@@ -139,7 +139,7 @@ PiecesWidget::PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* par
         }
         editPieceColor(id);
         ui->tableWidget->clearSelection();
-        emit Highlight(NULL);
+        emit Highlight(null_id);
     });
 
     connect(ui->editPiece_ToolButton, &QToolButton::clicked, this, [this]() {
@@ -162,7 +162,7 @@ PiecesWidget::PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* par
         }
         editPieceProperties(id);
         ui->tableWidget->clearSelection();
-        emit Highlight(NULL);
+        emit Highlight(null_id);
     });
 
     connect(ui->tableWidget, &QTableWidget::cellClicked, this, &PiecesWidget::cellClicked);
@@ -319,7 +319,7 @@ void PiecesWidget::cellDoubleClicked(int row, int column)
     if (locked == true) {
         QApplication::beep();
         ui->tableWidget->clearSelection();
-        emit Highlight(NULL);
+        emit Highlight(null_id);
         return;
     }
 
@@ -329,7 +329,7 @@ void PiecesWidget::cellDoubleClicked(int row, int column)
         editPieceProperties(id);
     }
     ui->tableWidget->clearSelection();
-    emit Highlight(NULL);
+    emit Highlight(null_id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
