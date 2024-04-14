@@ -71,7 +71,7 @@ public:
     VException& operator=(const VException& error);
     virtual ~VException() = default;
 
-    Q_NORETURN virtual void raise() const override;
+    [[noreturn]] virtual void raise() const override;
 
     // cppcheck-suppress unusedFunction
     Q_REQUIRED_RESULT virtual VException* clone() const override;
@@ -117,7 +117,7 @@ public:
     VExceptionToolWasDeleted& operator=(const VExceptionToolWasDeleted& error);
     virtual ~VExceptionToolWasDeleted() = default;
 
-    Q_NORETURN virtual void raise() const override;
+    [[noreturn]] virtual void raise() const override;
     // cppcheck-suppress unusedFunction
     virtual VExceptionToolWasDeleted* clone() const override;
 };

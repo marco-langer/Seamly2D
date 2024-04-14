@@ -142,7 +142,7 @@ VException* VException::clone() const { return new VException(*this); }
  * @brief raise method raise for exception
  */
 // cppcheck-suppress unusedFunction
-Q_NORETURN void VException::raise() const { throw *this; }
+[[noreturn]] void VException::raise() const { throw *this; }
 
 //---------------------------------------------------------------------------------------------------------------------
 const char* VException::what() const noexcept { return error.toUtf8().constData(); }
@@ -172,7 +172,7 @@ VExceptionToolWasDeleted& VExceptionToolWasDeleted::operator=(const VExceptionTo
  * @brief raise method raise for exception
  */
 // cppcheck-suppress unusedFunction
-Q_NORETURN void VExceptionToolWasDeleted::raise() const { throw *this; }
+[[noreturn]] void VExceptionToolWasDeleted::raise() const { throw *this; }
 
 //---------------------------------------------------------------------------------------------------------------------
 VExceptionToolWasDeleted* VExceptionToolWasDeleted::clone() const

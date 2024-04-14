@@ -93,7 +93,7 @@ protected:
     QString m_convertedFileName;
 
     void ValidateInputFile(const QString& currentSchema) const;
-    Q_NORETURN void InvalidVersion(int ver) const;
+    [[noreturn]] void InvalidVersion(int ver) const;
     void Save();
     void setVersion(const QString& version);
 

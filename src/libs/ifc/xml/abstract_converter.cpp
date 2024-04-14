@@ -317,7 +317,7 @@ void VAbstractConverter::BiasTokens(int position, int bias, QMap<int, QString>& 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_NORETURN void VAbstractConverter::InvalidVersion(int ver) const
+[[noreturn]] void VAbstractConverter::InvalidVersion(int ver) const
 {
     if (ver < minVer()) {
         const QString errorMsg(
