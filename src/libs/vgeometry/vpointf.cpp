@@ -56,13 +56,11 @@
 #include <QString>
 #include <QTransform>
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VPointF& VPointF::operator=(VPointF&& point) noexcept
 {
     Swap(point);
     return *this;
 }
-#endif
 
 void VPointF::Swap(VPointF& point) noexcept
 {

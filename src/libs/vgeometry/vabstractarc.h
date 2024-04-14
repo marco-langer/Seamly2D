@@ -110,9 +110,7 @@ public:
     virtual ~VAbstractArc();
 
     VAbstractArc& operator=(const VAbstractArc& arc);
-#ifdef Q_COMPILER_RVALUE_REFS
     VAbstractArc& operator=(VAbstractArc&& arc) noexcept;
-#endif
 
     void Swap(VAbstractArc& arc) noexcept;
 

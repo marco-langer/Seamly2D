@@ -92,10 +92,7 @@ public:
 
     VSplinePoint& operator[](int indx);
     VSplinePath& operator=(const VSplinePath& path);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     VSplinePath& operator=(VSplinePath&& path) noexcept;
-#endif
 
     void Swap(VSplinePath& path) noexcept;
 

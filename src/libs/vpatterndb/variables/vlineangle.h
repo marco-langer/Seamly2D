@@ -72,9 +72,7 @@ public:
     virtual ~VLineAngle() override;
 
     VLineAngle& operator=(const VLineAngle& var);
-#ifdef Q_COMPILER_RVALUE_REFS
     VLineAngle& operator=(VLineAngle&& var) noexcept;
-#endif
 
     void Swap(VLineAngle& var) noexcept;
 

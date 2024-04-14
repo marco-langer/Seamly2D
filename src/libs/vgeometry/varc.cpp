@@ -79,13 +79,11 @@ VArc::VArc()
  * @param f2 end angle (degree).
  */
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VArc& VArc::operator=(VArc&& arc) noexcept
 {
     Swap(arc);
     return *this;
 }
-#endif
 
 void VArc::Swap(VArc& arc) noexcept
 {

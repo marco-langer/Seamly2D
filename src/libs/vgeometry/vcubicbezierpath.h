@@ -77,10 +77,7 @@ public:
     virtual ~VCubicBezierPath();
 
     VCubicBezierPath& operator=(const VCubicBezierPath& curve);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     VCubicBezierPath& operator=(VCubicBezierPath&& curve) noexcept;
-#endif
 
     void Swap(VCubicBezierPath& curve) noexcept;
 

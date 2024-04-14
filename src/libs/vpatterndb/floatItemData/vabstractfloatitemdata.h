@@ -66,9 +66,7 @@ public:
     virtual ~VAbstractFloatItemData();
 
     VAbstractFloatItemData& operator=(const VAbstractFloatItemData& data);
-#ifdef Q_COMPILER_RVALUE_REFS
     VAbstractFloatItemData& operator=(VAbstractFloatItemData&& data) noexcept;
-#endif
 
     void Swap(VAbstractFloatItemData& data) noexcept;
 

@@ -105,9 +105,7 @@ public:
     virtual ~VArc() override;
 
     VArc& operator=(const VArc& arc);
-#ifdef Q_COMPILER_RVALUE_REFS
     VArc& operator=(VArc&& arc) noexcept;
-#endif
 
     void Swap(VArc& arc) noexcept;
 

@@ -71,9 +71,7 @@ public:
     virtual ~VCurveVariable() override;
 
     VCurveVariable& operator=(const VCurveVariable& var);
-#ifdef Q_COMPILER_RVALUE_REFS
     VCurveVariable& operator=(VCurveVariable&& var) noexcept;
-#endif
 
     void Swap(VCurveVariable& var) noexcept;
 

@@ -31,13 +31,11 @@
 #include "vgrainlinedata.h"
 #include "vgrainlinedata_p.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VGrainlineData& VGrainlineData::operator=(VGrainlineData&& data) noexcept
 {
     Swap(data);
     return *this;
 }
-#endif
 
 void VGrainlineData::Swap(VGrainlineData& data) noexcept
 {

@@ -63,13 +63,11 @@
 #include "vinternalvariable.h"
 #include "vlineangle_p.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VLineAngle& VLineAngle::operator=(VLineAngle&& var) noexcept
 {
     Swap(var);
     return *this;
 }
-#endif
 
 void VLineAngle::Swap(VLineAngle& var) noexcept
 {

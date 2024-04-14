@@ -152,9 +152,7 @@ public:
     virtual ~VAbstractPiece();
 
     VAbstractPiece& operator=(const VAbstractPiece& piece);
-#ifdef Q_COMPILER_RVALUE_REFS
     VAbstractPiece& operator=(VAbstractPiece&& piece) noexcept;
-#endif
 
     void Swap(VAbstractPiece& piece) noexcept;
 

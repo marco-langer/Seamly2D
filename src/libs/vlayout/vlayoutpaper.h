@@ -82,9 +82,7 @@ public:
     ~VLayoutPaper();
 
     VLayoutPaper& operator=(const VLayoutPaper& paper);
-#ifdef Q_COMPILER_RVALUE_REFS
     VLayoutPaper& operator=(VLayoutPaper&& paper) noexcept;
-#endif
 
     void Swap(VLayoutPaper& paper) noexcept;
 

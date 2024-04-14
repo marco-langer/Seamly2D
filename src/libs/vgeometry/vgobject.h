@@ -81,9 +81,7 @@ public:
     virtual ~VGObject();
 
     VGObject& operator=(const VGObject& obj);
-#ifdef Q_COMPILER_RVALUE_REFS
     VGObject& operator=(VGObject&& obj) noexcept;
-#endif
 
     void Swap(VGObject& obj) noexcept;
     quint32 getIdObject() const;

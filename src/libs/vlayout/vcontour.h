@@ -77,9 +77,7 @@ public:
     ~VContour();
 
     VContour& operator=(const VContour& contour);
-#ifdef Q_COMPILER_RVALUE_REFS
     VContour& operator=(VContour&& contour) noexcept;
-#endif
 
     void Swap(VContour& contour) noexcept;
 

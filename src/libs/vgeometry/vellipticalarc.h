@@ -106,10 +106,7 @@ public:
     virtual ~VEllipticalArc() override;
 
     VEllipticalArc& operator=(const VEllipticalArc& arc);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     VEllipticalArc& operator=(VEllipticalArc&& arc) noexcept;
-#endif
 
     void Swap(VEllipticalArc& arc) noexcept;
 

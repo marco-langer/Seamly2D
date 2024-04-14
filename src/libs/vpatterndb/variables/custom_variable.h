@@ -82,10 +82,7 @@ public:
     virtual ~CustomVariable() override;
 
     CustomVariable& operator=(const CustomVariable& variable);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     CustomVariable& operator=(CustomVariable&& variable) noexcept;
-#endif
 
     void Swap(CustomVariable& variable) noexcept;
     quint32 getIndex() const;

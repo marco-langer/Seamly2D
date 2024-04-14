@@ -104,10 +104,7 @@ public:
     virtual ~MeasurementVariable() override;
 
     MeasurementVariable& operator=(const MeasurementVariable& m);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     MeasurementVariable& operator=(MeasurementVariable&& m) noexcept;
-#endif
 
     void Swap(MeasurementVariable& m) noexcept;
 

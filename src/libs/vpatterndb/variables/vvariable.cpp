@@ -57,13 +57,11 @@
 #include "vinternalvariable.h"
 #include "vvariable_p.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VVariable& VVariable::operator=(VVariable&& var) noexcept
 {
     Swap(var);
     return *this;
 }
-#endif
 
 void VVariable::Swap(VVariable& var) noexcept
 {

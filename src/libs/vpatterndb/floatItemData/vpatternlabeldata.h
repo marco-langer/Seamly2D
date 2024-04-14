@@ -47,9 +47,7 @@ public:
     virtual ~VPatternLabelData();
 
     VPatternLabelData& operator=(const VPatternLabelData& data);
-#ifdef Q_COMPILER_RVALUE_REFS
     VPatternLabelData& operator=(VPatternLabelData&& data) noexcept;
-#endif
 
     void Swap(VPatternLabelData& data) noexcept;
 

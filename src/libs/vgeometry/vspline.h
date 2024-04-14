@@ -113,9 +113,7 @@ public:
     virtual ~VSpline();
 
     VSpline& operator=(const VSpline& spline);
-#ifdef Q_COMPILER_RVALUE_REFS
     VSpline& operator=(VSpline&& spline) noexcept;
-#endif
 
     void Swap(VSpline& spline) noexcept;
 

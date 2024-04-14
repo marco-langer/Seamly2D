@@ -95,10 +95,7 @@ public:
     virtual ~VPiece();
 
     VPiece& operator=(const VPiece& piece);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     VPiece& operator=(VPiece&& piece) noexcept;
-#endif
 
     void Swap(VPiece& piece) noexcept;
 

@@ -85,9 +85,7 @@ public:
     virtual ~VCubicBezier();
 
     VCubicBezier& operator=(const VCubicBezier& curve);
-#ifdef Q_COMPILER_RVALUE_REFS
     VCubicBezier& operator=(VCubicBezier&& curve) noexcept;
-#endif
 
     void Swap(VCubicBezier& curve) noexcept;
 

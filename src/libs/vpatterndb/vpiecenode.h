@@ -71,10 +71,7 @@ public:
     ~VPieceNode();
 
     VPieceNode& operator=(const VPieceNode& node);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     VPieceNode& operator=(VPieceNode&& node) noexcept;
-#endif
 
     void Swap(VPieceNode& node) noexcept;
 

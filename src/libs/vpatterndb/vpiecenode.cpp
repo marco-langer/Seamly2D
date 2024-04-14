@@ -85,13 +85,11 @@ qreal EvalFormula(const VContainer* data, QString formula)
 
 //---------------------------------------------------------------------------------------------------------------------
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VPieceNode& VPieceNode::operator=(VPieceNode&& node) noexcept
 {
     Swap(node);
     return *this;
 }
-#endif
 
 void VPieceNode::Swap(VPieceNode& node) noexcept { std::swap(d, node.d); }
 

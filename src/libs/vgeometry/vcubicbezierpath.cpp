@@ -61,13 +61,11 @@
 #include "vspline.h"
 #include "vsplinepoint.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VCubicBezierPath& VCubicBezierPath::operator=(VCubicBezierPath&& curve) noexcept
 {
     Swap(curve);
     return *this;
 }
-#endif
 
 void VCubicBezierPath::Swap(VCubicBezierPath& curve) noexcept
 {

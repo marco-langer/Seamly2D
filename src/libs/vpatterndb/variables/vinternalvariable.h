@@ -70,9 +70,7 @@ public:
     virtual ~VInternalVariable();
 
     VInternalVariable& operator=(const VInternalVariable& var);
-#ifdef Q_COMPILER_RVALUE_REFS
     VInternalVariable& operator=(VInternalVariable&& var) noexcept;
-#endif
 
     void Swap(VInternalVariable& var) noexcept;
 

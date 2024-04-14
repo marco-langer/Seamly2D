@@ -76,10 +76,7 @@ public:
     ~VPiecePath();
 
     VPiecePath& operator=(const VPiecePath& path);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     VPiecePath& operator=(VPiecePath&& path) noexcept;
-#endif
 
     void Swap(VPiecePath& path) noexcept;
     void Append(const VPieceNode& node);

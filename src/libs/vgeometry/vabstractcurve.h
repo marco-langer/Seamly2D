@@ -76,9 +76,7 @@ public:
     virtual ~VAbstractCurve() override;
 
     VAbstractCurve& operator=(const VAbstractCurve& curve);
-#ifdef Q_COMPILER_RVALUE_REFS
     VAbstractCurve& operator=(VAbstractCurve&& curve) noexcept;
-#endif
 
     void Swap(VAbstractCurve& curve) noexcept;
 

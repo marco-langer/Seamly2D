@@ -74,9 +74,7 @@ public:
     virtual ~VVariable() override;
 
     VVariable& operator=(const VVariable& var);
-#ifdef Q_COMPILER_RVALUE_REFS
     VVariable& operator=(VVariable&& var) noexcept;
-#endif
 
     void Swap(VVariable& var) noexcept;
 

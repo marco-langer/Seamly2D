@@ -95,9 +95,7 @@ public:
     virtual ~VPointF() override;
 
     VPointF& operator=(const VPointF& point);
-#ifdef Q_COMPILER_RVALUE_REFS
     VPointF& operator=(VPointF&& point) noexcept;
-#endif
 
     void Swap(VPointF& point) noexcept;
 

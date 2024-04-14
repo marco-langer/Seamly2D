@@ -75,9 +75,7 @@ public:
     ~VFSplinePoint();
 
     VFSplinePoint& operator=(const VFSplinePoint& point);
-#ifdef Q_COMPILER_RVALUE_REFS
     VFSplinePoint& operator=(VFSplinePoint&& point) noexcept;
-#endif
 
     void Swap(VFSplinePoint& point) noexcept;
 
@@ -123,9 +121,7 @@ public:
     ~VSplinePoint();
 
     VSplinePoint& operator=(const VSplinePoint& point);
-#ifdef Q_COMPILER_RVALUE_REFS
     VSplinePoint& operator=(VSplinePoint&& point) noexcept;
-#endif
 
     void Swap(VSplinePoint& point) noexcept;
 

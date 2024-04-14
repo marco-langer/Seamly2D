@@ -110,13 +110,11 @@ bool notchesPossible(const QVector<VPieceNode>& path)
 
 //---------------------------------------------------------------------------------------------------------------------
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VPiece& VPiece::operator=(VPiece&& piece) noexcept
 {
     Swap(piece);
     return *this;
 }
-#endif
 
 void VPiece::Swap(VPiece& piece) noexcept
 {

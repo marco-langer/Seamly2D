@@ -69,9 +69,7 @@ public:
     virtual ~VLayoutPiecePath();
 
     VLayoutPiecePath& operator=(const VLayoutPiecePath& path);
-#ifdef Q_COMPILER_RVALUE_REFS
     VLayoutPiecePath& operator=(VLayoutPiecePath&& path) noexcept;
-#endif
 
     void Swap(VLayoutPiecePath& path) noexcept;
 

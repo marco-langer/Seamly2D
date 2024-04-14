@@ -54,13 +54,11 @@
 #include "../vmisc/def.h"
 #include "vvariable.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 CustomVariable& CustomVariable::operator=(CustomVariable&& variable) noexcept
 {
     Swap(variable);
     return *this;
 }
-#endif
 
 void CustomVariable::Swap(CustomVariable& variable) noexcept
 {

@@ -86,10 +86,7 @@ public:
     virtual ~VLayoutPiece() override;
 
     VLayoutPiece& operator=(const VLayoutPiece& detail);
-
-#ifdef Q_COMPILER_RVALUE_REFS
     VLayoutPiece& operator=(VLayoutPiece&& detail) noexcept;
-#endif
 
     void Swap(VLayoutPiece& detail) noexcept;
 

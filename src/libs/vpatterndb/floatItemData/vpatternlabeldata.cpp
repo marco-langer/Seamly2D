@@ -30,13 +30,11 @@
 #include "../ifc/ifcdef.h"
 #include "vpatternlabeldata_p.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VPatternLabelData& VPatternLabelData::operator=(VPatternLabelData&& data) noexcept
 {
     Swap(data);
     return *this;
 }
-#endif
 
 void VPatternLabelData::Swap(VPatternLabelData& data) noexcept
 {

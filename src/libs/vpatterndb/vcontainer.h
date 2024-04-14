@@ -146,9 +146,7 @@ public:
     ~VContainer();
 
     VContainer& operator=(const VContainer& data);
-#ifdef Q_COMPILER_RVALUE_REFS
     VContainer& operator=(VContainer&& data) noexcept;
-#endif
 
     void Swap(VContainer& data) noexcept;
 

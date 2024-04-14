@@ -79,9 +79,7 @@ public:
     virtual ~VLengthLine() override;
 
     VLengthLine& operator=(const VLengthLine& var);
-#ifdef Q_COMPILER_RVALUE_REFS
     VLengthLine& operator=(VLengthLine&& var) noexcept;
-#endif
 
     void Swap(VLengthLine& var) noexcept;
 

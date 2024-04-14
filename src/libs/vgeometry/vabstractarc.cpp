@@ -57,13 +57,11 @@
 #include "vabstractarc_p.h"
 #include "vpointf.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VAbstractArc& VAbstractArc::operator=(VAbstractArc&& arc) noexcept
 {
     Swap(arc);
     return *this;
 }
-#endif
 
 void VAbstractArc::Swap(VAbstractArc& arc) noexcept
 {

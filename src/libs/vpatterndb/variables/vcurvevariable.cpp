@@ -56,13 +56,11 @@
 #include "vcurvevariable_p.h"
 #include "vinternalvariable.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VCurveVariable& VCurveVariable::operator=(VCurveVariable&& var) noexcept
 {
     Swap(var);
     return *this;
 }
-#endif
 
 void VCurveVariable::Swap(VCurveVariable& var) noexcept
 {

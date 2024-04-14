@@ -56,13 +56,11 @@
 #include "../qmuparser/qmutokenparser.h"
 #include "vsplinepoint_p.h"
 
-#ifdef Q_COMPILER_RVALUE_REFS
 VFSplinePoint& VFSplinePoint::operator=(VFSplinePoint&& point) noexcept
 {
     Swap(point);
     return *this;
 }
-#endif
 
 void VFSplinePoint::Swap(VFSplinePoint& point) noexcept { std::swap(d, point.d); }
 
@@ -197,13 +195,11 @@ qreal VFSplinePoint::KAsm2() const { return d->kAsm2; }
 void VFSplinePoint::SetKAsm2(const qreal& value) { d->kAsm2 = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-#ifdef Q_COMPILER_RVALUE_REFS
 VSplinePoint& VSplinePoint::operator=(VSplinePoint&& point) noexcept
 {
     Swap(point);
     return *this;
 }
-#endif
 
 void VSplinePoint::Swap(VSplinePoint& point) noexcept { std::swap(d, point.d); }
 //------------------------------------------VSplinePoint---------------------------------------------------------------

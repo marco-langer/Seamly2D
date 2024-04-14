@@ -50,9 +50,7 @@ public:
     virtual ~VPieceLabelData();
 
     VPieceLabelData& operator=(const VPieceLabelData& data);
-#ifdef Q_COMPILER_RVALUE_REFS
     VPieceLabelData& operator=(VPieceLabelData&& data) noexcept;
-#endif
 
     void Swap(VPieceLabelData& data) noexcept;
 

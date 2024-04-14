@@ -50,9 +50,7 @@ public:
     virtual ~VGrainlineData();
 
     VGrainlineData& operator=(const VGrainlineData& data);
-#ifdef Q_COMPILER_RVALUE_REFS
     VGrainlineData& operator=(VGrainlineData&& data) noexcept;
-#endif
 
     void Swap(VGrainlineData& data) noexcept;
 
