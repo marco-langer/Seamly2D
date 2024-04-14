@@ -63,10 +63,11 @@
  * @brief VException constructor exception
  * @param error string with error
  */
-VException::VException(const QString& error)
-    : error{ error }
+VException::VException(QString error)
+    : error{ std::move(error) }
+    , m_errorUtf8{ this->error.toUtf8() }
 {
-    Q_ASSERT_X(not error.isEmpty(), Q_FUNC_INFO, "Error message is empty");
+    Q_ASSERT_X(!this->error.isEmpty(), Q_FUNC_INFO, "Error message is empty");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -122,11 +123,11 @@ VException* VException::clone() const { return new VException(*this); }
 [[noreturn]] void VException::raise() const { throw *this; }
 
 //---------------------------------------------------------------------------------------------------------------------
-const char* VException::what() const noexcept { return error.toUtf8().constData(); }
+const char* VException::what() const noexcept { return m_errorUtf8.constData(); }
 
 //-----------------------------------------VExceptionToolWasDeleted----------------------------------------------------
-VExceptionToolWasDeleted::VExceptionToolWasDeleted(const QString& error)
-    : VException{ error }
+VExceptionToolWasDeleted::VExceptionToolWasDeleted(QString error)
+    : VException{ std::move(error) }
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

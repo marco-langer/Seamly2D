@@ -52,6 +52,7 @@
 #ifndef VEXCEPTION_H
 #define VEXCEPTION_H
 
+#include <QByteArray>
 #include <QCoreApplication>
 #include <QException>
 #include <QString>
@@ -67,7 +68,7 @@ class VException : public QException
     Q_DECLARE_TR_FUNCTIONS(VException)
 
 public:
-    explicit VException(const QString& error);
+    explicit VException(QString error);
 
     [[noreturn]] virtual void raise() const override;
 
@@ -83,7 +84,7 @@ public:
 protected:
     /** @brief error string with error */
     QString error;
-
+    QByteArray m_errorUtf8;
     /** @brief moreInfo more information about error */
     QString moreInfo;
 
@@ -103,7 +104,7 @@ class VExceptionToolWasDeleted : public VException
     Q_DECLARE_TR_FUNCTIONS(VExceptionToolDeleted)
 
 public:
-    explicit VExceptionToolWasDeleted(const QString& error);
+    explicit VExceptionToolWasDeleted(QString error);
 
     [[noreturn]] virtual void raise() const override;
     // cppcheck-suppress unusedFunction
