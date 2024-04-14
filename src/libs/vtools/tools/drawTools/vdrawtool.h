@@ -91,7 +91,7 @@ class VDrawTool : public VInteractiveTool
 
 public:
     VDrawTool(VAbstractPattern* doc, VContainer* data, quint32 id, QObject* parent = nullptr);
-    virtual ~VDrawTool() Q_DECL_EQ_DEFAULT;
+    virtual ~VDrawTool() = default;
 
     QString getLineType() const;
     virtual void setLineType(const QString& value);
@@ -137,8 +137,8 @@ protected:
 
     /** @brief SaveDialog save options into file after change in dialog. */
     virtual void SaveDialog(QDomElement& domElement) = 0;
-    virtual void SaveDialogChange() Q_DECL_FINAL;
-    virtual void AddToFile() Q_DECL_OVERRIDE;
+    virtual void SaveDialogChange() final;
+    virtual void AddToFile() override;
     void SaveOption(QSharedPointer<VGObject>& obj);
     virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj);
     virtual QString makeToolTip() const;

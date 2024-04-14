@@ -107,7 +107,7 @@ public:
     Draw mode;
 
 private:
-    VGObjectData& operator=(const VGObjectData&) Q_DECL_EQ_DELETE;
+    VGObjectData& operator=(const VGObjectData&) = delete;
 };
 
 VGObjectData::~VGObjectData() {}

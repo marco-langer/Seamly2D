@@ -53,13 +53,13 @@ class VTextGraphicsItem : public VPieceItem
     Q_OBJECT
 public:
     explicit VTextGraphicsItem(QGraphicsItem* pParent = nullptr);
-    virtual ~VTextGraphicsItem() Q_DECL_EQ_DEFAULT;
+    virtual ~VTextGraphicsItem() = default;
 
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-        Q_DECL_OVERRIDE;
-    virtual void Update() Q_DECL_OVERRIDE;
+    virtual void
+    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+    virtual void Update() override;
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::TextGraphicsItem)
@@ -74,11 +74,11 @@ public:
     int getTextLines() const;
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
     void UpdateBox();
     void correctLabel();

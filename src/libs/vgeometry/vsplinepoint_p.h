@@ -116,7 +116,7 @@ public:
     qreal kAsm2;
 
 private:
-    VFSplinePointData& operator=(const VFSplinePointData&) Q_DECL_EQ_DELETE;
+    VFSplinePointData& operator=(const VFSplinePointData&) = delete;
 };
 
 VFSplinePointData::~VFSplinePointData() {}
@@ -184,7 +184,7 @@ public:
     QString length2F;
 
 private:
-    VSplinePointData& operator=(const VSplinePointData&) Q_DECL_EQ_DELETE;
+    VSplinePointData& operator=(const VSplinePointData&) = delete;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -226,7 +226,7 @@ VSplinePointData::VSplinePointData(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VSplinePointData::~VSplinePointData() {}
+VSplinePointData::~VSplinePointData() = default;
 
 QT_WARNING_POP
 

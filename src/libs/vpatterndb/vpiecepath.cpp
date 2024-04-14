@@ -152,14 +152,14 @@ int IndexOfNode(const QVector<VPieceNode>& list, quint32 id)
 //---------------------------------------------------------------------------------------------------------------------
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VPiecePath& VPiecePath::operator=(VPiecePath&& path) Q_DECL_NOTHROW
+VPiecePath& VPiecePath::operator=(VPiecePath&& path) noexcept
 {
     Swap(path);
     return *this;
 }
 #endif
 
-void VPiecePath::Swap(VPiecePath& path) Q_DECL_NOTHROW { std::swap(d, path.d); }
+void VPiecePath::Swap(VPiecePath& path) noexcept { std::swap(d, path.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiecePath::VPiecePath()

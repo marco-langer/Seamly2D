@@ -44,7 +44,7 @@ public:
     virtual ~DialogAboutApp();
 
 protected:
-    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) override;
 
 public slots:
     void setProgressValue(int val);

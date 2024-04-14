@@ -91,7 +91,7 @@ public:
     QString lineWeight;
 
 private:
-    VAbstractCurveData& operator=(const VAbstractCurveData&) Q_DECL_EQ_DELETE;
+    VAbstractCurveData& operator=(const VAbstractCurveData&) = delete;
 };
 
 VAbstractCurveData::~VAbstractCurveData() {}

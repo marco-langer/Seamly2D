@@ -58,14 +58,14 @@
 #include "vspline_p.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VSpline& VSpline::operator=(VSpline&& spline) Q_DECL_NOTHROW
+VSpline& VSpline::operator=(VSpline&& spline) noexcept
 {
     Swap(spline);
     return *this;
 }
 #endif
 
-void VSpline::Swap(VSpline& spline) Q_DECL_NOTHROW
+void VSpline::Swap(VSpline& spline) noexcept
 {
     VAbstractCubicBezier::Swap(spline);
     std::swap(d, spline.d);

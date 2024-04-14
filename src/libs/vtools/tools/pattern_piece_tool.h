@@ -72,7 +72,7 @@ class PatternPieceTool
 {
     Q_OBJECT
 public:
-    virtual ~PatternPieceTool() Q_DECL_EQ_DEFAULT;
+    virtual ~PatternPieceTool() = default;
     static PatternPieceTool* Create(
         QSharedPointer<DialogTool> dialog,
         VMainGraphicsScene* scene,
@@ -138,27 +138,27 @@ public:
 
     void RefreshGeometry();
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::Piece)
     };
 
-    virtual QString getTagName() const Q_DECL_OVERRIDE;
-    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
-    virtual void GroupVisibility(quint32 object, bool visible) Q_DECL_OVERRIDE;
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-        Q_DECL_OVERRIDE;
+    virtual QString getTagName() const override;
+    virtual void ShowVisualization(bool show) override;
+    virtual void GroupVisibility(quint32 object, bool visible) override;
+    virtual void
+    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
-    virtual QRectF boundingRect() const Q_DECL_OVERRIDE;
-    virtual QPainterPath shape() const Q_DECL_OVERRIDE;
+    virtual QRectF boundingRect() const override;
+    virtual QPainterPath shape() const override;
 
 public slots:
-    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
+    virtual void FullUpdateFromFile() override;
     void EnableToolMove(bool move);
     void pieceLockedChanged(quint32 id, bool lock);
-    virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
-    virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+    virtual void AllowHover(bool enabled) override;
+    virtual void AllowSelecting(bool enabled) override;
     virtual void ResetChildren(QGraphicsItem* pItem);
     virtual void UpdateAll();
     virtual void retranslateUi();
@@ -181,20 +181,20 @@ protected slots:
     void SaveRotateGrainline(qreal dRot, const QPointF& ptPos);
 
 protected:
-    virtual void AddToFile() Q_DECL_OVERRIDE;
-    virtual void RefreshDataInFile() Q_DECL_OVERRIDE;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) Q_DECL_OVERRIDE;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) Q_DECL_OVERRIDE;
-    virtual void keyReleaseEvent(QKeyEvent* event) Q_DECL_OVERRIDE;
-    virtual void SetVisualization() Q_DECL_OVERRIDE {}
-    virtual void deleteTool(bool ask = true) Q_DECL_OVERRIDE;
-    virtual void ToolCreation(const Source& typeCreation) Q_DECL_OVERRIDE;
-    virtual void SetDialog() Q_DECL_FINAL;
-    virtual void SaveDialogChange() Q_DECL_FINAL;
+    virtual void AddToFile() override;
+    virtual void RefreshDataInFile() override;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    virtual void keyReleaseEvent(QKeyEvent* event) override;
+    virtual void SetVisualization() override {}
+    virtual void deleteTool(bool ask = true) override;
+    virtual void ToolCreation(const Source& typeCreation) override;
+    virtual void SetDialog() final;
+    virtual void SaveDialogChange() final;
 
 private:
     Q_DISABLE_COPY(PatternPieceTool)

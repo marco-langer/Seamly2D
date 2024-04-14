@@ -95,7 +95,7 @@ public:
         , m_my(piece.m_my)
     {}
 
-    ~VAbstractPieceData() Q_DECL_EQ_DEFAULT;
+    ~VAbstractPieceData() = default;
 
     QString m_name;
     QString m_color;
@@ -111,7 +111,7 @@ public:
     qreal m_my;
 
 private:
-    VAbstractPieceData& operator=(const VAbstractPieceData&) Q_DECL_EQ_DELETE;
+    VAbstractPieceData& operator=(const VAbstractPieceData&) = delete;
 };
 
 QT_WARNING_POP

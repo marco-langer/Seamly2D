@@ -68,7 +68,7 @@ class AbstractMConverter : public VAbstractConverter
 {
 public:
     explicit AbstractMConverter(const QString& fileName);
-    virtual ~AbstractMConverter() Q_DECL_EQ_DEFAULT;
+    virtual ~AbstractMConverter() = default;
 
 protected:
     void AddRootComment();

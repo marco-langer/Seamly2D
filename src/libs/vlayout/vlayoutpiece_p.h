@@ -127,7 +127,7 @@ public:
     VTextManager m_tmPattern;   //! @brief m_tmPattern text manager for laying out pattern info */
 
 private:
-    VLayoutPieceData& operator=(const VLayoutPieceData&) Q_DECL_EQ_DELETE;
+    VLayoutPieceData& operator=(const VLayoutPieceData&) = delete;
 };
 
 QT_WARNING_POP

@@ -78,7 +78,7 @@ class VToolBasePoint : public VToolSinglePoint
     Q_OBJECT
 public:
     virtual ~VToolBasePoint() = default;
-    virtual void setDialog() Q_DECL_OVERRIDE;
+    virtual void setDialog() override;
 
     static VToolBasePoint* Create(
         quint32 _id,
@@ -91,21 +91,21 @@ public:
         const Source& typeCreation);
 
     static const QString ToolType;
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::BasePoint)
     };
 
-    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
-    virtual void decrementReferens() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) override;
+    virtual void decrementReferens() override;
 
     QPointF GetBasePointPos() const;
     void SetBasePointPos(const QPointF& pos);
 
 public slots:
-    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
-    virtual void EnableToolMove(bool move) Q_DECL_OVERRIDE;
+    virtual void FullUpdateFromFile() override;
+    virtual void EnableToolMove(bool move) override;
 
 signals:
     /**
@@ -115,21 +115,21 @@ signals:
 
 protected slots:
     virtual void
-    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
 
 protected:
-    virtual void AddToFile() Q_DECL_OVERRIDE;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) Q_DECL_OVERRIDE;
-    virtual void deleteTool(bool ask = true) Q_DECL_OVERRIDE;
-    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
-    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
-    virtual void SetVisualization() Q_DECL_OVERRIDE {}
-    virtual QString makeToolTip() const Q_DECL_OVERRIDE;
+    virtual void AddToFile() override;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    virtual void deleteTool(bool ask = true) override;
+    virtual void SaveDialog(QDomElement& domElement) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    virtual void ReadToolAttributes(const QDomElement& domElement) override;
+    virtual void SetVisualization() override {}
+    virtual QString makeToolTip() const override;
 
 private:
     Q_DISABLE_COPY(VToolBasePoint)

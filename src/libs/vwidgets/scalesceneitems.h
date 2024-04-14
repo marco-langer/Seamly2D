@@ -66,15 +66,16 @@ public:
     VScaledLine(const QLineF& line, QGraphicsItem* parent = nullptr);
     virtual ~VScaledLine() = default;
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ScaledLine)
     };
 
-    virtual void
-    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
-        Q_DECL_OVERRIDE;
+    virtual void paint(
+        QPainter* painter,
+        const QStyleOptionGraphicsItem* option,
+        QWidget* widget = nullptr) override;
 
     qreal GetBasicWidth() const;
     void setBasicWidth(const qreal& value);
@@ -92,15 +93,16 @@ public:
     ArrowedLineItem(const QLineF& line, QGraphicsItem* parent = nullptr);
     virtual ~ArrowedLineItem() = default;
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ArrowedLineItem)
     };
 
-    virtual void
-    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
-        Q_DECL_OVERRIDE;
+    virtual void paint(
+        QPainter* painter,
+        const QStyleOptionGraphicsItem* option,
+        QWidget* widget = nullptr) override;
 
 private:
     Q_DISABLE_COPY(ArrowedLineItem)
@@ -114,15 +116,16 @@ public:
     explicit VScaledEllipse(QGraphicsItem* parent = nullptr);
     virtual ~VScaledEllipse() = default;
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ScaledEllipse)
     };
 
-    virtual void
-    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
-        Q_DECL_OVERRIDE;
+    virtual void paint(
+        QPainter* painter,
+        const QStyleOptionGraphicsItem* option,
+        QWidget* widget = nullptr) override;
 
 private:
     Q_DISABLE_COPY(VScaledEllipse)

@@ -73,7 +73,7 @@ class DialogCutSpline : public DialogTool
     Q_OBJECT
 public:
     DialogCutSpline(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogCutSpline() Q_DECL_OVERRIDE;
+    virtual ~DialogCutSpline() override;
 
     void SetPointName(const QString& value);
 
@@ -83,7 +83,7 @@ public:
     quint32 getSplineId() const;
     void setSplineId(const quint32& value);
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
@@ -91,12 +91,12 @@ public slots:
     void FXLength();
 
 protected:
-    virtual void ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() Q_DECL_OVERRIDE;
-    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+    virtual void SaveData() override;
+    virtual void closeEvent(QCloseEvent* event) override;
 
 private:
     Q_DISABLE_COPY(DialogCutSpline)

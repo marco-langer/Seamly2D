@@ -100,7 +100,7 @@ public:
     quint32 shift;
 
 private:
-    VContourData& operator=(const VContourData&) Q_DECL_EQ_DELETE;
+    VContourData& operator=(const VContourData&) = delete;
 };
 
 QT_WARNING_POP

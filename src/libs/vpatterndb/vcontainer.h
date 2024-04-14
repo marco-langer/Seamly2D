@@ -129,7 +129,7 @@ public:
     const Unit* patternUnit;
 
 private:
-    VContainerData& operator=(const VContainerData&) Q_DECL_EQ_DELETE;
+    VContainerData& operator=(const VContainerData&) = delete;
 };
 
 QT_WARNING_POP
@@ -147,10 +147,10 @@ public:
 
     VContainer& operator=(const VContainer& data);
 #ifdef Q_COMPILER_RVALUE_REFS
-    VContainer& operator=(VContainer&& data) Q_DECL_NOTHROW;
+    VContainer& operator=(VContainer&& data) noexcept;
 #endif
 
-    void Swap(VContainer& data) Q_DECL_NOTHROW;
+    void Swap(VContainer& data) noexcept;
 
     template <typename T>
     const QSharedPointer<T> GeometricObject(const quint32& id) const;

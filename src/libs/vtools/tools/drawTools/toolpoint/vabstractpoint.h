@@ -77,15 +77,15 @@ class VAbstractPoint : public VDrawTool
     Q_OBJECT
 public:
     VAbstractPoint(VAbstractPattern* doc, VContainer* data, quint32 id);
-    virtual ~VAbstractPoint() Q_DECL_EQ_DEFAULT;
+    virtual ~VAbstractPoint() = default;
 
-    virtual QString getTagName() const Q_DECL_OVERRIDE;
+    virtual QString getTagName() const override;
 
     template <typename T>
     void ShowToolVisualization(bool show);
 
 public slots:
-    virtual void ShowTool(quint32 id, bool enable) Q_DECL_OVERRIDE;
+    virtual void ShowTool(quint32 id, bool enable) override;
     void deletePoint();
 
 protected:

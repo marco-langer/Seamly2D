@@ -76,7 +76,7 @@ public:
         bool rotate,
         int rotationIncrease,
         bool saveLength);
-    virtual ~VPosition() Q_DECL_OVERRIDE {}
+    virtual ~VPosition() override {}
 
     quint32 getPaperIndex() const;
     void setPaperIndex(const quint32& value);
@@ -135,7 +135,7 @@ private:
         EdgeError = 2
     };
 
-    virtual void run() Q_DECL_OVERRIDE;
+    virtual void run() override;
 
     void SaveCandidate(
         VBestSquare& bestResult, const VLayoutPiece& piece, int globalI, int detJ, BestFrom type);

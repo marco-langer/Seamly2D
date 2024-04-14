@@ -69,16 +69,16 @@ class VisToolPointOfIntersectionCurves : public VisPath
 public:
     explicit VisToolPointOfIntersectionCurves(
         const VContainer* data, QGraphicsItem* parent = nullptr);
-    virtual ~VisToolPointOfIntersectionCurves() Q_DECL_EQ_DEFAULT;
+    virtual ~VisToolPointOfIntersectionCurves() = default;
 
-    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    virtual void VisualMode(const quint32& id) Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() override;
+    virtual void VisualMode(const quint32& id) override;
 
     void setObject2Id(const quint32& value);
     void setVCrossPoint(const VCrossCurvesPoint& value);
     void setHCrossPoint(const HCrossCurvesPoint& value);
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionCurves)

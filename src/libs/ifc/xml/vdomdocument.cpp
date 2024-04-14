@@ -151,7 +151,7 @@ protected:
         QtMsgType type,
         const QString& description,
         const QUrl& identifier,
-        const QSourceLocation& sourceLocation) Q_DECL_OVERRIDE;
+        const QSourceLocation& sourceLocation) override;
 
 private:
     QtMsgType m_messageType;

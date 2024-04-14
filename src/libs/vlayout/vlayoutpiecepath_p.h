@@ -84,7 +84,7 @@ public:
         , m_cut(path.m_cut)
     {}
 
-    ~VLayoutPiecePathData() Q_DECL_EQ_DEFAULT;
+    ~VLayoutPiecePathData() = default;
 
     /** @brief m_points list of path points. */
     QVector<QPointF> m_points;
@@ -95,7 +95,7 @@ public:
     bool m_cut;
 
 private:
-    VLayoutPiecePathData& operator=(const VLayoutPiecePathData&) Q_DECL_EQ_DELETE;
+    VLayoutPiecePathData& operator=(const VLayoutPiecePathData&) = delete;
 };
 
 QT_WARNING_POP

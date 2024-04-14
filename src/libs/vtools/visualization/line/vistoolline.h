@@ -72,9 +72,9 @@ public:
     explicit VisToolLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolLine() = default;
 
-    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() override;
     void setPoint2Id(const quint32& value);
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolLine)
@@ -86,7 +86,7 @@ protected:
         const QLineF& line,
         const QColor& color,
         const qreal& lineWeight,
-        Qt::PenStyle style = Qt::SolidLine) Q_DECL_OVERRIDE;
+        Qt::PenStyle style = Qt::SolidLine) override;
 
 private:
     Q_DISABLE_COPY(VisToolLine)

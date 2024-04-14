@@ -132,7 +132,7 @@ public:
         , m_notchCount(node.m_notchCount)
     {}
 
-    ~VPieceNodeData() Q_DECL_EQ_DEFAULT;
+    ~VPieceNodeData() = default;
 
     friend QDataStream& operator<<(QDataStream& out, const VPieceNodeData& p);
     friend QDataStream& operator>>(QDataStream& in, VPieceNodeData& p);
@@ -163,7 +163,7 @@ public:
     int m_notchCount;
 
 private:
-    VPieceNodeData& operator=(const VPieceNodeData&) Q_DECL_EQ_DELETE;
+    VPieceNodeData& operator=(const VPieceNodeData&) = delete;
 };
 
 // Friend functions

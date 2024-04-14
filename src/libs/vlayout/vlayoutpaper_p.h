@@ -125,7 +125,7 @@ public:
     bool saveLength;
 
 private:
-    VLayoutPaperData& operator=(const VLayoutPaperData&) Q_DECL_EQ_DELETE;
+    VLayoutPaperData& operator=(const VLayoutPaperData&) = delete;
 };
 
 QT_WARNING_POP

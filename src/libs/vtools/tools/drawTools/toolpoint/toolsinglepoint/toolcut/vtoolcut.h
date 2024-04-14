@@ -80,7 +80,7 @@ public:
         const quint32& curveCutId,
         QGraphicsItem* parent = nullptr);
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::Cut)
@@ -95,9 +95,9 @@ public:
     void setCurveCutId(const quint32& value);
 
 public slots:
-    virtual void Disable(bool disable, const QString& draftBlockName) Q_DECL_OVERRIDE;
-    virtual void piecesMode(bool mode) Q_DECL_OVERRIDE;
-    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
+    virtual void Disable(bool disable, const QString& draftBlockName) override;
+    virtual void piecesMode(bool mode) override;
+    virtual void FullUpdateFromFile() override;
 
 protected:
     /** @brief formula keep formula of length */
@@ -107,7 +107,7 @@ protected:
     bool m_piecesMode;
 
     void RefreshGeometry();
-    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void RemoveReferens() override;
 
     template <typename T>
     void ShowToolVisualization(bool show);

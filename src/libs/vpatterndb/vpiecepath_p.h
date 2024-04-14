@@ -99,7 +99,7 @@ public:
     bool m_cut;
 
 private:
-    VPiecePathData& operator=(const VPiecePathData&) Q_DECL_EQ_DELETE;
+    VPiecePathData& operator=(const VPiecePathData&) = delete;
 };
 
 VPiecePathData::~VPiecePathData() {}

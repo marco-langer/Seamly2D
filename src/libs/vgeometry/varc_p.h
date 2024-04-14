@@ -77,7 +77,7 @@ public:
     QString formulaRadius;
 
 private:
-    VArcData& operator=(const VArcData&) Q_DECL_EQ_DELETE;
+    VArcData& operator=(const VArcData&) = delete;
 };
 
 //---------------------------------------------------------------------------------------------------------------------

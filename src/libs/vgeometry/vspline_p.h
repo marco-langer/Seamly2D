@@ -121,7 +121,7 @@ public:
     qreal kCurve;
 
 private:
-    VSplineData& operator=(const VSplineData&) Q_DECL_EQ_DELETE;
+    VSplineData& operator=(const VSplineData&) = delete;
 };
 
 //---------------------------------------------------------------------------------------------------------------------

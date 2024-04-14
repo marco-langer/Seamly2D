@@ -95,7 +95,7 @@ public:
     VContainer data;
 
 private:
-    CustomVariableData& operator=(const CustomVariableData&) Q_DECL_EQ_DELETE;
+    CustomVariableData& operator=(const CustomVariableData&) = delete;
 };
 
 CustomVariableData::~CustomVariableData() {}

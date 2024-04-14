@@ -153,7 +153,7 @@ public:
     qreal baseHeight;
 
 private:
-    MeasurementVariableData& operator=(const MeasurementVariableData&) Q_DECL_EQ_DELETE;
+    MeasurementVariableData& operator=(const MeasurementVariableData&) = delete;
 };
 
 MeasurementVariableData::~MeasurementVariableData() {}

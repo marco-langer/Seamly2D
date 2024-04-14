@@ -63,7 +63,7 @@ class VInteractiveTool : public VAbstractTool
 public:
     VInteractiveTool(
         VAbstractPattern* doc, VContainer* data, quint32 id, QObject* parent = nullptr);
-    virtual ~VInteractiveTool() Q_DECL_EQ_DEFAULT;
+    virtual ~VInteractiveTool() = default;
 
     void DialogLinkDestroy();
 

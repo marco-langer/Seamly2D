@@ -78,7 +78,7 @@ public:
         qint32 segment);
     VCurveLength(const VCurveLength& var);
     VCurveLength& operator=(const VCurveLength& var);
-    virtual ~VCurveLength() Q_DECL_OVERRIDE;
+    virtual ~VCurveLength() override;
 };
 
 #endif   // VCURVELENGTH_H

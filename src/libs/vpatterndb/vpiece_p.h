@@ -114,7 +114,7 @@ public:
     QString m_formulaWidth;
 
 private:
-    VPieceData& operator=(const VPieceData&) Q_DECL_EQ_DELETE;
+    VPieceData& operator=(const VPieceData&) = delete;
 };
 
 VPieceData::~VPieceData() {}

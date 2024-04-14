@@ -44,8 +44,8 @@ public:
         quint32 nodeId,
         QUndoCommand* parent = nullptr);
     virtual ~AddGroupItem();
-    virtual void undo() Q_DECL_OVERRIDE;
-    virtual void redo() Q_DECL_OVERRIDE;
+    virtual void undo() override;
+    virtual void redo() override;
 
 signals:
     void updateGroups();

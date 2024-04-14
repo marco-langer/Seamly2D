@@ -75,12 +75,12 @@ class VPatternConverter : public VAbstractConverter
     Q_DECLARE_TR_FUNCTIONS(VPatternConverter)
 public:
     explicit VPatternConverter(const QString& fileName);
-    virtual ~VPatternConverter() Q_DECL_EQ_DEFAULT;
+    virtual ~VPatternConverter() = default;
 
     static const QString PatternMaxVerStr;
     static const QString CurrentSchema;
-    static Q_DECL_CONSTEXPR const int PatternMinVer = CONVERTER_VERSION_CHECK(0, 1, 0);
-    static Q_DECL_CONSTEXPR const int PatternMaxVer = CONVERTER_VERSION_CHECK(0, 6, 9);
+    static constexpr const int PatternMinVer = CONVERTER_VERSION_CHECK(0, 1, 0);
+    static constexpr const int PatternMaxVer = CONVERTER_VERSION_CHECK(0, 6, 9);
 
 protected:
     virtual int minVer() const override;

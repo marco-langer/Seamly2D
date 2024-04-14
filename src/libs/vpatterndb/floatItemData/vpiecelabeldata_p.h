@@ -70,7 +70,7 @@ public:
         , m_lines(data.m_lines)
     {}
 
-    ~VPieceLabelDataPrivate() Q_DECL_EQ_DEFAULT;
+    ~VPieceLabelDataPrivate() = default;
 
 
     QString m_qsLetter; /** @brief m_qsLetter Piece letter (should be no more than 3 characters) */
@@ -86,7 +86,7 @@ public:
     QVector<VLabelTemplateLine> m_lines;
 
 private:
-    VPieceLabelDataPrivate& operator=(const VPieceLabelDataPrivate&) Q_DECL_EQ_DELETE;
+    VPieceLabelDataPrivate& operator=(const VPieceLabelDataPrivate&) = delete;
 };
 
 QT_WARNING_POP

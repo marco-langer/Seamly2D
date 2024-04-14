@@ -76,19 +76,19 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VSAPoint : public QPointF
 {
 public:
-    Q_DECL_CONSTEXPR VSAPoint();
-    Q_DECL_CONSTEXPR VSAPoint(qreal xpos, qreal ypos);
-    Q_DECL_CONSTEXPR explicit VSAPoint(const QPointF& p);
+    constexpr VSAPoint();
+    constexpr VSAPoint(qreal xpos, qreal ypos);
+    constexpr explicit VSAPoint(const QPointF& p);
 
-    Q_DECL_CONSTEXPR qreal GetSABefore() const;
+    constexpr qreal GetSABefore() const;
     qreal GetSABefore(qreal width) const;
     void SetSABefore(qreal value);
 
-    Q_DECL_CONSTEXPR qreal GetSAAfter() const;
+    constexpr qreal GetSAAfter() const;
     qreal GetSAAfter(qreal width) const;
     void SetSAAfter(qreal value);
 
-    Q_DECL_CONSTEXPR PieceNodeAngle GetAngleType() const;
+    constexpr PieceNodeAngle GetAngleType() const;
     void SetAngleType(PieceNodeAngle value);
 
 private:
@@ -101,7 +101,7 @@ Q_DECLARE_METATYPE(VSAPoint)
 Q_DECLARE_TYPEINFO(VSAPoint, Q_MOVABLE_TYPE);
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_DECL_CONSTEXPR inline VSAPoint::VSAPoint()
+constexpr inline VSAPoint::VSAPoint()
     : QPointF()
     , m_before(-1)
     , m_after(-1)
@@ -109,7 +109,7 @@ Q_DECL_CONSTEXPR inline VSAPoint::VSAPoint()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_DECL_CONSTEXPR inline VSAPoint::VSAPoint(qreal xpos, qreal ypos)
+constexpr inline VSAPoint::VSAPoint(qreal xpos, qreal ypos)
     : QPointF(xpos, ypos)
     , m_before(-1)
     , m_after(-1)
@@ -117,7 +117,7 @@ Q_DECL_CONSTEXPR inline VSAPoint::VSAPoint(qreal xpos, qreal ypos)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_DECL_CONSTEXPR inline VSAPoint::VSAPoint(const QPointF& p)
+constexpr inline VSAPoint::VSAPoint(const QPointF& p)
     : QPointF(p)
     , m_before(-1)
     , m_after(-1)
@@ -125,19 +125,19 @@ Q_DECL_CONSTEXPR inline VSAPoint::VSAPoint(const QPointF& p)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_DECL_CONSTEXPR inline qreal VSAPoint::GetSABefore() const { return m_before; }
+constexpr inline qreal VSAPoint::GetSABefore() const { return m_before; }
 
 //---------------------------------------------------------------------------------------------------------------------
 inline void VSAPoint::SetSABefore(qreal value) { value < 0 ? m_before = -1 : m_before = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_DECL_CONSTEXPR inline qreal VSAPoint::GetSAAfter() const { return m_after; }
+constexpr inline qreal VSAPoint::GetSAAfter() const { return m_after; }
 
 //---------------------------------------------------------------------------------------------------------------------
 inline void VSAPoint::SetSAAfter(qreal value) { value < 0 ? m_after = -1 : m_after = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_DECL_CONSTEXPR inline PieceNodeAngle VSAPoint::GetAngleType() const { return m_angle; }
+constexpr inline PieceNodeAngle VSAPoint::GetAngleType() const { return m_angle; }
 
 //---------------------------------------------------------------------------------------------------------------------
 inline void VSAPoint::SetAngleType(PieceNodeAngle value) { m_angle = value; }
@@ -153,10 +153,10 @@ public:
 
     VAbstractPiece& operator=(const VAbstractPiece& piece);
 #ifdef Q_COMPILER_RVALUE_REFS
-    VAbstractPiece& operator=(VAbstractPiece&& piece) Q_DECL_NOTHROW;
+    VAbstractPiece& operator=(VAbstractPiece&& piece) noexcept;
 #endif
 
-    void Swap(VAbstractPiece& piece) Q_DECL_NOTHROW;
+    void Swap(VAbstractPiece& piece) noexcept;
 
     QString GetName() const;
     void SetName(const QString& value);
@@ -230,7 +230,7 @@ private:
     static bool ParallelCrossPoint(const QLineF& line1, const QLineF& line2, QPointF& point);
     static bool Crossing(const QVector<QPointF>& sub1, const QVector<QPointF>& sub2);
     static QVector<QPointF> SubPath(const QVector<QPointF>& path, int startIndex, int endIndex);
-    static Q_DECL_CONSTEXPR qreal PointPosition(const QPointF& p, const QLineF& line);
+    static constexpr qreal PointPosition(const QPointF& p, const QLineF& line);
     static QVector<QPointF> AngleByLength(
         const QPointF& p2, const QPointF& sp1, const QPointF& sp2, const QPointF& sp3, qreal width);
     static QVector<QPointF> AngleByIntersection(

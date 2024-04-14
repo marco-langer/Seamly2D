@@ -79,7 +79,7 @@ class VAbstractConverter : public VDomDocument
     Q_DECLARE_TR_FUNCTIONS(VAbstractConverter)
 public:
     explicit VAbstractConverter(const QString& fileName);
-    virtual ~VAbstractConverter() Q_DECL_EQ_DEFAULT;
+    virtual ~VAbstractConverter() = default;
 
     QString Convert();
 

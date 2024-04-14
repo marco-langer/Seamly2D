@@ -63,14 +63,14 @@
 const qreal VAbstractCurve::lengthCurveDirectionArrow = 14;
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VAbstractCurve& VAbstractCurve::operator=(VAbstractCurve&& curve) Q_DECL_NOTHROW
+VAbstractCurve& VAbstractCurve::operator=(VAbstractCurve&& curve) noexcept
 {
     Swap(curve);
     return *this;
 }
 #endif
 
-void VAbstractCurve::Swap(VAbstractCurve& curve) Q_DECL_NOTHROW
+void VAbstractCurve::Swap(VAbstractCurve& curve) noexcept
 {
     VGObject::Swap(curve);
     std::swap(d, curve.d);

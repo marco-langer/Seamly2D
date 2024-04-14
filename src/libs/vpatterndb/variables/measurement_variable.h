@@ -101,15 +101,15 @@ public:
         const QString& tagName = QString());
 
     MeasurementVariable(const MeasurementVariable& m);
-    virtual ~MeasurementVariable() Q_DECL_OVERRIDE;
+    virtual ~MeasurementVariable() override;
 
     MeasurementVariable& operator=(const MeasurementVariable& m);
 
 #ifdef Q_COMPILER_RVALUE_REFS
-    MeasurementVariable& operator=(MeasurementVariable&& m) Q_DECL_NOTHROW;
+    MeasurementVariable& operator=(MeasurementVariable&& m) noexcept;
 #endif
 
-    void Swap(MeasurementVariable& m) Q_DECL_NOTHROW;
+    void Swap(MeasurementVariable& m) noexcept;
 
     QString getGuiText() const;
 
@@ -123,10 +123,10 @@ public:
     int Index() const;
     bool IsFormulaOk() const;
 
-    virtual bool isNotUsed() const Q_DECL_OVERRIDE;
+    virtual bool isNotUsed() const override;
 
-    virtual qreal GetValue() const Q_DECL_OVERRIDE;
-    virtual qreal* GetValue() Q_DECL_OVERRIDE;
+    virtual qreal GetValue() const override;
+    virtual qreal* GetValue() override;
 
     VContainer* GetData();
 

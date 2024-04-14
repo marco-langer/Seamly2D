@@ -78,7 +78,7 @@ public:
     void setTextAsPaths(bool textAsPaths);
 
 protected:
-    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) override;
     void initTemplates(QComboBox* templates);
 
 private slots:

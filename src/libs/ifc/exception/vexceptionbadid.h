@@ -69,8 +69,8 @@ public:
     VExceptionBadId(const QString& error, const QString& key);
     VExceptionBadId(const VExceptionBadId& error);
     VExceptionBadId& operator=(const VExceptionBadId& error);
-    virtual ~VExceptionBadId() V_NOEXCEPT_EXPR(true) Q_DECL_EQ_DEFAULT;
-    virtual QString ErrorMessage() const Q_DECL_OVERRIDE;
+    virtual ~VExceptionBadId() V_NOEXCEPT_EXPR(true) = default;
+    virtual QString ErrorMessage() const override;
     quint32 BadId() const;
     QString BadKey() const;
 

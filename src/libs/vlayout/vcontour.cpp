@@ -64,14 +64,14 @@
 #include "vlayoutpiece.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VContour& VContour::operator=(VContour&& contour) Q_DECL_NOTHROW
+VContour& VContour::operator=(VContour&& contour) noexcept
 {
     Swap(contour);
     return *this;
 }
 #endif
 
-void VContour::Swap(VContour& contour) Q_DECL_NOTHROW { std::swap(d, contour.d); }
+void VContour::Swap(VContour& contour) noexcept { std::swap(d, contour.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 VContour::VContour()

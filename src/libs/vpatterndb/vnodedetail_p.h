@@ -120,7 +120,7 @@ public:
     bool reverse;
 
 private:
-    VNodeDetailData& operator=(const VNodeDetailData&) Q_DECL_EQ_DELETE;
+    VNodeDetailData& operator=(const VNodeDetailData&) = delete;
 };
 
 QT_WARNING_POP

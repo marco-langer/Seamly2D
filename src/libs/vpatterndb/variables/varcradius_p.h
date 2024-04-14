@@ -76,15 +76,15 @@ public:
         , arcId(var.arcId)
     {}
 
-    virtual ~VArcRadiusData() Q_DECL_OVERRIDE;
+    virtual ~VArcRadiusData();
 
     quint32 arcId;
 
 private:
-    VArcRadiusData& operator=(const VArcRadiusData&) Q_DECL_EQ_DELETE;
+    VArcRadiusData& operator=(const VArcRadiusData&) = delete;
 };
 
-VArcRadiusData::~VArcRadiusData() {}
+VArcRadiusData::~VArcRadiusData() = default;
 
 QT_WARNING_POP
 

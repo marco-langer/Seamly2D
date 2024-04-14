@@ -80,14 +80,14 @@ VArc::VArc()
  */
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VArc& VArc::operator=(VArc&& arc) Q_DECL_NOTHROW
+VArc& VArc::operator=(VArc&& arc) noexcept
 {
     Swap(arc);
     return *this;
 }
 #endif
 
-void VArc::Swap(VArc& arc) Q_DECL_NOTHROW
+void VArc::Swap(VArc& arc) noexcept
 {
     VAbstractArc::Swap(arc);
     std::swap(d, arc.d);

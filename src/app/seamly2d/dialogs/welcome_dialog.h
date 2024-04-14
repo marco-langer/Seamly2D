@@ -44,7 +44,7 @@ public:
     void apply();
 
 protected:
-    virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
+    virtual void changeEvent(QEvent* event) override;
     void seperatorChanged();
 
 private:

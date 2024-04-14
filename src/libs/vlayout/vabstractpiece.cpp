@@ -62,14 +62,14 @@
 const qreal maxL = 2.4;
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VAbstractPiece& VAbstractPiece::operator=(VAbstractPiece&& piece) Q_DECL_NOTHROW
+VAbstractPiece& VAbstractPiece::operator=(VAbstractPiece&& piece) noexcept
 {
     Swap(piece);
     return *this;
 }
 #endif
 
-void VAbstractPiece::Swap(VAbstractPiece& piece) Q_DECL_NOTHROW { std::swap(d, piece.d); }
+void VAbstractPiece::Swap(VAbstractPiece& piece) noexcept { std::swap(d, piece.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractPiece::VAbstractPiece()
@@ -372,7 +372,7 @@ QVector<QPointF> VAbstractPiece::CheckLoops(const QVector<QPointF>& points)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-Q_DECL_CONSTEXPR qreal VAbstractPiece::PointPosition(const QPointF& p, const QLineF& line)
+constexpr qreal VAbstractPiece::PointPosition(const QPointF& p, const QLineF& line)
 {
     return (line.p2().x() - line.p1().x()) * (p.y() - line.p1().y())
          - (line.p2().y() - line.p1().y()) * (p.x() - line.p1().x());

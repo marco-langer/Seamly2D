@@ -82,10 +82,10 @@ public:
     QString description;
 
 private:
-    VVariableData& operator=(const VVariableData&) Q_DECL_EQ_DELETE;
+    VVariableData& operator=(const VVariableData&) = delete;
 };
 
-VVariableData::~VVariableData() {}
+VVariableData::~VVariableData() = default;
 
 QT_WARNING_POP
 

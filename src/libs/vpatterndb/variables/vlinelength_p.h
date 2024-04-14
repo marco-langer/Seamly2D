@@ -90,7 +90,7 @@ public:
     Unit patternUnit;
 
 private:
-    VLengthLineData& operator=(const VLengthLineData&) Q_DECL_EQ_DELETE;
+    VLengthLineData& operator=(const VLengthLineData&) = delete;
 };
 
 VLengthLineData::~VLengthLineData() {}

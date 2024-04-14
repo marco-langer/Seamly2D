@@ -56,14 +56,14 @@
 #include <QPainterPath>
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VLayoutPiecePath& VLayoutPiecePath::operator=(VLayoutPiecePath&& path) Q_DECL_NOTHROW
+VLayoutPiecePath& VLayoutPiecePath::operator=(VLayoutPiecePath&& path) noexcept
 {
     Swap(path);
     return *this;
 }
 #endif
 
-void VLayoutPiecePath::Swap(VLayoutPiecePath& path) Q_DECL_NOTHROW { std::swap(d, path.d); }
+void VLayoutPiecePath::Swap(VLayoutPiecePath& path) noexcept { std::swap(d, path.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutPiecePath::VLayoutPiecePath()

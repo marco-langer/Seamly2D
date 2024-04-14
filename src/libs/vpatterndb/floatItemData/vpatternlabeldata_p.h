@@ -63,7 +63,7 @@ public:
         , m_bottomRightAnchorPoint(data.m_bottomRightAnchorPoint)
     {}
 
-    ~VPatternLabelDataPrivate() Q_DECL_EQ_DEFAULT;
+    ~VPatternLabelDataPrivate() = default;
 
     QString
         m_pieceLabelWidth; /** @brief m_pieceLabelWidth formula to calculate the width of label */
@@ -78,7 +78,7 @@ public:
         m_bottomRightAnchorPoint; /** @brief m_bottomRightAnchorPoint bottom right corner pin id */
 
 private:
-    VPatternLabelDataPrivate& operator=(const VPatternLabelDataPrivate&) Q_DECL_EQ_DELETE;
+    VPatternLabelDataPrivate& operator=(const VPatternLabelDataPrivate&) = delete;
 };
 
 QT_WARNING_POP

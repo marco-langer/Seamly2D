@@ -85,7 +85,7 @@ public:
     VPointF p4;
 
 private:
-    VCubicBezierData& operator=(const VCubicBezierData&) Q_DECL_EQ_DELETE;
+    VCubicBezierData& operator=(const VCubicBezierData&) = delete;
 };
 
 //---------------------------------------------------------------------------------------------------------------------

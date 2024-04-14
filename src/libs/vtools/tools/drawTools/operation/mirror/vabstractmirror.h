@@ -61,7 +61,7 @@ class VAbstractMirror : public VAbstractOperation
     Q_OBJECT
 
 public:
-    virtual ~VAbstractMirror() Q_DECL_EQ_DEFAULT;
+    virtual ~VAbstractMirror() = default;
 
 protected:
     VAbstractMirror(

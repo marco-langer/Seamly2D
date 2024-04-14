@@ -79,7 +79,7 @@ public:
     QVector<VPointF> path;
 
 private:
-    VCubicBezierPathData& operator=(const VCubicBezierPathData&) Q_DECL_EQ_DELETE;
+    VCubicBezierPathData& operator=(const VCubicBezierPathData&) = delete;
 };
 
 VCubicBezierPathData::~VCubicBezierPathData() {}

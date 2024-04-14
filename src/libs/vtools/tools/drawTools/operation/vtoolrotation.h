@@ -73,8 +73,8 @@ class VToolRotation : public VAbstractOperation
 {
     Q_OBJECT
 public:
-    virtual ~VToolRotation() Q_DECL_EQ_DEFAULT;
-    virtual void setDialog() Q_DECL_OVERRIDE;
+    virtual ~VToolRotation() = default;
+    virtual void setDialog() override;
     static VToolRotation* Create(
         QSharedPointer<DialogTool> dialog,
         VMainGraphicsScene* scene,
@@ -96,7 +96,7 @@ public:
 
     static const QString ToolType;
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::Rotation)
@@ -109,18 +109,18 @@ public:
     VFormula GetFormulaAngle() const;
     void SetFormulaAngle(const VFormula& value);
 
-    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) override;
 
 protected slots:
     virtual void
-    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
 
 protected:
-    virtual void SetVisualization() Q_DECL_OVERRIDE;
-    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
-    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
-    virtual QString makeToolTip() const Q_DECL_OVERRIDE;
+    virtual void SetVisualization() override;
+    virtual void SaveDialog(QDomElement& domElement) override;
+    virtual void ReadToolAttributes(const QDomElement& domElement) override;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    virtual QString makeToolTip() const override;
 
 private:
     Q_DISABLE_COPY(VToolRotation)

@@ -64,14 +64,14 @@
 #include "vvariable.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-MeasurementVariable& MeasurementVariable::operator=(MeasurementVariable&& m) Q_DECL_NOTHROW
+MeasurementVariable& MeasurementVariable::operator=(MeasurementVariable&& m) noexcept
 {
     Swap(m);
     return *this;
 }
 #endif
 
-void MeasurementVariable::Swap(MeasurementVariable& m) Q_DECL_NOTHROW
+void MeasurementVariable::Swap(MeasurementVariable& m) noexcept
 {
     VVariable::Swap(m);
     std::swap(d, m.d);

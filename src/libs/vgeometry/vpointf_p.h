@@ -123,7 +123,7 @@ public:
     bool m_showPointName;
 
 private:
-    VPointFData& operator=(const VPointFData&) Q_DECL_EQ_DELETE;
+    VPointFData& operator=(const VPointFData&) = delete;
 };
 
 VPointFData::~VPointFData() {}

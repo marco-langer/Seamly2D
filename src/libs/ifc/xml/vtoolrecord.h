@@ -74,7 +74,7 @@ public:
     void setTypeTool(const Tool& value);
     QString getDraftBlockName() const;
     void setNameDraw(const QString& value);
-    ~VToolRecord() Q_DECL_EQ_DEFAULT;
+    ~VToolRecord() = default;
 
 private:
     /** @brief id tool id. */

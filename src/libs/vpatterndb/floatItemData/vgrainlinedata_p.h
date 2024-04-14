@@ -62,7 +62,7 @@ public:
         , m_bottomAnchorPoint(data.m_bottomAnchorPoint)
     {}
 
-    ~VGrainlineDataPrivate() Q_DECL_EQ_DEFAULT;
+    ~VGrainlineDataPrivate() = default;
 
     QString m_qsLength;     /** @brief m_dLength formula to calculate the length of grainline */
     QString m_dRotation;    /** @brief m_dRotation formula to calculate the rotation of grainline in
@@ -73,7 +73,7 @@ public:
     quint32 m_bottomAnchorPoint; /** @brief m_bottomAnchorPoint bottom anchor point id */
 
 private:
-    VGrainlineDataPrivate& operator=(const VGrainlineDataPrivate&) Q_DECL_EQ_DELETE;
+    VGrainlineDataPrivate& operator=(const VGrainlineDataPrivate&) = delete;
 };
 
 QT_WARNING_POP

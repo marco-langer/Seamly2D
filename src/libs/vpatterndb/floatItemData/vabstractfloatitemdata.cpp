@@ -54,18 +54,14 @@
 #include <QtDebug>
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VAbstractFloatItemData&
-VAbstractFloatItemData::operator=(VAbstractFloatItemData&& data) Q_DECL_NOTHROW
+VAbstractFloatItemData& VAbstractFloatItemData::operator=(VAbstractFloatItemData&& data) noexcept
 {
     Swap(data);
     return *this;
 }
 #endif
 
-void VAbstractFloatItemData::Swap(VAbstractFloatItemData& data) Q_DECL_NOTHROW
-{
-    std::swap(d, data.d);
-}
+void VAbstractFloatItemData::Swap(VAbstractFloatItemData& data) noexcept { std::swap(d, data.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractFloatItemData::VAbstractFloatItemData()

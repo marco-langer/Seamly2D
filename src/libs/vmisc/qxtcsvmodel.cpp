@@ -52,7 +52,7 @@ public:
         , quoteMode(QxtCsvModel::DefaultQuoteMode)
     {}
     QXT_DECLARE_PUBLIC(QxtCsvModel)
-    virtual ~QxtCsvModelPrivate() Q_DECL_EQ_DEFAULT;
+    virtual ~QxtCsvModelPrivate() = default;
 
     QList<QStringList> csvData;
     QStringList header;
