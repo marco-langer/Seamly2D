@@ -149,23 +149,22 @@ const QString strCtrl = QStringLiteral("Ctrl");             // String
  */
 MainWindow::MainWindow(QWidget* parent)
     : MainWindowsNoGUI(parent)
-    , ui(new Ui::MainWindow)
+    , m_ui(new Ui::MainWindow)
 {
     for (int i = 0; i < MaxRecentFiles; ++i) {
-        recentFileActs[i] = nullptr;
+        m_recentFileActs[i] = nullptr;
     }
 
     createActions();
     initializeScenes();
-
-    doc = new VPattern(pattern, &mode, draftScene, pieceScene);
+    doc = new VPattern(pattern, &m_mode, m_draftScene, m_pieceScene);
     connect(doc, &VPattern::ClearMainWindow, this, &MainWindow::Clear);
     connect(doc, &VPattern::patternChanged, this, &MainWindow::patternChangesWereSaved);
     connect(doc, &VPattern::UndoCommand, this, &MainWindow::fullParseFile);
     connect(doc, &VPattern::setGuiEnabled, this, &MainWindow::setGuiEnabled);
     connect(doc, &VPattern::CheckLayout, this, [this]() {
         if (pattern->DataPieces()->count() == 0) {
-            if (!ui->showDraftMode->isChecked()) {
+            if (!m_ui->showDraftMode->isChecked()) {
                 showDraftMode(true);
             }
         }
@@ -186,8 +185,8 @@ MainWindow::MainWindow(QWidget* parent)
     showMaximized();
     initPenToolBar();
 
-    helpLabel = new QLabel(QObject::tr("Create new pattern piece to start working."));
-    ui->statusBar->addWidget(helpLabel);
+    m_helpLabel = new QLabel(QObject::tr("Create new pattern piece to start working."));
+    m_ui->statusBar->addWidget(m_helpLabel);
 
     initializeToolsToolBar();
 
@@ -199,7 +198,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     initializeAutoSave();
 
-    ui->draft_ToolBox->setCurrentIndex(0);
+    m_ui->draft_ToolBox->setCurrentIndex(0);
 
     ReadSettings();
     initializeToolBarVisibility();
@@ -207,15 +206,15 @@ MainWindow::MainWindow(QWidget* parent)
     setCurrentFile("");
     WindowsLocale();
 
-    connect(ui->listWidget, &QListWidget::currentRowChanged, this, &MainWindow::showLayoutPages);
+    connect(m_ui->listWidget, &QListWidget::currentRowChanged, this, &MainWindow::showLayoutPages);
 
-    connect(watcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::MeasurementsChanged);
+    connect(m_watcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::MeasurementsChanged);
     connect(qApp, &QApplication::focusChanged, this, [this](QWidget* old, QWidget* now) {
         if (old == nullptr && isAncestorOf(now) == true) {   // focus IN
             static bool asking = false;
-            if (!asking && mChanges && not mChangesAsked) {
+            if (!asking && m_changes && not m_changesAsked) {
                 asking = true;
-                mChangesAsked = true;
+                m_changesAsked = true;
                 const auto answer = QMessageBox::question(
                     this,
                     tr("Measurements"),
@@ -236,10 +235,10 @@ MainWindow::MainWindow(QWidget* parent)
 
 #if defined(Q_OS_MAC)
     // On Mac default icon size is 32x32.
-    ui->draft_ToolBar->setIconSize(QSize(24, 24));
-    ui->mode_ToolBar->setIconSize(QSize(24, 24));
-    ui->edit_Toolbar->setIconSize(QSize(24, 24));
-    ui->zoom_ToolBar->setIconSize(QSize(24, 24));
+    m_ui->draft_ToolBar->setIconSize(QSize(24, 24));
+    m_ui->mode_ToolBar->setIconSize(QSize(24, 24));
+    m_ui->edit_Toolbar->setIconSize(QSize(24, 24));
+    m_ui->zoom_ToolBar->setIconSize(QSize(24, 24));
 
     setUnifiedTitleAndToolBarOnMac(true);
 
@@ -276,43 +275,43 @@ void MainWindow::addDraftBlock(const QString& blockName)
         return;
     }
 
-    if (draftBlockComboBox->count() == 0) {
-        draftScene->initializeOrigins();
-        draftScene->enablePiecesMode(qApp->Seamly2DSettings()->getShowControlPoints());
-        pieceScene->initializeOrigins();
+    if (m_draftBlockComboBox->count() == 0) {
+        m_draftScene->initializeOrigins();
+        m_draftScene->enablePiecesMode(qApp->Seamly2DSettings()->getShowControlPoints());
+        m_pieceScene->initializeOrigins();
     }
 
-    draftBlockComboBox->blockSignals(true);
-    draftBlockComboBox->addItem(blockName);
+    m_draftBlockComboBox->blockSignals(true);
+    m_draftBlockComboBox->addItem(blockName);
 
     pattern->ClearGObjects();
     // Create single point
-    emit ui->view->itemClicked(nullptr);   // hide options previous tool
+    emit m_ui->view->itemClicked(nullptr);   // hide options previous tool
     const QString label = doc->GenerateLabel(LabelType::NewPatternPiece);
     const QPointF startPosition = draftBlockStartPosition();
     VPointF* point = new VPointF(startPosition.x(), startPosition.y(), label, 5, 10);
     auto spoint = VToolBasePoint::Create(
-        0, blockName, point, draftScene, doc, pattern, Document::FullParse, Source::FromGui);
-    ui->view->itemClicked(spoint);
+        0, blockName, point, m_draftScene, doc, pattern, Document::FullParse, Source::FromGui);
+    m_ui->view->itemClicked(spoint);
 
     setToolsEnabled(true);
     setWidgetsEnabled(true);
 
-    const qint32 index = draftBlockComboBox->findText(blockName);
+    const qint32 index = m_draftBlockComboBox->findText(blockName);
     if (index != -1) {   // -1 for not found
-        draftBlockComboBox->setCurrentIndex(index);
+        m_draftBlockComboBox->setCurrentIndex(index);
     } else {
-        draftBlockComboBox->setCurrentIndex(0);
+        m_draftBlockComboBox->setCurrentIndex(0);
     }
-    draftBlockComboBox->blockSignals(false);
+    m_draftBlockComboBox->blockSignals(false);
 
     // Show best for new PP
-    VMainGraphicsView::NewSceneRect(ui->view->scene(), ui->view, spoint);
-    ui->view->zoom100Percent();
+    VMainGraphicsView::NewSceneRect(m_ui->view->scene(), m_ui->view, spoint);
+    m_ui->view->zoom100Percent();
 
-    ui->newDraft_Action->setEnabled(true);
-    helpLabel->setText("");
-    groupsWidget->updateGroups();
+    m_ui->newDraft_Action->setEnabled(true);
+    m_helpLabel->setText("");
+    m_groupsWidget->updateGroups();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -321,8 +320,8 @@ QPointF MainWindow::draftBlockStartPosition() const
     const qreal originX = 30.0;
     const qreal originY = 40.0;
     const qreal margin = 40.0;
-    if (draftBlockComboBox->count() > 1) {
-        const QRectF rect = draftScene->visibleItemsBoundingRect();
+    if (m_draftBlockComboBox->count() > 1) {
+        const QRectF rect = m_draftScene->visibleItemsBoundingRect();
         if (rect.width() <= rect.height()) {
             return QPointF(rect.width() + margin, originY);
         } else {
@@ -336,106 +335,117 @@ QPointF MainWindow::draftBlockStartPosition() const
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::initializeScenes()
 {
-    draftScene = new VMainGraphicsScene(this);
-    currentScene = draftScene;
+    m_draftScene = new VMainGraphicsScene(this);
+    currentScene = m_draftScene;
     qApp->setCurrentScene(&currentScene);
-    connect(this, &MainWindow::EnableItemMove, draftScene, &VMainGraphicsScene::EnableItemMove);
-    connect(this, &MainWindow::ItemsSelection, draftScene, &VMainGraphicsScene::ItemsSelection);
+    connect(this, &MainWindow::EnableItemMove, m_draftScene, &VMainGraphicsScene::EnableItemMove);
+    connect(this, &MainWindow::ItemsSelection, m_draftScene, &VMainGraphicsScene::ItemsSelection);
 
     connect(
         this,
         &MainWindow::EnableLabelSelection,
-        draftScene,
+        m_draftScene,
         &VMainGraphicsScene::ToggleLabelSelection);
     connect(
         this,
         &MainWindow::EnablePointSelection,
-        draftScene,
+        m_draftScene,
         &VMainGraphicsScene::TogglePointSelection);
     connect(
         this,
         &MainWindow::EnableLineSelection,
-        draftScene,
+        m_draftScene,
         &VMainGraphicsScene::ToggleLineSelection);
     connect(
-        this, &MainWindow::EnableArcSelection, draftScene, &VMainGraphicsScene::ToggleArcSelection);
+        this,
+        &MainWindow::EnableArcSelection,
+        m_draftScene,
+        &VMainGraphicsScene::ToggleArcSelection);
     connect(
         this,
         &MainWindow::EnableElArcSelection,
-        draftScene,
+        m_draftScene,
         &VMainGraphicsScene::ToggleElArcSelection);
     connect(
         this,
         &MainWindow::EnableSplineSelection,
-        draftScene,
+        m_draftScene,
         &VMainGraphicsScene::ToggleSplineSelection);
     connect(
         this,
         &MainWindow::EnableSplinePathSelection,
-        draftScene,
+        m_draftScene,
         &VMainGraphicsScene::ToggleSplinePathSelection);
 
-    connect(this, &MainWindow::EnableLabelHover, draftScene, &VMainGraphicsScene::ToggleLabelHover);
-    connect(this, &MainWindow::EnablePointHover, draftScene, &VMainGraphicsScene::TogglePointHover);
-    connect(this, &MainWindow::EnableLineHover, draftScene, &VMainGraphicsScene::ToggleLineHover);
-    connect(this, &MainWindow::EnableArcHover, draftScene, &VMainGraphicsScene::ToggleArcHover);
-    connect(this, &MainWindow::EnableElArcHover, draftScene, &VMainGraphicsScene::ToggleElArcHover);
     connect(
-        this, &MainWindow::EnableSplineHover, draftScene, &VMainGraphicsScene::ToggleSplineHover);
+        this, &MainWindow::EnableLabelHover, m_draftScene, &VMainGraphicsScene::ToggleLabelHover);
+    connect(
+        this, &MainWindow::EnablePointHover, m_draftScene, &VMainGraphicsScene::TogglePointHover);
+    connect(this, &MainWindow::EnableLineHover, m_draftScene, &VMainGraphicsScene::ToggleLineHover);
+    connect(this, &MainWindow::EnableArcHover, m_draftScene, &VMainGraphicsScene::ToggleArcHover);
+    connect(
+        this, &MainWindow::EnableElArcHover, m_draftScene, &VMainGraphicsScene::ToggleElArcHover);
+    connect(
+        this, &MainWindow::EnableSplineHover, m_draftScene, &VMainGraphicsScene::ToggleSplineHover);
     connect(
         this,
         &MainWindow::EnableSplinePathHover,
-        draftScene,
+        m_draftScene,
         &VMainGraphicsScene::ToggleSplinePathHover);
 
-    connect(draftScene, &VMainGraphicsScene::mouseMove, this, &MainWindow::MouseMove);
+    connect(m_draftScene, &VMainGraphicsScene::mouseMove, this, &MainWindow::MouseMove);
 
-    pieceScene = new VMainGraphicsScene(this);
-    connect(this, &MainWindow::EnableItemMove, pieceScene, &VMainGraphicsScene::EnableItemMove);
+    m_pieceScene = new VMainGraphicsScene(this);
+    connect(this, &MainWindow::EnableItemMove, m_pieceScene, &VMainGraphicsScene::EnableItemMove);
 
     connect(
         this,
         &MainWindow::EnableNodeLabelSelection,
-        pieceScene,
+        m_pieceScene,
         &VMainGraphicsScene::ToggleNodeLabelSelection);
     connect(
         this,
         &MainWindow::EnableNodePointSelection,
-        pieceScene,
+        m_pieceScene,
         &VMainGraphicsScene::ToggleNodePointSelection);
     connect(
         this,
         &MainWindow::enablePieceSelection,
-        pieceScene,
+        m_pieceScene,
         &VMainGraphicsScene::togglePieceSelection);
 
     connect(
         this,
         &MainWindow::EnableNodeLabelHover,
-        pieceScene,
+        m_pieceScene,
         &VMainGraphicsScene::ToggleNodeLabelHover);
     connect(
         this,
         &MainWindow::EnableNodePointHover,
-        pieceScene,
+        m_pieceScene,
         &VMainGraphicsScene::ToggleNodePointHover);
-    connect(this, &MainWindow::enablePieceHover, pieceScene, &VMainGraphicsScene::togglePieceHover);
-
-    connect(pieceScene, &VMainGraphicsScene::mouseMove, this, &MainWindow::MouseMove);
-
-    ui->view->setScene(currentScene);
-
-    draftScene->setCurrentTransform(ui->view->transform());
-    pieceScene->setCurrentTransform(ui->view->transform());
-
-    connect(ui->view, &VMainGraphicsView::mouseRelease, this, [this]() { EndVisualization(true); });
     connect(
-        ui->view, &VMainGraphicsView::signalZoomScaleChanged, this, &MainWindow::zoomScaleChanged);
+        this, &MainWindow::enablePieceHover, m_pieceScene, &VMainGraphicsScene::togglePieceHover);
+
+    connect(m_pieceScene, &VMainGraphicsScene::mouseMove, this, &MainWindow::MouseMove);
+
+    m_ui->view->setScene(currentScene);
+
+    m_draftScene->setCurrentTransform(m_ui->view->transform());
+    m_pieceScene->setCurrentTransform(m_ui->view->transform());
+
+    connect(
+        m_ui->view, &VMainGraphicsView::mouseRelease, this, [this]() { EndVisualization(true); });
+    connect(
+        m_ui->view,
+        &VMainGraphicsView::signalZoomScaleChanged,
+        this,
+        &MainWindow::zoomScaleChanged);
 
     QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     policy.setHorizontalStretch(12);
-    ui->view->setSizePolicy(policy);
-    qApp->setSceneView(ui->view);
+    m_ui->view->setSizePolicy(policy);
+    qApp->setSceneView(m_ui->view);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -651,7 +661,7 @@ void MainWindow::SetToolButton(
     if (checked) {
         CancelTool();
         emit EnableItemMove(false);
-        currentTool = lastUsedTool = t;
+        m_currentTool = m_lastUsedTool = t;
         auto cursorResource = cursor;
         if (qApp->devicePixelRatio() >= 2) {
             // Try to load HiDPI versions of the cursors if available
@@ -662,19 +672,19 @@ void MainWindow::SetToolButton(
         }
         QPixmap pixmap(cursorResource);
         QCursor cur(pixmap, 2, 2);
-        ui->view->viewport()->setCursor(cur);
-        helpLabel->setText(toolTip);
-        ui->view->setShowToolOptions(false);
-        dialogTool = QSharedPointer<Dialog>(new Dialog(pattern, 0, this));
+        m_ui->view->viewport()->setCursor(cur);
+        m_helpLabel->setText(toolTip);
+        m_ui->view->setShowToolOptions(false);
+        m_dialogTool = QSharedPointer<Dialog>(new Dialog(pattern, 0, this));
 
         switch (t) {
         case Tool::ArcIntersectAxis:
-            dialogTool->setWindowTitle("Point - Intersect Arc and Axis");
+            m_dialogTool->setWindowTitle("Point - Intersect Arc and Axis");
             break;
-        case Tool::Midpoint: dialogTool->Build(t); break;
+        case Tool::Midpoint: m_dialogTool->Build(t); break;
         case Tool::InternalPath:
         case Tool::AnchorPoint:
-        case Tool::InsertNodes: dialogTool->SetPiecesList(doc->getActivePatternPieces()); break;
+        case Tool::InsertNodes: m_dialogTool->SetPiecesList(doc->getActivePatternPieces()); break;
         default: break;
         }
 
@@ -682,15 +692,18 @@ void MainWindow::SetToolButton(
         SCASSERT(scene != nullptr)
 
         connect(
-            scene, &VMainGraphicsScene::ChosenObject, dialogTool.data(), &DialogTool::ChosenObject);
+            scene,
+            &VMainGraphicsScene::ChosenObject,
+            m_dialogTool.data(),
+            &DialogTool::ChosenObject);
         connect(
             scene,
             &VMainGraphicsScene::SelectedObject,
-            dialogTool.data(),
+            m_dialogTool.data(),
             &DialogTool::SelectedObject);
-        connect(dialogTool.data(), &DialogTool::DialogClosed, this, closeDialogSlot);
-        connect(dialogTool.data(), &DialogTool::ToolTip, this, &MainWindow::ShowToolTip);
-        emit ui->view->itemClicked(nullptr);
+        connect(m_dialogTool.data(), &DialogTool::DialogClosed, this, closeDialogSlot);
+        connect(m_dialogTool.data(), &DialogTool::ToolTip, this, &MainWindow::ShowToolTip);
+        emit m_ui->view->itemClicked(nullptr);
     } else {
         if (QToolButton* tButton = qobject_cast<QToolButton*>(this->sender())) {
             tButton->setChecked(true);
@@ -720,7 +733,7 @@ void MainWindow::SetToolButtonWithApply(
     if (checked) {
         SetToolButton<Dialog>(checked, t, cursor, toolTip, closeDialogSlot);
 
-        connect(dialogTool.data(), &DialogTool::DialogApplied, this, applyDialogSlot);
+        connect(m_dialogTool.data(), &DialogTool::DialogApplied, this, applyDialogSlot);
     } else {
         if (QToolButton* tButton = qobject_cast<QToolButton*>(this->sender())) {
             tButton->setChecked(true);
@@ -735,15 +748,15 @@ void MainWindow::SetToolButtonWithApply(
 template <typename DrawTool>
 void MainWindow::ClosedDialog(int result)
 {
-    SCASSERT(!dialogTool.isNull())
+    SCASSERT(!m_dialogTool.isNull())
     if (result == QDialog::Accepted) {
         VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(currentScene);
         SCASSERT(scene != nullptr)
 
         QGraphicsItem* tool =
-            dynamic_cast<QGraphicsItem*>(DrawTool::Create(dialogTool, scene, doc, pattern));
+            dynamic_cast<QGraphicsItem*>(DrawTool::Create(m_dialogTool, scene, doc, pattern));
         // Do not check for nullptr! See issue #719.
-        ui->view->itemClicked(tool);
+        m_ui->view->itemClicked(tool);
     }
     handleArrowTool(true);
 }
@@ -756,25 +769,25 @@ void MainWindow::ClosedDialog(int result)
 template <typename DrawTool>
 void MainWindow::ClosedDialogWithApply(int result, VMainGraphicsScene* scene)
 {
-    SCASSERT(!dialogTool.isNull())
+    SCASSERT(!m_dialogTool.isNull())
     if (result == QDialog::Accepted) {
         ApplyDialog<DrawTool>(scene);
     }
     // If before Cancel was used Apply we have an item
-    DrawTool* vtool =
-        qobject_cast<DrawTool*>(dialogTool->GetAssociatedTool());   // Don't check for nullptr here
-    if (dialogTool->GetAssociatedTool() != nullptr) {
+    DrawTool* vtool = qobject_cast<DrawTool*>(
+        m_dialogTool->GetAssociatedTool());   // Don't check for nullptr here
+    if (m_dialogTool->GetAssociatedTool() != nullptr) {
         SCASSERT(vtool != nullptr)
         vtool->DialogLinkDestroy();
         connect(vtool, &DrawTool::ToolTip, this, &MainWindow::ShowToolTip);
     }
     handleArrowTool(true);
-    ui->view->itemClicked(vtool);   // Don't check for nullptr here
+    m_ui->view->itemClicked(vtool);   // Don't check for nullptr here
     // If insert not to the end of file call lite parse
     if (doc->getCursor() > 0) {
         doc->LiteParseTree(Document::LiteParse);
-        if (historyDialog) {
-            historyDialog->updateHistory();
+        if (m_historyDialog) {
+            m_historyDialog->updateHistory();
         }
     }
 }
@@ -786,15 +799,15 @@ void MainWindow::ClosedDialogWithApply(int result, VMainGraphicsScene* scene)
 template <typename DrawTool>
 void MainWindow::ApplyDialog(VMainGraphicsScene* scene)
 {
-    SCASSERT(!dialogTool.isNull())
+    SCASSERT(!m_dialogTool.isNull())
 
     // Only create tool if not already created with apply
-    if (dialogTool->GetAssociatedTool() == nullptr) {
+    if (m_dialogTool->GetAssociatedTool() == nullptr) {
         SCASSERT(scene != nullptr)
 
-        dialogTool->SetAssociatedTool(DrawTool::Create(dialogTool, scene, doc, pattern));
+        m_dialogTool->SetAssociatedTool(DrawTool::Create(m_dialogTool, scene, doc, pattern));
     } else {   // Or update associated tool with data
-        DrawTool* vtool = qobject_cast<DrawTool*>(dialogTool->GetAssociatedTool());
+        DrawTool* vtool = qobject_cast<DrawTool*>(m_dialogTool->GetAssociatedTool());
         SCASSERT(vtool != nullptr)
         vtool->FullUpdateFromGuiApply();
     }
@@ -804,32 +817,30 @@ void MainWindow::ApplyDialog(VMainGraphicsScene* scene)
 template <typename DrawTool>
 void MainWindow::ClosedDrawDialogWithApply(int result)
 {
-    ClosedDialogWithApply<DrawTool>(result, draftScene);
+    ClosedDialogWithApply<DrawTool>(result, m_draftScene);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename DrawTool>
 void MainWindow::ApplyDrawDialog()
 {
-    ApplyDialog<DrawTool>(draftScene);
+    ApplyDialog<DrawTool>(m_draftScene);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename DrawTool>
 void MainWindow::ClosedPiecesDialogWithApply(int result)
 {
-    ClosedDialogWithApply<DrawTool>(result, pieceScene);
+    ClosedDialogWithApply<DrawTool>(result, m_pieceScene);
     if (pattern->DataPieces()->size() > 0) {
-        ui->anchorPoint_ToolButton->setEnabled(true);
-        ui->internalPath_ToolButton->setEnabled(true);
-        ui->insertNodes_ToolButton->setEnabled(true);
-        ui->importImage_ToolButton->setEnabled(true);
-        ui->anchorPoint_Action->setEnabled(true);
-        ui->internalPath_Action->setEnabled(true);
-        ui->images_Action->setEnabled(true);
-        ui->anchorPoint_Action->setEnabled(true);
-        ui->internalPath_Action->setEnabled(true);
-        ui->insertNodes_Action->setEnabled(true);
+        m_ui->anchorPoint_ToolButton->setEnabled(true);
+        m_ui->internalPath_ToolButton->setEnabled(true);
+        m_ui->insertNodes_ToolButton->setEnabled(true);
+        m_ui->importImage_ToolButton->setEnabled(true);
+        m_ui->anchorPoint_Action->setEnabled(true);
+        m_ui->internalPath_Action->setEnabled(true);
+        m_ui->images_Action->setEnabled(true);
+        m_ui->insertNodes_Action->setEnabled(true);
     }
 }
 
@@ -837,7 +848,7 @@ void MainWindow::ClosedPiecesDialogWithApply(int result)
 template <typename DrawTool>
 void MainWindow::applyPiecesDialog()
 {
-    ApplyDialog<DrawTool>(pieceScene);
+    ApplyDialog<DrawTool>(m_pieceScene);
 }
 
 // Points
@@ -1332,9 +1343,9 @@ void MainWindow::handleGroupTool(bool checked)
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::ClosedEditGroupDialog(int result)
 {
-    SCASSERT(dialogTool != nullptr)
+    SCASSERT(m_dialogTool != nullptr)
     if (result == QDialog::Accepted) {
-        QSharedPointer<AddToGroupDialog> dialog = dialogTool.objectCast<AddToGroupDialog>();
+        QSharedPointer<AddToGroupDialog> dialog = m_dialogTool.objectCast<AddToGroupDialog>();
         SCASSERT(dialog != nullptr)
 
         QString gName = dialog->getName();
@@ -1344,7 +1355,7 @@ void MainWindow::ClosedEditGroupDialog(int result)
             QMessageBox::information(
                 this,
                 tr("Add Group Objects"),
-                tr("Group is Locked. Unlock to add objects"),
+                tr("Group is locked. Unlock to add objects"),
                 QMessageBox::Ok,
                 QMessageBox::Ok);
         }
@@ -1473,9 +1484,9 @@ void MainWindow::handleAnchorPointTool(bool checked)
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::ClosedDialogAnchorPoint(int result)
 {
-    SCASSERT(dialogTool != nullptr);
+    SCASSERT(m_dialogTool != nullptr);
     if (result == QDialog::Accepted) {
-        AnchorPointTool::Create(dialogTool, doc, pattern);
+        AnchorPointTool::Create(m_dialogTool, doc, pattern);
     }
     handleArrowTool(true);
     doc->LiteParseTree(Document::LiteParse);
@@ -1497,9 +1508,9 @@ void MainWindow::handleInternalPathTool(bool checked)
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::ClosedDialogInternalPath(int result)
 {
-    SCASSERT(dialogTool != nullptr);
+    SCASSERT(m_dialogTool != nullptr);
     if (result == QDialog::Accepted) {
-        VToolInternalPath::Create(dialogTool, pieceScene, doc, pattern);
+        VToolInternalPath::Create(m_dialogTool, m_pieceScene, doc, pattern);
     }
     handleArrowTool(true);
     doc->LiteParseTree(Document::LiteParse);
@@ -1526,12 +1537,12 @@ void MainWindow::handleInsertNodesTool(bool checked)
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::ClosedInsertNodesDialog(int result)
 {
-    SCASSERT(dialogTool != nullptr);
+    SCASSERT(m_dialogTool != nullptr);
     if (result == QDialog::Accepted) {
-        QSharedPointer<InsertNodesDialog> tool = dialogTool.objectCast<InsertNodesDialog>();
+        QSharedPointer<InsertNodesDialog> tool = m_dialogTool.objectCast<InsertNodesDialog>();
         SCASSERT(tool != nullptr)
         PatternPieceTool::insertNodes(
-            tool->getNodes(), tool->getPieceId(), pieceScene, pattern, doc);
+            tool->getNodes(), tool->getPieceId(), m_pieceScene, pattern, doc);
     }
     handleArrowTool(true);
     doc->LiteParseTree(Document::LiteParse);
@@ -1541,8 +1552,8 @@ void MainWindow::ClosedInsertNodesDialog(int result)
 void MainWindow::handleImportImage()
 {
     qCDebug(vMainWindow, "Add Image");
-    ui->draft_ToolBox->setCurrentWidget(ui->backgroundImage_Page);
-    ui->importImage_ToolButton->setChecked(true);
+    m_ui->draft_ToolBox->setCurrentWidget(m_ui->backgroundImage_Page);
+    m_ui->importImage_ToolButton->setChecked(true);
 
     QString filename = getImageFilename();
     qCDebug(vMainWindow, "Image filename: %s", qUtf8Printable(filename));
@@ -1550,7 +1561,7 @@ void MainWindow::handleImportImage()
     DraftImage image;
     QFileInfo f(filename);
     if (filename.isEmpty()) {
-        ui->importImage_ToolButton->setChecked(false);
+        m_ui->importImage_ToolButton->setChecked(false);
         return;
     }
     image.name = f.baseName();
@@ -1596,7 +1607,7 @@ void MainWindow::addImage(DraftImage image)
 
     ImageItem* item = new ImageItem(doc, image);
     doc->addBackgroundImage(image.id, item);
-    draftScene->addItem(item);
+    m_draftScene->addItem(item);
     // Need error dialog
 
     // connect(this, &MainWindow::EnableImageSelection, item, &ImageItem::enableSelection);
@@ -1606,7 +1617,7 @@ void MainWindow::addImage(DraftImage image)
     // connect(item, &ImageItem::imageSelected, this, &MainWindow::handleImageSelected);
     connect(item, &ImageItem::setStatusMessage, this, &MainWindow::setStatusMessage);
 
-    ui->importImage_ToolButton->setChecked(false);
+    m_ui->importImage_ToolButton->setChecked(false);
 
     if (!firstImportImage) {
         qCDebug(vMainWindow, "Inside first import image");
@@ -1657,7 +1668,7 @@ void MainWindow::handleImageSelected(quint32 id)
 }
 
 //--------------------------------------------------------------------------------------------------------------------
-void MainWindow::setStatusMessage(QString message) { helpLabel->setText(message); }
+void MainWindow::setStatusMessage(QString message) { m_helpLabel->setText(message); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::handleLockImage(bool state)
@@ -1758,7 +1769,7 @@ void MainWindow::closeUnionDialog(int result)
  */
 void MainWindow::handleNewLayout(bool checked)
 {
-    toolLayoutSettings(ui->layoutSettings_ToolButton, checked);
+    toolLayoutSettings(m_ui->layoutSettings_ToolButton, checked);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -1766,26 +1777,26 @@ void MainWindow::handleNewLayout(bool checked)
  * @brief ShowTool  highlight tool.Tip show tools tooltip.
  * @param toolTip tooltip text.
  */
-void MainWindow::ShowToolTip(const QString& toolTip) { helpLabel->setText(toolTip); }
+void MainWindow::ShowToolTip(const QString& toolTip) { m_helpLabel->setText(toolTip); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief triggers the update of the groups
  */
-void MainWindow::updateGroups() { groupsWidget->updateGroups(); }
+void MainWindow::updateGroups() { m_groupsWidget->updateGroups(); }
 
-void MainWindow::showAllGroups() { groupsWidget->showAllGroups(); }
+void MainWindow::showAllGroups() { m_groupsWidget->showAllGroups(); }
 
-void MainWindow::hideAllGroups() { groupsWidget->hideAllGroups(); }
+void MainWindow::hideAllGroups() { m_groupsWidget->hideAllGroups(); }
 
-void MainWindow::lockAllGroups() { groupsWidget->lockAllGroups(); }
+void MainWindow::lockAllGroups() { m_groupsWidget->lockAllGroups(); }
 
-void MainWindow::unlockAllGroups() { groupsWidget->unlockAllGroups(); }
+void MainWindow::unlockAllGroups() { m_groupsWidget->unlockAllGroups(); }
 
-void MainWindow::addGroupToList() { groupsWidget->addGroupToList(); }
-void MainWindow::deleteGroupFromList() { groupsWidget->deleteGroupFromList(); }
+void MainWindow::addGroupToList() { m_groupsWidget->addGroupToList(); }
+void MainWindow::deleteGroupFromList() { m_groupsWidget->deleteGroupFromList(); }
 
-void MainWindow::editGroup() { groupsWidget->editGroup(); }
+void MainWindow::editGroup() { m_groupsWidget->editGroup(); }
 
 void MainWindow::addSelectedItemsToGroup() { qCDebug(vMainWindow, "Add Selected items to Group."); }
 
@@ -1801,14 +1812,14 @@ void MainWindow::showEvent(QShowEvent* event)
         return;
     }
 
-    if (isInitialized) {
+    if (m_isInitialized) {
         return;
     }
     // do your initialize stuff here
 
     MinimumScrollBar();
 
-    isInitialized = true;   // first show windows are held
+    m_isInitialized = true;   // first show windows are held
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -1816,22 +1827,22 @@ void MainWindow::changeEvent(QEvent* event)
 {
     if (event->type() == QEvent::LanguageChange) {
         // retranslate designer form (single inheritance approach)
-        ui->retranslateUi(this);
+        m_ui->retranslateUi(this);
         undoAction->setText(tr("&Undo"));
         redoAction->setText(tr("&Redo"));
-        helpLabel->setText(QObject::tr("Changes applied."));
-        draftBlockLabel->setText(tr("Draft Block:"));
+        m_helpLabel->setText(QObject::tr("Changes applied."));
+        m_draftBlockLabel->setText(tr("Draft Block:"));
 
-        if (mode == Draw::Calculation) {
-            ui->groups_DockWidget->setWindowTitle(tr("Group Manager"));
+        if (m_mode == Draw::Calculation) {
+            m_ui->groups_DockWidget->setWindowTitle(tr("Group Manager"));
         } else {
-            ui->groups_DockWidget->setWindowTitle(tr("Pattern Pieces"));
+            m_ui->groups_DockWidget->setWindowTitle(tr("Pattern Pieces"));
         }
 
         UpdateWindowTitle();
         initPenToolBar();
         initBasePointComboBox();
-        emit pieceScene->LanguageChanged();
+        emit m_pieceScene->LanguageChanged();
     }
     // remember to call base class implementation
     QMainWindow::changeEvent(event);
@@ -1871,8 +1882,8 @@ void MainWindow::CleanLayout()
     scenes.clear();
     shadows.clear();
     papers.clear();
-    ui->listWidget->clear();
-    groupsWidget->clear();
+    m_ui->listWidget->clear();
+    m_groupsWidget->clear();
     SetLayoutModeActions();
 }
 
@@ -1881,11 +1892,11 @@ void MainWindow::PrepareSceneList()
 {
     for (int i = 1; i <= scenes.size(); ++i) {
         QListWidgetItem* item = new QListWidgetItem(ScenePreview(i - 1), QString::number(i));
-        ui->listWidget->addItem(item);
+        m_ui->listWidget->addItem(item);
     }
 
     if (!scenes.isEmpty()) {
-        ui->listWidget->setCurrentRow(0);
+        m_ui->listWidget->setCurrentRow(0);
         SetLayoutModeActions();
     }
 }
@@ -1985,19 +1996,19 @@ void MainWindow::LoadIndividual()
     if (!filename.isEmpty()) {
         if (loadMeasurements(filename)) {
             if (!doc->MPath().isEmpty()) {
-                watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
+                m_watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
             }
 
             qCInfo(vMainWindow, "Individual file %s was loaded.", qUtf8Printable(filename));
 
-            ui->unloadMeasurements_Action->setEnabled(true);
+            m_ui->unloadMeasurements_Action->setEnabled(true);
 
             doc->SetMPath(RelativeMPath(qApp->getFilePath(), filename));
-            watcher->addPath(filename);
+            m_watcher->addPath(filename);
             patternChangesWereSaved(false);
 
-            ui->editCurrent_Action->setEnabled(true);
-            helpLabel->setText(tr("Measurements loaded"));
+            m_ui->editCurrent_Action->setEnabled(true);
+            m_helpLabel->setText(tr("Measurements loaded"));
             doc->LiteParseTree(Document::LiteParse);
 
             UpdateWindowTitle();
@@ -2032,40 +2043,40 @@ void MainWindow::LoadMultisize()
 
     if (!filename.isEmpty()) {
         QString hText;
-        if (!gradationHeights.isNull()) {
-            hText = gradationHeights->currentText();
+        if (!m_gradationHeights.isNull()) {
+            hText = m_gradationHeights->currentText();
         }
         QString sText;
-        if (!gradationSizes.isNull()) {
-            sText = gradationSizes->currentText();
+        if (!m_gradationSizes.isNull()) {
+            sText = m_gradationSizes->currentText();
         }
 
         if (loadMeasurements(filename)) {
             if (!doc->MPath().isEmpty()) {
-                watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
+                m_watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
             }
 
             qCInfo(vMainWindow, "Multisize file %s was loaded.", qUtf8Printable(filename));
 
-            ui->unloadMeasurements_Action->setEnabled(true);
+            m_ui->unloadMeasurements_Action->setEnabled(true);
 
             doc->SetMPath(RelativeMPath(qApp->getFilePath(), filename));
-            watcher->addPath(filename);
+            m_watcher->addPath(filename);
             patternChangesWereSaved(false);
 
-            ui->editCurrent_Action->setEnabled(true);
-            helpLabel->setText(tr("Measurements loaded"));
+            m_ui->editCurrent_Action->setEnabled(true);
+            m_helpLabel->setText(tr("Measurements loaded"));
             doc->LiteParseTree(Document::LiteParse);
 
             UpdateWindowTitle();
 
             if (qApp->patternType() == MeasurementsType::Multisize) {
-                if (!hText.isEmpty() && not gradationHeights.isNull()) {
-                    gradationHeights->setCurrentText(hText);
+                if (!hText.isEmpty() && not m_gradationHeights.isNull()) {
+                    m_gradationHeights->setCurrentText(hText);
                 }
 
-                if (!sText.isEmpty() && not gradationSizes.isNull()) {
-                    gradationSizes->setCurrentText(sText);
+                if (!sText.isEmpty() && not m_gradationSizes.isNull()) {
+                    m_gradationSizes->setCurrentText(sText);
                 }
             }
         }
@@ -2076,12 +2087,12 @@ void MainWindow::LoadMultisize()
 void MainWindow::UnloadMeasurements()
 {
     if (doc->MPath().isEmpty()) {
-        ui->unloadMeasurements_Action->setDisabled(true);
+        m_ui->unloadMeasurements_Action->setDisabled(true);
         return;
     }
 
     if (doc->ListMeasurements().isEmpty()) {
-        watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
+        m_watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
         if (qApp->patternType() == MeasurementsType::Multisize) {
             initializeStatusToolBar();
         }
@@ -2089,9 +2100,9 @@ void MainWindow::UnloadMeasurements()
         doc->SetMPath(QString());
         emit doc->UpdatePatternLabel();
         patternChangesWereSaved(false);
-        ui->editCurrent_Action->setEnabled(false);
-        ui->unloadMeasurements_Action->setDisabled(true);
-        helpLabel->setText(tr("Measurements unloaded"));
+        m_ui->editCurrent_Action->setEnabled(false);
+        m_ui->unloadMeasurements_Action->setDisabled(true);
+        m_helpLabel->setText(tr("Measurements unloaded"));
 
         UpdateWindowTitle();
     } else {
@@ -2130,23 +2141,23 @@ void MainWindow::ShowMeasurements()
         const QString workingDirectory = QFileInfo(seamlyme).absoluteDir().absolutePath();
         QProcess::startDetached(seamlyme, arguments, workingDirectory);
     } else {
-        ui->editCurrent_Action->setEnabled(false);
+        m_ui->editCurrent_Action->setEnabled(false);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::MeasurementsChanged(const QString& path)
 {
-    mChanges = false;
+    m_changes = false;
     QFileInfo checkFile(path);
     if (checkFile.exists()) {
-        mChanges = true;
-        mChangesAsked = false;
+        m_changes = true;
+        m_changesAsked = false;
     } else {
         for (int i = 0; i <= 1000; i = i + 10) {
             if (checkFile.exists()) {
-                mChanges = true;
-                mChangesAsked = false;
+                m_changes = true;
+                m_changesAsked = false;
                 break;
             } else {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -2155,30 +2166,30 @@ void MainWindow::MeasurementsChanged(const QString& path)
     }
 
     UpdateWindowTitle();
-    ui->syncMeasurements_Action->setEnabled(mChanges);
+    m_ui->syncMeasurements_Action->setEnabled(m_changes);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::SyncMeasurements()
 {
-    if (mChanges) {
+    if (m_changes) {
         const QString path = AbsoluteMPath(qApp->getFilePath(), doc->MPath());
         if (updateMeasurements(
                 path,
                 static_cast<int>(VContainer::size()),
                 static_cast<int>(VContainer::height()))) {
-            if (!watcher->files().contains(path)) {
-                watcher->addPath(path);
+            if (!m_watcher->files().contains(path)) {
+                m_watcher->addPath(path);
             }
             const QString msg = tr("Measurements have been synced");
             qCDebug(vMainWindow, "%s", qUtf8Printable(msg));
-            helpLabel->setText(msg);
+            m_helpLabel->setText(msg);
             VWidgetPopup::PopupMessage(this, msg);
             doc->LiteParseTree(Document::LiteParse);
-            mChanges = false;
-            mChangesAsked = true;
+            m_changes = false;
+            m_changesAsked = true;
             UpdateWindowTitle();
-            ui->syncMeasurements_Action->setEnabled(mChanges);
+            m_ui->syncMeasurements_Action->setEnabled(m_changes);
         } else {
             qCWarning(vMainWindow, "%s", qUtf8Printable(tr("Couldn't sync measurements.")));
         }
@@ -2206,23 +2217,23 @@ void MainWindow::OpenAt(QAction* where)
  */
 void MainWindow::initializeStatusToolBar()
 {
-    if (!mouseCoordinates.isNull()) {
-        delete mouseCoordinates;
+    if (!m_mouseCoordinates.isNull()) {
+        delete m_mouseCoordinates;
     }
-    if (!infoToolButton.isNull()) {
-        delete infoToolButton;
+    if (!m_infoToolButton.isNull()) {
+        delete m_infoToolButton;
     }
-    if (!gradationHeights.isNull()) {
-        delete gradationHeights;
+    if (!m_gradationHeights.isNull()) {
+        delete m_gradationHeights;
     }
-    if (!gradationSizes.isNull()) {
-        delete gradationSizes;
+    if (!m_gradationSizes.isNull()) {
+        delete m_gradationSizes;
     }
-    if (!gradationHeightsLabel.isNull()) {
-        delete gradationHeightsLabel;
+    if (!m_gradationHeightsLabel.isNull()) {
+        delete m_gradationHeightsLabel;
     }
-    if (!gradationSizesLabel.isNull()) {
-        delete gradationSizesLabel;
+    if (!m_gradationSizesLabel.isNull()) {
+        delete m_gradationSizesLabel;
     }
 
     if (qApp->patternType() == MeasurementsType::Multisize) {
@@ -2231,37 +2242,37 @@ void MainWindow::initializeStatusToolBar()
         const QStringList listSizes =
             MeasurementVariable::ListSizes(doc->GetGradationSizes(), qApp->patternUnit());
 
-        gradationHeightsLabel = new QLabel(tr("Height:"), this);
-        gradationHeights = SetGradationList(gradationHeightsLabel, listHeights);
+        m_gradationHeightsLabel = new QLabel(tr("Height:"), this);
+        m_gradationHeights = SetGradationList(m_gradationHeightsLabel, listHeights);
 
         // set default height
         SetDefaultHeight();
 
         connect(
-            gradationHeights.data(),
+            m_gradationHeights.data(),
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
             &MainWindow::ChangedHeight);
 
-        gradationSizesLabel = new QLabel(tr("Size:"), this);
-        gradationSizes = SetGradationList(gradationSizesLabel, listSizes);
+        m_gradationSizesLabel = new QLabel(tr("Size:"), this);
+        m_gradationSizes = SetGradationList(m_gradationSizesLabel, listSizes);
 
         // set default size
         SetDefaultSize();
 
         connect(
-            gradationSizes.data(),
+            m_gradationSizes.data(),
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
             &MainWindow::ChangedSize);
     }
 
-    mouseCoordinates = new MouseCoordinates(qApp->patternUnit());
-    ui->statusBar->addPermanentWidget((mouseCoordinates));
+    m_mouseCoordinates = new MouseCoordinates(qApp->patternUnit());
+    m_ui->statusBar->addPermanentWidget((m_mouseCoordinates));
 
-    infoToolButton = new QToolButton();
-    infoToolButton->setDefaultAction(ui->documentInfo_Action);
-    ui->statusBar->addPermanentWidget((infoToolButton));
+    m_infoToolButton = new QToolButton();
+    m_infoToolButton->setDefaultAction(m_ui->documentInfo_Action);
+    m_ui->statusBar->addPermanentWidget((m_infoToolButton));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -2269,8 +2280,8 @@ QComboBox* MainWindow::SetGradationList(QLabel* label, const QStringList& list)
 {
     QComboBox* comboBox = new QComboBox(this);
     comboBox->addItems(list);
-    ui->statusBar->addPermanentWidget(label);
-    ui->statusBar->addPermanentWidget(comboBox);
+    m_ui->statusBar->addPermanentWidget(label);
+    m_ui->statusBar->addPermanentWidget(comboBox);
 
     return comboBox;
 }
@@ -2278,13 +2289,13 @@ QComboBox* MainWindow::SetGradationList(QLabel* label, const QStringList& list)
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::initializeModesToolBar()
 {
-    leftGoToStage = new QLabel(this);
-    leftGoToStage->setPixmap(QPixmap("://icon/24x24/fast_forward_left_to_right_arrow.png"));
-    ui->mode_ToolBar->insertWidget(ui->pieceMode_Action, leftGoToStage);
+    m_leftGoToStage = new QLabel(this);
+    m_leftGoToStage->setPixmap(QPixmap("://icon/24x24/fast_forward_left_to_right_arrow.png"));
+    m_ui->mode_ToolBar->insertWidget(m_ui->pieceMode_Action, m_leftGoToStage);
 
-    rightGoToStage = new QLabel(this);
-    rightGoToStage->setPixmap(QPixmap("://icon/24x24/left_to_right_arrow.png"));
-    ui->mode_ToolBar->insertWidget(ui->layoutMode_Action, rightGoToStage);
+    m_rightGoToStage = new QLabel(this);
+    m_rightGoToStage->setPixmap(QPixmap("://icon/24x24/left_to_right_arrow.png"));
+    m_ui->mode_ToolBar->insertWidget(m_ui->layoutMode_Action, m_rightGoToStage);
 }
 
 
@@ -2294,14 +2305,14 @@ void MainWindow::initializeModesToolBar()
  */
 void MainWindow::initializePointNameToolBar()
 {
-    fontComboBox = new QFontComboBox;
-    fontComboBox->setCurrentFont(qApp->Seamly2DSettings()->getPointNameFont());
-    ui->pointName_ToolBar->insertWidget(ui->showPointNames_Action, fontComboBox);
-    fontComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    fontComboBox->setEnabled(true);
+    m_fontComboBox = new QFontComboBox;
+    m_fontComboBox->setCurrentFont(qApp->Seamly2DSettings()->getPointNameFont());
+    m_ui->pointName_ToolBar->insertWidget(m_ui->showPointNames_Action, m_fontComboBox);
+    m_fontComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    m_fontComboBox->setEnabled(true);
 
     connect(
-        fontComboBox,
+        m_fontComboBox,
         static_cast<void (QFontComboBox::*)(const QFont&)>(&QFontComboBox::currentFontChanged),
         this,
         [this](QFont font) {
@@ -2309,56 +2320,57 @@ void MainWindow::initializePointNameToolBar()
             upDateScenes();
         });
 
-    fontSizeComboBox = new QComboBox;
-    ui->pointName_ToolBar->insertWidget(ui->showPointNames_Action, fontSizeComboBox);
-    fontSizeComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    fontSizeComboBox->addItem("6", QVariant(static_cast<int>(6)));
-    fontSizeComboBox->addItem("7", QVariant(static_cast<int>(7)));
-    fontSizeComboBox->addItem("8", QVariant(static_cast<int>(8)));
-    fontSizeComboBox->addItem("9", QVariant(static_cast<int>(9)));
-    fontSizeComboBox->addItem("10", QVariant(static_cast<int>(10)));
-    fontSizeComboBox->addItem("11", QVariant(static_cast<int>(11)));
-    fontSizeComboBox->addItem("12", QVariant(static_cast<int>(12)));
-    fontSizeComboBox->addItem("13", QVariant(static_cast<int>(13)));
-    fontSizeComboBox->addItem("14", QVariant(static_cast<int>(14)));
-    fontSizeComboBox->addItem("15", QVariant(static_cast<int>(15)));
-    fontSizeComboBox->addItem("16", QVariant(static_cast<int>(16)));
-    fontSizeComboBox->addItem("18", QVariant(static_cast<int>(18)));
-    fontSizeComboBox->addItem("20", QVariant(static_cast<int>(20)));
-    fontSizeComboBox->addItem("22", QVariant(static_cast<int>(22)));
-    fontSizeComboBox->addItem("24", QVariant(static_cast<int>(24)));
-    fontSizeComboBox->addItem("26", QVariant(static_cast<int>(26)));
-    fontSizeComboBox->addItem("28", QVariant(static_cast<int>(28)));
-    fontSizeComboBox->addItem("32", QVariant(static_cast<int>(32)));
-    fontSizeComboBox->addItem("36", QVariant(static_cast<int>(36)));
-    fontSizeComboBox->addItem("40", QVariant(static_cast<int>(40)));
-    fontSizeComboBox->addItem("44", QVariant(static_cast<int>(44)));
-    fontSizeComboBox->addItem("48", QVariant(static_cast<int>(48)));
-    fontSizeComboBox->addItem("54", QVariant(static_cast<int>(54)));
-    fontSizeComboBox->addItem("60", QVariant(static_cast<int>(60)));
-    fontSizeComboBox->addItem("66", QVariant(static_cast<int>(66)));
-    fontSizeComboBox->addItem("72", QVariant(static_cast<int>(72)));
-    fontSizeComboBox->addItem("80", QVariant(static_cast<int>(80)));
-    fontSizeComboBox->addItem("96", QVariant(static_cast<int>(96)));
+    m_fontSizeComboBox = new QComboBox;
+    m_ui->pointName_ToolBar->insertWidget(m_ui->showPointNames_Action, m_fontSizeComboBox);
+    m_fontSizeComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    m_fontSizeComboBox->addItem("6", QVariant(static_cast<int>(6)));
+    m_fontSizeComboBox->addItem("7", QVariant(static_cast<int>(7)));
+    m_fontSizeComboBox->addItem("8", QVariant(static_cast<int>(8)));
+    m_fontSizeComboBox->addItem("9", QVariant(static_cast<int>(9)));
+    m_fontSizeComboBox->addItem("10", QVariant(static_cast<int>(10)));
+    m_fontSizeComboBox->addItem("11", QVariant(static_cast<int>(11)));
+    m_fontSizeComboBox->addItem("12", QVariant(static_cast<int>(12)));
+    m_fontSizeComboBox->addItem("13", QVariant(static_cast<int>(13)));
+    m_fontSizeComboBox->addItem("14", QVariant(static_cast<int>(14)));
+    m_fontSizeComboBox->addItem("15", QVariant(static_cast<int>(15)));
+    m_fontSizeComboBox->addItem("16", QVariant(static_cast<int>(16)));
+    m_fontSizeComboBox->addItem("18", QVariant(static_cast<int>(18)));
+    m_fontSizeComboBox->addItem("20", QVariant(static_cast<int>(20)));
+    m_fontSizeComboBox->addItem("22", QVariant(static_cast<int>(22)));
+    m_fontSizeComboBox->addItem("24", QVariant(static_cast<int>(24)));
+    m_fontSizeComboBox->addItem("26", QVariant(static_cast<int>(26)));
+    m_fontSizeComboBox->addItem("28", QVariant(static_cast<int>(28)));
+    m_fontSizeComboBox->addItem("32", QVariant(static_cast<int>(32)));
+    m_fontSizeComboBox->addItem("36", QVariant(static_cast<int>(36)));
+    m_fontSizeComboBox->addItem("40", QVariant(static_cast<int>(40)));
+    m_fontSizeComboBox->addItem("44", QVariant(static_cast<int>(44)));
+    m_fontSizeComboBox->addItem("48", QVariant(static_cast<int>(48)));
+    m_fontSizeComboBox->addItem("54", QVariant(static_cast<int>(54)));
+    m_fontSizeComboBox->addItem("60", QVariant(static_cast<int>(60)));
+    m_fontSizeComboBox->addItem("66", QVariant(static_cast<int>(66)));
+    m_fontSizeComboBox->addItem("72", QVariant(static_cast<int>(72)));
+    m_fontSizeComboBox->addItem("80", QVariant(static_cast<int>(80)));
+    m_fontSizeComboBox->addItem("96", QVariant(static_cast<int>(96)));
 
-    int index = fontSizeComboBox->findData(qApp->Seamly2DSettings()->getPointNameSize());
+    int index = m_fontSizeComboBox->findData(qApp->Seamly2DSettings()->getPointNameSize());
     if (index < 0 || index > 28) {
         index = 18;
     }
-    fontSizeComboBox->setCurrentIndex(index);
+    m_fontSizeComboBox->setCurrentIndex(index);
 
-    connect(fontSizeComboBox, &QComboBox::currentTextChanged, this, [this](QString text) {
+    connect(m_fontSizeComboBox, &QComboBox::currentTextChanged, this, [this](QString text) {
         qApp->Seamly2DSettings()->setPointNameSize(text.toInt());
         upDateScenes();
     });
-    fontSizeComboBox->setEnabled(true);
+    m_fontSizeComboBox->setEnabled(true);
 
-    basePointComboBox = new QComboBox;
-    ui->pointName_ToolBar->addWidget(basePointComboBox);
+    m_basePointComboBox = new QComboBox;
+    m_ui->pointName_ToolBar->addWidget(m_basePointComboBox);
     initBasePointComboBox();
-    basePointComboBox->setEnabled(true);
+    m_basePointComboBox->setEnabled(true);
 
-    connect(basePointComboBox, &QComboBox::currentTextChanged, this, &MainWindow::basePointChanged);
+    connect(
+        m_basePointComboBox, &QComboBox::currentTextChanged, this, &MainWindow::basePointChanged);
 }
 
 
@@ -2368,16 +2380,16 @@ void MainWindow::initializePointNameToolBar()
  */
 void MainWindow::initBasePointComboBox()
 {
-    basePointComboBox->clear();
-    basePointComboBox->addItem(tr("Default"));
-    basePointComboBox->addItems(
+    m_basePointComboBox->clear();
+    m_basePointComboBox->addItem(tr("Default"));
+    m_basePointComboBox->addItems(
         doc->GetCurrentAlphabet());   // These items are based on the Point name language
-    basePointComboBox->setToolTip(
+    m_basePointComboBox->setToolTip(
         tr("Base name used for new points.\nPress enter to temporarily add it to the list."));
-    basePointComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    basePointComboBox->setCurrentIndex(0);
-    basePointComboBox->setEditable(true);
-    basePointComboBox->setInsertPolicy(QComboBox::InsertAtTop);
+    m_basePointComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    m_basePointComboBox->setCurrentIndex(0);
+    m_basePointComboBox->setEditable(true);
+    m_basePointComboBox->setInsertPolicy(QComboBox::InsertAtTop);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -2386,29 +2398,29 @@ void MainWindow::initBasePointComboBox()
  */
 void MainWindow::initializeDraftToolBar()
 {
-    draftBlockLabel = new QLabel(tr("Draft Block:"));
-    ui->draft_ToolBar->addWidget(draftBlockLabel);
+    m_draftBlockLabel = new QLabel(tr("Draft Block:"));
+    m_ui->draft_ToolBar->addWidget(m_draftBlockLabel);
 
-    // By using Qt UI Designer we can't add QComboBox to toolbar
-    draftBlockComboBox = new QComboBox;
-    ui->draft_ToolBar->addWidget(draftBlockComboBox);
-    draftBlockComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    draftBlockComboBox->setEnabled(false);
+    // By using Qt m_ui Designer we can't add QComboBox to toolbar
+    m_draftBlockComboBox = new QComboBox;
+    m_ui->draft_ToolBar->addWidget(m_draftBlockComboBox);
+    m_draftBlockComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    m_draftBlockComboBox->setEnabled(false);
 
     connect(
-        draftBlockComboBox,
+        m_draftBlockComboBox,
         static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
         this,
         [this](int index) { changeDraftBlock(index); });
 
-    connect(ui->renameDraft_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->renameDraft_Action, &QAction::triggered, this, [this]() {
         const QString activeDraftBlock = doc->getActiveDraftBlockName();
         const QString draftBlockName = createDraftBlockName(activeDraftBlock);
         if (draftBlockName.isEmpty()) {
             return;
         }
         RenameDraftBlock* draftBlock =
-            new RenameDraftBlock(doc, draftBlockName, draftBlockComboBox);
+            new RenameDraftBlock(doc, draftBlockName, m_draftBlockComboBox);
         qApp->getUndoStack()->push(draftBlock);
         fullParseFile();
     });
@@ -2425,119 +2437,120 @@ void MainWindow::initializeToolsToolBar()
     QList<QKeySequence> zoomInShortcuts;
     zoomInShortcuts.append(QKeySequence(QKeySequence::ZoomIn));
     zoomInShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_Plus + Qt::KeypadModifier));
-    ui->zoomIn_Action->setShortcuts(zoomInShortcuts);
-    connect(ui->zoomIn_Action, &QAction::triggered, ui->view, &VMainGraphicsView::zoomIn);
+    m_ui->zoomIn_Action->setShortcuts(zoomInShortcuts);
+    connect(m_ui->zoomIn_Action, &QAction::triggered, m_ui->view, &VMainGraphicsView::zoomIn);
 
     QList<QKeySequence> zoomOutShortcuts;
     zoomOutShortcuts.append(QKeySequence(QKeySequence::ZoomOut));
     zoomOutShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_Minus + Qt::KeypadModifier));
-    ui->zoomOut_Action->setShortcuts(zoomOutShortcuts);
-    connect(ui->zoomOut_Action, &QAction::triggered, ui->view, &VMainGraphicsView::zoomOut);
+    m_ui->zoomOut_Action->setShortcuts(zoomOutShortcuts);
+    connect(m_ui->zoomOut_Action, &QAction::triggered, m_ui->view, &VMainGraphicsView::zoomOut);
 
     QList<QKeySequence> zoom100PercentShortcuts;
     zoom100PercentShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_0));
     zoom100PercentShortcuts.append(
         QKeySequence(Qt::ControlModifier + Qt::Key_0 + Qt::KeypadModifier));
-    ui->zoom100Percent_Action->setShortcuts(zoom100PercentShortcuts);
+    m_ui->zoom100Percent_Action->setShortcuts(zoom100PercentShortcuts);
     connect(
-        ui->zoom100Percent_Action,
+        m_ui->zoom100Percent_Action,
         &QAction::triggered,
-        ui->view,
+        m_ui->view,
         &VMainGraphicsView::zoom100Percent);
 
     QList<QKeySequence> zoomToFitShortcuts;
     zoomToFitShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_Equal));
-    ui->zoomToFit_Action->setShortcuts(zoomToFitShortcuts);
-    connect(ui->zoomToFit_Action, &QAction::triggered, ui->view, &VMainGraphicsView::zoomToFit);
+    m_ui->zoomToFit_Action->setShortcuts(zoomToFitShortcuts);
+    connect(m_ui->zoomToFit_Action, &QAction::triggered, m_ui->view, &VMainGraphicsView::zoomToFit);
 
     QList<QKeySequence> zoomToSelectedShortcuts;
     zoomToSelectedShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_Right));
-    ui->zoomToSelected_Action->setShortcuts(zoomToSelectedShortcuts);
-    connect(ui->zoomToSelected_Action, &QAction::triggered, this, &MainWindow::zoomToSelected);
+    m_ui->zoomToSelected_Action->setShortcuts(zoomToSelectedShortcuts);
+    connect(m_ui->zoomToSelected_Action, &QAction::triggered, this, &MainWindow::zoomToSelected);
 
     QList<QKeySequence> zoomToPreviousShortcuts;
     zoomToPreviousShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_Left));
-    ui->zoomToPrevious_Action->setShortcuts(zoomToPreviousShortcuts);
-    connect(ui->zoomToPrevious_Action, &QAction::triggered, this, &MainWindow::zoomToPrevious);
+    m_ui->zoomToPrevious_Action->setShortcuts(zoomToPreviousShortcuts);
+    connect(m_ui->zoomToPrevious_Action, &QAction::triggered, this, &MainWindow::zoomToPrevious);
 
     QList<QKeySequence> zoomToAreaShortcuts;
     zoomToAreaShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_A));
-    ui->zoomToArea_Action->setShortcuts(zoomToAreaShortcuts);
-    connect(ui->zoomToArea_Action, &QAction::toggled, this, &MainWindow::zoomToArea);
+    m_ui->zoomToArea_Action->setShortcuts(zoomToAreaShortcuts);
+    connect(m_ui->zoomToArea_Action, &QAction::toggled, this, &MainWindow::zoomToArea);
 
     resetPanShortcuts();
-    connect(ui->zoomPan_Action, &QAction::toggled, this, &MainWindow::zoomPan);
+    connect(m_ui->zoomPan_Action, &QAction::toggled, this, &MainWindow::zoomPan);
 
     QList<QKeySequence> zoomToPointShortcuts;
     zoomToPointShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::AltModifier + Qt::Key_P));
-    ui->zoomToPoint_Action->setShortcuts(zoomToPointShortcuts);
-    connect(ui->zoomToPoint_Action, &QAction::triggered, this, &MainWindow::showZoomToPointDialog);
+    m_ui->zoomToPoint_Action->setShortcuts(zoomToPointShortcuts);
+    connect(
+        m_ui->zoomToPoint_Action, &QAction::triggered, this, &MainWindow::showZoomToPointDialog);
 
-    m_zoomToPointComboBox = new QComboBox(ui->zoom_ToolBar);
+    m_zoomToPointComboBox = new QComboBox(m_ui->zoom_ToolBar);
     m_zoomToPointComboBox->setEnabled(false);
-    m_zoomToPointComboBox->setToolTip(ui->zoomToPoint_Action->toolTip());
-    ui->zoom_ToolBar->addWidget(m_zoomToPointComboBox);
+    m_zoomToPointComboBox->setToolTip(m_ui->zoomToPoint_Action->toolTip());
+    m_ui->zoom_ToolBar->addWidget(m_zoomToPointComboBox);
     connect(m_zoomToPointComboBox, &QComboBox::currentTextChanged, this, &MainWindow::zoomToPoint);
 
-    if (zoomScaleSpinBox != nullptr) {
-        delete zoomScaleSpinBox;
+    if (m_zoomScaleSpinBox != nullptr) {
+        delete m_zoomScaleSpinBox;
     }
-    zoomScaleSpinBox = new QDoubleSpinBox();
-    zoomScaleSpinBox->setDecimals(1);
-    zoomScaleSpinBox->setAlignment(Qt::AlignRight);
-    zoomScaleSpinBox->setSingleStep(0.1);
-    zoomScaleSpinBox->setMinimum(qFloor(VMainGraphicsView::MinScale() * 1000) / 10.0);
-    zoomScaleSpinBox->setMaximum(qFloor(VMainGraphicsView::MaxScale() * 1000) / 10.0);
-    zoomScaleSpinBox->setSuffix("%");
-    zoomScaleSpinBox->setMaximumWidth(80);
-    zoomScaleSpinBox->setKeyboardTracking(false);
-    ui->zoom_ToolBar->insertWidget(ui->zoomIn_Action, zoomScaleSpinBox);
+    m_zoomScaleSpinBox = new QDoubleSpinBox();
+    m_zoomScaleSpinBox->setDecimals(1);
+    m_zoomScaleSpinBox->setAlignment(Qt::AlignRight);
+    m_zoomScaleSpinBox->setSingleStep(0.1);
+    m_zoomScaleSpinBox->setMinimum(qFloor(VMainGraphicsView::MinScale() * 1000) / 10.0);
+    m_zoomScaleSpinBox->setMaximum(qFloor(VMainGraphicsView::MaxScale() * 1000) / 10.0);
+    m_zoomScaleSpinBox->setSuffix("%");
+    m_zoomScaleSpinBox->setMaximumWidth(80);
+    m_zoomScaleSpinBox->setKeyboardTracking(false);
+    m_ui->zoom_ToolBar->insertWidget(m_ui->zoomIn_Action, m_zoomScaleSpinBox);
 
-    zoomScaleChanged(ui->view->transform().m11());
+    zoomScaleChanged(m_ui->view->transform().m11());
     connect(
-        zoomScaleSpinBox,
+        m_zoomScaleSpinBox,
         QOverload<double>::of(&QDoubleSpinBox::valueChanged),
         this,
-        [this](double d) { ui->view->zoomByScale(d / 100.0); });
+        [this](double d) { m_ui->view->zoomByScale(d / 100.0); });
 }
 
 void MainWindow::initializeToolBarVisibility()
 {
     updateToolBarVisibility();
-    connect(ui->tools_ToolBox_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->tools_ToolBox_ToolBar->setVisible(visible);
+    connect(m_ui->tools_ToolBox_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->tools_ToolBox_ToolBar->setVisible(visible);
         qApp->Settings()->setShowToolsToolBar(visible);
     });
-    connect(ui->points_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->points_ToolBar->setVisible(visible);
+    connect(m_ui->points_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->points_ToolBar->setVisible(visible);
         qApp->Settings()->setShowPointToolBar(visible);
     });
-    connect(ui->lines_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->lines_ToolBar->setVisible(visible);
+    connect(m_ui->lines_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->lines_ToolBar->setVisible(visible);
         qApp->Settings()->setShowLineToolBar(visible);
     });
-    connect(ui->curves_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->curves_ToolBar->setVisible(visible);
+    connect(m_ui->curves_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->curves_ToolBar->setVisible(visible);
         qApp->Settings()->setShowCurveToolBar(visible);
     });
-    connect(ui->arcs_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->arcs_ToolBar->setVisible(visible);
+    connect(m_ui->arcs_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->arcs_ToolBar->setVisible(visible);
         qApp->Settings()->setShowArcToolBar(visible);
     });
-    connect(ui->operations_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->operations_ToolBar->setVisible(visible);
+    connect(m_ui->operations_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->operations_ToolBar->setVisible(visible);
         qApp->Settings()->setShowOpsToolBar(visible);
     });
-    connect(ui->pieces_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->pieces_ToolBar->setVisible(visible);
+    connect(m_ui->pieces_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->pieces_ToolBar->setVisible(visible);
         qApp->Settings()->setShowPieceToolBar(visible);
     });
-    connect(ui->details_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->details_ToolBar->setVisible(visible);
+    connect(m_ui->details_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->details_ToolBar->setVisible(visible);
         qApp->Settings()->setShowDetailsToolBar(visible);
     });
-    connect(ui->layout_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->layout_ToolBar->setVisible(visible);
+    connect(m_ui->layout_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->layout_ToolBar->setVisible(visible);
         qApp->Settings()->setShowLayoutToolBar(visible);
     });
 }
@@ -2567,21 +2580,21 @@ void MainWindow::initPenToolBar()
 void MainWindow::initPropertyEditor()
 {
     qCDebug(vMainWindow, "Initialize the Tool Property Editor.");
-    if (toolProperties != nullptr) {
-        disconnect(toolProperties, nullptr, this, nullptr);
-        delete toolProperties;
+    if (m_toolProperties != nullptr) {
+        disconnect(m_toolProperties, nullptr, this, nullptr);
+        delete m_toolProperties;
     }
-    toolProperties = new VToolOptionsPropertyBrowser(pattern, ui->toolProperties_DockWidget);
+    m_toolProperties = new VToolOptionsPropertyBrowser(pattern, m_ui->toolProperties_DockWidget);
 
     connect(
-        ui->view,
+        m_ui->view,
         &VMainGraphicsView::itemClicked,
-        toolProperties,
+        m_toolProperties,
         &VToolOptionsPropertyBrowser::itemClicked);
     connect(
         doc,
         &VPattern::FullUpdateFromFile,
-        toolProperties,
+        m_toolProperties,
         &VToolOptionsPropertyBrowser::updateOptions);
 }
 
@@ -2593,14 +2606,14 @@ void MainWindow::penChanged(Pen pen) { doc->setDefaultPen(pen); }
 
 void MainWindow::basePointChanged()
 {
-    QString text = basePointComboBox->currentText();
+    QString text = m_basePointComboBox->currentText();
     QString basePoint = QString();
 
     QRegularExpression rx(NameRegExp());
     if (rx.match(text).hasMatch() == false) {
-        basePointComboBox->setStyleSheet("QComboBox {color: red;}");
+        m_basePointComboBox->setStyleSheet("QComboBox {color: red;}");
     } else {
-        basePointComboBox->setStyleSheet("QComboBox {color: black;}");
+        m_basePointComboBox->setStyleSheet("QComboBox {color: black;}");
 
         if (!text.isEmpty() && text != tr("Default")) {
             basePoint = text;
@@ -2613,15 +2626,15 @@ void MainWindow::basePointChanged()
 
 void MainWindow::updateToolBarVisibility()
 {
-    setToolBarVisibility(ui->tools_ToolBox_ToolBar, qApp->Settings()->getShowToolsToolBar());
-    setToolBarVisibility(ui->points_ToolBar, qApp->Settings()->getShowPointToolBar());
-    setToolBarVisibility(ui->lines_ToolBar, qApp->Settings()->getShowLineToolBar());
-    setToolBarVisibility(ui->curves_ToolBar, qApp->Settings()->getShowCurveToolBar());
-    setToolBarVisibility(ui->arcs_ToolBar, qApp->Settings()->getShowArcToolBar());
-    setToolBarVisibility(ui->operations_ToolBar, qApp->Settings()->getShowOpsToolBar());
-    setToolBarVisibility(ui->pieces_ToolBar, qApp->Settings()->getShowPieceToolBar());
-    setToolBarVisibility(ui->details_ToolBar, qApp->Settings()->getShowDetailsToolBar());
-    setToolBarVisibility(ui->layout_ToolBar, qApp->Settings()->getShowLayoutToolBar());
+    setToolBarVisibility(m_ui->tools_ToolBox_ToolBar, qApp->Settings()->getShowToolsToolBar());
+    setToolBarVisibility(m_ui->points_ToolBar, qApp->Settings()->getShowPointToolBar());
+    setToolBarVisibility(m_ui->lines_ToolBar, qApp->Settings()->getShowLineToolBar());
+    setToolBarVisibility(m_ui->curves_ToolBar, qApp->Settings()->getShowCurveToolBar());
+    setToolBarVisibility(m_ui->arcs_ToolBar, qApp->Settings()->getShowArcToolBar());
+    setToolBarVisibility(m_ui->operations_ToolBar, qApp->Settings()->getShowOpsToolBar());
+    setToolBarVisibility(m_ui->pieces_ToolBar, qApp->Settings()->getShowPieceToolBar());
+    setToolBarVisibility(m_ui->details_ToolBar, qApp->Settings()->getShowDetailsToolBar());
+    setToolBarVisibility(m_ui->layout_ToolBar, qApp->Settings()->getShowLayoutToolBar());
 }
 
 void MainWindow::setToolBarVisibility(QToolBar* toolbar, bool visible)
@@ -2633,9 +2646,9 @@ void MainWindow::setToolBarVisibility(QToolBar* toolbar, bool visible)
 
 void MainWindow::zoomScaleChanged(qreal scale)
 {
-    zoomScaleSpinBox->blockSignals(true);
-    zoomScaleSpinBox->setValue(qFloor(scale * 1000) / 10.0);
-    zoomScaleSpinBox->blockSignals(false);
+    m_zoomScaleSpinBox->blockSignals(true);
+    m_zoomScaleSpinBox->setValue(qFloor(scale * 1000) / 10.0);
+    m_zoomScaleSpinBox->blockSignals(false);
     qCDebug(vMainWindow, "Value %f\n", (qreal(qFloor(scale * 1000) / 10.0)));
 }
 
@@ -2645,22 +2658,22 @@ void MainWindow::zoomToSelected()
     QGraphicsItem* item = qApp->getCurrentScene()->focusItem();
     QRectF rect;
 
-    if (qApp->getCurrentScene() == draftScene) {
+    if (qApp->getCurrentScene() == m_draftScene) {
         if ((item != nullptr)
             && (item->type()
                 == QGraphicsItem::UserType + static_cast<int>(Tool::BackgroundImage))) {
             rect = item->boundingRect();
             rect.translate(item->scenePos());
-            ui->view->zoomToRect(rect);
+            m_ui->view->zoomToRect(rect);
         } else {
-            ui->view->zoomToRect(doc->ActiveDrawBoundingRect());
+            m_ui->view->zoomToRect(doc->ActiveDrawBoundingRect());
         }
-    } else if (qApp->getCurrentScene() == pieceScene) {
+    } else if (qApp->getCurrentScene() == m_pieceScene) {
         if ((item != nullptr)
             && (item->type() == QGraphicsItem::UserType + static_cast<int>(Tool::Piece))) {
             rect = item->boundingRect();
             rect.translate(item->scenePos());
-            ui->view->zoomToRect(rect);
+            m_ui->view->zoomToRect(rect);
         }
     }
 }
@@ -2672,26 +2685,26 @@ void MainWindow::zoomToPrevious()
 
     /*Set transform for current scene*/
     scene->swapTransforms();
-    ui->view->setTransform(scene->transform());
-    zoomScaleChanged(ui->view->transform().m11());
+    m_ui->view->setTransform(scene->transform());
+    zoomScaleChanged(m_ui->view->transform().m11());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::zoomToArea(bool checked)
 {
-    ui->view->zoomToAreaEnabled(checked);
+    m_ui->view->zoomToAreaEnabled(checked);
 
-    if (ui->zoomToArea_Action->isChecked()) {
-        ui->zoomPan_Action->setChecked(false);
+    if (m_ui->zoomToArea_Action->isChecked()) {
+        m_ui->zoomPan_Action->setChecked(false);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::zoomPan(bool checked)
 {
-    ui->view->zoomPanEnabled(checked);
+    m_ui->view->zoomPanEnabled(checked);
     if (checked) {
-        ui->zoomToArea_Action->setChecked(false);
+        m_ui->zoomToArea_Action->setChecked(false);
     }
 }
 
@@ -2736,8 +2749,8 @@ void MainWindow::zoomToPoint(const QString& pointName)
 
         if (objectName == pointName) {
             VPointF* point = (VPointF*)object.data();
-            ui->view->zoom100Percent();
-            ui->view->centerOn(point->toQPointF());
+            m_ui->view->zoom100Percent();
+            m_ui->view->centerOn(point->toQPointF());
 
             // show point name if it's hidden
             // TODO: Need to make this work with operation's and dart tools
@@ -2753,7 +2766,7 @@ void MainWindow::zoomToPoint(const QString& pointName)
 
             // show any hiden groups containing object
             QMap<quint32, QString> groups = doc->getGroupsContainingItem(toolId, objectId, true);
-            groupsWidget->showGroups(groups);
+            m_groupsWidget->showGroups(groups);
 
             // Reset combobox so same point can be selected again
             m_zoomToPointComboBox->blockSignals(true);
@@ -2768,167 +2781,175 @@ void MainWindow::zoomToPoint(const QString& pointName)
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::initializeToolButtons()
 {
-    connect(ui->arrowPointer_ToolButton, &QToolButton::clicked, this, &MainWindow::handleArrowTool);
+    connect(
+        m_ui->arrowPointer_ToolButton, &QToolButton::clicked, this, &MainWindow::handleArrowTool);
 
     // This check helps to find missed tools
     Q_STATIC_ASSERT_X(
         static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Check if all tools were connected.");
 
     connect(
-        ui->pointAtDistanceAngle_ToolButton,
+        m_ui->pointAtDistanceAngle_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointAtDistanceAngleTool);
-    connect(ui->line_ToolButton, &QToolButton::clicked, this, &MainWindow::handleLineTool);
+    connect(m_ui->line_ToolButton, &QToolButton::clicked, this, &MainWindow::handleLineTool);
     connect(
-        ui->alongLine_ToolButton, &QToolButton::clicked, this, &MainWindow::handleAlongLineTool);
+        m_ui->alongLine_ToolButton, &QToolButton::clicked, this, &MainWindow::handleAlongLineTool);
     connect(
-        ui->shoulderPoint_ToolButton,
+        m_ui->shoulderPoint_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleShoulderPointTool);
-    connect(ui->normal_ToolButton, &QToolButton::clicked, this, &MainWindow::handleNormalTool);
-    connect(ui->bisector_ToolButton, &QToolButton::clicked, this, &MainWindow::handleBisectorTool);
+    connect(m_ui->normal_ToolButton, &QToolButton::clicked, this, &MainWindow::handleNormalTool);
     connect(
-        ui->lineIntersect_ToolButton,
+        m_ui->bisector_ToolButton, &QToolButton::clicked, this, &MainWindow::handleBisectorTool);
+    connect(
+        m_ui->lineIntersect_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleLineIntersectTool);
-    connect(ui->curve_ToolButton, &QToolButton::clicked, this, &MainWindow::handleCurveTool);
+    connect(m_ui->curve_ToolButton, &QToolButton::clicked, this, &MainWindow::handleCurveTool);
     connect(
-        ui->curveWithCPs_ToolButton,
+        m_ui->curveWithCPs_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleCurveWithControlPointsTool);
-    connect(ui->arc_ToolButton, &QToolButton::clicked, this, &MainWindow::handleArcTool);
-    connect(ui->spline_ToolButton, &QToolButton::clicked, this, &MainWindow::handleSplineTool);
+    connect(m_ui->arc_ToolButton, &QToolButton::clicked, this, &MainWindow::handleArcTool);
+    connect(m_ui->spline_ToolButton, &QToolButton::clicked, this, &MainWindow::handleSplineTool);
     connect(
-        ui->splineWithCPs_ToolButton,
+        m_ui->splineWithCPs_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleSplineWithControlPointsTool);
     connect(
-        ui->pointOfContact_ToolButton,
+        m_ui->pointOfContact_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointOfContactTool);
     connect(
-        ui->addPatternPiece_ToolButton,
+        m_ui->addPatternPiece_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePatternPieceTool);
     connect(
-        ui->internalPath_ToolButton,
+        m_ui->internalPath_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleInternalPathTool);
-    connect(ui->height_ToolButton, &QToolButton::clicked, this, &MainWindow::handleHeightTool);
-    connect(ui->triangle_ToolButton, &QToolButton::clicked, this, &MainWindow::handleTriangleTool);
+    connect(m_ui->height_ToolButton, &QToolButton::clicked, this, &MainWindow::handleHeightTool);
     connect(
-        ui->pointIntersectXY_ToolButton,
+        m_ui->triangle_ToolButton, &QToolButton::clicked, this, &MainWindow::handleTriangleTool);
+    connect(
+        m_ui->pointIntersectXY_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointIntersectXYTool);
     connect(
-        ui->pointAlongCurve_ToolButton,
+        m_ui->pointAlongCurve_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointAlongCurveTool);
     connect(
-        ui->pointAlongSpline_ToolButton,
+        m_ui->pointAlongSpline_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointAlongSplineTool);
-    connect(ui->unitePieces_ToolButton, &QToolButton::clicked, this, &MainWindow::handleUnionTool);
     connect(
-        ui->pointAlongArc_ToolButton,
+        m_ui->unitePieces_ToolButton, &QToolButton::clicked, this, &MainWindow::handleUnionTool);
+    connect(
+        m_ui->pointAlongArc_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointAlongArcTool);
     connect(
-        ui->lineIntersectAxis_ToolButton,
+        m_ui->lineIntersectAxis_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleLineIntersectAxisTool);
     connect(
-        ui->curveIntersectAxis_ToolButton,
+        m_ui->curveIntersectAxis_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleCurveIntersectAxisTool);
     connect(
-        ui->arcIntersectAxis_ToolButton,
+        m_ui->arcIntersectAxis_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleArcIntersectAxisTool);
     connect(
-        ui->layoutSettings_ToolButton, &QToolButton::clicked, this, &MainWindow::handleNewLayout);
+        m_ui->layoutSettings_ToolButton, &QToolButton::clicked, this, &MainWindow::handleNewLayout);
     connect(
-        ui->pointOfIntersectionArcs_ToolButton,
+        m_ui->pointOfIntersectionArcs_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointOfIntersectionArcsTool);
     connect(
-        ui->pointOfIntersectionCircles_ToolButton,
+        m_ui->pointOfIntersectionCircles_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointOfIntersectionCirclesTool);
     connect(
-        ui->pointOfIntersectionCurves_ToolButton,
+        m_ui->pointOfIntersectionCurves_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleCurveIntersectCurveTool);
     connect(
-        ui->pointFromCircleAndTangent_ToolButton,
+        m_ui->pointFromCircleAndTangent_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointFromCircleAndTangentTool);
     connect(
-        ui->pointFromArcAndTangent_ToolButton,
+        m_ui->pointFromArcAndTangent_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handlePointFromArcAndTangentTool);
     connect(
-        ui->arcWithLength_ToolButton,
+        m_ui->arcWithLength_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleArcWithLengthTool);
-    connect(ui->trueDarts_ToolButton, &QToolButton::clicked, this, &MainWindow::handleTrueDartTool);
     connect(
-        ui->exportDraftBlocks_ToolButton,
+        m_ui->trueDarts_ToolButton, &QToolButton::clicked, this, &MainWindow::handleTrueDartTool);
+    connect(
+        m_ui->exportDraftBlocks_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::exportDraftBlocksAs);
-    connect(ui->group_ToolButton, &QToolButton::clicked, this, &MainWindow::handleGroupTool);
-    connect(ui->rotation_ToolButton, &QToolButton::clicked, this, &MainWindow::handleRotationTool);
+    connect(m_ui->group_ToolButton, &QToolButton::clicked, this, &MainWindow::handleGroupTool);
     connect(
-        ui->mirrorByLine_ToolButton,
+        m_ui->rotation_ToolButton, &QToolButton::clicked, this, &MainWindow::handleRotationTool);
+    connect(
+        m_ui->mirrorByLine_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleMirrorByLineTool);
     connect(
-        ui->mirrorByAxis_ToolButton,
+        m_ui->mirrorByAxis_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleMirrorByAxisTool);
-    connect(ui->move_ToolButton, &QToolButton::clicked, this, &MainWindow::handleMoveTool);
-    connect(ui->midpoint_ToolButton, &QToolButton::clicked, this, &MainWindow::handleMidpointTool);
-    connect(ui->exportLayout_ToolButton, &QToolButton::clicked, this, &MainWindow::exportLayoutAs);
+    connect(m_ui->move_ToolButton, &QToolButton::clicked, this, &MainWindow::handleMoveTool);
     connect(
-        ui->exportPiecesAs_ToolButton, &QToolButton::clicked, this, &MainWindow::exportPiecesAs);
+        m_ui->midpoint_ToolButton, &QToolButton::clicked, this, &MainWindow::handleMidpointTool);
     connect(
-        ui->ellipticalArc_ToolButton,
+        m_ui->exportLayout_ToolButton, &QToolButton::clicked, this, &MainWindow::exportLayoutAs);
+    connect(
+        m_ui->exportPiecesAs_ToolButton, &QToolButton::clicked, this, &MainWindow::exportPiecesAs);
+    connect(
+        m_ui->ellipticalArc_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleEllipticalArcTool);
     connect(
-        ui->anchorPoint_ToolButton,
+        m_ui->anchorPoint_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleAnchorPointTool);
     connect(
-        ui->importImage_ToolButton, &QToolButton::clicked, this, &MainWindow::handleImportImage);
+        m_ui->importImage_ToolButton, &QToolButton::clicked, this, &MainWindow::handleImportImage);
     connect(
-        ui->insertNodes_ToolButton,
+        m_ui->insertNodes_ToolButton,
         &QToolButton::clicked,
         this,
         &MainWindow::handleInsertNodesTool);
@@ -2970,48 +2991,48 @@ void MainWindow::handlePointsMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_Midpoint) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->midpoint_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->midpoint_ToolButton->setChecked(true);
         handleMidpointTool(true);
     } else if (selectedAction == action_PointAtDA) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->pointAtDistanceAngle_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->pointAtDistanceAngle_ToolButton->setChecked(true);
         handlePointAtDistanceAngleTool(true);
     } else if (selectedAction == action_PointAlongLine) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->alongLine_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->alongLine_ToolButton->setChecked(true);
         handleAlongLineTool(true);
     } else if (selectedAction == action_AlongPerpendicular) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->normal_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->normal_ToolButton->setChecked(true);
         handleNormalTool(true);
     } else if (selectedAction == action_Bisector) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->bisector_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->bisector_ToolButton->setChecked(true);
         handleBisectorTool(true);
     } else if (selectedAction == action_Shoulder) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->shoulderPoint_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->shoulderPoint_ToolButton->setChecked(true);
         handleShoulderPointTool(true);
     } else if (selectedAction == action_PointOfContact) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->pointOfContact_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->pointOfContact_ToolButton->setChecked(true);
         handlePointOfContactTool(true);
     } else if (selectedAction == action_Triangle) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->triangle_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->triangle_ToolButton->setChecked(true);
         handleTriangleTool(true);
     } else if (selectedAction == action_PointIntersectXY) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->pointIntersectXY_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->pointIntersectXY_ToolButton->setChecked(true);
         handlePointIntersectXYTool(true);
     } else if (selectedAction == action_PerpendicularPoint) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->height_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->height_ToolButton->setChecked(true);
         handleHeightTool(true);
     } else if (selectedAction == action_PointIntersectAxis) {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->lineIntersectAxis_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->lineIntersectAxis_ToolButton->setChecked(true);
         handleLineIntersectAxisTool(true);
     }
 }
@@ -3031,12 +3052,12 @@ void MainWindow::handleLinesMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_Line) {
-        ui->draft_ToolBox->setCurrentWidget(ui->lines_Page);
-        ui->line_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->lines_Page);
+        m_ui->line_ToolButton->setChecked(true);
         handleLineTool(true);
     } else if (selectedAction == action_LineIntersect) {
-        ui->draft_ToolBox->setCurrentWidget(ui->lines_Page);
-        ui->lineIntersect_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->lines_Page);
+        m_ui->lineIntersect_ToolButton->setChecked(true);
         handleLineIntersectTool(true);
     }
 }
@@ -3074,40 +3095,40 @@ void MainWindow::handleArcsMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_Arc) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->arc_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->arc_ToolButton->setChecked(true);
         handleArcTool(true);
     } else if (selectedAction == action_PointAlongArc) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointAlongArc_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointAlongArc_ToolButton->setChecked(true);
         handlePointAlongArcTool(true);
     } else if (selectedAction == action_ArcIntersectAxis) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->arcIntersectAxis_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->arcIntersectAxis_ToolButton->setChecked(true);
         handleArcIntersectAxisTool(true);
     } else if (selectedAction == action_ArcIntersectArc) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointOfIntersectionArcs_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointOfIntersectionArcs_ToolButton->setChecked(true);
         handlePointOfIntersectionArcsTool(true);
     } else if (selectedAction == action_CircleIntersect) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointOfIntersectionCircles_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointOfIntersectionCircles_ToolButton->setChecked(true);
         handlePointOfIntersectionCirclesTool(true);
     } else if (selectedAction == action_CircleTangent) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointFromCircleAndTangent_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointFromCircleAndTangent_ToolButton->setChecked(true);
         handlePointFromCircleAndTangentTool(true);
     } else if (selectedAction == action_ArcTangent) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointFromArcAndTangent_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointFromArcAndTangent_ToolButton->setChecked(true);
         handlePointFromArcAndTangentTool(true);
     } else if (selectedAction == action_ArcWithLength) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->arcWithLength_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->arcWithLength_ToolButton->setChecked(true);
         handleArcWithLengthTool(true);
     } else if (selectedAction == action_EllipticalArc) {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->ellipticalArc_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->ellipticalArc_ToolButton->setChecked(true);
         handleEllipticalArcTool(true);
     }
 }
@@ -3141,36 +3162,36 @@ void MainWindow::handleCurvesMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_Curve) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->curve_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->curve_ToolButton->setChecked(true);
         handleCurveTool(true);
     } else if (selectedAction == action_Spline) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->spline_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->spline_ToolButton->setChecked(true);
         handleSplineTool(true);
     } else if (selectedAction == action_PointAlongCurve) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->pointAlongCurve_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->pointAlongCurve_ToolButton->setChecked(true);
         handlePointAlongCurveTool(true);
     } else if (selectedAction == action_PointAlongSpline) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->pointAlongSpline_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->pointAlongSpline_ToolButton->setChecked(true);
         handlePointAlongSplineTool(true);
     } else if (selectedAction == action_CurveWithCPs) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->curveWithCPs_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->curveWithCPs_ToolButton->setChecked(true);
         handleCurveWithControlPointsTool(true);
     } else if (selectedAction == action_SplineWithCPs) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->splineWithCPs_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->splineWithCPs_ToolButton->setChecked(true);
         handleSplineWithControlPointsTool(true);
     } else if (selectedAction == action_CurveIntersectCurve) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->pointOfIntersectionCurves_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->pointOfIntersectionCurves_ToolButton->setChecked(true);
         handleCurveIntersectCurveTool(true);
     } else if (selectedAction == action_CurveIntersectAxis) {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->curveIntersectAxis_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->curveIntersectAxis_ToolButton->setChecked(true);
         handleCurveIntersectAxisTool(true);
     }
 }
@@ -3202,31 +3223,31 @@ void MainWindow::handleOperationsMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_Group) {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->group_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->group_ToolButton->setChecked(true);
         handleGroupTool(true);
     } else if (selectedAction == action_Rotate) {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->rotation_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->rotation_ToolButton->setChecked(true);
         handleRotationTool(true);
     } else if (selectedAction == action_MirrorByLine) {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->mirrorByLine_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->mirrorByLine_ToolButton->setChecked(true);
         handleMirrorByLineTool(true);
     } else if (selectedAction == action_MirrorByAxis) {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->mirrorByAxis_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->mirrorByAxis_ToolButton->setChecked(true);
         handleMirrorByAxisTool(true);
     } else if (selectedAction == action_Move) {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->move_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->move_ToolButton->setChecked(true);
         handleMoveTool(true);
     } else if (selectedAction == action_TrueDarts) {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->trueDarts_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->trueDarts_ToolButton->setChecked(true);
         handleTrueDartTool(true);
     } else if (selectedAction == action_ExportDraftBlocks) {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
         exportDraftBlocksAs();
     }
 }
@@ -3253,20 +3274,20 @@ void MainWindow::handlePieceMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_Piece) {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->addPatternPiece_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->addPatternPiece_ToolButton->setChecked(true);
         handlePatternPieceTool(true);
     } else if (selectedAction == action_AnchorPoint) {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->anchorPoint_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->anchorPoint_ToolButton->setChecked(true);
         handleAnchorPointTool(true);
     } else if (selectedAction == action_InternalPath) {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->internalPath_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->internalPath_ToolButton->setChecked(true);
         handleInternalPathTool(true);
     } else if (selectedAction == action_InsertNodes) {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->insertNodes_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->insertNodes_ToolButton->setChecked(true);
         handleInsertNodesTool(true);
     }
 }
@@ -3285,11 +3306,11 @@ void MainWindow::handlePatternPiecesMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_Union) {
-        ui->piece_ToolBox->setCurrentWidget(ui->details_Page);
-        ui->unitePieces_ToolButton->setChecked(true);
+        m_ui->piece_ToolBox->setCurrentWidget(m_ui->details_Page);
+        m_ui->unitePieces_ToolButton->setChecked(true);
         handleUnionTool(true);
     } else if (selectedAction == action_ExportPieces) {
-        ui->piece_ToolBox->setCurrentWidget(ui->details_Page);
+        m_ui->piece_ToolBox->setCurrentWidget(m_ui->details_Page);
         exportPiecesAs();
     }
 }
@@ -3311,11 +3332,11 @@ void MainWindow::handleLayoutMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_NewLayout) {
-        ui->layout_ToolBox->setCurrentWidget(ui->layout_Page);
-        ui->layoutSettings_ToolButton->setChecked(true);
+        m_ui->layout_ToolBox->setCurrentWidget(m_ui->layout_Page);
+        m_ui->layoutSettings_ToolButton->setChecked(true);
         handleNewLayout(true);
     } else if (selectedAction == action_ExportLayout) {
-        ui->layout_ToolBox->setCurrentWidget(ui->layout_Page);
+        m_ui->layout_ToolBox->setCurrentWidget(m_ui->layout_Page);
         exportLayoutAs();
     }
 }
@@ -3335,8 +3356,8 @@ void MainWindow::handleImagesMenu()
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == action_ImportImage) {
-        ui->draft_ToolBox->setCurrentWidget(ui->backgroundImage_Page);
-        ui->importImage_ToolButton->setChecked(true);
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->backgroundImage_Page);
+        m_ui->importImage_ToolButton->setChecked(true);
         handleImportImage();
     }
 }
@@ -3348,8 +3369,8 @@ void MainWindow::handleImagesMenu()
  */
 void MainWindow::MouseMove(const QPointF& scenePos)
 {
-    if (mouseCoordinates) {
-        mouseCoordinates->updateCoordinates(scenePos);
+    if (m_mouseCoordinates) {
+        m_mouseCoordinates->updateCoordinates(scenePos);
     }
 }
 
@@ -3366,24 +3387,24 @@ void MainWindow::CancelTool()
         static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were handled.");
 
     qCDebug(vMainWindow, "Canceling tool.");
-    dialogTool.clear();
+    m_dialogTool.clear();
     qCDebug(vMainWindow, "Dialog closed.");
 
     currentScene->setFocus(Qt::OtherFocusReason);
     currentScene->clearSelection();
-    emit ui->view->itemClicked(nullptr);   // Hide visualization to avoid a crash
+    emit m_ui->view->itemClicked(nullptr);   // Hide visualization to avoid a crash
 
-    ui->zoomPan_Action->setChecked(false);   // Disable Pan Zoom
-    ui->view->zoomPanEnabled(false);
+    m_ui->zoomPan_Action->setChecked(false);   // Disable Pan Zoom
+    m_ui->view->zoomPanEnabled(false);
 
-    ui->zoomToArea_Action->setChecked(false);   // Disable Zoom to Area
-    ui->view->zoomToAreaEnabled(false);
+    m_ui->zoomToArea_Action->setChecked(false);   // Disable Zoom to Area
+    m_ui->view->zoomToAreaEnabled(false);
 
-    switch (currentTool) {
+    switch (m_currentTool) {
     case Tool::Arrow:
-        ui->arrowPointer_ToolButton->setChecked(false);
-        ui->arrow_Action->setChecked(false);
-        helpLabel->setText(QString(""));
+        m_ui->arrowPointer_ToolButton->setChecked(false);
+        m_ui->arrow_Action->setChecked(false);
+        m_helpLabel->setText(QString(""));
 
         // Crash: using CRTL+Z while using line tool.
         undoAction->setEnabled(false);
@@ -3406,57 +3427,57 @@ void MainWindow::CancelTool()
         Q_UNREACHABLE();   //-V501
         // Nothing to do here because we can't create this tool from main window.
         break;
-    case Tool::EndLine: ui->pointAtDistanceAngle_ToolButton->setChecked(false); break;
-    case Tool::Line: ui->line_ToolButton->setChecked(false); break;
-    case Tool::AlongLine: ui->alongLine_ToolButton->setChecked(false); break;
-    case Tool::Midpoint: ui->midpoint_ToolButton->setChecked(false); break;
-    case Tool::ShoulderPoint: ui->shoulderPoint_ToolButton->setChecked(false); break;
-    case Tool::Normal: ui->normal_ToolButton->setChecked(false); break;
-    case Tool::Bisector: ui->bisector_ToolButton->setChecked(false); break;
-    case Tool::LineIntersect: ui->lineIntersect_ToolButton->setChecked(false); break;
-    case Tool::Spline: ui->curve_ToolButton->setChecked(false); break;
-    case Tool::CubicBezier: ui->curveWithCPs_ToolButton->setChecked(false); break;
-    case Tool::Arc: ui->arc_ToolButton->setChecked(false); break;
-    case Tool::ArcWithLength: ui->arcWithLength_ToolButton->setChecked(false); break;
-    case Tool::SplinePath: ui->spline_ToolButton->setChecked(false); break;
-    case Tool::CubicBezierPath: ui->splineWithCPs_ToolButton->setChecked(false); break;
-    case Tool::PointOfContact: ui->pointOfContact_ToolButton->setChecked(false); break;
-    case Tool::Piece: ui->addPatternPiece_ToolButton->setChecked(false); break;
-    case Tool::InternalPath: ui->internalPath_ToolButton->setChecked(false); break;
-    case Tool::Height: ui->height_ToolButton->setChecked(false); break;
-    case Tool::Triangle: ui->triangle_ToolButton->setChecked(false); break;
-    case Tool::PointOfIntersection: ui->pointIntersectXY_ToolButton->setChecked(false); break;
-    case Tool::CutSpline: ui->pointAlongCurve_ToolButton->setChecked(false); break;
-    case Tool::CutSplinePath: ui->pointAlongSpline_ToolButton->setChecked(false); break;
-    case Tool::Union: ui->unitePieces_ToolButton->setChecked(false); break;
-    case Tool::CutArc: ui->pointAlongArc_ToolButton->setChecked(false); break;
-    case Tool::LineIntersectAxis: ui->lineIntersectAxis_ToolButton->setChecked(false); break;
-    case Tool::CurveIntersectAxis: ui->curveIntersectAxis_ToolButton->setChecked(false); break;
-    case Tool::ArcIntersectAxis: ui->arcIntersectAxis_ToolButton->setChecked(false); break;
+    case Tool::EndLine: m_ui->pointAtDistanceAngle_ToolButton->setChecked(false); break;
+    case Tool::Line: m_ui->line_ToolButton->setChecked(false); break;
+    case Tool::AlongLine: m_ui->alongLine_ToolButton->setChecked(false); break;
+    case Tool::Midpoint: m_ui->midpoint_ToolButton->setChecked(false); break;
+    case Tool::ShoulderPoint: m_ui->shoulderPoint_ToolButton->setChecked(false); break;
+    case Tool::Normal: m_ui->normal_ToolButton->setChecked(false); break;
+    case Tool::Bisector: m_ui->bisector_ToolButton->setChecked(false); break;
+    case Tool::LineIntersect: m_ui->lineIntersect_ToolButton->setChecked(false); break;
+    case Tool::Spline: m_ui->curve_ToolButton->setChecked(false); break;
+    case Tool::CubicBezier: m_ui->curveWithCPs_ToolButton->setChecked(false); break;
+    case Tool::Arc: m_ui->arc_ToolButton->setChecked(false); break;
+    case Tool::ArcWithLength: m_ui->arcWithLength_ToolButton->setChecked(false); break;
+    case Tool::SplinePath: m_ui->spline_ToolButton->setChecked(false); break;
+    case Tool::CubicBezierPath: m_ui->splineWithCPs_ToolButton->setChecked(false); break;
+    case Tool::PointOfContact: m_ui->pointOfContact_ToolButton->setChecked(false); break;
+    case Tool::Piece: m_ui->addPatternPiece_ToolButton->setChecked(false); break;
+    case Tool::InternalPath: m_ui->internalPath_ToolButton->setChecked(false); break;
+    case Tool::Height: m_ui->height_ToolButton->setChecked(false); break;
+    case Tool::Triangle: m_ui->triangle_ToolButton->setChecked(false); break;
+    case Tool::PointOfIntersection: m_ui->pointIntersectXY_ToolButton->setChecked(false); break;
+    case Tool::CutSpline: m_ui->pointAlongCurve_ToolButton->setChecked(false); break;
+    case Tool::CutSplinePath: m_ui->pointAlongSpline_ToolButton->setChecked(false); break;
+    case Tool::Union: m_ui->unitePieces_ToolButton->setChecked(false); break;
+    case Tool::CutArc: m_ui->pointAlongArc_ToolButton->setChecked(false); break;
+    case Tool::LineIntersectAxis: m_ui->lineIntersectAxis_ToolButton->setChecked(false); break;
+    case Tool::CurveIntersectAxis: m_ui->curveIntersectAxis_ToolButton->setChecked(false); break;
+    case Tool::ArcIntersectAxis: m_ui->arcIntersectAxis_ToolButton->setChecked(false); break;
     case Tool::PointOfIntersectionArcs:
-        ui->pointOfIntersectionArcs_ToolButton->setChecked(false);
+        m_ui->pointOfIntersectionArcs_ToolButton->setChecked(false);
         break;
     case Tool::PointOfIntersectionCircles:
-        ui->pointOfIntersectionCircles_ToolButton->setChecked(false);
+        m_ui->pointOfIntersectionCircles_ToolButton->setChecked(false);
         break;
     case Tool::PointOfIntersectionCurves:
-        ui->pointOfIntersectionCurves_ToolButton->setChecked(false);
+        m_ui->pointOfIntersectionCurves_ToolButton->setChecked(false);
         break;
     case Tool::PointFromCircleAndTangent:
-        ui->pointFromCircleAndTangent_ToolButton->setChecked(false);
+        m_ui->pointFromCircleAndTangent_ToolButton->setChecked(false);
         break;
     case Tool::PointFromArcAndTangent:
-        ui->pointFromArcAndTangent_ToolButton->setChecked(false);
+        m_ui->pointFromArcAndTangent_ToolButton->setChecked(false);
         break;
-    case Tool::TrueDarts: ui->trueDarts_ToolButton->setChecked(false); break;
-    case Tool::Group: ui->group_ToolButton->setChecked(false); break;
-    case Tool::Rotation: ui->rotation_ToolButton->setChecked(false); break;
-    case Tool::MirrorByLine: ui->mirrorByLine_ToolButton->setChecked(false); break;
-    case Tool::MirrorByAxis: ui->mirrorByAxis_ToolButton->setChecked(false); break;
-    case Tool::Move: ui->move_ToolButton->setChecked(false); break;
-    case Tool::EllipticalArc: ui->ellipticalArc_ToolButton->setChecked(false); break;
-    case Tool::AnchorPoint: ui->anchorPoint_ToolButton->setChecked(false); break;
-    case Tool::InsertNodes: ui->insertNodes_ToolButton->setChecked(false); break;
+    case Tool::TrueDarts: m_ui->trueDarts_ToolButton->setChecked(false); break;
+    case Tool::Group: m_ui->group_ToolButton->setChecked(false); break;
+    case Tool::Rotation: m_ui->rotation_ToolButton->setChecked(false); break;
+    case Tool::MirrorByLine: m_ui->mirrorByLine_ToolButton->setChecked(false); break;
+    case Tool::MirrorByAxis: m_ui->mirrorByAxis_ToolButton->setChecked(false); break;
+    case Tool::Move: m_ui->move_ToolButton->setChecked(false); break;
+    case Tool::EllipticalArc: m_ui->ellipticalArc_ToolButton->setChecked(false); break;
+    case Tool::AnchorPoint: m_ui->anchorPoint_ToolButton->setChecked(false); break;
+    case Tool::InsertNodes: m_ui->insertNodes_ToolButton->setChecked(false); break;
     }
 
     // Crash: using CRTL+Z while using line tool.
@@ -3472,12 +3493,12 @@ QT_WARNING_POP
  */
 void MainWindow::handleArrowTool(bool checked)
 {
-    if (checked && currentTool != Tool::Arrow) {
+    if (checked && m_currentTool != Tool::Arrow) {
         qCDebug(vMainWindow, "Arrow tool.");
         CancelTool();
-        ui->arrowPointer_ToolButton->setChecked(true);
-        ui->arrow_Action->setChecked(true);
-        currentTool = Tool::Arrow;
+        m_ui->arrowPointer_ToolButton->setChecked(true);
+        m_ui->arrow_Action->setChecked(true);
+        m_currentTool = Tool::Arrow;
         emit EnableItemMove(true);
         emit ItemsSelection(SelectionType::ByMouseRelease);
         VAbstractTool::m_suppressContextMenu = false;
@@ -3508,16 +3529,16 @@ void MainWindow::handleArrowTool(bool checked)
         emit EnableImageHover(true);
         emit enablePieceHover(true);
 
-        ui->view->allowRubberBand(true);
+        m_ui->view->allowRubberBand(true);
 
-        ui->view->viewport()->unsetCursor();
-        helpLabel->setText("");
-        ui->view->setShowToolOptions(true);
+        m_ui->view->viewport()->unsetCursor();
+        m_helpLabel->setText("");
+        m_ui->view->setShowToolOptions(true);
         qCDebug(vMainWindow, "Enabled arrow tool.");
     } else {
-        ui->view->viewport()->setCursor(QCursor(Qt::ArrowCursor));
-        ui->arrowPointer_ToolButton->setChecked(true);
-        ui->arrow_Action->setChecked(true);
+        m_ui->view->viewport()->setCursor(QCursor(Qt::ArrowCursor));
+        m_ui->arrowPointer_ToolButton->setChecked(true);
+        m_ui->arrow_Action->setChecked(true);
     }
 }
 
@@ -3534,7 +3555,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Enter: EndVisualization(); break;
     case Qt::Key_Space:
         if (qApp->Seamly2DSettings()->isPanActiveSpaceKey()) {
-            ui->zoomPan_Action->setChecked(true);
+            m_ui->zoomPan_Action->setChecked(true);
         }
         break;
     default: break;
@@ -3552,7 +3573,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
     switch (event->key()) {
     case Qt::Key_Space:
         if (qApp->Seamly2DSettings()->isPanActiveSpaceKey()) {
-            ui->zoomPan_Action->setChecked(false);
+            m_ui->zoomPan_Action->setChecked(false);
         }
     default: break;
     }
@@ -3565,16 +3586,16 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
  */
 void MainWindow::SaveCurrentScene()
 {
-    if (mode == Draw::Calculation || mode == Draw::Modeling) {
+    if (m_mode == Draw::Calculation || m_mode == Draw::Modeling) {
         VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(currentScene);
         SCASSERT(scene != nullptr)
 
         /*Save transform*/
-        scene->setCurrentTransform(ui->view->transform());
+        scene->setCurrentTransform(m_ui->view->transform());
         /*Save scroll bars value for previous scene.*/
-        QScrollBar* horScrollBar = ui->view->horizontalScrollBar();
+        QScrollBar* horScrollBar = m_ui->view->horizontalScrollBar();
         scene->setHorScrollBar(horScrollBar->value());
-        QScrollBar* verScrollBar = ui->view->verticalScrollBar();
+        QScrollBar* verScrollBar = m_ui->view->verticalScrollBar();
         scene->setVerScrollBar(verScrollBar->value());
     }
 }
@@ -3589,12 +3610,12 @@ void MainWindow::RestoreCurrentScene()
     SCASSERT(scene != nullptr)
 
     /*Set transform for current scene*/
-    ui->view->setTransform(scene->transform());
-    zoomScaleChanged(ui->view->transform().m11());
+    m_ui->view->setTransform(scene->transform());
+    zoomScaleChanged(m_ui->view->transform().m11());
     /*Set value for current scene scroll bar.*/
-    QScrollBar* horScrollBar = ui->view->horizontalScrollBar();
+    QScrollBar* horScrollBar = m_ui->view->horizontalScrollBar();
     horScrollBar->setValue(scene->getHorScrollBar());
-    QScrollBar* verScrollBar = ui->view->verticalScrollBar();
+    QScrollBar* verScrollBar = m_ui->view->verticalScrollBar();
     verScrollBar->setValue(scene->getVerScrollBar());
 }
 
@@ -3606,52 +3627,52 @@ void MainWindow::RestoreCurrentScene()
 void MainWindow::showDraftMode(bool checked)
 {
     if (checked) {
-        ui->toolbox_StackedWidget->setCurrentIndex(0);
+        m_ui->toolbox_StackedWidget->setCurrentIndex(0);
         qCDebug(vMainWindow, "Show draft scene");
         handleArrowTool(true);
 
-        leftGoToStage->setPixmap(QPixmap("://icon/24x24/fast_forward_left_to_right_arrow.png"));
-        rightGoToStage->setPixmap(QPixmap("://icon/24x24/left_to_right_arrow.png"));
+        m_leftGoToStage->setPixmap(QPixmap("://icon/24x24/fast_forward_left_to_right_arrow.png"));
+        m_rightGoToStage->setPixmap(QPixmap("://icon/24x24/left_to_right_arrow.png"));
 
-        ui->showDraftMode->setChecked(true);
-        ui->pieceMode_Action->setChecked(false);
-        ui->layoutMode_Action->setChecked(false);
+        m_ui->showDraftMode->setChecked(true);
+        m_ui->pieceMode_Action->setChecked(false);
+        m_ui->layoutMode_Action->setChecked(false);
 
         SaveCurrentScene();
 
-        currentScene = draftScene;
-        ui->view->setScene(currentScene);
+        currentScene = m_draftScene;
+        m_ui->view->setScene(currentScene);
         RestoreCurrentScene();
 
-        mode = Draw::Calculation;
-        draftBlockComboBox->setCurrentIndex(currentBlockIndex);   // restore current draft block
-        drawMode = true;
+        m_mode = Draw::Calculation;
+        m_draftBlockComboBox->setCurrentIndex(m_currentBlockIndex);   // restore current draft Block
+        m_drawMode = true;
 
         setToolsEnabled(true);
         setWidgetsEnabled(true);
 
-        draftScene->enablePiecesMode(qApp->Seamly2DSettings()->getShowControlPoints());
-        draftScene->setOriginsVisible(qApp->Settings()->getShowAxisOrigin());
+        m_draftScene->enablePiecesMode(qApp->Seamly2DSettings()->getShowControlPoints());
+        m_draftScene->setOriginsVisible(qApp->Settings()->getShowAxisOrigin());
 
         updateViewToolbar();
 
-        // ui->toggleAnchorPoints_Action->setChecked(qApp->Settings()->getShowAnchorPoints());
-        // draftScene->setOriginsVisible(qApp->Settings()->getShowAnchorPoints());
+        // m_ui->toggleAnchorPoints_Action->setChecked(qApp->Settings()->getShowAnchorPoints());
+        // m_draftScene->setOriginsVisible(qApp->Settings()->getShowAnchorPoints());
 
-        ui->useToolColor_Action->setChecked(qApp->Settings()->getUseToolColor());
+        m_ui->useToolColor_Action->setChecked(qApp->Settings()->getUseToolColor());
 
-        ui->draft_ToolBox->setCurrentIndex(currentToolBoxIndex);
+        m_ui->draft_ToolBox->setCurrentIndex(m_currentToolBoxIndex);
 
         if (qApp->patternType() == MeasurementsType::Multisize) {
-            gradationHeightsLabel->setVisible(true);
-            gradationHeights->setVisible(true);
-            gradationSizesLabel->setVisible(true);
-            gradationSizes->setVisible(true);
+            m_gradationHeightsLabel->setVisible(true);
+            m_gradationHeights->setVisible(true);
+            m_gradationSizesLabel->setVisible(true);
+            m_gradationSizes->setVisible(true);
         }
-        ui->groups_DockWidget->setWidget(groupsWidget);
-        ui->groups_DockWidget->setWindowTitle(tr("Group Manager"));
+        m_ui->groups_DockWidget->setWidget(m_groupsWidget);
+        m_ui->groups_DockWidget->setWindowTitle(tr("Group Manager"));
     } else {
-        ui->showDraftMode->setChecked(true);
+        m_ui->showDraftMode->setChecked(true);
     }
 }
 
@@ -3663,29 +3684,30 @@ void MainWindow::showDraftMode(bool checked)
 void MainWindow::showPieceMode(bool checked)
 {
     if (checked) {
-        ui->toolbox_StackedWidget->setCurrentIndex(1);
+        m_ui->toolbox_StackedWidget->setCurrentIndex(1);
         handleArrowTool(true);
 
-        if (drawMode) {
-            currentBlockIndex = draftBlockComboBox->currentIndex();   // Save current draftf block.
-            drawMode = false;
+        if (m_drawMode) {
+            m_currentBlockIndex =
+                m_draftBlockComboBox->currentIndex();   // Save current draftf Block.
+            m_drawMode = false;
         }
-        draftBlockComboBox->setCurrentIndex(
-            draftBlockComboBox->count() - 1);   // Need to get data about all blocks.
+        m_draftBlockComboBox->setCurrentIndex(
+            m_draftBlockComboBox->count() - 1);   // Need to get data about all Blocks.
 
-        leftGoToStage->setPixmap(QPixmap("://icon/24x24/right_to_left_arrow.png"));
-        rightGoToStage->setPixmap(QPixmap("://icon/24x24/left_to_right_arrow.png"));
+        m_leftGoToStage->setPixmap(QPixmap("://icon/24x24/right_to_left_arrow.png"));
+        m_rightGoToStage->setPixmap(QPixmap("://icon/24x24/left_to_right_arrow.png"));
 
-        ui->showDraftMode->setChecked(false);
-        ui->pieceMode_Action->setChecked(true);
-        ui->layoutMode_Action->setChecked(false);
+        m_ui->showDraftMode->setChecked(false);
+        m_ui->pieceMode_Action->setChecked(true);
+        m_ui->layoutMode_Action->setChecked(false);
 
         if (!qApp->getOpeningPattern()) {
             if (pattern->DataPieces()->count() == 0) {
                 QMessageBox::information(
                     this,
                     tr("Piece mode"),
-                    tr("You can't use Piece mode yet. "
+                    tr("You can't use Piece m_mode yet. "
                        "Please, create at least one pattern piece."),
                     QMessageBox::Ok,
                     QMessageBox::Ok);
@@ -3694,41 +3716,41 @@ void MainWindow::showPieceMode(bool checked)
             }
         }
 
-        patternPiecesWidget->updateList();
+        m_patternPiecesWidget->updateList();
 
         qCDebug(vMainWindow, "Show piece scene");
         SaveCurrentScene();
 
-        currentScene = pieceScene;
-        emit ui->view->itemClicked(nullptr);
-        ui->view->setScene(currentScene);
+        currentScene = m_pieceScene;
+        emit m_ui->view->itemClicked(nullptr);
+        m_ui->view->setScene(currentScene);
         RestoreCurrentScene();
 
-        if (mode == Draw::Calculation) {
-            currentToolBoxIndex = ui->piece_ToolBox->currentIndex();
+        if (m_mode == Draw::Calculation) {
+            m_currentToolBoxIndex = m_ui->piece_ToolBox->currentIndex();
         }
-        mode = Draw::Modeling;
+        m_mode = Draw::Modeling;
         setToolsEnabled(true);
         setWidgetsEnabled(true);
 
-        pieceScene->setOriginsVisible(qApp->Settings()->getShowAxisOrigin());
+        m_pieceScene->setOriginsVisible(qApp->Settings()->getShowAxisOrigin());
 
         updateViewToolbar();
 
-        ui->piece_ToolBox->setCurrentIndex(ui->piece_ToolBox->indexOf(ui->details_Page));
+        m_ui->piece_ToolBox->setCurrentIndex(m_ui->piece_ToolBox->indexOf(m_ui->details_Page));
 
         if (qApp->patternType() == MeasurementsType::Multisize) {
-            gradationHeightsLabel->setVisible(true);
-            gradationHeights->setVisible(true);
-            gradationSizesLabel->setVisible(true);
-            gradationSizes->setVisible(true);
+            m_gradationHeightsLabel->setVisible(true);
+            m_gradationHeights->setVisible(true);
+            m_gradationSizesLabel->setVisible(true);
+            m_gradationSizes->setVisible(true);
         }
-        ui->groups_DockWidget->setWidget(patternPiecesWidget);
-        ui->groups_DockWidget->setWindowTitle(tr("Pattern Pieces"));
+        m_ui->groups_DockWidget->setWidget(m_patternPiecesWidget);
+        m_ui->groups_DockWidget->setWindowTitle(tr("Pattern Pieces"));
 
-        helpLabel->setText("");
+        m_helpLabel->setText("");
     } else {
-        ui->pieceMode_Action->setChecked(true);
+        m_ui->pieceMode_Action->setChecked(true);
     }
 }
 
@@ -3740,22 +3762,23 @@ void MainWindow::showPieceMode(bool checked)
 void MainWindow::showLayoutMode(bool checked)
 {
     if (checked) {
-        ui->toolbox_StackedWidget->setCurrentIndex(2);
+        m_ui->toolbox_StackedWidget->setCurrentIndex(2);
         handleArrowTool(true);
 
-        if (drawMode) {
-            currentBlockIndex = draftBlockComboBox->currentIndex();   // save current drfat block
-            drawMode = false;
+        if (m_drawMode) {
+            m_currentBlockIndex =
+                m_draftBlockComboBox->currentIndex();   // save current drfat Block
+            m_drawMode = false;
         }
-        draftBlockComboBox->setCurrentIndex(
-            draftBlockComboBox->count() - 1);   // Need to get data about all draft blocks
+        m_draftBlockComboBox->setCurrentIndex(
+            m_draftBlockComboBox->count() - 1);   // Need to get data about all draft Blocks
 
-        leftGoToStage->setPixmap(QPixmap("://icon/24x24/right_to_left_arrow.png"));
-        rightGoToStage->setPixmap(QPixmap("://icon/24x24/fast_forward_right_to_left_arrow.png"));
+        m_leftGoToStage->setPixmap(QPixmap("://icon/24x24/right_to_left_arrow.png"));
+        m_rightGoToStage->setPixmap(QPixmap("://icon/24x24/fast_forward_right_to_left_arrow.png"));
 
-        ui->showDraftMode->setChecked(false);
-        ui->pieceMode_Action->setChecked(false);
-        ui->layoutMode_Action->setChecked(true);
+        m_ui->showDraftMode->setChecked(false);
+        m_ui->pieceMode_Action->setChecked(false);
+        m_ui->layoutMode_Action->setChecked(true);
 
         QHash<quint32, VPiece> pieces;
         if (!qApp->getOpeningPattern()) {
@@ -3764,7 +3787,7 @@ void MainWindow::showLayoutMode(bool checked)
                 QMessageBox::information(
                     this,
                     tr("Layout mode"),
-                    tr("You can't use Layout mode yet. "
+                    tr("You can't use Layout m_mode yet. "
                        "Please, create at least one pattern piece."),
                     QMessageBox::Ok,
                     QMessageBox::Ok);
@@ -3783,17 +3806,17 @@ void MainWindow::showLayoutMode(bool checked)
                     QMessageBox::information(
                         this,
                         tr("Layout mode"),
-                        tr("You can't use Layout mode yet. Please, "
+                        tr("You can't use Layout m_mode yet. Please, "
                            "include at least one pattern piece in layout."),
                         QMessageBox::Ok,
                         QMessageBox::Ok);
-                    mode == Draw::Calculation ? showDraftMode(true) : showPieceMode(true);
+                    m_mode == Draw::Calculation ? showDraftMode(true) : showPieceMode(true);
                     return;
                 }
             }
         }
 
-        draftBlockComboBox->setCurrentIndex(-1);   // Hide pattern pieces
+        m_draftBlockComboBox->setCurrentIndex(-1);   // Hide pattern pieces
 
         qCDebug(vMainWindow, "Show layout scene");
 
@@ -3808,44 +3831,44 @@ void MainWindow::showLayoutMode(bool checked)
             QMessageBox::warning(
                 this,
                 tr("Layout mode"),
-                tr("You can't use Layout mode yet.") + QLatin1String(" \n")
+                tr("You can't use Layout m_mode yet.") + QLatin1String(" \n")
                     + exception.ErrorMessage(),
                 QMessageBox::Ok,
                 QMessageBox::Ok);
-            mode == Draw::Calculation ? showDraftMode(true) : showPieceMode(true);
+            m_mode == Draw::Calculation ? showDraftMode(true) : showPieceMode(true);
             return;
         }
 
         currentScene = tempSceneLayout;
-        emit ui->view->itemClicked(nullptr);
-        ui->view->setScene(currentScene);
+        emit m_ui->view->itemClicked(nullptr);
+        m_ui->view->setScene(currentScene);
 
-        if (mode == Draw::Calculation) {
-            currentToolBoxIndex = ui->layout_ToolBox->currentIndex();
+        if (m_mode == Draw::Calculation) {
+            m_currentToolBoxIndex = m_ui->layout_ToolBox->currentIndex();
         }
-        mode = Draw::Layout;
+        m_mode = Draw::Layout;
         setToolsEnabled(true);
         setWidgetsEnabled(true);
-        ui->layout_ToolBox->setCurrentIndex(ui->layout_ToolBox->indexOf(ui->layout_Page));
+        m_ui->layout_ToolBox->setCurrentIndex(m_ui->layout_ToolBox->indexOf(m_ui->layout_Page));
 
-        mouseCoordinates->updateCoordinates(QPointF());
+        m_mouseCoordinates->updateCoordinates(QPointF());
 
         if (qApp->patternType() == MeasurementsType::Multisize) {
-            gradationHeightsLabel->setVisible(false);
-            gradationHeights->setVisible(false);
-            gradationSizesLabel->setVisible(false);
-            gradationSizes->setVisible(false);
+            m_gradationHeightsLabel->setVisible(false);
+            m_gradationHeights->setVisible(false);
+            m_gradationSizesLabel->setVisible(false);
+            m_gradationSizes->setVisible(false);
         }
 
-        showLayoutPages(ui->listWidget->currentRow());
+        showLayoutPages(m_ui->listWidget->currentRow());
 
         if (scenes.isEmpty()) {
-            ui->layoutSettings_ToolButton->click();
+            m_ui->layoutSettings_ToolButton->click();
         }
 
-        helpLabel->setText("");
+        m_helpLabel->setText("");
     } else {
-        ui->layoutMode_Action->setChecked(true);
+        m_ui->layoutMode_Action->setChecked(true);
     }
 }
 
@@ -3856,7 +3879,7 @@ void MainWindow::showLayoutMode(bool checked)
  */
 bool MainWindow::SaveAs()
 {
-    if (patternReadOnly) {
+    if (m_patternReadOnly) {
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
         messageBox.setText(tr("Can not save file."));
@@ -3912,10 +3935,10 @@ bool MainWindow::SaveAs()
     }
 
     if (fileInfo.exists() && fileName != filePath) {
-        // Temporarily try to lock the file before saving
+        // Temporarily try to m_lock the file before saving
         // Also help to rewrite current read-only pattern
-        VLockGuard<char> lock(fileName);
-        if (!lock.IsLocked()) {
+        VLockGuard<char> m_lock(fileName);
+        if (!m_lock.IsLocked()) {
             qCWarning(
                 vMainWindow,
                 "%s",
@@ -3952,8 +3975,8 @@ bool MainWindow::SaveAs()
     m_curFileFormatVersionStr = VPatternConverter::PatternMaxVerStr;
 
     if (fileName != filePath) {
-        VlpCreateLock(lock, fileName);
-        if (!lock->IsLocked()) {
+        VlpCreateLock(m_lock, fileName);
+        if (!m_lock->IsLocked()) {
             qCWarning(
                 vMainWindow,
                 "%s",
@@ -3975,7 +3998,7 @@ bool MainWindow::SaveAs()
  */
 bool MainWindow::Save()
 {
-    if (patternReadOnly) {
+    if (m_patternReadOnly) {
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
         messageBox.setText(tr("Can not save file."));
@@ -4095,7 +4118,7 @@ void MainWindow::Open()
 void MainWindow::Clear()
 {
     qCDebug(vMainWindow, "Resetting main window.");
-    lock.reset();
+    m_lock.reset();
     qCDebug(vMainWindow, "Unlocked pattern file.");
     showDraftMode(true);
     qCDebug(vMainWindow, "Returned to Draft mode.");
@@ -4103,61 +4126,61 @@ void MainWindow::Clear()
     pattern->Clear();
     qCDebug(vMainWindow, "Clearing pattern.");
     if (!qApp->getFilePath().isEmpty() && not doc->MPath().isEmpty()) {
-        watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
+        m_watcher->removePath(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
     }
     doc->clear();
     qCDebug(vMainWindow, "Clearing scenes.");
-    draftScene->clear();
-    pieceScene->clear();
+    m_draftScene->clear();
+    m_pieceScene->clear();
     handleArrowTool(true);
-    draftBlockComboBox->clear();
-    ui->showDraftMode->setEnabled(false);
-    ui->pieceMode_Action->setEnabled(false);
-    ui->layoutMode_Action->setEnabled(false);
-    ui->newDraft_Action->setEnabled(false);
-    ui->renameDraft_Action->setEnabled(false);
-    ui->save_Action->setEnabled(false);
-    ui->saveAs_Action->setEnabled(false);
-    ui->patternPreferences_Action->setEnabled(false);
+    m_draftBlockComboBox->clear();
+    m_ui->showDraftMode->setEnabled(false);
+    m_ui->pieceMode_Action->setEnabled(false);
+    m_ui->layoutMode_Action->setEnabled(false);
+    m_ui->newDraft_Action->setEnabled(false);
+    m_ui->renameDraft_Action->setEnabled(false);
+    m_ui->save_Action->setEnabled(false);
+    m_ui->saveAs_Action->setEnabled(false);
+    m_ui->patternPreferences_Action->setEnabled(false);
 
     // disable zoom actions until a pattern is loaded
-    zoomScaleSpinBox->setEnabled(false);
-    ui->zoomIn_Action->setEnabled(false);
-    ui->zoomOut_Action->setEnabled(false);
-    ui->zoomToFit_Action->setEnabled(false);
-    ui->zoomToSelected_Action->setEnabled(false);
-    ui->zoom100Percent_Action->setEnabled(false);
-    ui->zoomToPrevious_Action->setEnabled(false);
-    ui->zoomToArea_Action->setEnabled(false);
-    ui->zoomPan_Action->setEnabled(false);
-    ui->zoomToPoint_Action->setEnabled(false);
+    m_zoomScaleSpinBox->setEnabled(false);
+    m_ui->zoomIn_Action->setEnabled(false);
+    m_ui->zoomOut_Action->setEnabled(false);
+    m_ui->zoomToFit_Action->setEnabled(false);
+    m_ui->zoomToSelected_Action->setEnabled(false);
+    m_ui->zoom100Percent_Action->setEnabled(false);
+    m_ui->zoomToPrevious_Action->setEnabled(false);
+    m_ui->zoomToArea_Action->setEnabled(false);
+    m_ui->zoomPan_Action->setEnabled(false);
+    m_ui->zoomToPoint_Action->setEnabled(false);
 
     // disable group actions
-    ui->groups_DockWidget->setEnabled(false);
+    m_ui->groups_DockWidget->setEnabled(false);
 
     // disable history menu actions
-    ui->history_Action->setEnabled(false);
-    ui->table_Action->setEnabled(false);
+    m_ui->history_Action->setEnabled(false);
+    m_ui->table_Action->setEnabled(false);
 
-    ui->lastTool_Action->setEnabled(false);
-    ui->increaseSize_Action->setEnabled(false);
-    ui->decreaseSize_Action->setEnabled(false);
-    ui->useToolColor_Action->setEnabled(false);
-    ui->showPointNames_Action->setEnabled(false);
-    ui->toggleWireframe_Action->setEnabled(false);
-    ui->toggleControlPoints_Action->setEnabled(false);
-    ui->toggleAxisOrigin_Action->setEnabled(false);
-    ui->toggleSeamAllowances_Action->setEnabled(false);
-    ui->toggleGrainLines_Action->setEnabled(false);
-    ui->toggleLabels_Action->setEnabled(false);
-    // ui->toggleAnchorPoints_Action->setEnabled(false);
+    m_ui->lastTool_Action->setEnabled(false);
+    m_ui->increaseSize_Action->setEnabled(false);
+    m_ui->decreaseSize_Action->setEnabled(false);
+    m_ui->useToolColor_Action->setEnabled(false);
+    m_ui->showPointNames_Action->setEnabled(false);
+    m_ui->toggleWireframe_Action->setEnabled(false);
+    m_ui->toggleControlPoints_Action->setEnabled(false);
+    m_ui->toggleAxisOrigin_Action->setEnabled(false);
+    m_ui->toggleSeamAllowances_Action->setEnabled(false);
+    m_ui->toggleGrainLines_Action->setEnabled(false);
+    m_ui->toggleLabels_Action->setEnabled(false);
+    // m_ui->toggleAnchorPoints_Action->setEnabled(false);
 
 
     // disable measurements menu actions
-    ui->loadIndividual_Action->setEnabled(false);
-    ui->loadMultisize_Action->setEnabled(false);
-    ui->unloadMeasurements_Action->setEnabled(false);
-    ui->editCurrent_Action->setEnabled(false);
+    m_ui->loadIndividual_Action->setEnabled(false);
+    m_ui->loadMultisize_Action->setEnabled(false);
+    m_ui->unloadMeasurements_Action->setEnabled(false);
+    m_ui->editCurrent_Action->setEnabled(false);
 
     setToolsEnabled(false);
 
@@ -4171,8 +4194,8 @@ void MainWindow::Clear()
     pieceList.clear();   // don't move to CleanLayout()
     doc->clearBackgroundImageMap();
     qApp->getUndoStack()->clear();
-    toolProperties->clearPropertyBrowser();
-    toolProperties->itemClicked(nullptr);
+    m_toolProperties->clearPropertyBrowser();
+    m_toolProperties->itemClicked(nullptr);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -4198,7 +4221,7 @@ void MainWindow::fullParseFile()
 {
     qCDebug(vMainWindow, "Full parsing file");
 
-    toolProperties->clearPropertyBrowser();
+    m_toolProperties->clearPropertyBrowser();
     try {
         setGuiEnabled(true);
         doc->Parse(Document::FullParse);
@@ -4298,46 +4321,46 @@ void MainWindow::fullParseFile()
     }
 
     QString draftBlock;
-    if (draftBlockComboBox->currentIndex() != -1) {
-        draftBlock = draftBlockComboBox->itemText(draftBlockComboBox->currentIndex());
+    if (m_draftBlockComboBox->currentIndex() != -1) {
+        draftBlock = m_draftBlockComboBox->itemText(m_draftBlockComboBox->currentIndex());
     }
-    draftBlockComboBox->blockSignals(true);
-    draftBlockComboBox->clear();
+    m_draftBlockComboBox->blockSignals(true);
+    m_draftBlockComboBox->clear();
 
     QStringList draftBlockNames = doc->getPatternPieces();
     draftBlockNames.sort();
-    draftBlockComboBox->addItems(draftBlockNames);
+    m_draftBlockComboBox->addItems(draftBlockNames);
 
-    if (!drawMode) {
-        draftBlockComboBox->setCurrentIndex(draftBlockComboBox->count() - 1);
+    if (!m_drawMode) {
+        m_draftBlockComboBox->setCurrentIndex(m_draftBlockComboBox->count() - 1);
     } else {
-        const qint32 index = draftBlockComboBox->findText(draftBlock);
+        const qint32 index = m_draftBlockComboBox->findText(draftBlock);
         if (index != -1) {
-            draftBlockComboBox->setCurrentIndex(index);
+            m_draftBlockComboBox->setCurrentIndex(index);
         }
     }
-    draftBlockComboBox->blockSignals(false);
-    ui->patternPreferences_Action->setEnabled(true);
+    m_draftBlockComboBox->blockSignals(false);
+    m_ui->patternPreferences_Action->setEnabled(true);
 
     changeDraftBlockGlobally(draftBlock);
 
-    setToolsEnabled(draftBlockComboBox->count() > 0);
-    patternPiecesWidget->updateList();
+    setToolsEnabled(m_draftBlockComboBox->count() > 0);
+    m_patternPiecesWidget->updateList();
 
-    VMainGraphicsView::NewSceneRect(draftScene, qApp->getSceneView());
-    VMainGraphicsView::NewSceneRect(pieceScene, qApp->getSceneView());
+    VMainGraphicsView::NewSceneRect(m_draftScene, qApp->getSceneView());
+    VMainGraphicsView::NewSceneRect(m_pieceScene, qApp->getSceneView());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::changeDraftBlockGlobally(const QString& draftBlock)
 {
-    const qint32 index = draftBlockComboBox->findText(draftBlock);
+    const qint32 index = m_draftBlockComboBox->findText(draftBlock);
     try {
         if (index != -1) {   // -1 for not found
             changeDraftBlock(index, false);
-            draftBlockComboBox->blockSignals(true);
-            draftBlockComboBox->setCurrentIndex(index);
-            draftBlockComboBox->blockSignals(false);
+            m_draftBlockComboBox->blockSignals(true);
+            m_draftBlockComboBox->setCurrentIndex(index);
+            m_draftBlockComboBox->blockSignals(false);
         } else {
             changeDraftBlock(0, false);
         }
@@ -4377,17 +4400,17 @@ void MainWindow::changeDraftBlockGlobally(const QString& draftBlock)
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::setGuiEnabled(bool enabled)
 {
-    if (guiEnabled != enabled) {
+    if (m_guiEnabled != enabled) {
         if (enabled == false) {
             handleArrowTool(true);
             qApp->getUndoStack()->clear();
         }
         setWidgetsEnabled(enabled);
 
-        guiEnabled = enabled;
+        m_guiEnabled = enabled;
 
         setToolsEnabled(enabled);
-        ui->statusBar->setEnabled(enabled);
+        m_ui->statusBar->setEnabled(enabled);
 #ifndef QT_NO_CURSOR
         QGuiApplication::setOverrideCursor(Qt::ArrowCursor);
 #endif
@@ -4401,103 +4424,103 @@ void MainWindow::setGuiEnabled(bool enabled)
  */
 void MainWindow::setWidgetsEnabled(bool enable)
 {
-    const bool draftStage = (mode == Draw::Calculation);
-    const bool pieceStage = (mode == Draw::Modeling);
+    const bool draftStage = (m_mode == Draw::Calculation);
+    const bool pieceStage = (m_mode == Draw::Modeling);
     const bool designStage = (draftStage || pieceStage);
-    const bool layoutStage = (mode == Draw::Layout);
+    const bool layoutStage = (m_mode == Draw::Layout);
 
-    draftBlockComboBox->setEnabled(enable && draftStage);
-    ui->arrow_Action->setEnabled(enable && designStage);
+    m_draftBlockComboBox->setEnabled(enable && draftStage);
+    m_ui->arrow_Action->setEnabled(enable && designStage);
 
     // enable file menu actions
-    ui->save_Action->setEnabled(isWindowModified() && enable && not patternReadOnly);
-    ui->saveAs_Action->setEnabled(enable);
-    ui->patternPreferences_Action->setEnabled(enable && designStage);
+    m_ui->save_Action->setEnabled(isWindowModified() && enable && not m_patternReadOnly);
+    m_ui->saveAs_Action->setEnabled(enable);
+    m_ui->patternPreferences_Action->setEnabled(enable && designStage);
 
     // enable edit  menu actions
     undoAction->setEnabled(enable && designStage && qApp->getUndoStack()->canUndo());
     redoAction->setEnabled(enable && designStage && qApp->getUndoStack()->canRedo());
 
     // enable view menu actions
-    ui->showDraftMode->setEnabled(enable);
-    ui->pieceMode_Action->setEnabled(enable);
-    ui->layoutMode_Action->setEnabled(enable);
-    zoomScaleSpinBox->setEnabled(enable);
-    ui->zoomIn_Action->setEnabled(enable);
-    ui->zoomOut_Action->setEnabled(enable);
-    ui->zoomToFit_Action->setEnabled(enable);
-    ui->zoomToSelected_Action->setEnabled(enable);
-    ui->zoom100Percent_Action->setEnabled(enable);
-    ui->zoomToPrevious_Action->setEnabled(enable);
-    ui->zoomToArea_Action->setEnabled(enable);
-    ui->zoomPan_Action->setEnabled(enable);
-    ui->zoomToPoint_Action->setEnabled(enable && draftStage);
+    m_ui->showDraftMode->setEnabled(enable);
+    m_ui->pieceMode_Action->setEnabled(enable);
+    m_ui->layoutMode_Action->setEnabled(enable);
+    m_zoomScaleSpinBox->setEnabled(enable);
+    m_ui->zoomIn_Action->setEnabled(enable);
+    m_ui->zoomOut_Action->setEnabled(enable);
+    m_ui->zoomToFit_Action->setEnabled(enable);
+    m_ui->zoomToSelected_Action->setEnabled(enable);
+    m_ui->zoom100Percent_Action->setEnabled(enable);
+    m_ui->zoomToPrevious_Action->setEnabled(enable);
+    m_ui->zoomToArea_Action->setEnabled(enable);
+    m_ui->zoomPan_Action->setEnabled(enable);
+    m_ui->zoomToPoint_Action->setEnabled(enable && draftStage);
     m_zoomToPointComboBox->setEnabled(enable && draftStage);
 
-    ui->increaseSize_Action->setEnabled(enable);
-    ui->decreaseSize_Action->setEnabled(enable);
-    ui->useToolColor_Action->setEnabled(enable && draftStage);
-    ui->showPointNames_Action->setEnabled(enable);
-    ui->toggleWireframe_Action->setEnabled(enable);
-    ui->toggleControlPoints_Action->setEnabled(enable && draftStage);
-    ui->toggleAxisOrigin_Action->setEnabled(enable);
-    ui->toggleSeamAllowances_Action->setEnabled(enable && pieceStage);
-    ui->toggleGrainLines_Action->setEnabled(enable && pieceStage);
-    ui->toggleLabels_Action->setEnabled(enable && pieceStage);
-    // ui->toggleAnchorPoints_Action->setEnabled(enable && draftStage);
+    m_ui->increaseSize_Action->setEnabled(enable);
+    m_ui->decreaseSize_Action->setEnabled(enable);
+    m_ui->useToolColor_Action->setEnabled(enable && draftStage);
+    m_ui->showPointNames_Action->setEnabled(enable);
+    m_ui->toggleWireframe_Action->setEnabled(enable);
+    m_ui->toggleControlPoints_Action->setEnabled(enable && draftStage);
+    m_ui->toggleAxisOrigin_Action->setEnabled(enable);
+    m_ui->toggleSeamAllowances_Action->setEnabled(enable && pieceStage);
+    m_ui->toggleGrainLines_Action->setEnabled(enable && pieceStage);
+    m_ui->toggleLabels_Action->setEnabled(enable && pieceStage);
+    // m_ui->toggleAnchorPoints_Action->setEnabled(enable && draftStage);
 
     // enable group actions
-    groupsWidget->setAddGroupEnabled(enable && draftStage);
+    m_groupsWidget->setAddGroupEnabled(enable && draftStage);
 
     // enable tool menu actions
-    ui->newDraft_Action->setEnabled(enable && draftStage);
-    ui->renameDraft_Action->setEnabled(enable && draftStage);
+    m_ui->newDraft_Action->setEnabled(enable && draftStage);
+    m_ui->renameDraft_Action->setEnabled(enable && draftStage);
 
     // enable measurement menu actions
-    ui->loadIndividual_Action->setEnabled(enable && designStage);
-    ui->loadMultisize_Action->setEnabled(enable && designStage);
-    ui->unloadMeasurements_Action->setEnabled(enable && designStage);
-    ui->table_Action->setEnabled(enable && draftStage);
+    m_ui->loadIndividual_Action->setEnabled(enable && designStage);
+    m_ui->loadMultisize_Action->setEnabled(enable && designStage);
+    m_ui->unloadMeasurements_Action->setEnabled(enable && designStage);
+    m_ui->table_Action->setEnabled(enable && draftStage);
 
     // enable history menu actions
-    ui->history_Action->setEnabled(enable && draftStage);
+    m_ui->history_Action->setEnabled(enable && draftStage);
 
     // enable utilities menu actions
-    ui->calculator_Action->setEnabled(enable);
-    ui->decimalChart_Action->setEnabled(enable);
+    m_ui->calculator_Action->setEnabled(enable);
+    m_ui->decimalChart_Action->setEnabled(enable);
 
     // enable help menu
-    ui->shortcuts_Action->setEnabled(enable);
+    m_ui->shortcuts_Action->setEnabled(enable);
 
     // enable dock widget actions
-    ui->groups_DockWidget->setEnabled(enable && designStage);
-    ui->toolProperties_DockWidget->setEnabled(enable && draftStage);
-    ui->layoutPages_DockWidget->setEnabled(enable && layoutStage);
+    m_ui->groups_DockWidget->setEnabled(enable && designStage);
+    m_ui->toolProperties_DockWidget->setEnabled(enable && draftStage);
+    m_ui->layoutPages_DockWidget->setEnabled(enable && layoutStage);
     actionDockWidgetToolOptions->setEnabled(enable && designStage);
     actionDockWidgetGroups->setEnabled(enable && designStage);
     actionDockWidgetLayouts->setEnabled(enable && layoutStage);
 
     // Now we don't want allow user call context menu
-    draftScene->setToolsDisabled(!enable, doc->getActiveDraftBlockName());
-    ui->view->setEnabled(enable);
+    m_draftScene->setToolsDisabled(!enable, doc->getActiveDraftBlockName());
+    m_ui->view->setEnabled(enable);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::UpdateHeightsList(const QStringList& list)
 {
     QString value;
-    if (gradationHeights->currentIndex() != -1) {
-        value = gradationHeights->currentText();
+    if (m_gradationHeights->currentIndex() != -1) {
+        value = m_gradationHeights->currentText();
     }
 
-    gradationHeights->blockSignals(true);
-    gradationHeights->clear();
-    gradationHeights->addItems(list);
-    gradationHeights->blockSignals(false);
+    m_gradationHeights->blockSignals(true);
+    m_gradationHeights->clear();
+    m_gradationHeights->addItems(list);
+    m_gradationHeights->blockSignals(false);
 
-    int index = gradationHeights->findText(value);
+    int index = m_gradationHeights->findText(value);
     if (index != -1) {
-        gradationHeights->setCurrentIndex(index);
+        m_gradationHeights->setCurrentIndex(index);
     } else {
         ChangedHeight(0);
     }
@@ -4507,18 +4530,18 @@ void MainWindow::UpdateHeightsList(const QStringList& list)
 void MainWindow::UpdateSizesList(const QStringList& list)
 {
     QString value;
-    if (gradationSizes->currentIndex() != -1) {
-        value = gradationSizes->currentText();
+    if (m_gradationSizes->currentIndex() != -1) {
+        value = m_gradationSizes->currentText();
     }
 
-    gradationSizes->blockSignals(true);
-    gradationSizes->clear();
-    gradationSizes->addItems(list);
-    gradationSizes->blockSignals(false);
+    m_gradationSizes->blockSignals(true);
+    m_gradationSizes->clear();
+    m_gradationSizes->addItems(list);
+    m_gradationSizes->blockSignals(false);
 
-    int index = gradationSizes->findText(value);
+    int index = m_gradationSizes->findText(value);
     if (index != -1) {
-        gradationSizes->setCurrentIndex(index);
+        m_gradationSizes->setCurrentIndex(index);
     } else {
         ChangedSize(0);
     }
@@ -4530,10 +4553,10 @@ void MainWindow::UpdateSizesList(const QStringList& list)
  */
 void MainWindow::New()
 {
-    if (draftBlockComboBox->count() == 0) {
-        // Creating a new pattern design requires creating a new draft block
+    if (m_draftBlockComboBox->count() == 0) {
+        // Creating a new pattern design requires creating a new draft Block
         qCDebug(vMainWindow, "New Draft Block.");
-        QString draftBlockName = tr("Draft block %1").arg(draftBlockComboBox->count() + 1);
+        QString draftBlockName = tr("Draft Block %1").arg(m_draftBlockComboBox->count() + 1);
         qCDebug(vMainWindow, "Generated Draft Block name: %s", qUtf8Printable(draftBlockName));
 
         qCDebug(vMainWindow, "First Draft Block");
@@ -4548,13 +4571,13 @@ void MainWindow::New()
         }
 
         // Set scene size to size scene view
-        VMainGraphicsView::NewSceneRect(draftScene, ui->view);
-        VMainGraphicsView::NewSceneRect(pieceScene, ui->view);
+        VMainGraphicsView::NewSceneRect(m_draftScene, m_ui->view);
+        VMainGraphicsView::NewSceneRect(m_pieceScene, m_ui->view);
 
         addDraftBlock(draftBlockName);
 
-        mouseCoordinates = new MouseCoordinates(qApp->patternUnit());
-        ui->statusBar->addPermanentWidget((mouseCoordinates));
+        m_mouseCoordinates = new MouseCoordinates(qApp->patternUnit());
+        m_ui->statusBar->addPermanentWidget((m_mouseCoordinates));
 
         m_curFileFormatVersion = VPatternConverter::PatternMaxVer;
         m_curFileFormatVersionStr = VPatternConverter::PatternMaxVerStr;
@@ -4569,11 +4592,11 @@ void MainWindow::New()
  */
 void MainWindow::patternChangesWereSaved(bool saved)
 {
-    if (guiEnabled) {
+    if (m_guiEnabled) {
         const bool state = doc->IsModified() || !saved;
         setWindowModified(state);
-        not patternReadOnly ? ui->save_Action->setEnabled(state)
-                            : ui->save_Action->setEnabled(false);
+        not m_patternReadOnly ? m_ui->save_Action->setEnabled(state)
+                              : m_ui->save_Action->setEnabled(false);
         isLayoutStale = true;
     }
 }
@@ -4588,16 +4611,16 @@ void MainWindow::ChangedSize(int index)
     const int size = static_cast<int>(VContainer::size());
     if (updateMeasurements(
             AbsoluteMPath(qApp->getFilePath(), doc->MPath()),
-            gradationSizes.data()->itemText(index).toInt(),
+            m_gradationSizes.data()->itemText(index).toInt(),
             static_cast<int>(VContainer::height()))) {
         doc->LiteParseTree(Document::LiteParse);
-        emit pieceScene->DimensionsChanged();
+        emit m_pieceScene->DimensionsChanged();
     } else {
         qCWarning(vMainWindow, "%s", qUtf8Printable(tr("Couldn't update measurements.")));
 
-        const qint32 index = gradationSizes->findText(QString().setNum(size));
+        const qint32 index = m_gradationSizes->findText(QString().setNum(size));
         if (index != -1) {
-            gradationSizes->setCurrentIndex(index);
+            m_gradationSizes->setCurrentIndex(index);
         } else {
             qCWarning(vMainWindow, "Couldn't restore size value.");
         }
@@ -4615,15 +4638,15 @@ void MainWindow::ChangedHeight(int index)
     if (updateMeasurements(
             AbsoluteMPath(qApp->getFilePath(), doc->MPath()),
             static_cast<int>(VContainer::size()),
-            gradationHeights.data()->itemText(index).toInt())) {
+            m_gradationHeights.data()->itemText(index).toInt())) {
         doc->LiteParseTree(Document::LiteParse);
-        emit pieceScene->DimensionsChanged();
+        emit m_pieceScene->DimensionsChanged();
     } else {
         qCWarning(vMainWindow, "%s", qUtf8Printable(tr("Couldn't update measurements.")));
 
-        const qint32 index = gradationHeights->findText(QString().setNum(height));
+        const qint32 index = m_gradationHeights->findText(QString().setNum(height));
         if (index != -1) {
-            gradationHeights->setCurrentIndex(index);
+            m_gradationHeights->setCurrentIndex(index);
         } else {
             qCWarning(vMainWindow, "Couldn't restore height value.");
         }
@@ -4634,32 +4657,32 @@ void MainWindow::ChangedHeight(int index)
 void MainWindow::SetDefaultHeight()
 {
     const QString defHeight = QString().setNum(doc->GetDefCustomHeight());
-    int index = gradationHeights->findText(defHeight);
+    int index = m_gradationHeights->findText(defHeight);
     if (index != -1) {
-        gradationHeights->setCurrentIndex(index);
+        m_gradationHeights->setCurrentIndex(index);
     } else {
-        index = gradationHeights->findText(QString().setNum(VContainer::height()));
+        index = m_gradationHeights->findText(QString().setNum(VContainer::height()));
         if (index != -1) {
-            gradationHeights->setCurrentIndex(index);
+            m_gradationHeights->setCurrentIndex(index);
         }
     }
-    VContainer::setHeight(gradationHeights->currentText().toInt());
+    VContainer::setHeight(m_gradationHeights->currentText().toInt());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::SetDefaultSize()
 {
     const QString defSize = QString().setNum(doc->GetDefCustomSize());
-    int index = gradationSizes->findText(defSize);
+    int index = m_gradationSizes->findText(defSize);
     if (index != -1) {
-        gradationSizes->setCurrentIndex(index);
+        m_gradationSizes->setCurrentIndex(index);
     } else {
-        index = gradationSizes->findText(QString().setNum(VContainer::size()));
+        index = m_gradationSizes->findText(QString().setNum(VContainer::size()));
         if (index != -1) {
-            gradationSizes->setCurrentIndex(index);
+            m_gradationSizes->setCurrentIndex(index);
         }
     }
-    VContainer::setSize(gradationSizes->currentText().toInt());
+    VContainer::setSize(m_gradationSizes->currentText().toInt());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -4673,7 +4696,7 @@ void MainWindow::setToolsEnabled(bool enable)
     bool pieceTools = false;
     bool layoutTools = false;
 
-    switch (mode) {
+    switch (m_mode) {
     case Draw::Calculation: draftTools = enable; break;
     case Draw::Modeling: pieceTools = enable; break;
     case Draw::Layout: layoutTools = enable; break;
@@ -4686,152 +4709,151 @@ void MainWindow::setToolsEnabled(bool enable)
 
     // Toolbox Drafting Tools
     // Points
-    ui->pointAtDistanceAngle_ToolButton->setEnabled(draftTools);
-    ui->alongLine_ToolButton->setEnabled(draftTools);
-    ui->normal_ToolButton->setEnabled(draftTools);
-    ui->bisector_ToolButton->setEnabled(draftTools);
-    ui->shoulderPoint_ToolButton->setEnabled(draftTools);
-    ui->pointOfContact_ToolButton->setEnabled(draftTools);
-    ui->triangle_ToolButton->setEnabled(draftTools);
-    ui->pointIntersectXY_ToolButton->setEnabled(draftTools);
-    ui->height_ToolButton->setEnabled(draftTools);
-    ui->lineIntersectAxis_ToolButton->setEnabled(draftTools);
-    ui->midpoint_ToolButton->setEnabled(draftTools);
+    m_ui->pointAtDistanceAngle_ToolButton->setEnabled(draftTools);
+    m_ui->alongLine_ToolButton->setEnabled(draftTools);
+    m_ui->normal_ToolButton->setEnabled(draftTools);
+    m_ui->bisector_ToolButton->setEnabled(draftTools);
+    m_ui->shoulderPoint_ToolButton->setEnabled(draftTools);
+    m_ui->pointOfContact_ToolButton->setEnabled(draftTools);
+    m_ui->triangle_ToolButton->setEnabled(draftTools);
+    m_ui->pointIntersectXY_ToolButton->setEnabled(draftTools);
+    m_ui->height_ToolButton->setEnabled(draftTools);
+    m_ui->lineIntersectAxis_ToolButton->setEnabled(draftTools);
+    m_ui->midpoint_ToolButton->setEnabled(draftTools);
 
     // Lines
-    ui->line_ToolButton->setEnabled(draftTools);
-    ui->lineIntersect_ToolButton->setEnabled(draftTools);
+    m_ui->line_ToolButton->setEnabled(draftTools);
+    m_ui->lineIntersect_ToolButton->setEnabled(draftTools);
 
     // Curves
-    ui->curve_ToolButton->setEnabled(draftTools);
-    ui->spline_ToolButton->setEnabled(draftTools);
-    ui->curveWithCPs_ToolButton->setEnabled(draftTools);
-    ui->splineWithCPs_ToolButton->setEnabled(draftTools);
-    ui->pointAlongCurve_ToolButton->setEnabled(draftTools);
-    ui->pointAlongSpline_ToolButton->setEnabled(draftTools);
-    ui->pointOfIntersectionCurves_ToolButton->setEnabled(draftTools);
-    ui->curveIntersectAxis_ToolButton->setEnabled(draftTools);
+    m_ui->curve_ToolButton->setEnabled(draftTools);
+    m_ui->spline_ToolButton->setEnabled(draftTools);
+    m_ui->curveWithCPs_ToolButton->setEnabled(draftTools);
+    m_ui->splineWithCPs_ToolButton->setEnabled(draftTools);
+    m_ui->pointAlongCurve_ToolButton->setEnabled(draftTools);
+    m_ui->pointAlongSpline_ToolButton->setEnabled(draftTools);
+    m_ui->pointOfIntersectionCurves_ToolButton->setEnabled(draftTools);
+    m_ui->curveIntersectAxis_ToolButton->setEnabled(draftTools);
 
     // Arcs
-    ui->arc_ToolButton->setEnabled(draftTools);
-    ui->pointAlongArc_ToolButton->setEnabled(draftTools);
-    ui->arcIntersectAxis_ToolButton->setEnabled(draftTools);
-    ui->pointOfIntersectionArcs_ToolButton->setEnabled(draftTools);
-    ui->pointOfIntersectionCircles_ToolButton->setEnabled(draftTools);
-    ui->pointFromCircleAndTangent_ToolButton->setEnabled(draftTools);
-    ui->pointFromArcAndTangent_ToolButton->setEnabled(draftTools);
-    ui->arcWithLength_ToolButton->setEnabled(draftTools);
-    ui->ellipticalArc_ToolButton->setEnabled(draftTools);
+    m_ui->arc_ToolButton->setEnabled(draftTools);
+    m_ui->pointAlongArc_ToolButton->setEnabled(draftTools);
+    m_ui->arcIntersectAxis_ToolButton->setEnabled(draftTools);
+    m_ui->pointOfIntersectionArcs_ToolButton->setEnabled(draftTools);
+    m_ui->pointOfIntersectionCircles_ToolButton->setEnabled(draftTools);
+    m_ui->pointFromCircleAndTangent_ToolButton->setEnabled(draftTools);
+    m_ui->pointFromArcAndTangent_ToolButton->setEnabled(draftTools);
+    m_ui->arcWithLength_ToolButton->setEnabled(draftTools);
+    m_ui->ellipticalArc_ToolButton->setEnabled(draftTools);
 
     // Operations
-    ui->group_ToolButton->setEnabled(draftTools);
-    ui->rotation_ToolButton->setEnabled(draftTools);
-    ui->mirrorByLine_ToolButton->setEnabled(draftTools);
-    ui->mirrorByAxis_ToolButton->setEnabled(draftTools);
-    ui->move_ToolButton->setEnabled(draftTools);
-    ui->trueDarts_ToolButton->setEnabled(draftTools);
-    ui->exportDraftBlocks_ToolButton->setEnabled(draftTools);
+    m_ui->group_ToolButton->setEnabled(draftTools);
+    m_ui->rotation_ToolButton->setEnabled(draftTools);
+    m_ui->mirrorByLine_ToolButton->setEnabled(draftTools);
+    m_ui->mirrorByAxis_ToolButton->setEnabled(draftTools);
+    m_ui->move_ToolButton->setEnabled(draftTools);
+    m_ui->trueDarts_ToolButton->setEnabled(draftTools);
+    m_ui->exportDraftBlocks_ToolButton->setEnabled(draftTools);
 
     // Piece
-    ui->addPatternPiece_ToolButton->setEnabled(draftTools);
-    ui->anchorPoint_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    ui->internalPath_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    ui->insertNodes_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->addPatternPiece_ToolButton->setEnabled(draftTools);
+    m_ui->anchorPoint_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->internalPath_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->insertNodes_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
 
     // Images
-    ui->importImage_ToolButton->setEnabled(draftTools);
+    m_ui->importImage_ToolButton->setEnabled(draftTools);
 
     // Details
-    ui->unitePieces_ToolButton->setEnabled(pieceTools);
-    ui->exportPiecesAs_ToolButton->setEnabled(pieceTools);
+    m_ui->unitePieces_ToolButton->setEnabled(pieceTools);
+    m_ui->exportPiecesAs_ToolButton->setEnabled(pieceTools);
 
     // Layout
-    ui->layoutSettings_ToolButton->setEnabled(layoutTools);
+    m_ui->layoutSettings_ToolButton->setEnabled(layoutTools);
 
     // enable Toolbox Toolbar actions
-    ui->arrow_Action->setEnabled(enable);
-    ui->points_Action->setEnabled(draftTools);
-    ui->lines_Action->setEnabled(draftTools);
-    ui->arcs_Action->setEnabled(draftTools);
-    ui->curves_Action->setEnabled(draftTools);
-    ui->modifications_Action->setEnabled(draftTools);
-    ui->pieces_Action->setEnabled(draftTools);
-    ui->details_Action->setEnabled(pieceTools);
-    ui->layout_Action->setEnabled(layoutTools);
-    ui->images_Action->setEnabled(layoutTools);
+    m_ui->arrow_Action->setEnabled(enable);
+    m_ui->points_Action->setEnabled(draftTools);
+    m_ui->lines_Action->setEnabled(draftTools);
+    m_ui->arcs_Action->setEnabled(draftTools);
+    m_ui->curves_Action->setEnabled(draftTools);
+    m_ui->modifications_Action->setEnabled(draftTools);
+    m_ui->pieces_Action->setEnabled(draftTools);
+    m_ui->details_Action->setEnabled(pieceTools);
+    m_ui->layout_Action->setEnabled(layoutTools);
+    m_ui->images_Action->setEnabled(layoutTools);
 
     // Menu Actions
     // Points
-    ui->midpoint_Action->setEnabled(draftTools);
-    ui->pointAtDistanceAngle_Action->setEnabled(draftTools);
-    ui->pointAlongLine_Action->setEnabled(draftTools);
-    ui->pointAlongPerpendicular_Action->setEnabled(draftTools);
-    ui->bisector_Action->setEnabled(draftTools);
-    ui->pointOnShoulder_Action->setEnabled(draftTools);
-    ui->pointOfContact_Action->setEnabled(draftTools);
-    ui->triangle_Action->setEnabled(draftTools);
-    ui->pointIntersectXY_Action->setEnabled(draftTools);
-    ui->perpendicularPoint_Action->setEnabled(draftTools);
-    ui->pointIntersectAxis_Action->setEnabled(draftTools);
+    m_ui->midpoint_Action->setEnabled(draftTools);
+    m_ui->pointAtDistanceAngle_Action->setEnabled(draftTools);
+    m_ui->pointAlongLine_Action->setEnabled(draftTools);
+    m_ui->pointAlongPerpendicular_Action->setEnabled(draftTools);
+    m_ui->bisector_Action->setEnabled(draftTools);
+    m_ui->pointOnShoulder_Action->setEnabled(draftTools);
+    m_ui->pointOfContact_Action->setEnabled(draftTools);
+    m_ui->triangle_Action->setEnabled(draftTools);
+    m_ui->pointIntersectXY_Action->setEnabled(draftTools);
+    m_ui->perpendicularPoint_Action->setEnabled(draftTools);
+    m_ui->pointIntersectAxis_Action->setEnabled(draftTools);
 
     // Lines
-    ui->lineTool_Action->setEnabled(draftTools);
-    ui->lineIntersect_Action->setEnabled(draftTools);
+    m_ui->lineTool_Action->setEnabled(draftTools);
+    m_ui->lineIntersect_Action->setEnabled(draftTools);
 
     // Curves
-    ui->curve_Action->setEnabled(draftTools);
-    ui->spline_Action->setEnabled(draftTools);
-    ui->curveWithCPs_Action->setEnabled(draftTools);
-    ui->splineWithCPs_Action->setEnabled(draftTools);
-    ui->pointAlongCurve_Action->setEnabled(draftTools);
-    ui->pointAlongSpline_Action->setEnabled(draftTools);
-    ui->curveIntersectCurve_Action->setEnabled(draftTools);
-    ui->splineIntersectAxis_Action->setEnabled(draftTools);
+    m_ui->curve_Action->setEnabled(draftTools);
+    m_ui->spline_Action->setEnabled(draftTools);
+    m_ui->curveWithCPs_Action->setEnabled(draftTools);
+    m_ui->splineWithCPs_Action->setEnabled(draftTools);
+    m_ui->pointAlongCurve_Action->setEnabled(draftTools);
+    m_ui->pointAlongSpline_Action->setEnabled(draftTools);
+    m_ui->curveIntersectCurve_Action->setEnabled(draftTools);
+    m_ui->splineIntersectAxis_Action->setEnabled(draftTools);
 
     // Arcs
-    ui->arcTool_Action->setEnabled(draftTools);
-    ui->pointAlongArc_Action->setEnabled(draftTools);
-    ui->arcIntersectAxis_Action->setEnabled(draftTools);
-    ui->arcIntersectArc_Action->setEnabled(draftTools);
-    ui->circleIntersect_Action->setEnabled(draftTools);
-    ui->circleTangent_Action->setEnabled(draftTools);
-    ui->arcTangent_Action->setEnabled(draftTools);
+    m_ui->arcTool_Action->setEnabled(draftTools);
+    m_ui->pointAlongArc_Action->setEnabled(draftTools);
+    m_ui->arcIntersectAxis_Action->setEnabled(draftTools);
+    m_ui->arcIntersectArc_Action->setEnabled(draftTools);
+    m_ui->circleIntersect_Action->setEnabled(draftTools);
+    m_ui->circleTangent_Action->setEnabled(draftTools);
+    m_ui->arcTangent_Action->setEnabled(draftTools);
     ;
-    ui->arcWithLength_Action->setEnabled(draftTools);
-    ui->ellipticalArc_Action->setEnabled(draftTools);
+    m_ui->arcWithLength_Action->setEnabled(draftTools);
+    m_ui->ellipticalArc_Action->setEnabled(draftTools);
 
     // Operations
-    ui->group_Action->setEnabled(draftTools);
-    ui->rotation_Action->setEnabled(draftTools);
-    ui->mirrorByLine_Action->setEnabled(draftTools);
-    ui->mirrorByAxis_Action->setEnabled(draftTools);
-    ui->move_Action->setEnabled(draftTools);
-    ui->trueDarts_Action->setEnabled(draftTools);
-    ui->exportDraftBlocks_Action->setEnabled(draftTools);
+    m_ui->group_Action->setEnabled(draftTools);
+    m_ui->rotation_Action->setEnabled(draftTools);
+    m_ui->mirrorByLine_Action->setEnabled(draftTools);
+    m_ui->mirrorByAxis_Action->setEnabled(draftTools);
+    m_ui->move_Action->setEnabled(draftTools);
+    m_ui->trueDarts_Action->setEnabled(draftTools);
+    m_ui->exportDraftBlocks_Action->setEnabled(draftTools);
 
     // Piece
-    ui->addPiece_Action->setEnabled(draftTools);
-    ui->anchorPoint_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    ui->internalPath_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    ui->images_Action->setEnabled(draftTools);
-    ui->internalPath_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    ui->insertNodes_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->addPiece_Action->setEnabled(draftTools);
+    m_ui->anchorPoint_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->images_Action->setEnabled(draftTools);
+    m_ui->internalPath_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->insertNodes_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
 
     // Images
-    ui->importImage_Action->setEnabled(draftTools);
+    m_ui->importImage_Action->setEnabled(draftTools);
 
     // Details
-    ui->union_Action->setEnabled(pieceTools);
-    ui->exportPieces_Action->setEnabled(pieceTools);
+    m_ui->union_Action->setEnabled(pieceTools);
+    m_ui->exportPieces_Action->setEnabled(pieceTools);
 
     // Layout
-    ui->newPrintLayout_Action->setEnabled(layoutTools);
-    ui->exportLayout_Action->setEnabled(layoutTools);
-    ui->lastTool_Action->setEnabled(draftTools);
+    m_ui->newPrintLayout_Action->setEnabled(layoutTools);
+    m_ui->exportLayout_Action->setEnabled(layoutTools);
+    m_ui->lastTool_Action->setEnabled(draftTools);
 
-    ui->arrowPointer_ToolButton->setEnabled(draftTools || pieceTools);
-    ui->arrowPointer_ToolButton->setChecked(draftTools || pieceTools);
-    ui->arrow_Action->setChecked(draftTools || pieceTools);
+    m_ui->arrowPointer_ToolButton->setEnabled(draftTools || pieceTools);
+    m_ui->arrowPointer_ToolButton->setChecked(draftTools || pieceTools);
+    m_ui->arrow_Action->setChecked(draftTools || pieceTools);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -4839,12 +4861,12 @@ void MainWindow::SetLayoutModeActions()
 {
     const bool enabled = not scenes.isEmpty();
 
-    ui->exportLayout_ToolButton->setEnabled(enabled);
-    ui->exportAs_Action->setEnabled(enabled);
-    ui->printPreview_Action->setEnabled(enabled);
-    ui->printPreviewTiled_Action->setEnabled(enabled);
-    ui->print_Action->setEnabled(enabled);
-    ui->printTiled_Action->setEnabled(enabled);
+    m_ui->exportLayout_ToolButton->setEnabled(enabled);
+    m_ui->exportAs_Action->setEnabled(enabled);
+    m_ui->printPreview_Action->setEnabled(enabled);
+    m_ui->printPreviewTiled_Action->setEnabled(enabled);
+    m_ui->print_Action->setEnabled(enabled);
+    m_ui->printTiled_Action->setEnabled(enabled);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -4853,9 +4875,9 @@ void MainWindow::SetLayoutModeActions()
  */
 void MainWindow::MinimumScrollBar()
 {
-    QScrollBar* horScrollBar = ui->view->horizontalScrollBar();
+    QScrollBar* horScrollBar = m_ui->view->horizontalScrollBar();
     horScrollBar->setValue(horScrollBar->minimum());
-    QScrollBar* verScrollBar = ui->view->verticalScrollBar();
+    QScrollBar* verScrollBar = m_ui->view->verticalScrollBar();
     verScrollBar->setValue(verScrollBar->minimum());
 }
 
@@ -4879,7 +4901,7 @@ bool MainWindow::SavePattern(const QString& fileName, QString& error)
     if (result) {
         if (tempInfo.suffix() != QLatin1String("autosave")) {
             setCurrentFile(fileName);
-            helpLabel->setText(tr("File saved"));
+            m_helpLabel->setText(tr("File saved"));
             qCDebug(vMainWindow, "File %s saved.", qUtf8Printable(fileName));
             patternChangesWereSaved(result);
         }
@@ -4901,7 +4923,7 @@ bool MainWindow::SavePattern(const QString& fileName, QString& error)
  */
 void MainWindow::AutoSavePattern()
 {
-    if (patternReadOnly) {
+    if (m_patternReadOnly) {
         return;
     }
     qCDebug(vMainWindow, "Autosaving pattern.");
@@ -4964,8 +4986,8 @@ void MainWindow::ReadSettings()
 
     // Scene antialiasing
     const bool graphOutputValue = settings->GetGraphicalOutput();
-    ui->view->setRenderHint(QPainter::Antialiasing, graphOutputValue);
-    ui->view->setRenderHint(QPainter::SmoothPixmapTransform, graphOutputValue);
+    m_ui->view->setRenderHint(QPainter::Antialiasing, graphOutputValue);
+    m_ui->view->setRenderHint(QPainter::SmoothPixmapTransform, graphOutputValue);
 
     // Stack limit
     qApp->getUndoStack()->setUndoLimit(settings->GetUndoCount());
@@ -4973,10 +4995,10 @@ void MainWindow::ReadSettings()
     // Text under tool button icon
     ToolBarStyles();
 
-    isToolOptionsDockVisible = ui->toolProperties_DockWidget->isVisible();
-    isGroupsDockVisible = ui->groups_DockWidget->isVisible();
-    isLayoutsDockVisible = ui->layoutPages_DockWidget->isVisible();
-    isToolboxDockVisible = ui->toolbox_DockWidget->isVisible();
+    m_isToolOptionsDockVisible = m_ui->toolProperties_DockWidget->isVisible();
+    m_isGroupsDockVisible = m_ui->groups_DockWidget->isVisible();
+    m_isLayoutsDockVisible = m_ui->layoutPages_DockWidget->isVisible();
+    m_isToolboxDockVisible = m_ui->toolbox_DockWidget->isVisible();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -5000,7 +5022,7 @@ void MainWindow::WriteSettings()
  */
 bool MainWindow::MaybeSave()
 {
-    if (this->isWindowModified() && guiEnabled) {
+    if (this->isWindowModified() && m_guiEnabled) {
         QScopedPointer<QMessageBox> messageBox(new QMessageBox(
             tr("Unsaved changes"),
             tr("The pattern has been modified.\n"
@@ -5017,7 +5039,7 @@ bool MainWindow::MaybeSave()
 
         messageBox->setButtonText(
             QMessageBox::Yes,
-            qApp->getFilePath().isEmpty() || patternReadOnly ? tr("Save...") : tr("Save"));
+            qApp->getFilePath().isEmpty() || m_patternReadOnly ? tr("Save...") : tr("Save"));
         messageBox->setButtonText(QMessageBox::No, tr("Don't Save"));
 
         messageBox->setWindowModality(Qt::ApplicationModal);
@@ -5028,7 +5050,7 @@ bool MainWindow::MaybeSave()
 
         switch (ret) {
         case QMessageBox::Yes:
-            if (patternReadOnly) {
+            if (m_patternReadOnly) {
                 return SaveAs();
             } else {
                 return Save();
@@ -5046,7 +5068,7 @@ bool MainWindow::MaybeSave()
  */
 void MainWindow::InfoUnsavedImages(bool* firstImportImage)
 {
-    if (guiEnabled) {
+    if (m_guiEnabled) {
         QScopedPointer<QMessageBox> messageBox(new QMessageBox(
             QMessageBox::Information,
             tr("Images will not be saved"),
@@ -5078,15 +5100,15 @@ void MainWindow::UpdateRecentFileActions()
 
     for (int i = 0; i < numRecentFiles; ++i) {
         QString text = QString("&%1. %2").arg(i + 1).arg(strippedName(files.at(i)));
-        recentFileActs[i]->setText(text);
-        recentFileActs[i]->setData(files.at(i));
-        recentFileActs[i]->setVisible(true);
+        m_recentFileActs[i]->setText(text);
+        m_recentFileActs[i]->setData(files.at(i));
+        m_recentFileActs[i]->setVisible(true);
     }
     for (int j = numRecentFiles; j < MaxRecentFiles; ++j) {
-        recentFileActs[j]->setVisible(false);
+        m_recentFileActs[j]->setVisible(false);
     }
 
-    separatorAct->setVisible(numRecentFiles > 0);
+    m_separatorAct->setVisible(numRecentFiles > 0);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -5094,11 +5116,11 @@ void MainWindow::createMenus()
 {
     // Add last 5 most recent projects to file menu.
     for (int i = 0; i < MaxRecentFiles; ++i) {
-        ui->file_Menu->insertAction(ui->exit_Action, recentFileActs[i]);
+        m_ui->file_Menu->insertAction(m_ui->exit_Action, m_recentFileActs[i]);
     }
-    separatorAct = new QAction(this);
-    separatorAct->setSeparator(true);
-    ui->file_Menu->insertAction(ui->exit_Action, separatorAct);
+    m_separatorAct = new QAction(this);
+    m_separatorAct->setSeparator(true);
+    m_ui->file_Menu->insertAction(m_ui->exit_Action, m_separatorAct);
     UpdateRecentFileActions();
 
     // Add Undo/Redo actions to edit menu.
@@ -5112,10 +5134,10 @@ void MainWindow::createMenus()
     connect(
         undoAction,
         &QAction::triggered,
-        toolProperties,
+        m_toolProperties,
         &VToolOptionsPropertyBrowser::refreshOptions);
-    ui->edit_Menu->addAction(undoAction);
-    ui->edit_Toolbar->addAction(undoAction);
+    m_ui->edit_Menu->addAction(undoAction);
+    m_ui->edit_Toolbar->addAction(undoAction);
 
     QList<QKeySequence> redoShortcuts;
     redoShortcuts.append(QKeySequence(Qt::ControlModifier + Qt::Key_Y));
@@ -5128,60 +5150,60 @@ void MainWindow::createMenus()
     connect(
         redoAction,
         &QAction::triggered,
-        toolProperties,
+        m_toolProperties,
         &VToolOptionsPropertyBrowser::refreshOptions);
-    ui->edit_Menu->addAction(redoAction);
-    ui->edit_Toolbar->addAction(redoAction);
+    m_ui->edit_Menu->addAction(redoAction);
+    m_ui->edit_Toolbar->addAction(redoAction);
 
-    separatorAct = new QAction(this);
-    separatorAct->setSeparator(true);
-    ui->edit_Menu->addAction(separatorAct);
+    m_separatorAct = new QAction(this);
+    m_separatorAct->setSeparator(true);
+    m_ui->edit_Menu->addAction(m_separatorAct);
 
     AddDocks();
 
-    separatorAct = new QAction(this);
-    separatorAct->setSeparator(true);
-    ui->view_Menu->addAction(separatorAct);
+    m_separatorAct = new QAction(this);
+    m_separatorAct->setSeparator(true);
+    m_ui->view_Menu->addAction(m_separatorAct);
 
     QMenu* menu = new QMenu(tr("Toolbars"));
-    ui->view_Menu->addMenu(menu);
+    m_ui->view_Menu->addMenu(menu);
 
-    menu->addAction(ui->file_ToolBar->toggleViewAction());
-    connect(ui->file_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->file_ToolBar->setVisible(visible);
+    menu->addAction(m_ui->file_ToolBar->toggleViewAction());
+    connect(m_ui->file_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->file_ToolBar->setVisible(visible);
     });
-    menu->addAction(ui->edit_Toolbar->toggleViewAction());
-    connect(ui->edit_Toolbar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->edit_Toolbar->setVisible(visible);
+    menu->addAction(m_ui->edit_Toolbar->toggleViewAction());
+    connect(m_ui->edit_Toolbar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->edit_Toolbar->setVisible(visible);
     });
-    menu->addAction(ui->view_ToolBar->toggleViewAction());
-    connect(ui->view_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->view_ToolBar->setVisible(visible);
-    });
-
-    menu->addAction(ui->mode_ToolBar->toggleViewAction());
-    connect(ui->mode_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->mode_ToolBar->setVisible(visible);
-    });
-    menu->addAction(ui->draft_ToolBar->toggleViewAction());
-    connect(ui->draft_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->draft_ToolBar->setVisible(visible);
+    menu->addAction(m_ui->view_ToolBar->toggleViewAction());
+    connect(m_ui->view_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->view_ToolBar->setVisible(visible);
     });
 
-    menu->addAction(ui->zoom_ToolBar->toggleViewAction());
-    connect(ui->zoom_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
-        ui->zoom_ToolBar->setVisible(visible);
+    menu->addAction(m_ui->mode_ToolBar->toggleViewAction());
+    connect(m_ui->mode_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->mode_ToolBar->setVisible(visible);
     });
-    menu->addAction(ui->tools_ToolBox_ToolBar->toggleViewAction());
-    menu->addAction(ui->points_ToolBar->toggleViewAction());
-    menu->addAction(ui->lines_ToolBar->toggleViewAction());
-    menu->addAction(ui->curves_ToolBar->toggleViewAction());
-    menu->addAction(ui->arcs_ToolBar->toggleViewAction());
-    menu->addAction(ui->operations_ToolBar->toggleViewAction());
-    menu->addAction(ui->pieces_ToolBar->toggleViewAction());
-    menu->addAction(ui->details_ToolBar->toggleViewAction());
-    menu->addAction(ui->layout_ToolBar->toggleViewAction());
-    menu->addAction(ui->pointName_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->draft_ToolBar->toggleViewAction());
+    connect(m_ui->draft_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->draft_ToolBar->setVisible(visible);
+    });
+
+    menu->addAction(m_ui->zoom_ToolBar->toggleViewAction());
+    connect(m_ui->zoom_ToolBar, &QToolBar::visibilityChanged, this, [this](bool visible) {
+        m_ui->zoom_ToolBar->setVisible(visible);
+    });
+    menu->addAction(m_ui->tools_ToolBox_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->points_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->lines_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->curves_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->arcs_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->operations_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->pieces_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->details_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->layout_ToolBar->toggleViewAction());
+    menu->addAction(m_ui->pointName_ToolBar->toggleViewAction());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -5193,14 +5215,14 @@ void MainWindow::LastUsedTool()
     Q_STATIC_ASSERT_X(
         static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were handled.");
 
-    if (currentTool == lastUsedTool) {
+    if (m_currentTool == m_lastUsedTool) {
         return;
     }
 
-    switch (lastUsedTool) {
+    switch (m_lastUsedTool) {
     case Tool::Arrow:
-        ui->arrowPointer_ToolButton->setChecked(true);
-        ui->arrow_Action->setChecked(true);
+        m_ui->arrowPointer_ToolButton->setChecked(true);
+        m_ui->arrow_Action->setChecked(true);
         handleArrowTool(true);
         break;
     case Tool::BasePoint:
@@ -5220,167 +5242,167 @@ void MainWindow::LastUsedTool()
         // Nothing to do here because we can't create this tool from main window.
         break;
     case Tool::EndLine:
-        ui->pointAtDistanceAngle_ToolButton->setChecked(true);
+        m_ui->pointAtDistanceAngle_ToolButton->setChecked(true);
         handlePointAtDistanceAngleTool(true);
         break;
     case Tool::Line:
-        ui->line_ToolButton->setChecked(true);
+        m_ui->line_ToolButton->setChecked(true);
         handleLineTool(true);
         break;
     case Tool::AlongLine:
-        ui->alongLine_ToolButton->setChecked(true);
+        m_ui->alongLine_ToolButton->setChecked(true);
         handleAlongLineTool(true);
         break;
     case Tool::Midpoint:
-        ui->midpoint_ToolButton->setChecked(true);
+        m_ui->midpoint_ToolButton->setChecked(true);
         handleMidpointTool(true);
         break;
     case Tool::ShoulderPoint:
-        ui->shoulderPoint_ToolButton->setChecked(true);
+        m_ui->shoulderPoint_ToolButton->setChecked(true);
         handleShoulderPointTool(true);
         break;
     case Tool::Normal:
-        ui->normal_ToolButton->setChecked(true);
+        m_ui->normal_ToolButton->setChecked(true);
         handleNormalTool(true);
         break;
     case Tool::Bisector:
-        ui->bisector_ToolButton->setChecked(true);
+        m_ui->bisector_ToolButton->setChecked(true);
         handleBisectorTool(true);
         break;
     case Tool::LineIntersect:
-        ui->lineIntersect_ToolButton->setChecked(true);
+        m_ui->lineIntersect_ToolButton->setChecked(true);
         handleLineIntersectTool(true);
         break;
     case Tool::Spline:
-        ui->curve_ToolButton->setChecked(true);
+        m_ui->curve_ToolButton->setChecked(true);
         handleCurveTool(true);
         break;
     case Tool::CubicBezier:
-        ui->curveWithCPs_ToolButton->setChecked(true);
+        m_ui->curveWithCPs_ToolButton->setChecked(true);
         handleCurveWithControlPointsTool(true);
         break;
     case Tool::Arc:
-        ui->arc_ToolButton->setChecked(true);
+        m_ui->arc_ToolButton->setChecked(true);
         handleArcTool(true);
         break;
     case Tool::SplinePath:
-        ui->spline_ToolButton->setChecked(true);
+        m_ui->spline_ToolButton->setChecked(true);
         handleSplineTool(true);
         break;
     case Tool::CubicBezierPath:
-        ui->splineWithCPs_ToolButton->setChecked(true);
+        m_ui->splineWithCPs_ToolButton->setChecked(true);
         handleSplineWithControlPointsTool(true);
         break;
     case Tool::PointOfContact:
-        ui->pointOfContact_ToolButton->setChecked(true);
+        m_ui->pointOfContact_ToolButton->setChecked(true);
         handlePointOfContactTool(true);
         break;
     case Tool::Piece:
-        ui->addPatternPiece_ToolButton->setChecked(true);
+        m_ui->addPatternPiece_ToolButton->setChecked(true);
         handlePatternPieceTool(true);
         break;
     case Tool::InternalPath:
-        ui->internalPath_ToolButton->setChecked(true);
+        m_ui->internalPath_ToolButton->setChecked(true);
         handleInternalPathTool(true);
         break;
     case Tool::Height:
-        ui->height_ToolButton->setChecked(true);
+        m_ui->height_ToolButton->setChecked(true);
         handleHeightTool(true);
         break;
     case Tool::Triangle:
-        ui->triangle_ToolButton->setChecked(true);
+        m_ui->triangle_ToolButton->setChecked(true);
         handleTriangleTool(true);
         break;
     case Tool::PointOfIntersection:
-        ui->pointIntersectXY_ToolButton->setChecked(true);
+        m_ui->pointIntersectXY_ToolButton->setChecked(true);
         handlePointIntersectXYTool(true);
         break;
     case Tool::PointOfIntersectionArcs:
-        ui->pointOfIntersectionArcs_ToolButton->setChecked(true);
+        m_ui->pointOfIntersectionArcs_ToolButton->setChecked(true);
         handlePointOfIntersectionArcsTool(true);
         break;
     case Tool::CutSpline:
-        ui->pointAlongCurve_ToolButton->setChecked(true);
+        m_ui->pointAlongCurve_ToolButton->setChecked(true);
         handlePointAlongCurveTool(true);
         break;
     case Tool::CutSplinePath:
-        ui->pointAlongSpline_ToolButton->setChecked(true);
+        m_ui->pointAlongSpline_ToolButton->setChecked(true);
         handlePointAlongSplineTool(true);
         break;
     case Tool::Union:
-        ui->unitePieces_ToolButton->setChecked(true);
+        m_ui->unitePieces_ToolButton->setChecked(true);
         handleUnionTool(true);
         break;
     case Tool::CutArc:
-        ui->pointAlongArc_ToolButton->setChecked(true);
+        m_ui->pointAlongArc_ToolButton->setChecked(true);
         handlePointAlongArcTool(true);
         break;
     case Tool::LineIntersectAxis:
-        ui->lineIntersectAxis_ToolButton->setChecked(true);
+        m_ui->lineIntersectAxis_ToolButton->setChecked(true);
         handleLineIntersectAxisTool(true);
         break;
     case Tool::CurveIntersectAxis:
-        ui->curveIntersectAxis_ToolButton->setChecked(true);
+        m_ui->curveIntersectAxis_ToolButton->setChecked(true);
         handleCurveIntersectAxisTool(true);
         break;
     case Tool::ArcIntersectAxis:
-        ui->arcIntersectAxis_ToolButton->setChecked(true);
+        m_ui->arcIntersectAxis_ToolButton->setChecked(true);
         handleArcIntersectAxisTool(true);
         break;
     case Tool::PointOfIntersectionCircles:
-        ui->pointOfIntersectionCircles_ToolButton->setChecked(true);
+        m_ui->pointOfIntersectionCircles_ToolButton->setChecked(true);
         handlePointOfIntersectionCirclesTool(true);
         break;
     case Tool::PointOfIntersectionCurves:
-        ui->pointOfIntersectionCurves_ToolButton->setChecked(true);
+        m_ui->pointOfIntersectionCurves_ToolButton->setChecked(true);
         handleCurveIntersectCurveTool(true);
         break;
     case Tool::PointFromCircleAndTangent:
-        ui->pointFromCircleAndTangent_ToolButton->setChecked(true);
+        m_ui->pointFromCircleAndTangent_ToolButton->setChecked(true);
         handlePointFromCircleAndTangentTool(true);
         break;
     case Tool::PointFromArcAndTangent:
-        ui->pointFromArcAndTangent_ToolButton->setChecked(true);
+        m_ui->pointFromArcAndTangent_ToolButton->setChecked(true);
         handlePointFromArcAndTangentTool(true);
         break;
     case Tool::ArcWithLength:
-        ui->arcWithLength_ToolButton->setChecked(true);
+        m_ui->arcWithLength_ToolButton->setChecked(true);
         handleArcWithLengthTool(true);
         break;
     case Tool::TrueDarts:
-        ui->trueDarts_ToolButton->setChecked(true);
+        m_ui->trueDarts_ToolButton->setChecked(true);
         handleTrueDartTool(true);
         break;
     case Tool::Group:
-        ui->group_ToolButton->setChecked(true);
+        m_ui->group_ToolButton->setChecked(true);
         handleGroupTool(true);
         break;
     case Tool::Rotation:
-        ui->rotation_ToolButton->setChecked(true);
+        m_ui->rotation_ToolButton->setChecked(true);
         handleRotationTool(true);
         break;
     case Tool::MirrorByLine:
-        ui->mirrorByLine_ToolButton->setChecked(true);
+        m_ui->mirrorByLine_ToolButton->setChecked(true);
         handleMirrorByLineTool(true);
         break;
     case Tool::MirrorByAxis:
-        ui->mirrorByAxis_ToolButton->setChecked(true);
+        m_ui->mirrorByAxis_ToolButton->setChecked(true);
         handleMirrorByAxisTool(true);
         break;
     case Tool::Move:
-        ui->move_ToolButton->setChecked(true);
+        m_ui->move_ToolButton->setChecked(true);
         handleMoveTool(true);
         break;
     case Tool::EllipticalArc:
-        ui->ellipticalArc_ToolButton->setChecked(true);
+        m_ui->ellipticalArc_ToolButton->setChecked(true);
         handleEllipticalArcTool(true);
         break;
     case Tool::AnchorPoint:
-        ui->anchorPoint_ToolButton->setChecked(true);
+        m_ui->anchorPoint_ToolButton->setChecked(true);
         handleAnchorPointTool(true);
         break;
     case Tool::InsertNodes:
-        ui->insertNodes_ToolButton->setChecked(true);
+        m_ui->insertNodes_ToolButton->setChecked(true);
         handleInsertNodesTool(true);
         break;
     }
@@ -5392,34 +5414,35 @@ QT_WARNING_POP
 void MainWindow::AddDocks()
 {
     // Add dock
-    actionDockWidgetToolOptions = ui->toolProperties_DockWidget->toggleViewAction();
-    ui->view_Menu->addAction(actionDockWidgetToolOptions);
+    actionDockWidgetToolOptions = m_ui->toolProperties_DockWidget->toggleViewAction();
+    m_ui->view_Menu->addAction(actionDockWidgetToolOptions);
     connect(
-        ui->toolProperties_DockWidget, &QDockWidget::visibilityChanged, this, [this](bool visible) {
-            isToolOptionsDockVisible = visible;
-        });
+        m_ui->toolProperties_DockWidget,
+        &QDockWidget::visibilityChanged,
+        this,
+        [this](bool visible) { m_isToolOptionsDockVisible = visible; });
 
-    actionDockWidgetGroups = ui->groups_DockWidget->toggleViewAction();
-    ui->view_Menu->addAction(actionDockWidgetGroups);
-    connect(ui->groups_DockWidget, &QDockWidget::visibilityChanged, this, [this](bool visible) {
-        isGroupsDockVisible = visible;
+    actionDockWidgetGroups = m_ui->groups_DockWidget->toggleViewAction();
+    m_ui->view_Menu->addAction(actionDockWidgetGroups);
+    connect(m_ui->groups_DockWidget, &QDockWidget::visibilityChanged, this, [this](bool visible) {
+        m_isGroupsDockVisible = visible;
     });
 
-    actionDockWidgetLayouts = ui->layoutPages_DockWidget->toggleViewAction();
-    ui->view_Menu->addAction(actionDockWidgetLayouts);
+    actionDockWidgetLayouts = m_ui->layoutPages_DockWidget->toggleViewAction();
+    m_ui->view_Menu->addAction(actionDockWidgetLayouts);
     connect(
-        ui->layoutPages_DockWidget, &QDockWidget::visibilityChanged, this, [this](bool visible) {
-            isLayoutsDockVisible = visible;
+        m_ui->layoutPages_DockWidget, &QDockWidget::visibilityChanged, this, [this](bool visible) {
+            m_isLayoutsDockVisible = visible;
         });
 
-    actionDockWidgetToolbox = ui->toolbox_DockWidget->toggleViewAction();
-    ui->view_Menu->addAction(actionDockWidgetToolbox);
-    connect(ui->toolbox_DockWidget, &QDockWidget::visibilityChanged, this, [this](bool visible) {
-        isToolboxDockVisible = visible;
+    actionDockWidgetToolbox = m_ui->toolbox_DockWidget->toggleViewAction();
+    m_ui->view_Menu->addAction(actionDockWidgetToolbox);
+    connect(m_ui->toolbox_DockWidget, &QDockWidget::visibilityChanged, this, [this](bool visible) {
+        m_isToolboxDockVisible = visible;
     });
 
-    tabifyDockWidget(ui->groups_DockWidget, ui->toolProperties_DockWidget);
-    splitDockWidget(ui->toolProperties_DockWidget, ui->layoutPages_DockWidget, Qt::Vertical);
+    tabifyDockWidget(m_ui->groups_DockWidget, m_ui->toolProperties_DockWidget);
+    splitDockWidget(m_ui->toolProperties_DockWidget, m_ui->layoutPages_DockWidget, Qt::Vertical);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::initializeDocksContain()
@@ -5430,22 +5453,22 @@ void MainWindow::initializeDocksContain()
     initPropertyEditor();
 
     qCDebug(vMainWindow, "Initialize Groups manager.");
-    groupsWidget = new GroupsWidget(pattern, doc, this);
-    ui->groups_DockWidget->setWidget(groupsWidget);
+    m_groupsWidget = new GroupsWidget(pattern, doc, this);
+    m_ui->groups_DockWidget->setWidget(m_groupsWidget);
     connect(doc, &VAbstractPattern::updateGroups, this, &MainWindow::updateGroups);
 
-    patternPiecesWidget = new PiecesWidget(pattern, doc, this);
-    connect(doc, &VPattern::FullUpdateFromFile, patternPiecesWidget, &PiecesWidget::updateList);
-    connect(doc, &VPattern::UpdateInLayoutList, patternPiecesWidget, &PiecesWidget::togglePiece);
-    connect(doc, &VPattern::showPiece, patternPiecesWidget, &PiecesWidget::selectPiece);
+    m_patternPiecesWidget = new PiecesWidget(pattern, doc, this);
+    connect(doc, &VPattern::FullUpdateFromFile, m_patternPiecesWidget, &PiecesWidget::updateList);
+    connect(doc, &VPattern::UpdateInLayoutList, m_patternPiecesWidget, &PiecesWidget::togglePiece);
+    connect(doc, &VPattern::showPiece, m_patternPiecesWidget, &PiecesWidget::selectPiece);
     connect(
-        patternPiecesWidget,
+        m_patternPiecesWidget,
         &PiecesWidget::Highlight,
-        pieceScene,
+        m_pieceScene,
         &VMainGraphicsScene::HighlightItem);
-    patternPiecesWidget->setVisible(false);
+    m_patternPiecesWidget->setVisible(false);
 
-    ui->toolbox_StackedWidget->setCurrentIndex(0);
+    m_ui->toolbox_StackedWidget->setCurrentIndex(0);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -5461,29 +5484,29 @@ bool MainWindow::startNewSeamly2D(const QString& fileName) const
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::createActions()
 {
-    ui->setupUi(this);
+    m_ui->setupUi(this);
 
     // Files menu
-    connect(ui->actionNew, &QAction::triggered, this, &MainWindow::New);
-    connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::Open);
-    connect(ui->save_Action, &QAction::triggered, this, &MainWindow::Save);
-    connect(ui->saveAs_Action, &QAction::triggered, this, &MainWindow::SaveAs);
-    connect(ui->closePattern_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->actionNew, &QAction::triggered, this, &MainWindow::New);
+    connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::Open);
+    connect(m_ui->save_Action, &QAction::triggered, this, &MainWindow::Save);
+    connect(m_ui->saveAs_Action, &QAction::triggered, this, &MainWindow::SaveAs);
+    connect(m_ui->closePattern_Action, &QAction::triggered, this, [this]() {
         if (MaybeSave()) {
             FileClosedCorrect();
             Clear();
         }
     });
 
-    connect(ui->exportAs_Action, &QAction::triggered, this, &MainWindow::exportLayoutAs);
-    connect(ui->printPreview_Action, &QAction::triggered, this, &MainWindow::PrintPreviewOrigin);
+    connect(m_ui->exportAs_Action, &QAction::triggered, this, &MainWindow::exportLayoutAs);
+    connect(m_ui->printPreview_Action, &QAction::triggered, this, &MainWindow::PrintPreviewOrigin);
     connect(
-        ui->printPreviewTiled_Action, &QAction::triggered, this, &MainWindow::PrintPreviewTiled);
-    connect(ui->print_Action, &QAction::triggered, this, &MainWindow::PrintOrigin);
-    connect(ui->printTiled_Action, &QAction::triggered, this, &MainWindow::PrintTiled);
+        m_ui->printPreviewTiled_Action, &QAction::triggered, this, &MainWindow::PrintPreviewTiled);
+    connect(m_ui->print_Action, &QAction::triggered, this, &MainWindow::PrintOrigin);
+    connect(m_ui->printTiled_Action, &QAction::triggered, this, &MainWindow::PrintTiled);
 
-    connect(ui->appPreferences_Action, &QAction::triggered, this, &MainWindow::Preferences);
-    connect(ui->patternPreferences_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->appPreferences_Action, &QAction::triggered, this, &MainWindow::Preferences);
+    connect(m_ui->patternPreferences_Action, &QAction::triggered, this, [this]() {
         DialogPatternProperties proper(doc, pattern, this);
         connect(&proper, &DialogPatternProperties::UpdateGradation, this, [this]() {
             UpdateHeightsList(
@@ -5493,14 +5516,14 @@ void MainWindow::createActions()
         });
         proper.exec();
     });
-    ui->patternPreferences_Action->setEnabled(false);
+    m_ui->patternPreferences_Action->setEnabled(false);
 
     // Actions for recent files loaded by a main window application.
     for (int i = 0; i < MaxRecentFiles; ++i) {
         QAction* action = new QAction(this);
         action->setVisible(false);
-        recentFileActs[i] = action;
-        connect(recentFileActs[i], &QAction::triggered, this, [this]() {
+        m_recentFileActs[i] = action;
+        connect(m_recentFileActs[i], &QAction::triggered, this, [this]() {
             if (QAction* action = qobject_cast<QAction*>(sender())) {
                 const QString filePath = action->data().toString();
                 if (!filePath.isEmpty()) {
@@ -5510,98 +5533,98 @@ void MainWindow::createActions()
         });
     }
 
-    connect(ui->documentInfo_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->documentInfo_Action, &QAction::triggered, this, [this]() {
         ShowInfoDialog* infoDialog = new ShowInfoDialog(doc, this);
         infoDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         infoDialog->adjustSize();
         infoDialog->show();
     });
 
-    connect(ui->exit_Action, &QAction::triggered, this, &MainWindow::close);
+    connect(m_ui->exit_Action, &QAction::triggered, this, &MainWindow::close);
 
     // Edit Menu
-    connect(ui->labelTemplateEditor_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->labelTemplateEditor_Action, &QAction::triggered, this, [this]() {
         EditLabelTemplateDialog editor(doc);
         editor.exec();
     });
 
     // View menu
-    connect(ui->showDraftMode, &QAction::triggered, this, &MainWindow::showDraftMode);
-    connect(ui->pieceMode_Action, &QAction::triggered, this, &MainWindow::showPieceMode);
-    connect(ui->layoutMode_Action, &QAction::triggered, this, &MainWindow::showLayoutMode);
+    connect(m_ui->showDraftMode, &QAction::triggered, this, &MainWindow::showDraftMode);
+    connect(m_ui->pieceMode_Action, &QAction::triggered, this, &MainWindow::showPieceMode);
+    connect(m_ui->layoutMode_Action, &QAction::triggered, this, &MainWindow::showLayoutMode);
 
-    connect(ui->toggleWireframe_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->toggleWireframe_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setWireframe(checked);
-        emit ui->view->itemClicked(nullptr);
+        emit m_ui->view->itemClicked(nullptr);
         upDateScenes();
     });
 
-    connect(ui->toggleControlPoints_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->toggleControlPoints_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setShowControlPoints(checked);
-        emit ui->view->itemClicked(nullptr);
-        draftScene->enablePiecesMode(checked);
+        emit m_ui->view->itemClicked(nullptr);
+        m_draftScene->enablePiecesMode(checked);
     });
 
-    connect(ui->toggleAxisOrigin_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->toggleAxisOrigin_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setShowAxisOrigin(checked);
-        draftScene->setOriginsVisible(checked);
-        pieceScene->setOriginsVisible(checked);
+        m_draftScene->setOriginsVisible(checked);
+        m_pieceScene->setOriginsVisible(checked);
     });
 
-    connect(ui->toggleSeamAllowances_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->toggleSeamAllowances_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setShowSeamAllowances(checked);
-        emit ui->view->itemClicked(nullptr);
+        emit m_ui->view->itemClicked(nullptr);
         refreshSeamAllowances();
     });
 
-    connect(ui->toggleGrainLines_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->toggleGrainLines_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setShowGrainlines(checked);
-        emit ui->view->itemClicked(nullptr);
+        emit m_ui->view->itemClicked(nullptr);
         refreshGrainLines();
     });
 
-    connect(ui->toggleLabels_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->toggleLabels_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setShowLabels(checked);
-        emit ui->view->itemClicked(nullptr);
+        emit m_ui->view->itemClicked(nullptr);
         refreshLabels();
     });
     /**
-        connect(ui->toggleAnchorPoints_Action, &QAction::triggered, this, [this](bool checked)
+        connect(m_ui->toggleAnchorPoints_Action, &QAction::triggered, this, [this](bool checked)
         {
             qApp->Seamly2DSettings()->setShowAnchorPoints(checked);
         });
     **/
-    connect(ui->increaseSize_Action, &QAction::triggered, this, [this]() {
-        int index = qMin(fontSizeComboBox->currentIndex() + 1, fontSizeComboBox->count() - 1);
-        fontSizeComboBox->setCurrentIndex(index);
-        qApp->Seamly2DSettings()->setPointNameSize(fontSizeComboBox->currentText().toInt());
+    connect(m_ui->increaseSize_Action, &QAction::triggered, this, [this]() {
+        int index = qMin(m_fontSizeComboBox->currentIndex() + 1, m_fontSizeComboBox->count() - 1);
+        m_fontSizeComboBox->setCurrentIndex(index);
+        qApp->Seamly2DSettings()->setPointNameSize(m_fontSizeComboBox->currentText().toInt());
         upDateScenes();
     });
 
-    connect(ui->decreaseSize_Action, &QAction::triggered, this, [this]() {
-        const int index = qMax(fontSizeComboBox->currentIndex() - 1, 0);
-        fontSizeComboBox->setCurrentIndex(index);
-        qApp->Seamly2DSettings()->setPointNameSize(fontSizeComboBox->currentText().toInt());
+    connect(m_ui->decreaseSize_Action, &QAction::triggered, this, [this]() {
+        const int index = qMax(m_fontSizeComboBox->currentIndex() - 1, 0);
+        m_fontSizeComboBox->setCurrentIndex(index);
+        qApp->Seamly2DSettings()->setPointNameSize(m_fontSizeComboBox->currentText().toInt());
         upDateScenes();
     });
 
-    connect(ui->showPointNames_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->showPointNames_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setHidePointNames(checked);
         upDateScenes();
     });
 
-    connect(ui->useToolColor_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->useToolColor_Action, &QAction::triggered, this, [this](bool checked) {
         qApp->Seamly2DSettings()->setUseToolColor(checked);
         upDateScenes();
     });
 
     // Tools menu
-    connect(ui->newDraft_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->newDraft_Action, &QAction::triggered, this, [this]() {
         qCDebug(vMainWindow, "New Draft Block.");
-        QString draftBlockName = tr("Draft Block %1").arg(draftBlockComboBox->count() + 1);
+        QString draftBlockName = tr("Draft Block %1").arg(m_draftBlockComboBox->count() + 1);
         qCDebug(vMainWindow, "Generated Draft Block name: %s", qUtf8Printable(draftBlockName));
 
-        qCDebug(vMainWindow, "Draft Block count %d", draftBlockComboBox->count());
+        qCDebug(vMainWindow, "Draft Block count %d", m_draftBlockComboBox->count());
         draftBlockName = createDraftBlockName(draftBlockName);
         qCDebug(vMainWindow, "Draft Block name: %s", qUtf8Printable(draftBlockName));
         if (draftBlockName.isEmpty()) {
@@ -5613,251 +5636,251 @@ void MainWindow::createActions()
     });
 
     // Tools->Point submenu actions
-    connect(ui->midpoint_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->midpoint_ToolButton->setChecked(true);
+    connect(m_ui->midpoint_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->midpoint_ToolButton->setChecked(true);
         handleMidpointTool(true);
     });
-    connect(ui->pointAtDistanceAngle_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->pointAtDistanceAngle_ToolButton->setChecked(true);
+    connect(m_ui->pointAtDistanceAngle_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->pointAtDistanceAngle_ToolButton->setChecked(true);
         handlePointAtDistanceAngleTool(true);
     });
-    connect(ui->pointAlongLine_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->alongLine_ToolButton->setChecked(true);
+    connect(m_ui->pointAlongLine_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->alongLine_ToolButton->setChecked(true);
         handleAlongLineTool(true);
     });
-    connect(ui->pointAlongPerpendicular_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->normal_ToolButton->setChecked(true);
+    connect(m_ui->pointAlongPerpendicular_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->normal_ToolButton->setChecked(true);
         handleNormalTool(true);
     });
-    connect(ui->bisector_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->bisector_ToolButton->setChecked(true);
+    connect(m_ui->bisector_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->bisector_ToolButton->setChecked(true);
         handleBisectorTool(true);
     });
-    connect(ui->pointOnShoulder_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->shoulderPoint_ToolButton->setChecked(true);
+    connect(m_ui->pointOnShoulder_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->shoulderPoint_ToolButton->setChecked(true);
         handleShoulderPointTool(true);
     });
-    connect(ui->pointOfContact_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->pointOfContact_ToolButton->setChecked(true);
+    connect(m_ui->pointOfContact_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->pointOfContact_ToolButton->setChecked(true);
         handlePointOfContactTool(true);
     });
-    connect(ui->triangle_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->triangle_ToolButton->setChecked(true);
+    connect(m_ui->triangle_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->triangle_ToolButton->setChecked(true);
         handleTriangleTool(true);
     });
-    connect(ui->pointIntersectXY_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->pointIntersectXY_ToolButton->setChecked(true);
+    connect(m_ui->pointIntersectXY_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->pointIntersectXY_ToolButton->setChecked(true);
         handlePointIntersectXYTool(true);
     });
-    connect(ui->perpendicularPoint_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->height_ToolButton->setChecked(true);
+    connect(m_ui->perpendicularPoint_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->height_ToolButton->setChecked(true);
         handleHeightTool(true);
     });
-    connect(ui->pointIntersectAxis_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->points_Page);
-        ui->lineIntersectAxis_ToolButton->setChecked(true);
+    connect(m_ui->pointIntersectAxis_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->points_Page);
+        m_ui->lineIntersectAxis_ToolButton->setChecked(true);
         handleLineIntersectAxisTool(true);
     });
 
     // Tools->Line submenu actions
-    connect(ui->lineTool_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->lines_Page);
-        ui->line_ToolButton->setChecked(true);
+    connect(m_ui->lineTool_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->lines_Page);
+        m_ui->line_ToolButton->setChecked(true);
         handleLineTool(true);
     });
-    connect(ui->lineIntersect_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->lines_Page);
-        ui->lineIntersect_ToolButton->setChecked(true);
+    connect(m_ui->lineIntersect_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->lines_Page);
+        m_ui->lineIntersect_ToolButton->setChecked(true);
         handleLineIntersectTool(true);
     });
 
     // Tools->Curve submenu actions
-    connect(ui->curve_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->curve_ToolButton->setChecked(true);
+    connect(m_ui->curve_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->curve_ToolButton->setChecked(true);
         handleCurveTool(true);
     });
-    connect(ui->spline_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->spline_ToolButton->setChecked(true);
+    connect(m_ui->spline_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->spline_ToolButton->setChecked(true);
         handleSplineTool(true);
     });
-    connect(ui->curveWithCPs_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->curveWithCPs_ToolButton->setChecked(true);
+    connect(m_ui->curveWithCPs_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->curveWithCPs_ToolButton->setChecked(true);
         handleCurveWithControlPointsTool(true);
     });
-    connect(ui->splineWithCPs_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->splineWithCPs_ToolButton->setChecked(true);
+    connect(m_ui->splineWithCPs_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->splineWithCPs_ToolButton->setChecked(true);
         handleSplineWithControlPointsTool(true);
     });
-    connect(ui->pointAlongCurve_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->pointAlongCurve_ToolButton->setChecked(true);
+    connect(m_ui->pointAlongCurve_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->pointAlongCurve_ToolButton->setChecked(true);
         handlePointAlongCurveTool(true);
     });
-    connect(ui->pointAlongSpline_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->pointAlongSpline_ToolButton->setChecked(true);
+    connect(m_ui->pointAlongSpline_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->pointAlongSpline_ToolButton->setChecked(true);
         handlePointAlongSplineTool(true);
     });
-    connect(ui->curveIntersectCurve_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->pointOfIntersectionCurves_ToolButton->setChecked(true);
+    connect(m_ui->curveIntersectCurve_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->pointOfIntersectionCurves_ToolButton->setChecked(true);
         handleCurveIntersectCurveTool(true);
     });
-    connect(ui->splineIntersectAxis_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->curves_Page);
-        ui->curveIntersectAxis_ToolButton->setChecked(true);
+    connect(m_ui->splineIntersectAxis_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->curves_Page);
+        m_ui->curveIntersectAxis_ToolButton->setChecked(true);
         handleCurveIntersectAxisTool(true);
     });
 
     // Tools->Arc submenu actions
-    connect(ui->arcTool_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->arc_ToolButton->setChecked(true);
+    connect(m_ui->arcTool_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->arc_ToolButton->setChecked(true);
         handleArcTool(true);
     });
 
-    connect(ui->pointAlongArc_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointAlongArc_ToolButton->setChecked(true);
+    connect(m_ui->pointAlongArc_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointAlongArc_ToolButton->setChecked(true);
         handlePointAlongArcTool(true);
     });
 
-    connect(ui->arcIntersectAxis_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->arcIntersectAxis_ToolButton->setChecked(true);
+    connect(m_ui->arcIntersectAxis_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->arcIntersectAxis_ToolButton->setChecked(true);
         handleArcIntersectAxisTool(true);
     });
 
-    connect(ui->arcIntersectArc_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointOfIntersectionArcs_ToolButton->setChecked(true);
+    connect(m_ui->arcIntersectArc_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointOfIntersectionArcs_ToolButton->setChecked(true);
         handlePointOfIntersectionArcsTool(true);
     });
 
-    connect(ui->circleIntersect_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointOfIntersectionCircles_ToolButton->setChecked(true);
+    connect(m_ui->circleIntersect_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointOfIntersectionCircles_ToolButton->setChecked(true);
         handlePointOfIntersectionCirclesTool(true);
     });
 
-    connect(ui->circleTangent_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointFromCircleAndTangent_ToolButton->setChecked(true);
+    connect(m_ui->circleTangent_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointFromCircleAndTangent_ToolButton->setChecked(true);
         handlePointFromCircleAndTangentTool(true);
     });
 
-    connect(ui->arcTangent_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->pointFromArcAndTangent_ToolButton->setChecked(true);
+    connect(m_ui->arcTangent_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->pointFromArcAndTangent_ToolButton->setChecked(true);
         handlePointFromArcAndTangentTool(true);
     });
 
-    connect(ui->arcWithLength_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->arcWithLength_ToolButton->setChecked(true);
+    connect(m_ui->arcWithLength_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->arcWithLength_ToolButton->setChecked(true);
         handleArcWithLengthTool(true);
     });
 
-    connect(ui->ellipticalArc_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->arcs_Page);
-        ui->ellipticalArc_ToolButton->setChecked(true);
+    connect(m_ui->ellipticalArc_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->arcs_Page);
+        m_ui->ellipticalArc_ToolButton->setChecked(true);
         handleEllipticalArcTool(true);
     });
 
     // Tools->Operations submenu actions
-    connect(ui->group_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->group_ToolButton->setChecked(true);
+    connect(m_ui->group_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->group_ToolButton->setChecked(true);
         handleGroupTool(true);
     });
 
-    connect(ui->rotation_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->rotation_ToolButton->setChecked(true);
+    connect(m_ui->rotation_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->rotation_ToolButton->setChecked(true);
         handleRotationTool(true);
     });
 
-    connect(ui->mirrorByLine_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->mirrorByLine_ToolButton->setChecked(true);
+    connect(m_ui->mirrorByLine_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->mirrorByLine_ToolButton->setChecked(true);
         handleMirrorByLineTool(true);
     });
-    connect(ui->mirrorByAxis_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->mirrorByAxis_ToolButton->setChecked(true);
+    connect(m_ui->mirrorByAxis_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->mirrorByAxis_ToolButton->setChecked(true);
         handleMirrorByAxisTool(true);
     });
 
-    connect(ui->move_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->move_ToolButton->setChecked(true);
+    connect(m_ui->move_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->move_ToolButton->setChecked(true);
         handleMoveTool(true);
     });
 
-    connect(ui->trueDarts_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
-        ui->trueDarts_ToolButton->setChecked(true);
+    connect(m_ui->trueDarts_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
+        m_ui->trueDarts_ToolButton->setChecked(true);
         handleTrueDartTool(true);
     });
 
-    connect(ui->exportDraftBlocks_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->operations_Page);
+    connect(m_ui->exportDraftBlocks_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->operations_Page);
         exportDraftBlocksAs();
     });
 
     // Tools->Details submenu actions
-    connect(ui->union_Action, &QAction::triggered, this, [this] {
-        ui->piece_ToolBox->setCurrentWidget(ui->details_Page);
-        ui->unitePieces_ToolButton->setChecked(true);
+    connect(m_ui->union_Action, &QAction::triggered, this, [this] {
+        m_ui->piece_ToolBox->setCurrentWidget(m_ui->details_Page);
+        m_ui->unitePieces_ToolButton->setChecked(true);
         handleUnionTool(true);
     });
 
-    connect(ui->exportPieces_Action, &QAction::triggered, this, [this] {
-        ui->piece_ToolBox->setCurrentWidget(ui->details_Page);
+    connect(m_ui->exportPieces_Action, &QAction::triggered, this, [this] {
+        m_ui->piece_ToolBox->setCurrentWidget(m_ui->details_Page);
         exportPiecesAs();
     });
 
     // Tools->Piece submenu actions
-    connect(ui->addPiece_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->addPatternPiece_ToolButton->setChecked(true);
+    connect(m_ui->addPiece_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->addPatternPiece_ToolButton->setChecked(true);
         handlePatternPieceTool(true);
     });
-    connect(ui->anchorPoint_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->anchorPoint_ToolButton->setChecked(true);
+    connect(m_ui->anchorPoint_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->anchorPoint_ToolButton->setChecked(true);
         handleAnchorPointTool(true);
     });
-    connect(ui->internalPath_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->internalPath_ToolButton->setChecked(true);
+    connect(m_ui->internalPath_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->internalPath_ToolButton->setChecked(true);
         handleInternalPathTool(true);
     });
-    connect(ui->insertNodes_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->piece_Page);
-        ui->insertNodes_ToolButton->setChecked(true);
+    connect(m_ui->insertNodes_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->piece_Page);
+        m_ui->insertNodes_ToolButton->setChecked(true);
         handleInsertNodesTool(true);
     });
 
     // Tools-> Images submenu actions
 
-    connect(ui->importImage_Action, &QAction::triggered, this, [this] {
-        ui->draft_ToolBox->setCurrentWidget(ui->backgroundImage_Page);
-        ui->importImage_ToolButton->setChecked(true);
+    connect(m_ui->importImage_Action, &QAction::triggered, this, [this] {
+        m_ui->draft_ToolBox->setCurrentWidget(m_ui->backgroundImage_Page);
+        m_ui->importImage_ToolButton->setChecked(true);
         handleImportImage();
     });
     // connect(ui->deleteImage_Action, &QAction::triggered, this, &MainWindow::handleDeleteImage);
@@ -5865,21 +5888,21 @@ void MainWindow::createActions()
     // connect(ui->alignImage_Action, &QAction::triggered, this, &MainWindow::handleAlignImage);
 
     // Tools->Layout submenu actions
-    connect(ui->newPrintLayout_Action, &QAction::triggered, this, [this] {
-        ui->layout_ToolBox->setCurrentWidget(ui->layout_Page);
-        ui->layoutSettings_ToolButton->setChecked(true);
+    connect(m_ui->newPrintLayout_Action, &QAction::triggered, this, [this] {
+        m_ui->layout_ToolBox->setCurrentWidget(m_ui->layout_Page);
+        m_ui->layoutSettings_ToolButton->setChecked(true);
         handleNewLayout(true);
     });
 
-    connect(ui->exportLayout_Action, &QAction::triggered, this, [this] {
-        ui->layout_ToolBox->setCurrentWidget(ui->layout_Page);
+    connect(m_ui->exportLayout_Action, &QAction::triggered, this, [this] {
+        m_ui->layout_ToolBox->setCurrentWidget(m_ui->layout_Page);
         exportLayoutAs();
     });
 
-    connect(ui->lastTool_Action, &QAction::triggered, this, &MainWindow::LastUsedTool);
+    connect(m_ui->lastTool_Action, &QAction::triggered, this, &MainWindow::LastUsedTool);
 
     // Measurements menu
-    connect(ui->openSeamlyMe_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->openSeamlyMe_Action, &QAction::triggered, this, [this]() {
         const QString seamlyme = qApp->seamlyMeFilePath();
         const QString workingDirectory = QFileInfo(seamlyme).absoluteDir().absolutePath();
 
@@ -5891,59 +5914,66 @@ void MainWindow::createActions()
         QProcess::startDetached(seamlyme, arguments, workingDirectory);
     });
 
-    connect(ui->editCurrent_Action, &QAction::triggered, this, &MainWindow::ShowMeasurements);
+    connect(m_ui->editCurrent_Action, &QAction::triggered, this, &MainWindow::ShowMeasurements);
     connect(
-        ui->unloadMeasurements_Action, &QAction::triggered, this, &MainWindow::UnloadMeasurements);
-    connect(ui->loadIndividual_Action, &QAction::triggered, this, &MainWindow::LoadIndividual);
-    connect(ui->loadMultisize_Action, &QAction::triggered, this, &MainWindow::LoadMultisize);
-    connect(ui->syncMeasurements_Action, &QAction::triggered, this, &MainWindow::SyncMeasurements);
-    connect(ui->table_Action, &QAction::triggered, this, [this](bool checked) {
+        m_ui->unloadMeasurements_Action,
+        &QAction::triggered,
+        this,
+        &MainWindow::UnloadMeasurements);
+    connect(m_ui->loadIndividual_Action, &QAction::triggered, this, &MainWindow::LoadIndividual);
+    connect(m_ui->loadMultisize_Action, &QAction::triggered, this, &MainWindow::LoadMultisize);
+    connect(
+        m_ui->syncMeasurements_Action, &QAction::triggered, this, &MainWindow::SyncMeasurements);
+    connect(m_ui->table_Action, &QAction::triggered, this, [this](bool checked) {
         if (checked) {
-            dialogTable = new DialogVariables(pattern, doc, this);
+            m_dialogTable = new DialogVariables(pattern, doc, this);
             connect(
-                dialogTable.data(),
+                m_dialogTable.data(),
                 &DialogVariables::updateProperties,
-                toolProperties,
+                m_toolProperties,
                 &VToolOptionsPropertyBrowser::refreshOptions);
-            connect(dialogTable.data(), &DialogVariables::DialogClosed, this, [this]() {
-                ui->table_Action->setChecked(false);
-                if (dialogTable != nullptr) {
-                    delete dialogTable;
+            connect(m_dialogTable.data(), &DialogVariables::DialogClosed, this, [this]() {
+                m_ui->table_Action->setChecked(false);
+                if (m_dialogTable != nullptr) {
+                    delete m_dialogTable;
                 }
             });
-            dialogTable->show();
+            m_dialogTable->show();
         } else {
-            ui->table_Action->setChecked(true);
-            dialogTable->activateWindow();
+            m_ui->table_Action->setChecked(true);
+            m_dialogTable->activateWindow();
         }
     });
     connect(
-        ui->exportVariablesToCSV_Action, &QAction::triggered, this, &MainWindow::handleExportToCSV);
+        m_ui->exportVariablesToCSV_Action,
+        &QAction::triggered,
+        this,
+        &MainWindow::handleExportToCSV);
 
     // History menu
-    connect(ui->history_Action, &QAction::triggered, this, [this](bool checked) {
+    connect(m_ui->history_Action, &QAction::triggered, this, [this](bool checked) {
         if (checked) {
-            historyDialog = new HistoryDialog(pattern, doc, this);
+            m_historyDialog = new HistoryDialog(pattern, doc, this);
             connect(
                 this,
                 &MainWindow::RefreshHistory,
-                historyDialog.data(),
+                m_historyDialog.data(),
                 &HistoryDialog::updateHistory);
-            connect(historyDialog.data(), &HistoryDialog::DialogClosed, this, [this]() {
-                ui->history_Action->setChecked(false);
-                if (historyDialog != nullptr) {
-                    delete historyDialog;
+            connect(m_historyDialog.data(), &HistoryDialog::DialogClosed, this, [this]() {
+                m_ui->history_Action->setChecked(false);
+                if (m_historyDialog != nullptr) {
+                    delete m_historyDialog;
                 }
             });
-            historyDialog->show();
+            m_historyDialog->show();
         } else {
-            ui->history_Action->setChecked(true);
-            historyDialog->activateWindow();
+            m_ui->history_Action->setChecked(true);
+            m_historyDialog->activateWindow();
         }
     });
 
     // Utilities menu
-    connect(ui->calculator_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->calculator_Action, &QAction::triggered, this, [this]() {
         CalculatorDialog* calcDialog = new CalculatorDialog(this);
         calcDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         calcDialog->setWindowTitle(tr("Calculator"));
@@ -5951,76 +5981,77 @@ void MainWindow::createActions()
         calcDialog->show();
     });
 
-    connect(ui->decimalChart_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->decimalChart_Action, &QAction::triggered, this, [this]() {
         DecimalChartDialog* decimalchartDialog = new DecimalChartDialog(this);
         decimalchartDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         decimalchartDialog->show();
     });
 
     // Help menu
-    connect(ui->shortcuts_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->shortcuts_Action, &QAction::triggered, this, [this]() {
         ShortcutsDialog* shortcutsDialog = new ShortcutsDialog(this);
         shortcutsDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         shortcutsDialog->show();
     });
-    connect(ui->wiki_Action, &QAction::triggered, this, []() {
+    connect(m_ui->wiki_Action, &QAction::triggered, this, []() {
         qCDebug(vMainWindow, "Showing online help");
         QDesktopServices::openUrl(QUrl(QStringLiteral("https://wiki.seamly.net/wiki/Main_Page")));
     });
 
-    connect(ui->forum_Action, &QAction::triggered, this, []() {
+    connect(m_ui->forum_Action, &QAction::triggered, this, []() {
         qCDebug(vMainWindow, "Opening forum");
         QDesktopServices::openUrl(QUrl(QStringLiteral("https://forum.seamly.io/")));
     });
 
-    connect(ui->reportBug_Action, &QAction::triggered, this, []() {
+    connect(m_ui->reportBug_Action, &QAction::triggered, this, []() {
         qCDebug(vMainWindow, "Reporting bug");
         QDesktopServices::openUrl(
             QUrl(QStringLiteral("https://github.com/FashionFreedom/Seamly2D/issues/"
                                 "new?&labels=bug&template=bug_report.md&title=BUG%3A")));
     });
 
-    connect(ui->aboutQt_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->aboutQt_Action, &QAction::triggered, this, [this]() {
         QMessageBox::aboutQt(this, tr("About Qt"));
     });
 
-    connect(ui->aboutSeamly2D_Action, &QAction::triggered, this, [this]() {
+    connect(m_ui->aboutSeamly2D_Action, &QAction::triggered, this, [this]() {
         DialogAboutApp* aboutDialog = new DialogAboutApp(this);
         aboutDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         aboutDialog->show();
     });
 
     // Toolbox toolbar
-    connect(ui->arrow_Action, &QAction::triggered, this, &MainWindow::handleArrowTool);
-    connect(ui->points_Action, &QAction::triggered, this, &MainWindow::handlePointsMenu);
-    connect(ui->lines_Action, &QAction::triggered, this, &MainWindow::handleLinesMenu);
-    connect(ui->arcs_Action, &QAction::triggered, this, &MainWindow::handleArcsMenu);
-    connect(ui->curves_Action, &QAction::triggered, this, &MainWindow::handleCurvesMenu);
-    connect(ui->modifications_Action, &QAction::triggered, this, &MainWindow::handleOperationsMenu);
-    connect(ui->details_Action, &QAction::triggered, this, &MainWindow::handlePatternPiecesMenu);
-    connect(ui->pieces_Action, &QAction::triggered, this, &MainWindow::handlePieceMenu);
-    connect(ui->layout_Action, &QAction::triggered, this, &MainWindow::handleLayoutMenu);
-    connect(ui->images_Action, &QAction::triggered, this, &MainWindow::handleImagesMenu);
+    connect(m_ui->arrow_Action, &QAction::triggered, this, &MainWindow::handleArrowTool);
+    connect(m_ui->points_Action, &QAction::triggered, this, &MainWindow::handlePointsMenu);
+    connect(m_ui->lines_Action, &QAction::triggered, this, &MainWindow::handleLinesMenu);
+    connect(m_ui->arcs_Action, &QAction::triggered, this, &MainWindow::handleArcsMenu);
+    connect(m_ui->curves_Action, &QAction::triggered, this, &MainWindow::handleCurvesMenu);
+    connect(
+        m_ui->modifications_Action, &QAction::triggered, this, &MainWindow::handleOperationsMenu);
+    connect(m_ui->details_Action, &QAction::triggered, this, &MainWindow::handlePatternPiecesMenu);
+    connect(m_ui->pieces_Action, &QAction::triggered, this, &MainWindow::handlePieceMenu);
+    connect(m_ui->layout_Action, &QAction::triggered, this, &MainWindow::handleLayoutMenu);
+    connect(m_ui->images_Action, &QAction::triggered, this, &MainWindow::handleImagesMenu);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::initializeAutoSave()
 {
     // Autosaving file each 1 minutes
-    delete autoSaveTimer;
-    autoSaveTimer = nullptr;
+    delete m_autoSaveTimer;
+    m_autoSaveTimer = nullptr;
 
-    autoSaveTimer = new QTimer(this);
-    autoSaveTimer->setTimerType(Qt::VeryCoarseTimer);
-    connect(autoSaveTimer, &QTimer::timeout, this, &MainWindow::AutoSavePattern);
-    autoSaveTimer->stop();
+    m_autoSaveTimer = new QTimer(this);
+    m_autoSaveTimer->setTimerType(Qt::VeryCoarseTimer);
+    connect(m_autoSaveTimer, &QTimer::timeout, this, &MainWindow::AutoSavePattern);
+    m_autoSaveTimer->stop();
 
     if (qApp->Seamly2DSettings()->GetAutosaveState()) {
         const qint32 autoTime = qApp->Seamly2DSettings()->getAutosaveInterval();
-        autoSaveTimer->start(autoTime * 60000);
+        m_autoSaveTimer->start(autoTime * 60000);
         qCInfo(vMainWindow, "Autosaving every %d minutes.", autoTime);
     }
-    qApp->setAutoSaveTimer(autoSaveTimer);
+    qApp->setAutoSaveTimer(m_autoSaveTimer);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -6044,7 +6075,7 @@ QString MainWindow::createDraftBlockName(const QString& text)
             delete dialog;
             return QString();
         }
-        if (draftBlockComboBox->findText(draftBlockName) == -1) {
+        if (m_draftBlockComboBox->findText(draftBlockName) == -1) {
             break;   // exit dialog
         }
         // repeat show dialog
@@ -6074,7 +6105,7 @@ MainWindow::~MainWindow()
     CleanLayout();
 
     delete doc;
-    delete ui;
+    delete m_ui;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -6137,20 +6168,20 @@ bool MainWindow::LoadPattern(const QString& fileName, const QString& customMeasu
         return false;
     }
 
-    qCDebug(vMainWindow, "Locking file");
-    VlpCreateLock(lock, fileName);
+    qCDebug(vMainWindow, "locking file");
+    VlpCreateLock(m_lock, fileName);
 
-    if (lock->IsLocked()) {
+    if (m_lock->IsLocked()) {
         qCInfo(vMainWindow, "Pattern file %s was locked.", qUtf8Printable(fileName));
     } else {
-        if (!IgnoreLocking(lock->GetLockError(), fileName)) {
+        if (!IgnoreLocking(m_lock->GetLockError(), fileName)) {
             return false;
         }
     }
 
     // On this stage scene empty. Fit scene size to view size
-    VMainGraphicsView::NewSceneRect(draftScene, ui->view);
-    VMainGraphicsView::NewSceneRect(pieceScene, ui->view);
+    VMainGraphicsView::NewSceneRect(m_draftScene, m_ui->view);
+    VMainGraphicsView::NewSceneRect(m_pieceScene, m_ui->view);
 
     qApp->setOpeningPattern();   // Begin opening file
     try {
@@ -6193,9 +6224,9 @@ bool MainWindow::LoadPattern(const QString& fileName, const QString& customMeasu
                 }
                 return false;
             } else {
-                ui->unloadMeasurements_Action->setEnabled(true);
-                watcher->addPath(path);
-                ui->editCurrent_Action->setEnabled(true);
+                m_ui->unloadMeasurements_Action->setEnabled(true);
+                m_watcher->addPath(path);
+                m_ui->editCurrent_Action->setEnabled(true);
             }
         }
 
@@ -6224,12 +6255,12 @@ bool MainWindow::LoadPattern(const QString& fileName, const QString& customMeasu
 
     fullParseFile();
 
-    if (guiEnabled) {   // No errors occurred
-        patternReadOnly = doc->isReadOnly();
+    if (m_guiEnabled) {   // No errors occurred
+        m_patternReadOnly = doc->isReadOnly();
         setWidgetsEnabled(true);
         setCurrentFile(fileName);
-        helpLabel->setText(tr("File loaded"));
-        qCDebug(vMainWindow, "%s", qUtf8Printable(helpLabel->text()));
+        m_helpLabel->setText(tr("File loaded"));
+        qCDebug(vMainWindow, "%s", qUtf8Printable(m_helpLabel->text()));
 
         // Fit scene size to best size for first show
         zoomFirstShow();
@@ -6254,8 +6285,8 @@ QStringList MainWindow::GetUnlokedRestoreFileList() const
     if (files.size() > 0) {
         for (int i = 0; i < files.size(); ++i) {
             // Seeking file that really needs reopen
-            VLockGuard<char> lock(files.at(i));
-            if (lock.IsLocked()) {
+            VLockGuard<char> m_lock(files.at(i));
+            if (m_lock.IsLocked()) {
                 restoreFiles.append(files.at(i));
             }
         }
@@ -6281,35 +6312,35 @@ QStringList MainWindow::GetUnlokedRestoreFileList() const
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::ToolBarStyles()
 {
-    ToolBarStyle(ui->draft_ToolBar);
-    ToolBarStyle(ui->mode_ToolBar);
-    ToolBarStyle(ui->edit_Toolbar);
-    ToolBarStyle(ui->zoom_ToolBar);
-    ToolBarStyle(ui->file_ToolBar);
+    ToolBarStyle(m_ui->draft_ToolBar);
+    ToolBarStyle(m_ui->mode_ToolBar);
+    ToolBarStyle(m_ui->edit_Toolbar);
+    ToolBarStyle(m_ui->zoom_ToolBar);
+    ToolBarStyle(m_ui->file_ToolBar);
 
-    fontComboBox->setCurrentFont(qApp->Seamly2DSettings()->getPointNameFont());
-    int index = fontSizeComboBox->findData(qApp->Seamly2DSettings()->getPointNameSize());
-    fontSizeComboBox->setCurrentIndex(index);
+    m_fontComboBox->setCurrentFont(qApp->Seamly2DSettings()->getPointNameFont());
+    int index = m_fontSizeComboBox->findData(qApp->Seamly2DSettings()->getPointNameSize());
+    m_fontSizeComboBox->setCurrentIndex(index);
 }
 
 void MainWindow::resetOrigins()
 {
-    draftScene->initializeOrigins();
-    draftScene->setOriginsVisible(true);
-    pieceScene->initializeOrigins();
-    pieceScene->setOriginsVisible(true);
+    m_draftScene->initializeOrigins();
+    m_draftScene->setOriginsVisible(true);
+    m_pieceScene->initializeOrigins();
+    m_pieceScene->setOriginsVisible(true);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::showLayoutPages(int index)
 {
     if (index < 0 || index >= scenes.size()) {
-        ui->view->setScene(tempSceneLayout);
+        m_ui->view->setScene(tempSceneLayout);
     } else {
-        ui->view->setScene(scenes.at(index));
+        m_ui->view->setScene(scenes.at(index));
     }
 
-    ui->view->fitInView(ui->view->scene()->sceneRect(), Qt::KeepAspectRatio);
+    m_ui->view->fitInView(m_ui->view->scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -6356,7 +6387,7 @@ void MainWindow::Preferences()
             emit doc->FullUpdateFromFile();
         });
         // connect(dialog.data(), &DialogPreferences::updateProperties,
-        //        toolProperties, &VToolOptionsPropertyBrowser::refreshOptions);
+        //        m_toolProperties, &VToolOptionsPropertyBrowser::refreshOptions);
         connect(
             dialog.data(),
             &DialogPreferences::updateProperties,
@@ -6371,12 +6402,12 @@ void MainWindow::Preferences()
         connect(
             dialog.data(),
             &DialogPreferences::updateProperties,
-            ui->view,
+            m_ui->view,
             &VMainGraphicsView::resetScrollBars);
         connect(
             dialog.data(),
             &DialogPreferences::updateProperties,
-            ui->view,
+            m_ui->view,
             &VMainGraphicsView::resetScrollAnimations);
 
         QGuiApplication::restoreOverrideCursor();
@@ -6406,11 +6437,11 @@ void MainWindow::CreateMeasurements()
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::exportLayoutAs()
 {
-    ui->exportLayout_ToolButton->setChecked(true);
+    m_ui->exportLayout_ToolButton->setChecked(true);
 
     if (isLayoutStale) {
         if (ContinueIfLayoutStale() == QMessageBox::No) {
-            ui->exportLayout_ToolButton->setChecked(false);
+            m_ui->exportLayout_ToolButton->setChecked(false);
             return;
         }
     }
@@ -6419,7 +6450,7 @@ void MainWindow::exportLayoutAs()
         ExportLayoutDialog dialog(scenes.size(), Draw::Layout, FileName(), this);
 
         if (dialog.exec() == QDialog::Rejected) {
-            ui->exportLayout_ToolButton->setChecked(false);
+            m_ui->exportLayout_ToolButton->setChecked(false);
             return;
         }
 
@@ -6427,7 +6458,7 @@ void MainWindow::exportLayoutAs()
     }
 
     catch (const VException& exception) {
-        ui->exportLayout_ToolButton->setChecked(false);
+        m_ui->exportLayout_ToolButton->setChecked(false);
         qCritical(
             "%s\n\n%s\n\n%s",
             qUtf8Printable(tr("Export exception.")),
@@ -6435,17 +6466,17 @@ void MainWindow::exportLayoutAs()
             qUtf8Printable(exception.DetailedInformation()));
         return;
     }
-    ui->exportLayout_ToolButton->setChecked(false);
+    m_ui->exportLayout_ToolButton->setChecked(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::exportPiecesAs()
 {
-    helpLabel->setText(QString(""));
+    m_helpLabel->setText(QString(""));
 
-    ui->arrowPointer_ToolButton->setChecked(false);
-    ui->arrow_Action->setChecked(false);
-    ui->exportPiecesAs_ToolButton->setChecked(true);
+    m_ui->arrowPointer_ToolButton->setChecked(false);
+    m_ui->arrow_Action->setChecked(false);
+    m_ui->exportPiecesAs_ToolButton->setChecked(true);
 
     const QHash<quint32, VPiece>* allPieces = pattern->DataPieces();
     QHash<quint32, VPiece>::const_iterator i = allPieces->constBegin();
@@ -6488,7 +6519,7 @@ void MainWindow::exportPiecesAs()
         dialog.setWindowTitle("Export Pattern Pieces");
 
         if (dialog.exec() == QDialog::Rejected) {
-            ui->exportPiecesAs_ToolButton->setChecked(false);
+            m_ui->exportPiecesAs_ToolButton->setChecked(false);
             return;
         }
 
@@ -6496,7 +6527,7 @@ void MainWindow::exportPiecesAs()
     }
 
     catch (const VException& exception) {
-        ui->exportPiecesAs_ToolButton->setChecked(false);
+        m_ui->exportPiecesAs_ToolButton->setChecked(false);
         qCritical(
             "%s\n\n%s\n\n%s",
             qUtf8Printable(tr("Export exception.")),
@@ -6505,39 +6536,39 @@ void MainWindow::exportPiecesAs()
         return;
     }
 
-    ui->arrowPointer_ToolButton->setChecked(true);
-    ui->arrow_Action->setChecked(true);
-    ui->exportPiecesAs_ToolButton->setChecked(false);
+    m_ui->arrowPointer_ToolButton->setChecked(true);
+    m_ui->arrow_Action->setChecked(true);
+    m_ui->exportPiecesAs_ToolButton->setChecked(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::exportDraftBlocksAs()
 {
-    helpLabel->setText(QString(""));
+    m_helpLabel->setText(QString(""));
 
     // select export tool button
-    ui->arrowPointer_ToolButton->setChecked(false);
-    ui->arrow_Action->setChecked(false);
-    ui->exportDraftBlocks_ToolButton->setChecked(true);
+    m_ui->arrowPointer_ToolButton->setChecked(false);
+    m_ui->arrow_Action->setChecked(false);
+    m_ui->exportDraftBlocks_ToolButton->setChecked(true);
 
     // Get view info so we can restore after export
-    int vScrollBar = ui->view->verticalScrollBar()->value();
-    int hScrollBar = ui->view->horizontalScrollBar()->value();
-    QTransform viewTransform = ui->view->transform();
+    int vScrollBar = m_ui->view->verticalScrollBar()->value();
+    int hScrollBar = m_ui->view->horizontalScrollBar()->value();
+    QTransform viewTransform = m_ui->view->transform();
 
     // Include all items in draft scene
-    ui->view->zoomToFit();
-    ui->view->repaint();
-    ui->view->zoom100Percent();
+    m_ui->view->zoomToFit();
+    m_ui->view->repaint();
+    m_ui->view->zoom100Percent();
 
-    // Enable all draft blocks in the scene
-    const QList<QGraphicsItem*> items = draftScene->items();
+    // Enable all draft Blocks in the scene
+    const QList<QGraphicsItem*> items = m_draftScene->items();
     for (auto* item : items) {
         item->setEnabled(true);
     }
-    ui->view->repaint();
+    m_ui->view->repaint();
 
-    draftScene->setOriginsVisible(false);
+    m_draftScene->setOriginsVisible(false);
 
     // Open a file dialog to save export
     ExportLayoutDialog dialog(1, Draw::Calculation, FileName(), this);
@@ -6551,48 +6582,48 @@ void MainWindow::exportDraftBlocksAs()
                 .arg(ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 3
 
         QRectF rect;
-        rect = draftScene->itemsBoundingRect();
-        draftScene->update(rect);
+        rect = m_draftScene->itemsBoundingRect();
+        m_draftScene->update(rect);
         QGraphicsRectItem* paper = new QGraphicsRectItem(rect);
         QMarginsF margins = QMarginsF(0, 0, 0, 0);
 
         switch (dialog.format()) {
         case LayoutExportFormat::SVG: {
-            exportSVG(filename, paper, draftScene);
+            exportSVG(filename, paper, m_draftScene);
             break;
         }
         case LayoutExportFormat::PNG: {
-            exportPNG(filename, draftScene);
+            exportPNG(filename, m_draftScene);
             break;
         }
         case LayoutExportFormat::JPG: {
-            exportJPG(filename, draftScene);
+            exportJPG(filename, m_draftScene);
             break;
         }
         case LayoutExportFormat::BMP: {
-            exportBMP(filename, draftScene);
+            exportBMP(filename, m_draftScene);
             break;
         }
         case LayoutExportFormat::TIF: {
-            exportTIF(filename, draftScene);
+            exportTIF(filename, m_draftScene);
             break;
         }
         case LayoutExportFormat::PPM: {
-            exportPPM(filename, draftScene);
+            exportPPM(filename, m_draftScene);
             break;
         }
         case LayoutExportFormat::PDF: {
-            exportPDF(filename, paper, draftScene, true, margins);
+            exportPDF(filename, paper, m_draftScene, true, margins);
             break;
         }
         case LayoutExportFormat::PDFTiled:
         case LayoutExportFormat::OBJ:
         case LayoutExportFormat::PS: {
-            exportPS(filename, paper, draftScene, true, margins);
+            exportPS(filename, paper, m_draftScene, true, margins);
             break;
         }
         case LayoutExportFormat::EPS: {
-            exportEPS(filename, paper, draftScene, true, margins);
+            exportEPS(filename, paper, m_draftScene, true, margins);
             break;
         }
         case LayoutExportFormat::DXF_AC1006_Flat:
@@ -6626,23 +6657,23 @@ void MainWindow::exportDraftBlocksAs()
         }
     }
 
-    // Disable draft blocks in the scenee except current block
+    // Disable draft Blocks in the scenee except current block
     doc->changeActiveDraftBlock(doc->getActiveDraftBlockName(), Document::FullParse);
 
-    draftScene->setOriginsVisible(qApp->Settings()->getShowAxisOrigin());
+    m_draftScene->setOriginsVisible(qApp->Settings()->getShowAxisOrigin());
 
     // Restore scale, scrollbars, current active draft block
-    ui->view->setTransform(viewTransform);
-    VMainGraphicsView::NewSceneRect(ui->view->scene(), ui->view);
-    zoomScaleChanged(ui->view->transform().m11());
+    m_ui->view->setTransform(viewTransform);
+    VMainGraphicsView::NewSceneRect(m_ui->view->scene(), m_ui->view);
+    zoomScaleChanged(m_ui->view->transform().m11());
 
-    ui->view->verticalScrollBar()->setValue(vScrollBar);
-    ui->view->horizontalScrollBar()->setValue(hScrollBar);
+    m_ui->view->verticalScrollBar()->setValue(vScrollBar);
+    m_ui->view->horizontalScrollBar()->setValue(hScrollBar);
 
     // reset tool buttons
-    ui->arrowPointer_ToolButton->setChecked(true);
-    ui->arrow_Action->setChecked(true);
-    ui->exportDraftBlocks_ToolButton->setChecked(false);
+    m_ui->arrowPointer_ToolButton->setChecked(true);
+    m_ui->arrow_Action->setChecked(true);
+    m_ui->exportDraftBlocks_ToolButton->setChecked(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -6879,25 +6910,25 @@ QString MainWindow::checkPathToMeasurements(const QString& patternPath, const QS
 void MainWindow::changeDraftBlock(int index, bool zoomBestFit)
 {
     if (index != -1) {
-        doc->changeActiveDraftBlock(draftBlockComboBox->itemText(index));
+        doc->changeActiveDraftBlock(m_draftBlockComboBox->itemText(index));
         doc->setCurrentData();
         emit RefreshHistory();
-        if (drawMode) {
+        if (m_drawMode) {
             handleArrowTool(true);
             if (zoomBestFit) {
                 zoomToSelected();
             }
         }
-        toolProperties->itemClicked(nullptr);   // hide options for tool in previous pattern piece
-        groupsWidget->updateGroups();
+        m_toolProperties->itemClicked(nullptr);   // hide options for tool in previous pattern piece
+        m_groupsWidget->updateGroups();
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::EndVisualization(bool click)
 {
-    if (!dialogTool.isNull()) {
-        dialogTool->ShowDialog(click);
+    if (!m_dialogTool.isNull()) {
+        m_dialogTool->ShowDialog(click);
     }
 }
 
@@ -6913,22 +6944,22 @@ void MainWindow::zoomFirstShow()
      */
     if (pattern->DataPieces()->size() > 0) {
         showPieceMode(true);
-        ui->view->zoomToFit();
+        m_ui->view->zoomToFit();
     }
-    if (!ui->showDraftMode->isChecked()) {
+    if (!m_ui->showDraftMode->isChecked()) {
         showDraftMode(true);
     }
     zoomToSelected();
 
-    VMainGraphicsView::NewSceneRect(draftScene, ui->view);
-    VMainGraphicsView::NewSceneRect(pieceScene, ui->view);
+    VMainGraphicsView::NewSceneRect(m_draftScene, m_ui->view);
+    VMainGraphicsView::NewSceneRect(m_pieceScene, m_ui->view);
 
     if (pattern->DataPieces()->size() > 0) {
         showPieceMode(true);
-        ui->view->zoomToFit();
+        m_ui->view->zoomToFit();
     }
 
-    if (!ui->showDraftMode->isChecked()) {
+    if (!m_ui->showDraftMode->isChecked()) {
         showDraftMode(true);
     }
 }
@@ -7007,9 +7038,9 @@ bool MainWindow::setSize(const QString& text)
             if (qApp->patternType() == MeasurementsType::Multisize) {
                 const int size = static_cast<int>(
                     UnitConvertor(text.toInt(), Unit::Cm, *pattern->GetPatternUnit()));
-                const qint32 index = gradationSizes->findText(QString().setNum(size));
+                const qint32 index = m_gradationSizes->findText(QString().setNum(size));
                 if (index != -1) {
-                    gradationSizes->setCurrentIndex(index);
+                    m_gradationSizes->setCurrentIndex(index);
                 } else {
                     qCCritical(
                         vMainWindow,
@@ -7049,9 +7080,9 @@ bool MainWindow::setHeight(const QString& text)
             if (qApp->patternType() == MeasurementsType::Multisize) {
                 const int height = static_cast<int>(
                     UnitConvertor(text.toInt(), Unit::Cm, *pattern->GetPatternUnit()));
-                const qint32 index = gradationHeights->findText(QString().setNum(height));
+                const qint32 index = m_gradationHeights->findText(QString().setNum(height));
                 if (index != -1) {
-                    gradationHeights->setCurrentIndex(index);
+                    m_gradationHeights->setCurrentIndex(index);
                 } else {
                     qCCritical(
                         vMainWindow,
@@ -7159,7 +7190,7 @@ QString MainWindow::GetMeasurementFileName()
         QString shownName(" - [");
         shownName += strippedName(AbsoluteMPath(qApp->getFilePath(), doc->MPath()));
 
-        if (mChanges) {
+        if (m_changes) {
             shownName += QLatin1String("*");
         }
 
@@ -7182,7 +7213,7 @@ void MainWindow::UpdateWindowTitle()
 #endif                                 /*Q_OS_WIN32*/
     }
 
-    if (!patternReadOnly && isFileWritable) {
+    if (!m_patternReadOnly && isFileWritable) {
         setWindowTitle(
             VER_INTERNALNAME_STR + QString(" - ") + GetPatternFileName()
             + GetMeasurementFileName());
@@ -7215,34 +7246,34 @@ void MainWindow::UpdateWindowTitle()
 
 void MainWindow::upDateScenes()
 {
-    if (draftScene) {
-        draftScene->update();
+    if (m_draftScene) {
+        m_draftScene->update();
     }
 
-    if (pieceScene) {
-        pieceScene->update();
+    if (m_pieceScene) {
+        m_pieceScene->update();
     }
 }
 
 void MainWindow::updateViewToolbar()
 {
-    ui->toggleWireframe_Action->setChecked(qApp->Settings()->isWireframe());
-    ui->toggleControlPoints_Action->setChecked(qApp->Settings()->getShowControlPoints());
-    ui->toggleAxisOrigin_Action->setChecked(qApp->Settings()->getShowAxisOrigin());
-    ui->toggleGrainLines_Action->setChecked(qApp->Settings()->showGrainlines());
-    ui->toggleSeamAllowances_Action->setChecked(qApp->Settings()->showSeamAllowances());
-    ui->toggleLabels_Action->setChecked(qApp->Settings()->showLabels());
+    m_ui->toggleWireframe_Action->setChecked(qApp->Settings()->isWireframe());
+    m_ui->toggleControlPoints_Action->setChecked(qApp->Settings()->getShowControlPoints());
+    m_ui->toggleAxisOrigin_Action->setChecked(qApp->Settings()->getShowAxisOrigin());
+    m_ui->toggleGrainLines_Action->setChecked(qApp->Settings()->showGrainlines());
+    m_ui->toggleSeamAllowances_Action->setChecked(qApp->Settings()->showSeamAllowances());
+    m_ui->toggleLabels_Action->setChecked(qApp->Settings()->showLabels());
 }
 
 void MainWindow::resetPanShortcuts()
 {
     QList<QKeySequence> zoomPanShortcuts;
-    zoomPanShortcuts = ui->zoomPan_Action->shortcuts();
+    zoomPanShortcuts = m_ui->zoomPan_Action->shortcuts();
     zoomPanShortcuts.removeAll(QKeySequence(Qt::Key_Space));
     if (!qApp->Seamly2DSettings()->isPanActiveSpaceKey()) {
         zoomPanShortcuts.append(QKeySequence(Qt::Key_Space));
     }
-    ui->zoomPan_Action->setShortcuts(zoomPanShortcuts);
+    m_ui->zoomPan_Action->setShortcuts(zoomPanShortcuts);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7254,7 +7285,7 @@ bool MainWindow::IgnoreLocking(int error, const QString& path)
         case QLockFile::LockFailedError:
             answer = QMessageBox::warning(
                 this,
-                tr("Locking file"),
+                tr("locking file"),
                 tr("This file already opened in another window. Ignore if you want "
                    "to continue (not recommended, can cause a data corruption)."),
                 QMessageBox::Abort | QMessageBox::Ignore,
@@ -7263,7 +7294,7 @@ bool MainWindow::IgnoreLocking(int error, const QString& path)
         case QLockFile::PermissionError:
             answer = QMessageBox::question(
                 this,
-                tr("Locking file"),
+                tr("locking file"),
                 tr("The lock file could not be created, for lack of permissions. "
                    "Ignore if you want to continue (not recommended, can cause "
                    "a data corruption)."),
@@ -7273,7 +7304,7 @@ bool MainWindow::IgnoreLocking(int error, const QString& path)
         case QLockFile::UnknownError:
             answer = QMessageBox::question(
                 this,
-                tr("Locking file"),
+                tr("locking file"),
                 tr("Unknown error happened, for instance a full partition prevented "
                    "writing out the lock file. Ignore if you want to continue (not "
                    "recommended, can cause a data corruption)."),
@@ -7376,7 +7407,7 @@ void MainWindow::ToolSelectPoint() const
     emit EnableSplinePathHover(false);
     emit EnableImageHover(false);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7418,7 +7449,7 @@ void MainWindow::ToolSelectSpline() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7446,7 +7477,7 @@ void MainWindow::ToolSelectSplinePath() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7474,7 +7505,7 @@ void MainWindow::ToolSelectArc() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7502,7 +7533,7 @@ void MainWindow::ToolSelectPointArc() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7530,7 +7561,7 @@ void MainWindow::ToolSelectCurve() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7558,7 +7589,7 @@ void MainWindow::selectAllDraftObjectsTool() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7586,7 +7617,7 @@ void MainWindow::ToolSelectOperationObjects() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(true);
+    m_ui->view->allowRubberBand(true);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -7615,5 +7646,5 @@ void MainWindow::selectPieceTool() const
 
     emit ItemsSelection(SelectionType::ByMouseRelease);
 
-    ui->view->allowRubberBand(false);
+    m_ui->view->allowRubberBand(false);
 }

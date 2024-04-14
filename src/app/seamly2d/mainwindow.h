@@ -290,80 +290,80 @@ private slots:
 private:
     Q_DISABLE_COPY(MainWindow)
     /** @brief ui keeps information about user interface */
-    Ui::MainWindow* ui;
+    Ui::MainWindow* m_ui;
 
-    QFileSystemWatcher* watcher{ new QFileSystemWatcher(this) };
+    QFileSystemWatcher* m_watcher{ new QFileSystemWatcher(this) };
 
     /** @brief tool current tool */
-    Tool currentTool{ Tool::Arrow };
+    Tool m_currentTool{ Tool::Arrow };
 
     /** @brief tool last used tool */
-    Tool lastUsedTool{ Tool::Arrow };
+    Tool m_lastUsedTool{ Tool::Arrow };
 
     /** @brief draftScene draft block scene. */
-    VMainGraphicsScene* draftScene{ nullptr };
+    VMainGraphicsScene* m_draftScene{ nullptr };
 
     /** @brief pieceScene pattern piece scene. */
-    VMainGraphicsScene* pieceScene{ nullptr };
+    VMainGraphicsScene* m_pieceScene{ nullptr };
 
     /** @brief mouseCoordinates pointer to label who show mouse coordinate. */
-    QPointer<MouseCoordinates> mouseCoordinates;
+    QPointer<MouseCoordinates> m_mouseCoordinates;
 
-    QPointer<QToolButton> infoToolButton;
+    QPointer<QToolButton> m_infoToolButton;
 
     /** @brief helpLabel help show tooltip. */
-    QLabel* helpLabel{ nullptr };
+    QLabel* m_helpLabel{ nullptr };
 
     /** @brief isInitialized true after first show window. */
-    bool isInitialized{ false };
+    bool m_isInitialized{ false };
 
-    /** @brief mChanges true if measurement file was changed. */
-    bool mChanges{ false };
-    bool mChangesAsked{ true };
+    /** @brief m_changes true if measurement file was changed. */
+    bool m_changes{ false };
+    bool m_changesAsked{ true };
 
-    bool patternReadOnly{ false };
+    bool m_patternReadOnly{ false };
 
-    QPointer<DialogVariables> dialogTable;
-    QSharedPointer<DialogTool> dialogTool;
-    QPointer<HistoryDialog> historyDialog;
+    QPointer<DialogVariables> m_dialogTable;
+    QSharedPointer<DialogTool> m_dialogTool;
+    QPointer<HistoryDialog> m_historyDialog;
 
-    QFontComboBox* fontComboBox{ nullptr };
-    QComboBox* fontSizeComboBox{ nullptr };
-    QComboBox* basePointComboBox{ nullptr };
-    QComboBox* draftBlockComboBox{
+    QFontComboBox* m_fontComboBox{ nullptr };
+    QComboBox* m_fontSizeComboBox{ nullptr };
+    QComboBox* m_basePointComboBox{ nullptr };
+    QComboBox* m_draftBlockComboBox{
         nullptr
     }; /** @brief draftBlockComboBox stores names of draft blocks.*/
-    QLabel* draftBlockLabel{ nullptr };
-    Draw mode{ Draw::Calculation };  /** @brief mode stores current draw mode. */
-    qint32 currentBlockIndex{ 0 };   /** @brief currentBlockIndex  current selected draft block.*/
-    qint32 currentToolBoxIndex{ 0 }; /** @brief currentToolBoxIndex  current set of tools. */
-    bool isToolOptionsDockVisible{ true };
-    bool isGroupsDockVisible{ true };
-    bool isLayoutsDockVisible{ false };
-    bool isToolboxDockVisible{ true };
-    bool drawMode{ true }; /** @brief drawMode true if draft scene active. */
+    QLabel* m_draftBlockLabel{ nullptr };
+    Draw m_mode{ Draw::Calculation };  /** @brief mode stores current draw mode. */
+    qint32 m_currentBlockIndex{ 0 };   /** @brief currentBlockIndex  current selected draft block.*/
+    qint32 m_currentToolBoxIndex{ 0 }; /** @brief currentToolBoxIndex  current set of tools. */
+    bool m_isToolOptionsDockVisible{ true };
+    bool m_isGroupsDockVisible{ true };
+    bool m_isLayoutsDockVisible{ false };
+    bool m_isToolboxDockVisible{ true };
+    bool m_drawMode{ true }; /** @brief drawMode true if draft scene active. */
 
     enum
     {
         MaxRecentFiles = 5
     };
-    QAction* recentFileActs[MaxRecentFiles];
-    QAction* separatorAct{ nullptr };
+    QAction* m_recentFileActs[MaxRecentFiles];
+    QAction* m_separatorAct{ nullptr };
 
-    QLabel* leftGoToStage{ nullptr };
-    QLabel* rightGoToStage{ nullptr };
-    QTimer* autoSaveTimer{ nullptr };
-    bool guiEnabled{ true };
-    QPointer<QComboBox> gradationHeights;
-    QPointer<QComboBox> gradationSizes;
-    QPointer<QLabel> gradationHeightsLabel;
-    QPointer<QLabel> gradationSizesLabel;
-    VToolOptionsPropertyBrowser* toolProperties{ nullptr };
-    GroupsWidget* groupsWidget{ nullptr };
-    PiecesWidget* patternPiecesWidget{ nullptr };
-    std::shared_ptr<VLockGuard<char>> lock;
+    QLabel* m_leftGoToStage{ nullptr };
+    QLabel* m_rightGoToStage{ nullptr };
+    QTimer* m_autoSaveTimer{ nullptr };
+    bool m_guiEnabled{ true };
+    QPointer<QComboBox> m_gradationHeights;
+    QPointer<QComboBox> m_gradationSizes;
+    QPointer<QLabel> m_gradationHeightsLabel;
+    QPointer<QLabel> m_gradationSizesLabel;
+    VToolOptionsPropertyBrowser* m_toolProperties{ nullptr };
+    GroupsWidget* m_groupsWidget{ nullptr };
+    PiecesWidget* m_patternPiecesWidget{ nullptr };
+    std::shared_ptr<VLockGuard<char>> m_lock;
 
-    QDoubleSpinBox* zoomScaleSpinBox{ nullptr };
+    QDoubleSpinBox* m_zoomScaleSpinBox{ nullptr };
     PenToolBar* m_penToolBar{ nullptr };   //!< for selecting the current pen
     PenToolBar* m_penReset{ nullptr };
     QComboBox* m_zoomToPointComboBox{ nullptr };
