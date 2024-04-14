@@ -52,12 +52,12 @@
 #ifndef ADDGROUP_H
 #define ADDGROUP_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -65,15 +65,16 @@ class AddGroup : public VUndoCommand
 {
     Q_OBJECT
 public:
-    AddGroup(const QDomElement &xml, VAbstractPattern *doc, QUndoCommand *parent = nullptr);
+    AddGroup(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent = nullptr);
     virtual ~AddGroup();
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
 signals:
     void updateGroups();
+
 private:
     Q_DISABLE_COPY(AddGroup)
     const QString activeBlockName;
 };
 
-#endif // ADDGROUP_H
+#endif   // ADDGROUP_H

@@ -53,20 +53,24 @@
 #define OPTIONS_H
 
 #include "../ifc/ifcdef.h"
-#include "../vgeometry/vgeometrydef.h"
 #include "../qmuparser/qmudef.h"
+#include "../vgeometry/vgeometrydef.h"
 #include "../vmisc/def.h"
 
 #ifdef Q_OS_WIN32
-#   if defined( Q_CC_MSVC )        // MSVC USED
-#       ifndef NOMINMAX
-#           define NOMINMAX        // DISABLE min/max MACROS
-#       endif
-#   endif /*Q_CC_MSVC*/
-#   include <windows.h>
+#    if defined(Q_CC_MSVC)   // MSVC USED
+#        ifndef NOMINMAX
+#            define NOMINMAX   // DISABLE min/max MACROS
+#        endif
+#    endif /*Q_CC_MSVC*/
+#    include <windows.h>
 
 #endif /*Q_OS_WIN32*/
 
-enum class Contour : char { OpenContour, CloseContour };
+enum class Contour : char
+{
+    OpenContour,
+    CloseContour
+};
 
-#endif // OPTIONS_H
+#endif   // OPTIONS_H

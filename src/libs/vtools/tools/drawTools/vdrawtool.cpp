@@ -48,18 +48,18 @@
  **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
  **
  *************************************************************************/
- 
+
 #include "vdrawtool.h"
 
-#include "../vabstracttool.h"
-#include "../ifc/ifcdef.h"
-#include "../ifc/xml/vdomdocument.h"
-#include "../ifc/xml/vabstractpattern.h"
-#include "../qmuparser/qmuparsererror.h"
-#include "../vmisc/logging.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../../undocommands/addtocalc.h"
 #include "../../undocommands/savetooloptions.h"
+#include "../ifc/ifcdef.h"
+#include "../ifc/xml/vabstractpattern.h"
+#include "../ifc/xml/vdomdocument.h"
+#include "../qmuparser/qmuparsererror.h"
+#include "../vabstracttool.h"
+#include "../vmisc/logging.h"
+#include "../vpatterndb/vcontainer.h"
 
 #include <QDialog>
 #include <QDomNode>
@@ -70,7 +70,8 @@
 #include <Qt>
 #include <QtDebug>
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -79,14 +80,19 @@ template <class T> class QSharedPointer;
  * @param data container with variables.
  * @param id object id in container.
  */
-VDrawTool::VDrawTool(VAbstractPattern *doc, VContainer *data, quint32 id, QObject *parent)
+VDrawTool::VDrawTool(VAbstractPattern* doc, VContainer* data, quint32 id, QObject* parent)
     : VInteractiveTool(doc, data, id, parent)
     , activeBlockName(doc->getActiveDraftBlockName())
     , m_lineType(LineTypeSolidLine)
     , m_lineWeight("0.35")
 {
-    connect(this->doc, &VAbstractPattern::activeDraftBlockChanged, this, &VDrawTool::activeBlockChanged);
-    connect(this->doc, &VAbstractPattern::draftBlockNameChanged, this, &VDrawTool::blockNameChanged);
+    connect(
+        this->doc,
+        &VAbstractPattern::activeDraftBlockChanged,
+        this,
+        &VDrawTool::activeBlockChanged);
+    connect(
+        this->doc, &VAbstractPattern::draftBlockNameChanged, this, &VDrawTool::blockNameChanged);
     connect(this->doc, &VAbstractPattern::ShowTool, this, &VDrawTool::ShowTool);
 }
 
@@ -107,7 +113,7 @@ void VDrawTool::ShowTool(quint32 id, bool enable)
  * @brief activeBlockChanged disable or enable context menu after change active draft block.
  * @param newName new name active draft block.
  */
-void VDrawTool::activeBlockChanged(const QString &newName)
+void VDrawTool::activeBlockChanged(const QString& newName)
 {
     Disable(!(activeBlockName == newName), newName);
 }
@@ -118,10 +124,9 @@ void VDrawTool::activeBlockChanged(const QString &newName)
  * @param oldName old name.
  * @param newName new name active draft block. new name.
  */
-void VDrawTool::blockNameChanged(const QString &oldName, const QString &newName)
+void VDrawTool::blockNameChanged(const QString& oldName, const QString& newName)
 {
-    if (activeBlockName == oldName)
-    {
+    if (activeBlockName == oldName) {
         activeBlockName = newName;
     }
 }
@@ -131,17 +136,15 @@ void VDrawTool::SaveDialogChange()
 {
     qCDebug(vTool, "Saving tool options after using dialog");
     QDomElement oldDomElement = doc->elementById(m_id, getTagName());
-    if (oldDomElement.isElement())
-    {
+    if (oldDomElement.isElement()) {
         QDomElement newDomElement = oldDomElement.cloneNode().toElement();
         SaveDialog(newDomElement);
 
-        SaveToolOptions *saveOptions = new SaveToolOptions(oldDomElement, newDomElement, doc, m_id);
-        connect(saveOptions, &SaveToolOptions::NeedLiteParsing, doc, &VAbstractPattern::LiteParseTree);
+        SaveToolOptions* saveOptions = new SaveToolOptions(oldDomElement, newDomElement, doc, m_id);
+        connect(
+            saveOptions, &SaveToolOptions::NeedLiteParsing, doc, &VAbstractPattern::LiteParseTree);
         qApp->getUndoStack()->push(saveOptions);
-    }
-    else
-    {
+    } else {
         qCWarning(vTool, "Can't find tool with id = %u", m_id);
     }
 }
@@ -159,28 +162,26 @@ void VDrawTool::AddToFile()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VDrawTool::SaveOption(QSharedPointer<VGObject> &obj)
+void VDrawTool::SaveOption(QSharedPointer<VGObject>& obj)
 {
     qCDebug(vTool, "Saving tool options");
     QDomElement oldDomElement = doc->elementById(m_id, getTagName());
-    if (oldDomElement.isElement())
-    {
+    if (oldDomElement.isElement()) {
         QDomElement newDomElement = oldDomElement.cloneNode().toElement();
 
         SaveOptions(newDomElement, obj);
 
-        SaveToolOptions *saveOptions = new SaveToolOptions(oldDomElement, newDomElement, doc, m_id);
-        connect(saveOptions, &SaveToolOptions::NeedLiteParsing, doc, &VAbstractPattern::LiteParseTree);
+        SaveToolOptions* saveOptions = new SaveToolOptions(oldDomElement, newDomElement, doc, m_id);
+        connect(
+            saveOptions, &SaveToolOptions::NeedLiteParsing, doc, &VAbstractPattern::LiteParseTree);
         qApp->getUndoStack()->push(saveOptions);
-    }
-    else
-    {
+    } else {
         qCWarning(vTool, "Can't find tool with id = %u", m_id);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VDrawTool::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void VDrawTool::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     Q_UNUSED(obj)
 
@@ -188,20 +189,14 @@ void VDrawTool::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VDrawTool::makeToolTip() const
-{
-    return QString();
-}
+QString VDrawTool::makeToolTip() const { return QString(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VDrawTool::CorrectDisable(bool disable, const QString &draftBlockName) const
+bool VDrawTool::CorrectDisable(bool disable, const QString& draftBlockName) const
 {
-    if (disable)
-    {
+    if (disable) {
         return disable;
-    }
-    else
-    {
+    } else {
         return !(activeBlockName == draftBlockName);
     }
 }
@@ -210,12 +205,9 @@ bool VDrawTool::CorrectDisable(bool disable, const QString &draftBlockName) cons
 void VDrawTool::ReadAttributes()
 {
     const QDomElement domElement = doc->elementById(m_id, getTagName());
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         ReadToolAttributes(domElement);
-    }
-    else
-    {
+    } else {
         qCWarning(vTool, "Can't find tool with id = %u", m_id);
     }
 }
@@ -246,31 +238,27 @@ void VDrawTool::piecesMode(bool mode)
  * @brief AddToCalculation add tool to calculation tag in pattern file.
  * @param domElement tag in xml tree.
  */
-void VDrawTool::AddToCalculation(const QDomElement &domElement)
+void VDrawTool::AddToCalculation(const QDomElement& domElement)
 {
-    AddToCalc *addToCal = new AddToCalc(domElement, doc);
+    AddToCalc* addToCal = new AddToCalc(domElement, doc);
     connect(addToCal, &AddToCalc::NeedFullParsing, doc, &VAbstractPattern::NeedFullParsing);
     qApp->getUndoStack()->push(addToCal);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VDrawTool::addDependence(QList<quint32> &list, quint32 objectId) const
+void VDrawTool::addDependence(QList<quint32>& list, quint32 objectId) const
 {
-    if (objectId != NULL_ID)
-    {
+    if (objectId != NULL_ID) {
         auto originPoint = VAbstractTool::data.GetGObject(objectId);
         list.append(originPoint->getIdTool());
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VDrawTool::getLineType() const
-{
-    return m_lineType;
-}
+QString VDrawTool::getLineType() const { return m_lineType; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VDrawTool::setLineType(const QString &value)
+void VDrawTool::setLineType(const QString& value)
 {
     m_lineType = value;
 
@@ -279,13 +267,10 @@ void VDrawTool::setLineType(const QString &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VDrawTool::getLineWeight() const
-{
-    return m_lineWeight;
-}
+QString VDrawTool::getLineWeight() const { return m_lineWeight; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VDrawTool::setLineWeight(const QString &value)
+void VDrawTool::setLineWeight(const QString& value)
 {
     m_lineWeight = value;
 

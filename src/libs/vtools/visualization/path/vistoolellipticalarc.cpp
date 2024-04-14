@@ -36,12 +36,18 @@
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vellipticalarc.h"
 #include "../vgeometry/vpointf.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../visualization.h"
+#include "../vpatterndb/vcontainer.h"
 #include "vispath.h"
 
-VisToolEllipticalArc::VisToolEllipticalArc(const VContainer *data, QGraphicsItem *parent)
-    :VisPath(data, parent), arcCenter(nullptr), radius1(0), radius2(0), f1(0), f2(0), rotationAngle(0)
+VisToolEllipticalArc::VisToolEllipticalArc(const VContainer* data, QGraphicsItem* parent)
+    : VisPath(data, parent)
+    , arcCenter(nullptr)
+    , radius1(0)
+    , radius2(0)
+    , f1(0)
+    , f2(0)
+    , rotationAngle(0)
 {
     arcCenter = InitPoint(mainColor, this);
 }
@@ -49,45 +55,52 @@ VisToolEllipticalArc::VisToolEllipticalArc(const VContainer *data, QGraphicsItem
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolEllipticalArc::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
-        const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
+    if (object1Id > NULL_ID) {
+        const QSharedPointer<VPointF> first =
+            Visualization::data->GeometricObject<VPointF>(object1Id);
         DrawPoint(arcCenter, static_cast<QPointF>(*first), supportColor);
 
-        if (not qFuzzyIsNull(radius1) && not qFuzzyIsNull(radius2) && f1 >= 0 && f2 >= 0 && rotationAngle >= 0)
-        {
+        if (not qFuzzyIsNull(radius1) && not qFuzzyIsNull(radius2) && f1 >= 0 && f2 >= 0
+            && rotationAngle >= 0) {
             VEllipticalArc elArc = VEllipticalArc(*first, radius1, radius2, f1, f2, rotationAngle);
-            DrawPath(this, elArc.GetPath(), elArc.DirectionArrows(), mainColor, lineStyle, lineWeight, Qt::RoundCap);
+            DrawPath(
+                this,
+                elArc.GetPath(),
+                elArc.DirectionArrows(),
+                mainColor,
+                lineStyle,
+                lineWeight,
+                Qt::RoundCap);
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolEllipticalArc::setRadius1(const QString &expression)
+void VisToolEllipticalArc::setRadius1(const QString& expression)
 {
     radius1 = FindLength(expression, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolEllipticalArc::setRadius2(const QString &expression)
+void VisToolEllipticalArc::setRadius2(const QString& expression)
 {
     radius2 = FindLength(expression, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolEllipticalArc::setF1(const QString &expression)
+void VisToolEllipticalArc::setF1(const QString& expression)
 {
     f1 = FindVal(expression, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolEllipticalArc::setF2(const QString &expression)
+void VisToolEllipticalArc::setF2(const QString& expression)
 {
     f2 = FindVal(expression, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolEllipticalArc::setRotationAngle(const QString &expression)
+void VisToolEllipticalArc::setRotationAngle(const QString& expression)
 {
     rotationAngle = FindVal(expression, Visualization::data->DataVariables());
 }

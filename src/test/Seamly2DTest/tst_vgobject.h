@@ -54,15 +54,15 @@
 
 #include <QObject>
 
-class TST_VGObject  : public QObject
+class TST_VGObject : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VGObject(QObject *parent = nullptr);
+    explicit TST_VGObject(QObject* parent = nullptr);
 
 private slots:
     void TestIsPointOnLineviaPDP_data();
     void TestIsPointOnLineviaPDP() const;
 };
 
-#endif // TST_VGOBJECT_H
+#endif   // TST_VGOBJECT_H

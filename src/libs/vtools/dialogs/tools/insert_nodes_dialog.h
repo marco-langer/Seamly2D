@@ -53,16 +53,15 @@
 #ifndef INSERT_NODES_DIALOG_H
 #define INSERT_NODES_DIALOG_H
 
-#include "dialogtool.h"
 #include "../vpatterndb/vpiecenode.h"
+#include "dialogtool.h"
 
 #include <QSound>
 
 class VPieceNode;
 
-namespace Ui
-{
-    class InsertNodesDialog;
+namespace Ui {
+class InsertNodesDialog;
 }
 
 class InsertNodesDialog : public DialogTool
@@ -70,40 +69,40 @@ class InsertNodesDialog : public DialogTool
     Q_OBJECT
 
 public:
-    explicit              InsertNodesDialog(const VContainer *data, quint32 toolId, QWidget *parent = nullptr);
-    virtual              ~InsertNodesDialog();
+    explicit InsertNodesDialog(const VContainer* data, quint32 toolId, QWidget* parent = nullptr);
+    virtual ~InsertNodesDialog();
 
-    virtual void          SetPiecesList(const QVector<quint32> &list) Q_DECL_OVERRIDE;
+    virtual void SetPiecesList(const QVector<quint32>& list) Q_DECL_OVERRIDE;
 
-    quint32               getPieceId() const;
+    quint32 getPieceId() const;
 
-    QVector<VPieceNode>   getNodes() const;
+    QVector<VPieceNode> getNodes() const;
 
-    virtual void          ShowDialog(bool click) Q_DECL_OVERRIDE;
+    virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void          SelectedObject(bool selected, quint32 object, quint32 tool) Q_DECL_OVERRIDE;
+    virtual void SelectedObject(bool selected, quint32 object, quint32 tool) Q_DECL_OVERRIDE;
 
 private slots:
-    void                  showContextMenu(const QPoint &pos);
+    void showContextMenu(const QPoint& pos);
 
 protected:
-    virtual void          checkState() Q_DECL_FINAL;
-    virtual bool          eventFilter(QObject *object, QEvent *event) Q_DECL_OVERRIDE;
+    virtual void checkState() Q_DECL_FINAL;
+    virtual bool eventFilter(QObject* object, QEvent* event) Q_DECL_OVERRIDE;
 
 private:
-                          Q_DISABLE_COPY(InsertNodesDialog)
-    Ui::InsertNodesDialog *ui;
+    Q_DISABLE_COPY(InsertNodesDialog)
+    Ui::InsertNodesDialog* ui;
 
-    QVector<VPieceNode>   m_nodes;
-    bool                  m_nodeFlag;
-    bool                  m_piecesFlag;
-    QSound               *m_beep;
-    void                  validatePieces();
-    void                  validateNodes();
-    quint32               getLastNodeId() const;
-    bool                  correctCurveDirection(quint32 objectId);
-    void                  insertCurveNodes(VPieceNode curveNode);
+    QVector<VPieceNode> m_nodes;
+    bool m_nodeFlag;
+    bool m_piecesFlag;
+    QSound* m_beep;
+    void validatePieces();
+    void validateNodes();
+    quint32 getLastNodeId() const;
+    bool correctCurveDirection(quint32 objectId);
+    void insertCurveNodes(VPieceNode curveNode);
 };
 
-#endif // INSERT_NODES_DIALOG_H
+#endif   // INSERT_NODES_DIALOG_H

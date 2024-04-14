@@ -27,17 +27,22 @@
 #include <QDomNode>
 #include <QDomNodeList>
 
+#include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/def.h"
-#include "../vwidgets/vmaingraphicsview.h"
-#include "../ifc/xml/vabstractpattern.h"
 #include "../vtools/tools/vdatatool.h"
+#include "../vwidgets/vmaingraphicsview.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 
-MoveGroupItem::MoveGroupItem(const QDomElement &source, const QDomElement &dest, VAbstractPattern *doc,
-                             quint32 sourceId, quint32 destinationId, QUndoCommand *parent)
+MoveGroupItem::MoveGroupItem(
+    const QDomElement& source,
+    const QDomElement& dest,
+    VAbstractPattern* doc,
+    quint32 sourceId,
+    quint32 destinationId,
+    QUndoCommand* parent)
     : VUndoCommand(source, doc, parent)
     , m_source(source)
     , m_dest(dest)
@@ -49,30 +54,27 @@ MoveGroupItem::MoveGroupItem(const QDomElement &source, const QDomElement &dest,
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveGroupItem::~MoveGroupItem()
-{
-}
+MoveGroupItem::~MoveGroupItem() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void MoveGroupItem::undo()
 {
     qCDebug(vUndo, "Undo move group item");
-    doc->changeActiveDraftBlock(m_activeDraftblockName);//Without this user will not see this change
+    doc->changeActiveDraftBlock(
+        m_activeDraftblockName);   // Without this user will not see this change
 
     QDomElement sourceGroup = doc->elementById(m_sourceGroupId, VAbstractPattern::TagGroup);
-    QDomElement destintationGroup = doc->elementById(m_destinationGroupId, VAbstractPattern::TagGroup);
-    if (sourceGroup.isElement() && destintationGroup.isElement())
-    {
-        if (sourceGroup.appendChild(m_source).isNull())
-        {
+    QDomElement destintationGroup =
+        doc->elementById(m_destinationGroupId, VAbstractPattern::TagGroup);
+    if (sourceGroup.isElement() && destintationGroup.isElement()) {
+        if (sourceGroup.appendChild(m_source).isNull()) {
             qCDebug(vUndo, "Can't move the item.");
             return;
         }
 
-        if (destintationGroup.removeChild(m_dest).isNull())
-        {
+        if (destintationGroup.removeChild(m_dest).isNull()) {
             qCDebug(vUndo, "Can't move item.");
-            //sourceGroup.removeChild(m_source);
+            // sourceGroup.removeChild(m_source);
             return;
         }
 
@@ -80,48 +82,43 @@ void MoveGroupItem::undo()
         emit qApp->getCurrentDocument()->patternChanged(true);
 
         QDomElement groups = doc->createGroups();
-        if (not groups.isNull())
-        {
+        if (not groups.isNull()) {
             doc->parseGroups(groups);
-        } else
-        {
+        } else {
             qCDebug(vUndo, "Can't get tag Groups.");
             return;
         }
 
         emit updateGroups();
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't get group by id = %u.", m_sourceGroupId);
         return;
     }
 
     VMainGraphicsView::NewSceneRect(qApp->getCurrentScene(), qApp->getSceneView());
-    emit doc->setCurrentDraftBlock(m_activeDraftblockName);//Return current draft Block after undo
-
+    emit doc->setCurrentDraftBlock(
+        m_activeDraftblockName);   // Return current draft Block after undo
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MoveGroupItem::redo()
 {
     qCDebug(vUndo, "Redo move group item");
-    doc->changeActiveDraftBlock(m_activeDraftblockName);//Without this user will not see this change
+    doc->changeActiveDraftBlock(
+        m_activeDraftblockName);   // Without this user will not see this change
 
     QDomElement sourceGroup = doc->elementById(m_sourceGroupId, VAbstractPattern::TagGroup);
-    QDomElement destintationGroup = doc->elementById(m_destinationGroupId, VAbstractPattern::TagGroup);
-    if (sourceGroup.isElement() && destintationGroup.isElement())
-    {
-        if (destintationGroup.appendChild(m_dest).isNull())
-        {
+    QDomElement destintationGroup =
+        doc->elementById(m_destinationGroupId, VAbstractPattern::TagGroup);
+    if (sourceGroup.isElement() && destintationGroup.isElement()) {
+        if (destintationGroup.appendChild(m_dest).isNull()) {
             qCDebug(vUndo, "Can't move the item.");
             return;
         }
 
-        if (sourceGroup.removeChild(m_source).isNull())
-        {
+        if (sourceGroup.removeChild(m_source).isNull()) {
             qCDebug(vUndo, "Can't move item.");
-            //destintationGroup.removeChild(m_dest);
+            // destintationGroup.removeChild(m_dest);
             return;
         }
 
@@ -129,23 +126,20 @@ void MoveGroupItem::redo()
         emit qApp->getCurrentDocument()->patternChanged(true);
 
         QDomElement groups = doc->createGroups();
-        if (not groups.isNull())
-        {
+        if (not groups.isNull()) {
             doc->parseGroups(groups);
-        } else
-        {
+        } else {
             qCDebug(vUndo, "Can't get tag Groups.");
             return;
         }
 
         emit updateGroups();
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't get group by id = %u.", m_sourceGroupId);
         return;
     }
 
     VMainGraphicsView::NewSceneRect(qApp->getCurrentScene(), qApp->getSceneView());
-    emit doc->setCurrentDraftBlock(m_activeDraftblockName); //Return current draft Block after undo
+    emit doc->setCurrentDraftBlock(
+        m_activeDraftblockName);   // Return current draft Block after undo
 }

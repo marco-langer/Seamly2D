@@ -26,18 +26,18 @@
  **
  *************************************************************************/
 
+#include <QApplication>
 #include <QDate>
+#include <QDebug>
 #include <QFileInfo>
 #include <QFontMetrics>
 #include <QLatin1String>
 #include <QRegularExpression>
-#include <QApplication>
-#include <QDebug>
 
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vpatterndb/floatItemData/vpiecelabeldata.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vmath.h"
+#include "../vpatterndb/floatItemData/vpiecelabeldata.h"
 #include "../vpatterndb/vcontainer.h"
 #include "vtextmanager.h"
 
@@ -46,20 +46,19 @@
  * @brief TextLine::TextLine default constructor
  */
 TextLine::TextLine()
-    : m_text(),
-      m_iFontSize(MIN_FONT_SIZE),
-      bold(false),
-      italic(false),
-      m_eAlign(Qt::AlignCenter)
+    : m_text()
+    , m_iFontSize(MIN_FONT_SIZE)
+    , bold(false)
+    , italic(false)
+    , m_eAlign(Qt::AlignCenter)
 {}
 
 QList<TextLine> VTextManager::m_patternLabelLines = QList<TextLine>();
 
-namespace
-{
+namespace {
 
 //---------------------------------------------------------------------------------------------------------------------
-QMap<QString, QString> PreparePlaceholders(const VAbstractPattern *doc)
+QMap<QString, QString> PreparePlaceholders(const VAbstractPattern* doc)
 {
     SCASSERT(doc != nullptr)
 
@@ -85,14 +84,11 @@ QMap<QString, QString> PreparePlaceholders(const VAbstractPattern *doc)
     QString curSize;
     QString curHeight;
     QString mExt;
-    if (qApp->patternType() == MeasurementsType::Multisize)
-    {
+    if (qApp->patternType() == MeasurementsType::Multisize) {
         curSize = QString::number(VContainer::size());
         curHeight = QString::number(VContainer::height());
         mExt = "vst";
-    }
-    else if (qApp->patternType() == MeasurementsType::Individual)
-    {
+    } else if (qApp->patternType() == MeasurementsType::Individual) {
         curSize = QString::number(VContainer::size());
         curHeight = QString::number(VContainer::height());
         mExt = "vit";
@@ -122,7 +118,8 @@ QMap<QString, QString> PreparePlaceholders(const VAbstractPattern *doc)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void InitPiecePlaceholders(QMap<QString, QString> &placeholders, const QString &name, const VPieceLabelData& data)
+void InitPiecePlaceholders(
+    QMap<QString, QString>& placeholders, const QString& name, const VPieceLabelData& data)
 {
     placeholders[pl_pLetter] = data.GetLetter();
     placeholders[pl_pAnnotation] = data.GetAnnotation();
@@ -133,34 +130,30 @@ void InitPiecePlaceholders(QMap<QString, QString> &placeholders, const QString &
     placeholders[pl_pName] = name;
     placeholders[pl_pQuantity] = QString::number(data.GetQuantity());
 
-    if (data.IsOnFold())
-    {
+    if (data.IsOnFold()) {
         placeholders[pl_wOnFold] = QObject::tr("on fold");
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString ReplacePlaceholders(const QMap<QString, QString> &placeholders, QString line)
+QString ReplacePlaceholders(const QMap<QString, QString>& placeholders, QString line)
 {
     QChar per('%');
     auto i = placeholders.constBegin();
-    while (i != placeholders.constEnd())
-    {
-        line.replace(per+i.key()+per, i.value());
+    while (i != placeholders.constEnd()) {
+        line.replace(per + i.key() + per, i.value());
         ++i;
     }
     return line;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QList<TextLine> PrepareLines(const QVector<VLabelTemplateLine> &lines)
+QList<TextLine> PrepareLines(const QVector<VLabelTemplateLine>& lines)
 {
     QList<TextLine> textLines;
 
-    for (int i=0; i < lines.size(); ++i)
-    {
-        if (not lines.at(i).line.isEmpty())
-        {
+    for (int i = 0; i < lines.size(); ++i) {
+        if (not lines.at(i).line.isEmpty()) {
             TextLine tl;
             tl.m_text = lines.at(i).line;
             tl.m_eAlign = static_cast<Qt::Alignment>(lines.at(i).alignment);
@@ -174,26 +167,27 @@ QList<TextLine> PrepareLines(const QVector<VLabelTemplateLine> &lines)
 
     return textLines;
 }
-}
+}   // namespace
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VTextManager::VTextManager constructor
  */
 VTextManager::VTextManager()
-     : m_font(), m_liLines()
+    : m_font()
+    , m_liLines()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VTextManager::VTextManager(const VTextManager &text)
-    : m_font(text.GetFont()), m_liLines(text.GetAllSourceLines())
+VTextManager::VTextManager(const VTextManager& text)
+    : m_font(text.GetFont())
+    , m_liLines(text.GetAllSourceLines())
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VTextManager &VTextManager::operator=(const VTextManager &text)
+VTextManager& VTextManager::operator=(const VTextManager& text)
 {
-    if ( &text == this )
-    {
+    if (&text == this) {
         return *this;
     }
     m_font = text.GetFont();
@@ -206,30 +200,21 @@ VTextManager &VTextManager::operator=(const VTextManager &text)
  * @brief GetSpacing returns the vertical spacing between the lines
  * @return spacing
  */
-int VTextManager::GetSpacing() const
-{
-    return 0;
-}
+int VTextManager::GetSpacing() const { return 0; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief SetFont set the text base font
  * @param font text base font
  */
-void VTextManager::setFont(const QFont& font)
-{
-    m_font = font;
-}
+void VTextManager::setFont(const QFont& font) { m_font = font; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetFont returns the text base font
  * @return text base font
  */
-const QFont& VTextManager::GetFont() const
-{
-    return m_font;
-}
+const QFont& VTextManager::GetFont() const { return m_font; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -242,20 +227,14 @@ void VTextManager::SetFontSize(int iFS)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QList<TextLine> VTextManager::GetAllSourceLines() const
-{
-    return m_liLines;
-}
+QList<TextLine> VTextManager::GetAllSourceLines() const { return m_liLines; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VTextManager::GetSourceLinesCount returns the number of input text lines
  * @return number of text lines that were added to the list by calling AddLine
  */
-int VTextManager::GetSourceLinesCount() const
-{
-    return m_liLines.count();
-}
+int VTextManager::GetSourceLinesCount() const { return m_liLines.count(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -272,21 +251,19 @@ const TextLine& VTextManager::GetSourceLine(int i) const
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
- * @brief VTextManager::FitFontSize sets the font size just big enough, so that the text fits into rectangle of
- * size (fW, fH)
+ * @brief VTextManager::FitFontSize sets the font size just big enough, so that the text fits into
+ * rectangle of size (fW, fH)
  * @param fW rectangle width
  * @param fH rectangle height
  */
 void VTextManager::FitFontSize(qreal fW, qreal fH)
 {
     int iFS = 0;
-    if (GetSourceLinesCount() > 0)
-    {//division by zero
-        iFS = 3*qFloor(fH/GetSourceLinesCount())/4;
+    if (GetSourceLinesCount() > 0) {   // division by zero
+        iFS = 3 * qFloor(fH / GetSourceLinesCount()) / 4;
     }
 
-    if (iFS < MIN_FONT_SIZE)
-    {
+    if (iFS < MIN_FONT_SIZE) {
         iFS = MIN_FONT_SIZE;
     }
 
@@ -295,8 +272,7 @@ void VTextManager::FitFontSize(qreal fW, qreal fH)
     int iMaxLen = 0;
     TextLine maxLine;
     QFont fnt;
-    for (int i = 0; i < GetSourceLinesCount(); ++i)
-    {
+    for (int i = 0; i < GetSourceLinesCount(); ++i) {
         const TextLine& tl = GetSourceLine(i);
         fnt = m_font;
         fnt.setPixelSize(iFS + tl.m_iFontSize);
@@ -304,27 +280,23 @@ void VTextManager::FitFontSize(qreal fW, qreal fH)
         fnt.setItalic(tl.italic);
         QFontMetrics fm(fnt);
         const int iTW = fm.horizontalAdvance(tl.m_text);
-        if (iTW > iMaxLen)
-        {
+        if (iTW > iMaxLen) {
             iMaxLen = iTW;
             maxLine = tl;
         }
     }
-    if (iMaxLen > fW)
-    {
+    if (iMaxLen > fW) {
         QFont fnt = m_font;
         fnt.setBold(maxLine.bold);
         fnt.setItalic(maxLine.italic);
 
         int lineLength = 0;
-        do
-        {
+        do {
             --iFS;
             fnt.setPixelSize(iFS + maxLine.m_iFontSize);
             QFontMetrics fm(fnt);
             lineLength = fm.horizontalAdvance(maxLine.m_text);
-        }
-        while (lineLength > fW && iFS > MIN_FONT_SIZE);
+        } while (lineLength > fW && iFS > MIN_FONT_SIZE);
     }
     SetFontSize(iFS);
     qDebug() << "Font size" << GetSourceLinesCount() << iFS;
@@ -345,8 +317,7 @@ void VTextManager::Update(const QString& qsName, const VPieceLabelData& data)
 
     QVector<VLabelTemplateLine> lines = data.GetLabelTemplate();
 
-    for (int i=0; i<lines.size(); ++i)
-    {
+    for (int i = 0; i < lines.size(); ++i) {
         lines[i].line = ReplacePlaceholders(placeholders, lines.at(i).line);
     }
 
@@ -358,22 +329,19 @@ void VTextManager::Update(const QString& qsName, const VPieceLabelData& data)
  * @brief VTextManager::Update updates the text lines with pattern info
  * @param pDoc pointer to the abstract pattern object
  */
-void VTextManager::Update(VAbstractPattern *pDoc)
+void VTextManager::Update(VAbstractPattern* pDoc)
 {
     m_liLines.clear();
 
-    if (m_patternLabelLines.isEmpty() || pDoc->GetPatternWasChanged())
-    {
+    if (m_patternLabelLines.isEmpty() || pDoc->GetPatternWasChanged()) {
         QVector<VLabelTemplateLine> lines = pDoc->getPatternLabelTemplate();
-        if (lines.isEmpty() && m_patternLabelLines.isEmpty())
-        {
-            return; // Nothing to parse
+        if (lines.isEmpty() && m_patternLabelLines.isEmpty()) {
+            return;   // Nothing to parse
         }
 
         const QMap<QString, QString> placeholders = PreparePlaceholders(pDoc);
 
-        for (int i=0; i<lines.size(); ++i)
-        {
+        for (int i = 0; i < lines.size(); ++i) {
             lines[i].line = ReplacePlaceholders(placeholders, lines.at(i).line);
         }
 

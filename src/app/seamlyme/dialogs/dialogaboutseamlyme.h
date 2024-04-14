@@ -54,9 +54,8 @@
 
 #include <QDialog>
 
-namespace Ui
-{
-    class DialogAboutSeamlyMe;
+namespace Ui {
+class DialogAboutSeamlyMe;
 }
 
 class DialogAboutSeamlyMe : public QDialog
@@ -64,24 +63,24 @@ class DialogAboutSeamlyMe : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogAboutSeamlyMe(QWidget *parent = nullptr);
+    explicit DialogAboutSeamlyMe(QWidget* parent = nullptr);
     virtual ~DialogAboutSeamlyMe();
 
 protected:
     virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 
 public slots:
-	void setProgressValue(int val);
+    void setProgressValue(int val);
 
 private:
     Q_DISABLE_COPY(DialogAboutSeamlyMe)
-    Ui::DialogAboutSeamlyMe *ui;
+    Ui::DialogAboutSeamlyMe* ui;
     bool isInitialized;
 
-    void FontPointSize(QWidget *w, int pointSize);
+    void FontPointSize(QWidget* w, int pointSize);
 
     void RetranslateUi();
 };
 
-#endif // DIALOGABOUTSEAMLYME_H
+#endif   // DIALOGABOUTSEAMLYME_H

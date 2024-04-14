@@ -32,7 +32,7 @@
 
 #include "../vproperty_p.h"
 
-VPE::VStringProperty::VStringProperty(const QString &name, const QMap<QString, QVariant> &settings)
+VPE::VStringProperty::VStringProperty(const QString& name, const QMap<QString, QVariant>& settings)
     : VProperty(name, QVariant::String)
     , readOnly(false)
     , typeForParent(0)
@@ -44,7 +44,7 @@ VPE::VStringProperty::VStringProperty(const QString &name, const QMap<QString, Q
     d_ptr->VariantValue.convert(QVariant::String);
 }
 
-VPE::VStringProperty::VStringProperty(const QString &name)
+VPE::VStringProperty::VStringProperty(const QString& name)
     : VProperty(name)
     , readOnly(false)
     , typeForParent(0)
@@ -55,13 +55,13 @@ VPE::VStringProperty::VStringProperty(const QString &name)
     d_ptr->VariantValue.convert(QVariant::String);
 }
 
-QWidget *VPE::VStringProperty::createEditor(QWidget *parent, const QStyleOptionViewItem &options,
-                                            const QAbstractItemDelegate *delegate)
+QWidget* VPE::VStringProperty::createEditor(
+    QWidget* parent, const QStyleOptionViewItem& options, const QAbstractItemDelegate* delegate)
 {
     Q_UNUSED(options)
     Q_UNUSED(delegate)
 
-    QLineEdit *tmpEditor = new QLineEdit(parent);
+    QLineEdit* tmpEditor = new QLineEdit(parent);
     tmpEditor->setMinimumWidth(140);
     tmpEditor->setAlignment(Qt::AlignTop);
     tmpEditor->setLocale(parent->locale());
@@ -75,55 +75,39 @@ QWidget *VPE::VStringProperty::createEditor(QWidget *parent, const QStyleOptionV
     return d_ptr->editor;
 }
 
-QVariant VPE::VStringProperty::getEditorData(const QWidget *editor) const
+QVariant VPE::VStringProperty::getEditorData(const QWidget* editor) const
 {
-    const QLineEdit *tmpEditor = qobject_cast<const QLineEdit*>(editor);
-    if (tmpEditor)
-    {
+    const QLineEdit* tmpEditor = qobject_cast<const QLineEdit*>(editor);
+    if (tmpEditor) {
         return tmpEditor->text();
     }
 
     return QVariant(QString());
 }
 
-void VPE::VStringProperty::setReadOnly(bool readOnly)
-{
-    this->readOnly = readOnly;
-}
+void VPE::VStringProperty::setReadOnly(bool readOnly) { this->readOnly = readOnly; }
 
-void VPE::VStringProperty::setOsSeparator(bool separator)
-{
-    m_osSeparator = separator;
-}
+void VPE::VStringProperty::setOsSeparator(bool separator) { m_osSeparator = separator; }
 
-void VPE::VStringProperty::setClearButtonEnable(bool value)
-{
-    this->clearButton = value;
-}
+void VPE::VStringProperty::setClearButtonEnable(bool value) { this->clearButton = value; }
 
-void VPE::VStringProperty::setSetting(const QString &key, const QVariant &value)
+void VPE::VStringProperty::setSetting(const QString& key, const QVariant& value)
 {
-    if (key == QLatin1String("ReadOnly"))
-    {
+    if (key == QLatin1String("ReadOnly")) {
         setReadOnly(value.toBool());
     }
-    if (key == QLatin1String("TypeForParent"))
-    {
+    if (key == QLatin1String("TypeForParent")) {
         setTypeForParent(value.toInt());
     }
 }
 
-QVariant VPE::VStringProperty::getSetting(const QString &key) const
+QVariant VPE::VStringProperty::getSetting(const QString& key) const
 {
-    if (key == QLatin1String("ReadOnly"))
-    {
+    if (key == QLatin1String("ReadOnly")) {
         return readOnly;
-    }
-    else if (key == QLatin1String("TypeForParent"))
-    {
+    } else if (key == QLatin1String("TypeForParent")) {
         return typeForParent;
-    }
-    else
+    } else
         return VProperty::getSetting(key);
 }
 
@@ -134,57 +118,42 @@ QStringList VPE::VStringProperty::getSettingKeys() const
     return settings;
 }
 
-QString VPE::VStringProperty::type() const
+QString VPE::VStringProperty::type() const { return QStringLiteral("string"); }
+
+VPE::VProperty* VPE::VStringProperty::clone(bool include_children, VPE::VProperty* container) const
 {
-    return QStringLiteral("string");
+    return VProperty::clone(
+        include_children, container ? container : new VStringProperty(getName(), getSettings()));
 }
 
-VPE::VProperty *VPE::VStringProperty::clone(bool include_children, VPE::VProperty *container) const
-{
-    return VProperty::clone(include_children, container ? container : new VStringProperty(getName(), getSettings()));
-}
-
-void VPE::VStringProperty::updateParent(const QVariant &value)
+void VPE::VStringProperty::updateParent(const QVariant& value)
 {
     emit childChanged(value, typeForParent);
 }
 
 // cppcheck-suppress unusedFunction
-int VPE::VStringProperty::getTypeForParent() const
-{
-    return typeForParent;
-}
+int VPE::VStringProperty::getTypeForParent() const { return typeForParent; }
 
-void VPE::VStringProperty::setTypeForParent(int value)
-{
-    typeForParent = value;
-}
+void VPE::VStringProperty::setTypeForParent(int value) { typeForParent = value; }
 
-bool VPE::VStringProperty::eventFilter(QObject *object, QEvent *event)
+bool VPE::VStringProperty::eventFilter(QObject* object, QEvent* event)
 {
-    if (QLineEdit *textEdit = qobject_cast<QLineEdit *>(object))
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-            if ((keyEvent->key() == Qt::Key_Period) && (keyEvent->modifiers() & Qt::KeypadModifier))
-            {
-                if (m_osSeparator)
-                {
+    if (QLineEdit* textEdit = qobject_cast<QLineEdit*>(object)) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            if ((keyEvent->key() == Qt::Key_Period)
+                && (keyEvent->modifiers() & Qt::KeypadModifier)) {
+                if (m_osSeparator) {
                     textEdit->insert(QLocale().decimalPoint());
-                }
-                else
-                {
+                } else {
                     textEdit->insert(QLocale::c().decimalPoint());
                 }
                 return true;
             }
         }
-    }
-    else
-    {
+    } else {
         // pass the event on to the parent class
         return VProperty::eventFilter(object, event);
     }
-    return false;// pass the event to the widget
+    return false;   // pass the event to the widget
 }

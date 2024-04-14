@@ -68,21 +68,21 @@
 
 #include "../../../../undocommands/label/movelabel.h"
 #include "../../../../undocommands/label/showpointname.h"
+#include "../../../vabstracttool.h"
+#include "../../vdrawtool.h"
 #include "../ifc/exception/vexception.h"
 #include "../ifc/exception/vexceptionbadid.h"
 #include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vmisc/diagnostic.h"
-#include "../vmisc/logging.h"
+#include "../vabstractpoint.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
+#include "../vmisc/diagnostic.h"
+#include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
-#include "../vwidgets/vgraphicssimpletextitem.h"
 #include "../vwidgets/scalesceneitems.h"
-#include "../../../vabstracttool.h"
-#include "../../vdrawtool.h"
-#include "../vabstractpoint.h"
+#include "../vwidgets/vgraphicssimpletextitem.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wmissing-prototypes")
@@ -100,30 +100,42 @@ QT_WARNING_POP
  * @param id object id in container.
  * @param parent parent object.
  */
-VToolSinglePoint::VToolSinglePoint(VAbstractPattern *doc, VContainer *data, quint32 id,
-                                   const QColor &lineColor, QGraphicsItem *parent)
+VToolSinglePoint::VToolSinglePoint(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    const QColor& lineColor,
+    QGraphicsItem* parent)
     : VAbstractPoint(doc, data, id)
     , VScenePoint(lineColor, parent)
 {
-    connect(m_pointName, &VGraphicsSimpleTextItem::showContextMenu,     this, &VToolSinglePoint::contextMenuEvent);
-    connect(m_pointName, &VGraphicsSimpleTextItem::deleteTool,          this, &VToolSinglePoint::deletePoint);
-    connect(m_pointName, &VGraphicsSimpleTextItem::pointChosen,         this, &VToolSinglePoint::pointChosen);
-    connect(m_pointName, &VGraphicsSimpleTextItem::pointSelected,       this, &VToolSinglePoint::pointSelected);
-    connect(m_pointName, &VGraphicsSimpleTextItem::nameChangedPosition, this, &VToolSinglePoint::pointnameChangedPosition);
+    connect(
+        m_pointName,
+        &VGraphicsSimpleTextItem::showContextMenu,
+        this,
+        &VToolSinglePoint::contextMenuEvent);
+    connect(
+        m_pointName, &VGraphicsSimpleTextItem::deleteTool, this, &VToolSinglePoint::deletePoint);
+    connect(
+        m_pointName, &VGraphicsSimpleTextItem::pointChosen, this, &VToolSinglePoint::pointChosen);
+    connect(
+        m_pointName,
+        &VGraphicsSimpleTextItem::pointSelected,
+        this,
+        &VToolSinglePoint::pointSelected);
+    connect(
+        m_pointName,
+        &VGraphicsSimpleTextItem::nameChangedPosition,
+        this,
+        &VToolSinglePoint::pointnameChangedPosition);
     refreshPointGeometry(*VAbstractTool::data.GeometricObject<VPointF>(id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VToolSinglePoint::name() const
-{
-    return ObjectName<VPointF>(m_id);
-}
+QString VToolSinglePoint::name() const { return ObjectName<VPointF>(m_id); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::setName(const QString &name)
-{
-    SetPointName(m_id, name);
-}
+void VToolSinglePoint::setName(const QString& name) { SetPointName(m_id, name); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VToolSinglePoint::SetEnabled(bool enabled)
@@ -142,13 +154,10 @@ void VToolSinglePoint::GroupVisibility(quint32 object, bool visible)
 //---------------------------------------------------------------------------------------------------------------------
 bool VToolSinglePoint::isPointNameVisible(quint32 id) const
 {
-    if (m_id == id)
-    {
+    if (m_id == id) {
         const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
         return point->isShowPointName();
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
@@ -156,8 +165,7 @@ bool VToolSinglePoint::isPointNameVisible(quint32 id) const
 //---------------------------------------------------------------------------------------------------------------------
 void VToolSinglePoint::setPointNameVisiblity(quint32 id, bool visible)
 {
-    if (m_id == id)
-    {
+    if (m_id == id) {
         const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
         point->setShowPointName(visible);
         refreshPointGeometry(*point);
@@ -167,17 +175,15 @@ void VToolSinglePoint::setPointNameVisiblity(quint32 id, bool visible)
 //---------------------------------------------------------------------------------------------------------------------
 void VToolSinglePoint::updatePointNameVisibility(quint32 id, bool visible)
 {
-    if (id == m_id)
-    {
+    if (id == m_id) {
         qApp->getUndoStack()->push(new ShowPointName(doc, id, visible));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::setPointNamePosition(quint32 id, const QPointF &pos)
+void VToolSinglePoint::setPointNamePosition(quint32 id, const QPointF& pos)
 {
-    if (id == m_id)
-    {
+    if (id == m_id) {
         QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
         point->setMx(pos.x());
         point->setMy(pos.y());
@@ -186,8 +192,7 @@ void VToolSinglePoint::setPointNamePosition(quint32 id, const QPointF &pos)
         m_pointName->blockSignals(false);
         refreshLeader();
 
-        if (QGraphicsScene *sc = scene())
-        {
+        if (QGraphicsScene* sc = scene()) {
             VMainGraphicsView::NewSceneRect(sc, qApp->getSceneView(), this);
         }
     }
@@ -198,7 +203,7 @@ void VToolSinglePoint::setPointNamePosition(quint32 id, const QPointF &pos)
  * @brief pointnameChangedPosition handle change position point text.
  * @param pos new position.
  */
-void VToolSinglePoint::pointnameChangedPosition(const QPointF &pos)
+void VToolSinglePoint::pointnameChangedPosition(const QPointF& pos)
 {
     updatePointNamePosition(m_id, pos - this->pos());
 }
@@ -207,41 +212,36 @@ void VToolSinglePoint::pointnameChangedPosition(const QPointF &pos)
 /**
  * @brief updatePointNamePosition save new position text to the pattern file.
  */
-void VToolSinglePoint::updatePointNamePosition(quint32 id, const QPointF &pos)
+void VToolSinglePoint::updatePointNamePosition(quint32 id, const QPointF& pos)
 {
-    if (id == m_id)
-    {
+    if (id == m_id) {
         qApp->getUndoStack()->push(new MoveLabel(doc, pos, id));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void VToolSinglePoint::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     // Special for not selectable item first need to call standard mousePressEvent then accept event
     VScenePoint::mousePressEvent(event);
 
     // Somehow clicking on notselectable object do not clean previous selections.
-    if (not (flags() & ItemIsSelectable) && scene())
-    {
+    if (not(flags() & ItemIsSelectable) && scene()) {
         scene()->clearSelection();
     }
 
-    if (selectionType == SelectionType::ByMouseRelease)
-    {
-        event->accept();// Special for not selectable item first need to call standard mousePressEvent then accept event
-    }
-    else
-    {
-        if (event->button() == Qt::LeftButton)
-        {
+    if (selectionType == SelectionType::ByMouseRelease) {
+        event->accept();   // Special for not selectable item first need to call standard
+                           // mousePressEvent then accept event
+    } else {
+        if (event->button() == Qt::LeftButton) {
             pointChosen();
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::Disable(bool disable, const QString &draftBlockName)
+void VToolSinglePoint::Disable(bool disable, const QString& draftBlockName)
 {
     const bool enabled = !CorrectDisable(disable, draftBlockName);
     SetEnabled(enabled);
@@ -255,16 +255,10 @@ void VToolSinglePoint::EnableToolMove(bool move)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::pointChosen()
-{
-    emit chosenTool(m_id, SceneObject::Point);
-}
+void VToolSinglePoint::pointChosen() { emit chosenTool(m_id, SceneObject::Point); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::pointSelected(bool selected)
-{
-    setSelected(selected);
-}
+void VToolSinglePoint::pointSelected(bool selected) { setSelected(selected); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -282,12 +276,10 @@ void VToolSinglePoint::FullUpdateFromFile()
  * @brief mouseReleaseEvent  handle mouse release events.
  * @param event mouse release event.
  */
-void VToolSinglePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void VToolSinglePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (selectionType == SelectionType::ByMouseRelease)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
+    if (selectionType == SelectionType::ByMouseRelease) {
+        if (event->button() == Qt::LeftButton) {
             pointChosen();
         }
     }
@@ -295,7 +287,7 @@ void VToolSinglePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void VToolSinglePoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
     setToolTip(makeToolTip());
     VScenePoint::hoverEnterEvent(event);
@@ -308,10 +300,10 @@ void VToolSinglePoint::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
  * @param value value.
  * @return value.
  */
-QVariant VToolSinglePoint::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant
+VToolSinglePoint::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
 {
-    if (change == QGraphicsItem::ItemSelectedChange)
-    {
+    if (change == QGraphicsItem::ItemSelectedChange) {
         m_pointName->blockSignals(true);
         m_pointName->setSelected(value.toBool());
         m_pointName->blockSignals(false);
@@ -326,35 +318,28 @@ QVariant VToolSinglePoint::itemChange(QGraphicsItem::GraphicsItemChange change, 
  * @brief keyReleaseEvent handle key release events.
  * @param event key release event.
  */
-void VToolSinglePoint::keyReleaseEvent(QKeyEvent *event)
+void VToolSinglePoint::keyReleaseEvent(QKeyEvent* event)
 {
-    switch (event->key())
-    {
-        case Qt::Key_Delete:
-            try
-            {
-                deleteTool();
-            }
-            catch(const VExceptionToolWasDeleted &error)
-            {
-                Q_UNUSED(error)
-                return;//Leave this method immediately!!!
-            }
-            break;
-        default:
-            break;
+    switch (event->key()) {
+    case Qt::Key_Delete: try { deleteTool();
+        } catch (const VExceptionToolWasDeleted& error) {
+            Q_UNUSED(error)
+            return;   // Leave this method immediately!!!
+        }
+        break;
+    default: break;
     }
-    VScenePoint::keyReleaseEvent ( event );
+    VScenePoint::keyReleaseEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+void VToolSinglePoint::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
     showContextMenu(event, m_id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void VToolSinglePoint::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
@@ -365,14 +350,10 @@ void VToolSinglePoint::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &o
     doc->SetAttribute(tag, AttrMx, qApp->fromPixel(point->mx()));
     doc->SetAttribute(tag, AttrMy, qApp->fromPixel(point->my()));
     doc->SetAttribute<bool>(tag, AttrShowPointName, point->isShowPointName());
-
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::AllowHover(bool enabled)
-{
-    setAcceptHoverEvents(enabled);
-}
+void VToolSinglePoint::AllowHover(bool enabled) { setAcceptHoverEvents(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VToolSinglePoint::AllowSelecting(bool enabled)
@@ -381,10 +362,7 @@ void VToolSinglePoint::AllowSelecting(bool enabled)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::allowTextHover(bool enabled)
-{
-    m_pointName->setAcceptHoverEvents(enabled);
-}
+void VToolSinglePoint::allowTextHover(bool enabled) { m_pointName->setAcceptHoverEvents(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VToolSinglePoint::allowTextSelectable(bool enabled)
@@ -393,7 +371,7 @@ void VToolSinglePoint::allowTextSelectable(bool enabled)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::ToolSelectionType(const SelectionType &type)
+void VToolSinglePoint::ToolSelectionType(const SelectionType& type)
 {
     VAbstractTool::ToolSelectionType(type);
     m_pointName->textSelectionType(type);

@@ -28,12 +28,12 @@
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/logging.h"
-#include "../vwidgets/vmaingraphicsview.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vtools/tools/vabstracttool.h"
+#include "../vwidgets/vmaingraphicsview.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-ShowPointName::ShowPointName(VAbstractPattern *doc, quint32 id, bool visible, QUndoCommand *parent)
+ShowPointName::ShowPointName(VAbstractPattern* doc, quint32 id, bool visible, QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , m_visible(visible)
     , m_oldVisible(true)
@@ -44,12 +44,9 @@ ShowPointName::ShowPointName(VAbstractPattern *doc, quint32 id, bool visible, QU
     nodeId = id;
 
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         m_oldVisible = doc->getParameterBool(domElement, AttrShowPointName, trueStr);
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
     }
 }
@@ -74,17 +71,13 @@ void ShowPointName::redo()
 void ShowPointName::setVisibility(bool visible)
 {
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         doc->SetAttribute<bool>(domElement, AttrShowPointName, visible);
 
-        if (VAbstractTool *tool = qobject_cast<VAbstractTool *>(VAbstractPattern::getTool(nodeId)))
-        {
+        if (VAbstractTool* tool = qobject_cast<VAbstractTool*>(VAbstractPattern::getTool(nodeId))) {
             tool->setPointNameVisiblity(nodeId, visible);
         }
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
     }
 }

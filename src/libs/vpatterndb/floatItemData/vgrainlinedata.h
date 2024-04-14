@@ -29,11 +29,11 @@
 #ifndef VGRAINLINEGEOMETRY_H
 #define VGRAINLINEGEOMETRY_H
 
-#include <QString>
 #include <QPointF>
+#include <QString>
 
-#include "vabstractfloatitemdata.h"
 #include "floatitemdef.h"
+#include "vabstractfloatitemdata.h"
 
 class VGrainlineDataPrivate;
 
@@ -45,39 +45,38 @@ class VGrainlineData : public VAbstractFloatItemData
 {
 public:
     VGrainlineData();
-    VGrainlineData(const VGrainlineData &data);
+    VGrainlineData(const VGrainlineData& data);
 
     virtual ~VGrainlineData();
 
-    VGrainlineData &operator=(const VGrainlineData &data);
+    VGrainlineData& operator=(const VGrainlineData& data);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VGrainlineData &operator=(VGrainlineData &&data) Q_DECL_NOTHROW;
+    VGrainlineData& operator=(VGrainlineData&& data) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VGrainlineData &data) Q_DECL_NOTHROW;
+    void Swap(VGrainlineData& data) Q_DECL_NOTHROW;
 
     // methods, which set and return values of different parameters
     QString GetLength() const;
-    void    SetLength(const QString& qsLen);
+    void SetLength(const QString& qsLen);
 
     QString GetRotation() const;
-    void    SetRotation(const QString& qsRot);
+    void SetRotation(const QString& qsRot);
 
     ArrowType GetArrowType() const;
-    void      SetArrowType(ArrowType eAT);
+    void SetArrowType(ArrowType eAT);
 
     quint32 centerAnchorPoint() const;
-    void    setCenterAnchorPoint(quint32 centerAnchor);
+    void setCenterAnchorPoint(quint32 centerAnchor);
 
     quint32 topAnchorPoint() const;
-    void    setTopAnchorPoint(quint32 topAnchorPoint);
+    void setTopAnchorPoint(quint32 topAnchorPoint);
 
     quint32 bottomAnchorPoint() const;
-    void    setBottomAnchorPoint(quint32 bottomAnchorPoint);
+    void setBottomAnchorPoint(quint32 bottomAnchorPoint);
 
 private:
     QSharedDataPointer<VGrainlineDataPrivate> d;
 };
 
-#endif // VGRAINLINEGEOMETRY_H
-
+#endif   // VGRAINLINEGEOMETRY_H

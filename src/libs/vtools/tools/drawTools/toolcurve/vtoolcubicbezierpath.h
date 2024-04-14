@@ -52,61 +52,80 @@
 #ifndef VTOOLCUBICBEZIERPATH_H
 #define VTOOLCUBICBEZIERPATH_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "vabstractspline.h"
 
 class VCubicBezierPath;
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
-class VToolCubicBezierPath:public VAbstractSpline
+class VToolCubicBezierPath : public VAbstractSpline
 {
     Q_OBJECT
 public:
-    virtual             ~VToolCubicBezierPath() Q_DECL_EQ_DEFAULT;
-    virtual void         setDialog() Q_DECL_OVERRIDE;
+    virtual ~VToolCubicBezierPath() Q_DECL_EQ_DEFAULT;
+    virtual void setDialog() Q_DECL_OVERRIDE;
 
-    static VToolCubicBezierPath *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene  *scene,
-                                        VAbstractPattern *doc, VContainer *data);
-    static VToolCubicBezierPath *Create(const quint32 _id, VCubicBezierPath *path, VMainGraphicsScene *scene,
-                                        VAbstractPattern *doc, VContainer *data, const Document &parse,
-                                        const Source &typeCreation);
+    static VToolCubicBezierPath* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static VToolCubicBezierPath* Create(
+        const quint32 _id,
+        VCubicBezierPath* path,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
 
     static const QString ToolType;
-    static void          UpdatePathPoints(VAbstractPattern *doc, QDomElement &element, const VCubicBezierPath &path);
-    virtual int          type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::CubicBezierPath)};
+    static void
+    UpdatePathPoints(VAbstractPattern* doc, QDomElement& element, const VCubicBezierPath& path);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::CubicBezierPath)
+    };
 
-    VCubicBezierPath     getSplinePath()const;
-    void                 setSplinePath(const VCubicBezierPath &splPath);
+    VCubicBezierPath getSplinePath() const;
+    void setSplinePath(const VCubicBezierPath& splPath);
 
-    virtual void         ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
 
 protected slots:
-    virtual void         showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
-    
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
+
 protected:
-    virtual void         RemoveReferens() Q_DECL_OVERRIDE;
-    virtual void         SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void         SetVisualization() Q_DECL_OVERRIDE;
-    virtual void         RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VToolCubicBezierPath)
 
-                         VToolCubicBezierPath(VAbstractPattern *doc, VContainer *data, quint32 id,
-                                              const Source &typeCreation, QGraphicsItem * parent = nullptr);
+    VToolCubicBezierPath(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        const Source& typeCreation,
+        QGraphicsItem* parent = nullptr);
 
-    static void          AddPathPoint(VAbstractPattern *doc, QDomElement &domElement, const VPointF &splPoint);
-    void                 SetSplinePathAttributes(QDomElement &domElement, const VCubicBezierPath &path);
+    static void
+    AddPathPoint(VAbstractPattern* doc, QDomElement& domElement, const VPointF& splPoint);
+    void SetSplinePathAttributes(QDomElement& domElement, const VCubicBezierPath& path);
 };
 
-#endif // VTOOLCUBICBEZIERPATH_H
+#endif   // VTOOLCUBICBEZIERPATH_H

@@ -63,19 +63,19 @@ class TST_AbstractRegExp : public AbstractTest
 {
     Q_OBJECT
 public:
-    TST_AbstractRegExp(const QString &locale, QObject *parent = nullptr);
+    TST_AbstractRegExp(const QString& locale, QObject* parent = nullptr);
     virtual ~TST_AbstractRegExp();
 
 protected:
     QString m_locale;
     QPointer<QTranslator> m_vTranslator;
-    VTranslateVars *m_trMs;
+    VTranslateVars* m_trMs;
 
-    virtual void        PrepareData()=0;
-    virtual QStringList AllNames()=0;
+    virtual void PrepareData() = 0;
+    virtual QStringList AllNames() = 0;
 
-    int  LoadVariables(const QString &checkedLocale);
-    void RemoveTrVariables(const QString &checkedLocale);
+    int LoadVariables(const QString& checkedLocale);
+    void RemoveTrVariables(const QString& checkedLocale);
     void InitTrMs();
 
     void CallTestCheckNoEndLine();
@@ -87,4 +87,4 @@ private:
     Q_DISABLE_COPY(TST_AbstractRegExp)
 };
 
-#endif // TST_ABSTRACTREGEXP_H
+#endif   // TST_ABSTRACTREGEXP_H

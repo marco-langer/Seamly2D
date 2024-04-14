@@ -60,24 +60,26 @@
 
 class QGraphicsItem;
 class QPrinter;
-template <class T> class QVector;
+template <class T>
+class QVector;
 
 struct PosterData
 {
     PosterData()
-        : index(0),
-          row(0),
-          column(0),
-          rows(0),
-          columns(0),
-          rect(){}
+        : index(0)
+        , row(0)
+        , column(0)
+        , rows(0)
+        , columns(0)
+        , rect()
+    {}
 
-    quint32 index; // paper index
-    quint32 row; // positions in the grid
+    quint32 index;   // paper index
+    quint32 row;     // positions in the grid
     quint32 column;
     quint32 rows;
     quint32 columns;
-    QRect rect; // rect section
+    QRect rect;   // rect section
 };
 
 // cppcheck-suppress noConstructor
@@ -85,13 +87,14 @@ class VPoster
 {
     Q_DECLARE_TR_FUNCTIONS(VPoster)
 public:
-    explicit VPoster(const QPrinter *printer);
+    explicit VPoster(const QPrinter* printer);
 
-    QVector<PosterData> Calc(const QRect &imageRect, int page, PageOrientation orientation) const;
+    QVector<PosterData> Calc(const QRect& imageRect, int page, PageOrientation orientation) const;
 
-    QVector<QGraphicsItem *> Borders(QGraphicsItem *parent, const PosterData &img, int sheets) const;
+    QVector<QGraphicsItem*> Borders(QGraphicsItem* parent, const PosterData& img, int sheets) const;
+
 private:
-    const QPrinter *printer;
+    const QPrinter* printer;
     /**
      * @brief allowance is the width of the strip that holds the tiled
      * grid information and that is used for the gluing.
@@ -101,11 +104,11 @@ private:
     int CountRows(int height, PageOrientation orientation) const;
     int CountColumns(int width, PageOrientation orientation) const;
 
-    PosterData Cut(int i, int j, const QRect &imageRect, PageOrientation orientation) const;
+    PosterData Cut(int i, int j, const QRect& imageRect, PageOrientation orientation) const;
 
     QRect PageRect() const;
 
     static qreal ToPixel(qreal val);
 };
 
-#endif // VPOSTER_H
+#endif   // VPOSTER_H

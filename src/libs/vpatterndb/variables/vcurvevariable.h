@@ -52,10 +52,10 @@
 #ifndef VCURVEVARIABLE_H
 #define VCURVEVARIABLE_H
 
-#include <qcompilerdetection.h>
 #include <QSharedDataPointer>
 #include <QTypeInfo>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vinternalvariable.h"
 
@@ -65,29 +65,30 @@ class VCurveVariable : public VInternalVariable
 {
 public:
     VCurveVariable();
-    VCurveVariable(const quint32 &id, const quint32 &parentId);
-    VCurveVariable(const VCurveVariable &var);
+    VCurveVariable(const quint32& id, const quint32& parentId);
+    VCurveVariable(const VCurveVariable& var);
 
     virtual ~VCurveVariable() Q_DECL_OVERRIDE;
 
-    VCurveVariable &operator=(const VCurveVariable &var);
+    VCurveVariable& operator=(const VCurveVariable& var);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VCurveVariable &operator=(VCurveVariable &&var) Q_DECL_NOTHROW;
+    VCurveVariable& operator=(VCurveVariable&& var) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VCurveVariable &var) Q_DECL_NOTHROW;
+    void Swap(VCurveVariable& var) Q_DECL_NOTHROW;
 
     virtual bool Filter(quint32 id) Q_DECL_OVERRIDE;
 
-    quint32      GetId() const;
-    void         SetId(const quint32 &id);
+    quint32 GetId() const;
+    void SetId(const quint32& id);
 
-    quint32      GetParentId() const;
-    void         SetParentId(const quint32 &value);
+    quint32 GetParentId() const;
+    void SetParentId(const quint32& value);
+
 private:
     QSharedDataPointer<VCurveVariableData> d;
 };
 
 Q_DECLARE_TYPEINFO(VCurveVariable, Q_MOVABLE_TYPE);
 
-#endif // VCURVEVARIABLE_H
+#endif   // VCURVEVARIABLE_H

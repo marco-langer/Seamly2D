@@ -54,10 +54,10 @@
 #include <QLatin1String>
 #include <QMessageLogger>
 
-#include "../vmisc/def.h"
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vspline.h"
+#include "../vmisc/def.h"
 #include "vcurvevariable.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -68,53 +68,55 @@ VCurveCLength::VCurveCLength()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveCLength::VCurveCLength(const quint32 &id, const quint32 &parentId, const VAbstractBezier *curve,
-                             CurveCLength cType, Unit patternUnit)
+VCurveCLength::VCurveCLength(
+    const quint32& id,
+    const quint32& parentId,
+    const VAbstractBezier* curve,
+    CurveCLength cType,
+    Unit patternUnit)
     : VCurveVariable(id, parentId)
 {
     SetType(VarType::CurveCLength);
     SCASSERT(curve != nullptr)
-    if (cType == CurveCLength::C1)
-    {
+    if (cType == CurveCLength::C1) {
         SetValue(FromPixel(curve->GetC1Length(), patternUnit));
         SetName(c1Length_V + curve->name());
-    }
-    else
-    {
+    } else {
         SetValue(FromPixel(curve->GetC2Length(), patternUnit));
         SetName(c2Length_V + curve->name());
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveCLength::VCurveCLength(const quint32 &id, const quint32 &parentId, const QString &baseCurveName,
-                             const VSpline &spl, CurveCLength cType, Unit patternUnit, qint32 segment)
+VCurveCLength::VCurveCLength(
+    const quint32& id,
+    const quint32& parentId,
+    const QString& baseCurveName,
+    const VSpline& spl,
+    CurveCLength cType,
+    Unit patternUnit,
+    qint32 segment)
     : VCurveVariable(id, parentId)
 {
     SetType(VarType::CurveCLength);
-    if (cType == CurveCLength::C1)
-    {
+    if (cType == CurveCLength::C1) {
         SetValue(FromPixel(spl.GetC1Length(), patternUnit));
         SetName(c1Length_V + baseCurveName + QLatin1String("_") + seg_ + QString().setNum(segment));
-    }
-    else
-    {
+    } else {
         SetValue(FromPixel(spl.GetC2Length(), patternUnit));
         SetName(c2Length_V + baseCurveName + QLatin1String("_") + seg_ + QString().setNum(segment));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveCLength::VCurveCLength(const VCurveCLength &var)
+VCurveCLength::VCurveCLength(const VCurveCLength& var)
     : VCurveVariable(var)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveCLength &VCurveCLength::operator=(const VCurveCLength &var)
+VCurveCLength& VCurveCLength::operator=(const VCurveCLength& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     VCurveVariable::operator=(var);
@@ -122,7 +124,4 @@ VCurveCLength &VCurveCLength::operator=(const VCurveCLength &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveCLength::~VCurveCLength()
-{
-}
-
+VCurveCLength::~VCurveCLength() {}

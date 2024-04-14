@@ -33,7 +33,6 @@
 #ifndef VISUALIZATION_H
 #define VISUALIZATION_H
 
-#include "variables/vinternalvariable.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vmisc/def.h"
 #include "../vmisc/logging.h"
@@ -42,11 +41,12 @@
 #include "../vwidgets/scalesceneitems.h"
 #include "../vwidgets/vcurvepathitem.h"
 #include "../vwidgets/vmaingraphicsscene.h"
+#include "variables/vinternalvariable.h"
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QObject>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 Q_DECLARE_LOGGING_CATEGORY(vVis)
 
@@ -54,96 +54,119 @@ class VScaledEllipse;
 class VScaledLine;
 class ArrowedLineItem;
 class VContainer;
-//class VInternalVariable;
+// class VInternalVariable;
 
-enum class Mode : char {Creation, Show};
+enum class Mode : char
+{
+    Creation,
+    Show
+};
 
 class Visualization : public QObject
 {
     Q_OBJECT
 public:
-    explicit               Visualization(const VContainer *data);
-    virtual               ~Visualization() Q_DECL_EQ_DEFAULT;
+    explicit Visualization(const VContainer* data);
+    virtual ~Visualization() Q_DECL_EQ_DEFAULT;
 
-    virtual void           RefreshGeometry()=0;
+    virtual void RefreshGeometry() = 0;
 
-    void                   setObject1Id(const quint32 &value);
-    void                   setLineStyle(const Qt::PenStyle &value);
-    void                   setLineWeight(const QString &value);
-    void                   setScenePos(const QPointF &value);
-    virtual void           VisualMode(const quint32 &pointId);
-    void                   setMainColor(const QColor &value);
+    void setObject1Id(const quint32& value);
+    void setLineStyle(const Qt::PenStyle& value);
+    void setLineWeight(const QString& value);
+    void setScenePos(const QPointF& value);
+    virtual void VisualMode(const quint32& pointId);
+    void setMainColor(const QColor& value);
 
-    const VContainer      *getData() const;
-    void                   setData(const VContainer *data);
+    const VContainer* getData() const;
+    void setData(const VContainer* data);
 
-    Mode                   GetMode() const;
-    void                   SetMode(const Mode &value);
+    Mode GetMode() const;
+    void SetMode(const Mode& value);
 
-    static qreal           FindLength(const QString &expression, const QHash<QString,
-                                      QSharedPointer<VInternalVariable> > *vars);
-    static qreal           FindVal(const QString &expression, const QHash<QString,
-                                   QSharedPointer<VInternalVariable> > *vars);
+    static qreal FindLength(
+        const QString& expression, const QHash<QString, QSharedPointer<VInternalVariable>>* vars);
+    static qreal FindVal(
+        const QString& expression, const QHash<QString, QSharedPointer<VInternalVariable>>* vars);
 
-    QString                CurrentToolTip() const {return toolTip;}
+    QString CurrentToolTip() const { return toolTip; }
 
 signals:
-    void                   ToolTip(const QString &toolTip);
+    void ToolTip(const QString& toolTip);
 
 public slots:
-    void                   mousePos(const QPointF &scenePos);
+    void mousePos(const QPointF& scenePos);
 
 protected:
-    const VContainer      *data;
-    QPointF                scenePos;
-    QColor                 mainColor;
-    QColor                 supportColor;
-    Qt::PenStyle           lineStyle;
-    qreal                  lineWeight;
-    quint32                object1Id;
-    QString                toolTip;
-    Mode                   mode;
+    const VContainer* data;
+    QPointF scenePos;
+    QColor mainColor;
+    QColor supportColor;
+    Qt::PenStyle lineStyle;
+    qreal lineWeight;
+    quint32 object1Id;
+    QString toolTip;
+    Mode mode;
 
-    virtual void           initPen()=0;
-    virtual void           AddOnScene()=0;
+    virtual void initPen() = 0;
+    virtual void AddOnScene() = 0;
 
-    VScaledEllipse        *InitPoint(const QColor &color, QGraphicsItem *parent, qreal z = 0) const;
-    void                   DrawPoint(QGraphicsEllipseItem *point, const QPointF &pos, const QColor &color,
-                                     Qt::PenStyle style = Qt::SolidLine);
-    virtual void           DrawLine(VScaledLine *lineItem, const QLineF &line, const QColor &color,
-                                    const qreal &lineWeight, Qt::PenStyle style = Qt::SolidLine);
-    void                   DrawPath(VCurvePathItem *pathItem, const QPainterPath &path, const QColor &color,
-                                    Qt::PenStyle style = Qt::SolidLine, const qreal &weight = 0.35,
-                                    Qt::PenCapStyle cap = Qt::SquareCap);
-    void                   DrawPath(VCurvePathItem *pathItem, const QPainterPath &path,
-                                    const QVector<DirectionArrow> &directionArrows, const QColor &color,
-                                    Qt::PenStyle style = Qt::SolidLine, const qreal &weight = 0.35,
-                                    Qt::PenCapStyle cap = Qt::SquareCap);
+    VScaledEllipse* InitPoint(const QColor& color, QGraphicsItem* parent, qreal z = 0) const;
+    void DrawPoint(
+        QGraphicsEllipseItem* point,
+        const QPointF& pos,
+        const QColor& color,
+        Qt::PenStyle style = Qt::SolidLine);
+    virtual void DrawLine(
+        VScaledLine* lineItem,
+        const QLineF& line,
+        const QColor& color,
+        const qreal& lineWeight,
+        Qt::PenStyle style = Qt::SolidLine);
+    void DrawPath(
+        VCurvePathItem* pathItem,
+        const QPainterPath& path,
+        const QColor& color,
+        Qt::PenStyle style = Qt::SolidLine,
+        const qreal& weight = 0.35,
+        Qt::PenCapStyle cap = Qt::SquareCap);
+    void DrawPath(
+        VCurvePathItem* pathItem,
+        const QPainterPath& path,
+        const QVector<DirectionArrow>& directionArrows,
+        const QColor& color,
+        Qt::PenStyle style = Qt::SolidLine,
+        const qreal& weight = 0.35,
+        Qt::PenCapStyle cap = Qt::SquareCap);
 
-    void                   drawArrowedLine(ArrowedLineItem *item, const QLineF &line, const QColor &color,
-                                           Qt::PenStyle style = Qt::SolidLine);
-    void                   drawArrow(const QLineF &axis, QPainterPath &path, const qreal &arrow_size);
+    void drawArrowedLine(
+        ArrowedLineItem* item,
+        const QLineF& line,
+        const QColor& color,
+        Qt::PenStyle style = Qt::SolidLine);
+    void drawArrow(const QLineF& axis, QPainterPath& path, const qreal& arrow_size);
 
     template <typename Item>
-    void                   addItem(Item *item);
+    void addItem(Item* item);
 
     template <class Item>
-    Item                  *InitItem(const QColor &color, QGraphicsItem *parent);
+    Item* InitItem(const QColor& color, QGraphicsItem* parent);
 
-    static VScaledEllipse *GetPointItem(QVector<VScaledEllipse *> &points, quint32 i, const QColor &color,
-                                        QGraphicsItem *parent);
+    static VScaledEllipse* GetPointItem(
+        QVector<VScaledEllipse*>& points, quint32 i, const QColor& color, QGraphicsItem* parent);
+
 private:
-                           Q_DISABLE_COPY(Visualization)
+    Q_DISABLE_COPY(Visualization)
 
-    static VScaledEllipse *initPointItem(const QColor &color, QGraphicsItem *parent, qreal z = 0);
+    static VScaledEllipse* initPointItem(const QColor& color, QGraphicsItem* parent, qreal z = 0);
 };
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename Item>
-inline void Visualization::addItem(Item *item)
+inline void Visualization::addItem(Item* item)
 {
     SCASSERT(item != nullptr)
-    VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+    VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
     SCASSERT(scene != nullptr)
 
     scene->addItem(item);
@@ -152,9 +175,9 @@ inline void Visualization::addItem(Item *item)
 
 //---------------------------------------------------------------------------------------------------------------------
 template <class Item>
-inline Item *Visualization::InitItem(const QColor &color, QGraphicsItem *parent)
+inline Item* Visualization::InitItem(const QColor& color, QGraphicsItem* parent)
 {
-    Item *item = new Item(parent);
+    Item* item = new Item(parent);
 
     QPen pen = item->pen();
     pen.setColor(color);
@@ -166,4 +189,4 @@ inline Item *Visualization::InitItem(const QColor &color, QGraphicsItem *parent)
     return item;
 }
 
-#endif // VISUALIZATION_H
+#endif   // VISUALIZATION_H

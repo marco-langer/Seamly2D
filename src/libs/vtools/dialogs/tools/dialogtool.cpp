@@ -51,13 +51,12 @@
 
 #include "dialogtool.h"
 
-#include <limits.h>
-#include <qiterator.h>
-#include <qnumeric.h>
+#include <QBuffer>
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QEvent>
+#include <QFont>
 #include <QHash>
 #include <QIcon>
 #include <QKeyEvent>
@@ -80,49 +79,49 @@
 #include <QWidget>
 #include <Qt>
 #include <QtDebug>
+#include <limits.h>
 #include <new>
-#include <QBuffer>
-#include <QFont>
+#include <qiterator.h>
+#include <qnumeric.h>
 
+#include "../../tools/vabstracttool.h"
+#include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../qmuparser/qmudef.h"
 #include "../qmuparser/qmuparsererror.h"
-#include "../vgeometry/vpointf.h"
-#include "../vpatterndb/calculator.h"
-#include "../vpatterndb/vcontainer.h"
-#include "../vpatterndb/vtranslatevars.h"
-#include "../vpatterndb/vpiecenode.h"
-#include "../../tools/vabstracttool.h"
-#include "../ifc/xml/vabstractpattern.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vgobject.h"
+#include "../vgeometry/vpointf.h"
 #include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/calculator.h"
+#include "../vpatterndb/vcontainer.h"
+#include "../vpatterndb/vpiecenode.h"
+#include "../vpatterndb/vtranslatevars.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 Q_LOGGING_CATEGORY(vDialog, "v.dialog")
 
 #define DIALOG_MAX_FORMULA_HEIGHT 64
-#define DIALOG_MIN_WIDTH 260
+#define DIALOG_MIN_WIDTH          260
 
-namespace
-{
+namespace {
 //---------------------------------------------------------------------------------------------------------------------
-quint32 RowId(QListWidget *listWidget, int i)
+quint32 RowId(QListWidget* listWidget, int i)
 {
     SCASSERT(listWidget != nullptr);
 
-    if (i < 0 || i >= listWidget->count())
-    {
+    if (i < 0 || i >= listWidget->count()) {
         return NULL_ID;
     }
 
-    const QListWidgetItem *rowItem = listWidget->item(i);
+    const QListWidgetItem* rowItem = listWidget->item(i);
     SCASSERT(rowItem != nullptr);
     const VPieceNode rowNode = qvariant_cast<VPieceNode>(rowItem->data(Qt::UserRole));
     return rowNode.GetId();
 }
-}
+}   // namespace
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -130,29 +129,29 @@ quint32 RowId(QListWidget *listWidget, int i)
  * @param data container with data
  * @param parent parent widget
  */
-DialogTool:: DialogTool(const VContainer *data, const quint32 &toolId, QWidget *parent)
-    : QDialog(parent),
-      data(data),
-      isInitialized(false),
-      flagName(true),
-      flagFormula(true),
-      flagError(true),
-      timerFormula(nullptr),
-      ok_Button(nullptr),
-      apply_Button(nullptr),
-      spinBoxAngle(nullptr),
-      plainTextEditFormula(nullptr),
-      labelResultCalculation(nullptr),
-      labelEditNamePoint(nullptr),
-      labelEditFormula(nullptr),
-      okColor(this->palette().color(QPalette::Active, QPalette::WindowText)),
-      errorColor(Qt::red),
-      associatedTool(nullptr),
-      toolId(toolId),
-      prepare(false),
-      pointName(),
-      number(0),
-      vis(nullptr)
+DialogTool::DialogTool(const VContainer* data, const quint32& toolId, QWidget* parent)
+    : QDialog(parent)
+    , data(data)
+    , isInitialized(false)
+    , flagName(true)
+    , flagFormula(true)
+    , flagError(true)
+    , timerFormula(nullptr)
+    , ok_Button(nullptr)
+    , apply_Button(nullptr)
+    , spinBoxAngle(nullptr)
+    , plainTextEditFormula(nullptr)
+    , labelResultCalculation(nullptr)
+    , labelEditNamePoint(nullptr)
+    , labelEditFormula(nullptr)
+    , okColor(this->palette().color(QPalette::Active, QPalette::WindowText))
+    , errorColor(Qt::red)
+    , associatedTool(nullptr)
+    , toolId(toolId)
+    , prepare(false)
+    , pointName()
+    , number(0)
+    , vis(nullptr)
 {
     SCASSERT(data != nullptr)
     timerFormula = new QTimer(this);
@@ -164,24 +163,21 @@ DialogTool::~DialogTool()
 {
     emit ToolTip("");
 
-    if (not vis.isNull())
-    {
+    if (not vis.isNull()) {
         delete vis;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::keyPressEvent(QKeyEvent *event)
+void DialogTool::keyPressEvent(QKeyEvent* event)
 {
-    switch (event->key())
-    {
-        case Qt::Key_Escape:
-            DialogRejected();
-            return; // After reject the dialog will be destroyed, exit imidiately
-        default:
-            break;
+    switch (event->key()) {
+    case Qt::Key_Escape:
+        DialogRejected();
+        return;   // After reject the dialog will be destroyed, exit imidiately
+    default: break;
     }
-    QDialog::keyPressEvent ( event );
+    QDialog::keyPressEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -189,7 +185,7 @@ void DialogTool::keyPressEvent(QKeyEvent *event)
  * @brief closeEvent handle when dialog cloded
  * @param event event
  */
-void DialogTool::closeEvent(QCloseEvent *event)
+void DialogTool::closeEvent(QCloseEvent* event)
 {
     DialogRejected();
     event->accept();
@@ -200,15 +196,13 @@ void DialogTool::closeEvent(QCloseEvent *event)
  * @brief showEvent handle when window show
  * @param event event
  */
-void DialogTool::showEvent(QShowEvent *event)
+void DialogTool::showEvent(QShowEvent* event)
 {
-    QDialog::showEvent( event );
-    if ( event->spontaneous() )
-    {
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
         return;
     }
-    if (isInitialized)
-    {
+    if (isInitialized) {
         return;
     }
     // do your init stuff here
@@ -216,22 +210,21 @@ void DialogTool::showEvent(QShowEvent *event)
     setMaximumSize(size());
     setMinimumSize(size());
 
-    isInitialized = true;//first show windows are held
+    isInitialized = true;   // first show windows are held
     ShowVisualization();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxPiecesList(QComboBox *box, const QVector<quint32> &list)
+void DialogTool::FillComboBoxPiecesList(QComboBox* box, const QVector<quint32>& list)
 {
     SCASSERT(box != nullptr)
     box->blockSignals(true);
     box->clear();
-    for (int i=0; i < list.size(); ++i)
-    {
+    for (int i = 0; i < list.size(); ++i) {
         box->addItem(data->GetPiece(list.at(i)).GetName(), list.at(i));
     }
     box->blockSignals(false);
-    box->setCurrentIndex(-1); // Force a user to choose
+    box->setCurrentIndex(-1);   // Force a user to choose
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -239,32 +232,31 @@ void DialogTool::FillComboBoxPiecesList(QComboBox *box, const QVector<quint32> &
  * @brief FillComboBoxPoints fill comboBox list of points
  * @param box comboBox
  */
-void DialogTool::FillComboBoxPoints(QComboBox *box, FillComboBox rule, const quint32 &ch1, const quint32 &ch2) const
+void DialogTool::FillComboBoxPoints(
+    QComboBox* box, FillComboBox rule, const quint32& ch1, const quint32& ch2) const
 {
     FillCombo<VPointF>(box, GOType::Point, rule, ch1, ch2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxArcs(QComboBox *box, FillComboBox rule, const quint32 &ch1, const quint32 &ch2) const
+void DialogTool::FillComboBoxArcs(
+    QComboBox* box, FillComboBox rule, const quint32& ch1, const quint32& ch2) const
 {
     FillCombo<VAbstractCurve>(box, GOType::Arc, rule, ch1, ch2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxSplines(QComboBox *box) const
+void DialogTool::FillComboBoxSplines(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
     box->blockSignals(true);
 
     const auto objs = data->DataGObjects();
-    QHash<quint32, QSharedPointer<VGObject> >::const_iterator i;
+    QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
     QMap<QString, quint32> list;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i)
-    {
-        if (i.key() != toolId)
-        {
-            if (IsSpline(i.value()))
-            {
+    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+        if (i.key() != toolId) {
+            if (IsSpline(i.value())) {
                 PrepareList<VAbstractCurve>(list, i.key());
             }
         }
@@ -275,20 +267,17 @@ void DialogTool::FillComboBoxSplines(QComboBox *box) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxSplinesPath(QComboBox *box) const
+void DialogTool::FillComboBoxSplinesPath(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
     box->blockSignals(true);
 
     const auto objs = data->DataGObjects();
-    QHash<quint32, QSharedPointer<VGObject> >::const_iterator i;
+    QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
     QMap<QString, quint32> list;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i)
-    {
-        if (i.key() != toolId)
-        {
-            if (IsSplinePath(i.value()))
-            {
+    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+        if (i.key() != toolId) {
+            if (IsSplinePath(i.value())) {
                 PrepareList<VAbstractCurve>(list, i.key());
             }
         }
@@ -299,24 +288,20 @@ void DialogTool::FillComboBoxSplinesPath(QComboBox *box) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxCurves(QComboBox *box) const
+void DialogTool::FillComboBoxCurves(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
     const auto objs = data->DataGObjects();
     QMap<QString, quint32> list;
-    QHash<quint32, QSharedPointer<VGObject> >::const_iterator i;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i)
-    {
-        if (i.key() != toolId)
-        {
+    QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
+    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+        if (i.key() != toolId) {
             QSharedPointer<VGObject> obj = i.value();
-            if ((obj->getType() == GOType::Arc
-                 || obj->getType() == GOType::EllipticalArc
-                 || obj->getType() == GOType::Spline
-                 || obj->getType() == GOType::SplinePath
+            if ((obj->getType() == GOType::Arc || obj->getType() == GOType::EllipticalArc
+                 || obj->getType() == GOType::Spline || obj->getType() == GOType::SplinePath
                  || obj->getType() == GOType::CubicBezier
-                 || obj->getType() == GOType::CubicBezierPath) && obj->getMode() == Draw::Calculation)
-            {
+                 || obj->getType() == GOType::CubicBezierPath)
+                && obj->getMode() == Draw::Calculation) {
                 PrepareList<VAbstractCurve>(list, i.key());
             }
         }
@@ -329,25 +314,23 @@ void DialogTool::FillComboBoxCurves(QComboBox *box) const
  * @brief FillComboBoxTypeLine fill comboBox list of type lines
  * @param box comboBox
  */
-void DialogTool::FillComboBoxTypeLine(QComboBox *box, const QMap<QString, QIcon> &stylesPics) const
+void DialogTool::FillComboBoxTypeLine(QComboBox* box, const QMap<QString, QIcon>& stylesPics) const
 {
     SCASSERT(box != nullptr)
     QMap<QString, QIcon>::const_iterator i = stylesPics.constBegin();
-    while (i != stylesPics.constEnd())
-    {
+    while (i != stylesPics.constEnd()) {
         box->addItem(i.value(), "", QVariant(i.key()));
         ++i;
     }
 
     const int index = box->findData(QVariant(LineTypeSolidLine));
-    if (index != -1)
-    {
+    if (index != -1) {
         box->setCurrentIndex(index);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxLineColors(QComboBox *box) const
+void DialogTool::FillComboBoxLineColors(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
 
@@ -355,13 +338,12 @@ void DialogTool::FillComboBoxLineColors(QComboBox *box) const
     int size = box->iconSize().height();
     // On Mac pixmap should be little bit smaller.
 #if defined(Q_OS_MAC)
-    size -= 2; // Two pixels should be enough.
-#endif //defined(Q_OS_MAC)
+    size -= 2;   // Two pixels should be enough.
+#endif           // defined(Q_OS_MAC)
 
     const QMap<QString, QString> map = VAbstractTool::ColorsList();
     QMap<QString, QString>::const_iterator i = map.constBegin();
-    while (i != map.constEnd())
-    {
+    while (i != map.constEnd()) {
         QPixmap pix(size, size);
         pix.fill(QColor(i.key()));
         box->addItem(QIcon(pix), i.value(), QVariant(i.key()));
@@ -370,7 +352,7 @@ void DialogTool::FillComboBoxLineColors(QComboBox *box) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxCrossCirclesPoints(QComboBox *box) const
+void DialogTool::FillComboBoxCrossCirclesPoints(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
 
@@ -379,7 +361,7 @@ void DialogTool::FillComboBoxCrossCirclesPoints(QComboBox *box) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxVCrossCurvesPoint(QComboBox *box) const
+void DialogTool::FillComboBoxVCrossCurvesPoint(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
 
@@ -388,23 +370,24 @@ void DialogTool::FillComboBoxVCrossCurvesPoint(QComboBox *box) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FillComboBoxHCrossCurvesPoint(QComboBox *box) const
+void DialogTool::FillComboBoxHCrossCurvesPoint(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
 
-    box->addItem(tr("Leftmost point"), QVariant(static_cast<int>(HCrossCurvesPoint::LeftmostPoint)));
-    box->addItem(tr("Rightmost point"), QVariant(static_cast<int>(HCrossCurvesPoint::RightmostPoint)));
+    box->addItem(
+        tr("Leftmost point"), QVariant(static_cast<int>(HCrossCurvesPoint::LeftmostPoint)));
+    box->addItem(
+        tr("Rightmost point"), QVariant(static_cast<int>(HCrossCurvesPoint::RightmostPoint)));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogTool::GetComboBoxCurrentData(const QComboBox *box, const QString &def) const
+QString DialogTool::GetComboBoxCurrentData(const QComboBox* box, const QString& def) const
 {
     SCASSERT(box != nullptr)
     QString value;
     value = box->currentData().toString();
 
-    if (value.isEmpty())
-    {
+    if (value.isEmpty()) {
         value = def;
     }
     return value;
@@ -416,12 +399,11 @@ QString DialogTool::GetComboBoxCurrentData(const QComboBox *box, const QString &
  * @param box combobox
  * @param value id of item
  */
-void DialogTool::ChangeCurrentData(QComboBox *box, const QVariant &value) const
+void DialogTool::ChangeCurrentData(QComboBox* box, const QVariant& value) const
 {
     SCASSERT(box != nullptr)
     const qint32 index = box->findData(value);
-    if (index != -1)
-    {
+    if (index != -1) {
         box->blockSignals(true);
         box->setCurrentIndex(index);
         box->blockSignals(false);
@@ -429,7 +411,7 @@ void DialogTool::ChangeCurrentData(QComboBox *box, const QVariant &value) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::MoveCursorToEnd(QPlainTextEdit *plainTextEdit) const
+void DialogTool::MoveCursorToEnd(QPlainTextEdit* plainTextEdit) const
 {
     SCASSERT(plainTextEdit != nullptr)
     QTextCursor cursor = plainTextEdit->textCursor();
@@ -438,47 +420,38 @@ void DialogTool::MoveCursorToEnd(QPlainTextEdit *plainTextEdit) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogTool::eventFilter(QObject *object, QEvent *event)
+bool DialogTool::eventFilter(QObject* object, QEvent* event)
 {
-    if (QPlainTextEdit *plainTextEdit = qobject_cast<QPlainTextEdit *>(object))
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-            if ((keyEvent->key() == Qt::Key_Enter) || (keyEvent->key() == Qt::Key_Return))
-            {
+    if (QPlainTextEdit* plainTextEdit = qobject_cast<QPlainTextEdit*>(object)) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            if ((keyEvent->key() == Qt::Key_Enter) || (keyEvent->key() == Qt::Key_Return)) {
                 // Ignore Enter key
                 return true;
-            }
-            else if ((keyEvent->key() == Qt::Key_Period) && (keyEvent->modifiers() & Qt::KeypadModifier))
-            {
-                if (qApp->Settings()->getOsSeparator())
-                {
+            } else if (
+                (keyEvent->key() == Qt::Key_Period)
+                && (keyEvent->modifiers() & Qt::KeypadModifier)) {
+                if (qApp->Settings()->getOsSeparator()) {
                     plainTextEdit->insertPlainText(QLocale().decimalPoint());
-                }
-                else
-                {
+                } else {
                     plainTextEdit->insertPlainText(QLocale::c().decimalPoint());
                 }
                 return true;
             }
         }
-    }
-    else
-    {
+    } else {
         // pass the event on to the parent class
         return QDialog::eventFilter(object, event);
     }
-    return false;// pass the event to the widget
+    return false;   // pass the event to the widget
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 DialogTool::DNumber(const QString &baseName) const
+quint32 DialogTool::DNumber(const QString& baseName) const
 {
     quint32 num = 0;
     QString name;
-    do
-    {
+    do {
         ++num;
         name = baseName + QString("_%1").arg(num);
     } while (not data->IsUnique(name));
@@ -487,92 +460,83 @@ quint32 DialogTool::DNumber(const QString &baseName) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int DialogTool::FindNotExcludedNodeDown(QListWidget *listWidget, int candidate)
+int DialogTool::FindNotExcludedNodeDown(QListWidget* listWidget, int candidate)
 {
     SCASSERT(listWidget != nullptr);
 
     int index = -1;
-    if (candidate < 0 || candidate >= listWidget->count())
-    {
+    if (candidate < 0 || candidate >= listWidget->count()) {
         return index;
     }
 
     int i = candidate;
     VPieceNode rowNode;
-    do
-    {
-        const QListWidgetItem *rowItem = listWidget->item(i);
+    do {
+        const QListWidgetItem* rowItem = listWidget->item(i);
         SCASSERT(rowItem != nullptr);
         rowNode = qvariant_cast<VPieceNode>(rowItem->data(Qt::UserRole));
 
-        if (not rowNode.isExcluded())
-        {
+        if (not rowNode.isExcluded()) {
             index = i;
         }
 
         ++i;
-    }
-    while (rowNode.isExcluded() && i < listWidget->count());
+    } while (rowNode.isExcluded() && i < listWidget->count());
 
     return index;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int DialogTool::FindNotExcludedNodeUp(QListWidget *listWidget, int candidate)
+int DialogTool::FindNotExcludedNodeUp(QListWidget* listWidget, int candidate)
 {
     SCASSERT(listWidget != nullptr);
 
     int index = -1;
-    if (candidate < 0 || candidate >= listWidget->count())
-    {
+    if (candidate < 0 || candidate >= listWidget->count()) {
         return index;
     }
 
     int i = candidate;
     VPieceNode rowNode;
-    do
-    {
-        const QListWidgetItem *rowItem = listWidget->item(i);
+    do {
+        const QListWidgetItem* rowItem = listWidget->item(i);
         SCASSERT(rowItem != nullptr);
         rowNode = qvariant_cast<VPieceNode>(rowItem->data(Qt::UserRole));
 
-        if (not rowNode.isExcluded())
-        {
+        if (not rowNode.isExcluded()) {
             index = i;
         }
 
         --i;
-    }
-    while (rowNode.isExcluded() && i > -1);
+    } while (rowNode.isExcluded() && i > -1);
 
     return index;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogTool::isFirstPointSameAsLast(QListWidget *listWidget)
+bool DialogTool::isFirstPointSameAsLast(QListWidget* listWidget)
 {
     SCASSERT(listWidget != nullptr);
-    if (listWidget->count() > 1)
-    {
+    if (listWidget->count() > 1) {
         const quint32 topId = RowId(listWidget, FindNotExcludedNodeDown(listWidget, 0));
-        const quint32 bottomId = RowId(listWidget, FindNotExcludedNodeUp(listWidget, listWidget->count()-1));
+        const quint32 bottomId =
+            RowId(listWidget, FindNotExcludedNodeUp(listWidget, listWidget->count() - 1));
         return topId == bottomId;
     }
     return false;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogTool::doublePointsExist(QListWidget *listWidget)
+bool DialogTool::doublePointsExist(QListWidget* listWidget)
 {
     SCASSERT(listWidget != nullptr);
-    for (int i=0, sz = listWidget->count()-1; i<sz; ++i)
-    {
+    for (int i = 0, sz = listWidget->count() - 1; i < sz; ++i) {
         const int firstIndex = FindNotExcludedNodeDown(listWidget, i);
         const quint32 firstId = RowId(listWidget, firstIndex);
-        const quint32 secondId = RowId(listWidget, FindNotExcludedNodeDown(listWidget, firstIndex+1));
+        const quint32 secondId =
+            RowId(listWidget, FindNotExcludedNodeDown(listWidget, firstIndex + 1));
 
-        if (firstId == secondId)
-        {
+        if (firstId == secondId) {
             return true;
         }
     }
@@ -580,18 +544,16 @@ bool DialogTool::doublePointsExist(QListWidget *listWidget)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogTool::isEachPointNameUnique(QListWidget *listWidget)
+bool DialogTool::isEachPointNameUnique(QListWidget* listWidget)
 {
     SCASSERT(listWidget != nullptr);
     QSet<quint32> pointLabels;
     int countPoints = 0;
-    for (int i=0; i < listWidget->count(); ++i)
-    {
-        const QListWidgetItem *rowItem = listWidget->item(i);
+    for (int i = 0; i < listWidget->count(); ++i) {
+        const QListWidgetItem* rowItem = listWidget->item(i);
         SCASSERT(rowItem != nullptr);
         const VPieceNode rowNode = qvariant_cast<VPieceNode>(rowItem->data(Qt::UserRole));
-        if (rowNode.GetTypeTool() == Tool::NodePoint)
-        {
+        if (rowNode.GetTypeTool() == Tool::NodePoint) {
             ++countPoints;
             pointLabels.insert(rowNode.GetId());
         }
@@ -603,14 +565,15 @@ bool DialogTool::isEachPointNameUnique(QListWidget *listWidget)
 //---------------------------------------------------------------------------------------------------------------------
 QString DialogTool::DialogWarningIcon()
 {
-    const QIcon icon = QIcon::fromTheme("dialog-warning",
-                                  QIcon(":/icons/win.icon.theme/16x16/status/dialog-warning.png"));
+    const QIcon icon = QIcon::fromTheme(
+        "dialog-warning", QIcon(":/icons/win.icon.theme/16x16/status/dialog-warning.png"));
 
     const QPixmap pixmap = icon.pixmap(QSize(16, 16));
     QByteArray byteArray;
     QBuffer buffer(&byteArray);
     pixmap.save(&buffer, "PNG");
-    const QString url = QString("<img src=\"data:image/png;base64,") + byteArray.toBase64() + QLatin1String("\"/> ");
+    const QString url = QString("<img src=\"data:image/png;base64,") + byteArray.toBase64()
+                      + QLatin1String("\"/> ");
     return url;
 }
 
@@ -625,50 +588,30 @@ QFont DialogTool::NodeFont(bool nodeExcluded)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-NodeInfo DialogTool::getNodeInfo(const VPieceNode &node, bool showNotch) const
+NodeInfo DialogTool::getNodeInfo(const VPieceNode& node, bool showNotch) const
 {
     NodeInfo info;
     const QSharedPointer<VGObject> obj = data->GetGObject(node.GetId());
     info.name = obj->name();
     info.icon = "://icon/24x24/spacer.png";
 
-    if (node.GetTypeTool() != Tool::NodePoint)
-    {
+    if (node.GetTypeTool() != Tool::NodePoint) {
         int bias = 0;
         qApp->translateVariables()->VariablesToUser(info.name, 0, obj->name(), bias);
 
-        if (node.GetReverse())
-        {
+        if (node.GetReverse()) {
             info.icon = "://icon/24x24/reverse.png";
         }
-    }
-    else if (showNotch && node.isNotch())
-    {
-        switch(node.getNotchType())
-        {
-            case NotchType::TNotch:
-                info.icon = "://icon/24x24/t_notch.png";
-                break;
-            case NotchType::UNotch:
-                info.icon = "://icon/24x24/u_notch.png";
-                break;
-            case NotchType::VInternal:
-                info.icon = "://icon/24x24/internal_v_notch.png";
-                break;
-            case NotchType::VExternal:
-                info.icon = "://icon/24x24/external_v_notch.png";
-                break;
-            case NotchType::Castle:
-                info.icon = "://icon/24x24/castle_notch.png";
-                break;
-            case NotchType::Diamond:
-                info.icon = "://icon/24x24/diamond_notch.png";
-                break;
-            case NotchType::Slit:
-                info.icon = "://icon/24x24/slit_notch.png";
-                break;
-            default:
-                break;
+    } else if (showNotch && node.isNotch()) {
+        switch (node.getNotchType()) {
+        case NotchType::TNotch: info.icon = "://icon/24x24/t_notch.png"; break;
+        case NotchType::UNotch: info.icon = "://icon/24x24/u_notch.png"; break;
+        case NotchType::VInternal: info.icon = "://icon/24x24/internal_v_notch.png"; break;
+        case NotchType::VExternal: info.icon = "://icon/24x24/external_v_notch.png"; break;
+        case NotchType::Castle: info.icon = "://icon/24x24/castle_notch.png"; break;
+        case NotchType::Diamond: info.icon = "://icon/24x24/diamond_notch.png"; break;
+        case NotchType::Slit: info.icon = "://icon/24x24/slit_notch.png"; break;
+        default: break;
         }
     }
 
@@ -676,62 +619,67 @@ NodeInfo DialogTool::getNodeInfo(const VPieceNode &node, bool showNotch) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::newNodeItem(QListWidget *listWidget, const VPieceNode &node, bool nodeExcluded, bool isDuplicate)
+void DialogTool::newNodeItem(
+    QListWidget* listWidget, const VPieceNode& node, bool nodeExcluded, bool isDuplicate)
 {
     SCASSERT(listWidget != nullptr);
     SCASSERT(node.GetId() > NULL_ID);
     NodeInfo info;
-    switch (node.GetTypeTool())
-    {
-        case (Tool::NodePoint):
-        case (Tool::NodeArc):
-        case (Tool::NodeElArc):
-        case (Tool::NodeSpline):
-        case (Tool::NodeSplinePath):
-            info = getNodeInfo(node, true);
-            break;
-        default:
-            qWarning() << "Got wrong tools. Ignore.";
-            return;
+    switch (node.GetTypeTool()) {
+    case (Tool::NodePoint):
+    case (Tool::NodeArc):
+    case (Tool::NodeElArc):
+    case (Tool::NodeSpline):
+    case (Tool::NodeSplinePath): info = getNodeInfo(node, true); break;
+    default: qWarning() << "Got wrong tools. Ignore."; return;
     }
 
     bool newNodeAllowed = false;
 
-    if(listWidget->count() == 0 || isDuplicate || RowId(listWidget, listWidget->count()-1) != node.GetId())
-    {
+    if (listWidget->count() == 0 || isDuplicate
+        || RowId(listWidget, listWidget->count() - 1) != node.GetId()) {
         newNodeAllowed = true;
     }
 
-    if(newNodeAllowed)
-    {
-        QListWidgetItem *item = new QListWidgetItem(info.name);
+    if (newNodeAllowed) {
+        QListWidgetItem* item = new QListWidgetItem(info.name);
         item->setFont(NodeFont(nodeExcluded ? node.isExcluded() : false));
         item->setData(Qt::UserRole, QVariant::fromValue(node));
         item->setIcon(QIcon(info.icon));
         listWidget->addItem(item);
-        listWidget->setCurrentRow(listWidget->count()-1);
+        listWidget->setCurrentRow(listWidget->count() - 1);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::initializeNodeAngles(QComboBox *box)
+void DialogTool::initializeNodeAngles(QComboBox* box)
 {
     SCASSERT(box != nullptr);
     box->clear();
 
     box->addItem(tr("by length"), static_cast<unsigned char>(PieceNodeAngle::ByLength));
-    box->addItem(tr("by points intersetions"), static_cast<unsigned char>(PieceNodeAngle::ByPointsIntersection));
-    box->addItem(tr("by first edge symmetry"), static_cast<unsigned char>(PieceNodeAngle::ByFirstEdgeSymmetry));
-    box->addItem(tr("by second edge symmetry"), static_cast<unsigned char>(PieceNodeAngle::BySecondEdgeSymmetry));
-    box->addItem(tr("by first edge right angle"), static_cast<unsigned char>(PieceNodeAngle::ByFirstEdgeRightAngle));
-    box->addItem(tr("by second edge right angle"), static_cast<unsigned char>(PieceNodeAngle::BySecondEdgeRightAngle));
+    box->addItem(
+        tr("by points intersetions"),
+        static_cast<unsigned char>(PieceNodeAngle::ByPointsIntersection));
+    box->addItem(
+        tr("by first edge symmetry"),
+        static_cast<unsigned char>(PieceNodeAngle::ByFirstEdgeSymmetry));
+    box->addItem(
+        tr("by second edge symmetry"),
+        static_cast<unsigned char>(PieceNodeAngle::BySecondEdgeSymmetry));
+    box->addItem(
+        tr("by first edge right angle"),
+        static_cast<unsigned char>(PieceNodeAngle::ByFirstEdgeRightAngle));
+    box->addItem(
+        tr("by second edge right angle"),
+        static_cast<unsigned char>(PieceNodeAngle::BySecondEdgeRightAngle));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogTool::IsSplinePath(const QSharedPointer<VGObject> &obj) const
+bool DialogTool::IsSplinePath(const QSharedPointer<VGObject>& obj) const
 {
-    return (obj->getType() == GOType::SplinePath || obj->getType() == GOType::CubicBezierPath) &&
-            obj->getMode() == Draw::Calculation;
+    return (obj->getType() == GOType::SplinePath || obj->getType() == GOType::CubicBezierPath)
+        && obj->getMode() == Draw::Calculation;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -741,23 +689,20 @@ bool DialogTool::IsSplinePath(const QSharedPointer<VGObject> &obj) const
  * @param edit LineEdit
  * @param timer timer of formula
  */
-void DialogTool::ValFormulaChanged(bool &flag, QLineEdit *edit, QTimer *timer, const QString& postfix)
+void DialogTool::ValFormulaChanged(
+    bool& flag, QLineEdit* edit, QTimer* timer, const QString& postfix)
 {
     SCASSERT(edit != nullptr)
     SCASSERT(timer != nullptr)
     SCASSERT(labelEditFormula != nullptr)
     SCASSERT(labelResultCalculation != nullptr)
-    if (edit->text().isEmpty())
-    {
+    if (edit->text().isEmpty()) {
         flag = false;
         CheckState();
         ChangeColor(labelEditFormula, Qt::red);
-        if (postfix.isEmpty())
-        {
+        if (postfix.isEmpty()) {
             labelResultCalculation->setText(tr("Error"));
-        }
-        else
-        {
+        } else {
             labelResultCalculation->setText(tr("Error") + " (" + postfix + ")");
         }
         labelResultCalculation->setToolTip(tr("Empty field"));
@@ -766,23 +711,20 @@ void DialogTool::ValFormulaChanged(bool &flag, QLineEdit *edit, QTimer *timer, c
     timer->start(1000);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::ValFormulaChanged(bool &flag, QPlainTextEdit *edit, QTimer *timer, const QString& postfix)
+void DialogTool::ValFormulaChanged(
+    bool& flag, QPlainTextEdit* edit, QTimer* timer, const QString& postfix)
 {
     SCASSERT(edit != nullptr)
     SCASSERT(timer != nullptr)
     SCASSERT(labelEditFormula != nullptr)
     SCASSERT(labelResultCalculation != nullptr)
-    if (edit->toPlainText().isEmpty())
-    {
+    if (edit->toPlainText().isEmpty()) {
         flag = false;
         CheckState();
         ChangeColor(labelEditFormula, Qt::red);
-        if (postfix.isEmpty())
-        {
+        if (postfix.isEmpty()) {
             labelResultCalculation->setText(tr("Error"));
-        }
-        else
-        {
+        } else {
             labelResultCalculation->setText(tr("Error") + " (" + postfix + ")");
         }
 
@@ -802,99 +744,96 @@ void DialogTool::ValFormulaChanged(bool &flag, QPlainTextEdit *edit, QTimer *tim
  * @param postfix unit name
  * @param checkZero true - if formula can't be equal zero
  */
-qreal DialogTool::Eval(const QString &text, bool &flag, QLabel *label, const QString& postfix, bool checkZero,
-                       bool checkLessThanZero)
+qreal DialogTool::Eval(
+    const QString& text,
+    bool& flag,
+    QLabel* label,
+    const QString& postfix,
+    bool checkZero,
+    bool checkLessThanZero)
 {
     SCASSERT(label != nullptr)
     SCASSERT(labelEditFormula != nullptr)
 
-    qreal result = INT_MIN;//Value can be 0, so use max imposible value
+    qreal result = INT_MIN;   // Value can be 0, so use max imposible value
 
-    if (text.isEmpty())
-    {
+    if (text.isEmpty()) {
         flag = false;
         ChangeColor(labelEditFormula, Qt::red);
         label->setText(tr("Error") + " (" + postfix + ")");
         label->setToolTip(tr("Empty field"));
-    }
-    else
-    {
-        try
-        {
+    } else {
+        try {
             // Replace line return character with spaces for calc if exist
             QString formula = text;
             formula.replace("\n", " ");
             // Translate to internal look.
-            formula = qApp->translateVariables()->FormulaFromUser(formula, qApp->Settings()->getOsSeparator());
+            formula = qApp->translateVariables()->FormulaFromUser(
+                formula, qApp->Settings()->getOsSeparator());
             QScopedPointer<Calculator> cal(new Calculator());
             result = cal->EvalFormula(data->DataVariables(), formula);
 
-            if (qIsInf(result) || qIsNaN(result))
-            {
+            if (qIsInf(result) || qIsNaN(result)) {
                 flag = false;
                 ChangeColor(labelEditFormula, Qt::red);
                 label->setText(tr("Error") + " (" + postfix + ")");
-                label->setToolTip(tr("Invalid result. Value is infinite or NaN. Please, check your calculations."));
-            }
-            else
-            {
-                //if result equal 0
-                if (checkZero && qFuzzyIsNull(result))
-                {
+                label->setToolTip(tr(
+                    "Invalid result. Value is infinite or NaN. Please, check your calculations."));
+            } else {
+                // if result equal 0
+                if (checkZero && qFuzzyIsNull(result)) {
                     flag = false;
                     ChangeColor(labelEditFormula, Qt::red);
                     label->setText(tr("Error") + " (" + postfix + ")");
                     label->setToolTip(tr("Value can't be 0"));
-                }
-                else if (checkLessThanZero && result < 0)
-                {
+                } else if (checkLessThanZero && result < 0) {
                     flag = false;
                     ChangeColor(labelEditFormula, Qt::red);
                     label->setText(tr("Error") + " (" + postfix + ")");
                     label->setToolTip(tr("Value can't be less than 0"));
-                }
-                else
-                {
-                    label->setText(qApp->LocaleToString(result) + " " +postfix);
+                } else {
+                    label->setText(qApp->LocaleToString(result) + " " + postfix);
                     flag = true;
                     ChangeColor(labelEditFormula, okColor);
                     label->setToolTip(tr("Result Value"));
                     emit ToolTip("");
                 }
             }
-        }
-        catch (qmu::QmuParserError &error)
-        {
+        } catch (qmu::QmuParserError& error) {
             label->setText(tr("Error") + " (" + postfix + ")");
             flag = false;
             ChangeColor(labelEditFormula, Qt::red);
             emit ToolTip(tr("Parser error: %1").arg(error.GetMsg()));
             label->setToolTip(tr("Parser error: %1").arg(error.GetMsg()));
             qDebug() << "\nMath parser error:\n"
-                       << "--------------------------------------\n"
-                       << "Message:     " << error.GetMsg()  << "\n"
-                       << "Expression:  " << error.GetExpr() << "\n"
-                       << "--------------------------------------";
+                     << "--------------------------------------\n"
+                     << "Message:     " << error.GetMsg() << "\n"
+                     << "Expression:  " << error.GetExpr() << "\n"
+                     << "--------------------------------------";
         }
     }
-    CheckState(); // Disable Ok and Apply buttons if something wrong.
+    CheckState();   // Disable Ok and Apply buttons if something wrong.
     return result;
 }
 
 // Normalizes any number to an arbitrary range
 // by assuming the range wraps around when going below min or above max
-qreal DialogTool::normalize( const qreal value, const qreal start, const qreal end )
+qreal DialogTool::normalize(const qreal value, const qreal start, const qreal end)
 {
-  const qreal range       = end - start   ;   //
-  const qreal offsetValue = value - start ;   // value relative to 0
+    const qreal range = end - start;           //
+    const qreal offsetValue = value - start;   // value relative to 0
 
-  return ( offsetValue - ( floor( offsetValue / range ) * range ) ) + start ;
-  // + start to reset back to start of original range
+    return (offsetValue - (floor(offsetValue / range) * range)) + start;
+    // + start to reset back to start of original range
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::setCurrentPointId(QComboBox *box, const quint32 &value, FillComboBox rule,
-                                   const quint32 &ch1, const quint32 &ch2) const
+void DialogTool::setCurrentPointId(
+    QComboBox* box,
+    const quint32& value,
+    FillComboBox rule,
+    const quint32& ch1,
+    const quint32& ch2) const
 {
     SCASSERT(box != nullptr)
 
@@ -910,7 +849,7 @@ void DialogTool::setCurrentPointId(QComboBox *box, const quint32 &value, FillCom
 /**
  * @brief setCurrentSplineId set current spline id in combobox
  */
-void DialogTool::setCurrentSplineId(QComboBox *box, const quint32 &value) const
+void DialogTool::setCurrentSplineId(QComboBox* box, const quint32& value) const
 {
     SCASSERT(box != nullptr)
     FillComboBoxSplines(box);
@@ -921,8 +860,12 @@ void DialogTool::setCurrentSplineId(QComboBox *box, const quint32 &value) const
 /**
  * @brief setCurrentArcId
  */
-void DialogTool::setCurrentArcId(QComboBox *box, const quint32 &value, FillComboBox rule,
-                                 const quint32 &ch1, const quint32 &ch2) const
+void DialogTool::setCurrentArcId(
+    QComboBox* box,
+    const quint32& value,
+    FillComboBox rule,
+    const quint32& ch1,
+    const quint32& ch2) const
 {
     SCASSERT(box != nullptr)
     FillComboBoxArcs(box, rule, ch1, ch2);
@@ -935,7 +878,7 @@ void DialogTool::setCurrentArcId(QComboBox *box, const quint32 &value, FillCombo
  * @param box combobox
  * @param value splinePath id
  */
-void DialogTool::setCurrentSplinePathId(QComboBox *box, const quint32 &value) const
+void DialogTool::setCurrentSplinePathId(QComboBox* box, const quint32& value) const
 {
     SCASSERT(box != nullptr)
     FillComboBoxSplinesPath(box);
@@ -943,7 +886,7 @@ void DialogTool::setCurrentSplinePathId(QComboBox *box, const quint32 &value) co
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::setCurrentCurveId(QComboBox *box, const quint32 &value) const
+void DialogTool::setCurrentCurveId(QComboBox* box, const quint32& value) const
 {
     SCASSERT(box != nullptr)
     FillComboBoxCurves(box);
@@ -956,65 +899,57 @@ void DialogTool::setCurrentCurveId(QComboBox *box, const quint32 &value) const
  * @param box combobox
  * @return id or 0 if combobox is empty
  */
-quint32 DialogTool::getCurrentObjectId(QComboBox *box) const
+quint32 DialogTool::getCurrentObjectId(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
     qint32 index = box->currentIndex();
-    if (index != -1)
-    {
+    if (index != -1) {
         return qvariant_cast<quint32>(box->itemData(index));
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogTool::SetObject(const quint32 &id, QComboBox *box, const QString &toolTip)
+bool DialogTool::SetObject(const quint32& id, QComboBox* box, const QString& toolTip)
 {
     SCASSERT(box != nullptr)
     const qint32 index = box->findData(id);
-    if ( index != -1 )
-    { // -1 for not found
+    if (index != -1) {   // -1 for not found
         box->setCurrentIndex(index);
         emit ToolTip(toolTip);
         return true;
-    }
-    else
-    {
-        qWarning() << "Can't find object by id"<<id;
+    } else {
+        qWarning() << "Can't find object by id" << id;
     }
     return false;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::DeployFormula(QPlainTextEdit *formula, QPushButton *buttonGrowLength, int formulaBaseHeight)
+void DialogTool::DeployFormula(
+    QPlainTextEdit* formula, QPushButton* buttonGrowLength, int formulaBaseHeight)
 {
     SCASSERT(formula != nullptr)
     SCASSERT(buttonGrowLength != nullptr)
 
     const QTextCursor cursor = formula->textCursor();
 
-    if (formula->height() < DIALOG_MAX_FORMULA_HEIGHT)
-    {
+    if (formula->height() < DIALOG_MAX_FORMULA_HEIGHT) {
         setMaximumWidth(QWIDGETSIZE_MAX);
         formula->setFixedHeight(DIALOG_MAX_FORMULA_HEIGHT);
-        //Set icon from theme (internal for Windows system)
-        buttonGrowLength->setIcon(QIcon::fromTheme("go-up",
-                                                   QIcon(":/icons/win.icon.theme/16x16/actions/go-up.png")));
-    }
-    else
-    {
+        // Set icon from theme (internal for Windows system)
+        buttonGrowLength->setIcon(
+            QIcon::fromTheme("go-up", QIcon(":/icons/win.icon.theme/16x16/actions/go-up.png")));
+    } else {
         setMaximumWidth(DIALOG_MIN_WIDTH);
         formula->setFixedHeight(formulaBaseHeight);
-        //Set icon from theme (internal for Windows system)
-        buttonGrowLength->setIcon(QIcon::fromTheme("go-down",
-                                                   QIcon(":/icons/win.icon.theme/16x16/actions/go-down.png")));
+        // Set icon from theme (internal for Windows system)
+        buttonGrowLength->setIcon(
+            QIcon::fromTheme("go-down", QIcon(":/icons/win.icon.theme/16x16/actions/go-down.png")));
     }
 
-    // I found that after change size of formula field, it was filed for angle formula, field for formula became black.
-    // This code prevent this.
+    // I found that after change size of formula field, it was filed for angle formula, field for
+    // formula became black. This code prevent this.
     setUpdatesEnabled(false);
     repaint();
     setUpdatesEnabled(true);
@@ -1029,14 +964,13 @@ void DialogTool::DeployFormula(QPlainTextEdit *formula, QPushButton *buttonGrowL
  * @param box combobox
  * @param list list with ids and names
  */
-void DialogTool::FillList(QComboBox *box, const QMap<QString, quint32> &list) const
+void DialogTool::FillList(QComboBox* box, const QMap<QString, quint32>& list) const
 {
     SCASSERT(box != nullptr)
     box->clear();
 
     QMapIterator<QString, quint32> iter(list);
-    while (iter.hasNext())
-    {
+    while (iter.hasNext()) {
         iter.next();
         box->addItem(iter.key(), iter.value());
     }
@@ -1044,28 +978,25 @@ void DialogTool::FillList(QComboBox *box, const QMap<QString, quint32> &list) co
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void DialogTool::PrepareList(QMap<QString, quint32> &list, quint32 id) const
+void DialogTool::PrepareList(QMap<QString, quint32>& list, quint32 id) const
 {
     const auto obj = data->GeometricObject<T>(id);
     SCASSERT(obj != nullptr)
 
     QString newName = obj->name();
     int bias = 0;
-    if (qApp->translateVariables()->VariablesToUser(newName, 0, obj->name(), bias))
-    {
+    if (qApp->translateVariables()->VariablesToUser(newName, 0, obj->name(), bias)) {
         list[newName] = id;
-    }
-    else
-    {
+    } else {
         list[obj->name()] = id;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogTool::IsSpline(const QSharedPointer<VGObject> &obj) const
+bool DialogTool::IsSpline(const QSharedPointer<VGObject>& obj) const
 {
-    return (obj->getType() == GOType::Spline || obj->getType() == GOType::CubicBezier) &&
-            obj->getMode() == Draw::Calculation;
+    return (obj->getType() == GOType::Spline || obj->getType() == GOType::CubicBezier)
+        && obj->getMode() == Draw::Calculation;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -1077,8 +1008,7 @@ void DialogTool::CheckState()
     SCASSERT(ok_Button != nullptr)
     ok_Button->setEnabled(flagFormula && flagName && flagError);
     // In case dialog hasn't apply button
-    if (apply_Button != nullptr)
-    {
+    if (apply_Button != nullptr) {
         apply_Button->setEnabled(ok_Button->isEnabled());
     }
 }
@@ -1089,7 +1019,7 @@ void DialogTool::CheckState()
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogTool::ChosenObject(quint32 id, const SceneObject &type)
+void DialogTool::ChosenObject(quint32 id, const SceneObject& type)
 {
     Q_UNUSED(id)
     Q_UNUSED(type)
@@ -1111,18 +1041,14 @@ void DialogTool::NamePointChanged()
 {
     SCASSERT(labelEditNamePoint != nullptr)
     QLineEdit* edit = qobject_cast<QLineEdit*>(sender());
-    if (edit)
-    {
+    if (edit) {
         QString name = edit->text();
         QRegularExpression rx(NameRegExp());
-        if (name.isEmpty() || (pointName != name && data->IsUnique(name) == false) ||
-            rx.match(name).hasMatch() == false)
-        {
+        if (name.isEmpty() || (pointName != name && data->IsUnique(name) == false)
+            || rx.match(name).hasMatch() == false) {
             flagName = false;
             ChangeColor(labelEditNamePoint, Qt::red);
-        }
-        else
-        {
+        } else {
             flagName = true;
             ChangeColor(labelEditNamePoint, okColor);
         }
@@ -1131,7 +1057,7 @@ void DialogTool::NamePointChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::ChangeColor(QWidget *widget, const QColor &color)
+void DialogTool::ChangeColor(QWidget* widget, const QColor& color)
 {
     SCASSERT(widget != nullptr)
     QPalette palette = widget->palette();
@@ -1160,10 +1086,7 @@ void DialogTool::DialogApply()
 /**
  * @brief DialogRejected emit signal dialog rejected
  */
-void DialogTool::DialogRejected()
-{
-    emit DialogClosed(QDialog::Rejected);
-}
+void DialogTool::DialogRejected() { emit DialogClosed(QDialog::Rejected); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -1172,17 +1095,15 @@ void DialogTool::DialogRejected()
 void DialogTool::FormulaChanged()
 {
     QPlainTextEdit* edit = qobject_cast<QPlainTextEdit*>(sender());
-    if (edit)
-    {
+    if (edit) {
         ValFormulaChanged(flagFormula, edit, timerFormula, UnitsToStr(qApp->patternUnit()));
     }
 }
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::FormulaChangedPlainText() //-V524
+void DialogTool::FormulaChangedPlainText()   //-V524
 {
     QPlainTextEdit* edit = qobject_cast<QPlainTextEdit*>(sender());
-    if (edit)
-    {
+    if (edit) {
         ValFormulaChanged(flagFormula, edit, timerFormula, UnitsToStr(qApp->patternUnit()));
     }
 }
@@ -1275,50 +1196,39 @@ void DialogTool::EvalFormula()
 {
     SCASSERT(plainTextEditFormula != nullptr)
     SCASSERT(labelResultCalculation != nullptr)
-    const QString postfix = UnitsToStr(qApp->patternUnit(), true);//Show unit in dialog lable (cm, mm or inch)
+    const QString postfix =
+        UnitsToStr(qApp->patternUnit(), true);   // Show unit in dialog lable (cm, mm or inch)
     Eval(plainTextEditFormula->toPlainText(), flagFormula, labelResultCalculation, postfix, false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-quint32 DialogTool::GetToolId() const
-{
-    return toolId;
-}
+quint32 DialogTool::GetToolId() const { return toolId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::SetToolId(const quint32 &value)
-{
-    toolId = value;
-}
+void DialogTool::SetToolId(const quint32& value) { toolId = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogTool::getPointName() const
-{
-    return pointName;
-}
+QString DialogTool::getPointName() const { return pointName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::moveListRowTop(QListWidget *list)
+void DialogTool::moveListRowTop(QListWidget* list)
 {
     SCASSERT(list != nullptr)
     const int currentIndex = list->currentRow();
-    if (QListWidgetItem *currentItem = list->takeItem(currentIndex))
-    {
+    if (QListWidgetItem* currentItem = list->takeItem(currentIndex)) {
         list->insertItem(0, currentItem);
         list->setCurrentRow(0);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::moveListRowUp(QListWidget *list)
+void DialogTool::moveListRowUp(QListWidget* list)
 {
     SCASSERT(list != nullptr)
     int currentIndex = list->currentRow();
-    if (QListWidgetItem *currentItem = list->takeItem(currentIndex--))
-    {
-        if (currentIndex < 0)
-        {
+    if (QListWidgetItem* currentItem = list->takeItem(currentIndex--)) {
+        if (currentIndex < 0) {
             currentIndex = 0;
         }
         list->insertItem(currentIndex, currentItem);
@@ -1327,14 +1237,12 @@ void DialogTool::moveListRowUp(QListWidget *list)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::moveListRowDown(QListWidget *list)
+void DialogTool::moveListRowDown(QListWidget* list)
 {
     SCASSERT(list != nullptr)
     int currentIndex = list->currentRow();
-    if (QListWidgetItem *currentItem = list->takeItem(currentIndex++))
-    {
-        if (currentIndex > list->count())
-        {
+    if (QListWidgetItem* currentItem = list->takeItem(currentIndex++)) {
+        if (currentIndex > list->count()) {
             currentIndex = list->count();
         }
         list->insertItem(currentIndex, currentItem);
@@ -1343,50 +1251,36 @@ void DialogTool::moveListRowDown(QListWidget *list)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::moveListRowBottom(QListWidget *list)
+void DialogTool::moveListRowBottom(QListWidget* list)
 {
     SCASSERT(list != nullptr)
     const int currentIndex = list->currentRow();
-    if (QListWidgetItem *currentItem = list->takeItem(currentIndex))
-    {
+    if (QListWidgetItem* currentItem = list->takeItem(currentIndex)) {
         list->insertItem(list->count(), currentItem);
-        list->setCurrentRow(list->count()-1);
+        list->setCurrentRow(list->count() - 1);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::ShowDialog(bool click)
-{
-    Q_UNUSED(click)
-}
+void DialogTool::ShowDialog(bool click) { Q_UNUSED(click) }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::Build(const Tool &type)
-{
-    Q_UNUSED(type)
-}
+void DialogTool::Build(const Tool& type) { Q_UNUSED(type) }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::SetPiecesList(const QVector<quint32> &list)
-{
-    Q_UNUSED(list);
-}
+void DialogTool::SetPiecesList(const QVector<quint32>& list) { Q_UNUSED(list); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTool::SetAssociatedTool(VAbstractTool *tool)
+void DialogTool::SetAssociatedTool(VAbstractTool* tool)
 {
-    if (tool != nullptr)
-    {
+    if (tool != nullptr) {
         associatedTool = tool;
         SetToolId(tool->getId());
         data = tool->getData();
-        if (not vis.isNull())
-        {
+        if (not vis.isNull()) {
             vis->setData(data);
         }
-    }
-    else
-    {
+    } else {
         associatedTool = nullptr;
         SetToolId(NULL_ID);
     }
@@ -1394,35 +1288,28 @@ void DialogTool::SetAssociatedTool(VAbstractTool *tool)
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename GObject>
-void DialogTool::FillCombo(QComboBox *box, GOType gType, FillComboBox rule, const quint32 &ch1,
-                           const quint32 &ch2) const
+void DialogTool::FillCombo(
+    QComboBox* box, GOType gType, FillComboBox rule, const quint32& ch1, const quint32& ch2) const
 {
     SCASSERT(box != nullptr)
     box->blockSignals(true);
 
-    const QHash<quint32, QSharedPointer<VGObject> > *objs = data->DataGObjects();
-    QHash<quint32, QSharedPointer<VGObject> >::const_iterator i;
+    const QHash<quint32, QSharedPointer<VGObject>>* objs = data->DataGObjects();
+    QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
     QMap<QString, quint32> list;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i)
-    {
-        if (rule == FillComboBox::NoChildren)
-        {
-            if (i.key() != toolId && i.value()->getIdTool() != toolId && i.key() != ch1 && i.key() != ch2)
-            {
+    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+        if (rule == FillComboBox::NoChildren) {
+            if (i.key() != toolId && i.value()->getIdTool() != toolId && i.key() != ch1
+                && i.key() != ch2) {
                 QSharedPointer<VGObject> obj = i.value();
-                if (obj->getType() == gType && obj->getMode() == Draw::Calculation)
-                {
+                if (obj->getType() == gType && obj->getMode() == Draw::Calculation) {
                     PrepareList<GObject>(list, i.key());
                 }
             }
-        }
-        else
-        {
-            if (i.key() != toolId && i.value()->getIdTool() != toolId)
-            {
+        } else {
+            if (i.key() != toolId && i.value()->getIdTool() != toolId) {
                 QSharedPointer<VGObject> obj = i.value();
-                if (obj->getType() == gType && obj->getMode() == Draw::Calculation)
-                {
+                if (obj->getType() == gType && obj->getMode() == Draw::Calculation) {
                     PrepareList<GObject>(list, i.key());
                 }
             }

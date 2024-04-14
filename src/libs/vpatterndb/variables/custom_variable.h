@@ -51,11 +51,11 @@
 #ifndef CUSTOM_VARIABLE_H
 #define CUSTOM_VARIABLE_H
 
-#include <qcompilerdetection.h>
 #include <QSharedDataPointer>
 #include <QString>
 #include <QTypeInfo>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vvariable.h"
 
@@ -65,27 +65,33 @@ class VContainer;
 /**
  * @brief The CustomVariable class keep data row of variables table
  */
-class CustomVariable :public VVariable
+class CustomVariable : public VVariable
 {
 public:
-                CustomVariable();
-                CustomVariable(VContainer *data, const QString &name, quint32 index, qreal base, const QString &formula, bool ok,
-                               const QString &description = QString());
-                CustomVariable(const CustomVariable &variable);
+    CustomVariable();
+    CustomVariable(
+        VContainer* data,
+        const QString& name,
+        quint32 index,
+        qreal base,
+        const QString& formula,
+        bool ok,
+        const QString& description = QString());
+    CustomVariable(const CustomVariable& variable);
 
-    virtual    ~CustomVariable() override;
+    virtual ~CustomVariable() override;
 
-                CustomVariable &operator=(const CustomVariable &variable);
+    CustomVariable& operator=(const CustomVariable& variable);
 
 #ifdef Q_COMPILER_RVALUE_REFS
-	            CustomVariable &operator=(CustomVariable &&variable) Q_DECL_NOTHROW;
+    CustomVariable& operator=(CustomVariable&& variable) Q_DECL_NOTHROW;
 #endif
 
-    void        Swap(CustomVariable &variable) Q_DECL_NOTHROW;
-    quint32     getIndex() const;
-    QString     GetFormula() const;
-    bool        IsFormulaOk() const;
-    VContainer *GetData();
+    void Swap(CustomVariable& variable) Q_DECL_NOTHROW;
+    quint32 getIndex() const;
+    QString GetFormula() const;
+    bool IsFormulaOk() const;
+    VContainer* GetData();
 
 private:
     QSharedDataPointer<CustomVariableData> d;
@@ -93,4 +99,4 @@ private:
 
 Q_DECLARE_TYPEINFO(CustomVariable, Q_MOVABLE_TYPE);
 
-#endif // CUSTOM_VARIABLE_H
+#endif   // CUSTOM_VARIABLE_H

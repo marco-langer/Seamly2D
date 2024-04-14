@@ -52,15 +52,15 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 
-#include <qcompilerdetection.h>
 #include <QHash>
 #include <QMap>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../qmuparser/qmuformulabase.h"
 
-//class VInternalVariable;
+// class VInternalVariable;
 #include "variables/vinternalvariable.h"
 /**
  * @brief The Calculator class for calculation formula.
@@ -73,25 +73,30 @@
  * if (dialog->exec() == QDialog::Accepted)
  * {
  *     formula = dialog->GetFormula();
- *     //Need delete dialog here because parser in dialog don't allow use correct separator for parsing here.
+ *     //Need delete dialog here because parser in dialog don't allow use correct separator for
+ * parsing here.
  *     //Don't know why.
  *     delete dialog;
  *     QScopedPointer<Calculator> cal(new Calculator());
  *     result = cal->EvalFormula(data->PlainVariables(), formula);
  * }
  */
-class Calculator:public qmu::QmuFormulaBase
+class Calculator : public qmu::QmuFormulaBase
 {
 public:
     Calculator();
     virtual ~Calculator() Q_DECL_EQ_DEFAULT;
 
-    qreal EvalFormula(const QHash<QString, QSharedPointer<VInternalVariable> > *vars, const QString &formula);
+    qreal EvalFormula(
+        const QHash<QString, QSharedPointer<VInternalVariable>>* vars, const QString& formula);
+
 private:
     Q_DISABLE_COPY(Calculator)
 
-    void InitVariables(const QHash<QString, QSharedPointer<VInternalVariable> > *vars, const QMap<int, QString> &tokens,
-                       const QString &formula);
+    void InitVariables(
+        const QHash<QString, QSharedPointer<VInternalVariable>>* vars,
+        const QMap<int, QString>& tokens,
+        const QString& formula);
 };
 
-#endif // CALCULATOR_H
+#endif   // CALCULATOR_H

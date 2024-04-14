@@ -25,14 +25,14 @@
  **
  *************************************************************************/
 
-#include <iostream>
 #include "pen.h"
+#include <iostream>
 
-std::ostream &operator << (std::ostream &stream, const Pen &pen)
+std::ostream& operator<<(std::ostream& stream, const Pen& pen)
 {
-    stream << " pen color: "        << pen.getColor()
+    stream << " pen color: "
+           << pen.getColor()
            //<< " pen width: "        << pen.getLineWeight()
-           << " pen line type: "    << pen.getLineType()
-           << std::endl;
+           << " pen line type: " << pen.getLineType() << std::endl;
     return stream;
 }

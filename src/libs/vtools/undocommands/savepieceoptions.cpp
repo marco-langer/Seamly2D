@@ -52,25 +52,29 @@
 
 #include "savepieceoptions.h"
 
+#include <QDebug>
 #include <QDomElement>
 #include <QPointF>
 #include <QUndoCommand>
-#include <QDebug>
 
-#include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/ifcdef.h"
-#include "../vmisc/logging.h"
+#include "../ifc/xml/vabstractpattern.h"
+#include "../tools/pattern_piece_tool.h"
 #include "../vmisc/def.h"
-#include "../vpatterndb/vpiecenode.h"
+#include "../vmisc/logging.h"
+#include "../vpatterndb/floatItemData/vgrainlinedata.h"
 #include "../vpatterndb/floatItemData/vpatternlabeldata.h"
 #include "../vpatterndb/floatItemData/vpiecelabeldata.h"
-#include "../vpatterndb/floatItemData/vgrainlinedata.h"
-#include "../tools/pattern_piece_tool.h"
+#include "../vpatterndb/vpiecenode.h"
 #include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-SavePieceOptions::SavePieceOptions(const VPiece &oldPiece, const VPiece &newPiece, VAbstractPattern *doc, quint32 id,
-                                   QUndoCommand *parent)
+SavePieceOptions::SavePieceOptions(
+    const VPiece& oldPiece,
+    const VPiece& newPiece,
+    VAbstractPattern* doc,
+    quint32 id,
+    QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , m_oldPiece(oldPiece)
     , m_newPiece(newPiece)
@@ -80,8 +84,7 @@ SavePieceOptions::SavePieceOptions(const VPiece &oldPiece, const VPiece &newPiec
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SavePieceOptions::~SavePieceOptions()
-{}
+SavePieceOptions::~SavePieceOptions() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void SavePieceOptions::undo()
@@ -89,10 +92,9 @@ void SavePieceOptions::undo()
     qCDebug(vUndo, "Undo.");
 
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPiece);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         PatternPieceTool::AddAttributes(doc, domElement, nodeId, m_oldPiece);
-        doc->RemoveAllChildren(domElement);//Very important to clear before rewrite
+        doc->RemoveAllChildren(domElement);   // Very important to clear before rewrite
         PatternPieceTool::AddPatternPieceData(doc, domElement, m_oldPiece);
         PatternPieceTool::AddPatternInfo(doc, domElement, m_oldPiece);
         PatternPieceTool::AddGrainline(doc, domElement, m_oldPiece);
@@ -106,9 +108,7 @@ void SavePieceOptions::undo()
         IncrementReferences(m_oldPiece.MissingInternalPaths(m_newPiece));
         IncrementReferences(m_oldPiece.missingAnchors(m_newPiece));
         emit NeedLiteParsing(Document::LiteParse);
-    }
-    else
-    {
+    } else {
         qCWarning(vUndo, "Can't find piece with id = %u.", nodeId);
         return;
     }
@@ -120,10 +120,9 @@ void SavePieceOptions::redo()
     qCDebug(vUndo, "Redo.");
 
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPiece);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         PatternPieceTool::AddAttributes(doc, domElement, nodeId, m_newPiece);
-        doc->RemoveAllChildren(domElement);//Very important to clear before rewrite
+        doc->RemoveAllChildren(domElement);   // Very important to clear before rewrite
         PatternPieceTool::AddPatternPieceData(doc, domElement, m_newPiece);
         PatternPieceTool::AddPatternInfo(doc, domElement, m_newPiece);
         PatternPieceTool::AddGrainline(doc, domElement, m_newPiece);
@@ -138,23 +137,20 @@ void SavePieceOptions::redo()
         DecrementReferences(m_oldPiece.missingAnchors(m_newPiece));
 
         emit NeedLiteParsing(Document::LiteParse);
-    }
-    else
-    {
+    } else {
         qCWarning(vUndo, "Can't find piece with id = %u.", nodeId);
         return;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool SavePieceOptions::mergeWith(const QUndoCommand *command)
+bool SavePieceOptions::mergeWith(const QUndoCommand* command)
 {
-    const SavePieceOptions *saveCommand = static_cast<const SavePieceOptions *>(command);
+    const SavePieceOptions* saveCommand = static_cast<const SavePieceOptions*>(command);
     SCASSERT(saveCommand != nullptr);
     const quint32 id = saveCommand->pieceId();
 
-    if (id != nodeId)
-    {
+    if (id != nodeId) {
         return false;
     }
 
@@ -163,7 +159,4 @@ bool SavePieceOptions::mergeWith(const QUndoCommand *command)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int SavePieceOptions::id() const
-{
-    return static_cast<int>(UndoCommand::SavePieceOptions);
-}
+int SavePieceOptions::id() const { return static_cast<int>(UndoCommand::SavePieceOptions); }

@@ -52,12 +52,12 @@
 #ifndef VISPATH_H
 #define VISPATH_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../visualization.h"
 #include "../vmisc/def.h"
@@ -65,22 +65,29 @@
 
 class VSimplePoint;
 
-class VisPath : public Visualization, public VCurvePathItem
+class VisPath
+    : public Visualization
+    , public VCurvePathItem
 {
     Q_OBJECT
 public:
-    explicit VisPath(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisPath(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisPath() = default;
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::Path)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::Path)
+    };
+
 protected:
     virtual void initPen() Q_DECL_OVERRIDE;
     virtual void AddOnScene() Q_DECL_OVERRIDE;
 
-    VSimplePoint *GetPoint(QVector<VSimplePoint *> &points, quint32 i, const QColor &color);
+    VSimplePoint* GetPoint(QVector<VSimplePoint*>& points, quint32 i, const QColor& color);
+
 private:
     Q_DISABLE_COPY(VisPath)
 };
 
-#endif // VISPATH_H
+#endif   // VISPATH_H

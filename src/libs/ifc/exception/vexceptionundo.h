@@ -52,8 +52,8 @@
 #ifndef VEXCEPTIONUNDO_H
 #define VEXCEPTIONUNDO_H
 
-#include <qcompilerdetection.h>
 #include <QString>
+#include <qcompilerdetection.h>
 
 #include "../ifcdef.h"
 #include "vexception.h"
@@ -61,9 +61,9 @@
 class VExceptionUndo : public VException
 {
 public:
-    explicit VExceptionUndo(const QString &what);
-    VExceptionUndo(const VExceptionUndo &error);
-    virtual ~VExceptionUndo() V_NOEXCEPT_EXPR (true) Q_DECL_EQ_DEFAULT;
+    explicit VExceptionUndo(const QString& what);
+    VExceptionUndo(const VExceptionUndo& error);
+    virtual ~VExceptionUndo() V_NOEXCEPT_EXPR(true) Q_DECL_EQ_DEFAULT;
 };
 
-#endif // VEXCEPTIONUNDO_H
+#endif   // VEXCEPTIONUNDO_H

@@ -52,13 +52,13 @@
 #ifndef VCUBICBEZIER_P_H
 #define VCUBICBEZIER_P_H
 
-#include <QSharedData>
 #include <QLineF>
+#include <QSharedData>
 
-#include "vpointf.h"
-#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/diagnostic.h"
+#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vmath.h"
+#include "vpointf.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -68,8 +68,8 @@ class VCubicBezierData : public QSharedData
 {
 public:
     VCubicBezierData();
-    VCubicBezierData(const VCubicBezierData &curve);
-    VCubicBezierData(const VPointF &p1, const VPointF &p2, const VPointF &p3, const VPointF &p4);
+    VCubicBezierData(const VCubicBezierData& curve);
+    VCubicBezierData(const VPointF& p1, const VPointF& p2, const VPointF& p3, const VPointF& p4);
     virtual ~VCubicBezierData();
 
     /** @brief p1 first spline point. */
@@ -85,42 +85,38 @@ public:
     VPointF p4;
 
 private:
-    VCubicBezierData &operator=(const VCubicBezierData &) Q_DECL_EQ_DELETE;
+    VCubicBezierData& operator=(const VCubicBezierData&) Q_DECL_EQ_DELETE;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
 VCubicBezierData::VCubicBezierData()
-    : p1(),
-      p2(),
-      p3(),
-      p4()
-{
-}
+    : p1()
+    , p2()
+    , p3()
+    , p4()
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezierData::VCubicBezierData(const VCubicBezierData &curve)
-    : QSharedData(curve),
-      p1(curve.p1),
-      p2(curve.p2),
-      p3(curve.p3),
-      p4(curve.p4)
-{
-}
+VCubicBezierData::VCubicBezierData(const VCubicBezierData& curve)
+    : QSharedData(curve)
+    , p1(curve.p1)
+    , p2(curve.p2)
+    , p3(curve.p3)
+    , p4(curve.p4)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezierData::VCubicBezierData(const VPointF &p1, const VPointF &p2, const VPointF &p3, const VPointF &p4)
-    : p1(p1),
-      p2(p2),
-      p3(p3),
-      p4(p4)
-{
-}
+VCubicBezierData::VCubicBezierData(
+    const VPointF& p1, const VPointF& p2, const VPointF& p3, const VPointF& p4)
+    : p1(p1)
+    , p2(p2)
+    , p3(p3)
+    , p4(p4)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezierData::~VCubicBezierData()
-{
-}
+VCubicBezierData::~VCubicBezierData() {}
 
 QT_WARNING_POP
 
-#endif // VCUBICBEZIER_P_H
+#endif   // VCUBICBEZIER_P_H

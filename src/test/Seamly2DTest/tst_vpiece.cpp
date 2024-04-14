@@ -50,20 +50,19 @@
  *************************************************************************/
 
 #include "tst_vpiece.h"
+#include "../vgeometry/vsplinepath.h"
+#include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vpiece.h"
 #include "../vpatterndb/vpiecenode.h"
 #include "../vpatterndb/vpiecepath.h"
-#include "../vgeometry/vsplinepath.h"
-#include "../vmisc/vabstractapplication.h"
 
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VPiece::TST_VPiece(QObject *parent)
-    :AbstractTest(parent)
-{
-}
+TST_VPiece::TST_VPiece(QObject* parent)
+    : AbstractTest(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VPiece::ClearLoop()
@@ -77,29 +76,49 @@ void TST_VPiece::ClearLoop()
     qApp->Settings()->setDefaultNotchLength(.250);
     qApp->Settings()->setDefaultNotchWidth(.250);
 
-    data->UpdateGObject(304, new VPointF(61.866708661417327, 446.92270866141735, "Ф1", 5.0000125984251973,
-                                         9.9999874015748045));
-    data->UpdateGObject(307, new VPointF(642.96276692900597, 581.21895343695326, "С1", 88.99993700787401,
-                                         50.000125984251973));
+    data->UpdateGObject(
+        304,
+        new VPointF(
+            61.866708661417327, 446.92270866141735, "Ф1", 5.0000125984251973, 9.9999874015748045));
+    data->UpdateGObject(
+        307,
+        new VPointF(
+            642.96276692900597, 581.21895343695326, "С1", 88.99993700787401, 50.000125984251973));
 
-    data->UpdateGObject(56, new VPointF(802.08718110236236, 850.6707401574804, "Г6", 20.733316535433072,
-                                        18.132850393700789));
-    data->UpdateGObject(57, new VPointF(690.47666217505162, 804.29700711628709, "З", -11.505637795275591,
-                                        31.221543307086616));
-    data->UpdateGObject(203, new VPointF(642.96276692900597, 581.21895343695326, "С1", 88.99993700787401,
-                                         50.000125984251973));
+    data->UpdateGObject(
+        56,
+        new VPointF(
+            802.08718110236236, 850.6707401574804, "Г6", 20.733316535433072, 18.132850393700789));
+    data->UpdateGObject(
+        57,
+        new VPointF(
+            690.47666217505162, 804.29700711628709, "З", -11.505637795275591, 31.221543307086616));
+    data->UpdateGObject(
+        203,
+        new VPointF(
+            642.96276692900597, 581.21895343695326, "С1", 88.99993700787401, 50.000125984251973));
 
     QVector<VFSplinePoint> points;
 
     {
         const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(203);
-        VFSplinePoint p(*point.data(), 0.79455646129695412, 449.62747641208136, 1.6867283804609809, 269.62747641208136);
+        VFSplinePoint p(
+            *point.data(),
+            0.79455646129695412,
+            449.62747641208136,
+            1.6867283804609809,
+            269.62747641208136);
         points.append(p);
     }
 
     {
         const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(57);
-        VFSplinePoint p(*point.data(), 0.4456850846354396, 120.24000000000034, 1.0255399999999999, 300.24000000000035);
+        VFSplinePoint p(
+            *point.data(),
+            0.4456850846354396,
+            120.24000000000034,
+            1.0255399999999999,
+            300.24000000000035);
         points.append(p);
     }
 
@@ -111,10 +130,14 @@ void TST_VPiece::ClearLoop()
 
     data->UpdateGObject(308, new VSplinePath(points));
 
-    data->UpdateGObject(309, new VPointF(799.45989815267649, 850.6707401574804, "Г8", -30.431206299212597,
-                                         29.487155905511813));
-    data->UpdateGObject(310, new VPointF(802.08718110236236, 1653.9337322834645, "Н5", 5.0000125984251973,
-                                         9.9999874015748045));
+    data->UpdateGObject(
+        309,
+        new VPointF(
+            799.45989815267649, 850.6707401574804, "Г8", -30.431206299212597, 29.487155905511813));
+    data->UpdateGObject(
+        310,
+        new VPointF(
+            802.08718110236236, 1653.9337322834645, "Н5", 5.0000125984251973, 9.9999874015748045));
 
     VPiece detail;
     detail.SetSeamAllowance(true);
@@ -126,7 +149,7 @@ void TST_VPiece::ClearLoop()
     detail.GetPath().Append(VPieceNode(310, Tool::NodePoint));
     // Closed
     detail.GetPath()[0].setBeforeSAFormula("0");
-    detail.GetPath()[detail.GetPath().CountNodes()-1].setAfterSAFormula("0");
+    detail.GetPath()[detail.GetPath().CountNodes() - 1].setAfterSAFormula("0");
 
     const QVector<QPointF> pointsEkv = detail.SeamAllowancePoints(data.data());
 
@@ -180,48 +203,90 @@ void TST_VPiece::Issue620()
     QScopedPointer<VContainer> data(new VContainer(nullptr, &unit));
     qApp->setPatternUnit(unit);
 
-    data->UpdateGObject(1, new VPointF(30, 39.999874015748034, "A", 5.0000125984251973, 9.9999874015748045));
-    data->UpdateGObject(2, new VPointF(333.80102715408322, 37.242158125518621, "A1", 5.0000125984251973,
-                                       9.9999874015748045));
-    data->UpdateGObject(3, new VPointF(345.43524385831239, 572.57275904711241, "A2", 5.0000125984251973,
-                                       9.9999874015748045));
-    VPointF *p4 = new VPointF(-43.770684129917051, 567.84465074396087, "A3", 5.0000125984251973,
-                              9.9999874015748045);
+    data->UpdateGObject(
+        1, new VPointF(30, 39.999874015748034, "A", 5.0000125984251973, 9.9999874015748045));
+    data->UpdateGObject(
+        2,
+        new VPointF(
+            333.80102715408322, 37.242158125518621, "A1", 5.0000125984251973, 9.9999874015748045));
+    data->UpdateGObject(
+        3,
+        new VPointF(
+            345.43524385831239, 572.57275904711241, "A2", 5.0000125984251973, 9.9999874015748045));
+    VPointF* p4 = new VPointF(
+        -43.770684129917051, 567.84465074396087, "A3", 5.0000125984251973, 9.9999874015748045);
     data->UpdateGObject(4, p4);
 
-    VPointF *p5 = new VPointF(101.73836126698214, 289.83563666815587, "A4", 5.0000125984251973, 9.9999874015748045);
+    VPointF* p5 = new VPointF(
+        101.73836126698214, 289.83563666815587, "A4", 5.0000125984251973, 9.9999874015748045);
     data->UpdateGObject(5, p5);
-    data->UpdateGObject(6, new VPointF(34.070501467722302, 568.79027240459118, "A5", 5.0000125984251973,
-                                       9.9999874015748045));
+    data->UpdateGObject(
+        6,
+        new VPointF(
+            34.070501467722302, 568.79027240459118, "A5", 5.0000125984251973, 9.9999874015748045));
 
     QVector<VSplinePoint> points;
 
     {
         const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(6);
-        VSplinePoint p(*point.data(), 239.37700000000001, "239.377", 419.37700000000001, "59.3765",
-                       0, "0", 109.55943307086613, "2.89876");
+        VSplinePoint p(
+            *point.data(),
+            239.37700000000001,
+            "239.377",
+            419.37700000000001,
+            "59.3765",
+            0,
+            "0",
+            109.55943307086613,
+            "2.89876");
         points.append(p);
     }
 
     {
         const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(5);
-        VSplinePoint p(*point.data(), 273.97199999999998, "273.972", 453.97199999999998, "93.9724",
-                       88.161637795275595, "2.33261", 56.135055118110238, "1.48524");
+        VSplinePoint p(
+            *point.data(),
+            273.97199999999998,
+            "273.972",
+            453.97199999999998,
+            "93.9724",
+            88.161637795275595,
+            "2.33261",
+            56.135055118110238,
+            "1.48524");
         points.append(p);
     }
 
     {
         const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(1);
-        VSplinePoint p(*point.data(), 337.32600000000002, "337.326", 157.32599999999999, "157.326",
-                       71.189669291338589, "1.88356", 50.093858267716534, "1.3254");
+        VSplinePoint p(
+            *point.data(),
+            337.32600000000002,
+            "337.326",
+            157.32599999999999,
+            "157.326",
+            71.189669291338589,
+            "1.88356",
+            50.093858267716534,
+            "1.3254");
         points.append(p);
     }
 
     data->UpdateGObject(7, new VSplinePath(points));
 
-    data->UpdateGObject(8, new VSpline(*p4, *p5, 59.932499999999997, "59.9325", 257.56999999999999,
-                                       "257.57", 170.46425196850396, "4.5102", 150.6164409448819,
-                                       "3.98506"));
+    data->UpdateGObject(
+        8,
+        new VSpline(
+            *p4,
+            *p5,
+            59.932499999999997,
+            "59.9325",
+            257.56999999999999,
+            "257.57",
+            170.46425196850396,
+            "4.5102",
+            150.6164409448819,
+            "3.98506"));
 
     VPiece detail;
     detail.SetSeamAllowance(false);

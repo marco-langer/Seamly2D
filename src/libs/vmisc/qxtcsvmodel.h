@@ -31,7 +31,6 @@
 #ifndef QXTCSVMODEL_H
 #define QXTCSVMODEL_H
 
-#include <qcompilerdetection.h>
 #include <QAbstractTableModel>
 #include <QChar>
 #include <QFlags>
@@ -45,6 +44,7 @@
 #include <QVariant>
 #include <Qt>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "def.h"
 
@@ -54,21 +54,28 @@ class QxtCsvModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit QxtCsvModel(QObject *parent = nullptr);
-    explicit QxtCsvModel(QIODevice *file, QObject *parent = nullptr, bool withHeader = false, QChar separator = ',');
-    explicit QxtCsvModel(const QString &filename, QObject *parent = nullptr, bool withHeader = false,
-                         QChar separator = ',');
+    explicit QxtCsvModel(QObject* parent = nullptr);
+    explicit QxtCsvModel(
+        QIODevice* file, QObject* parent = nullptr, bool withHeader = false, QChar separator = ',');
+    explicit QxtCsvModel(
+        const QString& filename,
+        QObject* parent = nullptr,
+        bool withHeader = false,
+        QChar separator = ',');
     virtual ~QxtCsvModel() Q_DECL_EQ_DEFAULT;
 
-    virtual int      rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    virtual int      columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    virtual bool     setData(const QModelIndex& index, const QVariant& data, int role = Qt::EditRole) Q_DECL_OVERRIDE;
-    virtual QVariant headerData(int section, Qt::Orientation orientation,
-                                int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    virtual bool     setHeaderData(int section, Qt::Orientation orientation, const QVariant& value,
-                                   int role = Qt::DisplayRole) Q_DECL_OVERRIDE;
-    void             setHeaderData(const QStringList& data);
+    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    virtual QVariant
+    data(const QModelIndex& index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    virtual bool setData(const QModelIndex& index, const QVariant& data, int role = Qt::EditRole)
+        Q_DECL_OVERRIDE;
+    virtual QVariant headerData(
+        int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    virtual bool setHeaderData(
+        int section, Qt::Orientation orientation, const QVariant& value, int role = Qt::DisplayRole)
+        Q_DECL_OVERRIDE;
+    void setHeaderData(const QStringList& data);
 
     QString text(int row, int column) const;
     void setText(int row, int column, const QString& value);
@@ -78,34 +85,55 @@ public:
 
 
     bool insertRow(int row, const QModelIndex& parent = QModelIndex());
-    virtual bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
+    virtual bool
+    insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
 
     bool removeRow(int row, const QModelIndex& parent = QModelIndex());
-    virtual bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
+    virtual bool
+    removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
 
     bool insertColumn(int col, const QModelIndex& parent = QModelIndex());
-    virtual bool insertColumns(int col, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
+    virtual bool
+    insertColumns(int col, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
 
     bool removeColumn(int col, const QModelIndex& parent = QModelIndex());
-    virtual bool removeColumns(int col, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
+    virtual bool
+    removeColumns(int col, int count, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
 
-    void setSource(QIODevice *file, bool withHeader = false, QChar separator = ',', QTextCodec* codec = nullptr);
-    void setSource(const QString &filename, bool withHeader = false, QChar separator = ',',
-                   QTextCodec* codec = nullptr);
+    void setSource(
+        QIODevice* file,
+        bool withHeader = false,
+        QChar separator = ',',
+        QTextCodec* codec = nullptr);
+    void setSource(
+        const QString& filename,
+        bool withHeader = false,
+        QChar separator = ',',
+        QTextCodec* codec = nullptr);
 
-    void toCSV(QIODevice *file, bool withHeader = false, QChar separator = ',', QTextCodec* codec = nullptr) const;
-    void toCSV(const QString &filename, bool withHeader = false, QChar separator = ',',
-               QTextCodec* codec = nullptr) const;
+    void toCSV(
+        QIODevice* file,
+        bool withHeader = false,
+        QChar separator = ',',
+        QTextCodec* codec = nullptr) const;
+    void toCSV(
+        const QString& filename,
+        bool withHeader = false,
+        QChar separator = ',',
+        QTextCodec* codec = nullptr) const;
 
-    enum QuoteOption { NoQuotes = 0,
-                       SingleQuote = 1,
-                       DoubleQuote = 2,
-                       BothQuotes = 3,
-                       NoEscape = 0,
-                       TwoQuoteEscape = 4,
-                       BackslashEscape = 8,
-                       AlwaysQuoteOutput = 16,
-                       DefaultQuoteMode = BothQuotes | BackslashEscape | AlwaysQuoteOutput };
+    enum QuoteOption
+    {
+        NoQuotes = 0,
+        SingleQuote = 1,
+        DoubleQuote = 2,
+        BothQuotes = 3,
+        NoEscape = 0,
+        TwoQuoteEscape = 4,
+        BackslashEscape = 8,
+        AlwaysQuoteOutput = 16,
+        DefaultQuoteMode = BothQuotes | BackslashEscape | AlwaysQuoteOutput
+    };
     Q_DECLARE_FLAGS(QuoteMode, QuoteOption)
 
     QuoteMode quoteMode() const;
@@ -119,4 +147,4 @@ private:
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(QxtCsvModel::QuoteMode)
 
-#endif // QXTCSVMODEL_H
+#endif   // QXTCSVMODEL_H

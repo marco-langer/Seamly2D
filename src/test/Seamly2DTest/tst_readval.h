@@ -54,28 +54,29 @@
 
 #include <QtCore/qglobal.h>
 
-#include <QObject>
 #include <QLocale>
+#include <QObject>
 
 class TST_ReadVal : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_ReadVal(QObject *parent = nullptr);
+    explicit TST_ReadVal(QObject* parent = nullptr);
 private slots:
     void TestReadVal_data();
     void TestReadVal();
     void TestInvalidData_data();
     void TestInvalidData();
     void cleanupTestCase();
+
 private:
     Q_DISABLE_COPY(TST_ReadVal)
     QLocale m_systemLocale;
 
-    void PrepareVal(qreal val, const QLocale &locale);
-    void PrepareString(const QString &str, const QLocale &locale, qreal val=0, int count=-1);
+    void PrepareVal(qreal val, const QLocale& locale);
+    void PrepareString(const QString& str, const QLocale& locale, qreal val = 0, int count = -1);
 
     void TestVal();
 };
 
-#endif // TST_READVAL_H
+#endif   // TST_READVAL_H

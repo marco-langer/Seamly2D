@@ -62,183 +62,206 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
+#include <QTextCodec>
 #include <QVariant>
 #include <QtDebug>
-#include <QTextCodec>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
 #include "../vmisc/vmath.h"
 #include "../vpatterndb/pmsystems.h"
 
-namespace
-{
-const QString settingImagesPath                          = QStringLiteral("paths/images");
-const QString settingPathsIndividualMeasurements         = QStringLiteral("paths/individual_size_measurements");
-const QString settingPathsMultisizeMeasurements          = QStringLiteral("paths/multi_size_measurements");
-const QString settingPathsTemplates                      = QStringLiteral("paths/templates");
-const QString settingPathsBodyScans                      = QStringLiteral("paths/bodyscans");
-const QString settingPathsLabelTemplate                  = QStringLiteral("paths/labels");
+namespace {
+const QString settingImagesPath = QStringLiteral("paths/images");
+const QString settingPathsIndividualMeasurements =
+    QStringLiteral("paths/individual_size_measurements");
+const QString settingPathsMultisizeMeasurements = QStringLiteral("paths/multi_size_measurements");
+const QString settingPathsTemplates = QStringLiteral("paths/templates");
+const QString settingPathsBodyScans = QStringLiteral("paths/bodyscans");
+const QString settingPathsLabelTemplate = QStringLiteral("paths/labels");
 
-const QString settingConfigurationCompanyName            = QStringLiteral("graphicsview/companyName");
-const QString settingConfigurationContact                = QStringLiteral("graphicsview/contact");
-const QString settingConfigurationAddress                = QStringLiteral("graphicsview/address");
-const QString settingConfigurationCity                   = QStringLiteral("graphicsview/city");
-const QString settingConfigurationState                  = QStringLiteral("graphicsview/state");
-const QString settingConfigurationZipcode                = QStringLiteral("graphicsview/zipcode");
-const QString settingConfigurationCountry                = QStringLiteral("graphicsview/country");
-const QString settingConfigurationTelephone              = QStringLiteral("graphicsview/telephone");
-const QString settingConfigurationFax                    = QStringLiteral("graphicsview/fax");
-const QString settingConfigurationEmail                  = QStringLiteral("graphicsview/email");
-const QString settingConfigurationWebsite                = QStringLiteral("graphicsview/website");
+const QString settingConfigurationCompanyName = QStringLiteral("graphicsview/companyName");
+const QString settingConfigurationContact = QStringLiteral("graphicsview/contact");
+const QString settingConfigurationAddress = QStringLiteral("graphicsview/address");
+const QString settingConfigurationCity = QStringLiteral("graphicsview/city");
+const QString settingConfigurationState = QStringLiteral("graphicsview/state");
+const QString settingConfigurationZipcode = QStringLiteral("graphicsview/zipcode");
+const QString settingConfigurationCountry = QStringLiteral("graphicsview/country");
+const QString settingConfigurationTelephone = QStringLiteral("graphicsview/telephone");
+const QString settingConfigurationFax = QStringLiteral("graphicsview/fax");
+const QString settingConfigurationEmail = QStringLiteral("graphicsview/email");
+const QString settingConfigurationWebsite = QStringLiteral("graphicsview/website");
 
-const QString settingConfigurationShowWelcome            = QStringLiteral("configuration/showWelcome");
-const QString settingConfigurationOsSeparator            = QStringLiteral("configuration/osSeparator");
-const QString settingConfigurationAutosaveState          = QStringLiteral("configuration/autosave/state");
-const QString settingConfigurationAutosaveTime           = QStringLiteral("configuration/autosave/time");
+const QString settingConfigurationShowWelcome = QStringLiteral("configuration/showWelcome");
+const QString settingConfigurationOsSeparator = QStringLiteral("configuration/osSeparator");
+const QString settingConfigurationAutosaveState = QStringLiteral("configuration/autosave/state");
+const QString settingConfigurationAutosaveTime = QStringLiteral("configuration/autosave/time");
 
-const QString settingConfigurationUseModeType            = QStringLiteral("configuration/autosave/useModeType");
-const QString settingConfigurationUseLastExportFormat    = QStringLiteral("configuration/autosave/useLastExportFormat");
-const QString settingConfigurationExportFormat           = QStringLiteral("configuration/autosave/exportFormat");
+const QString settingConfigurationUseModeType =
+    QStringLiteral("configuration/autosave/useModeType");
+const QString settingConfigurationUseLastExportFormat =
+    QStringLiteral("configuration/autosave/useLastExportFormat");
+const QString settingConfigurationExportFormat =
+    QStringLiteral("configuration/autosave/exportFormat");
 
-const QString settingConfigurationSendReportState        = QStringLiteral("configuration/send_report/state");
-const QString settingConfigurationLocale                 = QStringLiteral("configuration/locale");
-const QString settingPMSystemCode                        = QStringLiteral("configuration/pmscode");
-const QString settingConfigurationUnit                   = QStringLiteral("configuration/unit");
-const QString settingConfigurationConfirmItemDeletion    = QStringLiteral("configuration/confirm_item_deletion");
-const QString settingConfigurationConfirmFormatRewriting = QStringLiteral("configuration/confirm_format_rewriting");
-const QString settingConfigurationMoveSuffix             = QStringLiteral("configuration/moveSuffix");
-const QString settingConfigurationRotateSuffix           = QStringLiteral("configuration/rotateSuffix");
-const QString settingConfigurationMirrorByAxisSuffix     = QStringLiteral("configuration/mirrorByAxisSuffix");
-const QString settingConfigurationMirrorByLineSuffix     = QStringLiteral("configuration/mirrorByLineSuffix");
+const QString settingConfigurationSendReportState =
+    QStringLiteral("configuration/send_report/state");
+const QString settingConfigurationLocale = QStringLiteral("configuration/locale");
+const QString settingPMSystemCode = QStringLiteral("configuration/pmscode");
+const QString settingConfigurationUnit = QStringLiteral("configuration/unit");
+const QString settingConfigurationConfirmItemDeletion =
+    QStringLiteral("configuration/confirm_item_deletion");
+const QString settingConfigurationConfirmFormatRewriting =
+    QStringLiteral("configuration/confirm_format_rewriting");
+const QString settingConfigurationMoveSuffix = QStringLiteral("configuration/moveSuffix");
+const QString settingConfigurationRotateSuffix = QStringLiteral("configuration/rotateSuffix");
+const QString settingConfigurationMirrorByAxisSuffix =
+    QStringLiteral("configuration/mirrorByAxisSuffix");
+const QString settingConfigurationMirrorByLineSuffix =
+    QStringLiteral("configuration/mirrorByLineSuffix");
 
-const QString settingGraphicsViewToolBarStyle            = QStringLiteral("graphicsview/tool_bar_style");
-const QString settingGraphicsViewShowToolsToolBar        = QStringLiteral("graphicsview/showToolsToolbar");
-const QString settingGraphicsViewShowPointToolBar        = QStringLiteral("graphicsview/showPointToolbar");
-const QString settingGraphicsViewShowLineToolBar         = QStringLiteral("graphicsview/showLineToolbar");
-const QString settingGraphicsViewShowCurveToolBar        = QStringLiteral("graphicsview/showCurveToolbar");
-const QString settingGraphicsViewShowArcToolBar          = QStringLiteral("graphicsview/showArcToolbar");
-const QString settingGraphicsViewShowOpsToolBar          = QStringLiteral("graphicsview/showOpsToolbar");
-const QString settingGraphicsViewShowPieceToolBar        = QStringLiteral("graphicsview/showPieceToolbar");
-const QString settingGraphicsViewShowDetailsToolBar      = QStringLiteral("graphicsview/showDetailsToolbar");
-const QString settingGraphicsViewShowLayoutToolBar       = QStringLiteral("graphicsview/showLayoutToolbar");
+const QString settingGraphicsViewToolBarStyle = QStringLiteral("graphicsview/tool_bar_style");
+const QString settingGraphicsViewShowToolsToolBar = QStringLiteral("graphicsview/showToolsToolbar");
+const QString settingGraphicsViewShowPointToolBar = QStringLiteral("graphicsview/showPointToolbar");
+const QString settingGraphicsViewShowLineToolBar = QStringLiteral("graphicsview/showLineToolbar");
+const QString settingGraphicsViewShowCurveToolBar = QStringLiteral("graphicsview/showCurveToolbar");
+const QString settingGraphicsViewShowArcToolBar = QStringLiteral("graphicsview/showArcToolbar");
+const QString settingGraphicsViewShowOpsToolBar = QStringLiteral("graphicsview/showOpsToolbar");
+const QString settingGraphicsViewShowPieceToolBar = QStringLiteral("graphicsview/showPieceToolbar");
+const QString settingGraphicsViewShowDetailsToolBar =
+    QStringLiteral("graphicsview/showDetailsToolbar");
+const QString settingGraphicsViewShowLayoutToolBar =
+    QStringLiteral("graphicsview/showLayoutToolbar");
 
-const QString settingGraphicsViewShowScrollBars          = QStringLiteral("graphicsview/showScrollBars");
-const QString settingGraphicsViewScrollBarWidth          = QStringLiteral("graphicsview/scrollBarWidth");
-const QString settingGraphicsViewScrollDuration          = QStringLiteral("graphicsview/scrollDuration");
-const QString settingGraphicsViewScrollUpdateInterval    = QStringLiteral("graphicsview/scrollUpdateInterval");
-const QString settingGraphicsViewScrollSpeedFactor       = QStringLiteral("graphicsview/scrollSpeedFactor");
-const QString settingGraphicsViewPixelDelta              = QStringLiteral("graphicsview/pixelDelta");
-const QString settingGraphicsViewAngleDelta              = QStringLiteral("graphicsview/angleDelta");
-const QString settingGraphicsViewZoomModKey              = QStringLiteral("graphicsview/zoomModKey");
-const QString settingGraphicsViewZoomDoubleClick         = QStringLiteral("graphicsview/zoomDoubleClick");
-const QString settingGraphicsViewPanActiveSpaceKey       = QStringLiteral("graphicsview/panActiveSpaceKey");
-const QString settingGraphicsViewZoomSpeedFactor         = QStringLiteral("graphicsview/zoomSpeedFactor");
-const QString settingGraphicsViewExportQuality           = QStringLiteral("graphicsview/exportQuality");
-const QString settingGraphicsViewZoomRBPositiveColor     = QStringLiteral("graphicsview/zoomRBPositiveColor");
-const QString settingGraphicsViewZoomRBNegativeColor     = QStringLiteral("graphicsview/zoomRBNegativeColor");
-const QString settingGraphicsViewPointNameColor          = QStringLiteral("graphicsview/pointNameColor");
-const QString settingGraphicsViewPointNameHoverColor     = QStringLiteral("graphicsview/pointNameHoverColor");
-const QString settingGraphicsViewAxisOrginColor          = QStringLiteral("graphicsview/axisOrginColor");
-const QString settingGraphicsViewDefaultLineColor        = QStringLiteral("graphicsview/defaultLineColor");
-const QString settingGraphicsViewDefaultLineWeight       = QStringLiteral("graphicsview/defaultLineWeight");
-const QString settingGraphicsViewDefaultLineType         = QStringLiteral("graphicsview/defaultLineType");
-const QString settingGraphicsViewPrimaryColor            = QStringLiteral("graphicsview/primarySupportColor");
-const QString settingGraphicsViewSecondaryColor          = QStringLiteral("graphicsview/secondarySupportColor");
-const QString settingGraphicsViewTertiaryColor           = QStringLiteral("graphicsview/tertiarySupportColor");
+const QString settingGraphicsViewShowScrollBars = QStringLiteral("graphicsview/showScrollBars");
+const QString settingGraphicsViewScrollBarWidth = QStringLiteral("graphicsview/scrollBarWidth");
+const QString settingGraphicsViewScrollDuration = QStringLiteral("graphicsview/scrollDuration");
+const QString settingGraphicsViewScrollUpdateInterval =
+    QStringLiteral("graphicsview/scrollUpdateInterval");
+const QString settingGraphicsViewScrollSpeedFactor =
+    QStringLiteral("graphicsview/scrollSpeedFactor");
+const QString settingGraphicsViewPixelDelta = QStringLiteral("graphicsview/pixelDelta");
+const QString settingGraphicsViewAngleDelta = QStringLiteral("graphicsview/angleDelta");
+const QString settingGraphicsViewZoomModKey = QStringLiteral("graphicsview/zoomModKey");
+const QString settingGraphicsViewZoomDoubleClick = QStringLiteral("graphicsview/zoomDoubleClick");
+const QString settingGraphicsViewPanActiveSpaceKey =
+    QStringLiteral("graphicsview/panActiveSpaceKey");
+const QString settingGraphicsViewZoomSpeedFactor = QStringLiteral("graphicsview/zoomSpeedFactor");
+const QString settingGraphicsViewExportQuality = QStringLiteral("graphicsview/exportQuality");
+const QString settingGraphicsViewZoomRBPositiveColor =
+    QStringLiteral("graphicsview/zoomRBPositiveColor");
+const QString settingGraphicsViewZoomRBNegativeColor =
+    QStringLiteral("graphicsview/zoomRBNegativeColor");
+const QString settingGraphicsViewPointNameColor = QStringLiteral("graphicsview/pointNameColor");
+const QString settingGraphicsViewPointNameHoverColor =
+    QStringLiteral("graphicsview/pointNameHoverColor");
+const QString settingGraphicsViewAxisOrginColor = QStringLiteral("graphicsview/axisOrginColor");
+const QString settingGraphicsViewDefaultLineColor = QStringLiteral("graphicsview/defaultLineColor");
+const QString settingGraphicsViewDefaultLineWeight =
+    QStringLiteral("graphicsview/defaultLineWeight");
+const QString settingGraphicsViewDefaultLineType = QStringLiteral("graphicsview/defaultLineType");
+const QString settingGraphicsViewPrimaryColor = QStringLiteral("graphicsview/primarySupportColor");
+const QString settingGraphicsViewSecondaryColor =
+    QStringLiteral("graphicsview/secondarySupportColor");
+const QString settingGraphicsViewTertiaryColor =
+    QStringLiteral("graphicsview/tertiarySupportColor");
 
-const QString settingGraphicsViewConstrainValue          = QStringLiteral("graphicsview/constrainValue");
-const QString settingGraphicsViewConstrainModKey         = QStringLiteral("graphicsview/constrainModKey");
+const QString settingGraphicsViewConstrainValue = QStringLiteral("graphicsview/constrainValue");
+const QString settingGraphicsViewConstrainModKey = QStringLiteral("graphicsview/constrainModKey");
 
-const QString settingGraphicsViewPointNameSize           = QStringLiteral("graphicsview/pointNameSize");
-const QString settingGraphicsViewGuiFontSize             = QStringLiteral("graphicsview/guiFontSize");
-const QString settingGraphicsViewHidePointNames          = QStringLiteral("graphicsview/hidePointNames");
-const QString settingGraphicsViewShowAxisOrigin          = QStringLiteral("graphicsview/showAxisOrigin");
-const QString settingGraphicsViewWireframe               = QStringLiteral("graphicsview/wireframe");
-const QString settingGraphicsViewShowControlPoints       = QStringLiteral("graphicsview/showControlPoints");
-const QString settingGraphicsViewShowAnchorPoints        = QStringLiteral("graphicsview/showAnchorPoints");
-const QString settingGraphicsUseToolColor                = QStringLiteral("graphicsview/useToolColor");
+const QString settingGraphicsViewPointNameSize = QStringLiteral("graphicsview/pointNameSize");
+const QString settingGraphicsViewGuiFontSize = QStringLiteral("graphicsview/guiFontSize");
+const QString settingGraphicsViewHidePointNames = QStringLiteral("graphicsview/hidePointNames");
+const QString settingGraphicsViewShowAxisOrigin = QStringLiteral("graphicsview/showAxisOrigin");
+const QString settingGraphicsViewWireframe = QStringLiteral("graphicsview/wireframe");
+const QString settingGraphicsViewShowControlPoints =
+    QStringLiteral("graphicsview/showControlPoints");
+const QString settingGraphicsViewShowAnchorPoints = QStringLiteral("graphicsview/showAnchorPoints");
+const QString settingGraphicsUseToolColor = QStringLiteral("graphicsview/useToolColor");
 
-const QString settingPatternUndo                         = QStringLiteral("pattern/undo");
-const QString settingSelectionSound                      = QStringLiteral("pattern/selectionSound");
-const QString settingPatternForbidFlipping               = QStringLiteral("pattern/forbidFlipping");
-const QString settingPatternHideSeamLine                 = QStringLiteral("pattern/hideMainPath");
+const QString settingPatternUndo = QStringLiteral("pattern/undo");
+const QString settingSelectionSound = QStringLiteral("pattern/selectionSound");
+const QString settingPatternForbidFlipping = QStringLiteral("pattern/forbidFlipping");
+const QString settingPatternHideSeamLine = QStringLiteral("pattern/hideMainPath");
 
-const QString settingDefaultNotchLength                  = QStringLiteral("pattern/defaultNotchLength");
-const QString settingDefaultNotchWidth                   = QStringLiteral("pattern/defaultNotchWidth");
-const QString settingDefaultNotchType                    = QStringLiteral("pattern/defaultNotchType");
-const QString settingDefaultNotchColor                   = QStringLiteral("pattern/defaultNotchColor");
-const QString settingSeamlineNotch                       = QStringLiteral("pattern/doubleNotch");
-const QString settingSeamAllowanceNotch                  = QStringLiteral("pattern/showSeamAllowanceNotch");
+const QString settingDefaultNotchLength = QStringLiteral("pattern/defaultNotchLength");
+const QString settingDefaultNotchWidth = QStringLiteral("pattern/defaultNotchWidth");
+const QString settingDefaultNotchType = QStringLiteral("pattern/defaultNotchType");
+const QString settingDefaultNotchColor = QStringLiteral("pattern/defaultNotchColor");
+const QString settingSeamlineNotch = QStringLiteral("pattern/doubleNotch");
+const QString settingSeamAllowanceNotch = QStringLiteral("pattern/showSeamAllowanceNotch");
 
-const QString settingPatternDefaultSeamAllowance         = QStringLiteral("pattern/defaultSeamAllowance");
-const QString settingDefaultSeamColor                    = QStringLiteral("pattern/defaultSeamColor");
-const QString settingDefaultSeamLinetype                 = QStringLiteral("pattern/defaultSeamLinetype");
-const QString settingDefaultSeamLineweight               = QStringLiteral("pattern/defaultSeamLineweight");
-const QString settingDefaultCutColor                     = QStringLiteral("pattern/defaultCutColor");
-const QString settingDefaultCutLinetype                  = QStringLiteral("pattern/defaultCutLinetype");
-const QString settingDefaultCutLineweight                = QStringLiteral("pattern/defaultCutLineweight");
-const QString settingDefaultInternalColor                = QStringLiteral("pattern/defaultInternalColor");
-const QString settingDefaultInternalLinetype             = QStringLiteral("pattern/defaultInternalLinetype");
-const QString settingDefaultInternalLineweight           = QStringLiteral("pattern/defaultInternalLineweight");
-const QString settingDefaultCutoutColor                  = QStringLiteral("pattern/defaultCutoutColor");
-const QString settingDefaultCutoutLinetype               = QStringLiteral("pattern/defaultCutoutLinetype");
-const QString settingDefaultCutoutLineweight             = QStringLiteral("pattern/defaultCutoutLineweight");
+const QString settingPatternDefaultSeamAllowance = QStringLiteral("pattern/defaultSeamAllowance");
+const QString settingDefaultSeamColor = QStringLiteral("pattern/defaultSeamColor");
+const QString settingDefaultSeamLinetype = QStringLiteral("pattern/defaultSeamLinetype");
+const QString settingDefaultSeamLineweight = QStringLiteral("pattern/defaultSeamLineweight");
+const QString settingDefaultCutColor = QStringLiteral("pattern/defaultCutColor");
+const QString settingDefaultCutLinetype = QStringLiteral("pattern/defaultCutLinetype");
+const QString settingDefaultCutLineweight = QStringLiteral("pattern/defaultCutLineweight");
+const QString settingDefaultInternalColor = QStringLiteral("pattern/defaultInternalColor");
+const QString settingDefaultInternalLinetype = QStringLiteral("pattern/defaultInternalLinetype");
+const QString settingDefaultInternalLineweight =
+    QStringLiteral("pattern/defaultInternalLineweight");
+const QString settingDefaultCutoutColor = QStringLiteral("pattern/defaultCutoutColor");
+const QString settingDefaultCutoutLinetype = QStringLiteral("pattern/defaultCutoutLinetype");
+const QString settingDefaultCutoutLineweight = QStringLiteral("pattern/defaultCutoutLineweight");
 
-const QString settingShowSeamAllowances                  = QStringLiteral("pattern/showShowSeamAllowances");
-const QString settingDefaultSeamAllowanceVisibilty       = QStringLiteral("pattern/defaultSeamAllowanceVisibilty");
-const QString settingShowGrainlines                      = QStringLiteral("pattern/showGrainlines");
-const QString settingDefaultGrainlineVisibilty           = QStringLiteral("pattern/defaultGrainlineVisibilty");
-const QString settingDefaultGrainlineLength              = QStringLiteral("pattern/defaultGrainlineLength");
-const QString settingDefaultGrainlineColor               = QStringLiteral("pattern/defaultGrainlineColor");
-const QString settingDefaultGrainlineLineweight          = QStringLiteral("pattern/defaultGrainlineLineweight");
+const QString settingShowSeamAllowances = QStringLiteral("pattern/showShowSeamAllowances");
+const QString settingDefaultSeamAllowanceVisibilty =
+    QStringLiteral("pattern/defaultSeamAllowanceVisibilty");
+const QString settingShowGrainlines = QStringLiteral("pattern/showGrainlines");
+const QString settingDefaultGrainlineVisibilty =
+    QStringLiteral("pattern/defaultGrainlineVisibilty");
+const QString settingDefaultGrainlineLength = QStringLiteral("pattern/defaultGrainlineLength");
+const QString settingDefaultGrainlineColor = QStringLiteral("pattern/defaultGrainlineColor");
+const QString settingDefaultGrainlineLineweight =
+    QStringLiteral("pattern/defaultGrainlineLineweight");
 
-const QString settingShowLabels                          = QStringLiteral("pattern/showLabels");
-const QString settingShowPatternLabels                   = QStringLiteral("pattern/showPatternLabels");
-const QString settingShowPieceLabels                     = QStringLiteral("pattern/showPieceLabels");
-const QString settingDefaultLabelWidth                   = QStringLiteral("pattern/defaultLabelWidth");
-const QString settingDefaultLabelHeight                  = QStringLiteral("pattern/defaultLabelHeight");
-const QString settingDefaultLabelColor                   = QStringLiteral("pattern/defaultLabelColor");
-const QString settingDefaultPatternTemplate              = QStringLiteral("pattern/defaultPatternTemplate");
-const QString settingDefaultPieceTemplate                = QStringLiteral("pattern/defaultPieceTemplate");
+const QString settingShowLabels = QStringLiteral("pattern/showLabels");
+const QString settingShowPatternLabels = QStringLiteral("pattern/showPatternLabels");
+const QString settingShowPieceLabels = QStringLiteral("pattern/showPieceLabels");
+const QString settingDefaultLabelWidth = QStringLiteral("pattern/defaultLabelWidth");
+const QString settingDefaultLabelHeight = QStringLiteral("pattern/defaultLabelHeight");
+const QString settingDefaultLabelColor = QStringLiteral("pattern/defaultLabelColor");
+const QString settingDefaultPatternTemplate = QStringLiteral("pattern/defaultPatternTemplate");
+const QString settingDefaultPieceTemplate = QStringLiteral("pattern/defaultPieceTemplate");
 
-const QString settingPatternLabelFont                    = QStringLiteral("pattern/labelFont");
-const QString settingPatternGuiFont                      = QStringLiteral("pattern/guiFont");
-const QString settingPatternPointNameFont                = QStringLiteral("pattern/pointNameFont");
+const QString settingPatternLabelFont = QStringLiteral("pattern/labelFont");
+const QString settingPatternGuiFont = QStringLiteral("pattern/guiFont");
+const QString settingPatternPointNameFont = QStringLiteral("pattern/pointNameFont");
 
-const QString settingGeneralRecentFileList               = QStringLiteral("recentFileList");
-const QString settingGeneralRestoreFileList              = QStringLiteral("restoreFileList");
-const QString settingGeneralGeometry                     = QStringLiteral("geometry");
-const QString settingGeneralWindowState                  = QStringLiteral("windowState");
-const QString settingGeneralToolbarsState                = QStringLiteral("toolbarsState");
-const QString settingPreferenceDialogSize                = QStringLiteral("preferenceDialogSize");
-const QString settingToolSeamAllowanceDialogSize         = QStringLiteral("toolSeamAllowanceDialogSize");
-const QString settingVariablesDialogSize                = QStringLiteral("toolVariablesDialogSize");
-const QString settingFormulaWizardDialogSize             = QStringLiteral("formulaWizardDialogSize");
-const QString settingLatestSkippedVersion                = QStringLiteral("lastestSkippedVersion");
-const QString settingDateOfLastRemind                    = QStringLiteral("dateOfLastRemind");
+const QString settingGeneralRecentFileList = QStringLiteral("recentFileList");
+const QString settingGeneralRestoreFileList = QStringLiteral("restoreFileList");
+const QString settingGeneralGeometry = QStringLiteral("geometry");
+const QString settingGeneralWindowState = QStringLiteral("windowState");
+const QString settingGeneralToolbarsState = QStringLiteral("toolbarsState");
+const QString settingPreferenceDialogSize = QStringLiteral("preferenceDialogSize");
+const QString settingToolSeamAllowanceDialogSize = QStringLiteral("toolSeamAllowanceDialogSize");
+const QString settingVariablesDialogSize = QStringLiteral("toolVariablesDialogSize");
+const QString settingFormulaWizardDialogSize = QStringLiteral("formulaWizardDialogSize");
+const QString settingLatestSkippedVersion = QStringLiteral("lastestSkippedVersion");
+const QString settingDateOfLastRemind = QStringLiteral("dateOfLastRemind");
 
-const QString settingCSVWithHeader                       = QStringLiteral("csv/withHeader");
-const QString settingCSVCodec                            = QStringLiteral("csv/withCodec");
-const QString settingCSVSeparator                        = QStringLiteral("csv/withSeparator");
+const QString settingCSVWithHeader = QStringLiteral("csv/withHeader");
+const QString settingCSVCodec = QStringLiteral("csv/withCodec");
+const QString settingCSVSeparator = QStringLiteral("csv/withSeparator");
 
-const QString settingLabelDateFormat                     = QStringLiteral("label/dateFormat");
-const QString settingLabelUserDateFormats                = QStringLiteral("label/userDateFormats");
-const QString settingLabelTimeFormat                     = QStringLiteral("label/timeFormat");
-const QString settingLabelUserTimeFormats                = QStringLiteral("label/userTimeFormats");
+const QString settingLabelDateFormat = QStringLiteral("label/dateFormat");
+const QString settingLabelUserDateFormats = QStringLiteral("label/userDateFormats");
+const QString settingLabelTimeFormat = QStringLiteral("label/timeFormat");
+const QString settingLabelUserTimeFormats = QStringLiteral("label/userTimeFormats");
 
 int pointNameSize = 0;
 
 //---------------------------------------------------------------------------------------------------------------------
-QStringList ClearFormats(const QStringList &predefinedFormats, QStringList formats)
+QStringList ClearFormats(const QStringList& predefinedFormats, QStringList formats)
 {
-    for (int i = 0; i < predefinedFormats.size(); ++i)
-    {
+    for (int i = 0; i < predefinedFormats.size(); ++i) {
         formats.removeAll(predefinedFormats.at(i));
     }
     return formats;
 }
-}
+}   // namespace
 
 static const QString commonIniFilename = QStringLiteral("common");
 
@@ -246,38 +269,34 @@ static const QString commonIniFilename = QStringLiteral("common");
 const QString VCommonSettings::unixStandardSharePath = QStringLiteral("/usr/share/seamly2d");
 #endif
 
-namespace
-{
+namespace {
 //---------------------------------------------------------------------------------------------------------------------
-void SymlinkCopyDirRecursive(const QString &fromDir, const QString &toDir, bool replaceOnConflit)
+void SymlinkCopyDirRecursive(const QString& fromDir, const QString& toDir, bool replaceOnConflit)
 {
     QDir dir;
     dir.setPath(fromDir);
 
-    foreach (QString copyFile, dir.entryList(QDir::Files))
-    {
+    foreach (QString copyFile, dir.entryList(QDir::Files)) {
         const QString from = fromDir + QDir::separator() + copyFile;
         QString to = toDir + QDir::separator() + copyFile;
 
 #ifdef Q_OS_WIN
         {
             // To fix issue #702 check each not symlink if it is actually broken symlink.
-            // Also trying to mimic Unix symlink. If a file eaxists do not create a symlink and remove it if exists.
+            // Also trying to mimic Unix symlink. If a file eaxists do not create a symlink and
+            // remove it if exists.
             QFile fileTo(to);
-            if (fileTo.exists())
-            {
-                if (not fileTo.rename(to + QLatin1String(".lnk")))
-                {
+            if (fileTo.exists()) {
+                if (not fileTo.rename(to + QLatin1String(".lnk"))) {
                     QFile::remove(to + QLatin1String(".lnk"));
                     fileTo.rename(to + QLatin1String(".lnk"));
                 }
 
                 QFileInfo info(to + QLatin1String(".lnk"));
-                if (info.symLinkTarget().isEmpty())
-                {
+                if (info.symLinkTarget().isEmpty()) {
                     fileTo.copy(to);
                     fileTo.remove();
-                    continue; // The file already exists, skip creating shortcut
+                    continue;   // The file already exists, skip creating shortcut
                 }
             }
         }
@@ -285,14 +304,10 @@ void SymlinkCopyDirRecursive(const QString &fromDir, const QString &toDir, bool 
         to = to + QLatin1String(".lnk");
 #endif
 
-        if (QFile::exists(to))
-        {
-            if (replaceOnConflit)
-            {
+        if (QFile::exists(to)) {
+            if (replaceOnConflit) {
                 QFile::remove(to);
-            }
-            else
-            {
+            } else {
                 continue;
             }
         }
@@ -300,13 +315,11 @@ void SymlinkCopyDirRecursive(const QString &fromDir, const QString &toDir, bool 
         QFile::link(from, to);
     }
 
-    foreach (QString copyDir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
-    {
+    foreach (QString copyDir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
         const QString from = fromDir + QDir::separator() + copyDir;
         const QString to = toDir + QDir::separator() + copyDir;
 
-        if (dir.mkpath(to) == false)
-        {
+        if (dir.mkpath(to) == false) {
             return;
         }
 
@@ -315,70 +328,65 @@ void SymlinkCopyDirRecursive(const QString &fromDir, const QString &toDir, bool 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString PrepareStandardFiles(const QString &currentPath, const QString &standardPath, const QString &defPath)
+QString PrepareStandardFiles(
+    const QString& currentPath, const QString& standardPath, const QString& defPath)
 {
     QDir standardPathDir(standardPath);
     QDir currentPathDir(currentPath);
-    if ((currentPath == defPath || not currentPathDir.exists()) && standardPathDir.exists())
-    {
-        const QDir localdata (defPath);
-        if (localdata.mkpath("."))
-        {
+    if ((currentPath == defPath || not currentPathDir.exists()) && standardPathDir.exists()) {
+        const QDir localdata(defPath);
+        if (localdata.mkpath(".")) {
             SymlinkCopyDirRecursive(standardPath, defPath, false);
         }
         return defPath;
     }
     return currentPath;
 }
-}
+}   // namespace
 
 //---------------------------------------------------------------------------------------------------------------------
-VCommonSettings::VCommonSettings(Format format, Scope scope, const QString &organization,
-                            const QString &application, QObject *parent)
-    :QSettings(format, scope, organization, application, parent)
+VCommonSettings::VCommonSettings(
+    Format format,
+    Scope scope,
+    const QString& organization,
+    const QString& application,
+    QObject* parent)
+    : QSettings(format, scope, organization, application, parent)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VCommonSettings::SharePath(const QString &shareItem)
+QString VCommonSettings::SharePath(const QString& shareItem)
 {
 #ifdef Q_OS_WIN
     return QCoreApplication::applicationDirPath() + shareItem;
 #elif defined(Q_OS_MAC)
-    QDir dirBundle(QCoreApplication::applicationDirPath() + QStringLiteral("/../Resources") + shareItem);
-    if (dirBundle.exists())
-    {
+    QDir dirBundle(
+        QCoreApplication::applicationDirPath() + QStringLiteral("/../Resources") + shareItem);
+    if (dirBundle.exists()) {
         return dirBundle.absolutePath();
-    }
-    else
-    {
+    } else {
         QDir appDir = QDir(qApp->applicationDirPath());
         appDir.cdUp();
         appDir.cdUp();
         appDir.cdUp();
         QDir dir(appDir.absolutePath() + shareItem);
-        if (dir.exists())
-        {
+        if (dir.exists()) {
             return dir.absolutePath();
-        }
-        else
-        {
+        } else {
             return VCommonSettings::unixStandardSharePath + shareItem;
         }
     }
-#else // Unix
-#ifdef QT_DEBUG
+#else   // Unix
+#    ifdef QT_DEBUG
     return QCoreApplication::applicationDirPath() + shareItem;
-#else
+#    else
     QDir dir(QCoreApplication::applicationDirPath() + shareItem);
-    if (dir.exists())
-    {
+    if (dir.exists()) {
         return dir.absolutePath();
-    }
-    else
-    {
+    } else {
         return VCommonSettings::unixStandardSharePath + shareItem;
     }
-#endif
+#    endif
 #endif
 }
 
@@ -395,13 +403,13 @@ QString VCommonSettings::StandardTemplatesPath()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VCommonSettings::PrepareStandardTemplates(const QString & currentPath)
+QString VCommonSettings::PrepareStandardTemplates(const QString& currentPath)
 {
     return PrepareStandardFiles(currentPath, StandardTemplatesPath(), getDefaultTemplatePath());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VCommonSettings::prepareMultisizeTables(const QString &currentPath)
+QString VCommonSettings::prepareMultisizeTables(const QString& currentPath)
 {
     return PrepareStandardFiles(currentPath, MultisizeTablesPath(), getDefaultMultisizePath());
 }
@@ -409,18 +417,20 @@ QString VCommonSettings::prepareMultisizeTables(const QString &currentPath)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultIndividualSizePath()
 {
-    return QDir::homePath() + QLatin1String("/seamly2d/") + tr("measurements") + QLatin1String("/") + tr("individual");
+    return QDir::homePath() + QLatin1String("/seamly2d/") + tr("measurements") + QLatin1String("/")
+         + tr("individual");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getIndividualSizePath() const
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
-    return settings.value(settingPathsIndividualMeasurements, getDefaultIndividualSizePath()).toString();
+    return settings.value(settingPathsIndividualMeasurements, getDefaultIndividualSizePath())
+        .toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setIndividualSizePath(const QString &value)
+void VCommonSettings::setIndividualSizePath(const QString& value)
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
     settings.setValue(settingPathsIndividualMeasurements, value);
@@ -430,7 +440,8 @@ void VCommonSettings::setIndividualSizePath(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultMultisizePath()
 {
-    return QDir::homePath() + QLatin1String("/seamly2d/") + tr("measurements") + QLatin1String("/") + tr("multisize");
+    return QDir::homePath() + QLatin1String("/seamly2d/") + tr("measurements") + QLatin1String("/")
+         + tr("multisize");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -441,7 +452,7 @@ QString VCommonSettings::getMultisizePath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setMultisizePath(const QString &value)
+void VCommonSettings::setMultisizePath(const QString& value)
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
     settings.setValue(settingPathsMultisizeMeasurements, value);
@@ -462,7 +473,7 @@ QString VCommonSettings::getTemplatePath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setTemplatePath(const QString &value)
+void VCommonSettings::setTemplatePath(const QString& value)
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
     settings.setValue(settingPathsTemplates, value);
@@ -483,7 +494,7 @@ QString VCommonSettings::getBodyScansPath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setBodyScansPath(const QString &value)
+void VCommonSettings::setBodyScansPath(const QString& value)
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
     settings.setValue(settingPathsBodyScans, value);
@@ -503,7 +514,7 @@ QString VCommonSettings::getLabelTemplatePath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetPathLabelTemplate(const QString &text)
+void VCommonSettings::SetPathLabelTemplate(const QString& text)
 {
     setValue(settingPathsLabelTemplate, text);
 }
@@ -521,19 +532,18 @@ QString VCommonSettings::getImageFilePath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setImageFilePath(const QString &text)
-{
-    setValue(settingImagesPath, text);
-}
+void VCommonSettings::setImageFilePath(const QString& text) { setValue(settingImagesPath, text); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultPatternTemplate() const
 {
-    return value(settingDefaultPatternTemplate, getLabelTemplatePath() + "default_pattern_label.xml").toString();
+    return value(
+               settingDefaultPatternTemplate, getLabelTemplatePath() + "default_pattern_label.xml")
+        .toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultPatternTemplate(const QString &text)
+void VCommonSettings::setDefaultPatternTemplate(const QString& text)
 {
     setValue(settingDefaultPatternTemplate, text);
 }
@@ -541,11 +551,12 @@ void VCommonSettings::setDefaultPatternTemplate(const QString &text)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultPieceTemplate() const
 {
-    return value(settingDefaultPieceTemplate, getLabelTemplatePath() + "default_piece_label.xml").toString();
+    return value(settingDefaultPieceTemplate, getLabelTemplatePath() + "default_piece_label.xml")
+        .toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultPieceTemplate(const QString &value)
+void VCommonSettings::setDefaultPieceTemplate(const QString& value)
 {
     setValue(settingDefaultPieceTemplate, value);
 }
@@ -557,7 +568,7 @@ bool VCommonSettings::getShowWelcome() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowWelcome(const bool &value)
+void VCommonSettings::setShowWelcome(const bool& value)
 {
     setValue(settingConfigurationShowWelcome, value);
 }
@@ -569,7 +580,7 @@ bool VCommonSettings::getOsSeparator() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setOsSeparator(const bool &value)
+void VCommonSettings::setOsSeparator(const bool& value)
 {
     setValue(settingConfigurationOsSeparator, value);
 }
@@ -581,7 +592,7 @@ bool VCommonSettings::GetAutosaveState() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setAutosaveState(const bool &value)
+void VCommonSettings::setAutosaveState(const bool& value)
 {
     setValue(settingConfigurationAutosaveState, value);
 }
@@ -591,17 +602,16 @@ int VCommonSettings::getAutosaveInterval() const
 {
     bool ok = false;
     int val = value(settingConfigurationAutosaveTime, 1).toInt(&ok);
-    if (ok == false)
-    {
-        qDebug() << "Could not convert value"<<value(settingConfigurationAutosaveTime, 1)
-                   << "to int. Return default value for autosave time" << 1 << "minutes.";
+    if (ok == false) {
+        qDebug() << "Could not convert value" << value(settingConfigurationAutosaveTime, 1)
+                 << "to int. Return default value for autosave time" << 1 << "minutes.";
         val = 1;
     }
     return val;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setAutosaveInterval(const int &value)
+void VCommonSettings::setAutosaveInterval(const int& value)
 {
     setValue(settingConfigurationAutosaveTime, value);
 }
@@ -613,7 +623,7 @@ bool VCommonSettings::useModeType() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setUseModeType(const bool &value)
+void VCommonSettings::setUseModeType(const bool& value)
 {
     setValue(settingConfigurationUseModeType, value);
 }
@@ -625,7 +635,7 @@ bool VCommonSettings::useLastExportFormat() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setUseLastExportFormat(const bool &value)
+void VCommonSettings::setUseLastExportFormat(const bool& value)
 {
     setValue(settingConfigurationUseLastExportFormat, value);
 }
@@ -637,7 +647,7 @@ QString VCommonSettings::getExportFormat() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setExportFormat(const QString &value)
+void VCommonSettings::setExportFormat(const QString& value)
 {
     setValue(settingConfigurationExportFormat, value);
 }
@@ -649,7 +659,7 @@ bool VCommonSettings::GetSendReportState() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetSendReportState(const bool &value)
+void VCommonSettings::SetSendReportState(const bool& value)
 {
     setValue(settingConfigurationSendReportState, value);
 }
@@ -661,7 +671,7 @@ QString VCommonSettings::getLocale() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setLocale(const QString &value)
+void VCommonSettings::setLocale(const QString& value)
 {
     setValue(settingConfigurationLocale, value);
 }
@@ -673,7 +683,7 @@ QString VCommonSettings::GetPMSystemCode() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetPMSystemCode(const QString &value)
+void VCommonSettings::SetPMSystemCode(const QString& value)
 {
     setValue(settingPMSystemCode, value);
 }
@@ -681,15 +691,14 @@ void VCommonSettings::SetPMSystemCode(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::GetUnit() const
 {
-    return value(settingConfigurationUnit,
-                 QLocale().measurementSystem() == QLocale::MetricSystem ? unitCM : unitINCH).toString();
+    return value(
+               settingConfigurationUnit,
+               QLocale().measurementSystem() == QLocale::MetricSystem ? unitCM : unitINCH)
+        .toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetUnit(const QString &value)
-{
-    setValue(settingConfigurationUnit, value);
-}
+void VCommonSettings::SetUnit(const QString& value) { setValue(settingConfigurationUnit, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCommonSettings::getConfirmItemDelete() const
@@ -698,7 +707,7 @@ bool VCommonSettings::getConfirmItemDelete() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setConfirmItemDelete(const bool &value)
+void VCommonSettings::setConfirmItemDelete(const bool& value)
 {
     setValue(settingConfigurationConfirmItemDeletion, value);
 }
@@ -710,7 +719,7 @@ bool VCommonSettings::getConfirmFormatRewriting() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setConfirmFormatRewriting(const bool &value)
+void VCommonSettings::setConfirmFormatRewriting(const bool& value)
 {
     setValue(settingConfigurationConfirmFormatRewriting, value);
 }
@@ -723,7 +732,7 @@ QString VCommonSettings::getMoveSuffix() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setMoveSuffix(const QString &value)
+void VCommonSettings::setMoveSuffix(const QString& value)
 {
     setValue(settingConfigurationMoveSuffix, value);
 }
@@ -735,7 +744,7 @@ QString VCommonSettings::getRotateSuffix() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setRotateSuffix(const QString &value)
+void VCommonSettings::setRotateSuffix(const QString& value)
 {
     setValue(settingConfigurationRotateSuffix, value);
 }
@@ -747,7 +756,7 @@ QString VCommonSettings::getMirrorByAxisSuffix() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setMirrorByAxisSuffix(const QString &value)
+void VCommonSettings::setMirrorByAxisSuffix(const QString& value)
 {
     setValue(settingConfigurationMirrorByAxisSuffix, value);
 }
@@ -759,7 +768,7 @@ QString VCommonSettings::getMirrorByLineSuffix() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setMirrorByLineSuffix(const QString &value)
+void VCommonSettings::setMirrorByLineSuffix(const QString& value)
 {
     setValue(settingConfigurationMirrorByLineSuffix, value);
 }
@@ -771,7 +780,7 @@ bool VCommonSettings::getToolBarStyle() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setToolBarStyle(const bool &value)
+void VCommonSettings::setToolBarStyle(const bool& value)
 {
     setValue(settingGraphicsViewToolBarStyle, value);
 }
@@ -783,7 +792,7 @@ bool VCommonSettings::getShowToolsToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowToolsToolBar(const bool &value)
+void VCommonSettings::setShowToolsToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowToolsToolBar, value);
 }
@@ -795,7 +804,7 @@ bool VCommonSettings::getShowPointToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowPointToolBar(const bool &value)
+void VCommonSettings::setShowPointToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowPointToolBar, value);
 }
@@ -807,7 +816,7 @@ bool VCommonSettings::getShowLineToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowLineToolBar(const bool &value)
+void VCommonSettings::setShowLineToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowLineToolBar, value);
 }
@@ -819,7 +828,7 @@ bool VCommonSettings::getShowCurveToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowCurveToolBar(const bool &value)
+void VCommonSettings::setShowCurveToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowCurveToolBar, value);
 }
@@ -831,7 +840,7 @@ bool VCommonSettings::getShowArcToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowArcToolBar(const bool &value)
+void VCommonSettings::setShowArcToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowArcToolBar, value);
 }
@@ -843,7 +852,7 @@ bool VCommonSettings::getShowOpsToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowOpsToolBar(const bool &value)
+void VCommonSettings::setShowOpsToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowOpsToolBar, value);
 }
@@ -855,7 +864,7 @@ bool VCommonSettings::getShowPieceToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowPieceToolBar(const bool &value)
+void VCommonSettings::setShowPieceToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowPieceToolBar, value);
 }
@@ -867,7 +876,7 @@ bool VCommonSettings::getShowDetailsToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowDetailsToolBar(const bool &value)
+void VCommonSettings::setShowDetailsToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowDetailsToolBar, value);
 }
@@ -879,31 +888,31 @@ bool VCommonSettings::getShowLayoutToolBar() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowLayoutToolBar(const bool &value)
+void VCommonSettings::setShowLayoutToolBar(const bool& value)
 {
     setValue(settingGraphicsViewShowLayoutToolBar, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool  VCommonSettings::getShowScrollBars() const
+bool VCommonSettings::getShowScrollBars() const
 {
     return value(settingGraphicsViewShowScrollBars, 1).toBool();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowScrollBars(const bool  &value)
+void VCommonSettings::setShowScrollBars(const bool& value)
 {
     setValue(settingGraphicsViewShowScrollBars, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int  VCommonSettings::getScrollBarWidth() const
+int VCommonSettings::getScrollBarWidth() const
 {
     return value(settingGraphicsViewScrollBarWidth, 10).toInt();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setScrollBarWidth(const int  &width)
+void VCommonSettings::setScrollBarWidth(const int& width)
 {
     setValue(settingGraphicsViewScrollBarWidth, width);
 }
@@ -915,7 +924,7 @@ int VCommonSettings::getScrollDuration() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setScrollDuration(const int &duration)
+void VCommonSettings::setScrollDuration(const int& duration)
 {
     setValue(settingGraphicsViewScrollDuration, duration);
 }
@@ -927,7 +936,7 @@ int VCommonSettings::getScrollUpdateInterval() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setScrollUpdateInterval(const int &interval)
+void VCommonSettings::setScrollUpdateInterval(const int& interval)
 {
     setValue(settingGraphicsViewScrollUpdateInterval, interval);
 }
@@ -939,7 +948,7 @@ int VCommonSettings::getScrollSpeedFactor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setScrollSpeedFactor(const int &factor)
+void VCommonSettings::setScrollSpeedFactor(const int& factor)
 {
     setValue(settingGraphicsViewScrollSpeedFactor, factor);
 }
@@ -952,7 +961,7 @@ bool VCommonSettings::getZoomModKey() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setZoomModKey(const bool &value)
+void VCommonSettings::setZoomModKey(const bool& value)
 {
     setValue(settingGraphicsViewZoomModKey, value);
 }
@@ -964,7 +973,7 @@ bool VCommonSettings::isZoomDoubleClick() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setZoomDoubleClick(const bool &value)
+void VCommonSettings::setZoomDoubleClick(const bool& value)
 {
     setValue(settingGraphicsViewZoomDoubleClick, value);
 }
@@ -976,31 +985,31 @@ bool VCommonSettings::isPanActiveSpaceKey() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setPanActiveSpaceKey(const bool &value)
+void VCommonSettings::setPanActiveSpaceKey(const bool& value)
 {
     setValue(settingGraphicsViewPanActiveSpaceKey, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int  VCommonSettings::getZoomSpeedFactor() const
+int VCommonSettings::getZoomSpeedFactor() const
 {
     return value(settingGraphicsViewZoomSpeedFactor, 16).toInt();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setZoomSpeedFactor(const int  &value)
+void VCommonSettings::setZoomSpeedFactor(const int& value)
 {
     setValue(settingGraphicsViewZoomSpeedFactor, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int  VCommonSettings::getExportQuality() const
+int VCommonSettings::getExportQuality() const
 {
     return value(settingGraphicsViewExportQuality, 75).toInt();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setExportQuality(const int  &value)
+void VCommonSettings::setExportQuality(const int& value)
 {
     setValue(settingGraphicsViewExportQuality, value);
 }
@@ -1012,7 +1021,7 @@ QString VCommonSettings::getZoomRBPositiveColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setZoomRBPositiveColor(const QString &value)
+void VCommonSettings::setZoomRBPositiveColor(const QString& value)
 {
     setValue(settingGraphicsViewZoomRBPositiveColor, value);
 }
@@ -1024,7 +1033,7 @@ QString VCommonSettings::getZoomRBNegativeColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setZoomRBNegativeColor(const QString &value)
+void VCommonSettings::setZoomRBNegativeColor(const QString& value)
 {
     setValue(settingGraphicsViewZoomRBNegativeColor, value);
 }
@@ -1036,7 +1045,7 @@ QString VCommonSettings::getPointNameColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setPointNameColor(const QString &value)
+void VCommonSettings::setPointNameColor(const QString& value)
 {
     setValue(settingGraphicsViewPointNameColor, value);
 }
@@ -1048,7 +1057,7 @@ QString VCommonSettings::getPointNameHoverColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setPointNameHoverColor(const QString &value)
+void VCommonSettings::setPointNameHoverColor(const QString& value)
 {
     setValue(settingGraphicsViewPointNameHoverColor, value);
 }
@@ -1060,7 +1069,7 @@ QString VCommonSettings::getAxisOrginColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setAxisOrginColor(const QString &value)
+void VCommonSettings::setAxisOrginColor(const QString& value)
 {
     setValue(settingGraphicsViewAxisOrginColor, value);
 }
@@ -1072,7 +1081,7 @@ QString VCommonSettings::getDefaultLineColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultLineColor(const QString &value)
+void VCommonSettings::setDefaultLineColor(const QString& value)
 {
     setValue(settingGraphicsViewDefaultLineColor, value);
 }
@@ -1084,7 +1093,7 @@ qreal VCommonSettings::getDefaultLineWeight() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultLineWeight(const qreal &value)
+void VCommonSettings::setDefaultLineWeight(const qreal& value)
 {
     setValue(settingGraphicsViewDefaultLineWeight, value);
 }
@@ -1096,7 +1105,7 @@ QString VCommonSettings::getDefaultLineType() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultLineType(const QString &value)
+void VCommonSettings::setDefaultLineType(const QString& value)
 {
     setValue(settingGraphicsViewDefaultLineType, value);
 }
@@ -1108,7 +1117,7 @@ QString VCommonSettings::getPrimarySupportColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setPrimarySupportColor(const QString &value)
+void VCommonSettings::setPrimarySupportColor(const QString& value)
 {
     setValue(settingGraphicsViewPrimaryColor, value);
 }
@@ -1120,7 +1129,7 @@ QString VCommonSettings::getSecondarySupportColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setSecondarySupportColor(const QString &value)
+void VCommonSettings::setSecondarySupportColor(const QString& value)
 {
     setValue(settingGraphicsViewSecondaryColor, value);
 }
@@ -1132,7 +1141,7 @@ QString VCommonSettings::getTertiarySupportColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setTertiarySupportColor(const QString &value)
+void VCommonSettings::setTertiarySupportColor(const QString& value)
 {
     setValue(settingGraphicsViewTertiaryColor, value);
 }
@@ -1144,7 +1153,7 @@ qreal VCommonSettings::getConstrainValue() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setConstrainValue(const qreal &value)
+void VCommonSettings::setConstrainValue(const qreal& value)
 {
     setValue(settingGraphicsViewConstrainValue, value);
 }
@@ -1156,7 +1165,7 @@ bool VCommonSettings::getConstrainModKey() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setConstrainModKey(const bool &value)
+void VCommonSettings::setConstrainModKey(const bool& value)
 {
     setValue(settingGraphicsViewConstrainModKey, value);
 }
@@ -1167,7 +1176,7 @@ QString VCommonSettings::getCompanyName() const
     return value(settingConfigurationCompanyName, "").toString();
 }
 
-void VCommonSettings::setCompanyName(const QString &value)
+void VCommonSettings::setCompanyName(const QString& value)
 {
     setValue(settingConfigurationCompanyName, value);
 }
@@ -1177,7 +1186,7 @@ QString VCommonSettings::getContact() const
     return value(settingConfigurationContact, "").toString();
 }
 
-void VCommonSettings::setContact(const QString &value)
+void VCommonSettings::setContact(const QString& value)
 {
     setValue(settingConfigurationContact, value);
 }
@@ -1187,37 +1196,28 @@ QString VCommonSettings::getAddress() const
     return value(settingConfigurationAddress, "").toString();
 }
 
-void VCommonSettings::setAddress(const QString &value)
+void VCommonSettings::setAddress(const QString& value)
 {
     setValue(settingConfigurationAddress, value);
 }
 
-QString VCommonSettings::getCity() const
-{
-    return value(settingConfigurationCity, "").toString();
-}
+QString VCommonSettings::getCity() const { return value(settingConfigurationCity, "").toString(); }
 
-void VCommonSettings::setCity(const QString &value)
-{
-    setValue(settingConfigurationCity, value);
-}
+void VCommonSettings::setCity(const QString& value) { setValue(settingConfigurationCity, value); }
 
 QString VCommonSettings::getState() const
 {
     return value(settingConfigurationState, "").toString();
 }
 
-void VCommonSettings::setState(const QString &value)
-{
-    setValue(settingConfigurationState, value);
-}
+void VCommonSettings::setState(const QString& value) { setValue(settingConfigurationState, value); }
 
 QString VCommonSettings::getZipcode() const
 {
     return value(settingConfigurationZipcode, "").toString();
 }
 
-void VCommonSettings::setZipcode(const QString &value)
+void VCommonSettings::setZipcode(const QString& value)
 {
     setValue(settingConfigurationZipcode, value);
 }
@@ -1227,7 +1227,7 @@ QString VCommonSettings::getCountry() const
     return value(settingConfigurationCountry, "").toString();
 }
 
-void VCommonSettings::setCountry(const QString &value)
+void VCommonSettings::setCountry(const QString& value)
 {
     setValue(settingConfigurationCountry, value);
 }
@@ -1237,37 +1237,28 @@ QString VCommonSettings::getTelephone() const
     return value(settingConfigurationTelephone, "").toString();
 }
 
-void VCommonSettings::setTelephone(const QString &value)
+void VCommonSettings::setTelephone(const QString& value)
 {
     setValue(settingConfigurationTelephone, value);
 }
 
-QString VCommonSettings::getFax() const
-{
-    return value(settingConfigurationFax, "").toString();
-}
+QString VCommonSettings::getFax() const { return value(settingConfigurationFax, "").toString(); }
 
-void VCommonSettings::setFax(const QString &value)
-{
-    setValue(settingConfigurationFax, value);
-}
+void VCommonSettings::setFax(const QString& value) { setValue(settingConfigurationFax, value); }
 
 QString VCommonSettings::getEmail() const
 {
     return value(settingConfigurationEmail, "").toString();
 }
 
-void VCommonSettings::setEmail(const QString &value)
-{
-    setValue(settingConfigurationEmail, value);
-}
+void VCommonSettings::setEmail(const QString& value) { setValue(settingConfigurationEmail, value); }
 
 QString VCommonSettings::getWebsite() const
 {
     return value(settingConfigurationWebsite, "").toString();
 }
 
-void VCommonSettings::setWebsite(const QString &value)
+void VCommonSettings::setWebsite(const QString& value)
 {
     setValue(settingConfigurationWebsite, value);
 }
@@ -1277,20 +1268,16 @@ int VCommonSettings::GetUndoCount() const
 {
     bool ok = false;
     int val = value(settingPatternUndo, 0).toInt(&ok);
-    if (ok == false)
-    {
-        qDebug() << "Could not convert value"<<value(settingPatternUndo, 0)
-                   << "to int. Return default value for undo counts 0 (no limit).";
+    if (ok == false) {
+        qDebug() << "Could not convert value" << value(settingPatternUndo, 0)
+                 << "to int. Return default value for undo counts 0 (no limit).";
         val = 0;
     }
     return val;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setUndoCount(const int &value)
-{
-    setValue(settingPatternUndo, value);
-}
+void VCommonSettings::setUndoCount(const int& value) { setValue(settingPatternUndo, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getSound() const
@@ -1301,11 +1288,12 @@ QString VCommonSettings::getSound() const
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getSelectionSound() const
 {
-    return QStringLiteral("qrc:/sounds/") + value(settingSelectionSound, "silent").toString() + QStringLiteral(".wav");
+    return QStringLiteral("qrc:/sounds/") + value(settingSelectionSound, "silent").toString()
+         + QStringLiteral(".wav");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setSelectionSound(const QString &value)
+void VCommonSettings::setSelectionSound(const QString& value)
 {
     setValue(settingSelectionSound, value);
 }
@@ -1316,10 +1304,8 @@ QStringList VCommonSettings::GetRecentFileList() const
     const QStringList files = value(settingGeneralRecentFileList).toStringList();
     QStringList cleared;
 
-    for (int i = 0; i < files.size(); ++i)
-    {
-        if (QFileInfo(files.at(i)).exists())
-        {
+    for (int i = 0; i < files.size(); ++i) {
+        if (QFileInfo(files.at(i)).exists()) {
             cleared.append(files.at(i));
         }
     }
@@ -1328,7 +1314,7 @@ QStringList VCommonSettings::GetRecentFileList() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetRecentFileList(const QStringList &value)
+void VCommonSettings::SetRecentFileList(const QStringList& value)
 {
     setValue(settingGeneralRecentFileList, value);
 }
@@ -1340,7 +1326,7 @@ QStringList VCommonSettings::GetRestoreFileList() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetRestoreFileList(const QStringList &value)
+void VCommonSettings::SetRestoreFileList(const QStringList& value)
 {
     setValue(settingGeneralRestoreFileList, value);
 }
@@ -1352,7 +1338,7 @@ QByteArray VCommonSettings::GetGeometry() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetGeometry(const QByteArray &value)
+void VCommonSettings::SetGeometry(const QByteArray& value)
 {
     setValue(settingGeneralGeometry, value);
 }
@@ -1364,7 +1350,7 @@ QByteArray VCommonSettings::GetWindowState() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetWindowState(const QByteArray &value)
+void VCommonSettings::SetWindowState(const QByteArray& value)
 {
     setValue(settingGeneralWindowState, value);
 }
@@ -1376,7 +1362,7 @@ QByteArray VCommonSettings::GetToolbarsState() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetToolbarsState(const QByteArray &value)
+void VCommonSettings::SetToolbarsState(const QByteArray& value)
 {
     setValue(settingGeneralToolbarsState, value);
 }
@@ -1400,7 +1386,7 @@ QSize VCommonSettings::getPatternPieceDialogSize() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setPatternPieceDialogSize(const QSize &sz)
+void VCommonSettings::setPatternPieceDialogSize(const QSize& sz)
 {
     setValue(settingToolSeamAllowanceDialogSize, sz);
 }
@@ -1412,7 +1398,7 @@ QSize VCommonSettings::GetFormulaWizardDialogSize() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetFormulaWizardDialogSize(const QSize &sz)
+void VCommonSettings::SetFormulaWizardDialogSize(const QSize& sz)
 {
     setValue(settingFormulaWizardDialogSize, sz);
 }
@@ -1424,7 +1410,7 @@ QSize VCommonSettings::getVariablesDialogSize() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setVariablesDialogSize(const QSize &sz)
+void VCommonSettings::setVariablesDialogSize(const QSize& sz)
 {
     setValue(settingVariablesDialogSize, sz);
 }
@@ -1452,7 +1438,7 @@ QDate VCommonSettings::GetDateOfLastRemind() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetDateOfLastRemind(const QDate &date)
+void VCommonSettings::SetDateOfLastRemind(const QDate& date)
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
     settings.setValue(settingDateOfLastRemind, date);
@@ -1478,10 +1464,7 @@ bool VCommonSettings::isHideSeamLine() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setHideSeamLine(bool value)
-{
-    setValue(settingPatternHideSeamLine, value);
-}
+void VCommonSettings::setHideSeamLine(bool value) { setValue(settingPatternHideSeamLine, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCommonSettings::showSeamlineNotch() const
@@ -1490,10 +1473,7 @@ bool VCommonSettings::showSeamlineNotch() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowSeamlineNotch(bool value)
-{
-    setValue(settingSeamlineNotch, value);
-}
+void VCommonSettings::setShowSeamlineNotch(bool value) { setValue(settingSeamlineNotch, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCommonSettings::showSeamAllowanceNotch() const
@@ -1510,11 +1490,11 @@ void VCommonSettings::setShowSeamAllowanceNotch(bool value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultNotchLength() const
 {
-   return value(settingDefaultNotchLength, .250).toReal();
+    return value(settingDefaultNotchLength, .250).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultNotchLength(const qreal &value)
+void VCommonSettings::setDefaultNotchLength(const qreal& value)
 {
     setValue(settingDefaultNotchLength, value);
 }
@@ -1522,11 +1502,11 @@ void VCommonSettings::setDefaultNotchLength(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultNotchWidth() const
 {
-   return value(settingDefaultNotchWidth, .250).toReal();
+    return value(settingDefaultNotchWidth, .250).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultNotchWidth(const qreal &value)
+void VCommonSettings::setDefaultNotchWidth(const qreal& value)
 {
     setValue(settingDefaultNotchWidth, value);
 }
@@ -1534,11 +1514,11 @@ void VCommonSettings::setDefaultNotchWidth(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultNotchType() const
 {
-   return value(settingDefaultNotchType, "Slit").toString();
+    return value(settingDefaultNotchType, "Slit").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultNotchType(const QString &value)
+void VCommonSettings::setDefaultNotchType(const QString& value)
 {
     setValue(settingDefaultNotchType, value);
 }
@@ -1546,11 +1526,11 @@ void VCommonSettings::setDefaultNotchType(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultNotchColor() const
 {
-   return value(settingDefaultNotchColor, "black").toString();
+    return value(settingDefaultNotchColor, "black").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultNotchColor(const QString &value)
+void VCommonSettings::setDefaultNotchColor(const QString& value)
 {
     setValue(settingDefaultNotchColor, value);
 }
@@ -1570,10 +1550,7 @@ bool VCommonSettings::GetCSVWithHeader() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VCommonSettings::GetDefCSVWithHeader() const
-{
-    return false;
-}
+bool VCommonSettings::GetDefCSVWithHeader() const { return false; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VCommonSettings::SetCSVCodec(int mib)
@@ -1590,29 +1567,17 @@ int VCommonSettings::GetCSVCodec() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VCommonSettings::GetDefCSVCodec() const
-{
-    return QTextCodec::codecForLocale()->mibEnum();
-}
+int VCommonSettings::GetDefCSVCodec() const { return QTextCodec::codecForLocale()->mibEnum(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetCSVSeparator(const QChar &separator)
+void VCommonSettings::SetCSVSeparator(const QChar& separator)
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
-    switch(separator.toLatin1())
-    {
-        case '\t':
-            settings.setValue(settingCSVSeparator, 0);
-            break;
-        case ';':
-            settings.setValue(settingCSVSeparator, 1);
-            break;
-        case ' ':
-            settings.setValue(settingCSVSeparator, 2);
-            break;
-        default:
-            settings.setValue(settingCSVSeparator, 3);
-            break;
+    switch (separator.toLatin1()) {
+    case '\t': settings.setValue(settingCSVSeparator, 0); break;
+    case ';': settings.setValue(settingCSVSeparator, 1); break;
+    case ' ': settings.setValue(settingCSVSeparator, 2); break;
+    default: settings.setValue(settingCSVSeparator, 3); break;
     }
 }
 
@@ -1621,29 +1586,22 @@ QChar VCommonSettings::GetCSVSeparator() const
 {
     QSettings settings(this->format(), this->scope(), this->organizationName(), commonIniFilename);
     const quint8 separator = static_cast<quint8>(settings.value(settingCSVSeparator, 3).toUInt());
-    switch(separator)
-    {
-        case 0:
-            return QChar('\t');
-        case 1:
-            return QChar(';');
-        case 2:
-            return QChar(' ');
-        default:
-            return QChar(',');
+    switch (separator) {
+    case 0: return QChar('\t');
+    case 1: return QChar(';');
+    case 2: return QChar(' ');
+    default: return QChar(',');
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QChar VCommonSettings::GetDefCSVSeparator() const
-{
-    return QChar(',');
-}
+QChar VCommonSettings::GetDefCSVSeparator() const { return QChar(','); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VCommonSettings::SetDefaultSeamAllowance(double value)
 {
-    setValue(settingPatternDefaultSeamAllowance, UnitConvertor(value, StrToUnits(GetUnit()), Unit::Cm));
+    setValue(
+        settingPatternDefaultSeamAllowance, UnitConvertor(value, StrToUnits(GetUnit()), Unit::Cm));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -1657,35 +1615,25 @@ double VCommonSettings::GetDefaultSeamAllowance()
 
     const Unit globalUnit = StrToUnits(GetUnit());
 
-    switch (globalUnit)
-    {
-        case Unit::Mm:
-            defaultValue = 10;
-            break;
-        case Unit::Inch:
-            defaultValue = 0.25;
-            break;
-        default:
-        case Unit::Cm:
-            defaultValue = 1;
-            break;
+    switch (globalUnit) {
+    case Unit::Mm: defaultValue = 10; break;
+    case Unit::Inch: defaultValue = 0.25; break;
+    default:
+    case Unit::Cm: defaultValue = 1; break;
     }
 
     bool ok = false;
     double val = value(settingPatternDefaultSeamAllowance, -1).toDouble(&ok);
-    if (ok == false)
-    {
-        qDebug() <<  "Could not convert value"<<value(settingPatternDefaultSeamAllowance, 0)
-                   << "to real. Return default value for default seam allowance is " << defaultValue << ".";
+    if (ok == false) {
+        qDebug() << "Could not convert value" << value(settingPatternDefaultSeamAllowance, 0)
+                 << "to real. Return default value for default seam allowance is " << defaultValue
+                 << ".";
         val = defaultValue;
     }
 
-    if (val < 0)
-    {
+    if (val < 0) {
         val = defaultValue;
-    }
-    else
-    {
+    } else {
         val = UnitConvertor(val, Unit::Cm, globalUnit);
     }
 
@@ -1695,11 +1643,11 @@ double VCommonSettings::GetDefaultSeamAllowance()
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultSeamColor() const
 {
-   return value(settingDefaultSeamColor, "black").toString();
+    return value(settingDefaultSeamColor, "black").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultSeamColor(const QString &value)
+void VCommonSettings::setDefaultSeamColor(const QString& value)
 {
     setValue(settingDefaultSeamColor, value);
 }
@@ -1707,11 +1655,11 @@ void VCommonSettings::setDefaultSeamColor(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultSeamLinetype() const
 {
-   return value(settingDefaultSeamLinetype, "solidLine").toString();
+    return value(settingDefaultSeamLinetype, "solidLine").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultSeamLinetype(const QString &value)
+void VCommonSettings::setDefaultSeamLinetype(const QString& value)
 {
     setValue(settingDefaultSeamLinetype, value);
 }
@@ -1719,11 +1667,11 @@ void VCommonSettings::setDefaultSeamLinetype(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultSeamLineweight() const
 {
-   return value(settingDefaultSeamLineweight, 1.20).toReal();
+    return value(settingDefaultSeamLineweight, 1.20).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultSeamLineweight(const qreal &value)
+void VCommonSettings::setDefaultSeamLineweight(const qreal& value)
 {
     setValue(settingDefaultSeamLineweight, value);
 }
@@ -1731,11 +1679,11 @@ void VCommonSettings::setDefaultSeamLineweight(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultCutColor() const
 {
-   return value(settingDefaultCutColor, "black").toString();
+    return value(settingDefaultCutColor, "black").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultCutColor(const QString &value)
+void VCommonSettings::setDefaultCutColor(const QString& value)
 {
     setValue(settingDefaultCutColor, value);
 }
@@ -1743,11 +1691,11 @@ void VCommonSettings::setDefaultCutColor(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultCutLinetype() const
 {
-   return value(settingDefaultCutLinetype, "solidLine").toString();
+    return value(settingDefaultCutLinetype, "solidLine").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultCutLinetype(const QString &value)
+void VCommonSettings::setDefaultCutLinetype(const QString& value)
 {
     setValue(settingDefaultCutLinetype, value);
 }
@@ -1755,11 +1703,11 @@ void VCommonSettings::setDefaultCutLinetype(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultCutLineweight() const
 {
-   return value(settingDefaultCutLineweight, 1.20).toReal();
+    return value(settingDefaultCutLineweight, 1.20).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultCutLineweight(const qreal &value)
+void VCommonSettings::setDefaultCutLineweight(const qreal& value)
 {
     setValue(settingDefaultCutLineweight, value);
 }
@@ -1767,11 +1715,11 @@ void VCommonSettings::setDefaultCutLineweight(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultInternalColor() const
 {
-   return value(settingDefaultInternalColor, "black").toString();
+    return value(settingDefaultInternalColor, "black").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultInternalColor(const QString &value)
+void VCommonSettings::setDefaultInternalColor(const QString& value)
 {
     setValue(settingDefaultInternalColor, value);
 }
@@ -1779,11 +1727,11 @@ void VCommonSettings::setDefaultInternalColor(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultInternalLinetype() const
 {
-   return value(settingDefaultInternalLinetype, "solidLine").toString();
+    return value(settingDefaultInternalLinetype, "solidLine").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultInternalLinetype(const QString &value)
+void VCommonSettings::setDefaultInternalLinetype(const QString& value)
 {
     setValue(settingDefaultInternalLinetype, value);
 }
@@ -1791,11 +1739,11 @@ void VCommonSettings::setDefaultInternalLinetype(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultInternalLineweight() const
 {
-   return value(settingDefaultInternalLineweight, 1.20).toReal();
+    return value(settingDefaultInternalLineweight, 1.20).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultInternalLineweight(const qreal &value)
+void VCommonSettings::setDefaultInternalLineweight(const qreal& value)
 {
     setValue(settingDefaultInternalLineweight, value);
 }
@@ -1803,11 +1751,11 @@ void VCommonSettings::setDefaultInternalLineweight(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultCutoutColor() const
 {
-   return value(settingDefaultCutoutColor, "black").toString();
+    return value(settingDefaultCutoutColor, "black").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultCutoutColor(const QString &value)
+void VCommonSettings::setDefaultCutoutColor(const QString& value)
 {
     setValue(settingDefaultCutoutColor, value);
 }
@@ -1815,11 +1763,11 @@ void VCommonSettings::setDefaultCutoutColor(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultCutoutLinetype() const
 {
-   return value(settingDefaultCutoutLinetype, "solidLine").toString();
+    return value(settingDefaultCutoutLinetype, "solidLine").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultCutoutLinetype(const QString &value)
+void VCommonSettings::setDefaultCutoutLinetype(const QString& value)
 {
     setValue(settingDefaultCutoutLinetype, value);
 }
@@ -1827,11 +1775,11 @@ void VCommonSettings::setDefaultCutoutLinetype(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultCutoutLineweight() const
 {
-   return value(settingDefaultCutoutLineweight, 1.20).toReal();
+    return value(settingDefaultCutoutLineweight, 1.20).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultCutoutLineweight(const qreal &value)
+void VCommonSettings::setDefaultCutoutLineweight(const qreal& value)
 {
     setValue(settingDefaultCutoutLineweight, value);
 }
@@ -1843,7 +1791,7 @@ bool VCommonSettings::showSeamAllowances() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowSeamAllowances(const bool &value)
+void VCommonSettings::setShowSeamAllowances(const bool& value)
 {
     setValue(settingShowSeamAllowances, value);
 }
@@ -1855,19 +1803,16 @@ bool VCommonSettings::getDefaultSeamAllowanceVisibilty() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultSeamAllowanceVisibilty(const bool &value)
+void VCommonSettings::setDefaultSeamAllowanceVisibilty(const bool& value)
 {
     setValue(settingDefaultSeamAllowanceVisibilty, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VCommonSettings::showGrainlines() const
-{
-    return value(settingShowGrainlines, true).toBool();
-}
+bool VCommonSettings::showGrainlines() const { return value(settingShowGrainlines, true).toBool(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowGrainlines(const bool &value)
+void VCommonSettings::setShowGrainlines(const bool& value)
 {
     setValue(settingShowGrainlines, value);
 }
@@ -1879,7 +1824,7 @@ bool VCommonSettings::getDefaultGrainlineVisibilty() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultGrainlineVisibilty(const bool &value)
+void VCommonSettings::setDefaultGrainlineVisibilty(const bool& value)
 {
     setValue(settingDefaultGrainlineVisibilty, value);
 }
@@ -1887,11 +1832,11 @@ void VCommonSettings::setDefaultGrainlineVisibilty(const bool &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultGrainlineLength() const
 {
-   return value(settingDefaultGrainlineLength, 2).toReal();
+    return value(settingDefaultGrainlineLength, 2).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultGrainlineLength(const qreal &value)
+void VCommonSettings::setDefaultGrainlineLength(const qreal& value)
 {
     setValue(settingDefaultGrainlineLength, value);
 }
@@ -1899,11 +1844,11 @@ void VCommonSettings::setDefaultGrainlineLength(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultGrainlineColor() const
 {
-   return value(settingDefaultGrainlineColor, "black").toString();
+    return value(settingDefaultGrainlineColor, "black").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultGrainlineColor(const QString &value)
+void VCommonSettings::setDefaultGrainlineColor(const QString& value)
 {
     setValue(settingDefaultGrainlineColor, value);
 }
@@ -1911,26 +1856,20 @@ void VCommonSettings::setDefaultGrainlineColor(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultGrainlineLineweight() const
 {
-   return value(settingDefaultGrainlineLineweight, 0.25).toReal();
+    return value(settingDefaultGrainlineLineweight, 0.25).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultGrainlineLineweight(const qreal &value)
+void VCommonSettings::setDefaultGrainlineLineweight(const qreal& value)
 {
     setValue(settingDefaultGrainlineLineweight, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VCommonSettings::showLabels() const
-{
-    return value(settingShowLabels, true).toBool();
-}
+bool VCommonSettings::showLabels() const { return value(settingShowLabels, true).toBool(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowLabels(const bool &value)
-{
-    setValue(settingShowLabels, value);
-}
+void VCommonSettings::setShowLabels(const bool& value) { setValue(settingShowLabels, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCommonSettings::showPatternLabels() const
@@ -1939,7 +1878,7 @@ bool VCommonSettings::showPatternLabels() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowPatternLabels(const bool &value)
+void VCommonSettings::setShowPatternLabels(const bool& value)
 {
     setValue(settingShowPatternLabels, value);
 }
@@ -1951,7 +1890,7 @@ bool VCommonSettings::showPieceLabels() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setShowPieceLabels(const bool &value)
+void VCommonSettings::setShowPieceLabels(const bool& value)
 {
     setValue(settingShowPieceLabels, value);
 }
@@ -1959,11 +1898,11 @@ void VCommonSettings::setShowPieceLabels(const bool &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultLabelWidth() const
 {
-   return value(settingDefaultLabelWidth, 3).toReal();
+    return value(settingDefaultLabelWidth, 3).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultLabelWidth(const qreal &value)
+void VCommonSettings::setDefaultLabelWidth(const qreal& value)
 {
     setValue(settingDefaultLabelWidth, value);
 }
@@ -1971,11 +1910,11 @@ void VCommonSettings::setDefaultLabelWidth(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCommonSettings::getDefaultLabelHeight() const
 {
-   return value(settingDefaultLabelHeight, 2).toReal();
+    return value(settingDefaultLabelHeight, 2).toReal();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultLabelHeight(const qreal &value)
+void VCommonSettings::setDefaultLabelHeight(const qreal& value)
 {
     setValue(settingDefaultLabelHeight, value);
 }
@@ -1983,11 +1922,11 @@ void VCommonSettings::setDefaultLabelHeight(const qreal &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::getDefaultLabelColor() const
 {
-   return value(settingDefaultLabelColor, "black").toString();
+    return value(settingDefaultLabelColor, "black").toString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setDefaultLabelColor(const QString &value)
+void VCommonSettings::setDefaultLabelColor(const QString& value)
 {
     setValue(settingDefaultLabelColor, value);
 }
@@ -1999,10 +1938,7 @@ QFont VCommonSettings::getLabelFont() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setLabelFont(const QFont &f)
-{
-    setValue(settingPatternLabelFont, f);
-}
+void VCommonSettings::setLabelFont(const QFont& f) { setValue(settingPatternLabelFont, f); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QFont VCommonSettings::getGuiFont() const
@@ -2011,10 +1947,7 @@ QFont VCommonSettings::getGuiFont() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setGuiFont(const QFont &f)
-{
-    setValue(settingPatternGuiFont, f);
-}
+void VCommonSettings::setGuiFont(const QFont& f) { setValue(settingPatternGuiFont, f); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QFont VCommonSettings::getPointNameFont() const
@@ -2023,10 +1956,7 @@ QFont VCommonSettings::getPointNameFont() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setPointNameFont(const QFont &f)
-{
-    setValue(settingPatternPointNameFont, f);
-}
+void VCommonSettings::setPointNameFont(const QFont& f) { setValue(settingPatternPointNameFont, f); }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCommonSettings::getHidePointNames() const
@@ -2059,10 +1989,7 @@ bool VCommonSettings::isWireframe() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setWireframe(bool value)
-{
-    setValue(settingGraphicsViewWireframe, value);
-}
+void VCommonSettings::setWireframe(bool value) { setValue(settingGraphicsViewWireframe, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCommonSettings::getShowControlPoints() const
@@ -2095,20 +2022,15 @@ bool VCommonSettings::getUseToolColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setUseToolColor(bool value)
-{
-    setValue(settingGraphicsUseToolColor, value);
-}
+void VCommonSettings::setUseToolColor(bool value) { setValue(settingGraphicsUseToolColor, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 int VCommonSettings::getPointNameSize() const
 {
-    if (pointNameSize <= 0)
-    {
+    if (pointNameSize <= 0) {
         bool ok = false;
         pointNameSize = value(settingGraphicsViewPointNameSize, 32).toInt(&ok);
-        if (not ok)
-        {
+        if (not ok) {
             pointNameSize = 32;
         }
     }
@@ -2128,29 +2050,25 @@ int VCommonSettings::getGuiFontSize() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::setGuiFontSize(int value)
-{
-    setValue(settingGraphicsViewGuiFontSize, value);
-}
+void VCommonSettings::setGuiFontSize(int value) { setValue(settingGraphicsViewGuiFontSize, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::GetLabelDateFormat() const
 {
-    const QString format = value(settingLabelDateFormat, VCommonSettings::PredefinedDateFormats().first()).toString();
-    const QStringList allFormats = VCommonSettings::PredefinedDateFormats() + GetUserDefinedDateFormats();
+    const QString format =
+        value(settingLabelDateFormat, VCommonSettings::PredefinedDateFormats().first()).toString();
+    const QStringList allFormats =
+        VCommonSettings::PredefinedDateFormats() + GetUserDefinedDateFormats();
 
-    if (allFormats.contains(format))
-    {
+    if (allFormats.contains(format)) {
         return format;
-    }
-    else
-    {
+    } else {
         return VCommonSettings::PredefinedDateFormats().first();
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetLabelDateFormat(const QString &format)
+void VCommonSettings::SetLabelDateFormat(const QString& format)
 {
     setValue(settingLabelDateFormat, format);
 }
@@ -2188,29 +2106,30 @@ QStringList VCommonSettings::GetUserDefinedDateFormats() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetUserDefinedDateFormats(const QStringList &formats)
+void VCommonSettings::SetUserDefinedDateFormats(const QStringList& formats)
 {
-    setValue(settingLabelUserDateFormats, ClearFormats(VCommonSettings::PredefinedDateFormats(), formats));
+    setValue(
+        settingLabelUserDateFormats,
+        ClearFormats(VCommonSettings::PredefinedDateFormats(), formats));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::GetLabelTimeFormat() const
 {
-    const QString format = value(settingLabelTimeFormat, VCommonSettings::PredefinedTimeFormats().first()).toString();
-    const QStringList allFormats = VCommonSettings::PredefinedTimeFormats() + GetUserDefinedTimeFormats();
+    const QString format =
+        value(settingLabelTimeFormat, VCommonSettings::PredefinedTimeFormats().first()).toString();
+    const QStringList allFormats =
+        VCommonSettings::PredefinedTimeFormats() + GetUserDefinedTimeFormats();
 
-    if (allFormats.contains(format))
-    {
+    if (allFormats.contains(format)) {
         return format;
-    }
-    else
-    {
+    } else {
         return VCommonSettings::PredefinedTimeFormats().first();
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetLabelTimeFormat(const QString &format)
+void VCommonSettings::SetLabelTimeFormat(const QString& format)
 {
     setValue(settingLabelTimeFormat, format);
 }
@@ -2232,7 +2151,9 @@ QStringList VCommonSettings::GetUserDefinedTimeFormats() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCommonSettings::SetUserDefinedTimeFormats(const QStringList &formats)
+void VCommonSettings::SetUserDefinedTimeFormats(const QStringList& formats)
 {
-    setValue(settingLabelUserTimeFormats, ClearFormats(VCommonSettings::PredefinedTimeFormats(), formats));
+    setValue(
+        settingLabelUserTimeFormats,
+        ClearFormats(VCommonSettings::PredefinedTimeFormats(), formats));
 }

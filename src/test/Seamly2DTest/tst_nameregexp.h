@@ -58,7 +58,7 @@ class TST_NameRegExp : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_NameRegExp(QObject *parent = nullptr);
+    explicit TST_NameRegExp(QObject* parent = nullptr);
 
 signals:
 
@@ -71,4 +71,4 @@ private slots:
     void TestCorrectOrderMeasurement();
 };
 
-#endif // TST_NAMEREGEXP_H
+#endif   // TST_NAMEREGEXP_H

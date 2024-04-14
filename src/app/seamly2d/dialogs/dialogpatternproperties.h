@@ -52,24 +52,23 @@
 #ifndef DIALOGPATTERNPROPERTIES_H
 #define DIALOGPATTERNPROPERTIES_H
 
-#include <QDialog>
 #include "../options.h"
+#include <QDialog>
 #include <QMap>
 
 class VPattern;
 class VContainer;
 class QCheckBox;
 
-namespace Ui
-{
-    class DialogPatternProperties;
+namespace Ui {
+class DialogPatternProperties;
 }
 
 class DialogPatternProperties : public QDialog
 {
     Q_OBJECT
 public:
-    explicit DialogPatternProperties(VPattern *doc, VContainer *pattern, QWidget *parent = nullptr);
+    explicit DialogPatternProperties(VPattern* doc, VContainer* pattern, QWidget* parent = nullptr);
     virtual ~DialogPatternProperties() Q_DECL_OVERRIDE;
 signals:
     void UpdateGradation();
@@ -85,56 +84,58 @@ private slots:
     void ChangeImage();
     void SaveImage();
     void EditLabel();
+
 private:
     Q_DISABLE_COPY(DialogPatternProperties)
-    Ui::DialogPatternProperties *ui;
-    VPattern               *doc;
-    VContainer             *pattern;
-    int                    heightsChecked;
-    int                    sizesChecked;
-    QMap<GHeights, bool>   heights;
-    QMap<GSizes, bool>     sizes;
-    QMap<QCheckBox *, int> data;
-    bool                   descriptionChanged;
-    bool                   gradationChanged;
-    bool                   defaultChanged;
-    bool                   securityChanged;
-    bool                   labelDataChanged;
-    bool                   askSaveLabelData;
-    bool                   templateDataChanged;
-    QAction                *deleteAction;
-    QAction                *changeImageAction;
-    QAction                *saveImageAction;
-    QAction                *showImageAction;
+    Ui::DialogPatternProperties* ui;
+    VPattern* doc;
+    VContainer* pattern;
+    int heightsChecked;
+    int sizesChecked;
+    QMap<GHeights, bool> heights;
+    QMap<GSizes, bool> sizes;
+    QMap<QCheckBox*, int> data;
+    bool descriptionChanged;
+    bool gradationChanged;
+    bool defaultChanged;
+    bool securityChanged;
+    bool labelDataChanged;
+    bool askSaveLabelData;
+    bool templateDataChanged;
+    QAction* deleteAction;
+    QAction* changeImageAction;
+    QAction* saveImageAction;
+    QAction* showImageAction;
 
     QVector<VLabelTemplateLine> templateLines;
 
-    void         SetHeightsChecked(bool enabled);
-    void         SetSizesChecked(bool enabled);
-    void         InitHeights();
-    void         InitSizes();
-    template<typename Func>
-    void         Init(QCheckBox *check, int val, Func slot);
-    template<typename GVal>
-    void         SetOptions(const QMap<GVal, bool> &option);
-    template<typename GVal>
-    void         InitComboBox(QComboBox *box, const QMap<GVal, bool> &option);
-    void         initComboBoxFormats(QComboBox *box, const QStringList &items, const QString &currentFormat);
-    void         CheckApplyOk();
-    void         SaveDescription();
-    void         SaveGradation();
-    void         SaveDefValues();
-    void         SaveLabelData();
-    void         SaveTemplateData();
-    void         SaveReadOnlyState();
+    void SetHeightsChecked(bool enabled);
+    void SetSizesChecked(bool enabled);
+    void InitHeights();
+    void InitSizes();
+    template <typename Func>
+    void Init(QCheckBox* check, int val, Func slot);
+    template <typename GVal>
+    void SetOptions(const QMap<GVal, bool>& option);
+    template <typename GVal>
+    void InitComboBox(QComboBox* box, const QMap<GVal, bool>& option);
+    void
+    initComboBoxFormats(QComboBox* box, const QStringList& items, const QString& currentFormat);
+    void CheckApplyOk();
+    void SaveDescription();
+    void SaveGradation();
+    void SaveDefValues();
+    void SaveLabelData();
+    void SaveTemplateData();
+    void SaveReadOnlyState();
 
-    void         SetDefaultHeight(const QString &def);
-    void         SetDefaultSize(const QString &def);
+    void SetDefaultHeight(const QString& def);
+    void SetDefaultSize(const QString& def);
 
-    void         UpdateDefHeight();
-    void         UpdateDefSize();
-    void         InitImage();
-    QImage       GetImage();
+    void UpdateDefHeight();
+    void UpdateDefSize();
+    void InitImage();
+    QImage GetImage();
 };
 
-#endif // DIALOGPATTERNPROPERTIES_H
+#endif   // DIALOGPATTERNPROPERTIES_H

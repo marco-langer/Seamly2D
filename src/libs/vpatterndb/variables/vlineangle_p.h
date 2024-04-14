@@ -64,31 +64,33 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VLineAngleData : public QSharedData
 {
 public:
-
     VLineAngleData()
-        :p1Id(NULL_ID), p2Id(NULL_ID)
+        : p1Id(NULL_ID)
+        , p2Id(NULL_ID)
     {}
 
-    VLineAngleData(const quint32 &p1Id, const quint32 &p2Id)
-        :p1Id(p1Id), p2Id(p2Id)
+    VLineAngleData(const quint32& p1Id, const quint32& p2Id)
+        : p1Id(p1Id)
+        , p2Id(p2Id)
     {}
 
-    VLineAngleData(const VLineAngleData &var)
-        :QSharedData(var), p1Id(var.p1Id), p2Id(var.p2Id)
+    VLineAngleData(const VLineAngleData& var)
+        : QSharedData(var)
+        , p1Id(var.p1Id)
+        , p2Id(var.p2Id)
     {}
 
-    virtual  ~VLineAngleData();
+    virtual ~VLineAngleData();
 
     quint32 p1Id;
     quint32 p2Id;
 
 private:
-    VLineAngleData &operator=(const VLineAngleData &) Q_DECL_EQ_DELETE;
+    VLineAngleData& operator=(const VLineAngleData&) Q_DECL_EQ_DELETE;
 };
 
-VLineAngleData::~VLineAngleData()
-{}
+VLineAngleData::~VLineAngleData() {}
 
 QT_WARNING_POP
 
-#endif // VLINEANGLE_P_H
+#endif   // VLINEANGLE_P_H

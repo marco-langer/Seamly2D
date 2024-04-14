@@ -52,11 +52,11 @@
 #ifndef VABSTRACTARC_P_H
 #define VABSTRACTARC_P_H
 
-#include <QSharedData>
-#include "vgeometrydef.h"
-#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/diagnostic.h"
+#include "../vmisc/vabstractapplication.h"
+#include "vgeometrydef.h"
 #include "vpointf.h"
+#include <QSharedData>
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -65,26 +65,30 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VAbstractArcData : public QSharedData
 {
 public:
-             VAbstractArcData();
-             VAbstractArcData(const VPointF &center, qreal f1, const QString &formulaF1,
-                              qreal f2, const QString &formulaF2);
-             VAbstractArcData(const QString &formulaLength, const VPointF &center,
-                              qreal f1, const QString &formulaF1);
-             VAbstractArcData(const VPointF &center, qreal f1);
-             VAbstractArcData(const VPointF &center, qreal f1, qreal f2);
-             VAbstractArcData(const VAbstractArcData &arc);
+    VAbstractArcData();
+    VAbstractArcData(
+        const VPointF& center,
+        qreal f1,
+        const QString& formulaF1,
+        qreal f2,
+        const QString& formulaF2);
+    VAbstractArcData(
+        const QString& formulaLength, const VPointF& center, qreal f1, const QString& formulaF1);
+    VAbstractArcData(const VPointF& center, qreal f1);
+    VAbstractArcData(const VPointF& center, qreal f1, qreal f2);
+    VAbstractArcData(const VAbstractArcData& arc);
     virtual ~VAbstractArcData();
 
-    qreal    f1;            /** @brief f1 start angle in degree. */
-    QString  formulaF1;     /** @brief formulaF1 formula for start angle. */
-    qreal    f2;            /** @brief f2 end angle in degree. */
-    QString  formulaF2;     /** @brief formulaF2 formula for end angle. */
-    VPointF  center;        /** @brief center center point of arc. */
-    bool     isFlipped;
-    QString  formulaLength;
+    qreal f1;          /** @brief f1 start angle in degree. */
+    QString formulaF1; /** @brief formulaF1 formula for start angle. */
+    qreal f2;          /** @brief f2 end angle in degree. */
+    QString formulaF2; /** @brief formulaF2 formula for end angle. */
+    VPointF center;    /** @brief center center point of arc. */
+    bool isFlipped;
+    QString formulaLength;
 
 private:
-    VAbstractArcData &operator=(const VAbstractArcData &) Q_DECL_EQ_DELETE;
+    VAbstractArcData& operator=(const VAbstractArcData&) Q_DECL_EQ_DELETE;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -99,8 +103,8 @@ VAbstractArcData::VAbstractArcData()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArcData::VAbstractArcData(const VPointF &center, qreal f1, const QString &formulaF1, qreal f2,
-                                   const QString &formulaF2)
+VAbstractArcData::VAbstractArcData(
+    const VPointF& center, qreal f1, const QString& formulaF1, qreal f2, const QString& formulaF2)
     : f1(f1)
     , formulaF1(formulaF1)
     , f2(f2)
@@ -111,8 +115,8 @@ VAbstractArcData::VAbstractArcData(const VPointF &center, qreal f1, const QStrin
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArcData::VAbstractArcData(const QString &formulaLength, const VPointF &center, qreal f1,
-                                   const QString &formulaF1)
+VAbstractArcData::VAbstractArcData(
+    const QString& formulaLength, const VPointF& center, qreal f1, const QString& formulaF1)
     : f1(f1)
     , formulaF1(formulaF1)
     , f2(0)
@@ -123,7 +127,7 @@ VAbstractArcData::VAbstractArcData(const QString &formulaLength, const VPointF &
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArcData::VAbstractArcData(const VPointF &center, qreal f1)
+VAbstractArcData::VAbstractArcData(const VPointF& center, qreal f1)
     : f1(f1)
     , formulaF1(QString().number(f1))
     , f2(0)
@@ -134,7 +138,7 @@ VAbstractArcData::VAbstractArcData(const VPointF &center, qreal f1)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArcData::VAbstractArcData(const VPointF &center, qreal f1, qreal f2)
+VAbstractArcData::VAbstractArcData(const VPointF& center, qreal f1, qreal f2)
     : f1(f1)
     , formulaF1(QString().number(f1))
     , f2(f2)
@@ -145,7 +149,7 @@ VAbstractArcData::VAbstractArcData(const VPointF &center, qreal f1, qreal f2)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArcData::VAbstractArcData(const VAbstractArcData &arc)
+VAbstractArcData::VAbstractArcData(const VAbstractArcData& arc)
     : QSharedData(arc)
     , f1(arc.f1)
     , formulaF1(arc.formulaF1)
@@ -157,9 +161,8 @@ VAbstractArcData::VAbstractArcData(const VAbstractArcData &arc)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArcData::~VAbstractArcData()
-{}
+VAbstractArcData::~VAbstractArcData() {}
 
 QT_WARNING_POP
 
-#endif // VABSTRACTARCDATA_H
+#endif   // VABSTRACTARCDATA_H

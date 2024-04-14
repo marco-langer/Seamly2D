@@ -52,12 +52,12 @@
 #ifndef DELTOOL_H
 #define DELTOOL_H
 
-#include <qcompilerdetection.h>
 #include <QDomNode>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -65,15 +65,16 @@ class DelTool : public VUndoCommand
 {
     Q_OBJECT
 public:
-    DelTool(VAbstractPattern *doc, quint32 id, QUndoCommand *parent = nullptr);
+    DelTool(VAbstractPattern* doc, quint32 id, QUndoCommand* parent = nullptr);
     virtual ~DelTool() Q_DECL_OVERRIDE;
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(DelTool)
-    QDomNode      parentNode;
-    quint32       siblingId;
+    QDomNode parentNode;
+    quint32 siblingId;
     const QString activeBlockName;
 };
 
-#endif // DELTOOL_H
+#endif   // DELTOOL_H

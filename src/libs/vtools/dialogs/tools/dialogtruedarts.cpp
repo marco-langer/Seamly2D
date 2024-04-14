@@ -62,8 +62,8 @@
 #include <QSet>
 #include <Qt>
 
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/vistooltruedarts.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../qmuparser/qmudef.h"
 #include "../vgeometry/../ifc/ifcdef.h"
@@ -73,7 +73,7 @@
 #include "ui_dialogtruedarts.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogTrueDarts::DialogTrueDarts(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogTrueDarts::DialogTrueDarts(const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogTrueDarts)
     , d1PointName()
@@ -100,37 +100,56 @@ DialogTrueDarts::DialogTrueDarts(const VContainer *data, const quint32 &toolId, 
 
     FillComboBoxs(ch1, ch2);
 
-    connect(ui->lineEditFirstNewDartPoint,  &QLineEdit::textChanged, this, &DialogTrueDarts::NameDartPoint1Changed);
-    connect(ui->lineEditSecondNewDartPoint, &QLineEdit::textChanged, this, &DialogTrueDarts::NameDartPoint2Changed);
-    connect(ui->comboBoxFirstBasePoint,     &QComboBox::currentTextChanged, this, &DialogTrueDarts::PointNameChanged);
-    connect(ui->comboBoxSecondBasePoint,    &QComboBox::currentTextChanged, this, &DialogTrueDarts::PointNameChanged);
-    connect(ui->comboBoxFirstDartPoint,     &QComboBox::currentTextChanged, this, &DialogTrueDarts::PointNameChanged);
-    connect(ui->comboBoxSecondDartPoint,    &QComboBox::currentTextChanged, this, &DialogTrueDarts::PointNameChanged);
-    connect(ui->comboBoxThirdDartPoint,     &QComboBox::currentTextChanged, this, &DialogTrueDarts::PointNameChanged);
+    connect(
+        ui->lineEditFirstNewDartPoint,
+        &QLineEdit::textChanged,
+        this,
+        &DialogTrueDarts::NameDartPoint1Changed);
+    connect(
+        ui->lineEditSecondNewDartPoint,
+        &QLineEdit::textChanged,
+        this,
+        &DialogTrueDarts::NameDartPoint2Changed);
+    connect(
+        ui->comboBoxFirstBasePoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTrueDarts::PointNameChanged);
+    connect(
+        ui->comboBoxSecondBasePoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTrueDarts::PointNameChanged);
+    connect(
+        ui->comboBoxFirstDartPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTrueDarts::PointNameChanged);
+    connect(
+        ui->comboBoxSecondDartPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTrueDarts::PointNameChanged);
+    connect(
+        ui->comboBoxThirdDartPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTrueDarts::PointNameChanged);
 
     vis = new VisToolTrueDarts(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogTrueDarts::~DialogTrueDarts()
-{
-    delete ui;
-}
+DialogTrueDarts::~DialogTrueDarts() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogTrueDarts::GetFirstNewDartPointName()
-{
-    return d1PointName;
-}
+QString DialogTrueDarts::GetFirstNewDartPointName() { return d1PointName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogTrueDarts::GetSecondNewDartPointName()
-{
-    return d2PointName;
-}
+QString DialogTrueDarts::GetSecondNewDartPointName() { return d2PointName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::SetNewDartPointNames(const QString &firstPoint, const QString &secondPoint)
+void DialogTrueDarts::SetNewDartPointNames(const QString& firstPoint, const QString& secondPoint)
 {
     ui->lineEditFirstNewDartPoint->blockSignals(true);
     ui->lineEditSecondNewDartPoint->blockSignals(true);
@@ -144,10 +163,20 @@ void DialogTrueDarts::SetNewDartPointNames(const QString &firstPoint, const QStr
     ui->lineEditSecondNewDartPoint->blockSignals(false);
     ui->lineEditFirstNewDartPoint->blockSignals(false);
 
-    CheckName(ui->lineEditFirstNewDartPoint, ui->labelFirstNewDartPoint, d1PointName, d2PointName,
-                ui->lineEditSecondNewDartPoint, flagName1);
-    CheckName(ui->lineEditSecondNewDartPoint, ui->labelSecondNewDartPoint, d1PointName, d2PointName,
-                ui->lineEditFirstNewDartPoint, flagName2);
+    CheckName(
+        ui->lineEditFirstNewDartPoint,
+        ui->labelFirstNewDartPoint,
+        d1PointName,
+        d2PointName,
+        ui->lineEditSecondNewDartPoint,
+        flagName1);
+    CheckName(
+        ui->lineEditSecondNewDartPoint,
+        ui->labelSecondNewDartPoint,
+        d1PointName,
+        d2PointName,
+        ui->lineEditFirstNewDartPoint,
+        flagName2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -157,11 +186,11 @@ quint32 DialogTrueDarts::GetFirstBasePointId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::SetFirstBasePointId(const quint32 &value)
+void DialogTrueDarts::SetFirstBasePointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxFirstBasePoint, value, FillComboBox::NoChildren, ch1, ch2);
 
-    VisToolTrueDarts *points = qobject_cast<VisToolTrueDarts *>(vis);
+    VisToolTrueDarts* points = qobject_cast<VisToolTrueDarts*>(vis);
     SCASSERT(points != nullptr)
     points->setObject1Id(value);
 }
@@ -173,11 +202,11 @@ quint32 DialogTrueDarts::GetSecondBasePointId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::SetSecondBasePointId(const quint32 &value)
+void DialogTrueDarts::SetSecondBasePointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxSecondBasePoint, value, FillComboBox::NoChildren, ch1, ch2);
 
-    VisToolTrueDarts *points = qobject_cast<VisToolTrueDarts *>(vis);
+    VisToolTrueDarts* points = qobject_cast<VisToolTrueDarts*>(vis);
     SCASSERT(points != nullptr)
     points->setObject2Id(value);
 }
@@ -189,11 +218,11 @@ quint32 DialogTrueDarts::GetFirstDartPointId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::SetFirstDartPointId(const quint32 &value)
+void DialogTrueDarts::SetFirstDartPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxFirstDartPoint, value, FillComboBox::NoChildren, ch1, ch2);
 
-    VisToolTrueDarts *points = qobject_cast<VisToolTrueDarts *>(vis);
+    VisToolTrueDarts* points = qobject_cast<VisToolTrueDarts*>(vis);
     SCASSERT(points != nullptr)
     points->setD1PointId(value);
 }
@@ -205,11 +234,11 @@ quint32 DialogTrueDarts::GetSecondDartPointId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::SetSecondDartPointId(const quint32 &value)
+void DialogTrueDarts::SetSecondDartPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxSecondDartPoint, value, FillComboBox::NoChildren, ch1, ch2);
 
-    VisToolTrueDarts *points = qobject_cast<VisToolTrueDarts *>(vis);
+    VisToolTrueDarts* points = qobject_cast<VisToolTrueDarts*>(vis);
     SCASSERT(points != nullptr)
     points->setD2PointId(value);
 }
@@ -221,17 +250,17 @@ quint32 DialogTrueDarts::GetThirdDartPointId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::SetThirdDartPointId(const quint32 &value)
+void DialogTrueDarts::SetThirdDartPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxThirdDartPoint, value, FillComboBox::NoChildren, ch1, ch2);
 
-    VisToolTrueDarts *points = qobject_cast<VisToolTrueDarts *>(vis);
+    VisToolTrueDarts* points = qobject_cast<VisToolTrueDarts*>(vis);
     SCASSERT(points != nullptr)
     points->setD3PointId(value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::SetChildrenId(const quint32 &ch1, const quint32 &ch2)
+void DialogTrueDarts::SetChildrenId(const quint32& ch1, const quint32& ch2)
 {
     this->ch1 = ch1;
     this->ch2 = ch2;
@@ -239,95 +268,83 @@ void DialogTrueDarts::SetChildrenId(const quint32 &ch1, const quint32 &ch2)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::ChosenObject(quint32 id, const SceneObject &type)
+void DialogTrueDarts::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            VisToolTrueDarts *points = qobject_cast<VisToolTrueDarts *>(vis);
+        if (type == SceneObject::Point) {
+            VisToolTrueDarts* points = qobject_cast<VisToolTrueDarts*>(vis);
             SCASSERT(points != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxFirstBasePoint, tr("Select the second base point")))
-                    {
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxFirstBasePoint, tr("Select the second base point"))) {
+                    number++;
+                    points->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->comboBoxFirstBasePoint) != id) {
+                    if (SetObject(
+                            id, ui->comboBoxSecondBasePoint, tr("Select the first dart point"))) {
                         number++;
-                        points->VisualMode(id);
+                        points->setObject2Id(id);
+                        points->RefreshGeometry();
                     }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->comboBoxFirstBasePoint) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxSecondBasePoint, tr("Select the first dart point")))
-                        {
-                            number++;
-                            points->setObject2Id(id);
-                            points->RefreshGeometry();
-                        }
-                    }
-                    break;
-                case 2:
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
-                    set.insert(id);
-
-                    if (set.size() == 3)
-                    {
-                        if (SetObject(id, ui->comboBoxFirstDartPoint, tr("Select the second dart point")))
-                        {
-                            number++;
-                            points->setD1PointId(id);
-                            points->RefreshGeometry();
-                        }
-                    }
-                    break;
                 }
-                case 3:
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstDartPoint));
-                    set.insert(id);
+                break;
+            case 2: {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
+                set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
+                set.insert(id);
 
-                    if (set.size() == 4)
-                    {
-                        if (SetObject(id, ui->comboBoxSecondDartPoint, tr("Select the third dart point")))
-                        {
-                            number++;
-                            points->setD2PointId(id);
-                            points->RefreshGeometry();
-                        }
+                if (set.size() == 3) {
+                    if (SetObject(
+                            id, ui->comboBoxFirstDartPoint, tr("Select the second dart point"))) {
+                        number++;
+                        points->setD1PointId(id);
+                        points->RefreshGeometry();
                     }
-                    break;
                 }
-                case 4:
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstDartPoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxSecondDartPoint));
-                    set.insert(id);
+                break;
+            }
+            case 3: {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
+                set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
+                set.insert(getCurrentObjectId(ui->comboBoxFirstDartPoint));
+                set.insert(id);
 
-                    if (set.size() == 5)
-                    {
-                        if (SetObject(id, ui->comboBoxThirdDartPoint, ""))
-                        {
-                            points->setD3PointId(id);
-                            points->RefreshGeometry();
-                            prepare = true;
-                            DialogAccepted();
-                        }
+                if (set.size() == 4) {
+                    if (SetObject(
+                            id, ui->comboBoxSecondDartPoint, tr("Select the third dart point"))) {
+                        number++;
+                        points->setD2PointId(id);
+                        points->RefreshGeometry();
                     }
-                    break;
                 }
-                default:
-                    break;
+                break;
+            }
+            case 4: {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
+                set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
+                set.insert(getCurrentObjectId(ui->comboBoxFirstDartPoint));
+                set.insert(getCurrentObjectId(ui->comboBoxSecondDartPoint));
+                set.insert(id);
+
+                if (set.size() == 5) {
+                    if (SetObject(id, ui->comboBoxThirdDartPoint, "")) {
+                        points->setD3PointId(id);
+                        points->RefreshGeometry();
+                        prepare = true;
+                        DialogAccepted();
+                    }
+                }
+                break;
+            }
+            default: break;
             }
         }
     }
@@ -344,13 +361,10 @@ void DialogTrueDarts::PointNameChanged()
     set.insert(getCurrentObjectId(ui->comboBoxThirdDartPoint));
 
     QColor color = okColor;
-    if (set.size() != 5)
-    {
+    if (set.size() != 5) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -365,20 +379,27 @@ void DialogTrueDarts::PointNameChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogTrueDarts::NameDartPoint1Changed()
 {
-    NameChanged(ui->labelFirstNewDartPoint, d1PointName, d2PointName, ui->lineEditSecondNewDartPoint, flagName1);
+    NameChanged(
+        ui->labelFirstNewDartPoint,
+        d1PointName,
+        d2PointName,
+        ui->lineEditSecondNewDartPoint,
+        flagName1);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogTrueDarts::NameDartPoint2Changed()
 {
-    NameChanged(ui->labelSecondNewDartPoint, d1PointName, d2PointName, ui->lineEditFirstNewDartPoint, flagName2);
+    NameChanged(
+        ui->labelSecondNewDartPoint,
+        d1PointName,
+        d2PointName,
+        ui->lineEditFirstNewDartPoint,
+        flagName2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::ShowVisualization()
-{
-    AddVisualization<VisToolTrueDarts>();
-}
+void DialogTrueDarts::ShowVisualization() { AddVisualization<VisToolTrueDarts>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogTrueDarts::SaveData()
@@ -386,7 +407,7 @@ void DialogTrueDarts::SaveData()
     d1PointName = ui->lineEditFirstNewDartPoint->text();
     d2PointName = ui->lineEditSecondNewDartPoint->text();
 
-    VisToolTrueDarts *points = qobject_cast<VisToolTrueDarts *>(vis);
+    VisToolTrueDarts* points = qobject_cast<VisToolTrueDarts*>(vis);
     SCASSERT(points != nullptr)
 
     points->setObject1Id(GetFirstBasePointId());
@@ -403,28 +424,30 @@ void DialogTrueDarts::CheckState()
     SCASSERT(ok_Button != nullptr)
     ok_Button->setEnabled(flagName1 && flagName2 && flagError);
     // In case dialog hasn't apply button
-    if (apply_Button != nullptr)
-    {
+    if (apply_Button != nullptr) {
         apply_Button->setEnabled(ok_Button->isEnabled());
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::NameChanged(QLabel *labelEditNamePoint, const QString &pointD1Name, const QString &pointD2Name,
-                                  QLineEdit* secondPointName, bool &flagName)
+void DialogTrueDarts::NameChanged(
+    QLabel* labelEditNamePoint,
+    const QString& pointD1Name,
+    const QString& pointD2Name,
+    QLineEdit* secondPointName,
+    bool& flagName)
 {
     SCASSERT(labelEditNamePoint != nullptr)
     SCASSERT(secondPointName != nullptr)
     QLineEdit* edit = qobject_cast<QLineEdit*>(sender());
-    if (edit)
-    {
+    if (edit) {
         CheckName(edit, labelEditNamePoint, pointD1Name, pointD2Name, secondPointName, flagName);
     }
     CheckState();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::FillComboBoxs(const quint32 &ch1, const quint32 &ch2)
+void DialogTrueDarts::FillComboBoxs(const quint32& ch1, const quint32& ch2)
 {
     FillComboBoxPoints(ui->comboBoxFirstBasePoint, FillComboBox::NoChildren, ch1, ch2);
     FillComboBoxPoints(ui->comboBoxSecondBasePoint, FillComboBox::NoChildren, ch1, ch2);
@@ -434,8 +457,13 @@ void DialogTrueDarts::FillComboBoxs(const quint32 &ch1, const quint32 &ch2)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTrueDarts::CheckName(QLineEdit *edit, QLabel *labelEditNamePoint, const QString &pointD1Name,
-                                const QString &pointD2Name, QLineEdit *secondPointName, bool &flagName)
+void DialogTrueDarts::CheckName(
+    QLineEdit* edit,
+    QLabel* labelEditNamePoint,
+    const QString& pointD1Name,
+    const QString& pointD2Name,
+    QLineEdit* secondPointName,
+    bool& flagName)
 {
     SCASSERT(labelEditNamePoint != nullptr)
     SCASSERT(secondPointName != nullptr)
@@ -444,16 +472,12 @@ void DialogTrueDarts::CheckName(QLineEdit *edit, QLabel *labelEditNamePoint, con
     const QString name = edit->text();
     const QString secondName = secondPointName->text();
     QRegularExpression rx(NameRegExp());
-    if (name.isEmpty()
-            || secondName == name
-            || (pointD1Name != name && pointD2Name != name && data->IsUnique(name) == false)
-            || rx.match(name).hasMatch() == false)
-    {
+    if (name.isEmpty() || secondName == name
+        || (pointD1Name != name && pointD2Name != name && data->IsUnique(name) == false)
+        || rx.match(name).hasMatch() == false) {
         flagName = false;
         ChangeColor(labelEditNamePoint, Qt::red);
-    }
-    else
-    {
+    } else {
         flagName = true;
         ChangeColor(labelEditNamePoint, okColor);
     }

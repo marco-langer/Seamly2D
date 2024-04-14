@@ -55,11 +55,11 @@
 #include "vexception.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionUndo::VExceptionUndo(const QString &what)
+VExceptionUndo::VExceptionUndo(const QString& what)
     : VException(what)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionUndo::VExceptionUndo(const VExceptionUndo &error)
+VExceptionUndo::VExceptionUndo(const VExceptionUndo& error)
     : VException(error)
 {}

@@ -82,7 +82,7 @@ public:
         , m_cut(false)
     {}
 
-    VPiecePathData(const VPiecePathData &path)
+    VPiecePathData(const VPiecePathData& path)
         : QSharedData(path)
         , m_nodes(path.m_nodes)
         , m_type(path.m_type)
@@ -93,18 +93,17 @@ public:
     ~VPiecePathData();
 
     QVector<VPieceNode> m_nodes;
-    PiecePathType       m_type;
-    QString             m_name;
-    Qt::PenStyle        m_penType;
-    bool                m_cut;
+    PiecePathType m_type;
+    QString m_name;
+    Qt::PenStyle m_penType;
+    bool m_cut;
 
 private:
-    VPiecePathData     &operator=(const VPiecePathData &) Q_DECL_EQ_DELETE;
+    VPiecePathData& operator=(const VPiecePathData&) Q_DECL_EQ_DELETE;
 };
 
-VPiecePathData::~VPiecePathData()
-{}
+VPiecePathData::~VPiecePathData() {}
 
 QT_WARNING_POP
 
-#endif // VPIECEPATH_P_H
+#endif   // VPIECEPATH_P_H

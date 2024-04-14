@@ -21,18 +21,17 @@
 #ifndef VASTANDARDPROPERTYFACTORY_H
 #define VASTANDARDPROPERTYFACTORY_H
 
-#include <qcompilerdetection.h>
 #include <QString>
+#include <qcompilerdetection.h>
 
 #include "vabstractpropertyfactory.h"
 
-namespace VPE
-{
+namespace VPE {
 
 class VPropertyFactoryManager;
 
-//! The standard property factory is able to create all the properties that are included in VPropertyExplorer
-//! by default.
+//! The standard property factory is able to create all the properties that are included in
+//! VPropertyExplorer by default.
 class VStandardPropertyFactory : public VAbstractPropertyFactory
 {
 public:
@@ -46,9 +45,10 @@ public:
     //! Creates a new property of a certain type and assigns a name and description (otionally)
     //! \param type The type of the property as string
     //! \return Returns the created property or NULL if it couldn't be be created
-    Q_REQUIRED_RESULT virtual VProperty* createProperty(const QString& type, const QString &name) Q_DECL_OVERRIDE;
+    Q_REQUIRED_RESULT virtual VProperty*
+    createProperty(const QString& type, const QString& name) Q_DECL_OVERRIDE;
 };
 
-}
+}   // namespace VPE
 
-#endif // VASTANDARDPROPERTYFACTORY_H
+#endif   // VASTANDARDPROPERTYFACTORY_H

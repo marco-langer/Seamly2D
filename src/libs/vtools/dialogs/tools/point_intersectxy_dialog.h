@@ -32,60 +32,61 @@
 #ifndef POINT_INTERSECTXY_DIALOG_H
 #define POINT_INTERSECTXY_DIALOG_H
 
-#include "dialogtool.h"
 #include "../vmisc/def.h"
+#include "dialogtool.h"
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-namespace Ui
-{
-    class PointIntersectXYDialog;
+namespace Ui {
+class PointIntersectXYDialog;
 }
 
 /**
- * @brief The PointIntersectXYDialog class dialog for ToolPointOfIntersection. Help create point and edit option.
+ * @brief The PointIntersectXYDialog class dialog for ToolPointOfIntersection. Help create point and
+ * edit option.
  */
 class PointIntersectXYDialog : public DialogTool
 {
     Q_OBJECT
 
 public:
-                   PointIntersectXYDialog(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
-    virtual       ~PointIntersectXYDialog() Q_DECL_OVERRIDE;
+    PointIntersectXYDialog(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    virtual ~PointIntersectXYDialog() Q_DECL_OVERRIDE;
 
-    void           setPointName(const QString &value);
+    void setPointName(const QString& value);
 
-    quint32        getFirstPointId() const;
-    void           setFirstPointId(const quint32 &value);
+    quint32 getFirstPointId() const;
+    void setFirstPointId(const quint32& value);
 
-    quint32        getSecondPointId() const;
-    void           setSecondPointId(const quint32 &value);
+    quint32 getSecondPointId() const;
+    void setSecondPointId(const quint32& value);
 
-    QString        getLineType() const;
-    void           setLineType(const QString &value);
+    QString getLineType() const;
+    void setLineType(const QString& value);
 
-    QString        getLineWeight() const;
-    void           setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString        getLineColor() const;
-    void           setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
 public slots:
-    virtual void   ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    void           pointChanged();
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    void pointChanged();
 
 protected:
-    virtual void   ShowVisualization() Q_DECL_OVERRIDE;
-    virtual void   SaveData() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
 
 private:
-                   Q_DISABLE_COPY(PointIntersectXYDialog)
+    Q_DISABLE_COPY(PointIntersectXYDialog)
 
-    Ui::PointIntersectXYDialog *ui; /** @brief ui keeps information about user interface */
+    Ui::PointIntersectXYDialog* ui; /** @brief ui keeps information about user interface */
 };
 
-#endif // POINT_INTERSECTXY_DIALOG_H
+#endif   // POINT_INTERSECTXY_DIALOG_H

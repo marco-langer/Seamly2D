@@ -69,9 +69,9 @@ QT_WARNING_POP
 // An annoying char define, from the Windows team in <rpcndr.h>
 // #define small char
 // http://stuartjames.info/Journal/c--visual-studio-2012-vs2012--win8--converting-projects-up-some-conflicts-i-found.aspx
-#if defined (Q_OS_WIN) && defined (Q_CC_MSVC)
-#pragma push_macro("small")
-#undef small
+#if defined(Q_OS_WIN) && defined(Q_CC_MSVC)
+#    pragma push_macro("small")
+#    undef small
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -83,24 +83,22 @@ VBank::VBank()
     , small(QHash<int, qint64>())
     , layoutWidth(0)
     , caseType(Cases::CaseDesc)
-    , prepare(false), diagonal(0)
+    , prepare(false)
+    , diagonal(0)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VBank::GetLayoutWidth() const
-{
-    return layoutWidth;
-}
+qreal VBank::GetLayoutWidth() const { return layoutWidth; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VBank::SetLayoutWidth(const qreal &value)
+void VBank::SetLayoutWidth(const qreal& value)
 {
     layoutWidth = value;
     Reset();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VBank::setPieces(const QVector<VLayoutPiece> &pieces)
+void VBank::setPieces(const QVector<VLayoutPiece>& pieces)
 {
     this->pieces = pieces;
     Reset();
@@ -109,45 +107,32 @@ void VBank::setPieces(const QVector<VLayoutPiece> &pieces)
 //---------------------------------------------------------------------------------------------------------------------
 int VBank::GetTiket()
 {
-    if (prepare == false)
-    {
+    if (prepare == false) {
         return -1;
     }
 
-    if (LeftArrange() == 0)
-    {
-        if (unsorted.isEmpty())
-        {
+    if (LeftArrange() == 0) {
+        if (unsorted.isEmpty()) {
             return -1;
-        }
-        else
-        {
+        } else {
             PrepareGroup();
         }
     }
 
-    switch (caseType)
-    {
-        case Cases::CaseThreeGroup:
-            return GetNextThreeGroups();
-        case Cases::CaseTwoGroup:
-            return GetNextTwoGroups();
-        case Cases::CaseDesc:
-            return GetNextDescGroup();
-        default:
-            return -1;
+    switch (caseType) {
+    case Cases::CaseThreeGroup: return GetNextThreeGroups();
+    case Cases::CaseTwoGroup: return GetNextTwoGroups();
+    case Cases::CaseDesc: return GetNextDescGroup();
+    default: return -1;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutPiece VBank::getPiece(int i) const
 {
-    if (i >= 0 && i < pieces.size())
-    {
+    if (i >= 0 && i < pieces.size()) {
         return pieces.at(i);
-    }
-    else
-    {
+    } else {
         return VLayoutPiece();
     }
 }
@@ -155,20 +140,17 @@ VLayoutPiece VBank::getPiece(int i) const
 //---------------------------------------------------------------------------------------------------------------------
 void VBank::Arranged(int i)
 {
-    if (big.contains(i))
-    {
+    if (big.contains(i)) {
         big.remove(i);
         return;
     }
 
-    if (middle.contains(i))
-    {
+    if (middle.contains(i)) {
         middle.remove(i);
         return;
     }
 
-    if (small.contains(i))
-    {
+    if (small.contains(i)) {
         small.remove(i);
     }
 }
@@ -176,22 +158,19 @@ void VBank::Arranged(int i)
 //---------------------------------------------------------------------------------------------------------------------
 void VBank::NotArranged(int i)
 {
-    if (big.contains(i))
-    {
+    if (big.contains(i)) {
         unsorted.insert(i, big.value(i));
         big.remove(i);
         return;
     }
 
-    if (middle.contains(i))
-    {
+    if (middle.contains(i)) {
         unsorted.insert(i, middle.value(i));
         middle.remove(i);
         return;
     }
 
-    if (small.contains(i))
-    {
+    if (small.contains(i)) {
         unsorted.insert(i, small.value(i));
         small.remove(i);
     }
@@ -200,35 +179,30 @@ void VBank::NotArranged(int i)
 //---------------------------------------------------------------------------------------------------------------------
 bool VBank::Prepare()
 {
-    if (layoutWidth <= 0)
-    {
+    if (layoutWidth <= 0) {
         qCDebug(lBank, "Preparing data for layout error: Layout paper sheet <= 0");
         prepare = false;
         return prepare;
     }
 
-    if (pieces.isEmpty())
-    {
+    if (pieces.isEmpty()) {
         qCDebug(lBank, "Preparing data for layout error: List of pieces is empty");
         prepare = false;
         return prepare;
     }
 
     diagonal = 0;
-    for (int i=0; i < pieces.size(); ++i)
-    {
+    for (int i = 0; i < pieces.size(); ++i) {
         pieces[i].SetLayoutWidth(layoutWidth);
         pieces[i].SetLayoutAllowancePoints();
 
         const qreal d = pieces.at(i).Diagonal();
-        if (d > diagonal)
-        {
+        if (d > diagonal) {
             diagonal = d;
         }
 
         const qint64 square = pieces.at(i).Square();
-        if (square <= 0)
-        {
+        if (square <= 0) {
             qCDebug(lBank, "Preparing data for layout error: Detail squere <= 0");
             prepare = false;
             return prepare;
@@ -254,10 +228,7 @@ void VBank::Reset()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VBank::SetCaseType(Cases caseType)
-{
-    this->caseType = caseType;
-}
+void VBank::SetCaseType(Cases caseType) { this->caseType = caseType; }
 
 //---------------------------------------------------------------------------------------------------------------------
 int VBank::allPieceCount() const
@@ -266,39 +237,22 @@ int VBank::allPieceCount() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VBank::LeftArrange() const
-{
-    return big.count() + middle.count() + small.count();
-}
+int VBank::LeftArrange() const { return big.count() + middle.count() + small.count(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VBank::GetBiggestDiagonal() const
-{
-    return diagonal;
-}
+qreal VBank::GetBiggestDiagonal() const { return diagonal; }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VBank::ArrangedCount() const
-{
-    return pieces.size() - allPieceCount();
-}
+int VBank::ArrangedCount() const { return pieces.size() - allPieceCount(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VBank::PrepareGroup()
 {
-    switch (caseType)
-    {
-        case Cases::CaseThreeGroup:
-            PrepareThreeGroups();
-            break;
-        case Cases::CaseTwoGroup:
-            PrepareTwoGroups();
-            break;
-        case Cases::CaseDesc:
-            PrepareDescGroup();
-            break;
-        default:
-            break;
+    switch (caseType) {
+    case Cases::CaseThreeGroup: PrepareThreeGroups(); break;
+    case Cases::CaseTwoGroup: PrepareTwoGroups(); break;
+    case Cases::CaseDesc: PrepareDescGroup(); break;
+    default: break;
     }
 }
 
@@ -310,22 +264,16 @@ void VBank::PrepareThreeGroups()
 
     SqMaxMin(sMax, sMin);
 
-    const qint64 s1 = sMax - (sMax - sMin)/3;
-    const qint64 s2 = sMin + (sMax - sMin)/3;
+    const qint64 s1 = sMax - (sMax - sMin) / 3;
+    const qint64 s2 = sMin + (sMax - sMin) / 3;
 
     QHash<int, qint64>::const_iterator i = unsorted.constBegin();
-    while (i != unsorted.constEnd())
-    {
-        if (i.value() > s1)
-        {
+    while (i != unsorted.constEnd()) {
+        if (i.value() > s1) {
             big.insert(i.key(), i.value());
-        }
-        else if (s1 >= i.value() && i.value() > s2)
-        {
+        } else if (s1 >= i.value() && i.value() > s2) {
             middle.insert(i.key(), i.value());
-        }
-        else
-        {
+        } else {
             small.insert(i.key(), i.value());
         }
         ++i;
@@ -341,16 +289,12 @@ void VBank::PrepareTwoGroups()
 
     SqMaxMin(sMax, sMin);
 
-    const qint64 s = (sMax + sMin)/2;
+    const qint64 s = (sMax + sMin) / 2;
     QHash<int, qint64>::const_iterator i = unsorted.constBegin();
-    while (i != unsorted.constEnd())
-    {
-        if (i.value() >= s)
-        {
+    while (i != unsorted.constEnd()) {
+        if (i.value() >= s) {
             big.insert(i.key(), i.value());
-        }
-        else
-        {
+        } else {
             small.insert(i.key(), i.value());
         }
         ++i;
@@ -368,20 +312,17 @@ void VBank::PrepareDescGroup()
 //---------------------------------------------------------------------------------------------------------------------
 int VBank::GetNextThreeGroups() const
 {
-    if (big.isEmpty() == false)
-    {
+    if (big.isEmpty() == false) {
         QHash<int, qint64>::const_iterator i = big.constBegin();
         return i.key();
     }
 
-    if (middle.isEmpty() == false)
-    {
+    if (middle.isEmpty() == false) {
         QHash<int, qint64>::const_iterator i = middle.constBegin();
         return i.key();
     }
 
-    if (small.isEmpty() == false)
-    {
+    if (small.isEmpty() == false) {
         QHash<int, qint64>::const_iterator i = small.constBegin();
         return i.key();
     }
@@ -392,14 +333,12 @@ int VBank::GetNextThreeGroups() const
 //---------------------------------------------------------------------------------------------------------------------
 int VBank::GetNextTwoGroups() const
 {
-    if (big.isEmpty() == false)
-    {
+    if (big.isEmpty() == false) {
         QHash<int, qint64>::const_iterator i = big.constBegin();
         return i.key();
     }
 
-    if (small.isEmpty() == false)
-    {
+    if (small.isEmpty() == false) {
         QHash<int, qint64>::const_iterator i = small.constBegin();
         return i.key();
     }
@@ -414,10 +353,8 @@ int VBank::GetNextDescGroup() const
     qint64 sMax = LLONG_MIN;
 
     QHash<int, qint64>::const_iterator i = big.constBegin();
-    while (i != big.constEnd())
-    {
-        if (i.value() > sMax)
-        {
+    while (i != big.constEnd()) {
+        if (i.value() > sMax) {
             sMax = i.value();
             index = i.key();
         }
@@ -429,28 +366,24 @@ int VBank::GetNextDescGroup() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VBank::SqMaxMin(qint64 &sMax, qint64 &sMin) const
+void VBank::SqMaxMin(qint64& sMax, qint64& sMin) const
 {
     sMax = LLONG_MIN;
     sMin = LLONG_MAX;
 
     QHash<int, qint64>::const_iterator i = unsorted.constBegin();
-    while (i != unsorted.constEnd())
-    {
-        if (i.value() < sMin)
-        {
+    while (i != unsorted.constEnd()) {
+        if (i.value() < sMin) {
             sMin = i.value();
         }
 
-        if (i.value() > sMax)
-        {
+        if (i.value() > sMax) {
             sMax = i.value();
         }
         ++i;
     }
-
 }
 
-#if defined (Q_OS_WIN) && defined (Q_CC_MSVC)
-#pragma pop_macro("small")
+#if defined(Q_OS_WIN) && defined(Q_CC_MSVC)
+#    pragma pop_macro("small")
 #endif

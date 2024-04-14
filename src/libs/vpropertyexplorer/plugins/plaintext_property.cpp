@@ -37,11 +37,12 @@
 #include <QStringDataPtr>
 #include <QWidget>
 
-#include "expandingtextedit.h"
 #include "../vproperty_p.h"
+#include "expandingtextedit.h"
 
 
-VPE::PlainTextProperty::PlainTextProperty(const QString &name, const QMap<QString, QVariant> &settings)
+VPE::PlainTextProperty::PlainTextProperty(
+    const QString& name, const QMap<QString, QVariant>& settings)
     : VProperty(name, QVariant::String)
     , m_readOnly(false)
     , m_typeForParent(0)
@@ -52,7 +53,7 @@ VPE::PlainTextProperty::PlainTextProperty(const QString &name, const QMap<QStrin
     d_ptr->VariantValue.convert(QVariant::String);
 }
 
-VPE::PlainTextProperty::PlainTextProperty(const QString &name)
+VPE::PlainTextProperty::PlainTextProperty(const QString& name)
     : VProperty(name)
     , m_readOnly(false)
     , m_typeForParent(0)
@@ -69,13 +70,13 @@ VPE::PlainTextProperty::PlainTextProperty(const QString &name)
  * @param delegate A pointer to the QAbstractItemDelegate requesting the editor.
  *                 This can be used to connect signals and slots.
  */
-QWidget *VPE::PlainTextProperty::createEditor(QWidget *parent, const QStyleOptionViewItem &options,
-                                            const QAbstractItemDelegate *delegate)
+QWidget* VPE::PlainTextProperty::createEditor(
+    QWidget* parent, const QStyleOptionViewItem& options, const QAbstractItemDelegate* delegate)
 {
     Q_UNUSED(options)
     Q_UNUSED(delegate)
 
-    ExpandingTextEdit *textEditor = new ExpandingTextEdit(parent);
+    ExpandingTextEdit* textEditor = new ExpandingTextEdit(parent);
     textEditor->setMinimumWidth(140);
     textEditor->setFixedHeight(28);
     textEditor->setLocale(parent->locale());
@@ -92,56 +93,44 @@ QWidget *VPE::PlainTextProperty::createEditor(QWidget *parent, const QStyleOptio
  * @brief getEditorData Gets the data from the widget
  * @oaram editor
  */
-QVariant VPE::PlainTextProperty::getEditorData(const QWidget *editor) const
+QVariant VPE::PlainTextProperty::getEditorData(const QWidget* editor) const
 {
     const QPlainTextEdit* textEditor = qobject_cast<const QPlainTextEdit*>(editor);
-    if (textEditor)
-    {
+    if (textEditor) {
         return textEditor->toPlainText();
     }
 
     return QVariant(QString());
 }
 
-void VPE::PlainTextProperty::setReadOnly(bool m_readOnly)
-{
-    this->m_readOnly = m_readOnly;
-}
+void VPE::PlainTextProperty::setReadOnly(bool m_readOnly) { this->m_readOnly = m_readOnly; }
 
-void VPE::PlainTextProperty::setOsSeparator(bool separator)
-{
-    m_osSeparator = separator;
-}
+void VPE::PlainTextProperty::setOsSeparator(bool separator) { m_osSeparator = separator; }
 
 /**
  * @brief setSetting Sets the settings.
  */
-void VPE::PlainTextProperty::setSetting(const QString &key, const QVariant &value)
+void VPE::PlainTextProperty::setSetting(const QString& key, const QVariant& value)
 {
-    if (key == QLatin1String("ReadOnly"))
-    {
+    if (key == QLatin1String("ReadOnly")) {
         setReadOnly(value.toBool());
     }
-    if (key == QLatin1String("TypeForParent"))
-    {
+    if (key == QLatin1String("TypeForParent")) {
         setTypeForParent(value.toInt());
     }
 }
 
 /**
- * @brief getSetting Gets the settings.his function has to be implemented in a subclass in order to have an effect.
+ * @brief getSetting Gets the settings.his function has to be implemented in a subclass in order to
+ * have an effect.
  */
-QVariant VPE::PlainTextProperty::getSetting(const QString &key) const
+QVariant VPE::PlainTextProperty::getSetting(const QString& key) const
 {
-    if (key == QLatin1String("ReadOnly"))
-    {
+    if (key == QLatin1String("ReadOnly")) {
         return m_readOnly;
-    }
-    else if (key == QLatin1String("TypeForParent"))
-    {
+    } else if (key == QLatin1String("TypeForParent")) {
         return m_typeForParent;
-    }
-    else
+    } else
         return VProperty::getSetting(key);
 }
 
@@ -158,64 +147,51 @@ QStringList VPE::PlainTextProperty::getSettingKeys() const
 /**
  * @brief type Returns a string containing the type of the property.
  */
-QString VPE::PlainTextProperty::type() const
-{
-    return QStringLiteral("string");
-}
+QString VPE::PlainTextProperty::type() const { return QStringLiteral("string"); }
 
 /**
  * @brief clone Clones this property
  * @param include_children Indicates whether to also clone the children
- * @param container If a property is being passed here, no new VProperty is being created but instead it is tried
- *                  to fill all the data into container. This can also be used when subclassing this function.
+ * @param container If a property is being passed here, no new VProperty is being created but
+ * instead it is tried to fill all the data into container. This can also be used when subclassing
+ * this function.
  * @return Returns the newly created property (or container, if it was not NULL)
  */
-VPE::VProperty *VPE::PlainTextProperty::clone(bool include_children, VPE::VProperty *container) const
+VPE::VProperty*
+VPE::PlainTextProperty::clone(bool include_children, VPE::VProperty* container) const
 {
-    return VProperty::clone(include_children, container ? container : new PlainTextProperty(getName(), getSettings()));
+    return VProperty::clone(
+        include_children, container ? container : new PlainTextProperty(getName(), getSettings()));
 }
 
-void VPE::PlainTextProperty::updateParent(const QVariant &value)
+void VPE::PlainTextProperty::updateParent(const QVariant& value)
 {
     emit childChanged(value, m_typeForParent);
 }
 
 // cppcheck-suppress unusedFunction
-int VPE::PlainTextProperty::getTypeForParent() const
-{
-    return m_typeForParent;
-}
+int VPE::PlainTextProperty::getTypeForParent() const { return m_typeForParent; }
 
-void VPE::PlainTextProperty::setTypeForParent(int value)
-{
-    m_typeForParent = value;
-}
+void VPE::PlainTextProperty::setTypeForParent(int value) { m_typeForParent = value; }
 
-bool VPE::PlainTextProperty::eventFilter(QObject *object, QEvent *event)
+bool VPE::PlainTextProperty::eventFilter(QObject* object, QEvent* event)
 {
-    if (QPlainTextEdit *textEdit = qobject_cast<QPlainTextEdit *>(object))
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-            if ((keyEvent->key() == Qt::Key_Period) && (keyEvent->modifiers() & Qt::KeypadModifier))
-            {
-                if (m_osSeparator)
-                {
+    if (QPlainTextEdit* textEdit = qobject_cast<QPlainTextEdit*>(object)) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            if ((keyEvent->key() == Qt::Key_Period)
+                && (keyEvent->modifiers() & Qt::KeypadModifier)) {
+                if (m_osSeparator) {
                     textEdit->insertPlainText(QLocale().decimalPoint());
-                }
-                else
-                {
+                } else {
                     textEdit->insertPlainText(QLocale::c().decimalPoint());
                 }
                 return true;
             }
         }
-    }
-    else
-    {
+    } else {
         // pass the event on to the parent class
         return VProperty::eventFilter(object, event);
     }
-    return false;// pass the event to the widget
+    return false;   // pass the event to the widget
 }

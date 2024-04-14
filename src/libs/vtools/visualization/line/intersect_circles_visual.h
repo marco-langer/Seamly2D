@@ -38,46 +38,49 @@
 #include "../vmisc/def.h"
 
 #include <QColor>
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 class IntersectCirclesVisual : public VisLine
 {
     Q_OBJECT
 
 public:
-    explicit              IntersectCirclesVisual(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual              ~IntersectCirclesVisual() = default;
+    explicit IntersectCirclesVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~IntersectCirclesVisual() = default;
 
-    virtual void          RefreshGeometry() Q_DECL_OVERRIDE;
-    virtual void          VisualMode(const quint32 &id) Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void VisualMode(const quint32& id) Q_DECL_OVERRIDE;
 
-    void                  setObject2Id(const quint32 &value);
-    void                  setC1Radius(const QString &value);
-    void                  setC2Radius(const QString &value);
-    void                  setCrossPoint(const CrossCirclesPoint &value);
+    void setObject2Id(const quint32& value);
+    void setC1Radius(const QString& value);
+    void setC2Radius(const QString& value);
+    void setCrossPoint(const CrossCirclesPoint& value);
 
-    virtual int           type() const Q_DECL_OVERRIDE {return Type;}
-    enum                  {Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionCircles)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionCircles)
+    };
 
 private:
-                          Q_DISABLE_COPY(IntersectCirclesVisual)
+    Q_DISABLE_COPY(IntersectCirclesVisual)
 
-    quint32               object2Id;
-    qreal                 c1Radius;
-    qreal                 c2Radius;
-    CrossCirclesPoint     crossPoint;
-    VScaledEllipse       *point;
-    VScaledEllipse       *c1Center;
-    VScaledEllipse       *c2Center;
-    QGraphicsEllipseItem *c1Path;
-    QGraphicsEllipseItem *c2Path;
-    QColor                m_secondrySupportColor;
-    QColor                m_tertiarySupportColor;
+    quint32 object2Id;
+    qreal c1Radius;
+    qreal c2Radius;
+    CrossCirclesPoint crossPoint;
+    VScaledEllipse* point;
+    VScaledEllipse* c1Center;
+    VScaledEllipse* c2Center;
+    QGraphicsEllipseItem* c1Path;
+    QGraphicsEllipseItem* c2Path;
+    QColor m_secondrySupportColor;
+    QColor m_tertiarySupportColor;
 };
 
-#endif // INTERSECT_CIRCLES_VISUAL_H
+#endif   // INTERSECT_CIRCLES_VISUAL_H

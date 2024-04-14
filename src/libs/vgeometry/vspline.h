@@ -52,7 +52,6 @@
 #ifndef VSPLINE_H
 #define VSPLINE_H
 
-#include <qcompilerdetection.h>
 #include <QLineF>
 #include <QMetaType>
 #include <QPointF>
@@ -61,6 +60,7 @@
 #include <QTypeInfo>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vabstractcubicbezier.h"
 #include "vgeometrydef.h"
@@ -71,47 +71,71 @@ class VSplineData;
 /**
  * @brief VSpline class that implements the spline.
  */
-class VSpline :public VAbstractCubicBezier
+class VSpline : public VAbstractCubicBezier
 {
 public:
     VSpline();
-    VSpline (const VSpline &spline );
-    VSpline (const VPointF &p1, const VPointF &p4, qreal angle1, qreal angle2, qreal kAsm1, qreal kAsm2, qreal kCurve,
-             quint32 idObject = 0, Draw mode = Draw::Calculation);
-    VSpline (const VPointF &p1, const QPointF &p2, const QPointF &p3, const VPointF &p4, quint32 idObject = 0,
-             Draw mode = Draw::Calculation);
-    VSpline (const VPointF &p1, const VPointF &p4, qreal angle1, const QString &angle1Formula, qreal angle2,
-             const QString &angle2Formula, qreal c1Length, const QString &c1LengthFormula, qreal c2Length,
-             const QString &c2LengthFormula, quint32 idObject = 0, Draw mode = Draw::Calculation);
-    VSpline Rotate(const QPointF &originPoint, qreal degrees, const QString &prefix = QString()) const;
-    VSpline Flip(const QLineF &axis, const QString &prefix = QString()) const;
-    VSpline Move(qreal length, qreal angle, const QString &prefix = QString()) const;
+    VSpline(const VSpline& spline);
+    VSpline(
+        const VPointF& p1,
+        const VPointF& p4,
+        qreal angle1,
+        qreal angle2,
+        qreal kAsm1,
+        qreal kAsm2,
+        qreal kCurve,
+        quint32 idObject = 0,
+        Draw mode = Draw::Calculation);
+    VSpline(
+        const VPointF& p1,
+        const QPointF& p2,
+        const QPointF& p3,
+        const VPointF& p4,
+        quint32 idObject = 0,
+        Draw mode = Draw::Calculation);
+    VSpline(
+        const VPointF& p1,
+        const VPointF& p4,
+        qreal angle1,
+        const QString& angle1Formula,
+        qreal angle2,
+        const QString& angle2Formula,
+        qreal c1Length,
+        const QString& c1LengthFormula,
+        qreal c2Length,
+        const QString& c2LengthFormula,
+        quint32 idObject = 0,
+        Draw mode = Draw::Calculation);
+    VSpline
+    Rotate(const QPointF& originPoint, qreal degrees, const QString& prefix = QString()) const;
+    VSpline Flip(const QLineF& axis, const QString& prefix = QString()) const;
+    VSpline Move(qreal length, qreal angle, const QString& prefix = QString()) const;
     virtual ~VSpline();
 
-    VSpline &operator=(const VSpline &spline);
+    VSpline& operator=(const VSpline& spline);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VSpline &operator=(VSpline &&spline) Q_DECL_NOTHROW;
+    VSpline& operator=(VSpline&& spline) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VSpline &spline) Q_DECL_NOTHROW;
+    void Swap(VSpline& spline) Q_DECL_NOTHROW;
 
-    virtual VPointF GetP1 () const Q_DECL_OVERRIDE;
-    void            SetP1 (const VPointF &p);
+    virtual VPointF GetP1() const Q_DECL_OVERRIDE;
+    void SetP1(const VPointF& p);
 
-    virtual VPointF GetP2 () const Q_DECL_OVERRIDE;
-    virtual VPointF GetP3 () const Q_DECL_OVERRIDE;
+    virtual VPointF GetP2() const Q_DECL_OVERRIDE;
+    virtual VPointF GetP3() const Q_DECL_OVERRIDE;
 
-    virtual VPointF GetP4 () const Q_DECL_OVERRIDE;
-    void            SetP4 (const VPointF &p);
+    virtual VPointF GetP4() const Q_DECL_OVERRIDE;
+    void SetP4(const VPointF& p);
 
-    virtual qreal GetStartAngle () const Q_DECL_OVERRIDE;
+    virtual qreal GetStartAngle() const Q_DECL_OVERRIDE;
     virtual qreal GetEndAngle() const Q_DECL_OVERRIDE;
 
-    QString GetStartAngleFormula () const;
+    QString GetStartAngleFormula() const;
     QString GetEndAngleFormula() const;
 
-    void    SetStartAngle(qreal angle, const QString &formula);
-    void    SetEndAngle(qreal angle, const QString &formula);
+    void SetStartAngle(qreal angle, const QString& formula);
+    void SetEndAngle(qreal angle, const QString& formula);
 
     virtual qreal GetC1Length() const Q_DECL_OVERRIDE;
     virtual qreal GetC2Length() const Q_DECL_OVERRIDE;
@@ -119,35 +143,46 @@ public:
     QString GetC1LengthFormula() const;
     QString GetC2LengthFormula() const;
 
-    void    SetC1Length(qreal length, const QString &formula);
-    void    SetC2Length(qreal length, const QString &formula);
+    void SetC1Length(qreal length, const QString& formula);
+    void SetC2Length(qreal length, const QString& formula);
 
-    virtual qreal   GetLength () const Q_DECL_OVERRIDE;
-    qreal   GetKasm1() const;
-    qreal   GetKasm2() const;
-    qreal   GetKcurve() const;
+    virtual qreal GetLength() const Q_DECL_OVERRIDE;
+    qreal GetKasm1() const;
+    qreal GetKasm2() const;
+    qreal GetKcurve() const;
 
     using VAbstractCubicBezier::CutSpline;
-    QPointF CutSpline ( qreal length, VSpline &spl1, VSpline &spl2) const;
+    QPointF CutSpline(qreal length, VSpline& spl1, VSpline& spl2) const;
 
     virtual QVector<QPointF> getPoints() const Q_DECL_OVERRIDE;
     // cppcheck-suppress unusedFunction
-    static QVector<QPointF> SplinePoints(const QPointF &p1, const QPointF &p4, qreal angle1, qreal angle2, qreal kAsm1,
-                                         qreal kAsm2, qreal kCurve);
-    qreal   ParamT(const QPointF &pBt) const;
+    static QVector<QPointF> SplinePoints(
+        const QPointF& p1,
+        const QPointF& p4,
+        qreal angle1,
+        qreal angle2,
+        qreal kAsm1,
+        qreal kAsm2,
+        qreal kCurve);
+    qreal ParamT(const QPointF& pBt) const;
 
 protected:
     virtual QPointF GetControlPoint1() const Q_DECL_OVERRIDE;
     virtual QPointF GetControlPoint2() const Q_DECL_OVERRIDE;
+
 private:
     QSharedDataPointer<VSplineData> d;
-    QVector<qreal> CalcT(qreal curveCoord1, qreal curveCoord2, qreal curveCoord3, qreal curveCoord4,
-                         qreal pointCoord) const;
-    static qint32  Cubic(QVector<qreal> &x, qreal a, qreal b, qreal c);
-    static int     Sign(long double ld);
+    QVector<qreal> CalcT(
+        qreal curveCoord1,
+        qreal curveCoord2,
+        qreal curveCoord3,
+        qreal curveCoord4,
+        qreal pointCoord) const;
+    static qint32 Cubic(QVector<qreal>& x, qreal a, qreal b, qreal c);
+    static int Sign(long double ld);
 };
 
 Q_DECLARE_METATYPE(VSpline)
 Q_DECLARE_TYPEINFO(VSpline, Q_MOVABLE_TYPE);
 
-#endif // VSPLINE_H
+#endif   // VSPLINE_H

@@ -33,7 +33,7 @@
 const int VPE::SpinboxProperty::StandardMin = -1000000;
 const int VPE::SpinboxProperty::StandardMax = 1000000;
 
-VPE::SpinboxProperty::SpinboxProperty(const QString &name, const QMap<QString, QVariant> &settings)
+VPE::SpinboxProperty::SpinboxProperty(const QString& name, const QMap<QString, QVariant>& settings)
     : VProperty(name, QVariant::Int)
     , minValue(StandardMin)
     , maxValue(StandardMax)
@@ -44,7 +44,7 @@ VPE::SpinboxProperty::SpinboxProperty(const QString &name, const QMap<QString, Q
     VProperty::d_ptr->VariantValue.convert(QVariant::Int);
 }
 
-VPE::SpinboxProperty::SpinboxProperty(const QString &name)
+VPE::SpinboxProperty::SpinboxProperty(const QString& name)
     : VProperty(name)
     , minValue(StandardMin)
     , maxValue(StandardMax)
@@ -55,97 +55,91 @@ VPE::SpinboxProperty::SpinboxProperty(const QString &name)
 }
 
 //! Returns an editor widget, or NULL if it doesn't supply one
-QWidget *VPE::SpinboxProperty::createEditor(QWidget *parent, const QStyleOptionViewItem &options,
-                                             const QAbstractItemDelegate *delegate)
+QWidget* VPE::SpinboxProperty::createEditor(
+    QWidget* parent, const QStyleOptionViewItem& options, const QAbstractItemDelegate* delegate)
 {
     Q_UNUSED(options)
     Q_UNUSED(delegate)
 
-    QSpinBox *tmpEditor = new QSpinBox(parent);
+    QSpinBox* tmpEditor = new QSpinBox(parent);
     tmpEditor->setLocale(parent->locale());
     tmpEditor->setMinimum(static_cast<int>(minValue));
     tmpEditor->setMaximum(static_cast<int>(maxValue));
     tmpEditor->setSingleStep(static_cast<int>(singleStep));
     tmpEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     tmpEditor->setValue(VProperty::d_ptr->VariantValue.toInt());
-    connect(tmpEditor, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, &SpinboxProperty::valueChanged);
+    connect(
+        tmpEditor,
+        static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+        this,
+        &SpinboxProperty::valueChanged);
 
     VProperty::d_ptr->editor = tmpEditor;
     return VProperty::d_ptr->editor;
 }
 
 //! Gets the data from the widget
-QVariant VPE::SpinboxProperty::getEditorData(const QWidget *editor) const
+QVariant VPE::SpinboxProperty::getEditorData(const QWidget* editor) const
 {
-    const QSpinBox *tmpEditor = qobject_cast<const QSpinBox*>(editor);
-    if (tmpEditor)
-    {
+    const QSpinBox* tmpEditor = qobject_cast<const QSpinBox*>(editor);
+    if (tmpEditor) {
         return tmpEditor->value();
     }
 
     return QVariant(0);
 }
 
-void VPE::SpinboxProperty::setSetting(const QString &key, const QVariant &value)
+void VPE::SpinboxProperty::setSetting(const QString& key, const QVariant& value)
 {
-    if (key == QLatin1String("Min"))
-    {
+    if (key == QLatin1String("Min")) {
         maxValue = value.toInt();
-    }
-    else if (key == QLatin1String("Max"))
-    {
+    } else if (key == QLatin1String("Max")) {
         minValue = value.toInt();
-    }
-    else if (key == QLatin1String("Step"))
-    {
+    } else if (key == QLatin1String("Step")) {
         singleStep = value.toInt();
     }
 }
 
-QVariant VPE::SpinboxProperty::getSetting(const QString &key) const
+QVariant VPE::SpinboxProperty::getSetting(const QString& key) const
 {
-    if (key == QLatin1String("Min"))
-    {
+    if (key == QLatin1String("Min")) {
         return minValue;
     }
-    if (key == QLatin1String("Max"))
-    {
+    if (key == QLatin1String("Max")) {
         return maxValue;
     }
-    if (key == QLatin1String("Step"))
-    {
+    if (key == QLatin1String("Step")) {
         return singleStep;
-    }
-    else
+    } else
         return VProperty::getSetting(key);
 }
 
 QStringList VPE::SpinboxProperty::getSettingKeys() const
 {
-    return (QStringList("Min") << "Max" << "Step");
+    return (
+        QStringList("Min") << "Max"
+                           << "Step");
 }
 
-QString VPE::SpinboxProperty::type() const
-{
-    return "integer";
-}
+QString VPE::SpinboxProperty::type() const { return "integer"; }
 
-VPE::VProperty *VPE::SpinboxProperty::clone(bool include_children, VProperty *container) const
+VPE::VProperty* VPE::SpinboxProperty::clone(bool include_children, VProperty* container) const
 {
-    return VProperty::clone(include_children, container ? container : new SpinboxProperty(getName()));
+    return VProperty::clone(
+        include_children, container ? container : new SpinboxProperty(getName()));
 }
 
 void VPE::SpinboxProperty::valueChanged(int i)
 {
     Q_UNUSED(i)
-    UserChangeEvent *event = new UserChangeEvent();
-    QCoreApplication::postEvent (VProperty::d_ptr->editor, event );
+    UserChangeEvent* event = new UserChangeEvent();
+    QCoreApplication::postEvent(VProperty::d_ptr->editor, event);
 }
 
 const double VPE::DoubleSpinboxProperty::StandardPrecision = 5;
 
-VPE::DoubleSpinboxProperty::DoubleSpinboxProperty(const QString &name, const QMap<QString, QVariant> &settings)
+VPE::DoubleSpinboxProperty::DoubleSpinboxProperty(
+    const QString& name, const QMap<QString, QVariant>& settings)
     : SpinboxProperty(name)
     , Precision(static_cast<int>(StandardPrecision))
 {
@@ -155,7 +149,7 @@ VPE::DoubleSpinboxProperty::DoubleSpinboxProperty(const QString &name, const QMa
     VProperty::d_ptr->PropertyVariantType = QVariant::Double;
 }
 
-VPE::DoubleSpinboxProperty::DoubleSpinboxProperty(const QString &name)
+VPE::DoubleSpinboxProperty::DoubleSpinboxProperty(const QString& name)
     : SpinboxProperty(name)
     , Precision(static_cast<int>(StandardPrecision))
 {
@@ -165,12 +159,12 @@ VPE::DoubleSpinboxProperty::DoubleSpinboxProperty(const QString &name)
 }
 
 //! Returns an editor widget, or NULL if it doesn't supply one
-QWidget *VPE::DoubleSpinboxProperty::createEditor(QWidget *parent, const QStyleOptionViewItem &options,
-                                            const QAbstractItemDelegate *delegate)
+QWidget* VPE::DoubleSpinboxProperty::createEditor(
+    QWidget* parent, const QStyleOptionViewItem& options, const QAbstractItemDelegate* delegate)
 {
     Q_UNUSED(options)
     Q_UNUSED(delegate)
-    QDoubleSpinBox *tmpEditor = new QDoubleSpinBox(parent);
+    QDoubleSpinBox* tmpEditor = new QDoubleSpinBox(parent);
     tmpEditor->setLocale(parent->locale());
     tmpEditor->setMinimum(minValue);
     tmpEditor->setMaximum(maxValue);
@@ -178,78 +172,69 @@ QWidget *VPE::DoubleSpinboxProperty::createEditor(QWidget *parent, const QStyleO
     tmpEditor->setSingleStep(singleStep);
     tmpEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     tmpEditor->setValue(VProperty::d_ptr->VariantValue.toDouble());
-    connect(tmpEditor, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this,
-                     &SpinboxProperty::valueChanged);
+    connect(
+        tmpEditor,
+        static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged),
+        this,
+        &SpinboxProperty::valueChanged);
 
     VProperty::d_ptr->editor = tmpEditor;
     return VProperty::d_ptr->editor;
 }
 
 //! Gets the data from the widget
-QVariant VPE::DoubleSpinboxProperty::getEditorData(const QWidget *editor) const
+QVariant VPE::DoubleSpinboxProperty::getEditorData(const QWidget* editor) const
 {
-    const QDoubleSpinBox *tmpEditor = qobject_cast<const QDoubleSpinBox*>(editor);
-    if (tmpEditor)
-    {
+    const QDoubleSpinBox* tmpEditor = qobject_cast<const QDoubleSpinBox*>(editor);
+    if (tmpEditor) {
         return tmpEditor->value();
     }
 
     return QVariant(0);
 }
 
-void VPE::DoubleSpinboxProperty::setSetting(const QString &key, const QVariant &value)
+void VPE::DoubleSpinboxProperty::setSetting(const QString& key, const QVariant& value)
 {
-    if (key == QLatin1String("Min"))
-    {
+    if (key == QLatin1String("Min")) {
         minValue = value.toDouble();
-    }
-    else if (key == QLatin1String("Max"))
-    {
+    } else if (key == QLatin1String("Max")) {
         maxValue = value.toDouble();
-    }
-    else if (key == QLatin1String("Step"))
-    {
+    } else if (key == QLatin1String("Step")) {
         singleStep = value.toDouble();
-    }
-    else if (key == QLatin1String("Precision"))
-    {
+    } else if (key == QLatin1String("Precision")) {
         Precision = value.toInt();
     }
 }
 
-QVariant VPE::DoubleSpinboxProperty::getSetting(const QString &key) const
+QVariant VPE::DoubleSpinboxProperty::getSetting(const QString& key) const
 {
-    if (key == QLatin1String("Min"))
-    {
+    if (key == QLatin1String("Min")) {
         return minValue;
     }
-    if (key == QLatin1String("Max"))
-    {
+    if (key == QLatin1String("Max")) {
         return maxValue;
     }
-    if (key == QLatin1String("Step"))
-    {
+    if (key == QLatin1String("Step")) {
         return singleStep;
     }
-    if (key == QLatin1String("Precision"))
-    {
+    if (key == QLatin1String("Precision")) {
         return Precision;
-    }
-    else
+    } else
         return VProperty::getSetting(key);
 }
 
 QStringList VPE::DoubleSpinboxProperty::getSettingKeys() const
 {
-    return (QStringList("Min") << "Max" << "Step" << "Precision");
+    return (
+        QStringList("Min") << "Max"
+                           << "Step"
+                           << "Precision");
 }
 
-QString VPE::DoubleSpinboxProperty::type() const
-{
-    return "double";
-}
+QString VPE::DoubleSpinboxProperty::type() const { return "double"; }
 
-VPE::VProperty *VPE::DoubleSpinboxProperty::clone(bool include_children, VProperty *container) const
+VPE::VProperty* VPE::DoubleSpinboxProperty::clone(bool include_children, VProperty* container) const
 {
-    return SpinboxProperty::clone(include_children, container ? container : new DoubleSpinboxProperty(getName()));
+    return SpinboxProperty::clone(
+        include_children, container ? container : new DoubleSpinboxProperty(getName()));
 }

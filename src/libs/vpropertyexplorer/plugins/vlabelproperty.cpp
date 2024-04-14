@@ -56,8 +56,8 @@
 #include "vlabelproperty.h"
 
 #include <QKeyEvent>
-#include <QLatin1String>
 #include <QLabel>
+#include <QLatin1String>
 #include <QSizePolicy>
 #include <QStaticStringData>
 #include <QStringData>
@@ -65,7 +65,7 @@
 
 #include "../vproperty_p.h"
 
-VPE::VLabelProperty::VLabelProperty(const QString &name, const QMap<QString, QVariant> &settings)
+VPE::VLabelProperty::VLabelProperty(const QString& name, const QMap<QString, QVariant>& settings)
     : VProperty(name, QVariant::String)
     , typeForParent(0)
 {
@@ -74,7 +74,7 @@ VPE::VLabelProperty::VLabelProperty(const QString &name, const QMap<QString, QVa
     d_ptr->VariantValue.convert(QVariant::String);
 }
 
-VPE::VLabelProperty::VLabelProperty(const QString &name)
+VPE::VLabelProperty::VLabelProperty(const QString& name)
     : VProperty(name)
     , typeForParent(0)
 {
@@ -82,13 +82,13 @@ VPE::VLabelProperty::VLabelProperty(const QString &name)
     d_ptr->VariantValue.convert(QVariant::String);
 }
 
-QWidget *VPE::VLabelProperty::createEditor(QWidget *parent, const QStyleOptionViewItem &options,
-                                           const QAbstractItemDelegate *delegate)
+QWidget* VPE::VLabelProperty::createEditor(
+    QWidget* parent, const QStyleOptionViewItem& options, const QAbstractItemDelegate* delegate)
 {
     Q_UNUSED(options)
     Q_UNUSED(delegate)
 
-    QLabel *labelTextEditor = new QLabel(parent);
+    QLabel* labelTextEditor = new QLabel(parent);
     labelTextEditor->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     labelTextEditor->setLocale(parent->locale());
     labelTextEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -98,32 +98,28 @@ QWidget *VPE::VLabelProperty::createEditor(QWidget *parent, const QStyleOptionVi
     return d_ptr->editor;
 }
 
-QVariant VPE::VLabelProperty::getEditorData(const QWidget *editor) const
+QVariant VPE::VLabelProperty::getEditorData(const QWidget* editor) const
 {
-    const QLabel *labelTextEditor = qobject_cast<const QLabel*>(editor);
-    if (labelTextEditor)
-    {
+    const QLabel* labelTextEditor = qobject_cast<const QLabel*>(editor);
+    if (labelTextEditor) {
         return labelTextEditor->text();
     }
 
     return QVariant(QString());
 }
 
-void VPE::VLabelProperty::setSetting(const QString &key, const QVariant &value)
+void VPE::VLabelProperty::setSetting(const QString& key, const QVariant& value)
 {
-    if (key == QLatin1String("TypeForParent"))
-    {
+    if (key == QLatin1String("TypeForParent")) {
         setTypeForParent(value.toInt());
     }
 }
 
-QVariant VPE::VLabelProperty::getSetting(const QString &key) const
+QVariant VPE::VLabelProperty::getSetting(const QString& key) const
 {
-    if (key == QLatin1String("TypeForParent"))
-    {
+    if (key == QLatin1String("TypeForParent")) {
         return typeForParent;
-    }
-    else
+    } else
         return VProperty::getSetting(key);
 }
 
@@ -134,27 +130,19 @@ QStringList VPE::VLabelProperty::getSettingKeys() const
     return settings;
 }
 
-QString VPE::VLabelProperty::type() const
+QString VPE::VLabelProperty::type() const { return QStringLiteral("label"); }
+
+VPE::VProperty* VPE::VLabelProperty::clone(bool include_children, VPE::VProperty* container) const
 {
-    return QStringLiteral("label");
+    return VProperty::clone(
+        include_children, container ? container : new VLabelProperty(getName(), getSettings()));
 }
 
-VPE::VProperty *VPE::VLabelProperty::clone(bool include_children, VPE::VProperty *container) const
-{
-    return VProperty::clone(include_children, container ? container : new VLabelProperty(getName(), getSettings()));
-}
-
-void VPE::VLabelProperty::updateParent(const QVariant &value)
+void VPE::VLabelProperty::updateParent(const QVariant& value)
 {
     emit childChanged(value, typeForParent);
 }
 
-int VPE::VLabelProperty::getTypeForParent() const
-{
-    return typeForParent;
-}
+int VPE::VLabelProperty::getTypeForParent() const { return typeForParent; }
 
-void VPE::VLabelProperty::setTypeForParent(int value)
-{
-    typeForParent = value;
-}
+void VPE::VLabelProperty::setTypeForParent(int value) { typeForParent = value; }

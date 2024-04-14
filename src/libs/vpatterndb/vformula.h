@@ -57,7 +57,11 @@
 #include <QString>
 #include <QtGlobal>
 
-enum class FormulaType : char{ToUser, FromUser};
+enum class FormulaType : char
+{
+    ToUser,
+    FromUser
+};
 
 class VContainer;
 
@@ -66,47 +70,45 @@ class VFormula
     Q_DECLARE_TR_FUNCTIONS(VFormula)
 public:
     VFormula();
-    VFormula(const QString &formula, const VContainer *container);
-    VFormula &operator=(const VFormula &formula);
-    VFormula(const VFormula &formula);
-    bool operator==(const VFormula &formula) const;
-    bool operator!=(const VFormula &formula) const;
+    VFormula(const QString& formula, const VContainer* container);
+    VFormula& operator=(const VFormula& formula);
+    VFormula(const VFormula& formula);
+    bool operator==(const VFormula& formula) const;
+    bool operator!=(const VFormula& formula) const;
 
     QString GetFormula(FormulaType type = FormulaType::ToUser) const;
-    void SetFormula(const QString &value, FormulaType type = FormulaType::ToUser);
+    void SetFormula(const QString& value, FormulaType type = FormulaType::ToUser);
 
     QString getStringValue() const;
-    qreal   getDoubleValue() const;
+    qreal getDoubleValue() const;
 
     bool getCheckZero() const;
     void setCheckZero(bool value);
 
-    const VContainer *getData() const;
-    void setData(const VContainer *value);
+    const VContainer* getData() const;
+    void setData(const VContainer* value);
 
     quint32 getToolId() const;
-    void setToolId(const quint32 &value);
+    void setToolId(const quint32& value);
 
     QString getPostfix() const;
-    void setPostfix(const QString &value);
+    void setPostfix(const QString& value);
 
     bool error() const;
 
     static int FormulaTypeId();
     void Eval();
-    
+
 private:
     QString formula;
     QString value;
     bool checkZero;
-    const VContainer *data;
+    const VContainer* data;
     quint32 toolId;
     QString postfix;
     bool _error;
     qreal dValue;
-
-
 };
 Q_DECLARE_METATYPE(VFormula)
 
-#endif // VFORMULA_H
+#endif   // VFORMULA_H

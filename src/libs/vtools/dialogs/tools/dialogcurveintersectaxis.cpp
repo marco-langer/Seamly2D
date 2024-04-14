@@ -63,21 +63,22 @@
 #include <QToolButton>
 #include <new>
 
-#include "../vgeometry/vpointf.h"
-#include "../vpatterndb/vcontainer.h"
-#include "../vpatterndb/vtranslatevars.h"
-#include "../vwidgets/vmaingraphicsscene.h"
-#include "../vwidgets/vabstractmainwindow.h"
 #include "../../visualization/line/vistoolcurveintersectaxis.h"
 #include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../support/edit_formula_dialog.h"
+#include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/vcontainer.h"
+#include "../vpatterndb/vtranslatevars.h"
+#include "../vwidgets/vabstractmainwindow.h"
+#include "../vwidgets/vmaingraphicsscene.h"
 #include "ui_dialogcurveintersectaxis.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogCurveIntersectAxis::DialogCurveIntersectAxis(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogCurveIntersectAxis::DialogCurveIntersectAxis(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogCurveIntersectAxis)
     , formulaAngle()
@@ -104,40 +105,47 @@ DialogCurveIntersectAxis::DialogCurveIntersectAxis(const VContainer *data, const
     FillComboBoxCurves(ui->curve_ComboBox);
 
     int index = ui->lineColor_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineColor());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineColor_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineWeight_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineWeight_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineType_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineType());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->setCurrentIndex(index);
     }
 
-    connect(ui->exprAngle_ToolButton, &QPushButton::clicked, this, &DialogCurveIntersectAxis::FXAngle);
-    connect(ui->pointName_LineEdit, &QLineEdit::textChanged, this, &DialogCurveIntersectAxis::NamePointChanged);
-    connect(plainTextEditFormula, &QPlainTextEdit::textChanged, this, &DialogCurveIntersectAxis::AngleTextChanged);
-    connect(ui->growLengthAngle_PushButton, &QPushButton::clicked, this, &DialogCurveIntersectAxis::DeployAngleTextEdit);
+    connect(
+        ui->exprAngle_ToolButton, &QPushButton::clicked, this, &DialogCurveIntersectAxis::FXAngle);
+    connect(
+        ui->pointName_LineEdit,
+        &QLineEdit::textChanged,
+        this,
+        &DialogCurveIntersectAxis::NamePointChanged);
+    connect(
+        plainTextEditFormula,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogCurveIntersectAxis::AngleTextChanged);
+    connect(
+        ui->growLengthAngle_PushButton,
+        &QPushButton::clicked,
+        this,
+        &DialogCurveIntersectAxis::DeployAngleTextEdit);
     connect(timerFormula, &QTimer::timeout, this, &DialogCurveIntersectAxis::EvalAngle);
 
     vis = new VisToolCurveIntersectAxis(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogCurveIntersectAxis::~DialogCurveIntersectAxis()
-{
-    delete ui;
-}
+DialogCurveIntersectAxis::~DialogCurveIntersectAxis() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCurveIntersectAxis::SetPointName(const QString &value)
+void DialogCurveIntersectAxis::SetPointName(const QString& value)
 {
     pointName = value;
     ui->pointName_LineEdit->setText(pointName);
@@ -150,7 +158,7 @@ QString DialogCurveIntersectAxis::getLineType() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCurveIntersectAxis::setLineType(const QString &value)
+void DialogCurveIntersectAxis::setLineType(const QString& value)
 {
     ChangeCurrentData(ui->lineType_ComboBox, value);
     vis->setLineStyle(lineTypeToPenStyle(value));
@@ -163,7 +171,7 @@ void DialogCurveIntersectAxis::setLineType(const QString &value)
  */
 QString DialogCurveIntersectAxis::getLineWeight() const
 {
-        return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
+    return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -171,7 +179,7 @@ QString DialogCurveIntersectAxis::getLineWeight() const
  * @brief setLineWeight set weight of the lines
  * @param value type
  */
-void DialogCurveIntersectAxis::setLineWeight(const QString &value)
+void DialogCurveIntersectAxis::setLineWeight(const QString& value)
 {
     ChangeCurrentData(ui->lineWeight_ComboBox, value);
     vis->setLineWeight(value);
@@ -180,22 +188,23 @@ void DialogCurveIntersectAxis::setLineWeight(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString DialogCurveIntersectAxis::GetAngle() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(formulaAngle, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        formulaAngle, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCurveIntersectAxis::SetAngle(const QString &value)
+void DialogCurveIntersectAxis::SetAngle(const QString& value)
 {
-    formulaAngle = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
+    formulaAngle =
+        qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed. TODO : see if I can get the max number of caracters in one line
     // of this PlainTextEdit to change 80 to this value
-    if (formulaAngle.length() > 80)
-    {
+    if (formulaAngle.length() > 80) {
         this->DeployAngleTextEdit();
     }
     plainTextEditFormula->setPlainText(formulaAngle);
 
-    VisToolCurveIntersectAxis *line = qobject_cast<VisToolCurveIntersectAxis *>(vis);
+    VisToolCurveIntersectAxis* line = qobject_cast<VisToolCurveIntersectAxis*>(vis);
     SCASSERT(line != nullptr)
     line->SetAngle(formulaAngle);
 
@@ -209,11 +218,11 @@ quint32 DialogCurveIntersectAxis::GetBasePointId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCurveIntersectAxis::SetBasePointId(const quint32 &value)
+void DialogCurveIntersectAxis::SetBasePointId(const quint32& value)
 {
     setCurrentPointId(ui->axisPoint_ComboBox, value);
 
-    VisToolCurveIntersectAxis *line = qobject_cast<VisToolCurveIntersectAxis *>(vis);
+    VisToolCurveIntersectAxis* line = qobject_cast<VisToolCurveIntersectAxis*>(vis);
     SCASSERT(line != nullptr)
     line->setAxisPointId(value);
 }
@@ -225,11 +234,11 @@ quint32 DialogCurveIntersectAxis::getCurveId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCurveIntersectAxis::setCurveId(const quint32 &value)
+void DialogCurveIntersectAxis::setCurveId(const quint32& value)
 {
     setCurrentCurveId(ui->curve_ComboBox, value);
 
-    VisToolCurveIntersectAxis *line = qobject_cast<VisToolCurveIntersectAxis *>(vis);
+    VisToolCurveIntersectAxis* line = qobject_cast<VisToolCurveIntersectAxis*>(vis);
     SCASSERT(line != nullptr)
     line->setObject1Id(value);
 }
@@ -239,7 +248,7 @@ void DialogCurveIntersectAxis::setCurveId(const quint32 &value)
  * @brief getLineColor get the color of line
  * @param value type
  */
- QString DialogCurveIntersectAxis::getLineColor() const
+QString DialogCurveIntersectAxis::getLineColor() const
 {
     return GetComboBoxCurrentData(ui->lineColor_ComboBox, ColorBlack);
 }
@@ -248,7 +257,7 @@ void DialogCurveIntersectAxis::setCurveId(const quint32 &value)
 /* @brief setLineColor set color of the line
  * @param value type
  */
-void DialogCurveIntersectAxis::setLineColor(const QString &value)
+void DialogCurveIntersectAxis::setLineColor(const QString& value)
 {
     ChangeCurrentData(ui->lineColor_ComboBox, value);
 }
@@ -256,81 +265,73 @@ void DialogCurveIntersectAxis::setLineColor(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCurveIntersectAxis::ShowDialog(bool click)
 {
-    if (prepare)
-    {
-        if (click)
-        {
+    if (prepare) {
+        if (click) {
             // The check need to ignore first release of mouse button.
             // User can select point by clicking on a label.
-            if (not m_firstRelease)
-            {
+            if (not m_firstRelease) {
                 m_firstRelease = true;
                 return;
             }
 
             /*We will ignore click if poinet is in point circle*/
-            VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+            VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
             SCASSERT(scene != nullptr)
             const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(GetBasePointId());
             QLineF line = QLineF(static_cast<QPointF>(*point), scene->getScenePos());
 
-            //Radius of point circle, but little bigger. Need handle with hover sizes.
-            if (line.length() <= defPointRadiusPixel*1.5)
-            {
+            // Radius of point circle, but little bigger. Need handle with hover sizes.
+            if (line.length() <= defPointRadiusPixel * 1.5) {
                 return;
             }
         }
 
-        VisToolCurveIntersectAxis *line = qobject_cast<VisToolCurveIntersectAxis *>(vis);
+        VisToolCurveIntersectAxis* line = qobject_cast<VisToolCurveIntersectAxis*>(vis);
         SCASSERT(line != nullptr)
 
-        this->SetAngle(line->Angle());//Show in dialog angle what user choose
+        this->SetAngle(line->Angle());   // Show in dialog angle what user choose
         emit ToolTip("");
 
-        DialogAccepted();// Just set default values and don't show dialog
+        DialogAccepted();   // Just set default values and don't show dialog
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCurveIntersectAxis::ChosenObject(quint32 id, const SceneObject &type)
+void DialogCurveIntersectAxis::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        VisToolCurveIntersectAxis *line = qobject_cast<VisToolCurveIntersectAxis *>(vis);
+        VisToolCurveIntersectAxis* line = qobject_cast<VisToolCurveIntersectAxis*>(vis);
         SCASSERT(line != nullptr)
 
-        switch (number)
-        {
-            case (0):
-                if (type == SceneObject::Spline
-                        || type == SceneObject::Arc
-                        || type == SceneObject::ElArc
-                        || type == SceneObject::SplinePath)
-                {
-                    if (SetObject(id, ui->curve_ComboBox, tr("Select axis point")))
-                    {
-                        number++;
-                        line->VisualMode(id);
-                        VAbstractMainWindow *window = qobject_cast<VAbstractMainWindow *>(qApp->getMainWindow());
-                        SCASSERT(window != nullptr)
-                        connect(line, &VisToolCurveIntersectAxis::ToolTip, window, &VAbstractMainWindow::ShowToolTip);
-
-                    }
+        switch (number) {
+        case (0):
+            if (type == SceneObject::Spline || type == SceneObject::Arc
+                || type == SceneObject::ElArc || type == SceneObject::SplinePath) {
+                if (SetObject(id, ui->curve_ComboBox, tr("Select axis point"))) {
+                    number++;
+                    line->VisualMode(id);
+                    VAbstractMainWindow* window =
+                        qobject_cast<VAbstractMainWindow*>(qApp->getMainWindow());
+                    SCASSERT(window != nullptr)
+                    connect(
+                        line,
+                        &VisToolCurveIntersectAxis::ToolTip,
+                        window,
+                        &VAbstractMainWindow::ShowToolTip);
                 }
-                break;
-            case (1):
-                if (type == SceneObject::Point)
-                {
-                    if (SetObject(id, ui->axisPoint_ComboBox, ""))
-                    {
-                        line->setAxisPointId(id);
-                        line->RefreshGeometry();
-                        prepare = true;
-                    }
+            }
+            break;
+        case (1):
+            if (type == SceneObject::Point) {
+                if (SetObject(id, ui->axisPoint_ComboBox, "")) {
+                    line->setAxisPointId(id);
+                    line->RefreshGeometry();
+                    prepare = true;
                 }
-                break;
-            default:
-                break;
+            }
+            break;
+        default: break;
         }
     }
 }
@@ -338,7 +339,12 @@ void DialogCurveIntersectAxis::ChosenObject(quint32 id, const SceneObject &type)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCurveIntersectAxis::EvalAngle()
 {
-    Eval(ui->plainTextEditFormula->toPlainText(), flagError, ui->labelResultCalculation, degreeSymbol, false);
+    Eval(
+        ui->plainTextEditFormula->toPlainText(),
+        flagError,
+        ui->labelResultCalculation,
+        degreeSymbol,
+        false);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -356,12 +362,11 @@ void DialogCurveIntersectAxis::DeployAngleTextEdit()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCurveIntersectAxis::FXAngle()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit angle"));
     dialog->SetFormula(GetAngle());
     dialog->setPostfix(degreeSymbol);
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetAngle(dialog->GetFormula());
     }
     delete dialog;
@@ -381,7 +386,7 @@ void DialogCurveIntersectAxis::SaveData()
     formulaAngle = plainTextEditFormula->toPlainText();
     formulaAngle.replace("\n", " ");
 
-    VisToolCurveIntersectAxis *line = qobject_cast<VisToolCurveIntersectAxis *>(vis);
+    VisToolCurveIntersectAxis* line = qobject_cast<VisToolCurveIntersectAxis*>(vis);
     SCASSERT(line != nullptr)
 
     line->setObject1Id(getCurveId());
@@ -393,7 +398,7 @@ void DialogCurveIntersectAxis::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCurveIntersectAxis::closeEvent(QCloseEvent *event)
+void DialogCurveIntersectAxis::closeEvent(QCloseEvent* event)
 {
     plainTextEditFormula->blockSignals(true);
     DialogTool::closeEvent(event);

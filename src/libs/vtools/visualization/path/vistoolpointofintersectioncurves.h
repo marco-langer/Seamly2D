@@ -52,12 +52,12 @@
 #ifndef VISTOOLPOINTOFINTERSECTIONCURVES_H
 #define VISTOOLPOINTOFINTERSECTIONCURVES_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
@@ -67,26 +67,30 @@ class VisToolPointOfIntersectionCurves : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolPointOfIntersectionCurves(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolPointOfIntersectionCurves(
+        const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolPointOfIntersectionCurves() Q_DECL_EQ_DEFAULT;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    virtual void VisualMode(const quint32 &id) Q_DECL_OVERRIDE;
+    virtual void VisualMode(const quint32& id) Q_DECL_OVERRIDE;
 
-    void setObject2Id(const quint32 &value);
-    void setVCrossPoint(const VCrossCurvesPoint &value);
-    void setHCrossPoint(const HCrossCurvesPoint &value);
+    void setObject2Id(const quint32& value);
+    void setVCrossPoint(const VCrossCurvesPoint& value);
+    void setHCrossPoint(const HCrossCurvesPoint& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionCurves)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionCurves)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolPointOfIntersectionCurves)
-    quint32            object2Id;
-    VCrossCurvesPoint  vCrossPoint;
-    HCrossCurvesPoint  hCrossPoint;
-    VScaledEllipse    *point;
-    VCurvePathItem    *visCurve2;
-
+    quint32 object2Id;
+    VCrossCurvesPoint vCrossPoint;
+    HCrossCurvesPoint hCrossPoint;
+    VScaledEllipse* point;
+    VCurvePathItem* visCurve2;
 };
 
-#endif // VISTOOLPOINTOFINTERSECTIONCURVES_H
+#endif   // VISTOOLPOINTOFINTERSECTIONCURVES_H

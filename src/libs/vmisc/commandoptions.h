@@ -132,4 +132,4 @@ extern const QString SINGLE_OPTION_BOTTOM_MARGIN;
 
 QStringList AllKeys();
 
-#endif // COMMANDOPTIONS_H
+#endif   // COMMANDOPTIONS_H

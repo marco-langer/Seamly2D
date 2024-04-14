@@ -52,85 +52,85 @@
 #ifndef DIALOGSHOULDERPOINT_H
 #define DIALOGSHOULDERPOINT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogShoulderPoint;
+namespace Ui {
+class DialogShoulderPoint;
 }
 
 /**
- * @brief The DialogShoulderPoint class dialog for ToolShoulderPoint. Help create point and edit option.
+ * @brief The DialogShoulderPoint class dialog for ToolShoulderPoint. Help create point and edit
+ * option.
  */
 class DialogShoulderPoint : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogShoulderPoint(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogShoulderPoint(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogShoulderPoint() Q_DECL_OVERRIDE;
 
-    void           SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    QString        getLineType() const;
-    void           setLineType(const QString &value);
+    QString getLineType() const;
+    void setLineType(const QString& value);
 
-    QString        getLineWeight() const;
-    void           setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString        getLineColor() const;
-    void           setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
-    QString        GetFormula() const;
-    void           SetFormula(const QString &value);
+    QString GetFormula() const;
+    void SetFormula(const QString& value);
 
-    quint32        GetP1Line() const;
-    void           SetP1Line(const quint32 &value);
+    quint32 GetP1Line() const;
+    void SetP1Line(const quint32& value);
 
-    quint32        GetP2Line() const;
-    void           SetP2Line(const quint32 &value);
+    quint32 GetP2Line() const;
+    void SetP2Line(const quint32& value);
 
-    quint32        GetP3() const;
-    void           SetP3(const quint32 &value);
+    quint32 GetP3() const;
+    void SetP3(const quint32& value);
 
 public slots:
-    virtual void   ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
-    void           DeployFormulaTextEdit();
+    void DeployFormulaTextEdit();
     /**
      * @brief FormulaTextChanged when formula text changes for validation and calc
      */
-    void           FormulaTextChanged();
-    virtual void   PointNameChanged() Q_DECL_OVERRIDE;
-    void           FXLength();
+    void FormulaTextChanged();
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
+    void FXLength();
 
 protected:
-    virtual void   ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void   SaveData() Q_DECL_OVERRIDE;
-    virtual void   closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogShoulderPoint)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogShoulderPoint *ui;
+    Ui::DialogShoulderPoint* ui;
 
     /** @brief formula formula */
-    QString        formula;
+    QString formula;
 
     /** @brief formulaBaseHeight base height defined by dialogui */
-    int             formulaBaseHeight;
+    int formulaBaseHeight;
 };
 
-#endif // DIALOGSHOULDERPOINT_H
+#endif   // DIALOGSHOULDERPOINT_H

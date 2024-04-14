@@ -52,7 +52,6 @@
 #ifndef VSIMPLEPOINT_H
 #define VSIMPLEPOINT_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -61,26 +60,32 @@
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
-#include "vabstractsimple.h"
 #include "../vwidgets/vscenepoint.h"
+#include "vabstractsimple.h"
 
 class VGraphicsSimpleTextItem;
 class VPointF;
 
-class VSimplePoint : public VAbstractSimple, public VScenePoint
+class VSimplePoint
+    : public VAbstractSimple
+    , public VScenePoint
 {
     Q_OBJECT
 public:
-    VSimplePoint(quint32 id, const QColor &currentColor, QObject *parent = nullptr);
+    VSimplePoint(quint32 id, const QColor& currentColor, QObject* parent = nullptr);
     virtual ~VSimplePoint() = default;
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::SimplePoint)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::SimplePoint)
+    };
 
-    using VScenePoint::setOnlyPoint;
     using VScenePoint::isOnlyPoint;
+    using VScenePoint::setOnlyPoint;
 
     void SetVisualizationMode(bool value);
     bool IsVisualizationMode() const;
@@ -91,7 +96,7 @@ public:
     void EnableToolMove(bool move);
     void allowTextHover(bool enabled);
     void allowTextSelectable(bool enabled);
-    virtual void ToolSelectionType(const SelectionType &type) Q_DECL_OVERRIDE;
+    virtual void ToolSelectionType(const SelectionType& type) Q_DECL_OVERRIDE;
 
 signals:
     /**
@@ -100,22 +105,22 @@ signals:
      */
     void Choosed(quint32 id);
     void Selected(bool selected, quint32 id);
-    void nameChangedPosition(const QPointF &pos, quint32 id);
+    void nameChangedPosition(const QPointF& pos, quint32 id);
 
 public slots:
     void deletePoint();
     void pointChosen();
     void pointSelected(bool selected);
-    void pointnameChangedPosition(const QPointF &pos);
+    void pointnameChangedPosition(const QPointF& pos);
 
 protected:
-    virtual void     mousePressEvent( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    virtual void     hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    virtual void     keyReleaseEvent ( QKeyEvent * event ) Q_DECL_OVERRIDE;
-    virtual QVariant itemChange ( GraphicsItemChange change, const QVariant &value ) Q_DECL_OVERRIDE;
-    virtual void     contextMenuEvent (QGraphicsSceneContextMenuEvent * event ) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void keyReleaseEvent(QKeyEvent* event) Q_DECL_OVERRIDE;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) Q_DECL_OVERRIDE;
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VSimplePoint)
@@ -124,4 +129,4 @@ private:
     bool m_alwaysHovered;
 };
 
-#endif // VSIMPLEPOINT_H
+#endif   // VSIMPLEPOINT_H

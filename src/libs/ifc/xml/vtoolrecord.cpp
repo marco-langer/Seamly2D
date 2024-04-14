@@ -57,7 +57,9 @@
  * @brief VToolRecord default constructor.
  */
 VToolRecord::VToolRecord()
-    :id(NULL_ID), typeTool(Tool::Arrow), nameDraw(QString())
+    : id(NULL_ID)
+    , typeTool(Tool::Arrow)
+    , nameDraw(QString())
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -67,15 +69,16 @@ VToolRecord::VToolRecord()
  * @param typeTool tool type.
  * @param nameDraw pattern peace name.
  */
-VToolRecord::VToolRecord(const quint32 &id, const Tool &typeTool, const QString &nameDraw)
-    :id(id), typeTool(typeTool), nameDraw(nameDraw)
+VToolRecord::VToolRecord(const quint32& id, const Tool& typeTool, const QString& nameDraw)
+    : id(id)
+    , typeTool(typeTool)
+    , nameDraw(nameDraw)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolRecord &VToolRecord::operator=(const VToolRecord &record)
+VToolRecord& VToolRecord::operator=(const VToolRecord& record)
 {
-    if ( &record == this )
-    {
+    if (&record == this) {
         return *this;
     }
 
@@ -86,6 +89,8 @@ VToolRecord &VToolRecord::operator=(const VToolRecord &record)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolRecord::VToolRecord(const VToolRecord &record)
-    :id(record.getId()), typeTool(record.getTypeTool()), nameDraw(record.getDraftBlockName())
+VToolRecord::VToolRecord(const VToolRecord& record)
+    : id(record.getId())
+    , typeTool(record.getTypeTool())
+    , nameDraw(record.getDraftBlockName())
 {}

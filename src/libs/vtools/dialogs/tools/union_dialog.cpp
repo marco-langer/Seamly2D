@@ -68,7 +68,7 @@
  * @param data container with data
  * @param parent parent widget
  */
-UnionDialog::UnionDialog(const VContainer *data, const quint32 &toolId, QWidget *parent)
+UnionDialog::UnionDialog(const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::UnionDialog)
     , piece1_Index(0)
@@ -86,16 +86,10 @@ UnionDialog::UnionDialog(const VContainer *data, const quint32 &toolId, QWidget 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-UnionDialog::~UnionDialog()
-{
-    delete ui;
-}
+UnionDialog::~UnionDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool UnionDialog::retainPieces() const
-{
-    return ui->checkBox->isChecked();
-}
+bool UnionDialog::retainPieces() const { return ui->checkBox->isChecked(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -103,14 +97,11 @@ bool UnionDialog::retainPieces() const
  * @param id id of point or piece
  * @param type type of object
  */
-void UnionDialog::ChosenObject(quint32 id, const SceneObject &type)
+void UnionDialog::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (numberD == 0)
-    {
+    if (numberD == 0) {
         chosenPiece(id, type, d1, piece1_Index);
-    }
-    else
-    {
+    } else {
         chosenPiece(id, type, d2, piece2_Index);
     }
 }
@@ -122,10 +113,9 @@ void UnionDialog::ChosenObject(quint32 id, const SceneObject &type)
  * @param pieceId piece id
  * @return true if contain
  */
-bool UnionDialog::CheckObject(const quint32 &id, const quint32 &pieceId) const
+bool UnionDialog::CheckObject(const quint32& id, const quint32& pieceId) const
 {
-    if (pieceId == NULL_ID)
-    {
+    if (pieceId == NULL_ID) {
         return false;
     }
     const VPiece piece = data->GetPiece(pieceId);
@@ -133,24 +123,19 @@ bool UnionDialog::CheckObject(const quint32 &id, const quint32 &pieceId) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool UnionDialog::checkPiece(const quint32 &pieceId) const
+bool UnionDialog::checkPiece(const quint32& pieceId) const
 {
-    if (pieceId == NULL_ID)
-    {
+    if (pieceId == NULL_ID) {
         return false;
     }
     const VPiece piece = data->GetPiece(pieceId);
-    if (piece.isLocked())
-    {
+    if (piece.isLocked()) {
         ui->checkBox->setChecked(true);
         ui->checkBox->setEnabled(false);
     }
-    if (piece.GetPath().CountNodes() >= 3 && piece.GetPath().ListNodePoint().size() >= 2)
-    {
+    if (piece.GetPath().CountNodes() >= 3 && piece.GetPath().ListNodePoint().size() >= 2) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
@@ -163,73 +148,57 @@ bool UnionDialog::checkPiece(const quint32 &pieceId) const
  * @param pieceId id of piece
  * @param index index of edge
  */
-void UnionDialog::chosenPiece(const quint32 &id, const SceneObject &type, quint32 &pieceId,
-                                       int &index)
+void UnionDialog::chosenPiece(
+    const quint32& id, const SceneObject& type, quint32& pieceId, int& index)
 {
-    if (pieceId == NULL_ID)
-    {
-        if (type == SceneObject::Piece)
-        {
+    if (pieceId == NULL_ID) {
+        if (type == SceneObject::Piece) {
             m_beep->play();
-            if (checkPiece(id))
-            {
+            if (checkPiece(id)) {
                 pieceId = id;
                 emit ToolTip(tr("Select the first point"));
                 return;
-            }
-            else
-            {
+            } else {
                 emit ToolTip(tr("Pattern piece should have at least two points and three objects"));
                 return;
             }
         }
     }
-    if (CheckObject(id, pieceId) == false)
-    {
+    if (CheckObject(id, pieceId) == false) {
         return;
     }
-    if (type == SceneObject::Point)
-    {
+    if (type == SceneObject::Point) {
         m_beep->play();
-        if (numberP == 0)
-        {
+        if (numberP == 0) {
             p1 = id;
             ++numberP;
             emit ToolTip(tr("Select a second point"));
             return;
         }
-        if (numberP == 1)
-        {
-            if (id == p1)
-            {
+        if (numberP == 1) {
+            if (id == p1) {
                 emit ToolTip(tr("Select a unique point"));
                 return;
             }
             VPiece piece = data->GetPiece(pieceId);
-            if (piece.GetPath().OnEdge(p1, id))
-            {
+            if (piece.GetPath().OnEdge(p1, id)) {
                 p2 = id;
                 index = piece.GetPath().Edge(p1, p2);
                 ++numberD;
-                if (numberD > 1)
-                {
+                if (numberD > 1) {
                     ++numberP;
                     emit ToolTip("");
                     this->setModal(true);
                     this->show();
                     return;
-                }
-                else
-                {
+                } else {
                     numberP = 0;
                     p1 = 0;
                     p2 = 0;
                     emit ToolTip(tr("Select a piece"));
                     return;
                 }
-            }
-            else
-            {
+            } else {
                 emit ToolTip(tr("Select a point on edge"));
                 return;
             }

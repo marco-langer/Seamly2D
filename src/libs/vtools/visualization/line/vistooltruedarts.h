@@ -52,32 +52,36 @@
 #ifndef VISTOOLTRUEDARTS_H
 #define VISTOOLTRUEDARTS_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
 
-class VisToolTrueDarts :public VisLine
+class VisToolTrueDarts : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolTrueDarts(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolTrueDarts(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolTrueDarts() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void setObject2Id(const quint32 &value);
-    void setD1PointId(const quint32 &value);
-    void setD2PointId(const quint32 &value);
-    void setD3PointId(const quint32 &value);
+    void setObject2Id(const quint32& value);
+    void setD1PointId(const quint32& value);
+    void setD2PointId(const quint32& value);
+    void setD3PointId(const quint32& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolTrueDarts)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolTrueDarts)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolTrueDarts)
     quint32 baseLineP2Id;
@@ -85,18 +89,18 @@ private:
     quint32 dartP2Id;
     quint32 dartP3Id;
 
-    VScaledEllipse *point1;
-    VScaledEllipse *point2;
-    VScaledEllipse *baseLineP1;
-    VScaledEllipse *baseLineP2;
-    VScaledEllipse *dartP1;
-    VScaledEllipse *dartP2;
-    VScaledEllipse *dartP3;
+    VScaledEllipse* point1;
+    VScaledEllipse* point2;
+    VScaledEllipse* baseLineP1;
+    VScaledEllipse* baseLineP2;
+    VScaledEllipse* dartP1;
+    VScaledEllipse* dartP2;
+    VScaledEllipse* dartP3;
 
-    VScaledLine *lineblP1P1;
-    VScaledLine *lineblP2P2;
-    VScaledLine *p1d2;
-    VScaledLine *d2p2;
+    VScaledLine* lineblP1P1;
+    VScaledLine* lineblP2P2;
+    VScaledLine* p1d2;
+    VScaledLine* d2p2;
 };
 
-#endif // VISTOOLTRUEDARTS_H
+#endif   // VISTOOLTRUEDARTS_H

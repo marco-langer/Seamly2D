@@ -64,25 +64,34 @@
 #include <QRectF>
 #include <Qt>
 
-#include "global.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
-#include "vgraphicssimpletextitem.h"
 #include "../vmisc/vabstractapplication.h"
+#include "global.h"
+#include "vgraphicssimpletextitem.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VSimplePoint::VSimplePoint(quint32 id, const QColor &currentColor, QObject *parent)
+VSimplePoint::VSimplePoint(quint32 id, const QColor& currentColor, QObject* parent)
     : VAbstractSimple(id, parent)
     , VScenePoint(currentColor)
     , m_visualizationMode(false)
     , m_alwaysHovered(false)
 {
     m_pointColor = currentColor;
-    connect(m_pointName, &VGraphicsSimpleTextItem::showContextMenu,    this, &VSimplePoint::contextMenuEvent);
-    connect(m_pointName, &VGraphicsSimpleTextItem::deleteTool,         this, &VSimplePoint::deletePoint);
-    connect(m_pointName, &VGraphicsSimpleTextItem::pointChosen,        this, &VSimplePoint::pointChosen);
-    connect(m_pointName, &VGraphicsSimpleTextItem::pointSelected,      this, &VSimplePoint::pointSelected);
-    connect(m_pointName, &VGraphicsSimpleTextItem::nameChangedPosition, this, &VSimplePoint::pointnameChangedPosition);
+    connect(
+        m_pointName,
+        &VGraphicsSimpleTextItem::showContextMenu,
+        this,
+        &VSimplePoint::contextMenuEvent);
+    connect(m_pointName, &VGraphicsSimpleTextItem::deleteTool, this, &VSimplePoint::deletePoint);
+    connect(m_pointName, &VGraphicsSimpleTextItem::pointChosen, this, &VSimplePoint::pointChosen);
+    connect(
+        m_pointName, &VGraphicsSimpleTextItem::pointSelected, this, &VSimplePoint::pointSelected);
+    connect(
+        m_pointName,
+        &VGraphicsSimpleTextItem::nameChangedPosition,
+        this,
+        &VSimplePoint::pointnameChangedPosition);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -93,10 +102,7 @@ void VSimplePoint::SetVisualizationMode(bool value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VSimplePoint::IsVisualizationMode() const
-{
-    return m_visualizationMode;
-}
+bool VSimplePoint::IsVisualizationMode() const { return m_visualizationMode; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSimplePoint::SetPointHighlight(bool value)
@@ -119,10 +125,7 @@ void VSimplePoint::EnableToolMove(bool move)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::allowTextHover(bool enabled)
-{
-    m_pointName->setAcceptHoverEvents(enabled);
-}
+void VSimplePoint::allowTextHover(bool enabled) { m_pointName->setAcceptHoverEvents(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSimplePoint::allowTextSelectable(bool enabled)
@@ -131,62 +134,48 @@ void VSimplePoint::allowTextSelectable(bool enabled)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::ToolSelectionType(const SelectionType &type)
+void VSimplePoint::ToolSelectionType(const SelectionType& type)
 {
     VAbstractSimple::ToolSelectionType(type);
     m_pointName->textSelectionType(type);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::deletePoint()
-{
-    emit Delete();
-}
+void VSimplePoint::deletePoint() { emit Delete(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::pointChosen()
-{
-    emit Choosed(id);
-}
+void VSimplePoint::pointChosen() { emit Choosed(id); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::pointSelected(bool selected)
-{
-    setSelected(selected);
-}
+void VSimplePoint::pointSelected(bool selected) { setSelected(selected); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::pointnameChangedPosition(const QPointF &pos)
+void VSimplePoint::pointnameChangedPosition(const QPointF& pos)
 {
     emit nameChangedPosition(pos, id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void VSimplePoint::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (m_visualizationMode)
-    {
+    if (m_visualizationMode) {
         event->ignore();
-    }
-    else
-    {
-        // Special for not selectable item first need to call standard mousePressEvent then accept event
+    } else {
+        // Special for not selectable item first need to call standard mousePressEvent then accept
+        // event
         QGraphicsEllipseItem::mousePressEvent(event);
 
         // Somehow clicking on notselectable object do not clean previous selections.
-        if (not (flags() & ItemIsSelectable) && scene())
-        {
+        if (not(flags() & ItemIsSelectable) && scene()) {
             scene()->clearSelection();
         }
 
-        if (selectionType == SelectionType::ByMouseRelease)
-        {// Special for not selectable item first need to call standard mousePressEvent then accept event
+        if (selectionType
+            == SelectionType::ByMouseRelease) {   // Special for not selectable item first need to
+                                                  // call standard mousePressEvent then accept event
             event->accept();
-        }
-        else
-        {
-            if (event->button() == Qt::LeftButton)
-            {
+        } else {
+            if (event->button() == Qt::LeftButton) {
                 emit Choosed(id);
             }
         }
@@ -194,14 +183,11 @@ void VSimplePoint::mousePressEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void VSimplePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (not m_visualizationMode)
-    {
-        if (selectionType == SelectionType::ByMouseRelease)
-        {
-            if (event->button() == Qt::LeftButton)
-            {
+    if (not m_visualizationMode) {
+        if (selectionType == SelectionType::ByMouseRelease) {
+            if (event->button() == Qt::LeftButton) {
                 emit Choosed(id);
             }
         }
@@ -210,41 +196,35 @@ void VSimplePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void VSimplePoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
     m_isHovered = true;
     QGraphicsEllipseItem::hoverEnterEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void VSimplePoint::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
-    if (not m_alwaysHovered)
-    {
+    if (not m_alwaysHovered) {
         m_isHovered = false;
     }
     QGraphicsEllipseItem::hoverLeaveEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::keyReleaseEvent(QKeyEvent *event)
+void VSimplePoint::keyReleaseEvent(QKeyEvent* event)
 {
-    switch (event->key())
-    {
-        case Qt::Key_Delete:
-            emit Delete();
-            return; //Leave this method immediately after call!!!
-        default:
-            break;
+    switch (event->key()) {
+    case Qt::Key_Delete: emit Delete(); return;   // Leave this method immediately after call!!!
+    default: break;
     }
-    VScenePoint::keyReleaseEvent ( event );
+    VScenePoint::keyReleaseEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVariant VSimplePoint::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant VSimplePoint::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
 {
-    if (change == QGraphicsItem::ItemSelectedChange)
-    {
+    if (change == QGraphicsItem::ItemSelectedChange) {
         m_pointName->blockSignals(true);
         m_pointName->setSelected(value.toBool());
         m_pointName->blockSignals(false);
@@ -255,7 +235,7 @@ QVariant VSimplePoint::itemChange(QGraphicsItem::GraphicsItemChange change, cons
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimplePoint::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+void VSimplePoint::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
     emit showContextMenu(event, id);
 }

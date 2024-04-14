@@ -33,8 +33,7 @@
 
 class QFormLayout;
 
-namespace VPE
-{
+namespace VPE {
 
 class VPropertyFormWidgetPrivate;
 class VPropertySet;
@@ -45,24 +44,29 @@ class VPropertyFormWidget : public QGroupBox
     Q_OBJECT
 public:
     //! Constructor
-    VPropertyFormWidget(const QString &title, const QString &description, const QList<VProperty*> &properties,
-                        QWidget* parent);
+    VPropertyFormWidget(
+        const QString& title,
+        const QString& description,
+        const QList<VProperty*>& properties,
+        QWidget* parent);
 
     //! Constructor
-    VPropertyFormWidget(VProperty *parent_property, QWidget *parent);
+    VPropertyFormWidget(VProperty* parent_property, QWidget* parent);
 
     //! Destructor
     ~VPropertyFormWidget();
 
 
-    //! Returns a list of all child property form widgets (note that indirect children will not be in the list)
+    //! Returns a list of all child property form widgets (note that indirect children will not be
+    //! in the list)
     QList<VPropertyFormWidget*> getChildPropertyFormWidgets() const;
 
 public slots:
     //! Rebuilds the whole form
     virtual void build();
 
-    void buildEditor(VProperty *property, QFormLayout *formLayout, Property type = Property::Simple);
+    void
+    buildEditor(VProperty* property, QFormLayout* formLayout, Property type = Property::Simple);
 
     //! Reads the data from the editors and commits it to the properties
     void commitData();
@@ -77,27 +81,30 @@ public slots:
     void loadData(int row);
 
     //! Sets the update behaviour
-    //! \param auto_commit If set to true, whenever an event like focusOut is triggered on an editor, the data will be
-    //! submitted to the property.
+    //! \param auto_commit If set to true, whenever an event like focusOut is triggered on an
+    //! editor, the data will be submitted to the property.
     void setCommitBehaviour(bool auto_commit = true);
 
 signals:
     //! Emitted whenever a property data changes
-    void propertyDataSubmitted(VProperty *property);
+    void propertyDataSubmitted(VProperty* property);
 
 protected:
     //! Protected Constructor
-    VPropertyFormWidget(VPropertyFormWidgetPrivate *d_pointer, QWidget *parent, const QString &title = QString(),
-                        const QString &description = QString());
+    VPropertyFormWidget(
+        VPropertyFormWidgetPrivate* d_pointer,
+        QWidget* parent,
+        const QString& title = QString(),
+        const QString& description = QString());
 
     //! The protected data
-    VPropertyFormWidgetPrivate *d_ptr;
+    VPropertyFormWidgetPrivate* d_ptr;
 
     //! Event filter for the editor widgets
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
 
     //! Commits data of an editor
-    void commitData(const QWidget *editor);
+    void commitData(const QWidget* editor);
 
 private:
     Q_DISABLE_COPY(VPropertyFormWidget)
@@ -105,4 +112,4 @@ private:
 
 }   // Namespace VPE
 
-#endif // VPROPERTYFORMWIDGET_H
+#endif   // VPROPERTYFORMWIDGET_H

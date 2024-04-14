@@ -32,9 +32,9 @@
 #include <QPointF>
 #include <QSharedData>
 
+#include "../ifc/ifcdef.h"
 #include "../vmisc/diagnostic.h"
 #include "floatitemdef.h"
-#include "../ifc/ifcdef.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -52,7 +52,7 @@ public:
         , m_bottomAnchorPoint(NULL_ID)
     {}
 
-    VGrainlineDataPrivate(const VGrainlineDataPrivate &data)
+    VGrainlineDataPrivate(const VGrainlineDataPrivate& data)
         : QSharedData(data)
         , m_qsLength(data.m_qsLength)
         , m_dRotation(data.m_dRotation)
@@ -64,17 +64,18 @@ public:
 
     ~VGrainlineDataPrivate() Q_DECL_EQ_DEFAULT;
 
-    QString   m_qsLength;          /** @brief m_dLength formula to calculate the length of grainline */
-    QString   m_dRotation;         /** @brief m_dRotation formula to calculate the rotation of grainline in [degrees] */
-    ArrowType m_eArrowType;        /** @brief m_eArrowType type of arrow on the grainline */
-    quint32   m_centerAnchorPoint; /** @brief m_centerAnchorPoint center anchor point id */
-    quint32   m_topAnchorPoint;    /** @brief m_topAnchorPoint top anchor point id */
-    quint32   m_bottomAnchorPoint; /** @brief m_bottomAnchorPoint bottom anchor point id */
+    QString m_qsLength;     /** @brief m_dLength formula to calculate the length of grainline */
+    QString m_dRotation;    /** @brief m_dRotation formula to calculate the rotation of grainline in
+                               [degrees] */
+    ArrowType m_eArrowType; /** @brief m_eArrowType type of arrow on the grainline */
+    quint32 m_centerAnchorPoint; /** @brief m_centerAnchorPoint center anchor point id */
+    quint32 m_topAnchorPoint;    /** @brief m_topAnchorPoint top anchor point id */
+    quint32 m_bottomAnchorPoint; /** @brief m_bottomAnchorPoint bottom anchor point id */
 
 private:
-    VGrainlineDataPrivate &operator=(const VGrainlineDataPrivate &) Q_DECL_EQ_DELETE;
+    VGrainlineDataPrivate& operator=(const VGrainlineDataPrivate&) Q_DECL_EQ_DELETE;
 };
 
 QT_WARNING_POP
 
-#endif // VGRAINLINEDATA_P_H
+#endif   // VGRAINLINEDATA_P_H

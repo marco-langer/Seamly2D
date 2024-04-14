@@ -28,17 +28,17 @@
 
 #include "doubleline_point_tool.h"
 
-#include "../vtoolsinglepoint.h"
+#include "../../../../vabstracttool.h"
+#include "../../../vdrawtool.h"
+#include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/xml/vdomdocument.h"
-#include "../ifc/ifcdef.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
+#include "../vtoolsinglepoint.h"
 #include "../vwidgets/scalesceneitems.h"
-#include "../../../vdrawtool.h"
-#include "../../../../vabstracttool.h"
 
 #include <QColor>
 #include <QGraphicsLineItem>
@@ -50,7 +50,8 @@
 #include <Qt>
 #include <new>
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -65,10 +66,16 @@ template <class T> class QSharedPointer;
  * @param secondPointId id second point.
  * @param parent parent object.
  */
-DoubleLinePointTool::DoubleLinePointTool(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                         const QString &typeLine, const QString &lineWeight, const QString &lineColor,
-                                         const quint32 &firstPointId, const quint32 &secondPointId,
-                                         QGraphicsItem *parent)
+DoubleLinePointTool::DoubleLinePointTool(
+    VAbstractPattern* doc,
+    VContainer* data,
+    const quint32& id,
+    const QString& typeLine,
+    const QString& lineWeight,
+    const QString& lineColor,
+    const quint32& firstPointId,
+    const quint32& secondPointId,
+    QGraphicsItem* parent)
     : VToolSinglePoint(doc, data, id, QColor(lineColor), parent)
     , firstPointId(firstPointId)
     , secondPointId(secondPointId)
@@ -76,13 +83,13 @@ DoubleLinePointTool::DoubleLinePointTool(VAbstractPattern *doc, VContainer *data
     , secondLine(nullptr)
     , lineColor(lineColor)
 {
-    this->m_lineType   = typeLine;
+    this->m_lineType = typeLine;
     this->m_lineWeight = lineWeight;
 
     setPointColor(lineColor);
 
-    Q_ASSERT_X(firstPointId != 0, Q_FUNC_INFO, "firstPointId == 0"); //-V654 //-V712
-    Q_ASSERT_X(secondPointId != 0, Q_FUNC_INFO, "secondPointId == 0"); //-V654 //-V712
+    Q_ASSERT_X(firstPointId != 0, Q_FUNC_INFO, "firstPointId == 0");     //-V654 //-V712
+    Q_ASSERT_X(secondPointId != 0, Q_FUNC_INFO, "secondPointId == 0");   //-V654 //-V712
     QPointF point1 = static_cast<QPointF>(*data->GeometricObject<VPointF>(firstPointId));
     QPointF point2 = static_cast<QPointF>(*data->GeometricObject<VPointF>(secondPointId));
     QPointF point3 = static_cast<QPointF>(*data->GeometricObject<VPointF>(id));
@@ -104,12 +111,13 @@ DoubleLinePointTool::~DoubleLinePointTool()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void DoubleLinePointTool::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     QPen pen = firstLine->pen();
     pen.setColor(correctColor(this, lineColor));
     pen.setStyle(lineTypeToPenStyle(m_lineType));
-    pen.setWidthF(ToPixel(m_lineWeight.toDouble(), Unit::Mm)); 
+    pen.setWidthF(ToPixel(m_lineWeight.toDouble(), Unit::Mm));
 
     firstLine->setPen(pen);
     secondLine->setPen(pen);
@@ -150,25 +158,25 @@ void DoubleLinePointTool::RemoveReferens()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void DoubleLinePointTool::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 
-    doc->SetAttribute(tag, AttrLineType,   m_lineType);
+    doc->SetAttribute(tag, AttrLineType, m_lineType);
     doc->SetAttribute(tag, AttrLineWeight, m_lineWeight);
-    doc->SetAttribute(tag, AttrLineColor,  lineColor);
+    doc->SetAttribute(tag, AttrLineColor, lineColor);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void DoubleLinePointTool::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
-    firstLine->setBasicWidth(ToPixel(m_lineWeight.toDouble()+1, Unit::Mm));
-    secondLine->setBasicWidth(ToPixel(m_lineWeight.toDouble()+1, Unit::Mm));
+    firstLine->setBasicWidth(ToPixel(m_lineWeight.toDouble() + 1, Unit::Mm));
+    secondLine->setBasicWidth(ToPixel(m_lineWeight.toDouble() + 1, Unit::Mm));
     VToolSinglePoint::hoverEnterEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void DoubleLinePointTool::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
     firstLine->setBasicWidth(ToPixel(m_lineWeight.toDouble(), Unit::Mm));
     secondLine->setBasicWidth(ToPixel(m_lineWeight.toDouble(), Unit::Mm));
@@ -178,60 +186,63 @@ void DoubleLinePointTool::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //---------------------------------------------------------------------------------------------------------------------
 QString DoubleLinePointTool::makeToolTip() const
 {
-    const QSharedPointer<VPointF> point1 = VAbstractTool::data.GeometricObject<VPointF>(firstPointId);
-    const QSharedPointer<VPointF> point2 = VAbstractTool::data.GeometricObject<VPointF>(secondPointId);
+    const QSharedPointer<VPointF> point1 =
+        VAbstractTool::data.GeometricObject<VPointF>(firstPointId);
+    const QSharedPointer<VPointF> point2 =
+        VAbstractTool::data.GeometricObject<VPointF>(secondPointId);
     const QSharedPointer<VPointF> point3 = VAbstractTool::data.GeometricObject<VPointF>(m_id);
 
     const QLineF line1(static_cast<QPointF>(*point1), static_cast<QPointF>(*point3));
     const QLineF line2(static_cast<QPointF>(*point2), static_cast<QPointF>(*point3));
 
-    const QString toolTip = QString("<table>"
-                                        "<tr>"
-                                            "<td align ='right'><b>%9: </b></td>" // Tool name
-                                            "<td align ='left'>Intersect XY</td>"
-                                        "</tr>"
-                                        "<tr>"
-                                            "<td align ='right'><b>%1: </b></td>" // Point Name
-                                            "<td align ='left'>%5</td>"
-                                        "</tr>"
-                                        "<tr>"
-                                            "<td colspan ='2'><hr></td>"          // Divider
-                                        "</tr>"
-                                        "<tr>"
-                                            "<td align ='right'><b>%1: </b></td>" // Line 1 name
-                                            "<td align ='left'>Line_%3_%5</td>"
-                                        "</tr>"
-                                        "<tr>"
-                                            "<td align ='right'><b>%2: </b></td>" // Line 1 length
-                                            "<td align ='left'>%6 %8</td>"
-                                        "</tr>"
-                                        "<tr>"
-                                            "<td colspan ='2'><hr></td>"          // Divider
-                                        "</tr>"
-                                        "<tr>"
-                                            "<td align ='right'><b>%1: </b></td>" // Line 2 name
-                                            "<td align ='left'>Line_%4_%5</td>"
-                                        "</tr>"
-                                        "<tr>"
-                                            "<td align ='right'><b>%2: </b></td>" // Line 2 length
-                                            "<td align ='left'>%7 %8</td>"
-                                        "</tr>"
-                                    "</table>")
-                                    .arg(tr("Name"))                              //1
-                                    .arg(tr("Length"))                            //2
-                                    .arg(point1->name())                          //3
-                                    .arg(point2->name())                          //4
-                                    .arg(point3->name())                          //5
-                                    .arg(qApp->fromPixel(line1.length()))         //6
-                                    .arg(qApp->fromPixel(line2.length()))         //7
-                                    .arg(UnitsToStr(qApp->patternUnit(), true))   //8
-                                    .arg(tr("Tool"));                             //9
+    const QString toolTip = QString(
+                                "<table>"
+                                "<tr>"
+                                "<td align ='right'><b>%9: </b></td>"   // Tool name
+                                "<td align ='left'>Intersect XY</td>"
+                                "</tr>"
+                                "<tr>"
+                                "<td align ='right'><b>%1: </b></td>"   // Point Name
+                                "<td align ='left'>%5</td>"
+                                "</tr>"
+                                "<tr>"
+                                "<td colspan ='2'><hr></td>"   // Divider
+                                "</tr>"
+                                "<tr>"
+                                "<td align ='right'><b>%1: </b></td>"   // Line 1 name
+                                "<td align ='left'>Line_%3_%5</td>"
+                                "</tr>"
+                                "<tr>"
+                                "<td align ='right'><b>%2: </b></td>"   // Line 1 length
+                                "<td align ='left'>%6 %8</td>"
+                                "</tr>"
+                                "<tr>"
+                                "<td colspan ='2'><hr></td>"   // Divider
+                                "</tr>"
+                                "<tr>"
+                                "<td align ='right'><b>%1: </b></td>"   // Line 2 name
+                                "<td align ='left'>Line_%4_%5</td>"
+                                "</tr>"
+                                "<tr>"
+                                "<td align ='right'><b>%2: </b></td>"   // Line 2 length
+                                "<td align ='left'>%7 %8</td>"
+                                "</tr>"
+                                "</table>")
+                                .arg(tr("Name"))                              // 1
+                                .arg(tr("Length"))                            // 2
+                                .arg(point1->name())                          // 3
+                                .arg(point2->name())                          // 4
+                                .arg(point3->name())                          // 5
+                                .arg(qApp->fromPixel(line1.length()))         // 6
+                                .arg(qApp->fromPixel(line2.length()))         // 7
+                                .arg(UnitsToStr(qApp->patternUnit(), true))   // 8
+                                .arg(tr("Tool"));                             // 9
 
     return toolTip;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::Disable(bool disable, const QString &draftBlockName)
+void DoubleLinePointTool::Disable(bool disable, const QString& draftBlockName)
 {
     VToolSinglePoint::Disable(disable, draftBlockName);
     firstLine->setEnabled(isEnabled());
@@ -250,13 +261,10 @@ void DoubleLinePointTool::FullUpdateFromFile()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DoubleLinePointTool::getLineColor() const
-{
-    return lineColor;
-}
+QString DoubleLinePointTool::getLineColor() const { return lineColor; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::setLineColor(const QString &value)
+void DoubleLinePointTool::setLineColor(const QString& value)
 {
     lineColor = value;
 
@@ -265,16 +273,12 @@ void DoubleLinePointTool::setLineColor(const QString &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 DoubleLinePointTool::getFirstPointId() const
-{
-    return firstPointId;
-}
+quint32 DoubleLinePointTool::getFirstPointId() const { return firstPointId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::setFirstPointId(const quint32 &value)
+void DoubleLinePointTool::setFirstPointId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         firstPointId = value;
 
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
@@ -283,16 +287,12 @@ void DoubleLinePointTool::setFirstPointId(const quint32 &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 DoubleLinePointTool::getSecondPointId() const
-{
-    return secondPointId;
-}
+quint32 DoubleLinePointTool::getSecondPointId() const { return secondPointId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::setSecondPointId(const quint32 &value)
+void DoubleLinePointTool::setSecondPointId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         secondPointId = value;
 
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);

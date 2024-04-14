@@ -52,42 +52,42 @@
 #ifndef MOVE_OPERATION_LABEL_H
 #define MOVE_OPERATION_LABEL_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "moveabstractlabel.h"
 
 class MoveOperationLabel : public MoveAbstractLabel
 {
 public:
-                    MoveOperationLabel(quint32 idTool, VAbstractPattern *doc, const QPointF &pos,
-                                       quint32 idPoint, QUndoCommand *parent = nullptr);
-    virtual        ~MoveOperationLabel()=default;
+    MoveOperationLabel(
+        quint32 idTool,
+        VAbstractPattern* doc,
+        const QPointF& pos,
+        quint32 idPoint,
+        QUndoCommand* parent = nullptr);
+    virtual ~MoveOperationLabel() = default;
 
-    virtual bool    mergeWith(const QUndoCommand *command) Q_DECL_OVERRIDE;
-    virtual int     id() const Q_DECL_OVERRIDE;
+    virtual bool mergeWith(const QUndoCommand* command) Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
 
-    quint32         GetToolId() const;
+    quint32 GetToolId() const;
 
 protected:
-    virtual void    Do(const QPointF &pos) Q_DECL_OVERRIDE;
+    virtual void Do(const QPointF& pos) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(MoveOperationLabel)
-    quint32         m_idTool;
-    //Need for resizing scene rect
-    QGraphicsScene *m_scene;
-
+    quint32 m_idTool;
+    // Need for resizing scene rect
+    QGraphicsScene* m_scene;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline quint32 MoveOperationLabel::GetToolId() const
-{
-    return m_idTool;
-}
+inline quint32 MoveOperationLabel::GetToolId() const { return m_idTool; }
 
-#endif // MOVE_OPERATION_LABEL_H
+#endif   // MOVE_OPERATION_LABEL_H

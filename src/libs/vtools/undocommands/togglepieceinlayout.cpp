@@ -57,19 +57,19 @@
 #include <QMessageLogger>
 #include <QtDebug>
 
-#include "vundocommand.h"
 #include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/def.h"
 #include "../vmisc/logging.h"
+#include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vpiece.h"
 #include "../vwidgets/vabstractmainwindow.h"
+#include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-TogglePieceInLayout::TogglePieceInLayout(quint32 id, bool state, VContainer *data, VAbstractPattern *doc,
-                                         QUndoCommand *parent)
+TogglePieceInLayout::TogglePieceInLayout(
+    quint32 id, bool state, VContainer* data, VAbstractPattern* doc, QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , m_id(id)
     , m_data(data)
@@ -80,17 +80,14 @@ TogglePieceInLayout::TogglePieceInLayout(quint32 id, bool state, VContainer *dat
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-TogglePieceInLayout::~TogglePieceInLayout()
-{
-}
+TogglePieceInLayout::~TogglePieceInLayout() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceInLayout::undo()
 {
     qCDebug(vUndo, "TogglePieceInLayout::undo().");
 
-    if (m_newState != m_oldState)
-    {
+    if (m_newState != m_oldState) {
         doCmd(m_oldState);
     }
 }
@@ -100,36 +97,25 @@ void TogglePieceInLayout::redo()
 {
     qCDebug(vUndo, "TogglePieceInLayout::redo().");
 
-    if (m_newState != m_oldState)
-    {
+    if (m_newState != m_oldState) {
         doCmd(m_newState);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int TogglePieceInLayout::id() const
-{
-    return static_cast<int>(UndoCommand::TogglePieceInLayout);
-}
+int TogglePieceInLayout::id() const { return static_cast<int>(UndoCommand::TogglePieceInLayout); }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 TogglePieceInLayout::getPieceId() const
-{
-    return m_id;
-}
+quint32 TogglePieceInLayout::getPieceId() const { return m_id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool TogglePieceInLayout::getNewState() const
-{
-    return m_newState;
-}
+bool TogglePieceInLayout::getNewState() const { return m_newState; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceInLayout::doCmd(bool state)
 {
     QDomElement element = doc->elementById(m_id, VAbstractPattern::TagPiece);
-    if (element.isElement())
-    {
+    if (element.isElement()) {
         doc->SetAttribute(element, AttrInLayout, state);
 
         VPiece piece = m_data->DataPieces()->value(m_id);
@@ -137,12 +123,11 @@ void TogglePieceInLayout::doCmd(bool state)
         m_data->UpdatePiece(m_id, piece);
         emit updateList(m_id);
 
-        VAbstractMainWindow *window = qobject_cast<VAbstractMainWindow *>(qApp->getMainWindow());
+        VAbstractMainWindow* window = qobject_cast<VAbstractMainWindow*>(qApp->getMainWindow());
         SCASSERT(window != nullptr)
-        window->ShowToolTip(tr("Include piece in layout changed: ") + (state ? tr("Include") : tr("Exclude")));
-    }
-    else
-    {
+        window->ShowToolTip(
+            tr("Include piece in layout changed: ") + (state ? tr("Include") : tr("Exclude")));
+    } else {
         qDebug("Can't get piece by id = %u.", m_id);
         return;
     }

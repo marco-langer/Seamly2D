@@ -52,17 +52,21 @@
 #ifndef VABSTRACTNODE_H
 #define VABSTRACTNODE_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vabstracttool.h"
 
-enum class ParentType : bool {Scene, Item};
+enum class ParentType : bool
+{
+    Scene,
+    Item
+};
 
 /**
  * @brief The VAbstractNode class parent class for all detail node.
@@ -71,16 +75,22 @@ class VAbstractNode : public VAbstractTool
 {
     Q_OBJECT
 public:
-    VAbstractNode(VAbstractPattern *doc, VContainer *data, const quint32 &id, const quint32 &idNode,
-                  const QString &blockName = QString(), const quint32 &idTool = 0, QObject *parent = nullptr);
-    virtual      ~VAbstractNode() Q_DECL_EQ_DEFAULT;
+    VAbstractNode(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        const quint32& idNode,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0,
+        QObject* parent = nullptr);
+    virtual ~VAbstractNode() Q_DECL_EQ_DEFAULT;
     static const QString AttrIdTool;
     virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
     virtual void incrementReferens() Q_DECL_OVERRIDE;
     virtual void decrementReferens() Q_DECL_OVERRIDE;
 
     ParentType GetParentType() const;
-    void       SetParentType(const ParentType &value);
+    void SetParentType(const ParentType& value);
 
     virtual void GroupVisibility(quint32 object, bool visible) Q_DECL_OVERRIDE;
 
@@ -91,23 +101,24 @@ protected:
     ParentType parentType;
 
     /** @brief idNodenode id. */
-    quint32       idNode;
+    quint32 idNode;
 
     /** @brief idTool id tool. */
-    quint32       idTool;
+    quint32 idTool;
 
-    QString       m_blockName;
+    QString m_blockName;
 
-    bool          m_exluded;
+    bool m_exluded;
 
-    void         AddToModeling(const QDomElement &domElement);
-    virtual void ToolCreation(const Source &typeCreation) Q_DECL_OVERRIDE;
+    void AddToModeling(const QDomElement& domElement);
+    virtual void ToolCreation(const Source& typeCreation) Q_DECL_OVERRIDE;
     virtual void SetVisualization() Q_DECL_OVERRIDE {}
 
-    virtual void ShowNode()=0;
-    virtual void HideNode()=0;
+    virtual void ShowNode() = 0;
+    virtual void HideNode() = 0;
+
 private:
     Q_DISABLE_COPY(VAbstractNode)
 };
 
-#endif // VABSTRACTNODE_H
+#endif   // VABSTRACTNODE_H

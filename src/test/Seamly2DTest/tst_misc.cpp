@@ -54,16 +54,15 @@
  *************************************************************************/
 
 #include "tst_misc.h"
-#include "../vmisc/def.h"
 #include "../vgeometry/vgobject.h"
+#include "../vmisc/def.h"
 
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_Misc::TST_Misc(QObject *parent)
-    :QObject(parent)
-{
-}
+TST_Misc::TST_Misc(QObject* parent)
+    : QObject(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_Misc::TestRelativeFilePath_data()
@@ -72,33 +71,47 @@ void TST_Misc::TestRelativeFilePath_data()
     QTest::addColumn<QString>("absoluteMPath");
     QTest::addColumn<QString>("output");
 
-    QTest::newRow("Measurements one level above")
-            << "/home/user/patterns/pattern.sm2d" << "/home/user/measurements/m.smis" << "../measurements/m.smis";
+    QTest::newRow("Measurements one level above") << "/home/user/patterns/pattern.sm2d"
+                                                  << "/home/user/measurements/m.smis"
+                                                  << "../measurements/m.smis";
 
-    QTest::newRow("Measurements one level under")
-            << "/home/user/patterns/pattern.sm2d" << "/home/user/patterns/measurements/m.smis" << "measurements/m.smis";
+    QTest::newRow("Measurements one level under") << "/home/user/patterns/pattern.sm2d"
+                                                  << "/home/user/patterns/measurements/m.smis"
+                                                  << "measurements/m.smis";
 
-    QTest::newRow("Measurements in the same folder")
-            << "/home/user/patterns/pattern.sm2d" << "/home/user/patterns/m.smis" << "m.smis";
+    QTest::newRow("Measurements in the same folder") << "/home/user/patterns/pattern.sm2d"
+                                                     << "/home/user/patterns/m.smis"
+                                                     << "m.smis";
 
-    QTest::newRow("Path to measurements is empty")
-            << "/home/user/patterns/pattern.sm2d" << "" << "";
+    QTest::newRow("Path to measurements is empty") << "/home/user/patterns/pattern.sm2d"
+                                                   << ""
+                                                   << "";
 
     QTest::newRow("Path to a pattern file is empty. Ablosute measurements path.")
-            << "" << "/home/user/patterns/m.smis" << "/home/user/patterns/m.smis";
+        << ""
+        << "/home/user/patterns/m.smis"
+        << "/home/user/patterns/m.smis";
 
     QTest::newRow("Path to a pattern file is empty. Relative measurements path.")
-            << "" << "measurements/m.smis" << "measurements/m.smis";
+        << ""
+        << "measurements/m.smis"
+        << "measurements/m.smis";
 
-    QTest::newRow("Relative measurements path.")
-            << "/home/user/patterns/pattern.sm2d" << "../measurements/m.smis" << "../measurements/m.smis";
+    QTest::newRow("Relative measurements path.") << "/home/user/patterns/pattern.sm2d"
+                                                 << "../measurements/m.smis"
+                                                 << "../measurements/m.smis";
 
-    QTest::newRow("Both paths are empty") << "" << "" << "";
+    QTest::newRow("Both paths are empty") << ""
+                                          << ""
+                                          << "";
 
-    QTest::newRow("Path to measurements is relative")
-            << "/home/user/patterns/pattern.sm2d" << "m.smis" << "m.smis";
+    QTest::newRow("Path to measurements is relative") << "/home/user/patterns/pattern.sm2d"
+                                                      << "m.smis"
+                                                      << "m.smis";
 
-    QTest::newRow("Absolute pattern path.") << "/home/user/patterns" << "m.smis" << "m.smis";
+    QTest::newRow("Absolute pattern path.") << "/home/user/patterns"
+                                            << "m.smis"
+                                            << "m.smis";
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -119,84 +132,111 @@ void TST_Misc::TestAbsoluteFilePath_data()
     QTest::addColumn<QString>("relativeMPath");
     QTest::addColumn<QString>("output");
 
-    #ifdef Q_OS_WIN
+#ifdef Q_OS_WIN
     QTest::newRow("Measurements one level above")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/pattern.sm2d")
-            << "../measurements/m.smis"
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/measurements/m.smis");
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/pattern.sm2d")
+        << "../measurements/m.smis"
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/measurements/m.smis");
     QTest::newRow("Measurements one level above")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/pattern.sm2d")
-            << "../measurements/m.smis"
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/measurements/m.smis");
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/pattern.sm2d")
+        << "../measurements/m.smis"
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/measurements/m.smis");
 
     QTest::newRow("Measurements one level under")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/pattern.sm2d")
-            << "measurements/m.smis"
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/measurements/m.smis");
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/pattern.sm2d")
+        << "measurements/m.smis"
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/measurements/m.smis");
 
     QTest::newRow("Measurements in the same folder")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/pattern.sm2d")
-            << "m.smis"
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis");
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/pattern.sm2d")
+        << "m.smis"
+        << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis");
 
     QTest::newRow("Path to measurements is empty")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/pattern.sm2d")
-            << "" << "";
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/pattern.sm2d")
+        << ""
+        << "";
 
     QTest::newRow("Path to a pattern file is empty. Ablosute measurements path.")
-            << ""
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis");
+        << ""
+        << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis")
+        << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis");
 
     QTest::newRow("Path to a pattern file is empty. Relative measurements path.")
-            << ""
-            << "measurements/m.smis"
-            << "measurements/m.smis";
+        << ""
+        << "measurements/m.smis"
+        << "measurements/m.smis";
 
     QTest::newRow("Relative measurements path.")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/pattern.sm2d")
-            << "../measurements/m.smis"
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/measurements/m.smis");
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/pattern.sm2d")
+        << "../measurements/m.smis"
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/measurements/m.smis");
 
-    QTest::newRow("Both paths are empty") << "" << "" << "";
+    QTest::newRow("Both paths are empty") << ""
+                                          << ""
+                                          << "";
 
     QTest::newRow("Path to measurements is relative")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/pattern.sm2d")
-            << "m.smis"
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis");
+        << QCoreApplication::applicationDirPath()
+               + QStringLiteral("/home/user/patterns/pattern.sm2d")
+        << "m.smis"
+        << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns/m.smis");
 
     QTest::newRow("Absolute pattern path.")
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns")
-            << "m.smis"
-            << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/m.smis");
+        << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/patterns")
+        << "m.smis" << QCoreApplication::applicationDirPath() + QStringLiteral("/home/user/m.smis");
 #else
-    QTest::newRow("Measurements one level above")
-            << "/home/user/patterns/pattern.sm2d" << "../measurements/m.smis" << "/home/user/measurements/m.smis";
+    QTest::newRow("Measurements one level above") << "/home/user/patterns/pattern.sm2d"
+                                                  << "../measurements/m.smis"
+                                                  << "/home/user/measurements/m.smis";
 
-    QTest::newRow("Measurements one level under")
-            << "/home/user/patterns/pattern.sm2d" << "measurements/m.smis" << "/home/user/patterns/measurements/m.smis";
+    QTest::newRow("Measurements one level under") << "/home/user/patterns/pattern.sm2d"
+                                                  << "measurements/m.smis"
+                                                  << "/home/user/patterns/measurements/m.smis";
 
-    QTest::newRow("Measurements in the same folder")
-            << "/home/user/patterns/pattern.sm2d" << "m.smis" << "/home/user/patterns/m.smis";
+    QTest::newRow("Measurements in the same folder") << "/home/user/patterns/pattern.sm2d"
+                                                     << "m.smis"
+                                                     << "/home/user/patterns/m.smis";
 
-    QTest::newRow("Path to measurements is empty")
-            << "/home/user/patterns/pattern.sm2d" << "" << "";
+    QTest::newRow("Path to measurements is empty") << "/home/user/patterns/pattern.sm2d"
+                                                   << ""
+                                                   << "";
 
     QTest::newRow("Path to a pattern file is empty. Ablosute measurements path.")
-            << "" << "/home/user/patterns/m.smis" << "/home/user/patterns/m.smis";
+        << ""
+        << "/home/user/patterns/m.smis"
+        << "/home/user/patterns/m.smis";
 
     QTest::newRow("Path to a pattern file is empty. Relative measurements path.")
-            << "" << "measurements/m.smis" << "measurements/m.smis";
+        << ""
+        << "measurements/m.smis"
+        << "measurements/m.smis";
 
-    QTest::newRow("Relative measurements path.")
-            << "/home/user/patterns/pattern.sm2d" << "../measurements/m.smis" << "/home/user/measurements/m.smis";
+    QTest::newRow("Relative measurements path.") << "/home/user/patterns/pattern.sm2d"
+                                                 << "../measurements/m.smis"
+                                                 << "/home/user/measurements/m.smis";
 
-    QTest::newRow("Both paths are empty") << "" << "" << "";
+    QTest::newRow("Both paths are empty") << ""
+                                          << ""
+                                          << "";
 
-    QTest::newRow("Path to measurements is relative")
-            << "/home/user/patterns/pattern.sm2d" << "m.smis" << "/home/user/patterns/m.smis";
+    QTest::newRow("Path to measurements is relative") << "/home/user/patterns/pattern.sm2d"
+                                                      << "m.smis"
+                                                      << "/home/user/patterns/m.smis";
 
-    QTest::newRow("Absolute pattern path.") << "/home/user/patterns" << "m.smis" << "/home/user/m.smis";
+    QTest::newRow("Absolute pattern path.") << "/home/user/patterns"
+                                            << "m.smis"
+                                            << "/home/user/m.smis";
 #endif
 }
 
@@ -242,6 +282,7 @@ void TST_Misc::TestIssue485()
     const QPointF sPoint(407.9527559055118, 39.999874015748034);
 
     QPointF p1, p2;
-    const int res = VGObject::LineIntersectCircle(QPointF(), radius, QLineF(QPointF(), sPoint-cPoint), p1, p2);
+    const int res = VGObject::LineIntersectCircle(
+        QPointF(), radius, QLineF(QPointF(), sPoint - cPoint), p1, p2);
     QCOMPARE(res, 0);
 }

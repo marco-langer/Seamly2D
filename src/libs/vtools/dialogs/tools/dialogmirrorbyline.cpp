@@ -67,8 +67,8 @@
 #include <Qt>
 #include <new>
 
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/operation/vistoolmirrorbyline.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../qmuparser/qmudef.h"
@@ -81,7 +81,8 @@
 #include "ui_dialogmirrorbyline.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogMirrorByLine::DialogMirrorByLine(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogMirrorByLine::DialogMirrorByLine(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogMirrorByLine)
     , m_objects()
@@ -92,7 +93,8 @@ DialogMirrorByLine::DialogMirrorByLine(const VContainer *data, const quint32 &to
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowIcon(QIcon(":/toolicon/32x32/mirror_by_line.png"));
 
-    ui->suffix_LineEdit->setText(qApp->getCurrentDocument()->GenerateSuffix(qApp->Settings()->getMirrorByLineSuffix()));
+    ui->suffix_LineEdit->setText(
+        qApp->getCurrentDocument()->GenerateSuffix(qApp->Settings()->getMirrorByLineSuffix()));
 
     initializeOkCancelApply(ui);
 
@@ -102,18 +104,23 @@ DialogMirrorByLine::DialogMirrorByLine(const VContainer *data, const quint32 &to
     flagName = true;
     CheckState();
 
-    connect(ui->suffix_LineEdit,          &QLineEdit::textChanged,        this, &DialogMirrorByLine::suffixChanged);
-    connect(ui->firstLinePoint_ComboBox,  &QComboBox::currentTextChanged, this, &DialogMirrorByLine::pointChanged);
-    connect(ui->secondLinePoint_ComboBox, &QComboBox::currentTextChanged, this, &DialogMirrorByLine::pointChanged);
+    connect(ui->suffix_LineEdit, &QLineEdit::textChanged, this, &DialogMirrorByLine::suffixChanged);
+    connect(
+        ui->firstLinePoint_ComboBox,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogMirrorByLine::pointChanged);
+    connect(
+        ui->secondLinePoint_ComboBox,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogMirrorByLine::pointChanged);
 
     vis = new VisToolMirrorByLine(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogMirrorByLine::~DialogMirrorByLine()
-{
-    delete ui;
-}
+DialogMirrorByLine::~DialogMirrorByLine() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 quint32 DialogMirrorByLine::getFirstLinePointId() const
@@ -125,7 +132,7 @@ quint32 DialogMirrorByLine::getFirstLinePointId() const
 void DialogMirrorByLine::setFirstLinePointId(quint32 value)
 {
     ChangeCurrentData(ui->firstLinePoint_ComboBox, value);
-    VisToolMirrorByLine *operation = qobject_cast<VisToolMirrorByLine *>(vis);
+    VisToolMirrorByLine* operation = qobject_cast<VisToolMirrorByLine*>(vis);
     SCASSERT(operation != nullptr)
     operation->setFirstLinePointId(value);
 }
@@ -140,36 +147,30 @@ quint32 DialogMirrorByLine::getSecondLinePointId() const
 void DialogMirrorByLine::setSecondLinePointId(quint32 value)
 {
     ChangeCurrentData(ui->secondLinePoint_ComboBox, value);
-    VisToolMirrorByLine *operation = qobject_cast<VisToolMirrorByLine *>(vis);
+    VisToolMirrorByLine* operation = qobject_cast<VisToolMirrorByLine*>(vis);
     SCASSERT(operation != nullptr)
     operation->setSecondLinePointId(value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogMirrorByLine::getSuffix() const
-{
-    return m_suffix;
-}
+QString DialogMirrorByLine::getSuffix() const { return m_suffix; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByLine::setSuffix(const QString &value)
+void DialogMirrorByLine::setSuffix(const QString& value)
 {
     m_suffix = value;
     ui->suffix_LineEdit->setText(value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<SourceItem> DialogMirrorByLine::getSourceObjects() const
-{
-    return m_objects;
-}
+QVector<SourceItem> DialogMirrorByLine::getSourceObjects() const { return m_objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByLine::setSourceObjects(const QVector<SourceItem> &value)
+void DialogMirrorByLine::setSourceObjects(const QVector<SourceItem>& value)
 {
     m_objects = value;
 
-    VisToolMirrorByLine *operation = qobject_cast<VisToolMirrorByLine *>(vis);
+    VisToolMirrorByLine* operation = qobject_cast<VisToolMirrorByLine*>(vis);
     SCASSERT(operation != nullptr)
     operation->setObjects(sourceToObjects(m_objects));
 }
@@ -177,20 +178,18 @@ void DialogMirrorByLine::setSourceObjects(const QVector<SourceItem> &value)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByLine::ShowDialog(bool click)
 {
-    if (stage1 && not click)
-    {
-        if (m_objects.isEmpty())
-        {
+    if (stage1 && not click) {
+        if (m_objects.isEmpty()) {
             return;
         }
 
         stage1 = false;
 
-        VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+        VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
         SCASSERT(scene != nullptr)
         scene->clearSelection();
 
-        VisToolMirrorByLine *operation = qobject_cast<VisToolMirrorByLine *>(vis);
+        VisToolMirrorByLine* operation = qobject_cast<VisToolMirrorByLine*>(vis);
         SCASSERT(operation != nullptr)
         operation->setObjects(sourceToObjects(m_objects));
         operation->VisualMode();
@@ -208,9 +207,7 @@ void DialogMirrorByLine::ShowDialog(bool click)
         qApp->getSceneView()->allowRubberBand(false);
 
         emit ToolTip(tr("Select first mirror line point"));
-    }
-    else if (not stage1 && prepare && click)
-    {
+    } else if (not stage1 && prepare && click) {
         CheckState();
         setModal(true);
         emit ToolTip("");
@@ -219,59 +216,56 @@ void DialogMirrorByLine::ShowDialog(bool click)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByLine::ChosenObject(quint32 id, const SceneObject &type)
+void DialogMirrorByLine::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (not stage1 && not prepare)// After first choose we ignore all objects
+    if (not stage1 && not prepare)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            auto object = std::find_if(m_objects.begin(), m_objects.end(),
-                                    [id](const SourceItem &item) { return item.id == id; });
+        if (type == SceneObject::Point) {
+            auto object =
+                std::find_if(m_objects.begin(), m_objects.end(), [id](const SourceItem& item) {
+                    return item.id == id;
+                });
 
-            switch (number)
-            {
-                case 0:
-                    if (object != m_objects.end())
-                    {
-                        emit ToolTip(tr("Select first mirror line point that is not part of the list of objects"));
-                        return;
-                    }
+            switch (number) {
+            case 0:
+                if (object != m_objects.end()) {
+                    emit ToolTip(tr(
+                        "Select first mirror line point that is not part of the list of objects"));
+                    return;
+                }
 
-                    if (SetObject(id, ui->firstLinePoint_ComboBox, tr("Select second mirror line point")))
-                    {
-                        number++;
-                        VisToolMirrorByLine *operation = qobject_cast<VisToolMirrorByLine *>(vis);
-                        SCASSERT(operation != nullptr)
-                        operation->setFirstLinePointId(id);
-                        operation->RefreshGeometry();
-                    }
-                    break;
-                case 1:
-                    if (object != m_objects.end())
-                    {
-                        emit ToolTip(tr("Select second mirror line point that is not part of the list of objects"));
-                        return;
-                    }
+                if (SetObject(
+                        id, ui->firstLinePoint_ComboBox, tr("Select second mirror line point"))) {
+                    number++;
+                    VisToolMirrorByLine* operation = qobject_cast<VisToolMirrorByLine*>(vis);
+                    SCASSERT(operation != nullptr)
+                    operation->setFirstLinePointId(id);
+                    operation->RefreshGeometry();
+                }
+                break;
+            case 1:
+                if (object != m_objects.end()) {
+                    emit ToolTip(tr(
+                        "Select second mirror line point that is not part of the list of objects"));
+                    return;
+                }
 
-                    if (getCurrentObjectId(ui->firstLinePoint_ComboBox) != id)
-                    {
-                        if (SetObject(id, ui->secondLinePoint_ComboBox, ""))
-                        {
-                            if (flagError)
-                            {
-                                number = 0;
-                                prepare = true;
+                if (getCurrentObjectId(ui->firstLinePoint_ComboBox) != id) {
+                    if (SetObject(id, ui->secondLinePoint_ComboBox, "")) {
+                        if (flagError) {
+                            number = 0;
+                            prepare = true;
 
-                                VisToolMirrorByLine *operation = qobject_cast<VisToolMirrorByLine *>(vis);
-                                SCASSERT(operation != nullptr)
-                                operation->setSecondLinePointId(id);
-                                operation->RefreshGeometry();
-                            }
+                            VisToolMirrorByLine* operation =
+                                qobject_cast<VisToolMirrorByLine*>(vis);
+                            SCASSERT(operation != nullptr)
+                            operation->setSecondLinePointId(id);
+                            operation->RefreshGeometry();
                         }
                     }
-                    break;
-                default:
-                    break;
+                }
+                break;
+            default: break;
             }
         }
     }
@@ -281,24 +275,20 @@ void DialogMirrorByLine::ChosenObject(quint32 id, const SceneObject &type)
 void DialogMirrorByLine::SelectedObject(bool selected, quint32 id, quint32 tool)
 {
     Q_UNUSED(tool)
-    if (stage1)
-    {
-        auto object = std::find_if(m_objects.begin(), m_objects.end(),
-                                     [id](const SourceItem &item) { return item.id == id; });
+    if (stage1) {
+        auto object =
+            std::find_if(m_objects.begin(), m_objects.end(), [id](const SourceItem& item) {
+                return item.id == id;
+            });
 
-        if (selected)
-        {
-            if (object == m_objects.cend())
-            {
+        if (selected) {
+            if (object == m_objects.cend()) {
                 SourceItem item;
                 item.id = id;
                 m_objects.append(item);
             }
-        }
-        else
-        {
-            if (object != m_objects.end())
-            {
+        } else {
+            if (object != m_objects.end()) {
                 m_objects.erase(object);
             }
         }
@@ -309,27 +299,20 @@ void DialogMirrorByLine::SelectedObject(bool selected, quint32 id, quint32 tool)
 void DialogMirrorByLine::suffixChanged()
 {
     QLineEdit* edit = qobject_cast<QLineEdit*>(sender());
-    if (edit)
-    {
+    if (edit) {
         const QString suffix = edit->text();
-        if (suffix.isEmpty())
-        {
+        if (suffix.isEmpty()) {
             flagName = false;
             ChangeColor(ui->suffix_Label, Qt::red);
             CheckState();
             return;
-        }
-        else
-        {
-            if (m_suffix != suffix)
-            {
+        } else {
+            if (m_suffix != suffix) {
                 QRegularExpression rx(NameRegExp());
                 const QStringList uniqueNames = VContainer::AllUniqueNames();
-                for (int i=0; i < uniqueNames.size(); ++i)
-                {
+                for (int i = 0; i < uniqueNames.size(); ++i) {
                     const QString name = uniqueNames.at(i) + suffix;
-                    if (not rx.match(name).hasMatch() || not data->IsUnique(name))
-                    {
+                    if (not rx.match(name).hasMatch() || not data->IsUnique(name)) {
                         flagName = false;
                         ChangeColor(ui->suffix_Label, Qt::red);
                         CheckState();
@@ -355,17 +338,14 @@ void DialogMirrorByLine::CheckState()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByLine::ShowVisualization()
-{
-    AddVisualization<VisToolMirrorByLine>();
-}
+void DialogMirrorByLine::ShowVisualization() { AddVisualization<VisToolMirrorByLine>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByLine::SaveData()
 {
     m_suffix = ui->suffix_LineEdit->text();
 
-    VisToolMirrorByLine *operation = qobject_cast<VisToolMirrorByLine *>(vis);
+    VisToolMirrorByLine* operation = qobject_cast<VisToolMirrorByLine*>(vis);
     SCASSERT(operation != nullptr)
 
     operation->setObjects(sourceToObjects(m_objects));
@@ -383,28 +363,28 @@ void DialogMirrorByLine::pointChanged()
     ChangeColor(ui->secondLinePoint_Label, color);
 
     quint32 id1 = getCurrentObjectId(ui->firstLinePoint_ComboBox);
-    auto objectId1 = std::find_if(m_objects.begin(), m_objects.end(),
-                                 [id1](const SourceItem &item) { return item.id == id1;});
+    auto objectId1 =
+        std::find_if(m_objects.begin(), m_objects.end(), [id1](const SourceItem& item) {
+            return item.id == id1;
+        });
 
     quint32 id2 = getCurrentObjectId(ui->secondLinePoint_ComboBox);
-    auto objectId2 = std::find_if(m_objects.begin(), m_objects.end(),
-                                 [id2](const SourceItem &item) { return item.id == id2;});
+    auto objectId2 =
+        std::find_if(m_objects.begin(), m_objects.end(), [id2](const SourceItem& item) {
+            return item.id == id2;
+        });
 
-    if (getCurrentObjectId(ui->firstLinePoint_ComboBox) == getCurrentObjectId(ui->secondLinePoint_ComboBox))
-    {
+    if (getCurrentObjectId(ui->firstLinePoint_ComboBox)
+        == getCurrentObjectId(ui->secondLinePoint_ComboBox)) {
         flagError = false;
         color = errorColor;
         ChangeColor(ui->firstLinePoint_Label, color);
         ChangeColor(ui->secondLinePoint_Label, color);
-    }
-    else if (objectId1 != m_objects.end())
-    {
+    } else if (objectId1 != m_objects.end()) {
         flagError = false;
         color = errorColor;
         ChangeColor(ui->firstLinePoint_Label, color);
-    }
-    else if (objectId2 != m_objects.end())
-    {
+    } else if (objectId2 != m_objects.end()) {
         flagError = false;
         color = errorColor;
         ChangeColor(ui->secondLinePoint_Label, color);

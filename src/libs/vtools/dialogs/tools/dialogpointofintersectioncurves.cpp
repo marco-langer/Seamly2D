@@ -65,8 +65,8 @@
 #include "ui_dialogpointofintersectioncurves.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogPointOfIntersectionCurves::DialogPointOfIntersectionCurves(const VContainer *data, const quint32 &toolId,
-                                                                 QWidget *parent)
+DialogPointOfIntersectionCurves::DialogPointOfIntersectionCurves(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogPointOfIntersectionCurves)
 {
@@ -87,21 +87,30 @@ DialogPointOfIntersectionCurves::DialogPointOfIntersectionCurves(const VContaine
     FillComboBoxVCrossCurvesPoint(ui->verticalTake_ComboBox);
     FillComboBoxHCrossCurvesPoint(ui->horizontalTake_ComboBox);
 
-    connect(ui->lineEditNamePoint, &QLineEdit::textChanged, this, &DialogPointOfIntersectionCurves::NamePointChanged);
-    connect(ui->comboBoxCurve1, &QComboBox::currentTextChanged, this, &DialogPointOfIntersectionCurves::CurveChanged);
-    connect(ui->comboBoxCurve2, &QComboBox::currentTextChanged, this, &DialogPointOfIntersectionCurves::CurveChanged);
+    connect(
+        ui->lineEditNamePoint,
+        &QLineEdit::textChanged,
+        this,
+        &DialogPointOfIntersectionCurves::NamePointChanged);
+    connect(
+        ui->comboBoxCurve1,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogPointOfIntersectionCurves::CurveChanged);
+    connect(
+        ui->comboBoxCurve2,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogPointOfIntersectionCurves::CurveChanged);
 
     vis = new VisToolPointOfIntersectionCurves(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogPointOfIntersectionCurves::~DialogPointOfIntersectionCurves()
-{
-    delete ui;
-}
+DialogPointOfIntersectionCurves::~DialogPointOfIntersectionCurves() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfIntersectionCurves::SetPointName(const QString &value)
+void DialogPointOfIntersectionCurves::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -114,11 +123,11 @@ quint32 DialogPointOfIntersectionCurves::GetFirstCurveId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfIntersectionCurves::SetFirstCurveId(const quint32 &value)
+void DialogPointOfIntersectionCurves::SetFirstCurveId(const quint32& value)
 {
     setCurrentCurveId(ui->comboBoxCurve1, value);
 
-    auto point = qobject_cast<VisToolPointOfIntersectionCurves *>(vis);
+    auto point = qobject_cast<VisToolPointOfIntersectionCurves*>(vis);
     SCASSERT(point != nullptr)
     point->setObject1Id(value);
 }
@@ -130,11 +139,11 @@ quint32 DialogPointOfIntersectionCurves::GetSecondCurveId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfIntersectionCurves::SetSecondCurveId(const quint32 &value)
+void DialogPointOfIntersectionCurves::SetSecondCurveId(const quint32& value)
 {
     setCurrentCurveId(ui->comboBoxCurve2, value);
 
-    auto point = qobject_cast<VisToolPointOfIntersectionCurves *>(vis);
+    auto point = qobject_cast<VisToolPointOfIntersectionCurves*>(vis);
     SCASSERT(point != nullptr)
     point->setObject2Id(value);
 }
@@ -146,14 +155,13 @@ VCrossCurvesPoint DialogPointOfIntersectionCurves::GetVCrossPoint() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfIntersectionCurves::SetVCrossPoint(const VCrossCurvesPoint &vP)
+void DialogPointOfIntersectionCurves::SetVCrossPoint(const VCrossCurvesPoint& vP)
 {
     auto index = ui->verticalTake_ComboBox->findData(static_cast<int>(vP));
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->verticalTake_ComboBox->setCurrentIndex(index);
 
-        auto point = qobject_cast<VisToolPointOfIntersectionCurves *>(vis);
+        auto point = qobject_cast<VisToolPointOfIntersectionCurves*>(vis);
         SCASSERT(point != nullptr)
         point->setVCrossPoint(vP);
     }
@@ -166,56 +174,47 @@ HCrossCurvesPoint DialogPointOfIntersectionCurves::GetHCrossPoint() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfIntersectionCurves::SetHCrossPoint(const HCrossCurvesPoint &hP)
+void DialogPointOfIntersectionCurves::SetHCrossPoint(const HCrossCurvesPoint& hP)
 {
     auto index = ui->horizontalTake_ComboBox->findData(static_cast<int>(hP));
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->horizontalTake_ComboBox->setCurrentIndex(index);
 
-        auto point = qobject_cast<VisToolPointOfIntersectionCurves *>(vis);
+        auto point = qobject_cast<VisToolPointOfIntersectionCurves*>(vis);
         SCASSERT(point != nullptr)
         point->setHCrossPoint(hP);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfIntersectionCurves::ChosenObject(quint32 id, const SceneObject &type)
+void DialogPointOfIntersectionCurves::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Spline
-                || type == SceneObject::Arc
-                || type == SceneObject::ElArc
-                || type == SceneObject::SplinePath)
-        {
-            auto point = qobject_cast<VisToolPointOfIntersectionCurves *>(vis);
+        if (type == SceneObject::Spline || type == SceneObject::Arc || type == SceneObject::ElArc
+            || type == SceneObject::SplinePath) {
+            auto point = qobject_cast<VisToolPointOfIntersectionCurves*>(vis);
             SCASSERT(point != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxCurve1, tr("Select second curve")))
-                    {
-                        number++;
-                        point->VisualMode(id);
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxCurve1, tr("Select second curve"))) {
+                    number++;
+                    point->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->comboBoxCurve1) != id) {
+                    if (SetObject(id, ui->comboBoxCurve2, "")) {
+                        number = 0;
+                        point->setObject2Id(id);
+                        point->RefreshGeometry();
+                        prepare = true;
+                        DialogAccepted();
                     }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->comboBoxCurve1) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxCurve2, ""))
-                        {
-                            number = 0;
-                            point->setObject2Id(id);
-                            point->RefreshGeometry();
-                            prepare = true;
-                            DialogAccepted();
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                }
+                break;
+            default: break;
             }
         }
     }
@@ -232,7 +231,7 @@ void DialogPointOfIntersectionCurves::SaveData()
 {
     pointName = ui->lineEditNamePoint->text();
 
-    auto point = qobject_cast<VisToolPointOfIntersectionCurves *>(vis);
+    auto point = qobject_cast<VisToolPointOfIntersectionCurves*>(vis);
     SCASSERT(point != nullptr)
 
     point->setObject1Id(GetFirstCurveId());
@@ -248,8 +247,7 @@ void DialogPointOfIntersectionCurves::CheckState()
     SCASSERT(ok_Button != nullptr)
     ok_Button->setEnabled(flagName && flagError);
     // In case dialog hasn't apply button
-    if (apply_Button != nullptr)
-    {
+    if (apply_Button != nullptr) {
         apply_Button->setEnabled(ok_Button->isEnabled());
     }
 }
@@ -258,13 +256,10 @@ void DialogPointOfIntersectionCurves::CheckState()
 void DialogPointOfIntersectionCurves::CurveChanged()
 {
     QColor color = okColor;
-    if (getCurrentObjectId(ui->comboBoxCurve1) == getCurrentObjectId(ui->comboBoxCurve2))
-    {
+    if (getCurrentObjectId(ui->comboBoxCurve1) == getCurrentObjectId(ui->comboBoxCurve2)) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }

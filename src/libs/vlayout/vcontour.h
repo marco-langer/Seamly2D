@@ -72,40 +72,41 @@ class VContour
 public:
     VContour();
     VContour(int height, int width);
-    VContour(const VContour &contour);
+    VContour(const VContour& contour);
 
     ~VContour();
 
-    VContour &operator=(const VContour &contour);
+    VContour& operator=(const VContour& contour);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VContour &operator=(VContour &&contour) Q_DECL_NOTHROW;
+    VContour& operator=(VContour&& contour) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VContour &contour) Q_DECL_NOTHROW;
+    void Swap(VContour& contour) Q_DECL_NOTHROW;
 
-    void             SetContour(const QVector<QPointF> &contour);
+    void SetContour(const QVector<QPointF>& contour);
     QVector<QPointF> GetContour() const;
 
     quint32 GetShift() const;
-    void    SetShift(quint32 shift);
+    void SetShift(quint32 shift);
 
-    int  GetHeight() const;
+    int GetHeight() const;
     void setHeight(int height);
 
-    int  GetWidth() const;
+    int GetWidth() const;
     void SetWidth(int width);
 
     QSizeF GetSize() const;
 
-    QVector<QPointF> UniteWithContour(const VLayoutPiece &detail, int globalI, int detJ, BestFrom type) const;
+    QVector<QPointF>
+    UniteWithContour(const VLayoutPiece& detail, int globalI, int detJ, BestFrom type) const;
 
     QLineF EmptySheetEdge() const;
-    int    GlobalEdgesCount() const;
+    int GlobalEdgesCount() const;
     QLineF GlobalEdge(int i) const;
-    QVector<QPointF> CutEdge(const QLineF &edge) const;
+    QVector<QPointF> CutEdge(const QLineF& edge) const;
     QVector<QPointF> CutEmptySheetEdge() const;
 
-    const QPointF &	at(int i) const;
+    const QPointF& at(int i) const;
 
     QRectF BoundingRect() const;
 
@@ -114,9 +115,9 @@ public:
 private:
     QSharedDataPointer<VContourData> d;
 
-    void AppendWhole(QVector<QPointF> &contour, const VLayoutPiece &detail, int detJ) const;
+    void AppendWhole(QVector<QPointF>& contour, const VLayoutPiece& detail, int detJ) const;
 };
 
 Q_DECLARE_TYPEINFO(VContour, Q_MOVABLE_TYPE);
 
-#endif // VCONTOUR_H
+#endif   // VCONTOUR_H

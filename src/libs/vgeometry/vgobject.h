@@ -74,65 +74,69 @@ class VGObject
 {
 public:
     VGObject();
-    explicit VGObject(const GOType &type, const quint32 &idObject = 0, const Draw &mode = Draw::Calculation);
-    VGObject(const VGObject &obj);
+    explicit VGObject(
+        const GOType& type, const quint32& idObject = 0, const Draw& mode = Draw::Calculation);
+    VGObject(const VGObject& obj);
 
     virtual ~VGObject();
 
-    VGObject& operator= (const VGObject &obj);
+    VGObject& operator=(const VGObject& obj);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VGObject &operator=(VGObject &&obj) Q_DECL_NOTHROW;
+    VGObject& operator=(VGObject&& obj) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VGObject &obj) Q_DECL_NOTHROW;
-    quint32         getIdObject() const;
-    void            setIdObject(const quint32 &value);
+    void Swap(VGObject& obj) Q_DECL_NOTHROW;
+    quint32 getIdObject() const;
+    void setIdObject(const quint32& value);
 
     virtual QString name() const;
-    void            setName(const QString &name);
+    void setName(const QString& name);
 
-    Draw            getMode() const;
-    void            setMode(const Draw &value);
+    Draw getMode() const;
+    void setMode(const Draw& value);
 
-    GOType          getType() const;
-    void            setType(const GOType &type);
+    GOType getType() const;
+    void setType(const GOType& type);
 
-    quint32         id() const;
-    virtual void    setId(const quint32 &id);
+    quint32 id() const;
+    virtual void setId(const quint32& id);
 
-    quint32         getIdTool() const;
+    quint32 getIdTool() const;
 
-    static QLineF  BuildLine(const QPointF &p1, const qreal& length, const qreal &angle);
-    static QPointF BuildRay(const QPointF &firstPoint, const qreal &angle, const QRectF &scRect);
-    static QLineF  BuildAxis(const QPointF &p, const qreal &angle, const QRectF &scRect);
-    static QLineF  BuildAxis(const QPointF &p1, const QPointF &p2, const QRectF &scRect);
+    static QLineF BuildLine(const QPointF& p1, const qreal& length, const qreal& angle);
+    static QPointF BuildRay(const QPointF& firstPoint, const qreal& angle, const QRectF& scRect);
+    static QLineF BuildAxis(const QPointF& p, const qreal& angle, const QRectF& scRect);
+    static QLineF BuildAxis(const QPointF& p1, const QPointF& p2, const QRectF& scRect);
 
-    static int     ContactPoints (const QPointF &p, const QPointF &center, qreal radius, QPointF &p1, QPointF &p2);
-    static QPointF LineIntersectRect(const QRectF &rec, const QLineF &line);
-    static int     IntersectionCircles(const QPointF &c1, double r1, const QPointF &c2, double r2, QPointF &p1,
-                                       QPointF &p2);
-    static qint32  LineIntersectCircle(const QPointF &center, qreal radius, const QLineF &line, QPointF &p1,
-                                       QPointF &p2);
-    static QPointF ClosestPoint(const QLineF &line, const QPointF &point);
-    static QPointF addVector (const QPointF &p, const QPointF &p1, const QPointF &p2, qreal k);
-    static void    LineCoefficients(const QLineF &line, qreal *a, qreal *b, qreal *c);
-    static bool    IsPointOnLineSegment (const QPointF &t, const QPointF &p1, const QPointF &p2);
-    static bool    IsPointOnLineviaPDP(const QPointF &t, const QPointF &p1, const QPointF &p2);
+    static int
+    ContactPoints(const QPointF& p, const QPointF& center, qreal radius, QPointF& p1, QPointF& p2);
+    static QPointF LineIntersectRect(const QRectF& rec, const QLineF& line);
+    static int IntersectionCircles(
+        const QPointF& c1, double r1, const QPointF& c2, double r2, QPointF& p1, QPointF& p2);
+    static qint32 LineIntersectCircle(
+        const QPointF& center, qreal radius, const QLineF& line, QPointF& p1, QPointF& p2);
+    static QPointF ClosestPoint(const QLineF& line, const QPointF& point);
+    static QPointF addVector(const QPointF& p, const QPointF& p1, const QPointF& p2, qreal k);
+    static void LineCoefficients(const QLineF& line, qreal* a, qreal* b, qreal* c);
+    static bool IsPointOnLineSegment(const QPointF& t, const QPointF& p1, const QPointF& p2);
+    static bool IsPointOnLineviaPDP(const QPointF& t, const QPointF& p1, const QPointF& p2);
 
     template <typename T>
-    static QVector<T> GetReversePoints(const QVector<T> &points);
-    static int GetLengthContour(const QVector<QPointF> &contour, const QVector<QPointF> &newPoints);
+    static QVector<T> GetReversePoints(const QVector<T>& points);
+    static int GetLengthContour(const QVector<QPointF>& contour, const QVector<QPointF>& newPoints);
 
     static const double accuracyPointOnLine;
+
 protected:
-    static QTransform flipTransform(const QLineF &axis);
+    static QTransform flipTransform(const QLineF& axis);
+
 private:
     QSharedDataPointer<VGObjectData> d;
 
-    static double PerpDotProduct(const QPointF &p1, const QPointF &p2, const QPointF &t);
-    static double GetEpsilon(const QPointF &p1, const QPointF &p2);
+    static double PerpDotProduct(const QPointF& p1, const QPointF& p2, const QPointF& t);
+    static double GetEpsilon(const QPointF& p1, const QPointF& p2);
 
-    static int     PointInCircle (const QPointF &p, const QPointF &center, qreal radius);
+    static int PointInCircle(const QPointF& p, const QPointF& center, qreal radius);
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -142,16 +146,14 @@ private:
  * @return reverced points.
  */
 template <typename T>
-QVector<T> VGObject::GetReversePoints(const QVector<T> &points)
+QVector<T> VGObject::GetReversePoints(const QVector<T>& points)
 {
-    if (points.isEmpty())
-    {
+    if (points.isEmpty()) {
         return points;
     }
     QVector<T> reversePoints(points.size());
     qint32 j = 0;
-    for (qint32 i = points.size() - 1; i >= 0; --i)
-    {
+    for (qint32 i = points.size() - 1; i >= 0; --i) {
         reversePoints.replace(j, points.at(i));
         ++j;
     }
@@ -160,4 +162,4 @@ QVector<T> VGObject::GetReversePoints(const QVector<T> &points)
 
 Q_DECLARE_TYPEINFO(VGObject, Q_MOVABLE_TYPE);
 
-#endif // VGOBJECT_H
+#endif   // VGOBJECT_H

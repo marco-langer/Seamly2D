@@ -52,7 +52,6 @@
 #ifndef VTOOLLINEINTERSECTAXIS_H
 #define VTOOLLINEINTERSECTAXIS_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QGraphicsItem>
 #include <QLineF>
@@ -61,72 +60,101 @@
 #include <QPointF>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vpatterndb/vformula.h"
 #include "../vmisc/def.h"
+#include "../vpatterndb/vformula.h"
 #include "vtoollinepoint.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 class VToolLineIntersectAxis : public VToolLinePoint
 {
     Q_OBJECT
 public:
-    virtual             ~VToolLineIntersectAxis() Q_DECL_EQ_DEFAULT;
-    virtual void         setDialog() Q_DECL_OVERRIDE;
+    virtual ~VToolLineIntersectAxis() Q_DECL_EQ_DEFAULT;
+    virtual void setDialog() Q_DECL_OVERRIDE;
 
-    static VToolLineIntersectAxis *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene,
-                                          VAbstractPattern *doc, VContainer *data);
-    static VToolLineIntersectAxis *Create(const quint32 _id, const QString &pointName, const QString &lineType,
-                                          const QString &lineWeight, const QString &lineColor,
-                                          QString &formulaAngle, quint32 basePointId,
-                                          quint32 firstPointId, quint32 secondPointId,
-                                          qreal mx, qreal my, bool showPointName, VMainGraphicsScene  *scene,
-                                          VAbstractPattern *doc,
-                                          VContainer *data, const Document &parse, const Source &typeCreation);
+    static VToolLineIntersectAxis* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static VToolLineIntersectAxis* Create(
+        const quint32 _id,
+        const QString& pointName,
+        const QString& lineType,
+        const QString& lineWeight,
+        const QString& lineColor,
+        QString& formulaAngle,
+        quint32 basePointId,
+        quint32 firstPointId,
+        quint32 secondPointId,
+        qreal mx,
+        qreal my,
+        bool showPointName,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
 
-    static QPointF       FindPoint(const QLineF &axis, const QLineF &line);
+    static QPointF FindPoint(const QLineF& axis, const QLineF& line);
 
     static const QString ToolType;
-    virtual int          type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::LineIntersectAxis)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::LineIntersectAxis)
+    };
 
-    QString              FirstLinePoint() const;
-    QString              SecondLinePoint() const;
+    QString FirstLinePoint() const;
+    QString SecondLinePoint() const;
 
-    VFormula             GetFormulaAngle() const;
-    void                 SetFormulaAngle(const VFormula &value);
+    VFormula GetFormulaAngle() const;
+    void SetFormulaAngle(const VFormula& value);
 
-    quint32              GetFirstPointId() const;
-    void                 SetFirstPointId(const quint32 &value);
+    quint32 GetFirstPointId() const;
+    void SetFirstPointId(const quint32& value);
 
-    quint32              GetSecondPointId() const;
-    void                 SetSecondPointId(const quint32 &value);
+    quint32 GetSecondPointId() const;
+    void SetSecondPointId(const quint32& value);
 
-    virtual void         ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
 
 protected slots:
-    virtual void         showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void         SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void         ReadToolAttributes(const QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SetVisualization() Q_DECL_OVERRIDE;
-    virtual QString      makeToolTip() const Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
+    virtual QString makeToolTip() const Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VToolLineIntersectAxis)
 
-    QString              formulaAngle;
-    quint32              firstPointId;
-    quint32              secondPointId;
+    QString formulaAngle;
+    quint32 firstPointId;
+    quint32 secondPointId;
 
-    VToolLineIntersectAxis(VAbstractPattern *doc, VContainer *data, const quint32 &id, const QString &lineType,
-                           const QString &lineWeight, const QString &lineColor, const QString &formulaAngle,
-                           const quint32 &basePointId, const quint32 &firstPointId, const quint32 &secondPointId,
-                           const Source &typeCreation, QGraphicsItem * parent = nullptr);
+    VToolLineIntersectAxis(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        const QString& lineType,
+        const QString& lineWeight,
+        const QString& lineColor,
+        const QString& formulaAngle,
+        const quint32& basePointId,
+        const quint32& firstPointId,
+        const quint32& secondPointId,
+        const Source& typeCreation,
+        QGraphicsItem* parent = nullptr);
 };
 
-#endif // VTOOLLINEINTERSECTAXIS_H
+#endif   // VTOOLLINEINTERSECTAXIS_H

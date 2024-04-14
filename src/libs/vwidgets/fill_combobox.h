@@ -32,34 +32,33 @@
 /**
  * A comboBox for choosing a fill pattern.
  */
-class PieceFillComboBox: public QComboBox
+class PieceFillComboBox : public QComboBox
 {
     Q_OBJECT
 
 public:
-              PieceFillComboBox(QWidget *parent = nullptr, const char *name = nullptr);
-              PieceFillComboBox(int width, int height, QWidget *parent = nullptr, const char *name = nullptr);
-    virtual  ~PieceFillComboBox();
+    PieceFillComboBox(QWidget* parent = nullptr, const char* name = nullptr);
+    PieceFillComboBox(int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
+    virtual ~PieceFillComboBox();
 
 
-
-    QString   getFill() const;
-    void      setFill(const QString &fill);
-    QPixmap   createFillIcon(const int w, const int h, Qt::BrushStyle style);
-    int       getIconWidth();
-    int       getIconHeight();
+    QString getFill() const;
+    void setFill(const QString& fill);
+    QPixmap createFillIcon(const int w, const int h, Qt::BrushStyle style);
+    int getIconWidth();
+    int getIconHeight();
 
 private slots:
-    void      fillChanged(int index);
+    void fillChanged(int index);
 
 signals:
-    void      fillChangedSignal(const QString &fill);
+    void fillChangedSignal(const QString& fill);
 
 private:
-    void      init();
-    QString   m_currentFill;
-    int       m_iconWidth;
-    int       m_iconHeight;
+    void init();
+    QString m_currentFill;
+    int m_iconWidth;
+    int m_iconHeight;
 };
 
 #endif

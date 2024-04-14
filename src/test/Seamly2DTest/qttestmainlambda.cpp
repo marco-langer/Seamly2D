@@ -51,48 +51,47 @@
 
 #include <QtTest>
 
-#include "tst_vposter.h"
-#include "tst_vabstractpiece.h"
-#include "tst_vspline.h"
-#include "tst_nameregexp.h"
-#include "tst_vlayoutdetail.h"
-#include "tst_varc.h"
-#include "tst_vellipticalarc.h"
-#include "tst_qmutokenparser.h"
-#include "tst_vmeasurements.h"
-#include "tst_vlockguard.h"
-#include "tst_misc.h"
-#include "tst_vcommandline.h"
-#include "tst_vpiece.h"
 #include "tst_findpoint.h"
-#include "tst_vabstractcurve.h"
-#include "tst_vcubicbezierpath.h"
-#include "tst_vgobject.h"
-#include "tst_vsplinepath.h"
-#include "tst_vpointf.h"
+#include "tst_misc.h"
+#include "tst_nameregexp.h"
+#include "tst_qmutokenparser.h"
 #include "tst_readval.h"
+#include "tst_vabstractcurve.h"
+#include "tst_vabstractpiece.h"
+#include "tst_varc.h"
+#include "tst_vcommandline.h"
+#include "tst_vcubicbezierpath.h"
+#include "tst_vellipticalarc.h"
+#include "tst_vgobject.h"
+#include "tst_vlayoutdetail.h"
+#include "tst_vlockguard.h"
+#include "tst_vmeasurements.h"
+#include "tst_vpiece.h"
+#include "tst_vpointf.h"
+#include "tst_vposter.h"
+#include "tst_vspline.h"
+#include "tst_vsplinepath.h"
 #include "tst_vtranslatevars.h"
 
-#include "../vmisc/def.h"
 #include "../qmuparser/qmudef.h"
-#include "../vmisc/vabstractapplication.h"
+#include "../vmisc/def.h"
 #include "../vmisc/projectversion.h"
+#include "../vmisc/vabstractapplication.h"
 
 class TestApplication2D : public VAbstractApplication
 {
 public:
+    TestApplication2D(int& argc, char** argv);
+    virtual ~TestApplication2D() Q_DECL_EQ_DEFAULT;
 
-                                  TestApplication2D(int &argc, char ** argv);
-    virtual                      ~TestApplication2D() Q_DECL_EQ_DEFAULT;
-
-    virtual const VTranslateVars *translateVariables();
-    virtual void                  openSettings();
-    virtual bool                  isAppInGUIMode() const;
-    virtual void                  initTranslateVariables();
+    virtual const VTranslateVars* translateVariables();
+    virtual void openSettings();
+    virtual bool isAppInGUIMode() const;
+    virtual void initTranslateVariables();
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-TestApplication2D::TestApplication2D(int &argc, char **argv)
+TestApplication2D::TestApplication2D(int& argc, char** argv)
     : VAbstractApplication(argc, argv)
 {
     setApplicationName(VER_INTERNALNAME_2D_STR);
@@ -101,39 +100,34 @@ TestApplication2D::TestApplication2D(int &argc, char **argv)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const VTranslateVars *TestApplication2D::translateVariables()
-{
-    return nullptr;
-}
+const VTranslateVars* TestApplication2D::translateVariables() { return nullptr; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TestApplication2D::openSettings()
 {
-    settings = new VSettings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(),
-                             QCoreApplication::applicationName(), this);
+    settings = new VSettings(
+        QSettings::IniFormat,
+        QSettings::UserScope,
+        QCoreApplication::organizationName(),
+        QCoreApplication::applicationName(),
+        this);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool TestApplication2D::isAppInGUIMode() const
-{
-    return false;
-}
+bool TestApplication2D::isAppInGUIMode() const { return false; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TestApplication2D::initTranslateVariables()
-{
-}
+void TestApplication2D::initTranslateVariables() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
     Q_INIT_RESOURCE(schema);
 
-    TestApplication2D app( argc, argv );// For QPrinter
+    TestApplication2D app(argc, argv);   // For QPrinter
 
     int status = 0;
-    auto ASSERT_TEST = [&status, argc, argv](QObject* obj)
-    {
+    auto ASSERT_TEST = [&status, argc, argv](QObject* obj) {
         status |= QTest::qExec(obj, argc, argv);
         delete obj;
     };

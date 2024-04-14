@@ -1,29 +1,29 @@
 /******************************************************************************
-*   @file   vtoolpointofintersectionarcs.cpp
-**  @author Douglas S Caskey
-**  @date   17 Sep, 2023
-**
-**  @brief
-**  @copyright
-**  This source code is part of the Seamly2D project, a pattern making
-**  program to create and model patterns of clothing.
-**  Copyright (C) 2017-2023 Seamly2D project
-**  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
-**
-**  Seamly2D is free software: you can redistribute it and/or modify
-**  it under the terms of the GNU General Public License as published by
-**  the Free Software Foundation, either version 3 of the License, or
-**  (at your option) any later version.
-**
-**  Seamly2D is distributed in the hope that it will be useful,
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**  GNU General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
-**
-*************************************************************************/
+ *   @file   vtoolpointofintersectionarcs.cpp
+ **  @author Douglas S Caskey
+ **  @date   17 Sep, 2023
+ **
+ **  @brief
+ **  @copyright
+ **  This source code is part of the Seamly2D project, a pattern making
+ **  program to create and model patterns of clothing.
+ **  Copyright (C) 2017-2023 Seamly2D project
+ **  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ *************************************************************************/
 
 /************************************************************************
  **
@@ -55,21 +55,21 @@
 
 #include "vtoolpointofintersectionarcs.h"
 
-#include "vtoolsinglepoint.h"
-#include "../ifc/ifcdef.h"
+#include "../../../../dialogs/tools/dialogpointofintersectionarcs.h"
+#include "../../../../dialogs/tools/dialogtool.h"
+#include "../../../../visualization/line/vistoolpointofintersectionarcs.h"
+#include "../../../../visualization/visualization.h"
+#include "../../../vabstracttool.h"
+#include "../../vdrawtool.h"
 #include "../ifc/exception/vexception.h"
+#include "../ifc/ifcdef.h"
 #include "../vgeometry/varc.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "../../vdrawtool.h"
-#include "../../../vabstracttool.h"
-#include "../../../../dialogs/tools/dialogtool.h"
-#include "../../../../dialogs/tools/dialogpointofintersectionarcs.h"
-#include "../../../../visualization/visualization.h"
-#include "../../../../visualization/line/vistoolpointofintersectionarcs.h"
+#include "vtoolsinglepoint.h"
 
 #include <QLineF>
 #include <QMessageBox>
@@ -79,15 +79,21 @@
 #include <QStringDataPtr>
 #include <new>
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 const QString VToolPointOfIntersectionArcs::ToolType = QStringLiteral("pointOfIntersectionArcs");
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolPointOfIntersectionArcs::VToolPointOfIntersectionArcs(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                                           const quint32 &firstArcId, const quint32 &secondArcId,
-                                                           CrossCirclesPoint pType, const Source &typeCreation,
-                                                           QGraphicsItem *parent)
+VToolPointOfIntersectionArcs::VToolPointOfIntersectionArcs(
+    VAbstractPattern* doc,
+    VContainer* data,
+    const quint32& id,
+    const quint32& firstArcId,
+    const quint32& secondArcId,
+    CrossCirclesPoint pType,
+    const Source& typeCreation,
+    QGraphicsItem* parent)
     : VToolSinglePoint(doc, data, id, QColor(qApp->Settings()->getPointNameColor()), parent)
     , firstArcId(firstArcId)
     , secondArcId(secondArcId)
@@ -100,7 +106,8 @@ VToolPointOfIntersectionArcs::VToolPointOfIntersectionArcs(VAbstractPattern *doc
 void VToolPointOfIntersectionArcs::setDialog()
 {
     SCASSERT(not m_dialog.isNull())
-    QSharedPointer<DialogPointOfIntersectionArcs> dialogTool = m_dialog.objectCast<DialogPointOfIntersectionArcs>();
+    QSharedPointer<DialogPointOfIntersectionArcs> dialogTool =
+        m_dialog.objectCast<DialogPointOfIntersectionArcs>();
     SCASSERT(not dialogTool.isNull())
     const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
     dialogTool->SetFirstArcId(firstArcId);
@@ -110,45 +117,63 @@ void VToolPointOfIntersectionArcs::setDialog()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolPointOfIntersectionArcs *VToolPointOfIntersectionArcs::Create(QSharedPointer<DialogTool> dialog,
-                                                                   VMainGraphicsScene *scene, VAbstractPattern *doc,
-                                                                   VContainer *data)
+VToolPointOfIntersectionArcs* VToolPointOfIntersectionArcs::Create(
+    QSharedPointer<DialogTool> dialog,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data)
 {
     SCASSERT(not dialog.isNull())
-    QSharedPointer<DialogPointOfIntersectionArcs> dialogTool = dialog.objectCast<DialogPointOfIntersectionArcs>();
+    QSharedPointer<DialogPointOfIntersectionArcs> dialogTool =
+        dialog.objectCast<DialogPointOfIntersectionArcs>();
     SCASSERT(not dialogTool.isNull())
     const quint32 firstArcId = dialogTool->GetFirstArcId();
     const quint32 secondArcId = dialogTool->GetSecondArcId();
     const CrossCirclesPoint pType = dialogTool->GetCrossArcPoint();
     const QString pointName = dialogTool->getPointName();
-    VToolPointOfIntersectionArcs *point = Create(0, pointName, firstArcId, secondArcId, pType, 5, 10, scene, doc,
-                                                 data, Document::FullParse, Source::FromGui);
-    if (point != nullptr)
-    {
+    VToolPointOfIntersectionArcs* point = Create(
+        0,
+        pointName,
+        firstArcId,
+        secondArcId,
+        pType,
+        5,
+        10,
+        scene,
+        doc,
+        data,
+        Document::FullParse,
+        Source::FromGui);
+    if (point != nullptr) {
         point->m_dialog = dialogTool;
     }
     return point;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolPointOfIntersectionArcs *VToolPointOfIntersectionArcs::Create(const quint32 _id, const QString &pointName,
-                                                                   const quint32 &firstArcId,
-                                                                   const quint32 &secondArcId, CrossCirclesPoint pType,
-                                                                   qreal mx, qreal my,
-                                                                   VMainGraphicsScene *scene, VAbstractPattern *doc,
-                                                                   VContainer *data, const Document &parse,
-                                                                   const Source &typeCreation)
+VToolPointOfIntersectionArcs* VToolPointOfIntersectionArcs::Create(
+    const quint32 _id,
+    const QString& pointName,
+    const quint32& firstArcId,
+    const quint32& secondArcId,
+    CrossCirclesPoint pType,
+    qreal mx,
+    qreal my,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data,
+    const Document& parse,
+    const Source& typeCreation)
 {
     const QSharedPointer<VArc> firstArc = data->GeometricObject<VArc>(firstArcId);
     const QSharedPointer<VArc> secondArc = data->GeometricObject<VArc>(secondArcId);
 
     const QPointF point = FindPoint(firstArc.data(), secondArc.data(), pType);
 
-    if (point == QPointF())
-    {
+    if (point == QPointF()) {
         const QString msg = tr("<b><big>Can't find intersection point %1 of Arcs</big></b><br>"
                                "Using origin point as a place holder until pattern is corrected.")
-                               .arg(pointName);
+                                .arg(pointName);
 
         QMessageBox msgBox(qApp->getMainWindow());
         msgBox.setWindowTitle(tr("Point Intersect Arcs"));
@@ -161,24 +186,19 @@ VToolPointOfIntersectionArcs *VToolPointOfIntersectionArcs::Create(const quint32
     }
 
     quint32 id = _id;
-    if (typeCreation == Source::FromGui)
-    {
+    if (typeCreation == Source::FromGui) {
         id = data->AddGObject(new VPointF(point, pointName, mx, my));
-    }
-    else
-    {
+    } else {
         data->UpdateGObject(id, new VPointF(point, pointName, mx, my));
-        if (parse != Document::FullParse)
-        {
+        if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }
     }
 
-    if (parse == Document::FullParse)
-    {
+    if (parse == Document::FullParse) {
         VDrawTool::AddRecord(id, Tool::PointOfIntersectionArcs, doc);
-        VToolPointOfIntersectionArcs *point = new VToolPointOfIntersectionArcs(doc, data, id, firstArcId,
-                                                                               secondArcId, pType, typeCreation);
+        VToolPointOfIntersectionArcs* point = new VToolPointOfIntersectionArcs(
+            doc, data, id, firstArcId, secondArcId, pType, typeCreation);
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
@@ -190,83 +210,69 @@ VToolPointOfIntersectionArcs *VToolPointOfIntersectionArcs::Create(const quint32
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VToolPointOfIntersectionArcs::FindPoint(const VArc *arc1, const VArc *arc2, const CrossCirclesPoint pType)
+QPointF VToolPointOfIntersectionArcs::FindPoint(
+    const VArc* arc1, const VArc* arc2, const CrossCirclesPoint pType)
 {
     QPointF p1, p2;
     const QPointF centerArc1 = static_cast<QPointF>(arc1->GetCenter());
     const QPointF centerArc2 = static_cast<QPointF>(arc2->GetCenter());
-    const int res = VGObject::IntersectionCircles(centerArc1, arc1->GetRadius(), centerArc2, arc2->GetRadius(), p1, p2);
+    const int res = VGObject::IntersectionCircles(
+        centerArc1, arc1->GetRadius(), centerArc2, arc2->GetRadius(), p1, p2);
 
     QLineF r1Arc1(centerArc1, p1);
-    r1Arc1.setLength(r1Arc1.length()+10);
+    r1Arc1.setLength(r1Arc1.length() + 10);
 
     QLineF r1Arc2(centerArc2, p1);
-    r1Arc2.setLength(r1Arc2.length()+10);
+    r1Arc2.setLength(r1Arc2.length() + 10);
 
     QLineF r2Arc1(centerArc1, p2);
-    r2Arc1.setLength(r2Arc1.length()+10);
+    r2Arc1.setLength(r2Arc1.length() + 10);
 
     QLineF r2Arc2(centerArc2, p2);
-    r2Arc2.setLength(r2Arc2.length()+10);
+    r2Arc2.setLength(r2Arc2.length() + 10);
 
-    switch(res)
-    {
-        case 2:
-        {
-            int localRes = 0;
-            bool flagP1 = false;
+    switch (res) {
+    case 2: {
+        int localRes = 0;
+        bool flagP1 = false;
 
-            if (arc1->IsIntersectLine(r1Arc1)  && arc2->IsIntersectLine(r1Arc2))
-            {
-                ++localRes;
-                flagP1 = true;
-            }
-
-            if (arc1->IsIntersectLine(r2Arc1)  && arc2->IsIntersectLine(r2Arc2))
-            {
-                ++localRes;
-            }
-
-            switch(localRes)
-            {
-                case 2:
-                    if (pType == CrossCirclesPoint::FirstPoint)
-                    {
-                        return p1;
-                    }
-                    else
-                    {
-                        return p2;
-                    }
-                case 1:
-                    if (flagP1)
-                    {
-                        return p1;
-                    }
-                    else
-                    {
-                        return p2;
-                    }
-                case 0:
-                default:
-                    return QPointF();
-            }
-
-            break;
+        if (arc1->IsIntersectLine(r1Arc1) && arc2->IsIntersectLine(r1Arc2)) {
+            ++localRes;
+            flagP1 = true;
         }
-        case 1:
-            if (arc1->IsIntersectLine(r1Arc1) && arc2->IsIntersectLine(r1Arc2))
-            {
+
+        if (arc1->IsIntersectLine(r2Arc1) && arc2->IsIntersectLine(r2Arc2)) {
+            ++localRes;
+        }
+
+        switch (localRes) {
+        case 2:
+            if (pType == CrossCirclesPoint::FirstPoint) {
                 return p1;
+            } else {
+                return p2;
             }
-            else
-            {
-                return QPointF();
+        case 1:
+            if (flagP1) {
+                return p1;
+            } else {
+                return p2;
             }
-        case 3:
         case 0:
-        default:
-            break;
+        default: return QPointF();
+        }
+
+        break;
+    }
+    case 1:
+        if (arc1->IsIntersectLine(r1Arc1) && arc2->IsIntersectLine(r1Arc2)) {
+            return p1;
+        } else {
+            return QPointF();
+        }
+    case 3:
+    case 0:
+    default: break;
     }
     return QPointF();
 }
@@ -284,16 +290,12 @@ QString VToolPointOfIntersectionArcs::SecondArcName() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VToolPointOfIntersectionArcs::GetFirstArcId() const
-{
-    return firstArcId;
-}
+quint32 VToolPointOfIntersectionArcs::GetFirstArcId() const { return firstArcId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointOfIntersectionArcs::SetFirstArcId(const quint32 &value)
+void VToolPointOfIntersectionArcs::SetFirstArcId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         firstArcId = value;
 
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
@@ -302,16 +304,12 @@ void VToolPointOfIntersectionArcs::SetFirstArcId(const quint32 &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VToolPointOfIntersectionArcs::GetSecondArcId() const
-{
-    return secondArcId;
-}
+quint32 VToolPointOfIntersectionArcs::GetSecondArcId() const { return secondArcId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointOfIntersectionArcs::SetSecondArcId(const quint32 &value)
+void VToolPointOfIntersectionArcs::SetSecondArcId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         secondArcId = value;
 
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
@@ -320,18 +318,15 @@ void VToolPointOfIntersectionArcs::SetSecondArcId(const quint32 &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-CrossCirclesPoint VToolPointOfIntersectionArcs::GetCrossCirclesPoint() const
-{
-    return crossPoint;
-}
+CrossCirclesPoint VToolPointOfIntersectionArcs::GetCrossCirclesPoint() const { return crossPoint; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointOfIntersectionArcs::setCirclesCrossPoint(const CrossCirclesPoint &value)
+void VToolPointOfIntersectionArcs::setCirclesCrossPoint(const CrossCirclesPoint& value)
 {
-        crossPoint = value;
+    crossPoint = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
+    SaveOption(obj);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -351,33 +346,35 @@ void VToolPointOfIntersectionArcs::RemoveReferens()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointOfIntersectionArcs::showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id)
+void VToolPointOfIntersectionArcs::showContextMenu(
+    QGraphicsSceneContextMenuEvent* event, quint32 id)
 {
-    try
-    {
+    try {
         ContextMenu<DialogPointOfIntersectionArcs>(event, id);
-    }
-    catch(const VExceptionToolWasDeleted &error)
-    {
+    } catch (const VExceptionToolWasDeleted& error) {
         Q_UNUSED(error)
-        return;//Leave this method immediately!!!
+        return;   // Leave this method immediately!!!
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointOfIntersectionArcs::SaveDialog(QDomElement &domElement)
+void VToolPointOfIntersectionArcs::SaveDialog(QDomElement& domElement)
 {
     SCASSERT(not m_dialog.isNull())
-    QSharedPointer<DialogPointOfIntersectionArcs> dialogTool = m_dialog.objectCast<DialogPointOfIntersectionArcs>();
+    QSharedPointer<DialogPointOfIntersectionArcs> dialogTool =
+        m_dialog.objectCast<DialogPointOfIntersectionArcs>();
     SCASSERT(not dialogTool.isNull())
     doc->SetAttribute(domElement, AttrName, dialogTool->getPointName());
     doc->SetAttribute(domElement, AttrFirstArc, QString().setNum(dialogTool->GetFirstArcId()));
     doc->SetAttribute(domElement, AttrSecondArc, QString().setNum(dialogTool->GetSecondArcId()));
-    doc->SetAttribute(domElement, AttrCrossPoint, QString().setNum(static_cast<int>(dialogTool->GetCrossArcPoint())));
+    doc->SetAttribute(
+        domElement,
+        AttrCrossPoint,
+        QString().setNum(static_cast<int>(dialogTool->GetCrossArcPoint())));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointOfIntersectionArcs::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void VToolPointOfIntersectionArcs::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 
@@ -388,19 +385,19 @@ void VToolPointOfIntersectionArcs::SaveOptions(QDomElement &tag, QSharedPointer<
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointOfIntersectionArcs::ReadToolAttributes(const QDomElement &domElement)
+void VToolPointOfIntersectionArcs::ReadToolAttributes(const QDomElement& domElement)
 {
     firstArcId = doc->GetParametrUInt(domElement, AttrFirstArc, NULL_ID_STR);
     secondArcId = doc->GetParametrUInt(domElement, AttrSecondArc, NULL_ID_STR);
-    crossPoint = static_cast<CrossCirclesPoint>(doc->GetParametrUInt(domElement, AttrCrossPoint, "1"));
+    crossPoint =
+        static_cast<CrossCirclesPoint>(doc->GetParametrUInt(domElement, AttrCrossPoint, "1"));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VToolPointOfIntersectionArcs::SetVisualization()
 {
-    if (not vis.isNull())
-    {
-        VisToolPointOfIntersectionArcs *visual = qobject_cast<VisToolPointOfIntersectionArcs *>(vis);
+    if (not vis.isNull()) {
+        VisToolPointOfIntersectionArcs* visual = qobject_cast<VisToolPointOfIntersectionArcs*>(vis);
         SCASSERT(visual != nullptr)
 
         visual->setArc1Id(firstArcId);

@@ -52,84 +52,59 @@
 #include "tst_buitinregexp.h"
 #include "../qmuparser/qmudef.h"
 
+#include "../ifc/ifcdef.h"
 #include "../vmisc/logging.h"
 #include "../vpatterndb/vtranslatevars.h"
-#include "../ifc/ifcdef.h"
 
-#include <QtTest>
 #include <QTranslator>
+#include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_BuitInRegExp::TST_BuitInRegExp(const QString &locale, QObject *parent)
+TST_BuitInRegExp::TST_BuitInRegExp(const QString& locale, QObject* parent)
     : TST_AbstractRegExp(locale, parent)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_BuitInRegExp::initTestCase()
 {
-    if (m_locale.isEmpty())
-    {
+    if (m_locale.isEmpty()) {
         QFAIL("Empty locale code.");
     }
 
     const QStringList locales = SupportedLocales();
 
-    if (not locales.contains(m_locale))
-    {
+    if (not locales.contains(m_locale)) {
         QFAIL("Unsupported locale code.");
     }
 
-    if (LoadVariables(m_locale) != NoError)
-    {
+    if (LoadVariables(m_locale) != NoError) {
         const QString message = QString("Couldn't load variables. Locale = %1").arg(m_locale);
         QSKIP(qUtf8Printable(message));
     }
 
-    InitTrMs();//Very important do this after loading QM files.
+    InitTrMs();   // Very important do this after loading QM files.
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::TestCheckNoEndLine_data()
-{
-    PrepareData();
-}
+void TST_BuitInRegExp::TestCheckNoEndLine_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::TestCheckNoEndLine()
-{
-    CallTestCheckNoEndLine();
-}
+void TST_BuitInRegExp::TestCheckNoEndLine() { CallTestCheckNoEndLine(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::TestCheckRegExpNames_data()
-{
-    PrepareData();
-}
+void TST_BuitInRegExp::TestCheckRegExpNames_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::TestCheckRegExpNames()
-{
-    CallTestCheckRegExpNames();
-}
+void TST_BuitInRegExp::TestCheckRegExpNames() { CallTestCheckRegExpNames(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::TestCheckIsNamesUnique_data()
-{
-    PrepareData();
-}
+void TST_BuitInRegExp::TestCheckIsNamesUnique_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::TestCheckIsNamesUnique()
-{
-    CallTestCheckIsNamesUnique();
-}
+void TST_BuitInRegExp::TestCheckIsNamesUnique() { CallTestCheckIsNamesUnique(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::TestCheckNoOriginalNamesInTranslation_data()
-{
-    PrepareData();
-}
+void TST_BuitInRegExp::TestCheckNoOriginalNamesInTranslation_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_BuitInRegExp::TestCheckNoOriginalNamesInTranslation()
@@ -169,15 +144,14 @@ void TST_BuitInRegExp::TestCheckUnderlineExists_data()
     data.insert(c1LengthSplPath, false);
     data.insert(c2LengthSplPath, false);
 
-    //Catch case when new internal variable appears.
+    // Catch case when new internal variable appears.
     QCOMPARE(data.size(), builInVariables.size());
 
     QTest::addColumn<QString>("name");
     QTest::addColumn<bool>("exists");
 
     auto i = data.constBegin();
-    while (i != data.constEnd())
-    {
+    while (i != data.constEnd()) {
         const QString tag = QString("Locale: '%1'. Name '%2'").arg(m_locale).arg(i.key());
         QTest::newRow(qUtf8Printable(tag)) << i.key() << i.value();
         ++i;
@@ -191,10 +165,11 @@ void TST_BuitInRegExp::TestCheckUnderlineExists()
     QFETCH(bool, exists);
 
     const QString translated = m_trMs->InternalVarToUser(name);
-    if ((translated.right(1) == QLatin1String("_")) != exists)
-    {
-        const QString message = QString("String '%1' doesn't contain underline. Original string is '%2'")
-                .arg(translated).arg(name);
+    if ((translated.right(1) == QLatin1String("_")) != exists) {
+        const QString message =
+            QString("String '%1' doesn't contain underline. Original string is '%2'")
+                .arg(translated)
+                .arg(name);
         QFAIL(qUtf8Printable(message));
     }
 }
@@ -205,12 +180,10 @@ void TST_BuitInRegExp::TestCheckInternalVaribleRegExp_data()
     QTest::addColumn<QString>("var");
     QTest::addColumn<QString>("originalName");
 
-    foreach(const QString &var, builInVariables)
-    {
+    foreach (const QString& var, builInVariables) {
         const QString tag = QString("Locale: '%1'. Var '%2'").arg(m_locale).arg(var);
         const QStringList originalNames = AllNames();
-        foreach(const QString &str, originalNames)
-        {
+        foreach (const QString& str, originalNames) {
             QTest::newRow(qUtf8Printable(tag)) << var << str;
         }
     }
@@ -232,15 +205,14 @@ void TST_BuitInRegExp::TestCheckInternalVaribleRegExp()
     const QRegularExpression translationRe(translationRegex);
 
     {
-        if (sourceRe.match(originalName).hasMatch() || translationRe.match(originalName).hasMatch())
-        {
+        if (sourceRe.match(originalName).hasMatch()
+            || translationRe.match(originalName).hasMatch()) {
             const QString message = QString("Invalid original string '%1'").arg(originalName);
             QFAIL(qUtf8Printable(message));
         }
 
         const QString translated = m_trMs->VarToUser(originalName);
-        if (sourceRe.match(translated).hasMatch() || translationRe.match(translated).hasMatch())
-        {
+        if (sourceRe.match(translated).hasMatch() || translationRe.match(translated).hasMatch()) {
             const QString message = QString("Invalid translation string '%1'").arg(translated);
             QFAIL(qUtf8Printable(message));
         }
@@ -253,21 +225,18 @@ void TST_BuitInRegExp::TestTemplatePlaceholders()
     QSet<QString> originals;
     QSet<QString> translations;
 
-    for (int i = 0; i < labelTemplatePlaceholders.size(); ++i)
-    {
+    for (int i = 0; i < labelTemplatePlaceholders.size(); ++i) {
         originals.insert(labelTemplatePlaceholders.at(i));
         translations.insert(m_trMs->PlaceholderToUser(labelTemplatePlaceholders.at(i)));
     }
 
-    QCOMPARE(originals.size(), labelTemplatePlaceholders.size()); // All tags are unique
-    QCOMPARE(translations.size(), labelTemplatePlaceholders.size()); // All translated tags are unique
+    QCOMPARE(originals.size(), labelTemplatePlaceholders.size());   // All tags are unique
+    QCOMPARE(
+        translations.size(), labelTemplatePlaceholders.size());   // All translated tags are unique
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_BuitInRegExp::cleanupTestCase()
-{
-    RemoveTrVariables(m_locale);
-}
+void TST_BuitInRegExp::cleanupTestCase() { RemoveTrVariables(m_locale); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_BuitInRegExp::PrepareData()
@@ -276,15 +245,11 @@ void TST_BuitInRegExp::PrepareData()
 
     QTest::addColumn<QString>("originalName");
 
-    foreach(const QString &str, originalNames)
-    {
+    foreach (const QString& str, originalNames) {
         const QString tag = QString("Locale: '%1'. Name '%2'").arg(m_locale).arg(str);
         QTest::newRow(qUtf8Printable(tag)) << str;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QStringList TST_BuitInRegExp::AllNames()
-{
-    return builInFunctions + builInVariables;
-}
+QStringList TST_BuitInRegExp::AllNames() { return builInFunctions + builInVariables; }

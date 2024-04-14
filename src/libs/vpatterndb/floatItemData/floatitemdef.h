@@ -63,5 +63,4 @@ enum class ArrowType : char
     atRear
 };
 
-#endif // FLOATITEMDEF_H
-
+#endif   // FLOATITEMDEF_H

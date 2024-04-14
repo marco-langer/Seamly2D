@@ -29,12 +29,12 @@
 #include "decimalchart_dialog.h"
 #include "ui_decimalchart_dialog.h"
 
+#include "../core/application_2d.h"
 #include <QFont>
 #include <QShowEvent>
-#include "../core/application_2d.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DecimalChartDialog::DecimalChartDialog(QWidget *parent)
+DecimalChartDialog::DecimalChartDialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::DecimalChartDialog)
     , isInitialized(false)
@@ -44,22 +44,17 @@ DecimalChartDialog::DecimalChartDialog(QWidget *parent)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DecimalChartDialog::~DecimalChartDialog()
-{
-    delete ui;
-}
+DecimalChartDialog::~DecimalChartDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DecimalChartDialog::showEvent(QShowEvent *event)
+void DecimalChartDialog::showEvent(QShowEvent* event)
 {
-    QDialog::showEvent( event );
-    if ( event->spontaneous() )
-    {
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
         return;
     }
 
-    if (isInitialized)
-    {
+    if (isInitialized) {
         return;
     }
     // do your init stuff here
@@ -67,5 +62,5 @@ void DecimalChartDialog::showEvent(QShowEvent *event)
     setMaximumSize(size());
     setMinimumSize(size());
 
-    isInitialized = true;//first show windows are held
+    isInitialized = true;   // first show windows are held
 }

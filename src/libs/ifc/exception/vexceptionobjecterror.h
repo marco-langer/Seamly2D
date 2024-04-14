@@ -52,9 +52,9 @@
 #ifndef VEXCEPTIONOBJECTERROR_H
 #define VEXCEPTIONOBJECTERROR_H
 
-#include <qcompilerdetection.h>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifcdef.h"
 #include "vexception.h"
@@ -67,24 +67,25 @@ class QDomElement;
 class VExceptionObjectError : public VException
 {
 public:
-    VExceptionObjectError(const QString &what, const QDomElement &domElement);
-    VExceptionObjectError(const VExceptionObjectError &error);
-    VExceptionObjectError &operator=(const VExceptionObjectError &error);
-    virtual ~VExceptionObjectError() V_NOEXCEPT_EXPR (true) Q_DECL_EQ_DEFAULT;
+    VExceptionObjectError(const QString& what, const QDomElement& domElement);
+    VExceptionObjectError(const VExceptionObjectError& error);
+    VExceptionObjectError& operator=(const VExceptionObjectError& error);
+    virtual ~VExceptionObjectError() V_NOEXCEPT_EXPR(true) Q_DECL_EQ_DEFAULT;
     virtual QString ErrorMessage() const Q_DECL_OVERRIDE;
     virtual QString DetailedInformation() const Q_DECL_OVERRIDE;
-    QString         TagText() const;
-    QString         TagName() const;
-    qint32          LineNumber() const;
+    QString TagText() const;
+    QString TagName() const;
+    qint32 LineNumber() const;
+
 protected:
     /** @brief tagText tag text */
-    QString         tagText;
+    QString tagText;
 
     /** @brief tagName tag name */
-    QString         tagName;
+    QString tagName;
 
     /** @brief lineNumber line number */
-    qint32          lineNumber;
+    qint32 lineNumber;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -92,29 +93,20 @@ protected:
  * @brief TagText return tag text
  * @return tag text
  */
-inline QString VExceptionObjectError::TagText() const
-{
-    return tagText;
-}
+inline QString VExceptionObjectError::TagText() const { return tagText; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief TagName return tag name
  * @return tag name
  */
-inline QString VExceptionObjectError::TagName() const
-{
-    return tagName;
-}
+inline QString VExceptionObjectError::TagName() const { return tagName; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief LineNumber return line number in file
  * @return line number
  */
-inline qint32 VExceptionObjectError::LineNumber() const
-{
-    return lineNumber;
-}
+inline qint32 VExceptionObjectError::LineNumber() const { return lineNumber; }
 
-#endif // VEXCEPTIONOBJECTERROR_H
+#endif   // VEXCEPTIONOBJECTERROR_H

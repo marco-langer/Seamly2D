@@ -28,12 +28,12 @@
 #ifndef VISTOOLELLIPTICALARC_H
 #define VISTOOLELLIPTICALARC_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "vispath.h"
@@ -42,26 +42,30 @@ class VisToolEllipticalArc : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolEllipticalArc(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolEllipticalArc(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolEllipticalArc() Q_DECL_EQ_DEFAULT;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void setRadius1(const QString &expression);
-    void setRadius2(const QString &expression);
-    void setF1(const QString &expression);
-    void setF2(const QString &expression);
-    void setRotationAngle(const QString &expression);
+    void setRadius1(const QString& expression);
+    void setRadius2(const QString& expression);
+    void setF1(const QString& expression);
+    void setF2(const QString& expression);
+    void setRotationAngle(const QString& expression);
 
-    virtual int type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolEllipticalArc)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolEllipticalArc)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolEllipticalArc)
-    VScaledEllipse *arcCenter;
-    qreal           radius1;
-    qreal           radius2;
-    qreal           f1;
-    qreal           f2;
-    qreal           rotationAngle;
+    VScaledEllipse* arcCenter;
+    qreal radius1;
+    qreal radius2;
+    qreal f1;
+    qreal f2;
+    qreal rotationAngle;
 };
 
-#endif // VISTOOLELLIPTICALARC_H
+#endif   // VISTOOLELLIPTICALARC_H

@@ -28,16 +28,16 @@
 #ifndef PEN_TOOLBAR_H
 #define PEN_TOOLBAR_H
 
-#include <memory>
-#include <QToolBar>
-#include <QToolButton>
 #include <QAction>
 #include <QObject>
 #include <QPointer>
+#include <QToolBar>
+#include <QToolButton>
+#include <memory>
 
 #include "color_combobox.h"
-#include "lineweight_combobox.h"
 #include "linetype_combobox.h"
+#include "lineweight_combobox.h"
 
 class QAction;
 class QToolButton;
@@ -48,39 +48,38 @@ class LineTypeComboBox;
 
 struct Pen
 {
-    QString color{QString("black")};
-    qreal   lineWeight{1.20};
-    QString lineType{QString("solidline")};
+    QString color{ QString("black") };
+    qreal lineWeight{ 1.20 };
+    QString lineType{ QString("solidline") };
 };
 
-class PenToolBar: public QToolBar
+class PenToolBar : public QToolBar
 {
-
- Q_OBJECT
+    Q_OBJECT
 
 public:
-  	                             PenToolBar(const QString &title, QWidget *parent = 0);
-    virtual                     ~PenToolBar();
+    PenToolBar(const QString& title, QWidget* parent = 0);
+    virtual ~PenToolBar();
 
-	Pen                          getPen() const;
-    Pen                          currentPen;
-    QPointer<ColorComboBox>      colorBox;
-    QPointer<LineTypeComboBox>   lineTypeBox;
+    Pen getPen() const;
+    Pen currentPen;
+    QPointer<ColorComboBox> colorBox;
+    QPointer<LineTypeComboBox> lineTypeBox;
     QPointer<LineWeightComboBox> lineWeightBox;
 
 public slots:
-    void                         colorChanged(const QString &color);
-    void                         lineWeightChanged(const qreal &weight);
-    void                         lineTypeChanged(const QString &type);
-    void                         penReset();
-    void                         savePreset();
+    void colorChanged(const QString& color);
+    void lineWeightChanged(const qreal& weight);
+    void lineTypeChanged(const QString& type);
+    void penReset();
+    void savePreset();
 
 signals:
-    void                         penChanged(Pen pen);
+    void penChanged(Pen pen);
 
 private:
-    QAction                     *resetAction;
-    QAction                     *savePresetAction;
+    QAction* resetAction;
+    QAction* savePresetAction;
 };
 
 #endif

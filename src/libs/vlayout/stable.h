@@ -57,10 +57,10 @@
 #if defined __cplusplus
 /* Add C++ includes here */
 
-#ifdef QT_CORE_LIB
-#include <QtCore>
-#endif
+#    ifdef QT_CORE_LIB
+#        include <QtCore>
+#    endif
 
-#endif/*__cplusplus*/
+#endif /*__cplusplus*/
 
-#endif // STABLE_H
+#endif   // STABLE_H

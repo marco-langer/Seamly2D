@@ -25,12 +25,12 @@
 #ifndef REMOVE_GROUPITEM_H
 #define REMOVE_GROUPITEM_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -38,17 +38,21 @@ class RemoveGroupItem : public VUndoCommand
 {
     Q_OBJECT
 public:
-                  RemoveGroupItem(const QDomElement &xml, VAbstractPattern *doc, quint32 groupId, QUndoCommand *parent = nullptr);
-    virtual      ~RemoveGroupItem();
-    virtual void  undo() Q_DECL_OVERRIDE;
-    virtual void  redo() Q_DECL_OVERRIDE;
+    RemoveGroupItem(
+        const QDomElement& xml,
+        VAbstractPattern* doc,
+        quint32 groupId,
+        QUndoCommand* parent = nullptr);
+    virtual ~RemoveGroupItem();
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
 
 signals:
-    void          updateGroups();
+    void updateGroups();
 
 private:
-                  Q_DISABLE_COPY(RemoveGroupItem)
+    Q_DISABLE_COPY(RemoveGroupItem)
     const QString m_activeDrawName;
 };
 
-#endif // REMOVE_GROUPITEM_H
+#endif   // REMOVE_GROUPITEM_H

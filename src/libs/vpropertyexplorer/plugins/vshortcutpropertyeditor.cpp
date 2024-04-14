@@ -27,8 +27,10 @@
 #include <QSizePolicy>
 #include <Qt>
 
-VPE::VShortcutEditWidget::VShortcutEditWidget(QWidget *parent)
-    : QWidget(parent), CurrentKeySequence(), LineEdit(nullptr)
+VPE::VShortcutEditWidget::VShortcutEditWidget(QWidget* parent)
+    : QWidget(parent)
+    , CurrentKeySequence()
+    , LineEdit(nullptr)
 {
     // Create the line edit widget
     LineEdit = new QLineEdit(this);
@@ -51,22 +53,16 @@ VPE::VShortcutEditWidget::~VShortcutEditWidget()
     // nothing needs to be done here
 }
 
-bool VPE::VShortcutEditWidget::eventFilter(QObject *obj, QEvent *event)
+bool VPE::VShortcutEditWidget::eventFilter(QObject* obj, QEvent* event)
 {
-    if (obj == LineEdit)
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+    if (obj == LineEdit) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 
             int keys = keyEvent->key();
 
-            if (keys != Qt::Key_Shift &&
-               keys != Qt::Key_Control &&
-               keys != Qt::Key_Meta &&
-               keys != Qt::Key_AltGr &&
-               keys != Qt::Key_Alt)
-            {
+            if (keys != Qt::Key_Shift && keys != Qt::Key_Control && keys != Qt::Key_Meta
+                && keys != Qt::Key_AltGr && keys != Qt::Key_Alt) {
                 keys += keyEvent->modifiers();
                 setShortcut(QKeySequence(keys), true);
                 return true;
@@ -83,30 +79,22 @@ QString VPE::VShortcutEditWidget::getShortcutAsString() const
 }
 
 // cppcheck-suppress unusedFunction
-QKeySequence VPE::VShortcutEditWidget::getShortcut()
-{
-    return CurrentKeySequence;
-}
+QKeySequence VPE::VShortcutEditWidget::getShortcut() { return CurrentKeySequence; }
 
-void VPE::VShortcutEditWidget::setShortcut(const QString &shortcut, bool emit_signal)
+void VPE::VShortcutEditWidget::setShortcut(const QString& shortcut, bool emit_signal)
 {
     setShortcut(QKeySequence::fromString(shortcut), emit_signal);
 }
 
-void VPE::VShortcutEditWidget::setShortcut(const QKeySequence &shortcut, bool emit_signal)
+void VPE::VShortcutEditWidget::setShortcut(const QKeySequence& shortcut, bool emit_signal)
 {
-    if (shortcut != CurrentKeySequence)
-    {
+    if (shortcut != CurrentKeySequence) {
         CurrentKeySequence = shortcut;
         LineEdit->setText(CurrentKeySequence.toString());
-        if (emit_signal)
-        {
+        if (emit_signal) {
             emit dataChangedByUser(CurrentKeySequence, this);
         }
     }
 }
 
-void VPE::VShortcutEditWidget::onTextEdited(const QString &text)
-{
-    setShortcut(text, true);
-}
+void VPE::VShortcutEditWidget::onTextEdited(const QString& text) { setShortcut(text, true); }

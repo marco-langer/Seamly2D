@@ -64,8 +64,8 @@
 #include <QSharedPointer>
 #include <new>
 
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/vistoollineintersect.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
@@ -79,7 +79,8 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogLineIntersect::DialogLineIntersect(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogLineIntersect::DialogLineIntersect(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogLineIntersect)
     , flagPoint(true)
@@ -100,20 +101,37 @@ DialogLineIntersect::DialogLineIntersect(const VContainer *data, const quint32 &
     FillComboBoxPoints(ui->comboBoxP1Line2);
     FillComboBoxPoints(ui->comboBoxP2Line2);
 
-    connect(ui->lineEditNamePoint, &QLineEdit::textChanged,        this, &DialogLineIntersect::NamePointChanged);
-    connect(ui->comboBoxP1Line1,   &QComboBox::currentTextChanged, this, &DialogLineIntersect::PointNameChanged);
-    connect(ui->comboBoxP2Line1,   &QComboBox::currentTextChanged, this, &DialogLineIntersect::PointNameChanged);
-    connect(ui->comboBoxP1Line2,   &QComboBox::currentTextChanged, this, &DialogLineIntersect::PointNameChanged);
-    connect(ui->comboBoxP2Line2,   &QComboBox::currentTextChanged, this, &DialogLineIntersect::PointNameChanged);
+    connect(
+        ui->lineEditNamePoint,
+        &QLineEdit::textChanged,
+        this,
+        &DialogLineIntersect::NamePointChanged);
+    connect(
+        ui->comboBoxP1Line1,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogLineIntersect::PointNameChanged);
+    connect(
+        ui->comboBoxP2Line1,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogLineIntersect::PointNameChanged);
+    connect(
+        ui->comboBoxP1Line2,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogLineIntersect::PointNameChanged);
+    connect(
+        ui->comboBoxP2Line2,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogLineIntersect::PointNameChanged);
 
     vis = new VisToolLineIntersect(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogLineIntersect::~DialogLineIntersect()
-{
-    delete ui;
-}
+DialogLineIntersect::~DialogLineIntersect() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -121,84 +139,83 @@ DialogLineIntersect::~DialogLineIntersect()
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogLineIntersect::ChosenObject(quint32 id, const SceneObject &type)
+void DialogLineIntersect::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            VisToolLineIntersect *line = qobject_cast<VisToolLineIntersect *>(vis);
+        if (type == SceneObject::Point) {
+            VisToolLineIntersect* line = qobject_cast<VisToolLineIntersect*>(vis);
             SCASSERT(line != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxP1Line1, tr("Select second point of first line")))
-                    {
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxP1Line1, tr("Select second point of first line"))) {
+                    number++;
+                    line->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->comboBoxP1Line1) != id) {
+                    if (SetObject(
+                            id, ui->comboBoxP2Line1, tr("Select first point of second line"))) {
                         number++;
-                        line->VisualMode(id);
-                    }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->comboBoxP1Line1) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxP2Line1, tr("Select first point of second line")))
-                        {
-                            number++;
-                            line->setLine1P2Id(id);
-                            line->RefreshGeometry();
-                        }
-                    }
-                    break;
-                case 2:
-                    if (SetObject(id, ui->comboBoxP1Line2, tr("Select second point of second line")))
-                    {
-                        number++;
-                        line->setLine2P1Id(id);
+                        line->setLine1P2Id(id);
                         line->RefreshGeometry();
                     }
-                    break;
-                case 3:
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxP1Line1));
-                    set.insert(getCurrentObjectId(ui->comboBoxP2Line1));
-                    set.insert(getCurrentObjectId(ui->comboBoxP1Line2));
-                    set.insert(id);
+                }
+                break;
+            case 2:
+                if (SetObject(id, ui->comboBoxP1Line2, tr("Select second point of second line"))) {
+                    number++;
+                    line->setLine2P1Id(id);
+                    line->RefreshGeometry();
+                }
+                break;
+            case 3: {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxP1Line1));
+                set.insert(getCurrentObjectId(ui->comboBoxP2Line1));
+                set.insert(getCurrentObjectId(ui->comboBoxP1Line2));
+                set.insert(id);
 
-                    if (set.size() >= 3)
-                    {
-                        if (SetObject(id, ui->comboBoxP2Line2, ""))
-                        {
-                            line->setLine2P2Id(id);
-                            line->RefreshGeometry();
-                            prepare = true;
-                            flagPoint = CheckIntersecion();
-                            CheckState();
-                            if (flagPoint)
-                            {
-                                DialogAccepted();
-                            }
-                            else
-                            {
-                                this->setModal(true);
-                                this->show();
+                if (set.size() >= 3) {
+                    if (SetObject(id, ui->comboBoxP2Line2, "")) {
+                        line->setLine2P2Id(id);
+                        line->RefreshGeometry();
+                        prepare = true;
+                        flagPoint = CheckIntersecion();
+                        CheckState();
+                        if (flagPoint) {
+                            DialogAccepted();
+                        } else {
+                            this->setModal(true);
+                            this->show();
 
-                                connect(ui->comboBoxP1Line1,   &QComboBox::currentTextChanged, this,
-                                        &DialogLineIntersect::PointChanged);
-                                connect(ui->comboBoxP2Line1,   &QComboBox::currentTextChanged, this,
-                                        &DialogLineIntersect::PointChanged);
-                                connect(ui->comboBoxP1Line2,   &QComboBox::currentTextChanged, this,
-                                        &DialogLineIntersect::PointChanged);
-                                connect(ui->comboBoxP2Line2,   &QComboBox::currentTextChanged, this,
-                                        &DialogLineIntersect::PointChanged);
-                            }
+                            connect(
+                                ui->comboBoxP1Line1,
+                                &QComboBox::currentTextChanged,
+                                this,
+                                &DialogLineIntersect::PointChanged);
+                            connect(
+                                ui->comboBoxP2Line1,
+                                &QComboBox::currentTextChanged,
+                                this,
+                                &DialogLineIntersect::PointChanged);
+                            connect(
+                                ui->comboBoxP1Line2,
+                                &QComboBox::currentTextChanged,
+                                this,
+                                &DialogLineIntersect::PointChanged);
+                            connect(
+                                ui->comboBoxP2Line2,
+                                &QComboBox::currentTextChanged,
+                                this,
+                                &DialogLineIntersect::PointChanged);
                         }
                     }
                 }
-                    break;
-                default:
-                    break;
+            } break;
+            default: break;
             }
         }
     }
@@ -209,7 +226,7 @@ void DialogLineIntersect::SaveData()
 {
     pointName = ui->lineEditNamePoint->text();
 
-    VisToolLineIntersect *line = qobject_cast<VisToolLineIntersect *>(vis);
+    VisToolLineIntersect* line = qobject_cast<VisToolLineIntersect*>(vis);
     SCASSERT(line != nullptr)
 
     line->setObject1Id(GetP1Line1());
@@ -254,13 +271,10 @@ void DialogLineIntersect::PointNameChanged()
     QLineF::IntersectType intersect = line1.intersects(line2, &fPoint);
 
     QColor color = okColor;
-    if (set.size() < 3 || intersect == QLineF::NoIntersection)
-    {
+    if (set.size() < 3 || intersect == QLineF::NoIntersection) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -272,10 +286,7 @@ void DialogLineIntersect::PointNameChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogLineIntersect::ShowVisualization()
-{
-    AddVisualization<VisToolLineIntersect>();
-}
+void DialogLineIntersect::ShowVisualization() { AddVisualization<VisToolLineIntersect>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -303,12 +314,9 @@ bool DialogLineIntersect::CheckIntersecion()
     QLineF line2(static_cast<QPointF>(*p1L2), static_cast<QPointF>(*p2L2));
     QPointF fPoint;
     QLineF::IntersectType intersect = line1.intersects(line2, &fPoint);
-    if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection)
-    {
+    if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
@@ -318,11 +326,11 @@ bool DialogLineIntersect::CheckIntersecion()
  * @brief SetP2Line2 set id second point of second line
  * @param value id
  */
-void DialogLineIntersect::SetP2Line2(const quint32 &value)
+void DialogLineIntersect::SetP2Line2(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxP2Line2, value);
 
-    VisToolLineIntersect *line = qobject_cast<VisToolLineIntersect *>(vis);
+    VisToolLineIntersect* line = qobject_cast<VisToolLineIntersect*>(vis);
     SCASSERT(line != nullptr)
     line->setLine2P2Id(value);
 }
@@ -332,11 +340,11 @@ void DialogLineIntersect::SetP2Line2(const quint32 &value)
  * @brief SetP1Line2 set id first point of second line
  * @param value id
  */
-void DialogLineIntersect::SetP1Line2(const quint32 &value)
+void DialogLineIntersect::SetP1Line2(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxP1Line2, value);
 
-    VisToolLineIntersect *line = qobject_cast<VisToolLineIntersect *>(vis);
+    VisToolLineIntersect* line = qobject_cast<VisToolLineIntersect*>(vis);
     SCASSERT(line != nullptr)
     line->setLine2P1Id(value);
 }
@@ -346,11 +354,11 @@ void DialogLineIntersect::SetP1Line2(const quint32 &value)
  * @brief SetP2Line1 set id second point of first line
  * @param value id
  */
-void DialogLineIntersect::SetP2Line1(const quint32 &value)
+void DialogLineIntersect::SetP2Line1(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxP2Line1, value);
 
-    VisToolLineIntersect *line = qobject_cast<VisToolLineIntersect *>(vis);
+    VisToolLineIntersect* line = qobject_cast<VisToolLineIntersect*>(vis);
     SCASSERT(line != nullptr)
     line->setLine1P2Id(value);
 }
@@ -360,11 +368,11 @@ void DialogLineIntersect::SetP2Line1(const quint32 &value)
  * @brief SetP1Line1 set id first point of first line
  * @param value id
  */
-void DialogLineIntersect::SetP1Line1(const quint32 &value)
+void DialogLineIntersect::SetP1Line1(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxP1Line1, value);
 
-    VisToolLineIntersect *line = qobject_cast<VisToolLineIntersect *>(vis);
+    VisToolLineIntersect* line = qobject_cast<VisToolLineIntersect*>(vis);
     SCASSERT(line != nullptr)
     line->setObject1Id(value);
 }
@@ -374,7 +382,7 @@ void DialogLineIntersect::SetP1Line1(const quint32 &value)
  * @brief SetPointName set name of point
  * @param value name of point
  */
-void DialogLineIntersect::SetPointName(const QString &value)
+void DialogLineIntersect::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -385,37 +393,25 @@ void DialogLineIntersect::SetPointName(const QString &value)
  * @brief GetP1Line1 return id first point of first line
  * @return id
  */
-quint32 DialogLineIntersect::GetP1Line1() const
-{
-    return getCurrentObjectId(ui->comboBoxP1Line1);
-}
+quint32 DialogLineIntersect::GetP1Line1() const { return getCurrentObjectId(ui->comboBoxP1Line1); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetP2Line1 return id second point of first line
  * @return id
  */
-quint32 DialogLineIntersect::GetP2Line1() const
-{
-    return getCurrentObjectId(ui->comboBoxP2Line1);
-}
+quint32 DialogLineIntersect::GetP2Line1() const { return getCurrentObjectId(ui->comboBoxP2Line1); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetP1Line2 return id first point of second line
  * @return id
  */
-quint32 DialogLineIntersect::GetP1Line2() const
-{
-    return getCurrentObjectId(ui->comboBoxP1Line2);
-}
+quint32 DialogLineIntersect::GetP1Line2() const { return getCurrentObjectId(ui->comboBoxP1Line2); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetP2Line2 return id second point of second line
  * @return id
  */
-quint32 DialogLineIntersect::GetP2Line2() const
-{
-    return getCurrentObjectId(ui->comboBoxP2Line2);
-}
+quint32 DialogLineIntersect::GetP2Line2() const { return getCurrentObjectId(ui->comboBoxP2Line2); }

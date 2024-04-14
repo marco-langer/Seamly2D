@@ -58,12 +58,12 @@
 #include <QDomNode>
 #include <QHash>
 #include <QLatin1String>
+#include <QLocale>
 #include <QStaticStringData>
 #include <QString>
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QtGlobal>
-#include <QLocale>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
@@ -72,7 +72,8 @@
 
 class QDomElement;
 class QDomNode;
-template <typename T> class QVector;
+template <typename T>
+class QVector;
 
 Q_DECLARE_LOGGING_CATEGORY(vXML)
 
@@ -118,60 +119,64 @@ public:
 
     VDomDocument();
     virtual ~VDomDocument() Q_DECL_EQ_DEFAULT;
-    QDomElement elementById(quint32 id, const QString &tagName = QString());
+    QDomElement elementById(quint32 id, const QString& tagName = QString());
 
     template <typename T>
-    void SetAttribute(QDomElement &domElement, const QString &name, const T &value) const;
+    void SetAttribute(QDomElement& domElement, const QString& name, const T& value) const;
 
-    static quint32 GetParametrUInt(const QDomElement& domElement, const QString &name, const QString &defValue);
-    static bool    getParameterBool(const QDomElement& domElement, const QString &name, const QString &defValue);
+    static quint32
+    GetParametrUInt(const QDomElement& domElement, const QString& name, const QString& defValue);
+    static bool
+    getParameterBool(const QDomElement& domElement, const QString& name, const QString& defValue);
 
-    static NodeUsage GetParametrUsage(const QDomElement& domElement, const QString &name);
-    static void      SetParametrUsage(QDomElement& domElement, const QString &name, const NodeUsage &value);
+    static NodeUsage GetParametrUsage(const QDomElement& domElement, const QString& name);
+    static void
+    SetParametrUsage(QDomElement& domElement, const QString& name, const NodeUsage& value);
 
-    static QString GetParametrString(const QDomElement& domElement, const QString &name,
-                                     const QString &defValue = QString());
-    static QString GetParametrEmptyString(const QDomElement& domElement, const QString &name);
-    static qreal   GetParametrDouble(const QDomElement& domElement, const QString &name, const QString &defValue);
+    static QString GetParametrString(
+        const QDomElement& domElement, const QString& name, const QString& defValue = QString());
+    static QString GetParametrEmptyString(const QDomElement& domElement, const QString& name);
+    static qreal
+    GetParametrDouble(const QDomElement& domElement, const QString& name, const QString& defValue);
     static quint32 getParameterId(const QDomElement& domElement);
 
-    Unit           measurementUnits() const;
+    Unit measurementUnits() const;
 
-    static void    ValidateXML(const QString &schema, const QString &fileName);
-    virtual void   setXMLContent(const QString &fileName);
+    static void ValidateXML(const QString& schema, const QString& fileName);
+    virtual void setXMLContent(const QString& fileName);
     static QString UnitsHelpString();
 
-    virtual bool   SaveDocument(const QString &fileName, QString &error);
-    QString        Major() const;
-    QString        Minor() const;
-    QString        Patch() const;
-    static void    RemoveAllChildren(QDomElement &domElement);
+    virtual bool SaveDocument(const QString& fileName, QString& error);
+    QString Major() const;
+    QString Minor() const;
+    QString Patch() const;
+    static void RemoveAllChildren(QDomElement& domElement);
 
-    QDomNode       ParentNodeById(const quint32 &nodeId);
-    QDomElement    CloneNodeById(const quint32 &nodeId);
-    QDomElement    NodeById(const quint32 &nodeId);
+    QDomNode ParentNodeById(const quint32& nodeId);
+    QDomElement CloneNodeById(const quint32& nodeId);
+    QDomElement NodeById(const quint32& nodeId);
 
-    static bool    SafeCopy(const QString &source, const QString &destination, QString &error);
+    static bool SafeCopy(const QString& source, const QString& destination, QString& error);
 
-    QVector<VLabelTemplateLine> GetLabelTemplate(const QDomElement &element) const;
-    void                        SetLabelTemplate(QDomElement &element, const QVector<VLabelTemplateLine> &lines);
+    QVector<VLabelTemplateLine> GetLabelTemplate(const QDomElement& element) const;
+    void SetLabelTemplate(QDomElement& element, const QVector<VLabelTemplateLine>& lines);
 
 protected:
-    bool           setTagText(const QString &tag, const QString &text);
-    bool           setTagText(const QDomElement &domElement, const QString &text);
-    QString        UniqueTagText(const QString &tagName, const QString &defVal = QString()) const;
+    bool setTagText(const QString& tag, const QString& text);
+    bool setTagText(const QDomElement& domElement, const QString& text);
+    QString UniqueTagText(const QString& tagName, const QString& defVal = QString()) const;
 
-    void           TestUniqueId() const;
-    void           CollectId(const QDomElement &node, QVector<quint32> &vector)const;
+    void TestUniqueId() const;
+    void CollectId(const QDomElement& node, QVector<quint32>& vector) const;
 
 private:
     Q_DISABLE_COPY(VDomDocument)
     /** @brief Map used for finding element by id. */
     QHash<quint32, QDomElement> map;
 
-    bool           find(const QDomElement &node, quint32 id);
+    bool find(const QDomElement& node, quint32 id);
 
-    bool SaveCanonicalXML(QIODevice *file, int indent, QString &error) const;
+    bool SaveCanonicalXML(QIODevice* file, int indent, QString& error) const;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -182,7 +187,8 @@ template <typename T>
  * @param name name of attribute.
  * @param value value of attribute.
  */
-inline void VDomDocument::SetAttribute(QDomElement &domElement, const QString &name, const T &value) const
+inline void
+VDomDocument::SetAttribute(QDomElement& domElement, const QString& name, const T& value) const
 {
     // See specification for xs:decimal
     const QLocale locale = QLocale::c();
@@ -191,28 +197,31 @@ inline void VDomDocument::SetAttribute(QDomElement &domElement, const QString &n
 
 //---------------------------------------------------------------------------------------------------------------------
 template <>
-inline void VDomDocument::SetAttribute<QString>(QDomElement &domElement, const QString &name,
-                                                const QString &value) const
+inline void VDomDocument::SetAttribute<QString>(
+    QDomElement& domElement, const QString& name, const QString& value) const
 {
     domElement.setAttribute(name, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <>
-inline void VDomDocument::SetAttribute<bool>(QDomElement &domElement, const QString &name, const bool &value) const
+inline void VDomDocument::SetAttribute<bool>(
+    QDomElement& domElement, const QString& name, const bool& value) const
 {
     domElement.setAttribute(name, value ? trueStr : falseStr);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <>
-inline void VDomDocument::SetAttribute<MeasurementsType>(QDomElement &domElement, const QString &name,
-                                                              const MeasurementsType &value) const
+inline void VDomDocument::SetAttribute<MeasurementsType>(
+    QDomElement& domElement, const QString& name, const MeasurementsType& value) const
 {
-    domElement.setAttribute(name, value == MeasurementsType::Multisize ? QStringLiteral("multisize") :
-                                                                        QStringLiteral("individual"));
+    domElement.setAttribute(
+        name,
+        value == MeasurementsType::Multisize ? QStringLiteral("multisize")
+                                             : QStringLiteral("individual"));
 }
 
 QT_WARNING_POP
 
-#endif // VDOMDOCUMENT_H
+#endif   // VDOMDOCUMENT_H

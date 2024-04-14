@@ -54,21 +54,22 @@
 #include <QByteArray>
 #include <QDomNode>
 
-#include "../vmisc/logging.h"
 #include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/logging.h"
 #include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-AddDetNode::AddDetNode(const QDomElement &xml, VAbstractPattern *doc, const QString &blockName, QUndoCommand *parent)
-    : VUndoCommand(xml, doc, parent), m_blockName(blockName)
+AddDetNode::AddDetNode(
+    const QDomElement& xml, VAbstractPattern* doc, const QString& blockName, QUndoCommand* parent)
+    : VUndoCommand(xml, doc, parent)
+    , m_blockName(blockName)
 {
     setText(QObject::tr("add node"));
     nodeId = doc->getParameterId(xml);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-AddDetNode::~AddDetNode()
-{}
+AddDetNode::~AddDetNode() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void AddDetNode::undo()
@@ -76,25 +77,18 @@ void AddDetNode::undo()
     qCDebug(vUndo, "Undo.");
 
     QDomElement modeling = GetModelingSection();
-    if (not modeling.isNull())
-    {
+    if (not modeling.isNull()) {
         QDomElement domElement = doc->elementById(nodeId);
-        if (domElement.isElement())
-        {
-            if (modeling.removeChild(domElement).isNull())
-            {
+        if (domElement.isElement()) {
+            if (modeling.removeChild(domElement).isNull()) {
                 qCDebug(vUndo, "Can't delete node.");
                 return;
             }
-        }
-        else
-        {
+        } else {
             qCDebug(vUndo, "Can't get node by id = %u.", nodeId);
             return;
         }
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find tag %s.", qUtf8Printable(VAbstractPattern::TagModeling));
         return;
     }
@@ -106,12 +100,9 @@ void AddDetNode::redo()
     qCDebug(vUndo, "Redo.");
 
     QDomElement modeling = GetModelingSection();
-    if (not modeling.isNull())
-    {
+    if (not modeling.isNull()) {
         modeling.appendChild(xml);
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find tag %s.", qUtf8Printable(VAbstractPattern::TagModeling));
         return;
     }
@@ -121,13 +112,11 @@ void AddDetNode::redo()
 QDomElement AddDetNode::GetModelingSection() const
 {
     QDomElement modeling;
-    if (m_blockName.isEmpty())
-    {
+    if (m_blockName.isEmpty()) {
         doc->getActiveNodeElement(VAbstractPattern::TagModeling, modeling);
-    }
-    else
-    {
-        modeling = doc->getDraftBlockElement(m_blockName).firstChildElement(VAbstractPattern::TagModeling);
+    } else {
+        modeling =
+            doc->getDraftBlockElement(m_blockName).firstChildElement(VAbstractPattern::TagModeling);
     }
     return modeling;
 }

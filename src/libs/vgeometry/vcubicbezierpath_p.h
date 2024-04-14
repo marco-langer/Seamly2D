@@ -54,8 +54,8 @@
 
 #include <QSharedData>
 
-#include "vpointf.h"
 #include "../vmisc/diagnostic.h"
+#include "vpointf.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -64,14 +64,13 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VCubicBezierPathData : public QSharedData
 {
 public:
-
     VCubicBezierPathData()
         : path()
     {}
 
-    VCubicBezierPathData(const VCubicBezierPathData &splPath)
-        : QSharedData(splPath),
-          path(splPath.path)
+    VCubicBezierPathData(const VCubicBezierPathData& splPath)
+        : QSharedData(splPath)
+        , path(splPath.path)
     {}
 
     virtual ~VCubicBezierPathData();
@@ -80,12 +79,11 @@ public:
     QVector<VPointF> path;
 
 private:
-    VCubicBezierPathData &operator=(const VCubicBezierPathData &) Q_DECL_EQ_DELETE;
+    VCubicBezierPathData& operator=(const VCubicBezierPathData&) Q_DECL_EQ_DELETE;
 };
 
-VCubicBezierPathData::~VCubicBezierPathData()
-{}
+VCubicBezierPathData::~VCubicBezierPathData() {}
 
 QT_WARNING_POP
 
-#endif // VCUBICBEZIERPATH_P_H
+#endif   // VCUBICBEZIERPATH_P_H

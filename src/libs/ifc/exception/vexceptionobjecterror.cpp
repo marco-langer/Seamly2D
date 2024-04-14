@@ -62,7 +62,7 @@
  * @param what string with error
  * @param domElement dom element
  */
-VExceptionObjectError::VExceptionObjectError(const QString &what, const QDomElement &domElement)
+VExceptionObjectError::VExceptionObjectError(const QString& what, const QDomElement& domElement)
     : VException(what)
     , tagText(QString())
     , tagName(QString())
@@ -80,7 +80,7 @@ VExceptionObjectError::VExceptionObjectError(const QString &what, const QDomElem
  * @brief VExceptionObjectError copy constructor
  * @param e exception
  */
-VExceptionObjectError::VExceptionObjectError(const VExceptionObjectError &error)
+VExceptionObjectError::VExceptionObjectError(const VExceptionObjectError& error)
     : VException(error)
     , tagText(error.TagText())
     , tagName(error.TagName())
@@ -88,10 +88,9 @@ VExceptionObjectError::VExceptionObjectError(const VExceptionObjectError &error)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionObjectError &VExceptionObjectError::operator=(const VExceptionObjectError &error)
+VExceptionObjectError& VExceptionObjectError::operator=(const VExceptionObjectError& error)
 {
-    if (&error == this)
-    {
+    if (&error == this) {
         return *this;
     }
     VException::operator=(error);

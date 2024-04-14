@@ -32,13 +32,13 @@
 #include "point_intersectxy_dialog.h"
 #include "ui_point_intersectxy_dialog.h"
 
-#include "dialogtool.h"
-#include "../ifc/xml/vabstractpattern.h"
+#include "../../visualization/line/point_intersectxy_visual.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/ifcdef.h"
+#include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
-#include "../../visualization/visualization.h"
-#include "../../visualization/line/point_intersectxy_visual.h"
+#include "dialogtool.h"
 
 #include <QColor>
 #include <QComboBox>
@@ -52,7 +52,8 @@
  * @param data container with data
  * @param parent parent widget
  */
-PointIntersectXYDialog::PointIntersectXYDialog(const VContainer *data, const quint32 &toolId, QWidget *parent)
+PointIntersectXYDialog::PointIntersectXYDialog(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::PointIntersectXYDialog)
 {
@@ -72,29 +73,38 @@ PointIntersectXYDialog::PointIntersectXYDialog(const VContainer *data, const qui
     FillComboBoxPoints(ui->secondPoint_ComboBox);
 
     int index = ui->lineColor_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineColor());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineColor_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineWeight_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineWeight_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineType_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineType());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->setCurrentIndex(index);
     }
 
-    connect(ui->pointName_LineEdit,   &QLineEdit::textChanged,        this, &PointIntersectXYDialog::NamePointChanged);
-    connect(ui->firstPoint_ComboBox,  &QComboBox::currentTextChanged, this, &PointIntersectXYDialog::pointChanged);
-    connect(ui->secondPoint_ComboBox, &QComboBox::currentTextChanged, this, &PointIntersectXYDialog::pointChanged);
+    connect(
+        ui->pointName_LineEdit,
+        &QLineEdit::textChanged,
+        this,
+        &PointIntersectXYDialog::NamePointChanged);
+    connect(
+        ui->firstPoint_ComboBox,
+        &QComboBox::currentTextChanged,
+        this,
+        &PointIntersectXYDialog::pointChanged);
+    connect(
+        ui->secondPoint_ComboBox,
+        &QComboBox::currentTextChanged,
+        this,
+        &PointIntersectXYDialog::pointChanged);
 
     vis = new PointIntersectXYVisual(data);
-    vis->VisualMode(NULL_ID);//Show vertical axis
+    vis->VisualMode(NULL_ID);   // Show vertical axis
 
     // Call after initialization vis!!!!
     setLineType(LineTypeDashLine);
@@ -102,17 +112,14 @@ PointIntersectXYDialog::PointIntersectXYDialog(const VContainer *data, const qui
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-PointIntersectXYDialog::~PointIntersectXYDialog()
-{
-    delete ui;
-}
+PointIntersectXYDialog::~PointIntersectXYDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setPointName set name of point
  * @param value name
  */
-void PointIntersectXYDialog::setPointName(const QString &value)
+void PointIntersectXYDialog::setPointName(const QString& value)
 {
     pointName = value;
     ui->pointName_LineEdit->setText(pointName);
@@ -133,11 +140,11 @@ quint32 PointIntersectXYDialog::getFirstPointId() const
  * @brief setFirstPointId set id of first point
  * @param value id
  */
-void PointIntersectXYDialog::setFirstPointId(const quint32 &value)
+void PointIntersectXYDialog::setFirstPointId(const quint32& value)
 {
     setCurrentPointId(ui->firstPoint_ComboBox, value);
 
-    PointIntersectXYVisual *visual = qobject_cast<PointIntersectXYVisual *>(vis);
+    PointIntersectXYVisual* visual = qobject_cast<PointIntersectXYVisual*>(vis);
     SCASSERT(visual != nullptr)
     visual->setPoint1Id(value);
 }
@@ -157,11 +164,11 @@ quint32 PointIntersectXYDialog::getSecondPointId() const
  * @brief setSecondPointId set id of second point
  * @param value id
  */
-void PointIntersectXYDialog::setSecondPointId(const quint32 &value)
+void PointIntersectXYDialog::setSecondPointId(const quint32& value)
 {
     setCurrentPointId(ui->secondPoint_ComboBox, value);
 
-    PointIntersectXYVisual *visual = qobject_cast<PointIntersectXYVisual *>(vis);
+    PointIntersectXYVisual* visual = qobject_cast<PointIntersectXYVisual*>(vis);
     SCASSERT(visual != nullptr)
     visual->setPoint2Id(value);
 }
@@ -181,7 +188,7 @@ QString PointIntersectXYDialog::getLineType() const
  * @brief setLineType set type of the lines
  * @param value type
  */
-void PointIntersectXYDialog::setLineType(const QString &value)
+void PointIntersectXYDialog::setLineType(const QString& value)
 {
     ChangeCurrentData(ui->lineType_ComboBox, value);
     vis->setLineStyle(lineTypeToPenStyle(value));
@@ -194,7 +201,7 @@ void PointIntersectXYDialog::setLineType(const QString &value)
  */
 QString PointIntersectXYDialog::getLineWeight() const
 {
-        return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
+    return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -202,7 +209,7 @@ QString PointIntersectXYDialog::getLineWeight() const
  * @brief setLineWeight set weight of the lines
  * @param value type
  */
-void PointIntersectXYDialog::setLineWeight(const QString &value)
+void PointIntersectXYDialog::setLineWeight(const QString& value)
 {
     ChangeCurrentData(ui->lineWeight_ComboBox, value);
     vis->setLineWeight(value);
@@ -216,7 +223,8 @@ void PointIntersectXYDialog::setLineWeight(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString PointIntersectXYDialog::getLineColor() const
 {
-    return GetComboBoxCurrentData(ui->lineColor_ComboBox, qApp->Settings()->getSecondarySupportColor());
+    return GetComboBoxCurrentData(
+        ui->lineColor_ComboBox, qApp->Settings()->getSecondarySupportColor());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -225,7 +233,7 @@ QString PointIntersectXYDialog::getLineColor() const
  * @param value type
  */
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYDialog::setLineColor(const QString &value)
+void PointIntersectXYDialog::setLineColor(const QString& value)
 {
     ChangeCurrentData(ui->lineColor_ComboBox, value);
 }
@@ -236,39 +244,34 @@ void PointIntersectXYDialog::setLineColor(const QString &value)
  * @param id id of point or detail
  * @param type type of object
  */
-void PointIntersectXYDialog::ChosenObject(quint32 id, const SceneObject &type)
+void PointIntersectXYDialog::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            PointIntersectXYVisual *visual = qobject_cast<PointIntersectXYVisual *>(vis);
+        if (type == SceneObject::Point) {
+            PointIntersectXYVisual* visual = qobject_cast<PointIntersectXYVisual*>(vis);
             SCASSERT(visual != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->firstPoint_ComboBox, tr("Select point for Y value (horizontal)")))
-                    {
-                        number++;
-                        visual->setPoint1Id(id);
+            switch (number) {
+            case 0:
+                if (SetObject(
+                        id, ui->firstPoint_ComboBox, tr("Select point for Y value (horizontal)"))) {
+                    number++;
+                    visual->setPoint1Id(id);
+                    visual->RefreshGeometry();
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->firstPoint_ComboBox) != id) {
+                    if (SetObject(id, ui->secondPoint_ComboBox, "")) {
+                        visual->setPoint2Id(id);
                         visual->RefreshGeometry();
+                        prepare = true;
+                        DialogAccepted();
                     }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->firstPoint_ComboBox) != id)
-                    {
-                        if (SetObject(id, ui->secondPoint_ComboBox, ""))
-                        {
-                            visual->setPoint2Id(id);
-                            visual->RefreshGeometry();
-                            prepare = true;
-                            DialogAccepted();
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                }
+                break;
+            default: break;
             }
         }
     }
@@ -278,13 +281,10 @@ void PointIntersectXYDialog::ChosenObject(quint32 id, const SceneObject &type)
 void PointIntersectXYDialog::pointChanged()
 {
     QColor color = okColor;
-    if (getFirstPointId() == getSecondPointId())
-    {
+    if (getFirstPointId() == getSecondPointId()) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -294,20 +294,17 @@ void PointIntersectXYDialog::pointChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYDialog::ShowVisualization()
-{
-    AddVisualization<PointIntersectXYVisual>();
-}
+void PointIntersectXYDialog::ShowVisualization() { AddVisualization<PointIntersectXYVisual>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief SaveData Put dialog data in local variables
  */
- void PointIntersectXYDialog::SaveData()
+void PointIntersectXYDialog::SaveData()
 {
     pointName = ui->pointName_LineEdit->text();
 
-    PointIntersectXYVisual *visual = qobject_cast<PointIntersectXYVisual *>(vis);
+    PointIntersectXYVisual* visual = qobject_cast<PointIntersectXYVisual*>(vis);
     SCASSERT(visual != nullptr)
 
     visual->setPoint1Id(getFirstPointId());

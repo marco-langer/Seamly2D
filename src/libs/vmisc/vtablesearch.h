@@ -52,24 +52,24 @@
 #ifndef VTABLESEARCH_H
 #define VTABLESEARCH_H
 
-#include <QObject>
 #include <QList>
+#include <QObject>
 #include <QString>
 #include <QTableWidget>
 #include <QtGlobal>
 
-class VTableSearch: public QObject
+class VTableSearch : public QObject
 {
     Q_OBJECT
 public:
-    explicit VTableSearch(QTableWidget *table, QObject *parent = nullptr);
+    explicit VTableSearch(QTableWidget* table, QObject* parent = nullptr);
 
-    void Find(const QString &term);
+    void Find(const QString& term);
     void FindPrevious();
     void FindNext();
     void RemoveRow(int row);
     void AddRow(int row);
-    void RefreshList(const QString &term);
+    void RefreshList(const QString& term);
 
 signals:
     void HasResult(bool state);
@@ -77,12 +77,12 @@ signals:
 private:
     Q_DISABLE_COPY(VTableSearch)
 
-    QTableWidget *table;
-    int           searchIndex;
-    QList<QTableWidgetItem *> searchList;
+    QTableWidget* table;
+    int searchIndex;
+    QList<QTableWidgetItem*> searchList;
 
     void Clear();
     void ShowNext(int newIndex);
 };
 
-#endif // VTABLESEARCH_H
+#endif   // VTABLESEARCH_H

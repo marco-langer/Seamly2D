@@ -78,7 +78,7 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogBisector::DialogBisector(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogBisector::DialogBisector(const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogBisector)
     , formula(QString())
@@ -105,30 +105,48 @@ DialogBisector::DialogBisector(const VContainer *data, const quint32 &toolId, QW
     FillComboBoxPoints(ui->comboBoxThirdPoint);
 
     int index = ui->lineColor_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineColor());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineColor_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineWeight_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineWeight_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineType_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineType());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->setCurrentIndex(index);
     }
 
-    connect(ui->toolButtonExprLength, &QPushButton::clicked,          this, &DialogBisector::FXLength);
-    connect(ui->lineEditNamePoint,    &QLineEdit::textChanged,        this, &DialogBisector::NamePointChanged);
-    connect(ui->plainTextEditFormula, &QPlainTextEdit::textChanged,   this, &DialogBisector::FormulaTextChanged);
-    connect(ui->pushButtonGrowLength, &QPushButton::clicked,          this, &DialogBisector::DeployFormulaTextEdit);
-    connect(ui->comboBoxFirstPoint,   &QComboBox::currentTextChanged, this, &DialogBisector::PointNameChanged);
-    connect(ui->comboBoxSecondPoint,  &QComboBox::currentTextChanged, this, &DialogBisector::PointNameChanged);
-    connect(ui->comboBoxThirdPoint,   &QComboBox::currentTextChanged, this, &DialogBisector::PointNameChanged);
+    connect(ui->toolButtonExprLength, &QPushButton::clicked, this, &DialogBisector::FXLength);
+    connect(
+        ui->lineEditNamePoint, &QLineEdit::textChanged, this, &DialogBisector::NamePointChanged);
+    connect(
+        ui->plainTextEditFormula,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogBisector::FormulaTextChanged);
+    connect(
+        ui->pushButtonGrowLength,
+        &QPushButton::clicked,
+        this,
+        &DialogBisector::DeployFormulaTextEdit);
+    connect(
+        ui->comboBoxFirstPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogBisector::PointNameChanged);
+    connect(
+        ui->comboBoxSecondPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogBisector::PointNameChanged);
+    connect(
+        ui->comboBoxThirdPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogBisector::PointNameChanged);
 
     vis = new VisToolBisector(data);
 
@@ -138,10 +156,7 @@ DialogBisector::DialogBisector(const VContainer *data, const quint32 &toolId, QW
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogBisector::FormulaTextChanged()
-{
-    this->FormulaChangedPlainText();
-}
+void DialogBisector::FormulaTextChanged() { this->FormulaChangedPlainText(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogBisector::PointNameChanged()
@@ -152,13 +167,10 @@ void DialogBisector::PointNameChanged()
     set.insert(getCurrentObjectId(ui->comboBoxThirdPoint));
 
     QColor color = okColor;
-    if (set.size() != 3)
-    {
+    if (set.size() != 3) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -171,22 +183,18 @@ void DialogBisector::PointNameChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogBisector::FXLength()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit length"));
     dialog->SetFormula(GetFormula());
     dialog->setPostfix(UnitsToStr(qApp->patternUnit(), true));
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetFormula(dialog->GetFormula());
     }
     delete dialog;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogBisector::ShowVisualization()
-{
-    AddVisualization<VisToolBisector>();
-}
+void DialogBisector::ShowVisualization() { AddVisualization<VisToolBisector>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogBisector::DeployFormulaTextEdit()
@@ -195,10 +203,7 @@ void DialogBisector::DeployFormulaTextEdit()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogBisector::~DialogBisector()
-{
-    delete ui;
-}
+DialogBisector::~DialogBisector() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -206,57 +211,47 @@ DialogBisector::~DialogBisector()
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogBisector::ChosenObject(quint32 id, const SceneObject &type)
+void DialogBisector::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            VisToolBisector *line = qobject_cast<VisToolBisector *>(vis);
+        if (type == SceneObject::Point) {
+            VisToolBisector* line = qobject_cast<VisToolBisector*>(vis);
             SCASSERT(line != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point of angle")))
-                    {
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point of angle"))) {
+                    number++;
+                    line->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->comboBoxFirstPoint) != id) {
+                    if (SetObject(id, ui->comboBoxSecondPoint, tr("Select third point of angle"))) {
                         number++;
-                        line->VisualMode(id);
-                    }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->comboBoxFirstPoint) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxSecondPoint, tr("Select third point of angle")))
-                        {
-                            number++;
-                            line->setObject2Id(id);
-                            line->RefreshGeometry();
-                        }
-                    }
-                    break;
-                case 2:
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxSecondPoint));
-                    set.insert(id);
-
-                    if (set.size() == 3)
-                    {
-                        if (SetObject(id, ui->comboBoxThirdPoint, ""))
-                        {
-                            line->setObject3Id(id);
-                            line->RefreshGeometry();
-                            prepare = true;
-                            this->setModal(true);
-                            this->show();
-                        }
+                        line->setObject2Id(id);
+                        line->RefreshGeometry();
                     }
                 }
-                    break;
-                default:
-                    break;
+                break;
+            case 2: {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
+                set.insert(getCurrentObjectId(ui->comboBoxSecondPoint));
+                set.insert(id);
+
+                if (set.size() == 3) {
+                    if (SetObject(id, ui->comboBoxThirdPoint, "")) {
+                        line->setObject3Id(id);
+                        line->RefreshGeometry();
+                        prepare = true;
+                        this->setModal(true);
+                        this->show();
+                    }
+                }
+            } break;
+            default: break;
             }
         }
     }
@@ -267,7 +262,7 @@ void DialogBisector::ChosenObject(quint32 id, const SceneObject &type)
  * @brief SetPointName set name of point
  * @param value name
  */
-void DialogBisector::SetPointName(const QString &value)
+void DialogBisector::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -288,7 +283,7 @@ QString DialogBisector::getLineType() const
  * @brief setLineType set type of line
  * @param value type
  */
-void DialogBisector::setLineType(const QString &value)
+void DialogBisector::setLineType(const QString& value)
 {
     ChangeCurrentData(ui->lineType_ComboBox, value);
     vis->setLineStyle(lineTypeToPenStyle(value));
@@ -301,7 +296,7 @@ void DialogBisector::setLineType(const QString &value)
  */
 QString DialogBisector::getLineWeight() const
 {
-        return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
+    return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -309,7 +304,7 @@ QString DialogBisector::getLineWeight() const
  * @brief setLineWeight set weight of the lines
  * @param value type
  */
-void DialogBisector::setLineWeight(const QString &value)
+void DialogBisector::setLineWeight(const QString& value)
 {
     ChangeCurrentData(ui->lineWeight_ComboBox, value);
     vis->setLineWeight(value);
@@ -329,7 +324,7 @@ QString DialogBisector::getLineColor() const
 /* @brief setLineColor set color of the line
  * @param value type
  */
-void DialogBisector::setLineColor(const QString &value)
+void DialogBisector::setLineColor(const QString& value)
 {
     ChangeCurrentData(ui->lineColor_ComboBox, value);
 }
@@ -339,17 +334,16 @@ void DialogBisector::setLineColor(const QString &value)
  * @brief SetFormula set string of formula
  * @param value formula
  */
-void DialogBisector::SetFormula(const QString &value)
+void DialogBisector::SetFormula(const QString& value)
 {
     formula = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed.
-    if (formula.length() > 80)
-    {
+    if (formula.length() > 80) {
         this->DeployFormulaTextEdit();
     }
     ui->plainTextEditFormula->setPlainText(formula);
 
-    VisToolBisector *line = qobject_cast<VisToolBisector *>(vis);
+    VisToolBisector* line = qobject_cast<VisToolBisector*>(vis);
     SCASSERT(line != nullptr)
     line->setLength(formula);
 
@@ -361,11 +355,11 @@ void DialogBisector::SetFormula(const QString &value)
  * @brief SetFirstPointId set id of first point
  * @param value id
  */
-void DialogBisector::SetFirstPointId(const quint32 &value)
+void DialogBisector::SetFirstPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxFirstPoint, value);
 
-    VisToolBisector *line = qobject_cast<VisToolBisector *>(vis);
+    VisToolBisector* line = qobject_cast<VisToolBisector*>(vis);
     SCASSERT(line != nullptr)
     line->setObject1Id(value);
 }
@@ -375,11 +369,11 @@ void DialogBisector::SetFirstPointId(const quint32 &value)
  * @brief SetSecondPointId set id of second point
  * @param value id
  */
-void DialogBisector::SetSecondPointId(const quint32 &value)
+void DialogBisector::SetSecondPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxSecondPoint, value);
 
-    VisToolBisector *line = qobject_cast<VisToolBisector *>(vis);
+    VisToolBisector* line = qobject_cast<VisToolBisector*>(vis);
     SCASSERT(line != nullptr)
     line->setObject2Id(value);
 }
@@ -389,11 +383,11 @@ void DialogBisector::SetSecondPointId(const quint32 &value)
  * @brief SetThirdPointId set id of third point
  * @param value id
  */
-void DialogBisector::SetThirdPointId(const quint32 &value)
+void DialogBisector::SetThirdPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxThirdPoint, value);
 
-    VisToolBisector *line = qobject_cast<VisToolBisector *>(vis);
+    VisToolBisector* line = qobject_cast<VisToolBisector*>(vis);
     SCASSERT(line != nullptr)
     line->setObject3Id(value);
 }
@@ -406,7 +400,7 @@ void DialogBisector::SaveData()
     formula = ui->plainTextEditFormula->toPlainText();
     formula.replace("\n", " ");
 
-    VisToolBisector *line = qobject_cast<VisToolBisector *>(vis);
+    VisToolBisector* line = qobject_cast<VisToolBisector*>(vis);
     SCASSERT(line != nullptr)
 
     line->setObject1Id(GetFirstPointId());
@@ -419,7 +413,7 @@ void DialogBisector::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogBisector::closeEvent(QCloseEvent *event)
+void DialogBisector::closeEvent(QCloseEvent* event)
 {
     ui->plainTextEditFormula->blockSignals(true);
     DialogTool::closeEvent(event);
@@ -432,7 +426,8 @@ void DialogBisector::closeEvent(QCloseEvent *event)
  */
 QString DialogBisector::GetFormula() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(formula, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        formula, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------

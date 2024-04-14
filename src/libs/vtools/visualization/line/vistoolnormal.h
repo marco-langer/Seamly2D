@@ -52,12 +52,12 @@
 #ifndef VISTOOLNORMAL_H
 #define VISTOOLNORMAL_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -66,28 +66,30 @@ class VisToolNormal : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolNormal(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolNormal(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolNormal() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void         setObject2Id(const quint32 &value);
-    void         setLength(const QString &expression);
-    qreal        GetAngle() const;
-    void         SetAngle(const qreal &value);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolNormal)};
+    void setObject2Id(const quint32& value);
+    void setLength(const QString& expression);
+    qreal GetAngle() const;
+    void SetAngle(const qreal& value);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolNormal)
+    };
 
 private:
     Q_DISABLE_COPY(VisToolNormal)
-    quint32              object2Id;
-    VScaledEllipse *point;
-    VScaledEllipse *lineP1;
-    VScaledEllipse *lineP2;
-    VScaledLine    *line;
-    qreal                length;
-    qreal                angle;
-
+    quint32 object2Id;
+    VScaledEllipse* point;
+    VScaledEllipse* lineP1;
+    VScaledEllipse* lineP2;
+    VScaledLine* line;
+    qreal length;
+    qreal angle;
 };
 
-#endif // VISTOOLNORMAL_H
+#endif   // VISTOOLNORMAL_H

@@ -52,18 +52,17 @@
 #ifndef DIALOGTRUEDARTS_H
 #define DIALOGTRUEDARTS_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogTrueDarts;
+namespace Ui {
+class DialogTrueDarts;
 }
 
 class DialogTrueDarts : public DialogTool
@@ -71,45 +70,46 @@ class DialogTrueDarts : public DialogTool
     Q_OBJECT
 
 public:
-    DialogTrueDarts(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogTrueDarts(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogTrueDarts();
 
-    QString            GetFirstNewDartPointName();
-    QString            GetSecondNewDartPointName();
-    void               SetNewDartPointNames(const QString &firstPoint, const QString &secondPoint);
+    QString GetFirstNewDartPointName();
+    QString GetSecondNewDartPointName();
+    void SetNewDartPointNames(const QString& firstPoint, const QString& secondPoint);
 
-    quint32            GetFirstBasePointId() const;
-    void               SetFirstBasePointId(const quint32 &value);
+    quint32 GetFirstBasePointId() const;
+    void SetFirstBasePointId(const quint32& value);
 
-    quint32            GetSecondBasePointId() const;
-    void               SetSecondBasePointId(const quint32 &value);
+    quint32 GetSecondBasePointId() const;
+    void SetSecondBasePointId(const quint32& value);
 
-    quint32            GetFirstDartPointId() const;
-    void               SetFirstDartPointId(const quint32 &value);
+    quint32 GetFirstDartPointId() const;
+    void SetFirstDartPointId(const quint32& value);
 
-    quint32            GetSecondDartPointId() const;
-    void               SetSecondDartPointId(const quint32 &value);
+    quint32 GetSecondDartPointId() const;
+    void SetSecondDartPointId(const quint32& value);
 
-    quint32            GetThirdDartPointId() const;
-    void               SetThirdDartPointId(const quint32 &value);
+    quint32 GetThirdDartPointId() const;
+    void SetThirdDartPointId(const quint32& value);
 
-    void               SetChildrenId(const quint32 &ch1, const quint32 &ch2);
+    void SetChildrenId(const quint32& ch1, const quint32& ch2);
 public slots:
-    virtual void       ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void       PointNameChanged() Q_DECL_OVERRIDE;
-    void               NameDartPoint1Changed();
-    void               NameDartPoint2Changed();
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
+    void NameDartPoint1Changed();
+    void NameDartPoint2Changed();
+
 protected:
-    virtual void       ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void       SaveData() Q_DECL_OVERRIDE;
-    virtual void       CheckState() Q_DECL_FINAL;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void CheckState() Q_DECL_FINAL;
 
 private:
     Q_DISABLE_COPY(DialogTrueDarts)
-    Ui::DialogTrueDarts *ui;
+    Ui::DialogTrueDarts* ui;
 
     QString d1PointName;
     QString d2PointName;
@@ -120,13 +120,22 @@ private:
     bool flagName1;
     bool flagName2;
 
-    void NameChanged(QLabel *labelEditNamePoint, const QString &pointD1Name, const QString &pointD2Name,
-                     QLineEdit *secondPointName, bool &flagName);
+    void NameChanged(
+        QLabel* labelEditNamePoint,
+        const QString& pointD1Name,
+        const QString& pointD2Name,
+        QLineEdit* secondPointName,
+        bool& flagName);
 
-    void FillComboBoxs(const quint32 &ch1, const quint32 &ch2);
+    void FillComboBoxs(const quint32& ch1, const quint32& ch2);
 
-    void CheckName(QLineEdit* edit, QLabel *labelEditNamePoint, const QString &pointD1Name, const QString &pointD2Name,
-                   QLineEdit *secondPointName, bool &flagName);
+    void CheckName(
+        QLineEdit* edit,
+        QLabel* labelEditNamePoint,
+        const QString& pointD1Name,
+        const QString& pointD2Name,
+        QLineEdit* secondPointName,
+        bool& flagName);
 };
 
-#endif // DIALOGTRUEDARTS_H
+#endif   // DIALOGTRUEDARTS_H

@@ -54,118 +54,117 @@
 
 #include "../dialogtool.h"
 
-namespace Ui
-{
-    class DialogInternalPath;
+namespace Ui {
+class DialogInternalPath;
 }
 
 class DialogInternalPath : public DialogTool
 {
     Q_OBJECT
 public:
-    explicit                DialogInternalPath(const VContainer *data, quint32 toolId, QWidget *parent = nullptr);
-    virtual                ~DialogInternalPath();
+    explicit DialogInternalPath(const VContainer* data, quint32 toolId, QWidget* parent = nullptr);
+    virtual ~DialogInternalPath();
 
-    void                    EnbleShowMode(bool disable);
+    void EnbleShowMode(bool disable);
 
-    VPiecePath              GetPiecePath() const;
-    void                    SetPiecePath(const VPiecePath &path);
+    VPiecePath GetPiecePath() const;
+    void SetPiecePath(const VPiecePath& path);
 
-    quint32                 GetPieceId() const;
-    void                    SetPieceId(quint32 id);
+    quint32 GetPieceId() const;
+    void SetPieceId(quint32 id);
 
-    QString                 getSeamAllowanceWidthFormula() const;
-    void                    setSeamAllowanceWidthFormula(const QString &formula);
+    QString getSeamAllowanceWidthFormula() const;
+    void setSeamAllowanceWidthFormula(const QString& formula);
 
-    virtual void            SetPiecesList(const QVector<quint32> &list) Q_DECL_OVERRIDE;
+    virtual void SetPiecesList(const QVector<quint32>& list) Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void            ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void            ShowDialog(bool click) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void            CheckState() Q_DECL_FINAL;
-    virtual void            ShowVisualization() Q_DECL_OVERRIDE;
-    virtual void            closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void CheckState() Q_DECL_FINAL;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
-    void                    ShowContextMenu(const QPoint &pos);
-    void                    ListChanged();
-    void                    NameChanged();
-    void                    nodeChanged(int index);
-    void                    notchChanged(int index);
-    void                    enableDefaultBeforeButton();
-    void                    enableDefaultAfterButton();
-    void                    notchTypeChanged(int id);
-    void                    notchSubTypeChanged(int id);
+    void ShowContextMenu(const QPoint& pos);
+    void ListChanged();
+    void NameChanged();
+    void nodeChanged(int index);
+    void notchChanged(int index);
+    void enableDefaultBeforeButton();
+    void enableDefaultAfterButton();
+    void notchTypeChanged(int id);
+    void notchSubTypeChanged(int id);
 
-    void                    evaluateDefaultWidth();
-    void                    evaluateBeforeWidth();
-    void                    evaluateAfterWidth();
+    void evaluateDefaultWidth();
+    void evaluateBeforeWidth();
+    void evaluateAfterWidth();
 
-    void                    editDefaultSeamAllowanceWidth();
-    void                    editBeforeSeamAllowanceWidth();
-    void                    editAfterSeamAllowanceWidth();
+    void editDefaultSeamAllowanceWidth();
+    void editBeforeSeamAllowanceWidth();
+    void editAfterSeamAllowanceWidth();
 
-    void                    defaultWidthChanged();
-    void                    beforeWidthChanged();
-    void                    afterWidthChanged();
+    void defaultWidthChanged();
+    void beforeWidthChanged();
+    void afterWidthChanged();
 
-    void                    expandWidthFormulaTextEdit();
-    void                    expandWidthBeforeFormulaTextEdit();
-    void                    expandWidthAfterFormulaTextEdit();
+    void expandWidthFormulaTextEdit();
+    void expandWidthBeforeFormulaTextEdit();
+    void expandWidthAfterFormulaTextEdit();
 
 private:
     Q_DISABLE_COPY(DialogInternalPath)
-    Ui::DialogInternalPath *ui;
-    bool                    m_showMode;
-    qreal                   m_saWidth;
+    Ui::DialogInternalPath* ui;
+    bool m_showMode;
+    qreal m_saWidth;
 
-    QTimer                 *m_timerWidth;
-    QTimer                 *m_timerWidthBefore;
-    QTimer                 *m_timerWidthAfter;
+    QTimer* m_timerWidth;
+    QTimer* m_timerWidthBefore;
+    QTimer* m_timerWidthAfter;
 
-    int                     m_widthFormula;
-    int                     m_beforeWidthFormula;
-    int                     m_afterWidthFormula;
+    int m_widthFormula;
+    int m_beforeWidthFormula;
+    int m_afterWidthFormula;
 
-    void                    InitPathTab();
-    void                    InitSeamAllowanceTab();
-    void                    InitNotchesTab();
-    void                    InitPathTypes();
-    void                    initializeNodesList();
-    void                    initializeNotchesList();
-    void                    nodeAngleChanged(int index);
+    void InitPathTab();
+    void InitSeamAllowanceTab();
+    void InitNotchesTab();
+    void InitPathTypes();
+    void initializeNodesList();
+    void initializeNotchesList();
+    void nodeAngleChanged(int index);
 
-    VPiecePath              CreatePath() const;
+    VPiecePath CreatePath() const;
 
-    bool                    PathIsValid() const;
-    void                    ValidObjects(bool value);
-    void                    NewItem(const VPieceNode &node);
+    bool PathIsValid() const;
+    void ValidObjects(bool value);
+    void NewItem(const VPieceNode& node);
 
-    PiecePathType           GetType() const;
-    void                    SetType(PiecePathType type);
+    PiecePathType GetType() const;
+    void SetType(PiecePathType type);
 
-    Qt::PenStyle            GetPenType() const;
-    void                    SetPenType(const Qt::PenStyle &type);
+    Qt::PenStyle GetPenType() const;
+    void SetPenType(const Qt::PenStyle& type);
 
-    bool                    IsCutPath() const;
-    void                    SetCutPath(bool value);
+    bool IsCutPath() const;
+    void SetCutPath(bool value);
 
-    QListWidgetItem        *getItemById(quint32 id);
+    QListWidgetItem* getItemById(quint32 id);
 
-    quint32                 GetLastId() const;
+    quint32 GetLastId() const;
 
-    void                    SetCurrentSABefore(const QString &formula);
-    void                    setCurrentAfterSeamAllowance(const QString &formula);
+    void SetCurrentSABefore(const QString& formula);
+    void setCurrentAfterSeamAllowance(const QString& formula);
 
-    void                    updateNodeBeforeSeamAllowance(const QString &formula);
-    void                    updateNodeAfterSeamAllowance(const QString &formula);
+    void updateNodeBeforeSeamAllowance(const QString& formula);
+    void updateNodeAfterSeamAllowance(const QString& formula);
 
-    QString                 getSeamAllowanceWidthFormulaBefore() const;
-    QString                 getSeamAllowanceWidthFormulaAfter() const;
+    QString getSeamAllowanceWidthFormulaBefore() const;
+    QString getSeamAllowanceWidthFormulaAfter() const;
 
-    void                    setMoveExclusions();
+    void setMoveExclusions();
 };
 
-#endif // DIALOGINTERNALPATH_H
+#endif   // DIALOGINTERNALPATH_H

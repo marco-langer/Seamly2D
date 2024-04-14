@@ -54,15 +54,15 @@
 #include <QDomNode>
 #include <QDomNodeList>
 
+#include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/def.h"
 #include "../vwidgets/vmaingraphicsview.h"
-#include "../ifc/xml/vabstractpattern.h"
 #include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-AddGroup::AddGroup(const QDomElement &xml, VAbstractPattern *doc, QUndoCommand *parent)
+AddGroup::AddGroup(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent)
     : VUndoCommand(xml, doc, parent)
     , activeBlockName(doc->getActiveDraftBlockName())
 {
@@ -71,36 +71,28 @@ AddGroup::AddGroup(const QDomElement &xml, VAbstractPattern *doc, QUndoCommand *
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-AddGroup::~AddGroup()
-{
-}
+AddGroup::~AddGroup() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void AddGroup::undo()
 {
     qCDebug(vUndo, "Undo.");
 
-    doc->changeActiveDraftBlock(activeBlockName);//Without this user will not see this change
+    doc->changeActiveDraftBlock(activeBlockName);   // Without this user will not see this change
 
     QDomElement groups = doc->createGroups();
-    if (!groups.isNull())
-    {
+    if (!groups.isNull()) {
         QDomElement group = doc->elementById(nodeId, VAbstractPattern::TagGroup);
-        if (group.isElement())
-        {
+        if (group.isElement()) {
             group.setAttribute(VAbstractPattern::AttrVisible, trueStr);
             doc->parseGroups(groups);
-            if (groups.removeChild(group).isNull())
-            {
+            if (groups.removeChild(group).isNull()) {
                 qCDebug(vUndo, "Can't delete group.");
                 return;
             }
             emit updateGroups();
-        }
-        else
-        {
-            if (groups.childNodes().isEmpty())
-            {
+        } else {
+            if (groups.childNodes().isEmpty()) {
                 QDomNode parent = groups.parentNode();
                 parent.removeChild(groups);
             }
@@ -108,15 +100,13 @@ void AddGroup::undo()
             qCDebug(vUndo, "Can't get group by id = %u.", nodeId);
             return;
         }
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't get tag Groups.");
         return;
     }
 
     VMainGraphicsView::NewSceneRect(qApp->getCurrentScene(), qApp->getSceneView());
-    doc->setCurrentDraftBlock(activeBlockName);//Return current pattern piece after undo
+    doc->setCurrentDraftBlock(activeBlockName);   // Return current pattern piece after undo
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -124,17 +114,14 @@ void AddGroup::redo()
 {
     qCDebug(vUndo, "Redo.");
 
-    doc->changeActiveDraftBlock(activeBlockName);//Without this user will not see this change
+    doc->changeActiveDraftBlock(activeBlockName);   // Without this user will not see this change
 
     QDomElement groups = doc->createGroups();
-    if (!groups.isNull())
-    {
+    if (!groups.isNull()) {
         groups.appendChild(xml);
         doc->parseGroups(groups);
         emit updateGroups();
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't get tag Groups.");
         return;
     }

@@ -51,8 +51,6 @@
 
 #include "vtoolmirrorbyline.h"
 
-#include <limits.h>
-#include <qiterator.h>
 #include <QColor>
 #include <QDomNode>
 #include <QDomNodeList>
@@ -63,29 +61,32 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QUndoStack>
+#include <limits.h>
 #include <new>
+#include <qiterator.h>
 
-#include "../../../../dialogs/tools/dialogtool.h"
 #include "../../../../dialogs/tools/dialogmirrorbyline.h"
+#include "../../../../dialogs/tools/dialogtool.h"
 #include "../../../../visualization/line/operation/vistoolmirrorbyline.h"
 #include "../../../../visualization/visualization.h"
-#include "../vgeometry/vpointf.h"
-#include "../vpatterndb/vtranslatevars.h"
-#include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vcommonsettings.h"
-#include "../vmisc/diagnostic.h"
-#include "../vmisc/logging.h"
-#include "../vpatterndb/vcontainer.h"
-#include "../vpatterndb/vformula.h"
-#include "../ifc/ifcdef.h"
-#include "../ifc/exception/vexception.h"
-#include "../vwidgets/vabstractsimple.h"
-#include "../vwidgets/vmaingraphicsscene.h"
 #include "../../../vabstracttool.h"
 #include "../../../vdatatool.h"
 #include "../../vdrawtool.h"
+#include "../ifc/exception/vexception.h"
+#include "../ifc/ifcdef.h"
+#include "../vgeometry/vpointf.h"
+#include "../vmisc/diagnostic.h"
+#include "../vmisc/logging.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/vcontainer.h"
+#include "../vpatterndb/vformula.h"
+#include "../vpatterndb/vtranslatevars.h"
+#include "../vwidgets/vabstractsimple.h"
+#include "../vwidgets/vmaingraphicsscene.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 const QString VToolMirrorByLine::ToolType = QStringLiteral("flippingByLine");
 
@@ -101,32 +102,50 @@ void VToolMirrorByLine::setDialog()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolMirrorByLine *VToolMirrorByLine::Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene,
-                                             VAbstractPattern *doc, VContainer *data)
+VToolMirrorByLine* VToolMirrorByLine::Create(
+    QSharedPointer<DialogTool> dialog,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data)
 {
     SCASSERT(not dialog.isNull())
     QSharedPointer<DialogMirrorByLine> dialogTool = dialog.objectCast<DialogMirrorByLine>();
     SCASSERT(not dialogTool.isNull())
-    const quint32 firstLinePointId     = dialogTool->getFirstLinePointId();
-    const quint32 secondLinePointId    = dialogTool->getSecondLinePointId();
-    const QString suffix               = dialogTool->getSuffix();
-    const QVector<SourceItem> source   = dialogTool->getSourceObjects();
-    VToolMirrorByLine* operation = Create(0, firstLinePointId, secondLinePointId, suffix, source,
-                                            QVector<DestinationItem>(), scene, doc, data, Document::FullParse,
-                                            Source::FromGui);
-    if (operation != nullptr)
-    {
+    const quint32 firstLinePointId = dialogTool->getFirstLinePointId();
+    const quint32 secondLinePointId = dialogTool->getSecondLinePointId();
+    const QString suffix = dialogTool->getSuffix();
+    const QVector<SourceItem> source = dialogTool->getSourceObjects();
+    VToolMirrorByLine* operation = Create(
+        0,
+        firstLinePointId,
+        secondLinePointId,
+        suffix,
+        source,
+        QVector<DestinationItem>(),
+        scene,
+        doc,
+        data,
+        Document::FullParse,
+        Source::FromGui);
+    if (operation != nullptr) {
         operation->m_dialog = dialogTool;
     }
     return operation;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolMirrorByLine *VToolMirrorByLine::Create(const quint32 _id, quint32 firstLinePointId, quint32 secondLinePointId,
-                                                 const QString &suffix, const QVector<SourceItem> &source,
-                                                 const QVector<DestinationItem> &destination, VMainGraphicsScene *scene,
-                                                 VAbstractPattern *doc, VContainer *data, const Document &parse,
-                                                 const Source &typeCreation)
+VToolMirrorByLine* VToolMirrorByLine::Create(
+    const quint32 _id,
+    quint32 firstLinePointId,
+    quint32 secondLinePointId,
+    const QString& suffix,
+    const QVector<SourceItem>& source,
+    const QVector<DestinationItem>& destination,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data,
+    const Document& parse,
+    const Source& typeCreation)
 {
     const auto firstPoint = *data->GeometricObject<VPointF>(firstLinePointId);
     const QPointF fPoint = static_cast<QPointF>(firstPoint);
@@ -139,18 +158,16 @@ VToolMirrorByLine *VToolMirrorByLine::Create(const quint32 _id, quint32 firstLin
     quint32 id = _id;
     createDestination(typeCreation, id, dest, source, fPoint, sPoint, suffix, doc, data, parse);
 
-    if (parse == Document::FullParse)
-    {
+    if (parse == Document::FullParse) {
         VDrawTool::AddRecord(id, Tool::MirrorByLine, doc);
-        VToolMirrorByLine *tool = new VToolMirrorByLine(doc, data, id, firstLinePointId, secondLinePointId, suffix,
-                                                            source, dest, typeCreation);
+        VToolMirrorByLine* tool = new VToolMirrorByLine(
+            doc, data, id, firstLinePointId, secondLinePointId, suffix, source, dest, typeCreation);
         scene->addItem(tool);
         initOperationToolConnections(scene, tool);
         VAbstractPattern::AddTool(id, tool);
         doc->IncrementReferens(firstPoint.getIdTool());
         doc->IncrementReferens(secondPoint.getIdTool());
-        for (int i = 0; i < source.size(); ++i)
-        {
+        for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
             doc->IncrementReferens(data->GetGObject(item.id)->getIdTool());
         }
@@ -172,16 +189,12 @@ QString VToolMirrorByLine::secondLinePointName() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VToolMirrorByLine::getFirstLinePointId() const
-{
-    return m_firstLinePointId;
-}
+quint32 VToolMirrorByLine::getFirstLinePointId() const { return m_firstLinePointId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByLine::setFirstLinePointId(const quint32 &value)
+void VToolMirrorByLine::setFirstLinePointId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         m_firstLinePointId = value;
 
         QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
@@ -190,16 +203,12 @@ void VToolMirrorByLine::setFirstLinePointId(const quint32 &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VToolMirrorByLine::getSecondLinePointId() const
-{
-    return m_secondLinePointId;
-}
+quint32 VToolMirrorByLine::getSecondLinePointId() const { return m_secondLinePointId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByLine::setSecondLinePointId(const quint32 &value)
+void VToolMirrorByLine::setSecondLinePointId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         m_secondLinePointId = value;
 
         QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
@@ -216,9 +225,8 @@ void VToolMirrorByLine::ShowVisualization(bool show)
 //---------------------------------------------------------------------------------------------------------------------
 void VToolMirrorByLine::SetVisualization()
 {
-    if (not vis.isNull())
-    {
-        VisToolMirrorByLine *visual = qobject_cast<VisToolMirrorByLine *>(vis);
+    if (not vis.isNull()) {
+        VisToolMirrorByLine* visual = qobject_cast<VisToolMirrorByLine*>(vis);
         SCASSERT(visual != nullptr)
 
         visual->setObjects(sourceToObjects(source));
@@ -229,7 +237,7 @@ void VToolMirrorByLine::SetVisualization()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByLine::SaveDialog(QDomElement &domElement)
+void VToolMirrorByLine::SaveDialog(QDomElement& domElement)
 {
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogMirrorByLine> dialogTool = m_dialog.objectCast<DialogMirrorByLine>();
@@ -241,7 +249,7 @@ void VToolMirrorByLine::SaveDialog(QDomElement &domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByLine::ReadToolAttributes(const QDomElement &domElement)
+void VToolMirrorByLine::ReadToolAttributes(const QDomElement& domElement)
 {
     m_firstLinePointId = doc->GetParametrUInt(domElement, AttrP1Line, NULL_ID_STR);
     m_secondLinePointId = doc->GetParametrUInt(domElement, AttrP2Line, NULL_ID_STR);
@@ -249,7 +257,7 @@ void VToolMirrorByLine::ReadToolAttributes(const QDomElement &domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByLine::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void VToolMirrorByLine::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
@@ -262,36 +270,41 @@ void VToolMirrorByLine::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByLine::showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id)
+void VToolMirrorByLine::showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id)
 {
-    try
-    {
+    try {
         ContextMenu<DialogMirrorByLine>(event, id);
-    }
-    catch(const VExceptionToolWasDeleted &error)
-    {
+    } catch (const VExceptionToolWasDeleted& error) {
         Q_UNUSED(error)
-        return;//Leave this method immediately!!!
+        return;   // Leave this method immediately!!!
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolMirrorByLine::makeToolTip() const
 {
-    const QString toolTipStr = QString("<tr> <td><b>%1:</b> %2</td> </tr>"
-                                       "<tr> <td><b>%3:</b> %4</td> </tr>")
-                                       .arg(tr("First line point"))
-                                       .arg(firstLinePointName())
-                                       .arg(tr("Second line point"))
-                                       .arg(secondLinePointName());
+    const QString toolTipStr = QString(
+                                   "<tr> <td><b>%1:</b> %2</td> </tr>"
+                                   "<tr> <td><b>%3:</b> %4</td> </tr>")
+                                   .arg(tr("First line point"))
+                                   .arg(firstLinePointName())
+                                   .arg(tr("Second line point"))
+                                   .arg(secondLinePointName());
     return toolTipStr;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolMirrorByLine::VToolMirrorByLine(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 firstLinePointId,
-                                         quint32 secondLinePointId, const QString &suffix,
-                                         const QVector<SourceItem> &source, const QVector<DestinationItem> &destination,
-                                         const Source &typeCreation, QGraphicsItem *parent)
+VToolMirrorByLine::VToolMirrorByLine(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    quint32 firstLinePointId,
+    quint32 secondLinePointId,
+    const QString& suffix,
+    const QVector<SourceItem>& source,
+    const QVector<DestinationItem>& destination,
+    const Source& typeCreation,
+    QGraphicsItem* parent)
     : VAbstractMirror(doc, data, id, suffix, source, destination, parent)
     , m_firstLinePointId(firstLinePointId)
     , m_secondLinePointId(secondLinePointId)

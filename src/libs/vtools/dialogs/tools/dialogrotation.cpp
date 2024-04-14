@@ -70,8 +70,8 @@
 #include <Qt>
 #include <new>
 
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/operation/vistoolrotation.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../qmuparser/qmudef.h"
@@ -86,7 +86,7 @@
 #include "ui_dialogrotation.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogRotation::DialogRotation(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogRotation::DialogRotation(const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogRotation)
     , angleFlag(false)
@@ -102,7 +102,8 @@ DialogRotation::DialogRotation(const VContainer *data, const quint32 &toolId, QW
     setWindowIcon(QIcon(":/toolicon/32x32/rotation.png"));
 
     ui->plainTextEditFormula->installEventFilter(this);
-    ui->suffix_LineEdit->setText(qApp->getCurrentDocument()->GenerateSuffix(qApp->Settings()->getRotateSuffix()));
+    ui->suffix_LineEdit->setText(
+        qApp->getCurrentDocument()->GenerateSuffix(qApp->Settings()->getRotateSuffix()));
 
     angleTimer = new QTimer(this);
     connect(angleTimer, &QTimer::timeout, this, &DialogRotation::evaluateAngle);
@@ -114,19 +115,21 @@ DialogRotation::DialogRotation(const VContainer *data, const quint32 &toolId, QW
     flagName = true;
     CheckState();
 
-    connect(ui->suffix_LineEdit,      &QLineEdit::textChanged,        this, &DialogRotation::suffixChanged);
-    connect(ui->formula_ToolButton,   &QPushButton::clicked,          this, &DialogRotation::editAngleFormula);
-    connect(ui->plainTextEditFormula, &QPlainTextEdit::textChanged,   this, &DialogRotation::angleChanged);
-    connect(ui->rotation_ComboBox,    &QComboBox::currentTextChanged, this, &DialogRotation::pointChanged);
+    connect(ui->suffix_LineEdit, &QLineEdit::textChanged, this, &DialogRotation::suffixChanged);
+    connect(ui->formula_ToolButton, &QPushButton::clicked, this, &DialogRotation::editAngleFormula);
+    connect(
+        ui->plainTextEditFormula,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogRotation::angleChanged);
+    connect(
+        ui->rotation_ComboBox, &QComboBox::currentTextChanged, this, &DialogRotation::pointChanged);
 
     vis = new VisToolRotation(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogRotation::~DialogRotation()
-{
-    delete ui;
-}
+DialogRotation::~DialogRotation() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 quint32 DialogRotation::getOriginPointId() const
@@ -135,10 +138,10 @@ quint32 DialogRotation::getOriginPointId() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogRotation::setOriginPointId(const quint32 &value)
+void DialogRotation::setOriginPointId(const quint32& value)
 {
     ChangeCurrentData(ui->rotation_ComboBox, value);
-    VisToolRotation *operation = qobject_cast<VisToolRotation *>(vis);
+    VisToolRotation* operation = qobject_cast<VisToolRotation*>(vis);
     SCASSERT(operation != nullptr)
     operation->SetOriginPointId(value);
 }
@@ -146,16 +149,18 @@ void DialogRotation::setOriginPointId(const quint32 &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString DialogRotation::GetAngle() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(angleFormula, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        angleFormula, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogRotation::SetAngle(const QString &value)
+void DialogRotation::SetAngle(const QString& value)
 {
-    angleFormula = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
+    angleFormula =
+        qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     ui->plainTextEditFormula->setPlainText(angleFormula);
 
-    VisToolRotation *operation = qobject_cast<VisToolRotation *>(vis);
+    VisToolRotation* operation = qobject_cast<VisToolRotation*>(vis);
     SCASSERT(operation != nullptr)
     operation->SetAngle(angleFormula);
 
@@ -163,30 +168,24 @@ void DialogRotation::SetAngle(const QString &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogRotation::getSuffix() const
-{
-    return m_suffix;
-}
+QString DialogRotation::getSuffix() const { return m_suffix; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogRotation::setSuffix(const QString &value)
+void DialogRotation::setSuffix(const QString& value)
 {
     m_suffix = value;
     ui->suffix_LineEdit->setText(value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<SourceItem> DialogRotation::getSourceObjects() const
-{
-    return m_objects;
-}
+QVector<SourceItem> DialogRotation::getSourceObjects() const { return m_objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogRotation::setSourceObjects(const QVector<SourceItem> &value)
+void DialogRotation::setSourceObjects(const QVector<SourceItem>& value)
 {
     m_objects = value;
 
-    VisToolRotation *operation = qobject_cast<VisToolRotation *>(vis);
+    VisToolRotation* operation = qobject_cast<VisToolRotation*>(vis);
     SCASSERT(operation != nullptr)
     operation->setObjects(sourceToObjects(m_objects));
 }
@@ -194,20 +193,18 @@ void DialogRotation::setSourceObjects(const QVector<SourceItem> &value)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogRotation::ShowDialog(bool click)
 {
-    if (stage1 && not click)
-    {
-        if (m_objects.isEmpty())
-        {
+    if (stage1 && not click) {
+        if (m_objects.isEmpty()) {
             return;
         }
 
         stage1 = false;
 
-        VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+        VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
         SCASSERT(scene != nullptr)
         scene->clearSelection();
 
-        VisToolRotation *operation = qobject_cast<VisToolRotation *>(vis);
+        VisToolRotation* operation = qobject_cast<VisToolRotation*>(vis);
         SCASSERT(operation != nullptr)
         operation->setObjects(sourceToObjects(m_objects));
         operation->VisualMode();
@@ -225,40 +222,34 @@ void DialogRotation::ShowDialog(bool click)
         qApp->getSceneView()->allowRubberBand(false);
 
         emit ToolTip(tr("Select rotation point"));
-    }
-    else if (not stage1 && prepare && click)
-    {
+    } else if (not stage1 && prepare && click) {
         // The check need to ignore first release of mouse button.
         // User can select point by clicking on a label.
-        if (not m_firstRelease)
-        {
+        if (not m_firstRelease) {
             m_firstRelease = true;
             return;
         }
 
         /*We will ignore click if pointer is in point circle*/
-        VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+        VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
         SCASSERT(scene != nullptr)
-        try
-        {
-            const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(getOriginPointId());
+        try {
+            const QSharedPointer<VPointF> point =
+                data->GeometricObject<VPointF>(getOriginPointId());
             const QLineF line = QLineF(static_cast<QPointF>(*point), scene->getScenePos());
 
-            //Radius of point circle, but little bigger. Need handle with hover sizes.
-            if (line.length() <= scaledRadius(sceneScale(qApp->getCurrentScene())) * 1.5)
-            {
+            // Radius of point circle, but little bigger. Need handle with hover sizes.
+            if (line.length() <= scaledRadius(sceneScale(qApp->getCurrentScene())) * 1.5) {
                 return;
             }
-        }
-        catch (const VExceptionBadId &)
-        {
+        } catch (const VExceptionBadId&) {
             return;
         }
 
-        VisToolRotation *operation = qobject_cast<VisToolRotation *>(vis);
+        VisToolRotation* operation = qobject_cast<VisToolRotation*>(vis);
         SCASSERT(operation != nullptr)
 
-        SetAngle(operation->Angle());//Show in dialog angle that a user choose
+        SetAngle(operation->Angle());   // Show in dialog angle that a user choose
         setModal(true);
         emit ToolTip("");
         angleTimer->start();
@@ -267,40 +258,38 @@ void DialogRotation::ShowDialog(bool click)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogRotation::ChosenObject(quint32 id, const SceneObject &type)
+void DialogRotation::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (not stage1 && not prepare)// After first choose we ignore all objects
+    if (not stage1 && not prepare)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            VisToolRotation *operation = qobject_cast<VisToolRotation *>(vis);
+        if (type == SceneObject::Point) {
+            VisToolRotation* operation = qobject_cast<VisToolRotation*>(vis);
             SCASSERT(operation != nullptr)
 
-            auto object = std::find_if(m_objects.begin(), m_objects.end(),
-                                         [id](const SourceItem &item) { return item.id == id; });
+            auto object =
+                std::find_if(m_objects.begin(), m_objects.end(), [id](const SourceItem& item) {
+                    return item.id == id;
+                });
 
-            if (object != m_objects.end())
-            {
-                if (m_objects.size() > 1)
-                {
-                    // It's not really logical for a user that a center of rotation no need to select.
-                    // To fix this issue we just silently remove it from the list.
+            if (object != m_objects.end()) {
+                if (m_objects.size() > 1) {
+                    // It's not really logical for a user that a center of rotation no need to
+                    // select. To fix this issue we just silently remove it from the list.
                     m_objects.erase(object);
                     operation->setObjects(sourceToObjects(m_objects));
-                }
-                else
-                {
-                    emit ToolTip(tr("Select rotation point that is not part of the list of objects"));
+                } else {
+                    emit ToolTip(
+                        tr("Select rotation point that is not part of the list of objects"));
                     return;
                 }
             }
 
-            if (SetObject(id, ui->rotation_ComboBox, ""))
-            {
-
-                VAbstractMainWindow *window = qobject_cast<VAbstractMainWindow *>(qApp->getMainWindow());
+            if (SetObject(id, ui->rotation_ComboBox, "")) {
+                VAbstractMainWindow* window =
+                    qobject_cast<VAbstractMainWindow*>(qApp->getMainWindow());
                 SCASSERT(window != nullptr)
-                connect(operation, &Visualization::ToolTip, window, &VAbstractMainWindow::ShowToolTip);
+                connect(
+                    operation, &Visualization::ToolTip, window, &VAbstractMainWindow::ShowToolTip);
 
                 operation->SetOriginPointId(id);
                 operation->RefreshGeometry();
@@ -315,24 +304,20 @@ void DialogRotation::ChosenObject(quint32 id, const SceneObject &type)
 void DialogRotation::SelectedObject(bool selected, quint32 id, quint32 tool)
 {
     Q_UNUSED(tool)
-    if (stage1)
-    {
-        auto object = std::find_if(m_objects.begin(), m_objects.end(),
-                                [id](const SourceItem &item) { return item.id == id; });
+    if (stage1) {
+        auto object =
+            std::find_if(m_objects.begin(), m_objects.end(), [id](const SourceItem& item) {
+                return item.id == id;
+            });
 
-        if (selected)
-        {
-            if (object == m_objects.cend())
-            {
+        if (selected) {
+            if (object == m_objects.cend()) {
                 SourceItem item;
                 item.id = id;
                 m_objects.append(item);
             }
-        }
-        else
-        {
-            if (object != m_objects.end())
-            {
+        } else {
+            if (object != m_objects.end()) {
                 m_objects.erase(object);
             }
         }
@@ -350,12 +335,11 @@ void DialogRotation::angleChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogRotation::editAngleFormula()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit angle"));
     dialog->SetFormula(GetAngle());
     dialog->setPostfix(degreeSymbol);
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetAngle(dialog->GetFormula());
     }
     delete dialog;
@@ -365,27 +349,20 @@ void DialogRotation::editAngleFormula()
 void DialogRotation::suffixChanged()
 {
     QLineEdit* edit = qobject_cast<QLineEdit*>(sender());
-    if (edit)
-    {
+    if (edit) {
         const QString suffix = edit->text();
-        if (suffix.isEmpty())
-        {
+        if (suffix.isEmpty()) {
             flagName = false;
             ChangeColor(ui->suffix_Label, Qt::red);
             CheckState();
             return;
-        }
-        else
-        {
-            if (m_suffix != suffix)
-            {
+        } else {
+            if (m_suffix != suffix) {
                 QRegularExpression rx(NameRegExp());
                 const QStringList uniqueNames = VContainer::AllUniqueNames();
-                for (int i=0; i < uniqueNames.size(); ++i)
-                {
+                for (int i = 0; i < uniqueNames.size(); ++i) {
                     const QString name = uniqueNames.at(i) + suffix;
-                    if (not rx.match(name).hasMatch() || not data->IsUnique(name))
-                    {
+                    if (not rx.match(name).hasMatch() || not data->IsUnique(name)) {
                         flagName = false;
                         ChangeColor(ui->suffix_Label, Qt::red);
                         CheckState();
@@ -411,10 +388,7 @@ void DialogRotation::CheckState()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogRotation::ShowVisualization()
-{
-    AddVisualization<VisToolRotation>();
-}
+void DialogRotation::ShowVisualization() { AddVisualization<VisToolRotation>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogRotation::SaveData()
@@ -424,7 +398,7 @@ void DialogRotation::SaveData()
     angleFormula = ui->plainTextEditFormula->toPlainText();
     angleFormula.replace("\n", " ");
 
-    VisToolRotation *operation = qobject_cast<VisToolRotation *>(vis);
+    VisToolRotation* operation = qobject_cast<VisToolRotation*>(vis);
     SCASSERT(operation != nullptr)
 
     operation->setObjects(sourceToObjects(m_objects));
@@ -434,7 +408,7 @@ void DialogRotation::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogRotation::closeEvent(QCloseEvent *event)
+void DialogRotation::closeEvent(QCloseEvent* event)
 {
     ui->plainTextEditFormula->blockSignals(true);
     DialogTool::closeEvent(event);
@@ -445,17 +419,14 @@ void DialogRotation::pointChanged()
 {
     quint32 id = getCurrentObjectId(ui->rotation_ComboBox);
 
-    auto objectId = std::find_if(m_objects.begin(), m_objects.end(),
-                            [id](const SourceItem &item) { return item.id == id; });
+    auto objectId = std::find_if(
+        m_objects.begin(), m_objects.end(), [id](const SourceItem& item) { return item.id == id; });
 
     QColor color = okColor;
-    if (objectId != m_objects.end())
-    {
+    if (objectId != m_objects.end()) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -467,5 +438,10 @@ void DialogRotation::pointChanged()
 void DialogRotation::evaluateAngle()
 {
     labelEditFormula = ui->editAngle_Label;
-    Eval(ui->plainTextEditFormula->toPlainText(), angleFlag, ui->resultAngle_Label, degreeSymbol, false);
+    Eval(
+        ui->plainTextEditFormula->toPlainText(),
+        angleFlag,
+        ui->resultAngle_Label,
+        degreeSymbol,
+        false);
 }

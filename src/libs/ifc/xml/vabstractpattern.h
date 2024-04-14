@@ -53,7 +53,6 @@
 #ifndef VABSTRACTPATTERN_H
 #define VABSTRACTPATTERN_H
 
-#include <qcompilerdetection.h>
 #include <QHash>
 #include <QMap>
 #include <QMetaObject>
@@ -63,27 +62,52 @@
 #include <QStringList>
 #include <QVector>
 #include <QtGlobal>
-#include <QVector>
+#include <qcompilerdetection.h>
 
-#include "vdomdocument.h"
-#include "vtoolrecord.h"
+#include "../../tools/image_item.h"
 #include "../vmisc/def.h"
 #include "../vwidgets/pen_toolbar.h"
-#include "../../tools/image_item.h"
+#include "vdomdocument.h"
+#include "vtoolrecord.h"
 
 class QDomElement;
 class VPiecePath;
 class VPieceNode;
 class PenToolBar;
 
-enum class Document : char { LiteParse, LiteBlockParse, FullParse };
-enum class LabelType : char {NewPatternPiece, NewLabel};
+enum class Document : char
+{
+    LiteParse,
+    LiteBlockParse,
+    FullParse
+};
+enum class LabelType : char
+{
+    NewPatternPiece,
+    NewLabel
+};
 
 // Don't touch values!!!. Same values stored in xml.
-enum class CrossCirclesPoint : char {FirstPoint = 1, SecondPoint = 2};
-enum class VCrossCurvesPoint : char {HighestPoint = 1, LowestPoint = 2};
-enum class HCrossCurvesPoint : char {LeftmostPoint = 1, RightmostPoint = 2};
-enum class AxisType : char {VerticalAxis = 1, HorizontalAxis = 2};
+enum class CrossCirclesPoint : char
+{
+    FirstPoint = 1,
+    SecondPoint = 2
+};
+enum class VCrossCurvesPoint : char
+{
+    HighestPoint = 1,
+    LowestPoint = 2
+};
+enum class HCrossCurvesPoint : char
+{
+    LeftmostPoint = 1,
+    RightmostPoint = 2
+};
+enum class AxisType : char
+{
+    VerticalAxis = 1,
+    HorizontalAxis = 2
+};
 
 class VContainer;
 class VDataTool;
@@ -93,192 +117,201 @@ QT_WARNING_DISABLE_GCC("-Weffc++")
 
 struct VFormulaField
 {
-    QString     expression;
+    QString expression;
     QDomElement element;
-    QString     attribute;
+    QString attribute;
 };
 
 struct GroupAttributes
 {
-   QString  name;
-   bool     visible;
-   bool     locked;
-   QString  color;
-   QString  linetype;
-   QString  lineweight;
+    QString name;
+    bool visible;
+    bool locked;
+    QString color;
+    QString linetype;
+    QString lineweight;
 };
 
 QT_WARNING_POP
 
-class VAbstractPattern : public QObject, public VDomDocument
+class VAbstractPattern
+    : public QObject
+    , public VDomDocument
 {
     Q_OBJECT
 public:
-    explicit                       VAbstractPattern(QObject *parent = nullptr);
-    virtual                       ~VAbstractPattern() Q_DECL_EQ_DEFAULT;
+    explicit VAbstractPattern(QObject* parent = nullptr);
+    virtual ~VAbstractPattern() Q_DECL_EQ_DEFAULT;
 
-    QStringList                    ListMeasurements() const;
-    QVector<VFormulaField>         ListExpressions() const;
-    QVector<VFormulaField>         listVariableExpressions() const;
+    QStringList ListMeasurements() const;
+    QVector<VFormulaField> ListExpressions() const;
+    QVector<VFormulaField> listVariableExpressions() const;
 
-    virtual void                   CreateEmptyFile()=0;
+    virtual void CreateEmptyFile() = 0;
 
-    void                           changeActiveDraftBlock(const QString &name, const Document &parse = Document::FullParse);
-    QString                        getActiveDraftBlockName() const;
+    void changeActiveDraftBlock(const QString& name, const Document& parse = Document::FullParse);
+    QString getActiveDraftBlockName() const;
 
-    bool                           draftBlockNameExists(const QString &name) const;
-    int                            draftBlockCount() const;
-    QDomElement                    getDraftBlockElement(const QString &name);
-    bool                           renameDraftBlock(const QString &oldName, const QString &newName);
-    bool                           appendDraftBlock(const QString &name);
+    bool draftBlockNameExists(const QString& name) const;
+    int draftBlockCount() const;
+    QDomElement getDraftBlockElement(const QString& name);
+    bool renameDraftBlock(const QString& oldName, const QString& newName);
+    bool appendDraftBlock(const QString& name);
 
-    bool                           getActiveNodeElement(const QString &name, QDomElement &element) const;
+    bool getActiveNodeElement(const QString& name, QDomElement& element) const;
 
-    quint32                        getCursor() const;
-    void                           setCursor(const quint32 &value);
+    quint32 getCursor() const;
+    void setCursor(const quint32& value);
 
-    void                           setDefaultPen(Pen pen);
-    QString                        getDefaultLineColor() const;
-    qreal                          getDefaultLineWeight() const;
-    QString                        getDefaultLineType() const;
+    void setDefaultPen(Pen pen);
+    QString getDefaultLineColor() const;
+    qreal getDefaultLineWeight() const;
+    QString getDefaultLineType() const;
 
-    void                           setDefaultBasePoint(QString basePoint);
+    void setDefaultBasePoint(QString basePoint);
 
-    virtual void                   IncrementReferens(quint32 id) const=0;
-    virtual void                   DecrementReferens(quint32 id) const=0;
+    virtual void IncrementReferens(quint32 id) const = 0;
+    virtual void DecrementReferens(quint32 id) const = 0;
 
-    virtual QStringList            GetCurrentAlphabet() const=0;
-    virtual QString                GenerateLabel(const LabelType &type, const QString &reservedName = QString())const=0;
-    virtual QString                GenerateSuffix(const QString &type) const=0;
+    virtual QStringList GetCurrentAlphabet() const = 0;
+    virtual QString
+    GenerateLabel(const LabelType& type, const QString& reservedName = QString()) const = 0;
+    virtual QString GenerateSuffix(const QString& type) const = 0;
 
-    virtual void                   UpdateToolData(const quint32 &id, VContainer *data)=0;
+    virtual void UpdateToolData(const quint32& id, VContainer* data) = 0;
 
-    static VDataTool              *getTool(quint32 id);
-    static void                    AddTool(quint32 id, VDataTool *tool);
-    static void                    RemoveTool(quint32 id);
+    static VDataTool* getTool(quint32 id);
+    static void AddTool(quint32 id, VDataTool* tool);
+    static void RemoveTool(quint32 id);
 
-    static VPiecePath              ParsePieceNodes(const QDomElement &domElement);
-    static QVector<CustomSARecord> ParsePieceCSARecords(const QDomElement &domElement);
-    static QVector<quint32>        ParsePieceInternalPaths(const QDomElement &domElement);
-    static QVector<quint32>        ParsePieceAnchors(const QDomElement &domElement);
+    static VPiecePath ParsePieceNodes(const QDomElement& domElement);
+    static QVector<CustomSARecord> ParsePieceCSARecords(const QDomElement& domElement);
+    static QVector<quint32> ParsePieceInternalPaths(const QDomElement& domElement);
+    static QVector<quint32> ParsePieceAnchors(const QDomElement& domElement);
 
-    void                           AddToolOnRemove(VDataTool *tool);
+    void AddToolOnRemove(VDataTool* tool);
 
-    QVector<VToolRecord>          *getHistory();
-    QVector<VToolRecord>           getBlockHistory() const;
-    QMap<quint32, Tool>            getGroupObjHistory() const;
+    QVector<VToolRecord>* getHistory();
+    QVector<VToolRecord> getBlockHistory() const;
+    QMap<quint32, Tool> getGroupObjHistory() const;
 
-    QString                        MPath() const;
-    void                           SetMPath(const QString &path);
+    QString MPath() const;
+    void SetMPath(const QString& path);
 
-    quint32                        SiblingNodeId(const quint32 &nodeId) const;
+    quint32 SiblingNodeId(const quint32& nodeId) const;
 
-    QStringList                    getPatternPieces() const;
+    QStringList getPatternPieces() const;
 
-    QMap<qint32, ImageItem *>      getBackgroundImageMap();
-    ImageItem *                    getBackgroundImage(qint32 id);
-    void                           addBackgroundImage(qint32 id, ImageItem *item);
-    void                           removeBackgroundImage(qint32 id);
-    void                           clearBackgroundImageMap();
+    QMap<qint32, ImageItem*> getBackgroundImageMap();
+    ImageItem* getBackgroundImage(qint32 id);
+    void addBackgroundImage(qint32 id, ImageItem* item);
+    void removeBackgroundImage(qint32 id);
+    void clearBackgroundImageMap();
 
-    QMap<GHeights, bool>           GetGradationHeights() const;
-    void                           SetGradationHeights(const QMap<GHeights, bool> &options);
+    QMap<GHeights, bool> GetGradationHeights() const;
+    void SetGradationHeights(const QMap<GHeights, bool>& options);
 
-    QMap<GSizes, bool>             GetGradationSizes() const;
-    void                           SetGradationSizes(const QMap<GSizes, bool> &options);
+    QMap<GSizes, bool> GetGradationSizes() const;
+    void SetGradationSizes(const QMap<GSizes, bool>& options);
 
-    QString                        GetDescription() const;
-    void                           SetDescription(const QString &text);
+    QString GetDescription() const;
+    void SetDescription(const QString& text);
 
-    QString                        GetNotes() const;
-    void                           SetNotes(const QString &text);
+    QString GetNotes() const;
+    void SetNotes(const QString& text);
 
-    QString                        GetPatternName() const;
-    void                           SetPatternName(const QString &qsName);
+    QString GetPatternName() const;
+    void SetPatternName(const QString& qsName);
 
-    QString                        GetCompanyName() const;
-    void                           SetCompanyName(const QString &qsName);
+    QString GetCompanyName() const;
+    void SetCompanyName(const QString& qsName);
 
-    QString                        GetPatternNumber() const;
-    void                           SetPatternNumber(const QString &qsNum);
+    QString GetPatternNumber() const;
+    void SetPatternNumber(const QString& qsNum);
 
-    QString                        GetCustomerName() const;
-    void                           SetCustomerName(const QString &qsName);
+    QString GetCustomerName() const;
+    void SetCustomerName(const QString& qsName);
 
-    QString                        GetLabelDateFormat() const;
-    void                           SetLabelDateFormat(const QString &format);
+    QString GetLabelDateFormat() const;
+    void SetLabelDateFormat(const QString& format);
 
-    QString                        GetLabelTimeFormat() const;
-    void                           SetLabelTimeFormat(const QString &format);
+    QString GetLabelTimeFormat() const;
+    void SetLabelTimeFormat(const QString& format);
 
-    void                           setPatternLabelTemplate(const QVector<VLabelTemplateLine> &lines);
+    void setPatternLabelTemplate(const QVector<VLabelTemplateLine>& lines);
 
-    QVector<VLabelTemplateLine>    getPatternLabelTemplate() const;
+    QVector<VLabelTemplateLine> getPatternLabelTemplate() const;
 
-    void                           SetPatternWasChanged(bool changed);
-    bool                           GetPatternWasChanged() const;
+    void SetPatternWasChanged(bool changed);
+    bool GetPatternWasChanged() const;
 
-    QString                        GetImage() const;
-    QString                        GetImageExtension() const;
-    void                           SetImage(const QString &text, const QString &extension);
-    void                           DeleteImage();
+    QString GetImage() const;
+    QString GetImageExtension() const;
+    void SetImage(const QString& text, const QString& extension);
+    void DeleteImage();
 
-    QString                        GetVersion() const;
-    void                           setVersion();
+    QString GetVersion() const;
+    void setVersion();
 
-    QVector<quint32>               getOpItems(const quint32 &toolId, const QString &itemType);
-    QVector<quint32>               getDartItems(const quint32 &toolId);
+    QVector<quint32> getOpItems(const quint32& toolId, const QString& itemType);
+    QVector<quint32> getDartItems(const quint32& toolId);
 
-    bool                           IsModified() const;
-    void                           SetModified(bool modified);
+    bool IsModified() const;
+    void SetModified(bool modified);
 
-    QDomElement                    getDraw(const QString &name) const;
+    QDomElement getDraw(const QString& name) const;
 
-    void                           parseGroups(const QDomElement &domElement);
-    QDomElement                    createGroups();
-    QDomElement                    createGroup(quint32 id, const QString &name, const QString &color, const QString &type,
-                                                const QString &weight, const QMap<quint32, quint32> &groupData);
+    void parseGroups(const QDomElement& domElement);
+    QDomElement createGroups();
+    QDomElement createGroup(
+        quint32 id,
+        const QString& name,
+        const QString& color,
+        const QString& type,
+        const QString& weight,
+        const QMap<quint32, quint32>& groupData);
 
-    QDomElement                    addGroupItems(const QString &name, const QMap<quint32, quint32> &groupData);
-    QString                        getGroupName(quint32 id);
-    void                           setGroupName(quint32 id, const QString &name);
+    QDomElement addGroupItems(const QString& name, const QMap<quint32, quint32>& groupData);
+    QString getGroupName(quint32 id);
+    void setGroupName(quint32 id, const QString& name);
 
     QMap<quint32, GroupAttributes> getGroups();
 
-    QStringList                    groupListByName();
-    QDomElement                    getGroupByName(const QString &name);
-    quint32                        getGroupIdByName(const QString &name);
-    QMap<quint32, QString>         getGroupsContainingItem(quint32 toolId, quint32 objectId, bool containsItem);
+    QStringList groupListByName();
+    QDomElement getGroupByName(const QString& name);
+    quint32 getGroupIdByName(const QString& name);
+    QMap<quint32, QString>
+    getGroupsContainingItem(quint32 toolId, quint32 objectId, bool containsItem);
 
-    void                           deleteToolFromGroup(quint32 toolId);
-    void                           addToolToGroup(quint32 toolId, quint32 objectId, const QString &groupName );
+    void deleteToolFromGroup(quint32 toolId);
+    void addToolToGroup(quint32 toolId, quint32 objectId, const QString& groupName);
 
-    QDomElement                    addGroupItem(quint32 toolId, quint32 objectId, quint32 groupId);
-    QDomElement                    removeGroupItem(quint32 toolId, quint32 objectId, quint32 groupId);
-    bool                           isGroupEmpty(quint32 id);
+    QDomElement addGroupItem(quint32 toolId, quint32 objectId, quint32 groupId);
+    QDomElement removeGroupItem(quint32 toolId, quint32 objectId, quint32 groupId);
+    bool isGroupEmpty(quint32 id);
 
-    bool                           getGroupVisibility(quint32 id);
-    void                           setGroupVisibility(quint32 id, bool visible);
+    bool getGroupVisibility(quint32 id);
+    void setGroupVisibility(quint32 id, bool visible);
 
-    bool                           getGroupLock(quint32 id);
-    void                           setGroupLock(quint32 id, bool locked);
+    bool getGroupLock(quint32 id);
+    void setGroupLock(quint32 id, bool locked);
 
-    QString                        getGroupColor(quint32 id);
-    void                           setGroupColor(quint32 id, QString color);
+    QString getGroupColor(quint32 id);
+    void setGroupColor(quint32 id, QString color);
 
-    QString                        getGroupLineType(quint32 id);
-    void                           setGroupLineType(quint32 id, QString type);
+    QString getGroupLineType(quint32 id);
+    void setGroupLineType(quint32 id, QString type);
 
-    QString                        getGroupLineWeight(quint32 id);
-    void                           setGroupLineWeight(quint32 id, QString weight);
+    QString getGroupLineWeight(quint32 id);
+    void setGroupLineWeight(quint32 id, QString weight);
 
-    bool                           groupNameExists(const QString &groupName);
+    bool groupNameExists(const QString& groupName);
 
-    QString                        useGroupColor(quint32 toolId, QString color);
-    QString                        useGroupLineType(quint32 toolId, QString type);
-    QString                        useGroupLineWeight(quint32 toolId, QString weight);
+    QString useGroupColor(quint32 toolId, QString color);
+    QString useGroupLineType(quint32 toolId, QString type);
+    QString useGroupLineWeight(quint32 toolId, QString weight);
 
-    QPair<bool, QMap<quint32, quint32> > parseItemElement(const QDomElement &domElement);
+    QPair<bool, QMap<quint32, quint32>> parseItemElement(const QDomElement& domElement);
 
     static const QString TagPattern;
     static const QString TagCalculation;
@@ -326,7 +359,7 @@ public:
     static const QString AttrYPos;
     static const QString AttrHeight;
     static const QString AttrXScale;
-    static const QString AttrYScale ;
+    static const QString AttrYScale;
     static const QString AttrAspectLocked;
     static const QString AttrUnits;
     static const QString AttrOpacity;
@@ -446,67 +479,67 @@ signals:
      * @brief activeDraftBlockChanged change active draft block.
      * @param newName new pattern peace name.
      */
-    void           activeDraftBlockChanged(const QString &newName);
+    void activeDraftBlockChanged(const QString& newName);
 
     /**
      * @brief ChangedCursor change cursor position.
      * @param id tool id.
      */
-    void           ChangedCursor(quint32 id);
+    void ChangedCursor(quint32 id);
 
     /**
      * @brief draftBlockNameChanged save new name draft block.
      * @param oldName old name.
      * @param newName new name.
      */
-    void           draftBlockNameChanged(const QString &oldName, const QString &newName);
+    void draftBlockNameChanged(const QString& oldName, const QString& newName);
     /**
      * @brief FullUpdateFromFile update tool data form file.
      */
-    void           FullUpdateFromFile();
+    void FullUpdateFromFile();
     /**
      * @brief patternChanged emit if we have unsaved change.
      */
-    void           patternChanged(bool saved);
-    void           UpdatePatternLabel();
+    void patternChanged(bool saved);
+    void UpdatePatternLabel();
     /**
      * @brief ShowTool highlight tool.
      * @param id tool id.
      * @param enable enable or disable highlight.
      */
-    void           ShowTool(quint32 id, bool enable);
-    void           ClearMainWindow();
-    void           UndoCommand();
-    void           setGuiEnabled(bool enabled);
-    void           CheckLayout();
-    void           UpdateInLayoutList(quint32 id);
-    void           showPiece(quint32 id);
-    void           setCurrentDraftBlock(const QString &patterPiece);
-    void           patternHasGroups(bool value);
-    void           updateGroups();
+    void ShowTool(quint32 id, bool enable);
+    void ClearMainWindow();
+    void UndoCommand();
+    void setGuiEnabled(bool enabled);
+    void CheckLayout();
+    void UpdateInLayoutList(quint32 id);
+    void showPiece(quint32 id);
+    void setCurrentDraftBlock(const QString& patterPiece);
+    void patternHasGroups(bool value);
+    void updateGroups();
 
 public slots:
-    virtual void   LiteParseTree(const Document &parse)=0;
-    void           haveLiteChange();
-    void           NeedFullParsing();
-    void           ClearScene();
-    void           updatePieceList(quint32 id);
-    void           selectedPiece(quint32 id);
+    virtual void LiteParseTree(const Document& parse) = 0;
+    void haveLiteChange();
+    void NeedFullParsing();
+    void ClearScene();
+    void updatePieceList(quint32 id);
+    void selectedPiece(quint32 id);
 
 protected:
     /** @brief activeBlockName name current pattern peace. */
-    QString        activeDraftBlock;
+    QString activeDraftBlock;
 
-    QString        m_DefaultLineColor;
-    qreal          m_DefaultLineWeight;
-    QString        m_DefaultLineType;
+    QString m_DefaultLineColor;
+    qreal m_DefaultLineWeight;
+    QString m_DefaultLineType;
 
-    QString        defaultBasePoint;
+    QString defaultBasePoint;
 
-    QString        lastSavedExportFormat;
+    QString lastSavedExportFormat;
 
     /** @brief cursor cursor keep id tool after which we will add new tool in file. */
-    quint32        cursor;
+    quint32 cursor;
 
     QVector<VDataTool*> toolsOnRemove;
 
@@ -514,13 +547,13 @@ protected:
     QVector<VToolRecord> history;
 
     /** @brief patternPieces list of patern pieces names for combobox*/
-    QStringList    patternPieces;
+    QStringList patternPieces;
 
     /** @brief m_imageMap stores the image items and their id*/
-    QMap<qint32, ImageItem *>         m_imageMap{};
+    QMap<qint32, ImageItem*> m_imageMap{};
 
     /** @brief modified keep state of the document for cases that do not cover QUndoStack*/
-    mutable bool   modified;
+    mutable bool modified;
 
     /** @brief tools list with pointer on tools. */
     static QHash<quint32, VDataTool*> tools;
@@ -528,43 +561,42 @@ protected:
     static QVector<VLabelTemplateLine> patternLabelLines;
     static bool patternLabelWasChanged;
 
-    static void       ToolExists(const quint32 &id);
-    static VPiecePath ParsePathNodes(const QDomElement &domElement);
-    static VPieceNode ParseSANode(const QDomElement &domElement);
+    static void ToolExists(const quint32& id);
+    static VPiecePath ParsePathNodes(const QDomElement& domElement);
+    static VPieceNode ParseSANode(const QDomElement& domElement);
 
-    void              setActiveDraftBlock(const QString &name);
+    void setActiveDraftBlock(const QString& name);
 
-    QDomElement       CheckTagExists(const QString &tag);
-    void              InsertTag(const QStringList &tags, const QDomElement &element);
+    QDomElement CheckTagExists(const QString& tag);
+    void InsertTag(const QStringList& tags, const QDomElement& element);
 
-    void              SetChildTag(const QString &qsParent, const QString &qsChild, const QString &qsValue);
+    void SetChildTag(const QString& qsParent, const QString& qsChild, const QString& qsValue);
 
-    int               getActiveDraftBlockIndex() const;
-    bool              getActiveDraftElement(QDomElement &element) const;
+    int getActiveDraftBlockIndex() const;
+    bool getActiveDraftElement(QDomElement& element) const;
 
-    bool              hasGroupItem(const QDomElement &domElement, quint32 toolId, quint32 objectId);
+    bool hasGroupItem(const QDomElement& domElement, quint32 toolId, quint32 objectId);
 
 private:
     Q_DISABLE_COPY(VAbstractPattern)
 
-    QStringList            listVariables() const;
+    QStringList listVariables() const;
     QVector<VFormulaField> ListPointExpressions() const;
     QVector<VFormulaField> ListArcExpressions() const;
     QVector<VFormulaField> ListElArcExpressions() const;
     QVector<VFormulaField> ListSplineExpressions() const;
     QVector<VFormulaField> ListPathPointExpressions() const;
     QVector<VFormulaField> ListOperationExpressions() const;
-    QVector<VFormulaField> ListNodesExpressions(const QDomElement &nodes) const;
+    QVector<VFormulaField> ListNodesExpressions(const QDomElement& nodes) const;
     QVector<VFormulaField> ListPathExpressions() const;
-    QVector<VFormulaField> ListGrainlineExpressions(const QDomElement &element) const;
+    QVector<VFormulaField> ListGrainlineExpressions(const QDomElement& element) const;
     QVector<VFormulaField> ListPieceExpressions() const;
 
-    bool                   IsVariable(const QString &token) const;
-    bool                   IsPostfixOperator(const QString &token) const;
-    bool                   IsFunction(const QString &token) const;
+    bool IsVariable(const QString& token) const;
+    bool IsPostfixOperator(const QString& token) const;
+    bool IsFunction(const QString& token) const;
 
-    QPair<bool, QMap<quint32, quint32> > ParseItemElement(const QDomElement &domElement);
-
+    QPair<bool, QMap<quint32, quint32>> ParseItemElement(const QDomElement& domElement);
 };
 
-#endif // VABSTRACTPATTERN_H
+#endif   // VABSTRACTPATTERN_H

@@ -66,24 +66,24 @@
 #include "../vmisc/logging.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractApplication::VAbstractApplication(int &argc, char **argv)
-    :QApplication(argc, argv),
-      undoStack(nullptr),
-      mainWindow(nullptr),
-      settings(nullptr),
-      qtTranslator(nullptr),
-      qtxmlTranslator(nullptr),
-      qtBaseTranslator(nullptr),
-      appTranslator(nullptr),
-      pmsTranslator(nullptr),
-      _patternUnit(Unit::Cm),
-      _patternType(MeasurementsType::Unknown),
-      patternFilePath(),
-      currentScene(nullptr),
-      sceneView(nullptr),
-      doc(nullptr),
-      data(nullptr),
-      openingPattern(false)
+VAbstractApplication::VAbstractApplication(int& argc, char** argv)
+    : QApplication(argc, argv)
+    , undoStack(nullptr)
+    , mainWindow(nullptr)
+    , settings(nullptr)
+    , qtTranslator(nullptr)
+    , qtxmlTranslator(nullptr)
+    , qtBaseTranslator(nullptr)
+    , appTranslator(nullptr)
+    , pmsTranslator(nullptr)
+    , _patternUnit(Unit::Cm)
+    , _patternType(MeasurementsType::Unknown)
+    , patternFilePath()
+    , currentScene(nullptr)
+    , sceneView(nullptr)
+    , doc(nullptr)
+    , data(nullptr)
+    , openingPattern(false)
 {
     QString rules;
 
@@ -92,183 +92,136 @@ VAbstractApplication::VAbstractApplication(int &argc, char **argv)
     // See issue #528: Error: QSslSocket: cannot resolve SSLv2_client_method.
     rules += QLatin1String("qt.network.ssl.warning=false\n");
     // See issue #568: Certificate checking on Mac OS X.
-    rules += QLatin1String("qt.network.ssl.critical=false\n"
-                           "qt.network.ssl.fatal=false\n");
-#endif //defined(V_NO_ASSERT)
+    rules += QLatin1String(
+        "qt.network.ssl.critical=false\n"
+        "qt.network.ssl.fatal=false\n");
+#endif   // defined(V_NO_ASSERT)
 
     // cppcheck-suppress reademptycontainer
-    if (!rules.isEmpty())
-    {
+    if (!rules.isEmpty()) {
         QLoggingCategory::setFilterRules(rules);
     }
 
     setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-    connect(this, &QApplication::aboutToQuit, this, [this]()
-    {
-        // If try to use the method QApplication::exit program can't sync settings and show warning about QApplication
-        // instance. Solution is to call sync() before quit.
-        // Connect this slot with Application2D::aboutToQuit.
+    connect(this, &QApplication::aboutToQuit, this, [this]() {
+        // If try to use the method QApplication::exit program can't sync settings and show warning
+        // about QApplication instance. Solution is to call sync() before quit. Connect this slot
+        // with Application2D::aboutToQuit.
         Settings()->sync();
     });
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractApplication::~VAbstractApplication()
-{}
+VAbstractApplication::~VAbstractApplication() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief translationsPath return path to the root directory that contains QM files.
  * @param locale historic, not used
- * @return path to a directory that contains QM files, default from CONFIG+=embed_translations as set in translations.pri
+ * @return path to a directory that contains QM files, default from CONFIG+=embed_translations as
+ * set in translations.pri
  */
-QString VAbstractApplication::translationsPath(const QString &locale) const
+QString VAbstractApplication::translationsPath(const QString& locale) const
 {
     Q_UNUSED(locale)
     return QStringLiteral(":/i18n/");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MeasurementsType VAbstractApplication::patternType() const
-{
-    return _patternType;
-}
+MeasurementsType VAbstractApplication::patternType() const { return _patternType; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setPatternType(const MeasurementsType &patternType)
+void VAbstractApplication::setPatternType(const MeasurementsType& patternType)
 {
     _patternType = patternType;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setCurrentDocument(VAbstractPattern *doc)
-{
-    this->doc = doc;
-}
+void VAbstractApplication::setCurrentDocument(VAbstractPattern* doc) { this->doc = doc; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractPattern *VAbstractApplication::getCurrentDocument() const
+VAbstractPattern* VAbstractApplication::getCurrentDocument() const
 {
     SCASSERT(doc != nullptr)
     return doc;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setCurrentData(VContainer *data)
-{
-    this->data = data;
-}
+void VAbstractApplication::setCurrentData(VContainer* data) { this->data = data; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VContainer *VAbstractApplication::getCurrentData() const
+VContainer* VAbstractApplication::getCurrentData() const
 {
     SCASSERT(data != nullptr)
     return data;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VAbstractApplication::getOpeningPattern() const
-{
-    return openingPattern;
-}
+bool VAbstractApplication::getOpeningPattern() const { return openingPattern; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setOpeningPattern()
-{
-    openingPattern = !openingPattern;
-}
+void VAbstractApplication::setOpeningPattern() { openingPattern = !openingPattern; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QWidget *VAbstractApplication::getMainWindow() const
-{
-    return mainWindow;
-}
+QWidget* VAbstractApplication::getMainWindow() const { return mainWindow; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setMainWindow(QWidget *value)
+void VAbstractApplication::setMainWindow(QWidget* value)
 {
     SCASSERT(value != nullptr)
     mainWindow = value;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QUndoStack *VAbstractApplication::getUndoStack() const
-{
-    return undoStack;
-}
+QUndoStack* VAbstractApplication::getUndoStack() const { return undoStack; }
 
 //---------------------------------------------------------------------------------------------------------------------
-Unit VAbstractApplication::patternUnit() const
-{
-    return _patternUnit;
-}
+Unit VAbstractApplication::patternUnit() const { return _patternUnit; }
 
 //---------------------------------------------------------------------------------------------------------------------
-const Unit *VAbstractApplication::patternUnitP() const
-{
-    return &_patternUnit;
-}
+const Unit* VAbstractApplication::patternUnitP() const { return &_patternUnit; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setPatternUnit(const Unit &patternUnit)
-{
-    _patternUnit = patternUnit;
-}
+void VAbstractApplication::setPatternUnit(const Unit& patternUnit) { _patternUnit = patternUnit; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getSettings hide settings constructor.
  * @return pointer to class for acssesing to settings in ini file.
  */
-VCommonSettings *VAbstractApplication::Settings()
+VCommonSettings* VAbstractApplication::Settings()
 {
     SCASSERT(settings != nullptr)
     return settings;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QGraphicsScene *VAbstractApplication::getCurrentScene() const
+QGraphicsScene* VAbstractApplication::getCurrentScene() const
 {
     SCASSERT(*currentScene != nullptr)
     return *currentScene;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setCurrentScene(QGraphicsScene **value)
-{
-    currentScene = value;
-}
+void VAbstractApplication::setCurrentScene(QGraphicsScene** value) { currentScene = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VMainGraphicsView *VAbstractApplication::getSceneView() const
-{
-    return sceneView;
-}
+VMainGraphicsView* VAbstractApplication::getSceneView() const { return sceneView; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::setSceneView(VMainGraphicsView *value)
-{
-    sceneView = value;
-}
+void VAbstractApplication::setSceneView(VMainGraphicsView* value) { sceneView = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-double VAbstractApplication::toPixel(double val) const
-{
-    return ToPixel(val, _patternUnit);
-}
+double VAbstractApplication::toPixel(double val) const { return ToPixel(val, _patternUnit); }
 
 //---------------------------------------------------------------------------------------------------------------------
-double VAbstractApplication::fromPixel(double pix) const
-{
-    return FromPixel(pix, _patternUnit);
-}
+double VAbstractApplication::fromPixel(double pix) const { return FromPixel(pix, _patternUnit); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractApplication::loadTranslations(const QString &locale)
+void VAbstractApplication::loadTranslations(const QString& locale)
 {
-    if (locale.isEmpty())
-    {
+    if (locale.isEmpty()) {
         qInfo() << "Locale is empty.";
         return;
     }
@@ -276,11 +229,11 @@ void VAbstractApplication::loadTranslations(const QString &locale)
 
     ClearTranslation();
 
-    qtTranslator     = new QTranslator(this);
-    qtxmlTranslator  = new QTranslator(this);
+    qtTranslator = new QTranslator(this);
+    qtxmlTranslator = new QTranslator(this);
     qtBaseTranslator = new QTranslator(this);
-    appTranslator    = new QTranslator(this);
-    pmsTranslator    = new QTranslator(this);
+    appTranslator = new QTranslator(this);
+    pmsTranslator = new QTranslator(this);
 
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
     qtTranslator->load("qt_" + locale, translationsPath(locale));
@@ -288,8 +241,10 @@ void VAbstractApplication::loadTranslations(const QString &locale)
     qtBaseTranslator->load("qtbase_" + locale, translationsPath(locale));
 #else
     qtTranslator->load("qt_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    qtxmlTranslator->load("qtxmlpatterns_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    qtBaseTranslator->load("qtbase_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtxmlTranslator->load(
+        "qtxmlpatterns_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtBaseTranslator->load(
+        "qtbase_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 #endif
 
     appTranslator->load("seamly2d_" + locale, translationsPath(locale));
@@ -301,38 +256,33 @@ void VAbstractApplication::loadTranslations(const QString &locale)
     installTranslator(appTranslator);
     installTranslator(pmsTranslator);
 
-    initTranslateVariables();//Very important do it after load QM files.
+    initTranslateVariables();   // Very important do it after load QM files.
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractApplication::ClearTranslation()
 {
-    if (!qtTranslator.isNull())
-    {
+    if (!qtTranslator.isNull()) {
         removeTranslator(qtTranslator);
         delete qtTranslator;
     }
 
-    if (!qtxmlTranslator.isNull())
-    {
+    if (!qtxmlTranslator.isNull()) {
         removeTranslator(qtxmlTranslator);
         delete qtxmlTranslator;
     }
 
-    if (!qtBaseTranslator.isNull())
-    {
+    if (!qtBaseTranslator.isNull()) {
         removeTranslator(qtBaseTranslator);
         delete qtBaseTranslator;
     }
 
-    if (!appTranslator.isNull())
-    {
+    if (!appTranslator.isNull()) {
         removeTranslator(appTranslator);
         delete appTranslator;
     }
 
-    if (!pmsTranslator.isNull())
-    {
+    if (!pmsTranslator.isNull()) {
         removeTranslator(pmsTranslator);
         delete pmsTranslator;
     }

@@ -50,19 +50,18 @@
  *************************************************************************/
 
 #include "tst_findpoint.h"
-#include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/vtoolpointofintersectioncurves.h"
 #include "../vtools/tools/drawTools/toolpoint/tooldoublepoint/vtooltruedarts.h"
 #include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoollineintersectaxis.h"
-#include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/vtooltriangle.h"
 #include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolshoulderpoint.h"
+#include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/vtoolpointofintersectioncurves.h"
+#include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/vtooltriangle.h"
 
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_FindPoint::TST_FindPoint(QObject *parent) :
-    QObject(parent)
-{
-}
+TST_FindPoint::TST_FindPoint(QObject* parent)
+    : QObject(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_FindPoint::TestPointOfIntersectionCurves_data()
@@ -80,7 +79,8 @@ void TST_FindPoint::TestPointOfIntersectionCurves_data()
     HCrossCurvesPoint h = HCrossCurvesPoint::LeftmostPoint;
     QPointF p;
 
-    QTest::newRow("Empty lists of points") << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
+    QTest::newRow("Empty lists of points")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     points1.clear();
     points1.append(QPointF(10, 10));
@@ -91,7 +91,8 @@ void TST_FindPoint::TestPointOfIntersectionCurves_data()
     points2.append(QPointF(30, 10));
     points2.append(QPointF(25, 20));
     points2.append(QPointF(30, 30));
-    QTest::newRow("No intersections") << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
+    QTest::newRow("No intersections")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     points1.clear();
     points1.append(QPointF(10, 10));
@@ -104,7 +105,8 @@ void TST_FindPoint::TestPointOfIntersectionCurves_data()
     points2.append(QPointF(30, 30));
 
     p = QPointF(20, 20);
-    QTest::newRow("One intersection point") << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
+    QTest::newRow("One intersection point")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     points1.clear();
     points1.append(QPointF(10, 10));
@@ -119,27 +121,23 @@ void TST_FindPoint::TestPointOfIntersectionCurves_data()
     p = QPointF(19, 16);
 
     h = HCrossCurvesPoint::LeftmostPoint;
-    QTest::newRow("Two intersection points (highest point, leftmost point)") << points1 << points2
-                                                                             << static_cast<int>(v)
-                                                                             << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (highest point, leftmost point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     h = HCrossCurvesPoint::RightmostPoint;
-    QTest::newRow("Two intersection points (highest point, rightmost point)") << points1 << points2
-                                                                              << static_cast<int>(v)
-                                                                              << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (highest point, rightmost point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     v = VCrossCurvesPoint::LowestPoint;
     p = QPointF(19, 24);
 
     h = HCrossCurvesPoint::LeftmostPoint;
-    QTest::newRow("Two intersection points (lowest point, leftmost point)") << points1 << points2
-                                                                            << static_cast<int>(v)
-                                                                            << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (lowest point, leftmost point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     h = HCrossCurvesPoint::RightmostPoint;
-    QTest::newRow("Two intersection points (lowest point, rightmost point)") << points1 << points2
-                                                                             << static_cast<int>(v)
-                                                                             << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (lowest point, rightmost point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     points1.clear();
     points1.append(QPointF(10, 10));
@@ -155,27 +153,23 @@ void TST_FindPoint::TestPointOfIntersectionCurves_data()
     p = QPointF(16.6667, 20);
 
     v = VCrossCurvesPoint::HighestPoint;
-    QTest::newRow("Two intersection points (leftmost point, highest point)") << points1 << points2
-                                                                             << static_cast<int>(v)
-                                                                             << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (leftmost point, highest point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     v = VCrossCurvesPoint::LowestPoint;
-    QTest::newRow("Two intersection points (leftmost point, lowest point)") << points1 << points2
-                                                                            << static_cast<int>(v)
-                                                                            << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (leftmost point, lowest point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     h = HCrossCurvesPoint::RightmostPoint;
     p = QPointF(23.3333, 20);
 
     v = VCrossCurvesPoint::HighestPoint;
-    QTest::newRow("Two intersection points (rightmost point, highest point)") << points1 << points2
-                                                                              << static_cast<int>(v)
-                                                                              << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (rightmost point, highest point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 
     v = VCrossCurvesPoint::LowestPoint;
-    QTest::newRow("Two intersection points (rightmost point, lowest point)") << points1 << points2
-                                                                             << static_cast<int>(v)
-                                                                             << static_cast<int>(h) << p;
+    QTest::newRow("Two intersection points (rightmost point, lowest point)")
+        << points1 << points2 << static_cast<int>(v) << static_cast<int>(h) << p;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -187,9 +181,11 @@ void TST_FindPoint::TestPointOfIntersectionCurves()
     QFETCH(int, hCross);
     QFETCH(QPointF, expect);
 
-    const QPointF result = VToolPointOfIntersectionCurves::FindPoint(curve1Points, curve2Points,
-                                                                     static_cast<VCrossCurvesPoint>(vCross),
-                                                                     static_cast<HCrossCurvesPoint>(hCross));
+    const QPointF result = VToolPointOfIntersectionCurves::FindPoint(
+        curve1Points,
+        curve2Points,
+        static_cast<VCrossCurvesPoint>(vCross),
+        static_cast<HCrossCurvesPoint>(hCross));
     QCOMPARE(result.toPoint(), expect.toPoint());
 }
 
@@ -212,7 +208,8 @@ void TST_FindPoint::TestTrueDarts_data()
     const QPointF p1(196.220708253, 3106.93562497);
     const QPointF p2(277.006407384, 3116.02492305);
 
-    QTest::newRow("Real case") << baseLineP1 << baseLineP2 << dartP1 << dartP2 << dartP3 << p1 << p2;
+    QTest::newRow("Real case") << baseLineP1 << baseLineP2 << dartP1 << dartP2 << dartP3 << p1
+                               << p2;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -310,11 +307,9 @@ void TST_FindPoint::TestShoulderPoint_data()
     // The same file <root>/src/app/share/collection/bugs/Issue_#647.val
     // The length changed to get default value
     QPointF p2(-574.724409448819, 115.5904251968504);
-    QTest::newRow("Value not found") << QPointF(-234.5669291338583, 39.999874015748034)
-                                     << p2
-                                     << QPointF(-234.5669291338583, -35.590677165354336)
-                                     << 75.59055118110237
-                                     << p2;
+    QTest::newRow("Value not found")
+        << QPointF(-234.5669291338583, 39.999874015748034) << p2
+        << QPointF(-234.5669291338583, -35.590677165354336) << 75.59055118110237 << p2;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -54,9 +54,8 @@
 
 #include <QDialog>
 
-namespace Ui
-{
-    class DialogMDataBase;
+namespace Ui {
+class DialogMDataBase;
 }
 
 class QTreeWidgetItem;
@@ -66,88 +65,102 @@ class MeasurementDatabaseDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit             MeasurementDatabaseDialog(const QStringList &measurements, QWidget *parent = nullptr);
-    explicit             MeasurementDatabaseDialog(QWidget *parent = nullptr);
-    virtual             ~MeasurementDatabaseDialog() Q_DECL_OVERRIDE;
+    explicit MeasurementDatabaseDialog(const QStringList& measurements, QWidget* parent = nullptr);
+    explicit MeasurementDatabaseDialog(QWidget* parent = nullptr);
+    virtual ~MeasurementDatabaseDialog() Q_DECL_OVERRIDE;
 
-    void                 retranslateGroups();
+    void retranslateGroups();
 
-    QStringList          getNewMeasurementNames() const;
-    static QString       imageUrl(const QString &number);
+    QStringList getNewMeasurementNames() const;
+    static QString imageUrl(const QString& number);
 
 protected:
-    virtual void         changeEvent(QEvent* event) Q_DECL_OVERRIDE;
-    virtual bool         eventFilter(QObject *target, QEvent *event) Q_DECL_OVERRIDE;
+    virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
+    virtual bool eventFilter(QObject* target, QEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
-    void                 updateChecks(QTreeWidgetItem *item, int column);
-    void                 showDescription(QTreeWidgetItem *item, int column);
-    void                 treeContextMenu(const QPoint &pos);
-    void                 recheckState();
+    void updateChecks(QTreeWidgetItem* item, int column);
+    void showDescription(QTreeWidgetItem* item, int column);
+    void treeContextMenu(const QPoint& pos);
+    void recheckState();
 
 private:
     Q_DISABLE_COPY(MeasurementDatabaseDialog)
-    Ui::DialogMDataBase *ui;
-    bool                 selectMode;
-    QStringList          measurements;
-    QStringList          newMeasurements;
+    Ui::DialogMDataBase* ui;
+    bool selectMode;
+    QStringList measurements;
+    QStringList newMeasurements;
 
-    const QString groupAText = "A. " + MeasurementDatabaseDialog::tr("Direct Height", "Measurement section");
-    const QString groupBText = "B. " + MeasurementDatabaseDialog::tr("Direct Width", "Measurement section");
-    const QString groupCText = "C. " + MeasurementDatabaseDialog::tr("Indentation", "Measurement section");
+    const QString groupAText =
+        "A. " + MeasurementDatabaseDialog::tr("Direct Height", "Measurement section");
+    const QString groupBText =
+        "B. " + MeasurementDatabaseDialog::tr("Direct Width", "Measurement section");
+    const QString groupCText =
+        "C. " + MeasurementDatabaseDialog::tr("Indentation", "Measurement section");
     const QString groupDText = "D. " + MeasurementDatabaseDialog::tr("Hand", "Measurement section");
     const QString groupEText = "E. " + MeasurementDatabaseDialog::tr("Foot", "Measurement section");
     const QString groupFText = "F. " + MeasurementDatabaseDialog::tr("Head", "Measurement section");
-    const QString groupGText = "G. " + MeasurementDatabaseDialog::tr("Circumference and Arc", "Measurement section");
-    const QString groupHText = "H. " + MeasurementDatabaseDialog::tr("Vertical", "Measurement section");
-    const QString groupIText = "I. " + MeasurementDatabaseDialog::tr("Horizontal", "Measurement section");
+    const QString groupGText =
+        "G. " + MeasurementDatabaseDialog::tr("Circumference and Arc", "Measurement section");
+    const QString groupHText =
+        "H. " + MeasurementDatabaseDialog::tr("Vertical", "Measurement section");
+    const QString groupIText =
+        "I. " + MeasurementDatabaseDialog::tr("Horizontal", "Measurement section");
     const QString groupJText = "J. " + MeasurementDatabaseDialog::tr("Bust", "Measurement section");
-    const QString groupKText = "K. " + MeasurementDatabaseDialog::tr("Balance", "Measurement section");
+    const QString groupKText =
+        "K. " + MeasurementDatabaseDialog::tr("Balance", "Measurement section");
     const QString groupLText = "L. " + MeasurementDatabaseDialog::tr("Arm", "Measurement section");
     const QString groupMText = "M. " + MeasurementDatabaseDialog::tr("Leg", "Measurement section");
-    const QString groupNText = "N. " + MeasurementDatabaseDialog::tr("Crotch and Rise", "Measurement section");
-    const QString groupOText = "O. " + MeasurementDatabaseDialog::tr("Men & Tailoring", "Measurement section");
-    const QString groupPText = "P. " + MeasurementDatabaseDialog::tr("Historical & Specialty", "Measurement section");
-    const QString groupQText = "Q. " + MeasurementDatabaseDialog::tr("Patternmaking measurements", "Measurement section");
+    const QString groupNText =
+        "N. " + MeasurementDatabaseDialog::tr("Crotch and Rise", "Measurement section");
+    const QString groupOText =
+        "O. " + MeasurementDatabaseDialog::tr("Men & Tailoring", "Measurement section");
+    const QString groupPText =
+        "P. " + MeasurementDatabaseDialog::tr("Historical & Specialty", "Measurement section");
+    const QString groupQText =
+        "Q. " + MeasurementDatabaseDialog::tr("Patternmaking measurements", "Measurement section");
 
-    QTreeWidgetItem     *groupA;
-    QTreeWidgetItem     *groupB;
-    QTreeWidgetItem     *groupC;
-    QTreeWidgetItem     *groupD;
-    QTreeWidgetItem     *groupE;
-    QTreeWidgetItem     *groupF;
-    QTreeWidgetItem     *groupG;
-    QTreeWidgetItem     *groupH;
-    QTreeWidgetItem     *groupI;
-    QTreeWidgetItem     *groupJ;
-    QTreeWidgetItem     *groupK;
-    QTreeWidgetItem     *groupL;
-    QTreeWidgetItem     *groupM;
-    QTreeWidgetItem     *groupN;
-    QTreeWidgetItem     *groupO;
-    QTreeWidgetItem     *groupP;
-    QTreeWidgetItem     *groupQ;
+    QTreeWidgetItem* groupA;
+    QTreeWidgetItem* groupB;
+    QTreeWidgetItem* groupC;
+    QTreeWidgetItem* groupD;
+    QTreeWidgetItem* groupE;
+    QTreeWidgetItem* groupF;
+    QTreeWidgetItem* groupG;
+    QTreeWidgetItem* groupH;
+    QTreeWidgetItem* groupI;
+    QTreeWidgetItem* groupJ;
+    QTreeWidgetItem* groupK;
+    QTreeWidgetItem* groupL;
+    QTreeWidgetItem* groupM;
+    QTreeWidgetItem* groupN;
+    QTreeWidgetItem* groupO;
+    QTreeWidgetItem* groupP;
+    QTreeWidgetItem* groupQ;
 
-    void                 initDataBase(const QStringList &measurements = QStringList());
-    void                 initGroup(QTreeWidgetItem **group, const QString &groupName, const QStringList &groupList,
-                                   const QStringList &measurementList = QStringList());
+    void initDataBase(const QStringList& measurements = QStringList());
+    void initGroup(
+        QTreeWidgetItem** group,
+        const QString& groupName,
+        const QStringList& groupList,
+        const QStringList& measurementList = QStringList());
 
-    Q_REQUIRED_RESULT QTreeWidgetItem *addMeasurementGroup(const QString &text);
+    Q_REQUIRED_RESULT QTreeWidgetItem* addMeasurementGroup(const QString& text);
 
-    void                addMeasurement(QTreeWidgetItem *group, const QString &groupName,
-                                       const QStringList &newMeasurements);
+    void addMeasurement(
+        QTreeWidgetItem* group, const QString& groupName, const QStringList& newMeasurements);
 
-    void                readSettings();
-    void                writeSettings();
-    void                filterGroups(const QString searchString);
-    void                filterGroup(QTreeWidgetItem *group, const QString &searchString);
+    void readSettings();
+    void writeSettings();
+    void filterGroups(const QString searchString);
+    void filterGroup(QTreeWidgetItem* group, const QString& searchString);
 
-    void                retranslateGroup(QTreeWidgetItem *group, const QString &groupName,
-                                         const QStringList &measurements);
-    void                retranslateMeasurement(QTreeWidgetItem *group, int index, const QString &name);
+    void retranslateGroup(
+        QTreeWidgetItem* group, const QString& groupName, const QStringList& measurements);
+    void retranslateMeasurement(QTreeWidgetItem* group, int index, const QString& name);
 
-    void                changeCheckState(QTreeWidgetItem *group, Qt::CheckState state);
-    Qt::CheckState      globalCheckState() const;
+    void changeCheckState(QTreeWidgetItem* group, Qt::CheckState state);
+    Qt::CheckState globalCheckState() const;
 };
 
-#endif // DIALOGMDATABASE_H
+#endif   // DIALOGMDATABASE_H

@@ -31,14 +31,14 @@
 
 #include "intersect_circletangent_visual.h"
 
-#include "visline.h"
+#include "../../tools/drawTools/toolpoint/toolsinglepoint/intersect_circletangent_tool.h"
 #include "../ifc/ifcdef.h"
-#include "../visualization.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
+#include "../visualization.h"
 #include "../vmisc/vcommonsettings.h"
 #include "../vpatterndb/vcontainer.h"
-#include "../../tools/drawTools/toolpoint/toolsinglepoint/intersect_circletangent_tool.h"
+#include "visline.h"
 
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
@@ -47,7 +47,8 @@
 #include <new>
 
 //---------------------------------------------------------------------------------------------------------------------
-IntersectCircleTangentVisual::IntersectCircleTangentVisual(const VContainer *data, QGraphicsItem *parent)
+IntersectCircleTangentVisual::IntersectCircleTangentVisual(
+    const VContainer* data, QGraphicsItem* parent)
     : VisLine(data, parent)
     , object2Id(NULL_ID)
     , cRadius(0)
@@ -60,36 +61,37 @@ IntersectCircleTangentVisual::IntersectCircleTangentVisual(const VContainer *dat
     , m_secondarySupportColor(QColor(qApp->Settings()->getSecondarySupportColor()))
 
 {
-    cPath    = InitItem<QGraphicsEllipseItem>(m_secondarySupportColor, this);
-    point    = InitPoint(mainColor, this);
-    tangent  = InitPoint(supportColor, this);
-    cCenter  = InitPoint(supportColor, this); //-V656
+    cPath = InitItem<QGraphicsEllipseItem>(m_secondarySupportColor, this);
+    point = InitPoint(mainColor, this);
+    tangent = InitPoint(supportColor, this);
+    cCenter = InitPoint(supportColor, this);   //-V656
     tangent2 = InitItem<VScaledLine>(supportColor, this);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void IntersectCircleTangentVisual::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)// tangent point
+    if (object1Id > NULL_ID)   // tangent point
     {
-        const QSharedPointer<VPointF> tan = Visualization::data->GeometricObject<VPointF>(object1Id);
+        const QSharedPointer<VPointF> tan =
+            Visualization::data->GeometricObject<VPointF>(object1Id);
         DrawPoint(tangent, static_cast<QPointF>(*tan), supportColor);
 
-        if (object2Id > NULL_ID)// circle center
+        if (object2Id > NULL_ID)   // circle center
         {
-            const QSharedPointer<VPointF> center = Visualization::data->GeometricObject<VPointF>(object2Id);
+            const QSharedPointer<VPointF> center =
+                Visualization::data->GeometricObject<VPointF>(object2Id);
             DrawPoint(cCenter, static_cast<QPointF>(*center), supportColor);
 
-            if (cRadius > 0)
-            {
+            if (cRadius > 0) {
                 cPath->setRect(PointRect(cRadius));
-                DrawPoint(cPath, static_cast<QPointF>(*center), m_secondarySupportColor, Qt::DashLine);
+                DrawPoint(
+                    cPath, static_cast<QPointF>(*center), m_secondarySupportColor, Qt::DashLine);
 
                 FindRays(static_cast<QPointF>(*tan), static_cast<QPointF>(*center), cRadius);
 
-                const QPointF fPoint = IntersectCircleTangentTool::FindPoint(static_cast<QPointF>(*tan),
-                                                                                 static_cast<QPointF>(*center),
-                                                                                 cRadius, crossPoint);
+                const QPointF fPoint = IntersectCircleTangentTool::FindPoint(
+                    static_cast<QPointF>(*tan), static_cast<QPointF>(*center), cRadius, crossPoint);
                 DrawPoint(point, fPoint, mainColor);
             }
         }
@@ -97,42 +99,38 @@ void IntersectCircleTangentVisual::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCircleTangentVisual::setObject2Id(const quint32 &value)
-{
-    object2Id = value;
-}
+void IntersectCircleTangentVisual::setObject2Id(const quint32& value) { object2Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCircleTangentVisual::setCRadius(const QString &value)
+void IntersectCircleTangentVisual::setCRadius(const QString& value)
 {
     cRadius = FindLength(value, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCircleTangentVisual::setCrossPoint(const CrossCirclesPoint &value)
+void IntersectCircleTangentVisual::setCrossPoint(const CrossCirclesPoint& value)
 {
     crossPoint = value;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCircleTangentVisual::FindRays(const QPointF &p, const QPointF &center, qreal radius)
+void IntersectCircleTangentVisual::FindRays(const QPointF& p, const QPointF& center, qreal radius)
 {
     QPointF p1, p2;
-    const int res = VGObject::ContactPoints (p, center, radius, p1, p2);
+    const int res = VGObject::ContactPoints(p, center, radius, p1, p2);
 
-    switch(res)
-    {
-        case 2:
-            DrawRay(this, p, p1, supportColor, Qt::DashLine);
-            DrawRay(tangent2, p, p2, supportColor, Qt::DashLine);
-            break;
-        case 1:
-            DrawRay(this, p, p1, supportColor, Qt::DashLine);
-            tangent2->setVisible(false);
-            break;
-        default:
-            this->setVisible(false);
-            tangent2->setVisible(false);
-            break;
+    switch (res) {
+    case 2:
+        DrawRay(this, p, p1, supportColor, Qt::DashLine);
+        DrawRay(tangent2, p, p2, supportColor, Qt::DashLine);
+        break;
+    case 1:
+        DrawRay(this, p, p1, supportColor, Qt::DashLine);
+        tangent2->setVisible(false);
+        break;
+    default:
+        this->setVisible(false);
+        tangent2->setVisible(false);
+        break;
     }
 }

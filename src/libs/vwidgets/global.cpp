@@ -56,19 +56,17 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
-const qreal defPointRadiusPixel = (2./*mm*/ / 25.4) * PrintDPI;
-const qreal widthMainLine = (1.2/*mm*/ / 25.4) * PrintDPI;
-const qreal widthHairLine = widthMainLine/3.0;
+const qreal defPointRadiusPixel = (2. /*mm*/ / 25.4) * PrintDPI;
+const qreal widthMainLine = (1.2 /*mm*/ / 25.4) * PrintDPI;
+const qreal widthHairLine = widthMainLine / 3.0;
 
-qreal sceneScale(QGraphicsScene *scene)
+qreal sceneScale(QGraphicsScene* scene)
 {
     qreal scale = 1;
 
-    if (scene)
-    {
-        const QList<QGraphicsView *> views = scene->views();
-        if (not views.isEmpty())
-        {
+    if (scene) {
+        const QList<QGraphicsView*> views = scene->views();
+        if (not views.isEmpty()) {
             scale = views.first()->transform().m11();
         }
     }
@@ -77,16 +75,13 @@ qreal sceneScale(QGraphicsScene *scene)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QColor correctColor(const QGraphicsItem *item, const QColor &color)
+QColor correctColor(const QGraphicsItem* item, const QColor& color)
 {
     SCASSERT(item != nullptr)
 
-    if (item->isEnabled())
-    {
+    if (item->isEnabled()) {
         return color;
-    }
-    else
-    {
+    } else {
         return Qt::gray;
     }
 }
@@ -94,7 +89,7 @@ QColor correctColor(const QGraphicsItem *item, const QColor &color)
 //---------------------------------------------------------------------------------------------------------------------
 QRectF PointRect(qreal radius)
 {
-    QRectF rec = QRectF(0, 0, radius*2, radius*2);
+    QRectF rec = QRectF(0, 0, radius * 2, radius * 2);
     rec.translate(-rec.center().x(), -rec.center().y());
     return rec;
 }
@@ -103,15 +98,14 @@ QRectF PointRect(qreal radius)
 qreal scaledRadius(qreal scale)
 {
     qreal scaledRadius = defPointRadiusPixel;
-    if (scale > 1)
-    {
-        scaledRadius = qMax(defPointRadiusPixel/96, defPointRadiusPixel/scale);
+    if (scale > 1) {
+        scaledRadius = qMax(defPointRadiusPixel / 96, defPointRadiusPixel / scale);
     }
     return scaledRadius;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void scaleCircleSize(QGraphicsEllipseItem *item, qreal scale)
+void scaleCircleSize(QGraphicsEllipseItem* item, qreal scale)
 {
     SCASSERT(item != nullptr)
 
@@ -119,7 +113,7 @@ void scaleCircleSize(QGraphicsEllipseItem *item, qreal scale)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void scaleRectSize(QGraphicsRectItem *item, qreal scale)
+void scaleRectSize(QGraphicsRectItem* item, qreal scale)
 {
     SCASSERT(item != nullptr)
 
@@ -129,32 +123,27 @@ void scaleRectSize(QGraphicsRectItem *item, qreal scale)
 //---------------------------------------------------------------------------------------------------------------------
 qreal scaleWidth(qreal width, qreal scale)
 {
-    if (scale > 1)
-    {
-        width = qMax(0.01, width/scale);
+    if (scale > 1) {
+        width = qMax(0.01, width / scale);
     }
     return width;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPainterPath ItemShapeFromPath(const QPainterPath &path, const QPen &pen)
+QPainterPath ItemShapeFromPath(const QPainterPath& path, const QPen& pen)
 {
     // We unfortunately need this hack as QPainterPathStroker will set a width of 1.0
     // if we pass a value of 0.0 to QPainterPathStroker::setWidth()
     const qreal penWidthZero = qreal(0.00000001);
 
-    if (path == QPainterPath() || pen == Qt::NoPen)
-    {
+    if (path == QPainterPath() || pen == Qt::NoPen) {
         return path;
     }
     QPainterPathStroker ps;
     ps.setCapStyle(pen.capStyle());
-    if (pen.widthF() <= 0.0)
-    {
+    if (pen.widthF() <= 0.0) {
         ps.setWidth(penWidthZero);
-    }
-    else
-    {
+    } else {
         ps.setWidth(pen.widthF());
     }
     ps.setJoinStyle(pen.joinStyle());

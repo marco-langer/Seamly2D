@@ -21,7 +21,6 @@
 #ifndef VPOINTFPROPERTY_H
 #define VPOINTFPROPERTY_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
@@ -29,22 +28,22 @@
 #include <QVariant>
 #include <Qt>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vproperty.h"
 
-namespace VPE
-{
+namespace VPE {
 
 class VPointFProperty : public VProperty
 {
     Q_OBJECT
 public:
-    explicit VPointFProperty(const QString &name);
+    explicit VPointFProperty(const QString& name);
 
     virtual ~VPointFProperty() Q_DECL_OVERRIDE {}
 
     //! Get the data how it should be displayed
-    virtual QVariant data (int column = DPC_Name, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    virtual QVariant data(int column = DPC_Name, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     //! Returns item flags
     Qt::ItemFlags flags(int column = DPC_Name) const Q_DECL_OVERRIDE;
@@ -53,7 +52,7 @@ public:
     virtual QPointF getPointF() const;
 
     //! Sets the QPointF
-    virtual void setPointF(const QPointF &point);
+    virtual void setPointF(const QPointF& point);
 
     //! Sets the QPointF
     virtual void setPointF(qreal x, qreal y);
@@ -63,14 +62,15 @@ public:
 
     //! Clones this property
     //! \param include_children Indicates whether to also clone the children
-    //! \param container If a property is being passed here, no new VProperty is being created but instead it is tried
-    //! to fill all the data into container. This can also be used when subclassing this function.
-    //! \return Returns the newly created property (or container, if it was not NULL)
-    Q_REQUIRED_RESULT virtual VProperty *clone(bool include_children = true,
-                                               VProperty *container = nullptr) const Q_DECL_OVERRIDE;
+    //! \param container If a property is being passed here, no new VProperty is being created but
+    //! instead it is tried to fill all the data into container. This can also be used when
+    //! subclassing this function. \return Returns the newly created property (or container, if it
+    //! was not NULL)
+    Q_REQUIRED_RESULT virtual VProperty*
+    clone(bool include_children = true, VProperty* container = nullptr) const Q_DECL_OVERRIDE;
 
     //! Sets the value of the property
-    virtual void setValue(const QVariant &value) Q_DECL_OVERRIDE;
+    virtual void setValue(const QVariant& value) Q_DECL_OVERRIDE;
 
     //! Returns the value of the property as a QVariant
     virtual QVariant getValue() const Q_DECL_OVERRIDE;
@@ -79,6 +79,6 @@ private:
     Q_DISABLE_COPY(VPointFProperty)
 };
 
-}
+}   // namespace VPE
 
-#endif // VPOINTFPROPERTY_H
+#endif   // VPOINTFPROPERTY_H

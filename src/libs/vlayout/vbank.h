@@ -61,14 +61,20 @@
 // An annoying char define, from the Windows team in <rpcndr.h>
 // #define small char
 // http://stuartjames.info/Journal/c--visual-studio-2012-vs2012--win8--converting-projects-up-some-conflicts-i-found.aspx
-#if defined (Q_OS_WIN) && defined (Q_CC_MSVC)
-#pragma push_macro("small")
-#undef small
+#if defined(Q_OS_WIN) && defined(Q_CC_MSVC)
+#    pragma push_macro("small")
+#    undef small
 #endif
 
 class VLayoutPiece;
 
-enum class Cases : char { CaseThreeGroup = 0, CaseTwoGroup, CaseDesc, UnknownCase};
+enum class Cases : char
+{
+    CaseThreeGroup = 0,
+    CaseTwoGroup,
+    CaseDesc,
+    UnknownCase
+};
 
 class VBank
 {
@@ -76,10 +82,10 @@ public:
     VBank();
 
     qreal GetLayoutWidth() const;
-    void SetLayoutWidth(const qreal &value);
+    void SetLayoutWidth(const qreal& value);
 
-    void setPieces(const QVector<VLayoutPiece> &pieces);
-    int  GetTiket();
+    void setPieces(const QVector<VLayoutPiece>& pieces);
+    int GetTiket();
     VLayoutPiece getPiece(int i) const;
 
     void Arranged(int i);
@@ -120,11 +126,11 @@ private:
     int GetNextTwoGroups() const;
     int GetNextDescGroup() const;
 
-    void SqMaxMin(qint64 &sMax, qint64 &sMin) const;
+    void SqMaxMin(qint64& sMax, qint64& sMin) const;
 };
 
-#if defined (Q_OS_WIN) && defined (Q_CC_MSVC)
-#pragma pop_macro("small")
+#if defined(Q_OS_WIN) && defined(Q_CC_MSVC)
+#    pragma pop_macro("small")
 #endif
 
-#endif // VBANK_H
+#endif   // VBANK_H

@@ -52,13 +52,17 @@
 #ifndef VCURVECLENGTH_H
 #define VCURVECLENGTH_H
 
-#include <qcompilerdetection.h>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vcurvevariable.h"
 
-enum class CurveCLength : char { C1, C2 };
+enum class CurveCLength : char
+{
+    C1,
+    C2
+};
 
 class VAbstractBezier;
 class VSpline;
@@ -67,13 +71,23 @@ class VCurveCLength : public VCurveVariable
 {
 public:
     VCurveCLength();
-    VCurveCLength(const quint32 &id, const quint32 &parentId, const VAbstractBezier *curve, CurveCLength cType,
-                  Unit patternUnit);
-    VCurveCLength(const quint32 &id, const quint32 &parentId, const QString &baseCurveName, const VSpline &spl,
-                 CurveCLength cType, Unit patternUnit, qint32 segment);
-    VCurveCLength(const VCurveCLength &var);
-    VCurveCLength &operator=(const VCurveCLength &var);
+    VCurveCLength(
+        const quint32& id,
+        const quint32& parentId,
+        const VAbstractBezier* curve,
+        CurveCLength cType,
+        Unit patternUnit);
+    VCurveCLength(
+        const quint32& id,
+        const quint32& parentId,
+        const QString& baseCurveName,
+        const VSpline& spl,
+        CurveCLength cType,
+        Unit patternUnit,
+        qint32 segment);
+    VCurveCLength(const VCurveCLength& var);
+    VCurveCLength& operator=(const VCurveCLength& var);
     virtual ~VCurveCLength() Q_DECL_OVERRIDE;
 };
 
-#endif // VCURVECLENGTH_H
+#endif   // VCURVECLENGTH_H

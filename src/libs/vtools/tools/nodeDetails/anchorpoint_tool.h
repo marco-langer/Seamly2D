@@ -63,33 +63,47 @@ class AnchorPointTool : public VAbstractNode
 {
     Q_OBJECT
 public:
-    static AnchorPointTool *Create(QSharedPointer<DialogTool> dialog, VAbstractPattern *doc, VContainer *data);
-    static AnchorPointTool *Create(quint32 _id, quint32 pointId, quint32 pieceId, VAbstractPattern *doc, VContainer *data,
-                            const Document &parse, const Source &typeCreation, const QString &blockName = QString(),
-                            const quint32 &idTool = 0);
+    static AnchorPointTool*
+    Create(QSharedPointer<DialogTool> dialog, VAbstractPattern* doc, VContainer* data);
+    static AnchorPointTool* Create(
+        quint32 _id,
+        quint32 pointId,
+        quint32 pieceId,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0);
 
-    static const QString  ToolType;
-    virtual QString       getTagName() const Q_DECL_OVERRIDE;
+    static const QString ToolType;
+    virtual QString getTagName() const Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void            FullUpdateFromFile () Q_DECL_OVERRIDE {}
-    virtual void            AllowHover(bool enabled) Q_DECL_OVERRIDE;
-    virtual void            AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE {}
+    virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
+    virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void            AddToFile() Q_DECL_OVERRIDE;
-    virtual void            ShowNode() Q_DECL_OVERRIDE {}
-    virtual void            HideNode() Q_DECL_OVERRIDE {}
+    virtual void AddToFile() Q_DECL_OVERRIDE;
+    virtual void ShowNode() Q_DECL_OVERRIDE {}
+    virtual void HideNode() Q_DECL_OVERRIDE {}
 
 private:
-                            Q_DISABLE_COPY(AnchorPointTool)
+    Q_DISABLE_COPY(AnchorPointTool)
 
-    quint32                 m_pieceId;
+    quint32 m_pieceId;
 
-                            AnchorPointTool(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 pointId,
-                                            quint32 pieceId, const Source &typeCreation,
-                                            const QString &blockName = QString(), const quint32 &idTool = 0,
-                                            QObject *qoParent = nullptr);
+    AnchorPointTool(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 pointId,
+        quint32 pieceId,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0,
+        QObject* qoParent = nullptr);
 };
 
-#endif // ANCHOR_POINT_TOOL_H
+#endif   // ANCHOR_POINT_TOOL_H

@@ -32,19 +32,18 @@
 #ifndef INTERSECT_CIRCLETANGENT_DIALOG_H
 #define INTERSECT_CIRCLETANGENT_DIALOG_H
 
-#include "dialogtool.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
+#include "dialogtool.h"
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-namespace Ui
-{
-    class IntersectCircleTangentDialog;
+namespace Ui {
+class IntersectCircleTangentDialog;
 }
 
 class IntersectCircleTangentDialog : public DialogTool
@@ -52,51 +51,51 @@ class IntersectCircleTangentDialog : public DialogTool
     Q_OBJECT
 
 public:
-                      IntersectCircleTangentDialog(const VContainer *data, const quint32 &toolId,
-                                                   QWidget *parent = nullptr);
-                     ~IntersectCircleTangentDialog();
+    IntersectCircleTangentDialog(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    ~IntersectCircleTangentDialog();
 
-    void              SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    quint32           GetCircleCenterId() const;
-    void              SetCircleCenterId(const quint32 &value);
+    quint32 GetCircleCenterId() const;
+    void SetCircleCenterId(const quint32& value);
 
-    QString           GetCircleRadius() const;
-    void              SetCircleRadius(const QString &value);
+    QString GetCircleRadius() const;
+    void SetCircleRadius(const QString& value);
 
-    quint32           GetTangentPointId() const;
-    void              SetTangentPointId(const quint32 &value);
+    quint32 GetTangentPointId() const;
+    void SetTangentPointId(const quint32& value);
 
     CrossCirclesPoint GetCrossCirclesPoint() const;
-    void              setCirclesCrossPoint(const CrossCirclesPoint &p);
+    void setCirclesCrossPoint(const CrossCirclesPoint& p);
 
 public slots:
-    virtual void      ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    void              PointChanged();
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    void PointChanged();
 
-    void              DeployCircleRadiusTextEdit();
-    void              CircleRadiusChanged();
-    void              FXCircleRadius();
-    void              EvalCircleRadius();
+    void DeployCircleRadiusTextEdit();
+    void CircleRadiusChanged();
+    void FXCircleRadius();
+    void EvalCircleRadius();
 
 protected:
-    virtual void      ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void      SaveData() Q_DECL_OVERRIDE;
-    virtual void      closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
-    virtual void      CheckState() Q_DECL_FINAL;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+    virtual void CheckState() Q_DECL_FINAL;
 
 private:
-                      Q_DISABLE_COPY(IntersectCircleTangentDialog)
+    Q_DISABLE_COPY(IntersectCircleTangentDialog)
 
-    Ui::IntersectCircleTangentDialog *ui;
+    Ui::IntersectCircleTangentDialog* ui;
 
-    bool             flagCircleRadius;
-    QTimer           *timerCircleRadius;
-    QString          circleRadius;
-    int              formulaBaseHeightCircleRadius;
+    bool flagCircleRadius;
+    QTimer* timerCircleRadius;
+    QString circleRadius;
+    int formulaBaseHeightCircleRadius;
 };
 
-#endif // INTERSECT_CIRCLETANGENT_DIALOG_H
+#endif   // INTERSECT_CIRCLETANGENT_DIALOG_H

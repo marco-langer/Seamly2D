@@ -56,10 +56,10 @@
 #include "ui_dialoggroup.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-EditGroupDialog::EditGroupDialog(const VContainer *data, const quint32 &toolId, QWidget *parent)
-    : DialogTool(data, toolId, parent),
-      ui(new Ui::EditGroupDialog),
-      group()
+EditGroupDialog::EditGroupDialog(const VContainer* data, const quint32& toolId, QWidget* parent)
+    : DialogTool(data, toolId, parent)
+    , ui(new Ui::EditGroupDialog)
+    , group()
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -72,30 +72,19 @@ EditGroupDialog::EditGroupDialog(const VContainer *data, const quint32 &toolId, 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-EditGroupDialog::~EditGroupDialog()
-{
-    delete ui;
-}
+EditGroupDialog::~EditGroupDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void EditGroupDialog::SetName(const QString &name)
-{
-    ui->lineEditName->setText(name);
-}
+void EditGroupDialog::SetName(const QString& name) { ui->lineEditName->setText(name); }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString EditGroupDialog::GetName() const
-{
-    return ui->lineEditName->text();
-}
+QString EditGroupDialog::GetName() const { return ui->lineEditName->text(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void EditGroupDialog::ShowDialog(bool click)
 {
-    if (not click)
-    {
-        if (group.isEmpty())
-        {
+    if (not click) {
+        if (group.isEmpty()) {
             return;
         }
 
@@ -110,12 +99,9 @@ void EditGroupDialog::ShowDialog(bool click)
 //---------------------------------------------------------------------------------------------------------------------
 void EditGroupDialog::SelectedObject(bool selected, quint32 object, quint32 tool)
 {
-    if (selected)
-    {
+    if (selected) {
         group.insert(object, tool);
-    }
-    else
-    {
+    } else {
         group.remove(object);
     }
 }
@@ -128,7 +114,4 @@ void EditGroupDialog::NameChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QMap<quint32, quint32> EditGroupDialog::GetGroup() const
-{
-    return group;
-}
+QMap<quint32, quint32> EditGroupDialog::GetGroup() const { return group; }

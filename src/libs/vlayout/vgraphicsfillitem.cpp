@@ -29,28 +29,25 @@
 #include "vgraphicsfillitem.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VGraphicsFillItem::VGraphicsFillItem(const QColor &color, bool fill, QGraphicsItem *parent)
+VGraphicsFillItem::VGraphicsFillItem(const QColor& color, bool fill, QGraphicsItem* parent)
     : QGraphicsPathItem(parent)
     , m_color(color)
     , m_fill(fill)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VGraphicsFillItem::~VGraphicsFillItem()
-{}
+VGraphicsFillItem::~VGraphicsFillItem() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VGraphicsFillItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VGraphicsFillItem::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
     painter->save();
-    if (m_fill)
-    {
+    if (m_fill) {
         painter->setBrush(QBrush(Qt::NoBrush));
-    }
-    else
-    {
+    } else {
         painter->setBrush(m_color);
     }
 

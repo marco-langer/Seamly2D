@@ -61,55 +61,72 @@ class VisOperation : public VisLine
 {
     Q_OBJECT
 public:
-    explicit                  VisOperation(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual                  ~VisOperation();
+    explicit VisOperation(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~VisOperation();
 
-    void                      setObjects(QVector<quint32> objects);
+    void setObjects(QVector<quint32> objects);
 
-    virtual void              VisualMode(const quint32 &pointId = NULL_ID) Q_DECL_OVERRIDE;
+    virtual void VisualMode(const quint32& pointId = NULL_ID) Q_DECL_OVERRIDE;
 
-    virtual int               type() const Q_DECL_OVERRIDE {return Type;}
-    enum                      {Type = UserType + static_cast<int>(Vis::ToolRotation)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolRotation)
+    };
+
 protected:
-    QVector<quint32>          objects;
-    QColor                    supportColor2;
-    QColor                    supportColor3;
+    QVector<quint32> objects;
+    QColor supportColor2;
+    QColor supportColor3;
 
-    QVector<VScaledEllipse *> points;
-    QVector<VCurvePathItem *> curves;
+    QVector<VScaledEllipse*> points;
+    QVector<VCurvePathItem*> curves;
 
-    VScaledEllipse           *GetPoint(quint32 i, const QColor &color);
-    VCurvePathItem           *GetCurve(quint32 i, const QColor &color);
+    VScaledEllipse* GetPoint(quint32 i, const QColor& color);
+    VCurvePathItem* GetCurve(quint32 i, const QColor& color);
 
     template <class Item>
-    int                       addFlippedCurve(const QPointF &firstPoint, const QPointF &secondPoint, quint32 id, int i);
+    int addFlippedCurve(const QPointF& firstPoint, const QPointF& secondPoint, quint32 id, int i);
 
-    void                      refreshMirroredObjects(const QPointF &firstPoint, const QPointF &secondPoint);
+    void refreshMirroredObjects(const QPointF& firstPoint, const QPointF& secondPoint);
+
 private:
     Q_DISABLE_COPY(VisOperation)
 };
 
 //---------------------------------------------------------------------------------------------------------------------
 template <class Item>
-int VisOperation::addFlippedCurve(const QPointF &firstPoint, const QPointF &secondPoint, quint32 id, int i)
+int VisOperation::addFlippedCurve(
+    const QPointF& firstPoint, const QPointF& secondPoint, quint32 id, int i)
 {
     const QSharedPointer<Item> curve = Visualization::data->template GeometricObject<Item>(id);
 
     ++i;
-    VCurvePathItem *path = GetCurve(static_cast<quint32>(i), supportColor2);
-    DrawPath(path, curve->GetPath(), curve->DirectionArrows(), supportColor2, Qt::SolidLine,
-             lineWeight, Qt::RoundCap);
+    VCurvePathItem* path = GetCurve(static_cast<quint32>(i), supportColor2);
+    DrawPath(
+        path,
+        curve->GetPath(),
+        curve->DirectionArrows(),
+        supportColor2,
+        Qt::SolidLine,
+        lineWeight,
+        Qt::RoundCap);
 
     ++i;
     path = GetCurve(static_cast<quint32>(i), supportColor);
-    if (object1Id != NULL_ID)
-    {
+    if (object1Id != NULL_ID) {
         const Item flipped = curve->Flip(QLineF(firstPoint, secondPoint));
-        DrawPath(path, flipped.GetPath(), flipped.DirectionArrows(), supportColor, Qt::SolidLine,
-                 lineWeight, Qt::RoundCap);
+        DrawPath(
+            path,
+            flipped.GetPath(),
+            flipped.DirectionArrows(),
+            supportColor,
+            Qt::SolidLine,
+            lineWeight,
+            Qt::RoundCap);
     }
 
     return i;
 }
 
-#endif // VISOPERATION_H
+#endif   // VISOPERATION_H

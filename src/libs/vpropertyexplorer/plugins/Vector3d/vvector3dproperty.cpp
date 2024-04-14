@@ -28,38 +28,41 @@
 #include "../vnumberproperty.h"
 
 VPE::QVector3DProperty::QVector3DProperty(const QString& name)
-    : VProperty(name, QVariant::String) // todo: QVariant::Vector3D??
+    : VProperty(name, QVariant::String)   // todo: QVariant::Vector3D??
 {
-    QVariant tmpFloat(0); tmpFloat.convert(QVariant::Double);
-    DoubleSpinboxProperty* tmpX = new DoubleSpinboxProperty("X"); addChild(tmpX); tmpX->setUpdateBehaviour(true, false);
-    DoubleSpinboxProperty* tmpY = new DoubleSpinboxProperty("Y"); addChild(tmpY); tmpY->setUpdateBehaviour(true, false);
-    DoubleSpinboxProperty* tmpZ = new DoubleSpinboxProperty("Z"); addChild(tmpZ); tmpZ->setUpdateBehaviour(true, false);
+    QVariant tmpFloat(0);
+    tmpFloat.convert(QVariant::Double);
+    DoubleSpinboxProperty* tmpX = new DoubleSpinboxProperty("X");
+    addChild(tmpX);
+    tmpX->setUpdateBehaviour(true, false);
+    DoubleSpinboxProperty* tmpY = new DoubleSpinboxProperty("Y");
+    addChild(tmpY);
+    tmpY->setUpdateBehaviour(true, false);
+    DoubleSpinboxProperty* tmpZ = new DoubleSpinboxProperty("Z");
+    addChild(tmpZ);
+    tmpZ->setUpdateBehaviour(true, false);
     setVector(Vector3D());
 }
 
 
 //! Get the data how it should be displayed
-QVariant VPE::QVector3DProperty::data (int column, int role) const
+QVariant VPE::QVector3DProperty::data(int column, int role) const
 {
-    if (column == DPC_Data && Qt::DisplayRole == role)
-    {
+    if (column == DPC_Data && Qt::DisplayRole == role) {
         Vector3D tmpVect = getVector();
-        return QString("(%1, %2, %3)").arg(QString::number(tmpVect.X),
-                                         QString::number(tmpVect.Y),
-                                         QString::number(tmpVect.Z));
-    }
-    else
+        return QString("(%1, %2, %3)")
+            .arg(
+                QString::number(tmpVect.X), QString::number(tmpVect.Y), QString::number(tmpVect.Z));
+    } else
         return VProperty::data(column, role);
 }
 
 //! Returns item flags
 Qt::ItemFlags VPE::QVector3DProperty::flags(int column) const
 {
-    if (column == DPC_Name || column == DPC_Data)
-    {
+    if (column == DPC_Name || column == DPC_Data) {
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    }
-    else
+    } else
         return Qt::NoItemFlags;
 }
 
@@ -69,8 +72,7 @@ VPE::Vector3D VPE::QVector3DProperty::getVector() const
 {
     Vector3D tmpVect;
 
-    if (d_ptr->Children.count() < 3)
-    {
+    if (d_ptr->Children.count() < 3) {
         return tmpVect;
     }
 
@@ -82,63 +84,55 @@ VPE::Vector3D VPE::QVector3DProperty::getVector() const
 }
 
 //! Sets the Vector3d
-void VPE::QVector3DProperty::setVector(const Vector3D &vect)
-{
-    setVector(vect.X, vect.Y, vect.Z);
-}
+void VPE::QVector3DProperty::setVector(const Vector3D& vect) { setVector(vect.X, vect.Y, vect.Z); }
 
 void VPE::QVector3DProperty::setVector(double x, double y, double z)
 {
-    if (d_ptr->Children.count() < 3)
-    {
+    if (d_ptr->Children.count() < 3) {
         return;
     }
 
-    QVariant tmpX(x); tmpX.convert(QVariant::Double);
-    QVariant tmpY(y); tmpY.convert(QVariant::Double);
-    QVariant tmpZ(z); tmpZ.convert(QVariant::Double);
+    QVariant tmpX(x);
+    tmpX.convert(QVariant::Double);
+    QVariant tmpY(y);
+    tmpY.convert(QVariant::Double);
+    QVariant tmpZ(z);
+    tmpZ.convert(QVariant::Double);
     d_ptr->Children.at(0)->setValue(tmpX);
     d_ptr->Children.at(1)->setValue(tmpY);
     d_ptr->Children.at(2)->setValue(tmpZ);
 }
 
-QString VPE::QVector3DProperty::type() const
-{
-    return "vector3d";
-}
+QString VPE::QVector3DProperty::type() const { return "vector3d"; }
 
 VPE::VProperty* VPE::QVector3DProperty::clone(bool include_children, VProperty* container) const
 {
-    if (!container)
-    {
+    if (!container) {
         container = new QVector3DProperty(getName());
 
-        if (!include_children)
-        {
+        if (!include_children) {
             QList<VProperty*> tmpChildren = container->getChildren();
-            foreach (VProperty* tmpChild, tmpChildren)
-            {
+            foreach (VProperty* tmpChild, tmpChildren) {
                 container->removeChild(tmpChild);
                 delete tmpChild;
             }
         }
     }
 
-    return VProperty::clone(false, container);  // Child
+    return VProperty::clone(false, container);   // Child
 }
 
-void VPE::QVector3DProperty::setValue(const QVariant &value)
+void VPE::QVector3DProperty::setValue(const QVariant& value)
 {
     QStringList tmpStrings = value.toString().split(",");
-    if (tmpStrings.count() == 3)
-    {
+    if (tmpStrings.count() == 3) {
         setVector(tmpStrings[0].toDouble(), tmpStrings[1].toDouble(), tmpStrings[2].toDouble());
     }
-
 }
 
 QVariant VPE::QVector3DProperty::getValue() const
 {
     Vector3D tmpVect = getVector();
-    return QString("%1,%2,%3").arg(QString::number(tmpVect.X), QString::number(tmpVect.Y), QString::number(tmpVect.Z));
+    return QString("%1,%2,%3")
+        .arg(QString::number(tmpVect.X), QString::number(tmpVect.Y), QString::number(tmpVect.Z));
 }

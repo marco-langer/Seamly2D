@@ -28,41 +28,41 @@
 #include <QComboBox>
 #include <QWidget>
 
-#include "../vmisc/def.h"
 #include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/def.h"
 
 /**
  * A comboBox for choosing an export format type.
  */
-class ExportFormatCombobox: public QComboBox
+class ExportFormatCombobox : public QComboBox
 {
     Q_OBJECT
 
 public:
-                        ExportFormatCombobox(QWidget *parent = nullptr, const char *name = nullptr);
-    virtual            ~ExportFormatCombobox();
+    ExportFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
+    virtual ~ExportFormatCombobox();
 
-    void                init();
+    void init();
 
-    LayoutExportFormat  getExportFormat() const;
-    void                setExportFormat(LayoutExportFormat &format);
-    static QString      exportFormatDescription(LayoutExportFormat format);
-    static QString      makeHelpFormatList();
-    void                setCurrentToDefault();
+    LayoutExportFormat getExportFormat() const;
+    void setExportFormat(LayoutExportFormat& format);
+    static QString exportFormatDescription(LayoutExportFormat format);
+    static QString makeHelpFormatList();
+    void setCurrentToDefault();
 
 private slots:
-    void                updateExportFormat(int index);
+    void updateExportFormat(int index);
 
 signals:
-    void                exportFormatChanged(const LayoutExportFormat &format);
+    void exportFormatChanged(const LayoutExportFormat& format);
 
 private:
-    static QVector<std::pair<QString, LayoutExportFormat> > initFormats();
-    static bool         supportPSTest();
-    static bool         testPdf();
-    static bool         havePdf;
-    static bool         tested;
-    LayoutExportFormat  m_currentFormat;
+    static QVector<std::pair<QString, LayoutExportFormat>> initFormats();
+    static bool supportPSTest();
+    static bool testPdf();
+    static bool havePdf;
+    static bool tested;
+    LayoutExportFormat m_currentFormat;
 };
 
-#endif //EXPORT_FORMAT_COMBOBOX_H
+#endif   // EXPORT_FORMAT_COMBOBOX_H

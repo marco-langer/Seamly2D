@@ -52,12 +52,12 @@
 #ifndef VCURVELENGTH_H
 #define VCURVELENGTH_H
 
-#include <qcompilerdetection.h>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "../vmisc/def.h"
 #include "../ifc/ifcdef.h"
+#include "../vmisc/def.h"
 #include "vcurvevariable.h"
 
 class VAbstractCurve;
@@ -67,12 +67,18 @@ class VCurveLength : public VCurveVariable
 {
 public:
     VCurveLength();
-    VCurveLength(const quint32 &id, const quint32 &parentId, const VAbstractCurve *curve, Unit patternUnit);
-    VCurveLength(const quint32 &id, const quint32 &parentId, const QString &baseCurveName, const VSpline &spl,
-                 Unit patternUnit, qint32 segment);
-    VCurveLength(const VCurveLength &var);
-    VCurveLength &operator=(const VCurveLength &var);
+    VCurveLength(
+        const quint32& id, const quint32& parentId, const VAbstractCurve* curve, Unit patternUnit);
+    VCurveLength(
+        const quint32& id,
+        const quint32& parentId,
+        const QString& baseCurveName,
+        const VSpline& spl,
+        Unit patternUnit,
+        qint32 segment);
+    VCurveLength(const VCurveLength& var);
+    VCurveLength& operator=(const VCurveLength& var);
     virtual ~VCurveLength() Q_DECL_OVERRIDE;
 };
 
-#endif // VCURVELENGTH_H
+#endif   // VCURVELENGTH_H

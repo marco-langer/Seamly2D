@@ -117,86 +117,38 @@ const QString p998_S = QStringLiteral("p998");
 QStringList ListPMSystems()
 {
     QStringList list;
-    list << p0_S
-         << p1_S
-         << p2_S
-         << p3_S
-         << p4_S
-         << p5_S
-         << p6_S
-         << p7_S
-         << p8_S
-         << p9_S
-         << p10_S
-         << p11_S
-         << p12_S
-         << p13_S
-         << p14_S
-         << p15_S
-         << p16_S
-         << p17_S
-         << p18_S
-         << p19_S
-         << p20_S
-         << p21_S
-         << p22_S
-         << p23_S
-         << p24_S
-         << p25_S
-         << p26_S
-         << p27_S
-         << p28_S
-         << p29_S
-         << p30_S
-         << p31_S
-         << p32_S
-         << p33_S
-         << p34_S
-         << p35_S
-         << p36_S
-         << p37_S
-         << p38_S
-         << p39_S
-         << p40_S
-         << p41_S
-         << p42_S
-         << p43_S
-         << p44_S
-         << p45_S
-         << p46_S
-         << p47_S
-         << p48_S
-         << p49_S
-         << p50_S
-         << p51_S
-         << p52_S
-         << p53_S
-         << p54_S
-         << p998_S;
+    list << p0_S << p1_S << p2_S << p3_S << p4_S << p5_S << p6_S << p7_S << p8_S << p9_S << p10_S
+         << p11_S << p12_S << p13_S << p14_S << p15_S << p16_S << p17_S << p18_S << p19_S << p20_S
+         << p21_S << p22_S << p23_S << p24_S << p25_S << p26_S << p27_S << p28_S << p29_S << p30_S
+         << p31_S << p32_S << p33_S << p34_S << p35_S << p36_S << p37_S << p38_S << p39_S << p40_S
+         << p41_S << p42_S << p43_S << p44_S << p45_S << p46_S << p47_S << p48_S << p49_S << p50_S
+         << p51_S << p52_S << p53_S << p54_S << p998_S;
 
     return list;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void InitPMSystems(QComboBox *systemCombo)
+void InitPMSystems(QComboBox* systemCombo)
 {
     const QStringList listSystems = ListPMSystems();
     QMap<QString, QString> systems;
-    for (int i = 0; i < listSystems.size()-1; ++i)
-    {
-        systems.insert(qApp->translateVariables()->PMSystemName(listSystems.at(i)) + " ("+listSystems.at(i)+")", listSystems.at(i));
+    for (int i = 0; i < listSystems.size() - 1; ++i) {
+        systems.insert(
+            qApp->translateVariables()->PMSystemName(listSystems.at(i)) + " (" + listSystems.at(i)
+                + ")",
+            listSystems.at(i));
     }
 
-// * The default option (blank field or 'None') should appear at the top of the list.
-// * The list should be sorted alphabetically so users can find their system easily.
+    // * The default option (blank field or 'None') should appear at the top of the list.
+    // * The list should be sorted alphabetically so users can find their system easily.
 
     SCASSERT(systemCombo != nullptr)
-    systemCombo->addItem(qApp->translateVariables()->PMSystemName(listSystems.at(listSystems.size()-1)),
-                         listSystems.at(listSystems.size()-1));
+    systemCombo->addItem(
+        qApp->translateVariables()->PMSystemName(listSystems.at(listSystems.size() - 1)),
+        listSystems.at(listSystems.size() - 1));
 
     QMap<QString, QString>::const_iterator i = systems.constBegin();
-    while (i != systems.constEnd())
-    {
+    while (i != systems.constEnd()) {
         systemCombo->addItem(i.key(), i.value());
         ++i;
     }

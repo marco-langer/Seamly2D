@@ -37,22 +37,25 @@ class PieceAnchorPointVisual : public VisPath
     Q_OBJECT
 
 public:
-                             PieceAnchorPointVisual(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual                 ~PieceAnchorPointVisual() Q_DECL_EQ_DEFAULT;
+    PieceAnchorPointVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~PieceAnchorPointVisual() Q_DECL_EQ_DEFAULT;
 
-    virtual void             RefreshGeometry() Q_DECL_OVERRIDE;
-    void                     setAnchors(const QVector<quint32> &anchors);
-    virtual int              type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::PieceAnchors)};
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
+    void setAnchors(const QVector<quint32>& anchors);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::PieceAnchors)
+    };
 
 private:
-                             Q_DISABLE_COPY(PieceAnchorPointVisual)
-    QVector<VSimplePoint *>  m_points;
-    QVector<quint32>         m_anchors;
+    Q_DISABLE_COPY(PieceAnchorPointVisual)
+    QVector<VSimplePoint*> m_points;
+    QVector<quint32> m_anchors;
 
-    VSimplePoint            *GetPoint(quint32 i, const QColor &color);
+    VSimplePoint* GetPoint(quint32 i, const QColor& color);
 
-    void                     HideAllItems();
+    void HideAllItems();
 };
 
-#endif // PIECE_ANCHOR_POINT_VISUAL_H
+#endif   // PIECE_ANCHOR_POINT_VISUAL_H

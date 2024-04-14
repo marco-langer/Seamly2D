@@ -52,12 +52,12 @@
 #ifndef VPOINTF_H
 #define VPOINTF_H
 
-#include <qcompilerdetection.h>
 #include <QMetaType>
 #include <QSharedDataPointer>
 #include <QString>
 #include <QTypeInfo>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/diagnostic.h"
 #include "vgeometrydef.h"
@@ -71,45 +71,57 @@ QT_WARNING_DISABLE_INTEL(2304)
 /**
  * @brief The VPointF class keep data of point.
  */
-class VPointF:public VGObject
+class VPointF : public VGObject
 {
 public:
-                      VPointF();
-                      VPointF(const VPointF &point );
-    explicit          VPointF(const QPointF &point );
-                      VPointF(qreal x, qreal y, const QString &name, qreal mx, qreal my, quint32 idObject = 0,
-                              const Draw &mode = Draw::Calculation);
-                      VPointF(const QPointF &point, const QString &name, qreal mx, qreal my, quint32 idObject = 0,
-                              const Draw &mode = Draw::Calculation);
-    virtual          ~VPointF() Q_DECL_OVERRIDE;
+    VPointF();
+    VPointF(const VPointF& point);
+    explicit VPointF(const QPointF& point);
+    VPointF(
+        qreal x,
+        qreal y,
+        const QString& name,
+        qreal mx,
+        qreal my,
+        quint32 idObject = 0,
+        const Draw& mode = Draw::Calculation);
+    VPointF(
+        const QPointF& point,
+        const QString& name,
+        qreal mx,
+        qreal my,
+        quint32 idObject = 0,
+        const Draw& mode = Draw::Calculation);
+    virtual ~VPointF() Q_DECL_OVERRIDE;
 
-    VPointF &operator=(const VPointF &point);
+    VPointF& operator=(const VPointF& point);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VPointF &operator=(VPointF &&point) Q_DECL_NOTHROW;
+    VPointF& operator=(VPointF&& point) Q_DECL_NOTHROW;
 #endif
 
-	void              Swap(VPointF &point) Q_DECL_NOTHROW;
+    void Swap(VPointF& point) Q_DECL_NOTHROW;
 
     explicit operator QPointF() const;
-    VPointF           Rotate(const QPointF &originPoint, qreal degrees, const QString &prefix = QString()) const;
-    VPointF           Flip(const QLineF &axis, const QString &prefix = QString()) const;
-    VPointF           Move(qreal length, qreal angle, const QString &prefix = QString()) const;
-    qreal             mx() const;
-    qreal             my() const;
-    void              setMx(qreal mx);
-    void              setMy(qreal my);
-    QPointF           toQPointF()const;
-    qreal             x() const;
-    void              setX(const qreal &value);
-    qreal             y() const;
-    void              setY(const qreal &value);
+    VPointF
+    Rotate(const QPointF& originPoint, qreal degrees, const QString& prefix = QString()) const;
+    VPointF Flip(const QLineF& axis, const QString& prefix = QString()) const;
+    VPointF Move(qreal length, qreal angle, const QString& prefix = QString()) const;
+    qreal mx() const;
+    qreal my() const;
+    void setMx(qreal mx);
+    void setMy(qreal my);
+    QPointF toQPointF() const;
+    qreal x() const;
+    void setX(const qreal& value);
+    qreal y() const;
+    void setY(const qreal& value);
 
-    bool              isShowPointName() const;
-    void              setShowPointName(bool show);
+    bool isShowPointName() const;
+    void setShowPointName(bool show);
 
-    static QPointF    RotatePF(const QPointF &originPoint, const QPointF &point, qreal degrees);
-    static QPointF    FlipPF(const QLineF &axis, const QPointF &point);
-    static QPointF    MovePF(const QPointF &originPoint, qreal length, qreal angle);
+    static QPointF RotatePF(const QPointF& originPoint, const QPointF& point, qreal degrees);
+    static QPointF FlipPF(const QLineF& axis, const QPointF& point);
+    static QPointF MovePF(const QPointF& originPoint, qreal length, qreal angle);
 
 private:
     QSharedDataPointer<VPointFData> d;
@@ -120,4 +132,4 @@ Q_DECLARE_TYPEINFO(VPointF, Q_MOVABLE_TYPE);
 
 QT_WARNING_POP
 
-#endif // VPOINTF_H
+#endif   // VPOINTF_H

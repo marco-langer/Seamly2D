@@ -46,19 +46,20 @@
 #ifndef VTOOLELLIPTICALARC_H
 #define VTOOLELLIPTICALARC_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "vabstractspline.h"
 
 class VFormula;
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 /**
  * @brief The VToolEllipticalArc class tool for creation elliptical arc.
@@ -67,56 +68,78 @@ class VToolEllipticalArc : public VAbstractSpline
 {
     Q_OBJECT
 public:
-    virtual void         setDialog() Q_DECL_OVERRIDE;
-    static VToolEllipticalArc *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene  *scene,
-                                      VAbstractPattern *doc, VContainer *data);
-    static VToolEllipticalArc *Create(const quint32 _id, const quint32 &center, QString &radius1, QString &radius2,
-                                      QString &f1, QString &f2, QString &rotationAngle, const QString &color,
-                                      const QString &penStyle, const QString &lineWeight, VMainGraphicsScene *scene,
-                                      VAbstractPattern *doc, VContainer *data,
-                            const Document &parse, const Source &typeCreation);
+    virtual void setDialog() Q_DECL_OVERRIDE;
+    static VToolEllipticalArc* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static VToolEllipticalArc* Create(
+        const quint32 _id,
+        const quint32& center,
+        QString& radius1,
+        QString& radius2,
+        QString& f1,
+        QString& f2,
+        QString& rotationAngle,
+        const QString& color,
+        const QString& penStyle,
+        const QString& lineWeight,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
     static const QString ToolType;
-    virtual int          type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::EllipticalArc)};
-    virtual QString      getTagName() const Q_DECL_OVERRIDE;
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::EllipticalArc)
+    };
+    virtual QString getTagName() const Q_DECL_OVERRIDE;
 
-    QString              CenterPointName() const;
+    QString CenterPointName() const;
 
-    quint32              getCenter() const;
-    void                 setCenter(const quint32 &value);
+    quint32 getCenter() const;
+    void setCenter(const quint32& value);
 
-    VFormula             GetFormulaRadius1() const;
-    void                 SetFormulaRadius1(const VFormula &value);
+    VFormula GetFormulaRadius1() const;
+    void SetFormulaRadius1(const VFormula& value);
 
-    VFormula             GetFormulaRadius2() const;
-    void                 SetFormulaRadius2(const VFormula &value);
+    VFormula GetFormulaRadius2() const;
+    void SetFormulaRadius2(const VFormula& value);
 
-    VFormula             GetFormulaF1() const;
-    void                 SetFormulaF1(const VFormula &value);
+    VFormula GetFormulaF1() const;
+    void SetFormulaF1(const VFormula& value);
 
-    VFormula             GetFormulaF2() const;
-    void                 SetFormulaF2(const VFormula &value);
+    VFormula GetFormulaF2() const;
+    void SetFormulaF2(const VFormula& value);
 
-    VFormula             GetFormulaRotationAngle() const;
-    void                 SetFormulaRotationAngle(const VFormula &value);
+    VFormula GetFormulaRotationAngle() const;
+    void SetFormulaRotationAngle(const VFormula& value);
 
-    virtual void         ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
 
 
 protected slots:
-    virtual void         showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void         RemoveReferens() Q_DECL_OVERRIDE;
-    virtual void         SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void         SetVisualization() Q_DECL_OVERRIDE;
-    virtual QString      makeToolTip() const Q_DECL_OVERRIDE;
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
+    virtual QString makeToolTip() const Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VToolEllipticalArc)
-                         VToolEllipticalArc(VAbstractPattern *doc, VContainer *data, quint32 id,
-                                            const Source &typeCreation, QGraphicsItem * parent = nullptr);
+    VToolEllipticalArc(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        const Source& typeCreation,
+        QGraphicsItem* parent = nullptr);
 };
 
-#endif // VTOOLELLIPTICALARC_H
+#endif   // VTOOLELLIPTICALARC_H

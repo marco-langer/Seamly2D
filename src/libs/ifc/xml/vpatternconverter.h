@@ -56,7 +56,6 @@
 #ifndef VPATTERNCONVERTER_H
 #define VPATTERNCONVERTER_H
 
-#include <qcompilerdetection.h>
 #include <QCoreApplication>
 #include <QDomElement>
 #include <QMap>
@@ -65,6 +64,7 @@
 #include <QStringList>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "abstract_converter.h"
 
@@ -74,7 +74,7 @@ class VPatternConverter : public VAbstractConverter
 {
     Q_DECLARE_TR_FUNCTIONS(VPatternConverter)
 public:
-    explicit VPatternConverter(const QString &fileName);
+    explicit VPatternConverter(const QString& fileName);
     virtual ~VPatternConverter() Q_DECL_EQ_DEFAULT;
 
     static const QString PatternMaxVerStr;
@@ -83,141 +83,138 @@ public:
     static Q_DECL_CONSTEXPR const int PatternMaxVer = CONVERTER_VERSION_CHECK(0, 6, 9);
 
 protected:
-    virtual int     minVer() const override;
-    virtual int     maxVer() const override;
+    virtual int minVer() const override;
+    virtual int maxVer() const override;
 
     virtual QString minVerStr() const override;
     virtual QString maxVerStr() const override;
 
     virtual QString getSchema(int ver) const override;
-    virtual void    applyPatches() override;
-    virtual void    downgradeToCurrentMaxVersion() override;
+    virtual void applyPatches() override;
+    virtual void downgradeToCurrentMaxVersion() override;
 
-    virtual bool    isReadOnly() const override;
+    virtual bool isReadOnly() const override;
 
 private:
     Q_DISABLE_COPY(VPatternConverter)
     static const QString PatternMinVerStr;
 
-    void          toVersion0_1_1();
-    void          toVersion0_1_2();
-    void          toVersion0_1_3();
-    void          toVersion0_1_4();
-    void          toVersion0_2_0();
-    void          toVersion0_2_1();
-    void          toVersion0_2_2();
-    void          toVersion0_2_3();
-    void          toVersion0_2_4();
-    void          toVersion0_2_5();
-    void          toVersion0_2_6();
-    void          toVersion0_2_7();
-    void          toVersion0_3_0();
-    void          toVersion0_3_1();
-    void          toVersion0_3_2();
-    void          toVersion0_3_3();
-    void          toVersion0_3_4();
-    void          toVersion0_3_5();
-    void          toVersion0_3_6();
-    void          toVersion0_3_7();
-    void          toVersion0_3_8();
-    void          toVersion0_3_9();
-    void          toVersion0_4_0();
-    void          toVersion0_4_1();
-    void          toVersion0_4_2();
-    void          toVersion0_4_3();
-    void          toVersion0_4_4();
-    void          toVersion0_4_5();
-    void          toVersion0_4_6();
-    void          toVersion0_4_7();
-    void          toVersion0_4_8();
-    void          toVersion0_5_0();
-    void          toVersion0_5_1();
-    void          toVersion0_6_0();
-    void          toVersion0_6_1();
-    void          toVersion0_6_2();
-    void          toVersion0_6_3();
-    void          toVersion0_6_4();
-    void          toVersion0_6_5();
-    void          toVersion0_6_6();
-    void          toVersion0_6_7();
-    void          toVersion0_6_8();
-    void          toVersion0_6_9();
+    void toVersion0_1_1();
+    void toVersion0_1_2();
+    void toVersion0_1_3();
+    void toVersion0_1_4();
+    void toVersion0_2_0();
+    void toVersion0_2_1();
+    void toVersion0_2_2();
+    void toVersion0_2_3();
+    void toVersion0_2_4();
+    void toVersion0_2_5();
+    void toVersion0_2_6();
+    void toVersion0_2_7();
+    void toVersion0_3_0();
+    void toVersion0_3_1();
+    void toVersion0_3_2();
+    void toVersion0_3_3();
+    void toVersion0_3_4();
+    void toVersion0_3_5();
+    void toVersion0_3_6();
+    void toVersion0_3_7();
+    void toVersion0_3_8();
+    void toVersion0_3_9();
+    void toVersion0_4_0();
+    void toVersion0_4_1();
+    void toVersion0_4_2();
+    void toVersion0_4_3();
+    void toVersion0_4_4();
+    void toVersion0_4_5();
+    void toVersion0_4_6();
+    void toVersion0_4_7();
+    void toVersion0_4_8();
+    void toVersion0_5_0();
+    void toVersion0_5_1();
+    void toVersion0_6_0();
+    void toVersion0_6_1();
+    void toVersion0_6_2();
+    void toVersion0_6_3();
+    void toVersion0_6_4();
+    void toVersion0_6_5();
+    void toVersion0_6_6();
+    void toVersion0_6_7();
+    void toVersion0_6_8();
+    void toVersion0_6_9();
 
-    void          TagUnitToV0_2_0();
-    void          TagIncrementToV0_2_0();
-    void          ConvertMeasurementsToV0_2_0();
-    void          TagMeasurementsToV0_2_0();
+    void TagUnitToV0_2_0();
+    void TagIncrementToV0_2_0();
+    void ConvertMeasurementsToV0_2_0();
+    void TagMeasurementsToV0_2_0();
 
-    void          ConvertMeasurementsToV0_2_1();
+    void ConvertMeasurementsToV0_2_1();
 
-    void          RemoveColorToolCutV0_3_1();
+    void RemoveColorToolCutV0_3_1();
 
     QSet<QString> FixIncrementsToV0_2_0();
-    QString       FixIncrementInFormulaToV0_2_0(const QString &formula, const QSet<QString> &names);
-    void          FixPointExpressionsToV0_2_0(const QSet<QString> &names);
-    void          FixArcExpressionsToV0_2_0(const QSet<QString> &names);
-    void          FixPathPointExpressionsToV0_2_0(const QSet<QString> &names);
+    QString FixIncrementInFormulaToV0_2_0(const QString& formula, const QSet<QString>& names);
+    void FixPointExpressionsToV0_2_0(const QSet<QString>& names);
+    void FixArcExpressionsToV0_2_0(const QSet<QString>& names);
+    void FixPathPointExpressionsToV0_2_0(const QSet<QString>& names);
 
-    void          ConvertPointExpressionsToV0_2_0(const QMap<QString, QString> &names);
-    void          ConvertArcExpressionsToV0_2_0(const QMap<QString, QString> &names);
-    void          ConvertPathPointExpressionsToV0_2_0(const QMap<QString, QString> &names);
-    QString       FixMeasurementInFormulaToV0_2_0(const QString &formula, const QMap<QString, QString> &names);
+    void ConvertPointExpressionsToV0_2_0(const QMap<QString, QString>& names);
+    void ConvertArcExpressionsToV0_2_0(const QMap<QString, QString>& names);
+    void ConvertPathPointExpressionsToV0_2_0(const QMap<QString, QString>& names);
+    QString
+    FixMeasurementInFormulaToV0_2_0(const QString& formula, const QMap<QString, QString>& names);
 
-    QString       MUnitV0_1_4() const;
-    QDomElement   TagMeasurementsV0_1_4() const;
-    QDomElement   TagIncrementsV0_1_4() const;
+    QString MUnitV0_1_4() const;
+    QDomElement TagMeasurementsV0_1_4() const;
+    QDomElement TagIncrementsV0_1_4() const;
 
-    void          FixToolUnionToV0_2_4();
-    void          ParseModelingToV0_2_4(const QDomElement &modeling);
-    void          SaveChildrenToolUnionToV0_2_4(quint32 id, const QVector<quint32> &children);
+    void FixToolUnionToV0_2_4();
+    void ParseModelingToV0_2_4(const QDomElement& modeling);
+    void SaveChildrenToolUnionToV0_2_4(quint32 id, const QVector<quint32>& children);
 
     static QMap<QString, QString> OldNamesToNewNames_InV0_2_0();
     static QMap<QString, QString> OldNamesToNewNames_InV0_2_1();
 
-    void          FixCutPoint();
-    void          FixSubPaths(int i, quint32 id, quint32 baseCurve);
+    void FixCutPoint();
+    void FixSubPaths(int i, quint32 id, quint32 baseCurve);
 
-    void          TagRemoveAttributeTypeObjectInV0_4_0();
-    void          TagDetailToV0_4_0();
-    void          TagUnionDetailsToV0_4_0();
-    QDomElement   GetUnionDetailNodesV0_4_0(const QDomElement &detail);
-    QDomElement   GetUnionChildrenNodesV0_4_0(const QDomElement &detail);
+    void TagRemoveAttributeTypeObjectInV0_4_0();
+    void TagDetailToV0_4_0();
+    void TagUnionDetailsToV0_4_0();
+    QDomElement GetUnionDetailNodesV0_4_0(const QDomElement& detail);
+    QDomElement GetUnionChildrenNodesV0_4_0(const QDomElement& detail);
 
-    void          LabelTagToV0_4_4(const QString &tagName);
+    void LabelTagToV0_4_4(const QString& tagName);
 
-    QDomElement   AddTagPatternLabelV0_5_1();
-    void          PortPatternLabeltoV0_6_0(QDomElement &label);
-    void          AddLabelTemplateLineV0_6_0(QDomElement &label, const QString &text, bool bold,
-                                             bool italic, int alignment, int fontSizeIncrement);
-    void          PortPieceLabelstoV0_6_0();
-    void          RemoveUnusedTagsV0_6_0();
-    void          RemoveUniqueTagV0_6_0(const QString &tag);
-    void          renameAttribute(QDomElement &element, const QString &oldName,
-                                  const QString &newName, const QString &value) const;
+    QDomElement AddTagPatternLabelV0_5_1();
+    void PortPatternLabeltoV0_6_0(QDomElement& label);
+    void AddLabelTemplateLineV0_6_0(
+        QDomElement& label,
+        const QString& text,
+        bool bold,
+        bool italic,
+        int alignment,
+        int fontSizeIncrement);
+    void PortPieceLabelstoV0_6_0();
+    void RemoveUnusedTagsV0_6_0();
+    void RemoveUniqueTagV0_6_0(const QString& tag);
+    void renameAttribute(
+        QDomElement& element,
+        const QString& oldName,
+        const QString& newName,
+        const QString& value) const;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline int VPatternConverter::minVer() const
-{
-    return PatternMinVer;
-}
+inline int VPatternConverter::minVer() const { return PatternMinVer; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline int VPatternConverter::maxVer() const
-{
-    return PatternMaxVer;
-}
+inline int VPatternConverter::maxVer() const { return PatternMaxVer; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString VPatternConverter::minVerStr() const
-{
-    return PatternMinVerStr;
-}
+inline QString VPatternConverter::minVerStr() const { return PatternMinVerStr; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString VPatternConverter::maxVerStr() const
-{
-    return PatternMaxVerStr;
-}
+inline QString VPatternConverter::maxVerStr() const { return PatternMaxVerStr; }
 
-#endif // VPATTERNCONVERTER_H
+#endif   // VPATTERNCONVERTER_H

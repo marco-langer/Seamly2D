@@ -53,27 +53,29 @@
 #include "vinternalvariable_p.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VInternalVariable &VInternalVariable::operator=(VInternalVariable &&var) Q_DECL_NOTHROW { Swap(var); return *this; }
+VInternalVariable& VInternalVariable::operator=(VInternalVariable&& var) Q_DECL_NOTHROW
+{
+    Swap(var);
+    return *this;
+}
 #endif
 
-void VInternalVariable::Swap(VInternalVariable &var) Q_DECL_NOTHROW
-{ std::swap(d, var.d); }
+void VInternalVariable::Swap(VInternalVariable& var) Q_DECL_NOTHROW { std::swap(d, var.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 VInternalVariable::VInternalVariable()
-    :d(new VInternalVariableData)
+    : d(new VInternalVariableData)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VInternalVariable::VInternalVariable(const VInternalVariable &var)
-    :d(var.d)
+VInternalVariable::VInternalVariable(const VInternalVariable& var)
+    : d(var.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VInternalVariable &VInternalVariable::operator=(const VInternalVariable &var)
+VInternalVariable& VInternalVariable::operator=(const VInternalVariable& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     d = var.d;
@@ -81,8 +83,7 @@ VInternalVariable &VInternalVariable::operator=(const VInternalVariable &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VInternalVariable::~VInternalVariable()
-{}
+VInternalVariable::~VInternalVariable() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VInternalVariable::Filter(quint32 id)
@@ -92,50 +93,26 @@ bool VInternalVariable::Filter(quint32 id)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VInternalVariable::isNotUsed() const
-{
-    return false;
-}
+bool VInternalVariable::isNotUsed() const { return false; }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VInternalVariable::GetValue() const
-{
-    return d->value;
-}
+qreal VInternalVariable::GetValue() const { return d->value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal *VInternalVariable::GetValue()
-{
-    return &d->value;
-}
+qreal* VInternalVariable::GetValue() { return &d->value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VInternalVariable::SetValue(const qreal &value)
-{
-    d->value = value;
-}
+void VInternalVariable::SetValue(const qreal& value) { d->value = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VInternalVariable::GetName() const
-{
-    return d->name;
-}
+QString VInternalVariable::GetName() const { return d->name; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VInternalVariable::SetName(const QString &name)
-{
-    d->name = name;
-}
+void VInternalVariable::SetName(const QString& name) { d->name = name; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VarType VInternalVariable::GetType() const
-{
-    return d->type;
-}
+VarType VInternalVariable::GetType() const { return d->type; }
 
 
 //---------------------------------------------------------------------------------------------------------------------
-void VInternalVariable::SetType(const VarType &type)
-{
-    d->type = type;
-}
+void VInternalVariable::SetType(const VarType& type) { d->type = type; }

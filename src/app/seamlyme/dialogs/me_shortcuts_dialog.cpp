@@ -34,20 +34,20 @@
 #include <QFileDialog>
 #include <QFont>
 #include <QGuiApplication>
-#include <QTextDocument>
 #include <QPageLayout>
-#include <QPrinter>
-#include <QPrintPreviewDialog>
 #include <QPrintDialog>
+#include <QPrintPreviewDialog>
+#include <QPrinter>
 #include <QScreen>
 #include <QShowEvent>
 #include <QString>
+#include <QTextDocument>
 #include <QtWidgets>
 
 #include "../application_me.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-MeShortcutsDialog::MeShortcutsDialog(QWidget *parent)
+MeShortcutsDialog::MeShortcutsDialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::MeShortcutsDialog)
     , isInitialized(false)
@@ -55,64 +55,72 @@ MeShortcutsDialog::MeShortcutsDialog(QWidget *parent)
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    //Limit dialog height to 80% of screen size
+    // Limit dialog height to 80% of screen size
     setMaximumHeight(qRound(QGuiApplication::primaryScreen()->availableGeometry().height() * .8));
 
-    const QString html = QString("<table style=font-size:11pt; font-weight:600>"
-                                    "<tr><td width = 50%><b>%1</b></td><td></td></tr>"
-                                    "<tr><td width = 50%>%22        </td><td>%23</td></tr>"
-                                    "<tr><td width = 50%>%24        </td><td>%25<br></td></tr>"
-                                    "<tr><td width = 50%><b>%2</b></td><td></td></tr>"
-                                    "<tr><td width = 50%>%3        </td><td>%4</td></tr>"
-                                    "<tr><td width = 50%>%5        </td><td>%6</td></tr>"
-                                    "<tr><td width = 50%>%7        </td><td>%8</td></tr>"
-                                    "<tr><td width = 50%>%9        </td><td>%10</td></tr>"
-                                    "<tr><td width = 50%>%11       </td><td>%12</td></tr>"
-                                    "<tr><td width = 50%>%13       </td><td>%14</td></tr>"
-                                    "<tr><td width = 50%>%15       </td><td>%16</td></tr>"
-                                    "<tr><td width = 50%>%17	   </td><td>%18<br></td></tr>"
-                                    "<tr><td width = 50%><b>%19</b></td><td></td></tr>"
-                                    "<tr><td width = 50%>%20       </td><td>%21</td></tr>"
-                                "</table>")
-                                .arg(tr("Keyboard Shortcuts"))
-                                .arg(tr("File"))
-                                .arg(tr("New")).arg(tr("Ctrl+N"))
-                                .arg(tr("Open Individual")).arg(tr("Ctrl+O"))
-                                .arg(tr("Open Multisize")).arg(tr("Ctrl+Shift+O"))
-                                .arg(tr("Print")).arg(tr("Ctrl+P"))
-                                .arg(tr("Save")).arg(tr("Ctrl+S"))
-                                .arg(tr("Save as")).arg(tr("Ctrl+Shift+S"))
-                                .arg(tr("Export to CSV")).arg(tr("Ctrl+E"))
-                                .arg(tr("Exit")).arg(tr("Ctrl+Q"))
-                                .arg(tr("Help"))
-                                .arg(tr("Keyboard Shortcuts")).arg(tr("K"))
-                                .arg(tr("Find previous")).arg(tr("Ctrl+Shift+G"))
-                                .arg(tr("Find next")).arg(tr("Ctrl+G"));
+    const QString html = QString(
+                             "<table style=font-size:11pt; font-weight:600>"
+                             "<tr><td width = 50%><b>%1</b></td><td></td></tr>"
+                             "<tr><td width = 50%>%22        </td><td>%23</td></tr>"
+                             "<tr><td width = 50%>%24        </td><td>%25<br></td></tr>"
+                             "<tr><td width = 50%><b>%2</b></td><td></td></tr>"
+                             "<tr><td width = 50%>%3        </td><td>%4</td></tr>"
+                             "<tr><td width = 50%>%5        </td><td>%6</td></tr>"
+                             "<tr><td width = 50%>%7        </td><td>%8</td></tr>"
+                             "<tr><td width = 50%>%9        </td><td>%10</td></tr>"
+                             "<tr><td width = 50%>%11       </td><td>%12</td></tr>"
+                             "<tr><td width = 50%>%13       </td><td>%14</td></tr>"
+                             "<tr><td width = 50%>%15       </td><td>%16</td></tr>"
+                             "<tr><td width = 50%>%17	   </td><td>%18<br></td></tr>"
+                             "<tr><td width = 50%><b>%19</b></td><td></td></tr>"
+                             "<tr><td width = 50%>%20       </td><td>%21</td></tr>"
+                             "</table>")
+                             .arg(tr("Keyboard Shortcuts"))
+                             .arg(tr("File"))
+                             .arg(tr("New"))
+                             .arg(tr("Ctrl+N"))
+                             .arg(tr("Open Individual"))
+                             .arg(tr("Ctrl+O"))
+                             .arg(tr("Open Multisize"))
+                             .arg(tr("Ctrl+Shift+O"))
+                             .arg(tr("Print"))
+                             .arg(tr("Ctrl+P"))
+                             .arg(tr("Save"))
+                             .arg(tr("Ctrl+S"))
+                             .arg(tr("Save as"))
+                             .arg(tr("Ctrl+Shift+S"))
+                             .arg(tr("Export to CSV"))
+                             .arg(tr("Ctrl+E"))
+                             .arg(tr("Exit"))
+                             .arg(tr("Ctrl+Q"))
+                             .arg(tr("Help"))
+                             .arg(tr("Keyboard Shortcuts"))
+                             .arg(tr("K"))
+                             .arg(tr("Find previous"))
+                             .arg(tr("Ctrl+Shift+G"))
+                             .arg(tr("Find next"))
+                             .arg(tr("Ctrl+G"));
 
     ui->shortcuts_TextBrowser->setHtml(html);
 
-    connect(ui->clipboard_ToolButton, &QToolButton::clicked, this, &MeShortcutsDialog::copyToClipboard);
-    connect(ui->printer_ToolButton,   &QToolButton::clicked, this, &MeShortcutsDialog::sendToPrinter);
-    connect(ui->pdf_ToolButton,       &QToolButton::clicked, this, &MeShortcutsDialog::exportPdf);
+    connect(
+        ui->clipboard_ToolButton, &QToolButton::clicked, this, &MeShortcutsDialog::copyToClipboard);
+    connect(ui->printer_ToolButton, &QToolButton::clicked, this, &MeShortcutsDialog::sendToPrinter);
+    connect(ui->pdf_ToolButton, &QToolButton::clicked, this, &MeShortcutsDialog::exportPdf);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MeShortcutsDialog::~MeShortcutsDialog()
-{
-    delete ui;
-}
+MeShortcutsDialog::~MeShortcutsDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MeShortcutsDialog::showEvent(QShowEvent *event)
+void MeShortcutsDialog::showEvent(QShowEvent* event)
 {
-    QDialog::showEvent( event );
-    if ( event->spontaneous() )
-    {
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
         return;
     }
 
-    if (isInitialized)
-    {
+    if (isInitialized) {
         return;
     }
     // do your init stuff here
@@ -120,23 +128,22 @@ void MeShortcutsDialog::showEvent(QShowEvent *event)
     setMaximumSize(size());
     setMinimumSize(size());
 
-    isInitialized = true;//first show windows are held
+    isInitialized = true;   // first show windows are held
 }
 
 void MeShortcutsDialog::copyToClipboard()
 {
-    //QClipboard *clipboard = QApplication::clipboard();
-    //clipboard->setText(ui->shortcuts_TextBrowser->toPlainText());
+    // QClipboard *clipboard = QApplication::clipboard();
+    // clipboard->setText(ui->shortcuts_TextBrowser->toPlainText());
 
     ui->shortcuts_TextBrowser->selectAll();
     ui->shortcuts_TextBrowser->copy();
 }
 void MeShortcutsDialog::sendToPrinter()
 {
-    QPrinter  printer;
+    QPrinter printer;
     QPrintDialog printDialog(&printer);
-    if(printDialog.exec())
-    {
+    if (printDialog.exec()) {
         QTextDocument textDocument;
         textDocument.setHtml(ui->shortcuts_TextBrowser->toHtml());
         textDocument.print(&printer);
@@ -145,11 +152,10 @@ void MeShortcutsDialog::sendToPrinter()
 
 void MeShortcutsDialog::exportPdf()
 {
-    QString filename = QFileDialog::getSaveFileName(nullptr, tr("Export PDF"), QString(),
-                                                    "*.pdf", nullptr, QFileDialog::DontUseNativeDialog);
+    QString filename = QFileDialog::getSaveFileName(
+        nullptr, tr("Export PDF"), QString(), "*.pdf", nullptr, QFileDialog::DontUseNativeDialog);
 
-    if (QFileInfo(filename).suffix().isEmpty())
-    {
+    if (QFileInfo(filename).suffix().isEmpty()) {
         filename.append(".pdf");
     }
     QPrinter printer(QPrinter::PrinterResolution);

@@ -52,12 +52,12 @@
 #ifndef VISTOOLPOINTOFCONTACT_H
 #define VISTOOLPOINTOFCONTACT_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -66,26 +66,29 @@ class VisToolPointOfContact : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolPointOfContact(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolPointOfContact(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolPointOfContact() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         setLineP2Id(const quint32 &value);
-    void         setRadiusId(const quint32 &value);
-    void         setRadius(const QString &expression);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolPointOfContact)};
+    void setLineP2Id(const quint32& value);
+    void setRadiusId(const quint32& value);
+    void setRadius(const QString& expression);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPointOfContact)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolPointOfContact)
-    quint32         lineP2Id;
-    quint32         radiusId;
-    VScaledEllipse *point;
-    VScaledEllipse *lineP1;
-    VScaledEllipse *lineP2;
-    VScaledEllipse *arc_point;
-    VScaledEllipse *circle;
-    qreal           radius;
-
+    quint32 lineP2Id;
+    quint32 radiusId;
+    VScaledEllipse* point;
+    VScaledEllipse* lineP1;
+    VScaledEllipse* lineP2;
+    VScaledEllipse* arc_point;
+    VScaledEllipse* circle;
+    qreal radius;
 };
 
-#endif // VISTOOLPOINTOFCONTACT_H
+#endif   // VISTOOLPOINTOFCONTACT_H

@@ -61,20 +61,20 @@ class VAbstractFloatItemData
 {
 public:
     VAbstractFloatItemData();
-    VAbstractFloatItemData(const VAbstractFloatItemData &data);
+    VAbstractFloatItemData(const VAbstractFloatItemData& data);
 
     virtual ~VAbstractFloatItemData();
 
-    VAbstractFloatItemData &operator=(const VAbstractFloatItemData &data);
+    VAbstractFloatItemData& operator=(const VAbstractFloatItemData& data);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VAbstractFloatItemData &operator=(VAbstractFloatItemData &&data) Q_DECL_NOTHROW;
+    VAbstractFloatItemData& operator=(VAbstractFloatItemData&& data) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VAbstractFloatItemData &data) Q_DECL_NOTHROW;
+    void Swap(VAbstractFloatItemData& data) Q_DECL_NOTHROW;
 
     // methods, which set and return values of different parameters
     QPointF GetPos() const;
-    void    SetPos(const QPointF& ptPos);
+    void SetPos(const QPointF& ptPos);
 
     bool IsVisible() const;
     void SetVisible(bool bVisible);
@@ -83,4 +83,4 @@ private:
     QSharedDataPointer<VAbstractFloatItemDataPrivate> d;
 };
 
-#endif // VABSTRACTFLOATITEMDATA_H
+#endif   // VABSTRACTFLOATITEMDATA_H

@@ -61,8 +61,10 @@ Q_LOGGING_CATEGORY(vTool, "v.tool")
  * @param data container with variables
  * @param parent parent object
  */
-VDataTool::VDataTool(VContainer *data, QObject *parent)
-    : QObject(parent), data(*data), _referens(1)
+VDataTool::VDataTool(VContainer* data, QObject* parent)
+    : QObject(parent)
+    , data(*data)
+    , _referens(1)
 {
     SCASSERT(data != nullptr)
 }
@@ -73,8 +75,7 @@ VDataTool::VDataTool(VContainer *data, QObject *parent)
  */
 void VDataTool::decrementReferens()
 {
-    if (_referens > 0)
-    {
+    if (_referens > 0) {
         --_referens;
     }
 }

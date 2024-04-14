@@ -64,19 +64,24 @@
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/varc.h"
+#include "../visualization.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "../visualization.h"
 #include "visualization/line/visline.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolPointOfIntersectionArcs::VisToolPointOfIntersectionArcs(const VContainer *data, QGraphicsItem *parent)
-    : VisLine(data, parent), arc1Id(NULL_ID), arc2Id(NULL_ID), crossPoint(CrossCirclesPoint::FirstPoint),
-      point(nullptr),
-      arc1Path(nullptr), arc2Path(nullptr)
+VisToolPointOfIntersectionArcs::VisToolPointOfIntersectionArcs(
+    const VContainer* data, QGraphicsItem* parent)
+    : VisLine(data, parent)
+    , arc1Id(NULL_ID)
+    , arc2Id(NULL_ID)
+    , crossPoint(CrossCirclesPoint::FirstPoint)
+    , point(nullptr)
+    , arc1Path(nullptr)
+    , arc2Path(nullptr)
 {
-    this->setPen(QPen(Qt::NoPen)); // don't use parent this time
+    this->setPen(QPen(Qt::NoPen));   // don't use parent this time
 
     arc1Path = InitItem<VCurvePathItem>(Qt::darkGreen, this);
     arc1Path->setFlag(QGraphicsItem::ItemStacksBehindParent, false);
@@ -91,28 +96,39 @@ VisToolPointOfIntersectionArcs::VisToolPointOfIntersectionArcs(const VContainer 
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolPointOfIntersectionArcs::RefreshGeometry()
 {
-    if (arc1Id > NULL_ID)
-    {
+    if (arc1Id > NULL_ID) {
         const QSharedPointer<VArc> arc1 = Visualization::data->GeometricObject<VArc>(arc1Id);
-        DrawPath(arc1Path, arc1->GetPath(), arc1->DirectionArrows(), Qt::darkGreen, Qt::SolidLine,
-                 lineWeight,  Qt::RoundCap);
+        DrawPath(
+            arc1Path,
+            arc1->GetPath(),
+            arc1->DirectionArrows(),
+            Qt::darkGreen,
+            Qt::SolidLine,
+            lineWeight,
+            Qt::RoundCap);
 
-        if (arc2Id > NULL_ID)
-        {
+        if (arc2Id > NULL_ID) {
             const QSharedPointer<VArc> arc2 = Visualization::data->GeometricObject<VArc>(arc2Id);
-            DrawPath(arc2Path, arc2->GetPath(), arc2->DirectionArrows(), Qt::darkRed, Qt::SolidLine,
-                     lineWeight,  Qt::RoundCap);
+            DrawPath(
+                arc2Path,
+                arc2->GetPath(),
+                arc2->DirectionArrows(),
+                Qt::darkRed,
+                Qt::SolidLine,
+                lineWeight,
+                Qt::RoundCap);
 
-            const QPointF fPoint = VToolPointOfIntersectionArcs::FindPoint(arc1.data(), arc2.data(), crossPoint);
+            const QPointF fPoint =
+                VToolPointOfIntersectionArcs::FindPoint(arc1.data(), arc2.data(), crossPoint);
             DrawPoint(point, fPoint, mainColor);
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolPointOfIntersectionArcs::VisualMode(const quint32 &id)
+void VisToolPointOfIntersectionArcs::VisualMode(const quint32& id)
 {
-    VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+    VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
     SCASSERT(scene != nullptr)
 
     this->arc1Id = id;
@@ -123,19 +139,13 @@ void VisToolPointOfIntersectionArcs::VisualMode(const quint32 &id)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolPointOfIntersectionArcs::setArc1Id(const quint32 &value)
-{
-    arc1Id = value;
-}
+void VisToolPointOfIntersectionArcs::setArc1Id(const quint32& value) { arc1Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolPointOfIntersectionArcs::setArc2Id(const quint32 &value)
-{
-    arc2Id = value;
-}
+void VisToolPointOfIntersectionArcs::setArc2Id(const quint32& value) { arc2Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolPointOfIntersectionArcs::setCrossPoint(const CrossCirclesPoint &value)
+void VisToolPointOfIntersectionArcs::setCrossPoint(const CrossCirclesPoint& value)
 {
     crossPoint = value;
 }

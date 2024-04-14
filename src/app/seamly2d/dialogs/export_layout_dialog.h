@@ -39,63 +39,65 @@
 #include "../vmisc/def.h"
 #include "abstractlayout_dialog.h"
 
-namespace Ui
-{
-    class ExportLayoutDialog;
+namespace Ui {
+class ExportLayoutDialog;
 }
 
 
-class ExportLayoutDialog : public  AbstractLayoutDialog
+class ExportLayoutDialog : public AbstractLayoutDialog
 {
     Q_OBJECT
 
 public:
-    explicit              ExportLayoutDialog(int count, Draw mode = Draw::Layout, const QString &fileName = QString(),
-                                           QWidget *parent = nullptr);
+    explicit ExportLayoutDialog(
+        int count,
+        Draw mode = Draw::Layout,
+        const QString& fileName = QString(),
+        QWidget* parent = nullptr);
 
-    virtual              ~ExportLayoutDialog();
+    virtual ~ExportLayoutDialog();
 
-    QString               path() const;
-    QString               fileName() const;
-    QString               modeString() const;
+    QString path() const;
+    QString fileName() const;
+    QString modeString() const;
 
-    LayoutExportFormat    format() const;
-    QString               formatText() const;
-    void                  selectFormat(LayoutExportFormat format);
+    LayoutExportFormat format() const;
+    QString formatText() const;
+    void selectFormat(LayoutExportFormat format);
 
-    void                  setBinaryDXFFormat(bool binary);
-    bool                  isBinaryDXFFormat() const;
+    void setBinaryDXFFormat(bool binary);
+    bool isBinaryDXFFormat() const;
 
-    void                  setDestinationPath(const QString& cmdDestinationPath);
+    void setDestinationPath(const QString& cmdDestinationPath);
 
-    Draw                  mode() const;
+    Draw mode() const;
 
-    static QString        exportFormatSuffix(LayoutExportFormat format);
+    static QString exportFormatSuffix(LayoutExportFormat format);
 
-    bool                  isTextAsPaths() const;
-    void                  setTextAsPaths(bool textAsPaths);
+    bool isTextAsPaths() const;
+    void setTextAsPaths(bool textAsPaths);
 
 protected:
-    virtual void          showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    void                  initTemplates(QComboBox *templates);
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+    void initTemplates(QComboBox* templates);
 
 private slots:
-    void                  save();
-    void                  pathChanged(const QString &text);
-    void                  showExportFiles();
+    void save();
+    void pathChanged(const QString& text);
+    void showExportFiles();
 
 private:
     Q_DISABLE_COPY(ExportLayoutDialog)
-    Ui::ExportLayoutDialog *ui;
-    int                   m_count;
-    bool                  m_isInitialized;
-    Draw                  m_mode;
-    QPushButton          *m_SaveButton;
+    Ui::ExportLayoutDialog* ui;
+    int m_count;
+    bool m_isInitialized;
+    Draw m_mode;
+    QPushButton* m_SaveButton;
 
-    void                  removeFormatFromList(LayoutExportFormat format);
+    void removeFormatFromList(LayoutExportFormat format);
 
-    void                  readSettings();
-    void                  writeSettings() const;
+    void readSettings();
+    void writeSettings() const;
 };
 
-#endif // EXPORT_LAYOUT_DIALOG_H
+#endif   // EXPORT_LAYOUT_DIALOG_H

@@ -52,20 +52,20 @@
 #ifndef VOBJENGINE_H
 #define VOBJENGINE_H
 
-#include <qcompilerdetection.h>
-#include <QTransform>
 #include <QPaintEngine>
 #include <QPolygonF>
 #include <QRectF>
 #include <QSharedPointer>
 #include <QSize>
+#include <QTransform>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "delaunay.h"
 
 class QTextStream;
 
-#define MAX_POINTS      512
+#define MAX_POINTS 512
 
 class VObjEngine : public QPaintEngine
 {
@@ -73,22 +73,24 @@ public:
     VObjEngine();
     virtual ~VObjEngine() Q_DECL_OVERRIDE;
 
-    virtual bool begin(QPaintDevice *pdev) Q_DECL_OVERRIDE;
+    virtual bool begin(QPaintDevice* pdev) Q_DECL_OVERRIDE;
     virtual bool end() Q_DECL_OVERRIDE;
-    virtual void updateState(const QPaintEngineState &state) Q_DECL_OVERRIDE;
-    virtual void drawPath(const QPainterPath &path) Q_DECL_OVERRIDE;
+    virtual void updateState(const QPaintEngineState& state) Q_DECL_OVERRIDE;
+    virtual void drawPath(const QPainterPath& path) Q_DECL_OVERRIDE;
     virtual Type type() const Q_DECL_OVERRIDE;
-    virtual void drawPoints(const QPointF *points, int pointCount) Q_DECL_OVERRIDE;
-    virtual void drawPoints(const QPoint *points, int pointCount) Q_DECL_OVERRIDE;
-    virtual void drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr) Q_DECL_OVERRIDE;
-    virtual void drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
-    virtual void drawPolygon(const QPoint *points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
+    virtual void drawPoints(const QPointF* points, int pointCount) Q_DECL_OVERRIDE;
+    virtual void drawPoints(const QPoint* points, int pointCount) Q_DECL_OVERRIDE;
+    virtual void drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr) Q_DECL_OVERRIDE;
+    virtual void
+    drawPolygon(const QPointF* points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
+    virtual void
+    drawPolygon(const QPoint* points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
 
     QSize getSize() const;
-    void setSize(const QSize &value);
+    void setSize(const QSize& value);
 
-    QIODevice *getOutputDevice() const;
-    void setOutputDevice(QIODevice *value);
+    QIODevice* getOutputDevice() const;
+    void setOutputDevice(QIODevice* value);
 
     int getResolution() const;
     void setResolution(int value);
@@ -96,16 +98,16 @@ public:
 private:
     Q_DISABLE_COPY(VObjEngine)
     QSharedPointer<QTextStream> stream;
-    quint32     globalPointsCount;
+    quint32 globalPointsCount;
     QSharedPointer<QIODevice> outputDevice;
-    del_point2d_t    points[MAX_POINTS];
-    quint32          planeCount;
-    QSize            size;
-    int              resolution;
-    QTransform       transform;
+    del_point2d_t points[MAX_POINTS];
+    quint32 planeCount;
+    QSize size;
+    int resolution;
+    QTransform transform;
 
-    QPolygonF  MakePointsUnique(const QPolygonF &polygon)const;
-    qint64     Square(const QPolygonF &poly)const;
+    QPolygonF MakePointsUnique(const QPolygonF& polygon) const;
+    qint64 Square(const QPolygonF& poly) const;
 };
 
-#endif // VOBJENGINE_H
+#endif   // VOBJENGINE_H

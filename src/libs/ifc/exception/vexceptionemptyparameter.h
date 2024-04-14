@@ -52,9 +52,9 @@
 #ifndef VEXCEPTIONEMPTYPARAMETER_H
 #define VEXCEPTIONEMPTYPARAMETER_H
 
-#include <qcompilerdetection.h>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifcdef.h"
 #include "vexception.h"
@@ -67,28 +67,30 @@ class QDomElement;
 class VExceptionEmptyParameter : public VException
 {
 public:
-    VExceptionEmptyParameter(const QString &what, const QString &name, const QDomElement &domElement);
-    VExceptionEmptyParameter(const VExceptionEmptyParameter &error);
-    VExceptionEmptyParameter &operator=(const VExceptionEmptyParameter &error);
-    virtual         ~VExceptionEmptyParameter() V_NOEXCEPT_EXPR (true) Q_DECL_EQ_DEFAULT;
+    VExceptionEmptyParameter(
+        const QString& what, const QString& name, const QDomElement& domElement);
+    VExceptionEmptyParameter(const VExceptionEmptyParameter& error);
+    VExceptionEmptyParameter& operator=(const VExceptionEmptyParameter& error);
+    virtual ~VExceptionEmptyParameter() V_NOEXCEPT_EXPR(true) Q_DECL_EQ_DEFAULT;
     virtual QString ErrorMessage() const Q_DECL_OVERRIDE;
     virtual QString DetailedInformation() const Q_DECL_OVERRIDE;
-    QString         Name() const;
-    QString         TagText() const;
-    QString         TagName() const;
-    qint32          LineNumber() const;
+    QString Name() const;
+    QString TagText() const;
+    QString TagName() const;
+    qint32 LineNumber() const;
+
 protected:
     /** @brief name name attribute */
-    QString         name;
+    QString name;
 
     /** @brief tagText tag text */
-    QString         tagText;
+    QString tagText;
 
     /** @brief tagName tag name */
-    QString         tagName;
+    QString tagName;
 
     /** @brief lineNumber line number */
-    qint32          lineNumber;
+    qint32 lineNumber;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -96,39 +98,27 @@ protected:
  * @brief Name return name of attribute where error
  * @return name
  */
-inline QString VExceptionEmptyParameter::Name() const
-{
-    return name;
-}
+inline QString VExceptionEmptyParameter::Name() const { return name; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief TagText return tag text
  * @return tag text
  */
-inline QString VExceptionEmptyParameter::TagText() const
-{
-    return tagText;
-}
+inline QString VExceptionEmptyParameter::TagText() const { return tagText; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief TagName return tag name
  * @return tag name
  */
-inline QString VExceptionEmptyParameter::TagName() const
-{
-    return tagName;
-}
+inline QString VExceptionEmptyParameter::TagName() const { return tagName; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief LineNumber return line number of tag
  * @return line number
  */
-inline qint32 VExceptionEmptyParameter::LineNumber() const
-{
-    return lineNumber;
-}
+inline qint32 VExceptionEmptyParameter::LineNumber() const { return lineNumber; }
 
-#endif // VEXCEPTIONEMPTYPARAMETER_H
+#endif   // VEXCEPTIONEMPTYPARAMETER_H

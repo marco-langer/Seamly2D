@@ -55,11 +55,18 @@
 #include "vvariable.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-CustomVariable &CustomVariable::operator=(CustomVariable &&variable) Q_DECL_NOTHROW { Swap(variable); return *this; }
+CustomVariable& CustomVariable::operator=(CustomVariable&& variable) Q_DECL_NOTHROW
+{
+    Swap(variable);
+    return *this;
+}
 #endif
 
-void CustomVariable::Swap(CustomVariable &variable) Q_DECL_NOTHROW
-{ VVariable::Swap(variable); std::swap(d, variable.d); }
+void CustomVariable::Swap(CustomVariable& variable) Q_DECL_NOTHROW
+{
+    VVariable::Swap(variable);
+    std::swap(d, variable.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -79,8 +86,14 @@ CustomVariable::CustomVariable()
  * @param base value
  * @param description description of variable
  */
-CustomVariable::CustomVariable(VContainer *data, const QString &name, quint32 index, qreal base, const QString &formula,
-                       bool ok, const QString &description)
+CustomVariable::CustomVariable(
+    VContainer* data,
+    const QString& name,
+    quint32 index,
+    qreal base,
+    const QString& formula,
+    bool ok,
+    const QString& description)
     : VVariable(name, description)
     , d(new CustomVariableData(data, index, formula, ok))
 {
@@ -89,16 +102,15 @@ CustomVariable::CustomVariable(VContainer *data, const QString &name, quint32 in
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-CustomVariable::CustomVariable(const CustomVariable &variable)
+CustomVariable::CustomVariable(const CustomVariable& variable)
     : VVariable(variable)
     , d(variable.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-CustomVariable &CustomVariable::operator=(const CustomVariable &variable)
+CustomVariable& CustomVariable::operator=(const CustomVariable& variable)
 {
-    if ( &variable == this )
-    {
+    if (&variable == this) {
         return *this;
     }
     VVariable::operator=(variable);
@@ -107,33 +119,20 @@ CustomVariable &CustomVariable::operator=(const CustomVariable &variable)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-CustomVariable::~CustomVariable()
-{}
+CustomVariable::~CustomVariable() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getIndex return index of row
  * @return index
  */
-quint32 CustomVariable::getIndex() const
-{
-    return d->index;
-}
+quint32 CustomVariable::getIndex() const { return d->index; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString CustomVariable::GetFormula() const
-{
-    return d->formula;
-}
+QString CustomVariable::GetFormula() const { return d->formula; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool CustomVariable::IsFormulaOk() const
-{
-    return d->formulaOk;
-}
+bool CustomVariable::IsFormulaOk() const { return d->formulaOk; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VContainer *CustomVariable::GetData()
-{
-    return &d->data;
-}
+VContainer* CustomVariable::GetData() { return &d->data; }

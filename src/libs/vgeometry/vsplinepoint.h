@@ -63,34 +63,35 @@
 class VFSplinePointData;
 
 /**
- * @brief The VFSplinePoint class keep information about point in spline path. Each point have two angles and two
- * coefficient. Point represent at the same time first and last point of a spline.
+ * @brief The VFSplinePoint class keep information about point in spline path. Each point have two
+ * angles and two coefficient. Point represent at the same time first and last point of a spline.
  */
 class VFSplinePoint
 {
 public:
     VFSplinePoint();
-    VFSplinePoint(const VPointF &pSpline, qreal kAsm1, qreal angle1, qreal kAsm2, qreal angle2);
-    VFSplinePoint(const VFSplinePoint &point);
+    VFSplinePoint(const VPointF& pSpline, qreal kAsm1, qreal angle1, qreal kAsm2, qreal angle2);
+    VFSplinePoint(const VFSplinePoint& point);
     ~VFSplinePoint();
 
-    VFSplinePoint &operator=(const VFSplinePoint &point);
+    VFSplinePoint& operator=(const VFSplinePoint& point);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VFSplinePoint &operator=(VFSplinePoint &&point) Q_DECL_NOTHROW;
+    VFSplinePoint& operator=(VFSplinePoint&& point) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VFSplinePoint &point) Q_DECL_NOTHROW;
+    void Swap(VFSplinePoint& point) Q_DECL_NOTHROW;
 
     VPointF P() const;
-    void    SetP(const VPointF &value);
-    qreal   Angle1() const;
-    void    SetAngle1(const qreal &value);
-    void    SetAngle2(const qreal &value);
-    qreal   Angle2() const;
-    qreal   KAsm1() const;
-    void    SetKAsm1(const qreal &value);
-    qreal   KAsm2() const;
-    void    SetKAsm2(const qreal &value);
+    void SetP(const VPointF& value);
+    qreal Angle1() const;
+    void SetAngle1(const qreal& value);
+    void SetAngle2(const qreal& value);
+    qreal Angle2() const;
+    qreal KAsm1() const;
+    void SetKAsm1(const qreal& value);
+    qreal KAsm2() const;
+    void SetKAsm2(const qreal& value);
+
 protected:
     QSharedDataPointer<VFSplinePointData> d;
 };
@@ -101,45 +102,54 @@ Q_DECLARE_TYPEINFO(VFSplinePoint, Q_MOVABLE_TYPE);
 class VSplinePointData;
 
 /**
- * @brief The VSplinePoint class keep information about point in spline path. Each point have two angles and two
- * lengths. Point represent at the same time first and last point of a spline.
+ * @brief The VSplinePoint class keep information about point in spline path. Each point have two
+ * angles and two lengths. Point represent at the same time first and last point of a spline.
  */
 class VSplinePoint
 {
 public:
     VSplinePoint();
-    VSplinePoint(const VPointF &pSpline, qreal angle1, const QString &angle1F, qreal angle2, const QString &angle2F,
-                 qreal length1, const QString &length1F, qreal length2, const QString &length2F);
-    VSplinePoint(const VSplinePoint &point);
+    VSplinePoint(
+        const VPointF& pSpline,
+        qreal angle1,
+        const QString& angle1F,
+        qreal angle2,
+        const QString& angle2F,
+        qreal length1,
+        const QString& length1F,
+        qreal length2,
+        const QString& length2F);
+    VSplinePoint(const VSplinePoint& point);
     ~VSplinePoint();
 
-    VSplinePoint &operator=(const VSplinePoint &point);
+    VSplinePoint& operator=(const VSplinePoint& point);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VSplinePoint &operator=(VSplinePoint &&point) Q_DECL_NOTHROW;
+    VSplinePoint& operator=(VSplinePoint&& point) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VSplinePoint &point) Q_DECL_NOTHROW;
+    void Swap(VSplinePoint& point) Q_DECL_NOTHROW;
 
     VPointF P() const;
-    void    SetP(const VPointF &value);
+    void SetP(const VPointF& value);
 
-    qreal   Angle1() const;
+    qreal Angle1() const;
     QString Angle1Formula() const;
-    void    SetAngle1(const qreal &value, const QString &angle1F);
+    void SetAngle1(const qreal& value, const QString& angle1F);
 
-    qreal   Angle2() const;
+    qreal Angle2() const;
     QString Angle2Formula() const;
-    void    SetAngle2(const qreal &value, const QString &angle2F);
+    void SetAngle2(const qreal& value, const QString& angle2F);
 
-    qreal   Length1() const;
+    qreal Length1() const;
     QString Length1Formula() const;
-    void    SetLength1(const qreal &value, const QString &length1F);
+    void SetLength1(const qreal& value, const QString& length1F);
 
-    qreal   Length2() const;
+    qreal Length2() const;
     QString Length2Formula() const;
-    void    SetLength2(const qreal &value, const QString &length2F);
+    void SetLength2(const qreal& value, const QString& length2F);
 
-    bool    IsMovable() const;
+    bool IsMovable() const;
+
 protected:
     QSharedDataPointer<VSplinePointData> d;
 };
@@ -147,4 +157,4 @@ protected:
 Q_DECLARE_METATYPE(VSplinePoint)
 Q_DECLARE_TYPEINFO(VSplinePoint, Q_MOVABLE_TYPE);
 
-#endif // VSPLINEPOINT_H
+#endif   // VSPLINEPOINT_H

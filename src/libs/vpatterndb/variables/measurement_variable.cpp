@@ -60,16 +60,22 @@
 #include <QtDebug>
 
 #include "../ifc/ifcdef.h"
-#include "vvariable.h"
 #include "measurement_variable_p.h"
+#include "vvariable.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-MeasurementVariable &MeasurementVariable::operator=(MeasurementVariable &&m) Q_DECL_NOTHROW
-{ Swap(m); return *this; }
+MeasurementVariable& MeasurementVariable::operator=(MeasurementVariable&& m) Q_DECL_NOTHROW
+{
+    Swap(m);
+    return *this;
+}
 #endif
 
-void MeasurementVariable::Swap(MeasurementVariable &m) Q_DECL_NOTHROW
-{ VVariable::Swap(m); std::swap(d, m.d); }
+void MeasurementVariable::Swap(MeasurementVariable& m) Q_DECL_NOTHROW
+{
+    VVariable::Swap(m);
+    std::swap(d, m.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -82,11 +88,20 @@ void MeasurementVariable::Swap(MeasurementVariable &m) Q_DECL_NOTHROW
  * @param description measurement full description
  * @param tagName measurement's tag name in file
  */
-MeasurementVariable::MeasurementVariable(quint32 index, const QString &name, qreal baseSize, qreal baseHeight, const qreal &base,
-                           const qreal &ksize, const qreal &kheight, const QString &gui_text,
-                           const QString &description, const QString &tagName)
+MeasurementVariable::MeasurementVariable(
+    quint32 index,
+    const QString& name,
+    qreal baseSize,
+    qreal baseHeight,
+    const qreal& base,
+    const qreal& ksize,
+    const qreal& kheight,
+    const QString& gui_text,
+    const QString& description,
+    const QString& tagName)
     : VVariable(name, description)
-    , d(new MeasurementVariableData(index, gui_text, tagName, baseSize, baseHeight, base, ksize, kheight))
+    , d(new MeasurementVariableData(
+          index, gui_text, tagName, baseSize, baseHeight, base, ksize, kheight))
 {
     SetType(VarType::Measurement);
     VInternalVariable::SetValue(d->base);
@@ -101,9 +116,16 @@ MeasurementVariable::MeasurementVariable(quint32 index, const QString &name, qre
  * @param description measurement full description
  * @param tagName measurement's tag name in file
  */
-MeasurementVariable::MeasurementVariable(VContainer *data, quint32 index, const QString &name, const qreal &base,
-                           const QString &formula, bool ok, const QString &gui_text, const QString &description,
-                           const QString &tagName)
+MeasurementVariable::MeasurementVariable(
+    VContainer* data,
+    quint32 index,
+    const QString& name,
+    const qreal& base,
+    const QString& formula,
+    bool ok,
+    const QString& gui_text,
+    const QString& description,
+    const QString& tagName)
     : VVariable(name, description)
     , d(new MeasurementVariableData(data, index, formula, ok, gui_text, tagName, base))
 {
@@ -112,16 +134,15 @@ MeasurementVariable::MeasurementVariable(VContainer *data, quint32 index, const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MeasurementVariable::MeasurementVariable(const MeasurementVariable &m)
+MeasurementVariable::MeasurementVariable(const MeasurementVariable& m)
     : VVariable(m)
     , d(m.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-MeasurementVariable &MeasurementVariable::operator=(const MeasurementVariable &m)
+MeasurementVariable& MeasurementVariable::operator=(const MeasurementVariable& m)
 {
-    if ( &m == this )
-    {
+    if (&m == this) {
         return *this;
     }
     VVariable::operator=(m);
@@ -130,8 +151,7 @@ MeasurementVariable &MeasurementVariable::operator=(const MeasurementVariable &m
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MeasurementVariable::~MeasurementVariable()
-{}
+MeasurementVariable::~MeasurementVariable() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 QStringList MeasurementVariable::ListHeights(QMap<GHeights, bool> heights, Unit patternUnit)
@@ -139,17 +159,14 @@ QStringList MeasurementVariable::ListHeights(QMap<GHeights, bool> heights, Unit 
     QStringList list;
 
     QMap<GHeights, bool>::const_iterator i = heights.constBegin();
-    while (i != heights.constEnd())
-    {
-        if (i.value() && i.key() != GHeights::ALL)
-        {
+    while (i != heights.constEnd()) {
+        if (i.value() && i.key() != GHeights::ALL) {
             ListValue(list, static_cast<int>(i.key()), patternUnit);
         }
         ++i;
     }
 
-    if (list.isEmpty())
-    {
+    if (list.isEmpty()) {
         list = MeasurementVariable::WholeListHeights(patternUnit);
     }
     return list;
@@ -161,17 +178,14 @@ QStringList MeasurementVariable::ListSizes(QMap<GSizes, bool> sizes, Unit patter
     QStringList list;
 
     QMap<GSizes, bool>::const_iterator i = sizes.constBegin();
-    while (i != sizes.constEnd())
-    {
-        if (i.value() && i.key() != GSizes::ALL)
-        {
+    while (i != sizes.constEnd()) {
+        if (i.value() && i.key() != GSizes::ALL) {
             ListValue(list, static_cast<int>(i.key()), patternUnit);
         }
         ++i;
     }
 
-    if (list.isEmpty())
-    {
+    if (list.isEmpty()) {
         list = MeasurementVariable::WholeListSizes(patternUnit);
     }
     return list;
@@ -182,8 +196,8 @@ QStringList MeasurementVariable::WholeListHeights(Unit patternUnit)
 {
     QStringList list;
 
-    for (int i = static_cast<int>(GHeights::H50); i<= static_cast<int>(GHeights::H200); i = i+heightStep)
-    {
+    for (int i = static_cast<int>(GHeights::H50); i <= static_cast<int>(GHeights::H200);
+         i = i + heightStep) {
         ListValue(list, i, patternUnit);
     }
 
@@ -195,38 +209,32 @@ QStringList MeasurementVariable::WholeListSizes(Unit patternUnit)
 {
     QStringList list;
 
-    for (int i = static_cast<int>(GSizes::S22); i<= static_cast<int>(GSizes::S72); i = i+sizeStep)
-    {
-       ListValue(list, i, patternUnit);
+    for (int i = static_cast<int>(GSizes::S22); i <= static_cast<int>(GSizes::S72);
+         i = i + sizeStep) {
+        ListValue(list, i, patternUnit);
     }
 
     return list;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MeasurementVariable::IsGradationSizeValid(const QString &size)
+bool MeasurementVariable::IsGradationSizeValid(const QString& size)
 {
-    if (not size.isEmpty())
-    {
+    if (not size.isEmpty()) {
         const QStringList sizes = MeasurementVariable::WholeListSizes(Unit::Cm);
         return sizes.contains(size);
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MeasurementVariable::IsGradationHeightValid(const QString &height)
+bool MeasurementVariable::IsGradationHeightValid(const QString& height)
 {
-    if (not height.isEmpty())
-    {
+    if (not height.isEmpty()) {
         const QStringList heights = MeasurementVariable::WholeListHeights(Unit::Cm);
         return heights.contains(height);
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
@@ -234,13 +242,11 @@ bool MeasurementVariable::IsGradationHeightValid(const QString &height)
 //---------------------------------------------------------------------------------------------------------------------
 qreal MeasurementVariable::CalcValue() const
 {
-    if (d->currentUnit == nullptr || d->currentSize == nullptr || d->currentHeight == nullptr)
-    {
+    if (d->currentUnit == nullptr || d->currentSize == nullptr || d->currentHeight == nullptr) {
         return VInternalVariable::GetValue();
     }
 
-    if (*d->currentUnit == Unit::Inch)
-    {
+    if (*d->currentUnit == Unit::Inch) {
         qWarning("Gradation doesn't support inches");
         return 0;
     }
@@ -249,13 +255,13 @@ qreal MeasurementVariable::CalcValue() const
     const qreal heightIncrement = UnitConvertor(6.0, Unit::Cm, *d->currentUnit);
 
     // Formula for calculation gradation
-    const qreal k_size    = ( *d->currentSize - d->baseSize ) / sizeIncrement;
-    const qreal k_height  = ( *d->currentHeight - d->baseHeight ) / heightIncrement;
+    const qreal k_size = (*d->currentSize - d->baseSize) / sizeIncrement;
+    const qreal k_height = (*d->currentHeight - d->baseHeight) / heightIncrement;
     return d->base + k_size * d->ksize + k_height * d->kheight;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MeasurementVariable::ListValue(QStringList &list, qreal value, Unit patternUnit)
+void MeasurementVariable::ListValue(QStringList& list, qreal value, Unit patternUnit)
 {
     const qreal val = UnitConvertor(value, Unit::Cm, patternUnit);
     const QString strVal = QString("%1").arg(val);
@@ -267,46 +273,25 @@ void MeasurementVariable::ListValue(QStringList &list, qreal value, Unit pattern
  * @brief getGuiText measurement name for tooltip
  * @return measurement name
  */
-QString MeasurementVariable::getGuiText() const
-{
-    return d->gui_text;
-}
+QString MeasurementVariable::getGuiText() const { return d->gui_text; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString MeasurementVariable::TagName() const
-{
-    return d->_tagName;
-}
+QString MeasurementVariable::TagName() const { return d->_tagName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MeasurementVariable::setTagName(const QString &tagName)
-{
-    d->_tagName = tagName;
-}
+void MeasurementVariable::setTagName(const QString& tagName) { d->_tagName = tagName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString MeasurementVariable::GetFormula() const
-{
-    return d->formula;
-}
+QString MeasurementVariable::GetFormula() const { return d->formula; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MeasurementVariable::isCustom() const
-{
-    return GetName().indexOf(CustomMSign) == 0;
-}
+bool MeasurementVariable::isCustom() const { return GetName().indexOf(CustomMSign) == 0; }
 
 //---------------------------------------------------------------------------------------------------------------------
-int MeasurementVariable::Index() const
-{
-    return static_cast<int>(d->index);
-}
+int MeasurementVariable::Index() const { return static_cast<int>(d->index); }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MeasurementVariable::IsFormulaOk() const
-{
-    return d->formulaOk;
-}
+bool MeasurementVariable::IsFormulaOk() const { return d->formulaOk; }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool MeasurementVariable::isNotUsed() const
@@ -315,88 +300,55 @@ bool MeasurementVariable::isNotUsed() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal MeasurementVariable::GetValue() const
-{
-    return CalcValue();
-}
+qreal MeasurementVariable::GetValue() const { return CalcValue(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal *MeasurementVariable::GetValue()
+qreal* MeasurementVariable::GetValue()
 {
     VInternalVariable::SetValue(CalcValue());
     return VInternalVariable::GetValue();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VContainer *MeasurementVariable::GetData()
-{
-    return &d->data;
-}
+VContainer* MeasurementVariable::GetData() { return &d->data; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MeasurementVariable::setSize(qreal *size)
-{
-    d->currentSize = size;
-}
+void MeasurementVariable::setSize(qreal* size) { d->currentSize = size; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MeasurementVariable::setHeight(qreal *height)
-{
-    d->currentHeight = height;
-}
+void MeasurementVariable::setHeight(qreal* height) { d->currentHeight = height; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MeasurementVariable::SetUnit(const Unit *unit)
-{
-    d->currentUnit = unit;
-}
+void MeasurementVariable::SetUnit(const Unit* unit) { d->currentUnit = unit; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetBase return value in base size and height
  * @return value
  */
-qreal MeasurementVariable::GetBase() const
-{
-    return d->base;
-}
+qreal MeasurementVariable::GetBase() const { return d->base; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MeasurementVariable::SetBase(const qreal &value)
-{
-    d->base = value;
-}
+void MeasurementVariable::SetBase(const qreal& value) { d->base = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetKsize return increment in sizes
  * @return increment
  */
-qreal MeasurementVariable::GetKsize() const
-{
-    return d->ksize;
-}
+qreal MeasurementVariable::GetKsize() const { return d->ksize; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void MeasurementVariable::SetKsize(const qreal &value)
-{
-    d->ksize = value;
-}
+void MeasurementVariable::SetKsize(const qreal& value) { d->ksize = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetKheight return increment in heights
  * @return increment
  */
-qreal MeasurementVariable::GetKheight() const
-{
-    return d->kheight;
-}
+qreal MeasurementVariable::GetKheight() const { return d->kheight; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void MeasurementVariable::SetKheight(const qreal &value)
-{
-    d->kheight = value;
-}
+void MeasurementVariable::SetKheight(const qreal& value) { d->kheight = value; }

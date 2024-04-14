@@ -58,26 +58,29 @@
 #include <QRectF>
 #include <QTransform>
 
+#include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
 #include "../vmisc/vmath.h"
-#include "../ifc/ifcdef.h"
 #include "vgobject_p.h"
 
-const double VGObject::accuracyPointOnLine = (0.1555/*mm*/ / 25.4) * 96.0;
+const double VGObject::accuracyPointOnLine = (0.1555 /*mm*/ / 25.4) * 96.0;
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VGObject &VGObject::operator=(VGObject &&obj) Q_DECL_NOTHROW { Swap(obj); return *this; }
+VGObject& VGObject::operator=(VGObject&& obj) Q_DECL_NOTHROW
+{
+    Swap(obj);
+    return *this;
+}
 #endif
 
-void VGObject::Swap(VGObject &obj) Q_DECL_NOTHROW
-{ std::swap(d, obj.d); }
+void VGObject::Swap(VGObject& obj) Q_DECL_NOTHROW { std::swap(d, obj.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VGObject default constructor.
  */
 VGObject::VGObject()
-    :d(new VGObjectData)
+    : d(new VGObjectData)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -87,8 +90,8 @@ VGObject::VGObject()
  * @param idObject id parent object.
  * @param mode mode creation. Used in modeling mode.
  */
-VGObject::VGObject(const GOType &type, const quint32 &idObject, const Draw &mode)
-    :d(new VGObjectData(type, idObject, mode))
+VGObject::VGObject(const GOType& type, const quint32& idObject, const Draw& mode)
+    : d(new VGObjectData(type, idObject, mode))
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -96,8 +99,8 @@ VGObject::VGObject(const GOType &type, const quint32 &idObject, const Draw &mode
  * @brief VGObject copy constructor.
  * @param obj object.
  */
-VGObject::VGObject(const VGObject &obj)
-    :d (obj.d)
+VGObject::VGObject(const VGObject& obj)
+    : d(obj.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -106,10 +109,9 @@ VGObject::VGObject(const VGObject &obj)
  * @param obj object
  * @return object
  */
-VGObject &VGObject::operator=(const VGObject &obj)
+VGObject& VGObject::operator=(const VGObject& obj)
 {
-    if ( &obj == this )
-    {
+    if (&obj == this) {
         return *this;
     }
     d = obj.d;
@@ -117,148 +119,113 @@ VGObject &VGObject::operator=(const VGObject &obj)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VGObject::~VGObject()
-{}
+VGObject::~VGObject() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getIdObject return parent id.
  * @return parent id or 0 if object don't have parent.
  */
-quint32 VGObject::getIdObject() const
-{
-    return d->idObject;
-}
+quint32 VGObject::getIdObject() const { return d->idObject; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setIdObject set parent id.
  * @param value parent id.
  */
-void VGObject::setIdObject(const quint32 &value)
-{
-    d->idObject = value;
-}
+void VGObject::setIdObject(const quint32& value) { d->idObject = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief name return name graphical object.
  * @return name
  */
-QString VGObject::name() const
-{
-    return d->_name;
-}
+QString VGObject::name() const { return d->_name; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setName set name graphical object.
  * @param name name graphical object.
  */
-void VGObject::setName(const QString &name)
-{
-    d->_name = name;
-}
+void VGObject::setName(const QString& name) { d->_name = name; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getMode return mode creation.
  * @return mode.
  */
-Draw VGObject::getMode() const
-{
-    return d->mode;
-}
+Draw VGObject::getMode() const { return d->mode; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setMode set mode creation.
  * @param value mode.
  */
-void VGObject::setMode(const Draw &value)
-{
-    d->mode = value;
-}
+void VGObject::setMode(const Draw& value) { d->mode = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getType return object type.
  * @return type.
  */
-GOType VGObject::getType() const
-{
-    return d->type;
-}
+GOType VGObject::getType() const { return d->type; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void VGObject::setType(const GOType &type)
-{
-    d->type = type;
-}
+void VGObject::setType(const GOType& type) { d->type = type; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief id return id object.
  * @return id
  */
-quint32 VGObject::id() const
-{
-    return d->_id;
-}
+quint32 VGObject::id() const { return d->_id; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setId set id object.
  * @param id id.
  */
-void VGObject::setId(const quint32 &id)
-{
-    d->_id = id;
-}
+void VGObject::setId(const quint32& id) { d->_id = id; }
 
 //---------------------------------------------------------------------------------------------------------------------
 quint32 VGObject::getIdTool() const
 {
-    if (d->mode == Draw::Calculation)
-    {
-        if (d->idObject != NULL_ID)
-        {
+    if (d->mode == Draw::Calculation) {
+        if (d->idObject != NULL_ID) {
             return d->idObject;
-        }
-        else
-        {
+        } else {
             return d->_id;
         }
-    }
-    else
-    {
+    } else {
         return d->_id;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QLineF VGObject::BuildLine(const QPointF &p1, const qreal &length, const qreal &angle)
+QLineF VGObject::BuildLine(const QPointF& p1, const qreal& length, const qreal& angle)
 {
     QLineF line = QLineF();
     line.setP1(p1);
-    line.setAngle(angle);// First set angle then length. Length can have negative value.
+    line.setAngle(angle);   // First set angle then length. Length can have negative value.
     line.setLength(length);
     return line;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VGObject::BuildRay(const QPointF &firstPoint, const qreal &angle, const QRectF &scRect)
+QPointF VGObject::BuildRay(const QPointF& firstPoint, const qreal& angle, const QRectF& scRect)
 {
     QRectF rect = scRect;
-    if (rect.isValid() == false)
-    {
+    if (rect.isValid() == false) {
         rect = QRectF(0, 0, 1200, 700);
     }
-    if (rect.contains(firstPoint) == false)
-    {
+    if (rect.contains(firstPoint) == false) {
         // If point outside of scene rect create one around point and unite two rects.
-        QRectF rectangle(firstPoint.x()-rect.width()/2, firstPoint.y()-rect.height()/2, rect.width(), rect.height());
+        QRectF rectangle(
+            firstPoint.x() - rect.width() / 2,
+            firstPoint.y() - rect.height() / 2,
+            rect.width(),
+            rect.height());
         rect = rect.united(rectangle);
     }
     const qreal diagonal = qSqrt(pow(rect.height(), 2) + pow(rect.width(), 2));
@@ -268,38 +235,37 @@ QPointF VGObject::BuildRay(const QPointF &firstPoint, const qreal &angle, const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QLineF VGObject::BuildAxis(const QPointF &p, const qreal &angle, const QRectF &scRect)
+QLineF VGObject::BuildAxis(const QPointF& p, const qreal& angle, const QRectF& scRect)
 {
-    const QPointF endP1 = BuildRay(p, angle+180, scRect);
+    const QPointF endP1 = BuildRay(p, angle + 180, scRect);
     const QPointF endP2 = BuildRay(p, angle, scRect);
     return QLineF(endP1, endP2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QLineF VGObject::BuildAxis(const QPointF &p1, const QPointF &p2, const QRectF &scRect)
+QLineF VGObject::BuildAxis(const QPointF& p1, const QPointF& p2, const QRectF& scRect)
 {
     QLineF line(p1, p2);
     return BuildAxis(p1, line.angle(), scRect);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VGObject::ContactPoints(const QPointF &p, const QPointF &center, qreal radius, QPointF &p1, QPointF &p2)
+int VGObject::ContactPoints(
+    const QPointF& p, const QPointF& center, qreal radius, QPointF& p1, QPointF& p2)
 {
     const int flag = PointInCircle(p, center, radius);
 
-    if (flag == 0)
-    {
+    if (flag == 0) {
         return 0;
     }
 
-    if (flag == 1)
-    {
+    if (flag == 1) {
         p1 = p;
         return 1;
     }
 
-    const double d = QLineF (p, center).length();
-    const double k = sqrt (d * d - radius * radius);
+    const double d = QLineF(p, center).length();
+    const double k = sqrt(d * d - radius * radius);
     return IntersectionCircles(p, k, center, radius, p1, p2);
 }
 
@@ -310,62 +276,54 @@ int VGObject::ContactPoints(const QPointF &p, const QPointF &center, qreal radiu
  * @param line line.
  * @return point intersection.
  */
-QPointF VGObject::LineIntersectRect(const QRectF &rec, const QLineF &line)
+QPointF VGObject::LineIntersectRect(const QRectF& rec, const QLineF& line)
 {
     qreal x1, y1, x2, y2;
     rec.getCoords(&x1, &y1, &x2, &y2);
     QPointF point;
     QLineF::IntersectType type = line.intersects(QLineF(QPointF(x1, y1), QPointF(x1, y2)), &point);
-    if ( type == QLineF::BoundedIntersection )
-    {
+    if (type == QLineF::BoundedIntersection) {
         return point;
     }
     type = line.intersects(QLineF(QPointF(x1, y1), QPointF(x2, y1)), &point);
-    if ( type == QLineF::BoundedIntersection )
-    {
+    if (type == QLineF::BoundedIntersection) {
         return point;
     }
     type = line.intersects(QLineF(QPointF(x1, y2), QPointF(x2, y2)), &point);
-    if ( type == QLineF::BoundedIntersection )
-    {
+    if (type == QLineF::BoundedIntersection) {
         return point;
     }
     type = line.intersects(QLineF(QPointF(x2, y1), QPointF(x2, y2)), &point);
-    if ( type == QLineF::BoundedIntersection )
-    {
+    if (type == QLineF::BoundedIntersection) {
         return point;
     }
     return point;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VGObject::IntersectionCircles(const QPointF &c1, double r1, const QPointF &c2, double r2, QPointF &p1, QPointF &p2)
+int VGObject::IntersectionCircles(
+    const QPointF& c1, double r1, const QPointF& c2, double r2, QPointF& p1, QPointF& p2)
 {
     if (VFuzzyComparePossibleNulls(c1.x(), c2.x()) && VFuzzyComparePossibleNulls(c1.y(), c2.y())
-            && VFuzzyComparePossibleNulls(r1, r2))
-    {
-        return 3;// Circles are equal
+        && VFuzzyComparePossibleNulls(r1, r2)) {
+        return 3;   // Circles are equal
     }
-    const double a = - 2.0 * (c2.x() - c1.x());
-    const double b = - 2.0 * (c2.y() - c1.y());
-    const double c = (c2.x() - c1.x())* (c2.x() - c1.x()) + (c2.y() - c1.y()) * (c2.y() - c1.y()) + r1 * r1 - r2 * r2;
+    const double a = -2.0 * (c2.x() - c1.x());
+    const double b = -2.0 * (c2.y() - c1.y());
+    const double c = (c2.x() - c1.x()) * (c2.x() - c1.x()) + (c2.y() - c1.y()) * (c2.y() - c1.y())
+                   + r1 * r1 - r2 * r2;
 
-    const double x0 = -a*c/(a*a+b*b);
-    const double y0 = -b*c/(a*a+b*b);
+    const double x0 = -a * c / (a * a + b * b);
+    const double y0 = -b * c / (a * a + b * b);
 
-    if (c*c > r1*r1*(a*a+b*b))
-    {
+    if (c * c > r1 * r1 * (a * a + b * b)) {
         return 0;
-    }
-    else if (VFuzzyComparePossibleNulls(c*c, r1*r1*(a*a+b*b)))
-    {
-        p1 = QPointF(x0 + c1.x(), y0  + c1.y());
+    } else if (VFuzzyComparePossibleNulls(c * c, r1 * r1 * (a * a + b * b))) {
+        p1 = QPointF(x0 + c1.x(), y0 + c1.y());
         return 1;
-    }
-    else
-    {
-        const double d = r1*r1 - c*c/(a*a+b*b);
-        const double mult = sqrt (d / (a*a+b*b));
+    } else {
+        const double d = r1 * r1 - c * c / (a * a + b * b);
+        const double mult = sqrt(d / (a * a + b * b));
 
         const double ax = x0 + b * mult;
         const double bx = x0 - b * mult;
@@ -388,42 +346,36 @@ int VGObject::IntersectionCircles(const QPointF &c1, double r1, const QPointF &c
  * @param p2 second intersection point.
  * @return 0 - intersection doesn't exist, 1 - one intersection point, 2 - two intersection points.
  */
-qint32 VGObject::LineIntersectCircle(const QPointF &center, qreal radius, const QLineF &line, QPointF &p1, QPointF &p2)
+qint32 VGObject::LineIntersectCircle(
+    const QPointF& center, qreal radius, const QLineF& line, QPointF& p1, QPointF& p2)
 {
-    if (qFuzzyIsNull(line.length()))
-    {
+    if (qFuzzyIsNull(line.length())) {
         return 0;
     }
 
-    //coefficient for equation of segment
+    // coefficient for equation of segment
     qreal a = 0, b = 0, c = 0;
     LineCoefficients(line, &a, &b, &c);
     // projection center of circle on to line
-    const QPointF p = ClosestPoint (line, center);
+    const QPointF p = ClosestPoint(line, center);
     // how many solutions?
     qint32 flag = 0;
-    const qreal d = QLineF (center, p).length();
-    if (VFuzzyComparePossibleNulls(d, radius))
-    {
+    const qreal d = QLineF(center, p).length();
+    if (VFuzzyComparePossibleNulls(d, radius)) {
         flag = 1;
-    }
-    else
-    {
-        if (radius > d)
-        {
+    } else {
+        if (radius > d) {
             flag = 2;
-        }
-        else
-        {
+        } else {
             return 0;
         }
     }
     // find distance from projection to points of intersection
-    const qreal k = qSqrt (qAbs(radius * radius - d * d));
-    const qreal t = QLineF (QPointF (0, 0), QPointF (b, - a)).length();
+    const qreal k = qSqrt(qAbs(radius * radius - d * d));
+    const qreal t = QLineF(QPointF(0, 0), QPointF(b, -a)).length();
     // add to projection a vectors aimed to points of intersection
-    p1 = addVector (p, QPointF (0, 0), QPointF (- b, a), k / t);
-    p2 = addVector (p, QPointF (0, 0), QPointF (b, - a), k / t);
+    p1 = addVector(p, QPointF(0, 0), QPointF(-b, a), k / t);
+    p2 = addVector(p, QPointF(0, 0), QPointF(b, -a), k / t);
     return flag;
 }
 
@@ -433,29 +385,26 @@ qint32 VGObject::LineIntersectCircle(const QPointF &center, qreal radius, const 
  * @param line line.
  * @return point on line or extended line if origin size too small.
  */
-QPointF VGObject::ClosestPoint(const QLineF &line, const QPointF &point)
+QPointF VGObject::ClosestPoint(const QLineF& line, const QPointF& point)
 {
     qreal a = 0, b = 0, c = 0;
     LineCoefficients(line, &a, &b, &c);
     qreal x = point.x() + a;
     qreal y = b + point.y();
-    QLineF lin (point, QPointF(x, y));
+    QLineF lin(point, QPointF(x, y));
     QPointF p;
     QLineF::IntersectType intersect = line.intersects(lin, &p);
-    if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection)
-    {
+    if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection) {
         return p;
-    }
-    else
-    {
+    } else {
         return point;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VGObject::addVector(const QPointF &p, const QPointF &p1, const QPointF &p2, qreal k)
+QPointF VGObject::addVector(const QPointF& p, const QPointF& p1, const QPointF& p2, qreal k)
 {
-    return QPointF (p.x() + (p2.x() - p1.x()) * k, p.y() + (p2.y() - p1.y()) * k);
+    return QPointF(p.x() + (p2.x() - p1.x()) * k, p.y() + (p2.y() - p1.y()) * k);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -466,13 +415,13 @@ QPointF VGObject::addVector(const QPointF &p, const QPointF &p1, const QPointF &
  * @param b b value
  * @param c c value
  */
-void VGObject::LineCoefficients(const QLineF &line, qreal *a, qreal *b, qreal *c)
+void VGObject::LineCoefficients(const QLineF& line, qreal* a, qreal* b, qreal* c)
 {
-    //coefficient for equation of segment
+    // coefficient for equation of segment
     QPointF p1 = line.p1();
     *a = line.p2().y() - p1.y();
     *b = p1.x() - line.p2().x();
-    *c = - *a * p1.x() - *b * p1.y();
+    *c = -*a * p1.x() - *b * p1.y();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -481,22 +430,20 @@ void VGObject::LineCoefficients(const QLineF &line, qreal *a, qreal *b, qreal *c
  *
  * Original idea http://www.sunshine2k.de/coding/java/PointOnLine/PointOnLine.html
  */
-bool VGObject::IsPointOnLineSegment(const QPointF &t, const QPointF &p1, const QPointF &p2)
+bool VGObject::IsPointOnLineSegment(const QPointF& t, const QPointF& p1, const QPointF& p2)
 {
     // The test point must lie inside the bounding box spanned by the two line points.
-    if (not ( (p1.x() <= t.x() && t.x() <= p2.x()) || (p2.x() <= t.x() && t.x() <= p1.x()) ))
-    {
-        if (not (qAbs(p1.x() - t.x()) <= accuracyPointOnLine) && not (qAbs(p2.x() - t.x()) <= accuracyPointOnLine))
-        {
+    if (not((p1.x() <= t.x() && t.x() <= p2.x()) || (p2.x() <= t.x() && t.x() <= p1.x()))) {
+        if (not(qAbs(p1.x() - t.x()) <= accuracyPointOnLine)
+            && not(qAbs(p2.x() - t.x()) <= accuracyPointOnLine)) {
             // test point not in x-range
             return false;
         }
     }
 
-    if (not ( (p1.y() <= t.y() && t.y() <= p2.y()) || (p2.y() <= t.y() && t.y() <= p1.y()) ))
-    {
-        if (not (qAbs(p1.y() - t.y()) <= accuracyPointOnLine) && not (qAbs(p2.y() - t.y()) <= accuracyPointOnLine))
-        {
+    if (not((p1.y() <= t.y() && t.y() <= p2.y()) || (p2.y() <= t.y() && t.y() <= p1.y()))) {
+        if (not(qAbs(p1.y() - t.y()) <= accuracyPointOnLine)
+            && not(qAbs(p2.y() - t.y()) <= accuracyPointOnLine)) {
             // test point not in y-range
             return false;
         }
@@ -513,7 +460,7 @@ bool VGObject::IsPointOnLineSegment(const QPointF &t, const QPointF &p1, const Q
  *  The pdp is zero only if the t lies on the line e1 = vector from p1 to p2.
  * @return true if point is on line
  */
-bool VGObject::IsPointOnLineviaPDP(const QPointF &t, const QPointF &p1, const QPointF &p2)
+bool VGObject::IsPointOnLineviaPDP(const QPointF& t, const QPointF& p1, const QPointF& p2)
 {
     const double p = qAbs(PerpDotProduct(p1, p2, t));
     const double e = GetEpsilon(p1, p2);
@@ -524,10 +471,11 @@ bool VGObject::IsPointOnLineviaPDP(const QPointF &t, const QPointF &p1, const QP
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief PerpDotProduct Calculates the area of the parallelogram of the three points.
- * This is actually the same as the area of the triangle defined by the three points, multiplied by 2.
+ * This is actually the same as the area of the triangle defined by the three points, multiplied
+ * by 2.
  * @return 2 * triangleArea(a,b,c)
  */
-double VGObject::PerpDotProduct(const QPointF &p1, const QPointF &p2, const QPointF &t)
+double VGObject::PerpDotProduct(const QPointF& p1, const QPointF& p2, const QPointF& t)
 {
     return (p1.x() - t.x()) * (p2.y() - t.y()) - (p1.y() - t.y()) * (p2.x() - t.x());
 }
@@ -536,34 +484,33 @@ double VGObject::PerpDotProduct(const QPointF &p1, const QPointF &p2, const QPoi
 /**
  * @brief GetEpsilon solve the floating-point accuraccy problem.
  *
- * There is the floating-point accuraccy problem, so instead of checking against zero, some epsilon value has to be
- * used. Because the size of the pdp value depends on the length of the vectors, no static value can be used. One
- * approach is to compare the pdp/area value to the fraction of another area which also depends on the length of the
- * line e1=(p1, p2), e.g. the minimal area calucalted with PerpDotProduc() if point still not on the line. This distance
- * is controled by variable accuracyPointOnLine
+ * There is the floating-point accuraccy problem, so instead of checking against zero, some epsilon
+ * value has to be used. Because the size of the pdp value depends on the length of the vectors, no
+ * static value can be used. One approach is to compare the pdp/area value to the fraction of
+ * another area which also depends on the length of the line e1=(p1, p2), e.g. the minimal area
+ * calucalted with PerpDotProduc() if point still not on the line. This distance is controled by
+ * variable accuracyPointOnLine
  */
-double VGObject::GetEpsilon(const QPointF &p1, const QPointF &p2)
+double VGObject::GetEpsilon(const QPointF& p1, const QPointF& p2)
 {
     QLineF line(p1, p2);
     line.setAngle(line.angle() + 90);
-    line.setLength(accuracyPointOnLine); // less than accuracy means the same point
+    line.setLength(accuracyPointOnLine);   // less than accuracy means the same point
 
     return qAbs(PerpDotProduct(p1, p2, line.p2()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VGObject::PointInCircle(const QPointF &p, const QPointF &center, qreal radius)
+int VGObject::PointInCircle(const QPointF& p, const QPointF& center, qreal radius)
 {
-    const double d = QLineF (p, center).length();
-    if (VFuzzyComparePossibleNulls(radius, d))
-    {
-        return 1; // on circle
+    const double d = QLineF(p, center).length();
+    if (VFuzzyComparePossibleNulls(radius, d)) {
+        return 1;   // on circle
     }
-    if (radius > d)
-    {
-        return 0; // outside circle
+    if (radius > d) {
+        return 0;   // outside circle
     }
-    return 2; // inside circle
+    return 2;   // inside circle
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -574,30 +521,28 @@ int VGObject::PointInCircle(const QPointF &p, const QPointF &center, qreal radiu
  * @return length length of contour.
  */
 // cppcheck-suppress unusedFunction
-int VGObject::GetLengthContour(const QVector<QPointF> &contour, const QVector<QPointF> &newPoints)
+int VGObject::GetLengthContour(const QVector<QPointF>& contour, const QVector<QPointF>& newPoints)
 {
     qreal length = 0;
     QVector<QPointF> points;
     points << contour << newPoints;
-    for (qint32 i = 0; i < points.size()-1; ++i)
-    {
-        QLineF line(points.at(i), points.at(i+1));
+    for (qint32 i = 0; i < points.size() - 1; ++i) {
+        QLineF line(points.at(i), points.at(i + 1));
         length += line.length();
     }
     return qFloor(length);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QTransform VGObject::flipTransform(const QLineF &axis)
+QTransform VGObject::flipTransform(const QLineF& axis)
 {
     QTransform transform;
 
-    if (axis.isNull())
-    {
+    if (axis.isNull()) {
         return transform;
     }
 
-    const QLineF axisOX = QLineF(axis.x2(), axis.y2(), axis.x2() + 100, axis.y2()); // Ox axis
+    const QLineF axisOX = QLineF(axis.x2(), axis.y2(), axis.x2() + 100, axis.y2());   // Ox axis
 
     const qreal angle = axis.angleTo(axisOX);
     const QPointF p2 = axis.p2();
@@ -610,13 +555,13 @@ QTransform VGObject::flipTransform(const QLineF &axis)
 
     m.reset();
     m.translate(p2.x(), p2.y());
-    m.scale(m.m11(), m.m22()*-1);
+    m.scale(m.m11(), m.m22() * -1);
     m.translate(-p2.x(), -p2.y());
     transform *= m;
 
     m.reset();
     m.translate(p2.x(), p2.y());
-    m.rotate(-(360-angle));
+    m.rotate(-(360 - angle));
     m.translate(-p2.x(), -p2.y());
     transform *= m;
 

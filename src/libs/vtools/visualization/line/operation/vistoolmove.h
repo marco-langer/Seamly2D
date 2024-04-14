@@ -52,7 +52,6 @@
 #ifndef VISTOOLMOVE_H
 #define VISTOOLMOVE_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -61,6 +60,7 @@
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
@@ -70,49 +70,62 @@ class VisToolMove : public VisOperation
 {
     Q_OBJECT
 public:
-    explicit                 VisToolMove(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual                 ~VisToolMove();
+    explicit VisToolMove(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~VisToolMove();
 
-    virtual void             RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    QString                  Angle() const;
-    void                     SetAngle(const QString &expression);
+    QString Angle() const;
+    void SetAngle(const QString& expression);
 
-    QString                  Rotation() const;
-    void                     setRotation(const QString &expression);
+    QString Rotation() const;
+    void setRotation(const QString& expression);
 
-    QString                  Length() const;
-    qreal                    LengthValue() const;
-    void                     SetLength(const QString &expression);
+    QString Length() const;
+    qreal LengthValue() const;
+    void SetLength(const QString& expression);
 
-    void                     setOriginPointId(quint32 value);
+    void setOriginPointId(quint32 value);
 
-    virtual int              type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolMove)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolMove)
+    };
 
 private:
     Q_DISABLE_COPY(VisToolMove)
-    qreal                    angle;
-    qreal                    length;
-    qreal                    rotationAngle;
-    VScaledEllipse          *originPointItem;
-    VScaledEllipse          *rotationOriginPointItem;
-    VScaledEllipse          *rotationFinishPointItem;
-    ArrowedLineItem         *moveLineItem;
-    VScaledLine             *rotationLineItem;
-    QPointF                  m_origin;
-    QPointF                  m_rotationPoint;
+    qreal angle;
+    qreal length;
+    qreal rotationAngle;
+    VScaledEllipse* originPointItem;
+    VScaledEllipse* rotationOriginPointItem;
+    VScaledEllipse* rotationFinishPointItem;
+    ArrowedLineItem* moveLineItem;
+    VScaledLine* rotationLineItem;
+    QPointF m_origin;
+    QPointF m_rotationPoint;
 
     template <class Item>
-    QGraphicsPathItem       *AddOriginCurve(quint32 id, int &i);
+    QGraphicsPathItem* AddOriginCurve(quint32 id, int& i);
 
     template <class Item>
-    int                      AddDestinationCurve(qreal angle, qreal length, quint32 id, int i,
-                                                  qreal rotationAngle, const QPointF &rotationOrigin);
+    int AddDestinationCurve(
+        qreal angle,
+        qreal length,
+        quint32 id,
+        int i,
+        qreal rotationAngle,
+        const QPointF& rotationOrigin);
 
-    void                     createOriginObjects(int &iPoint, int &iCurve);
-    void                     createRotatedObjects(int &iPoint, int &iCurve, qreal length, qreal angle,
-                                                       qreal rotationAngle, const QPointF &rotationOrigin);
+    void createOriginObjects(int& iPoint, int& iCurve);
+    void createRotatedObjects(
+        int& iPoint,
+        int& iCurve,
+        qreal length,
+        qreal angle,
+        qreal rotationAngle,
+        const QPointF& rotationOrigin);
 };
 
-#endif // VISTOOLMOVE_H
+#endif   // VISTOOLMOVE_H

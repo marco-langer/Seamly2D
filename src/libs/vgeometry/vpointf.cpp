@@ -57,11 +57,18 @@
 #include <QTransform>
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VPointF &VPointF::operator=(VPointF &&point) Q_DECL_NOTHROW { Swap(point); return *this; }
+VPointF& VPointF::operator=(VPointF&& point) Q_DECL_NOTHROW
+{
+    Swap(point);
+    return *this;
+}
 #endif
 
-void VPointF::Swap(VPointF &point) Q_DECL_NOTHROW
-{ VGObject::Swap(point); std::swap(d, point.d); }
+void VPointF::Swap(VPointF& point) Q_DECL_NOTHROW
+{
+    VGObject::Swap(point);
+    std::swap(d, point.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -73,13 +80,13 @@ VPointF::VPointF()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF::VPointF(const VPointF &point)
+VPointF::VPointF(const VPointF& point)
     : VGObject(point)
     , d(point.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF::VPointF(const QPointF &point)
+VPointF::VPointF(const QPointF& point)
     : VGObject(VPointF())
     , d(new VPointFData(point))
 {}
@@ -93,7 +100,8 @@ VPointF::VPointF(const QPointF &point)
  * @param mx offset name respect to x
  * @param my offset name respect to y
  */
-VPointF::VPointF(qreal x, qreal y, const QString &name, qreal mx, qreal my, quint32 idObject, const Draw &mode)
+VPointF::VPointF(
+    qreal x, qreal y, const QString& name, qreal mx, qreal my, quint32 idObject, const Draw& mode)
     : VGObject(GOType::Point, idObject, mode)
     , d(new VPointFData(x, y, mx, my))
 {
@@ -108,7 +116,13 @@ VPointF::VPointF(qreal x, qreal y, const QString &name, qreal mx, qreal my, quin
  * @param mx offset name respect to x
  * @param my offset name respect to y
  */
-VPointF::VPointF(const QPointF &point, const QString &name, qreal mx, qreal my, quint32 idObject, const Draw &mode)
+VPointF::VPointF(
+    const QPointF& point,
+    const QString& name,
+    qreal mx,
+    qreal my,
+    quint32 idObject,
+    const Draw& mode)
     : VGObject(GOType::Point, idObject, mode)
     , d(new VPointFData(point, mx, my))
 {
@@ -116,8 +130,7 @@ VPointF::VPointF(const QPointF &point, const QString &name, qreal mx, qreal my, 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF::~VPointF()
-{}
+VPointF::~VPointF() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -125,10 +138,9 @@ VPointF::~VPointF()
  * @param point point
  * @return point
  */
-VPointF &VPointF::operator =(const VPointF &point)
+VPointF& VPointF::operator=(const VPointF& point)
 {
-    if ( &point == this )
-    {
+    if (&point == this) {
         return *this;
     }
     VGObject::operator=(point);
@@ -137,13 +149,10 @@ VPointF &VPointF::operator =(const VPointF &point)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF::operator QPointF() const
-{
-    return toQPointF();
-}
+VPointF::operator QPointF() const { return toQPointF(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VPointF::Rotate(const QPointF &originPoint, qreal degrees, const QString &prefix) const
+VPointF VPointF::Rotate(const QPointF& originPoint, qreal degrees, const QString& prefix) const
 {
     const QPointF newPoint = RotatePF(originPoint, toQPointF(), degrees);
     VPointF rotated(newPoint, name() + prefix, mx(), my());
@@ -152,7 +161,7 @@ VPointF VPointF::Rotate(const QPointF &originPoint, qreal degrees, const QString
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VPointF::Flip(const QLineF &axis, const QString &prefix) const
+VPointF VPointF::Flip(const QLineF& axis, const QString& prefix) const
 {
     const QPointF newPoint = FlipPF(axis, toQPointF());
     VPointF flipped(newPoint, name() + prefix, mx(), my());
@@ -161,7 +170,7 @@ VPointF VPointF::Flip(const QLineF &axis, const QString &prefix) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VPointF::Move(qreal length, qreal angle, const QString &prefix) const
+VPointF VPointF::Move(qreal length, qreal angle, const QString& prefix) const
 {
     const QPointF newPoint = MovePF(toQPointF(), length, angle);
     VPointF moved(newPoint, name() + prefix, mx(), my());
@@ -174,101 +183,68 @@ VPointF VPointF::Move(qreal length, qreal angle, const QString &prefix) const
  * @brief mx return offset name respect to x
  * @return offset
  */
-qreal VPointF::mx() const
-{
-    return d->_mx;
-}
+qreal VPointF::mx() const { return d->_mx; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief my return offset name respect to y
  * @return offset
  */
-qreal VPointF::my() const
-{
-    return d->_my;
-}
+qreal VPointF::my() const { return d->_my; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setMx set offset name respect to x
  * @param mx offset
  */
-void VPointF::setMx(qreal mx)
-{
-    d->_mx = mx;
-}
+void VPointF::setMx(qreal mx) { d->_mx = mx; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setMy set offset name respect to y
  * @param my offset
  */
-void VPointF::setMy(qreal my)
-{
-    d->_my = my;
-}
+void VPointF::setMy(qreal my) { d->_my = my; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VPointF::toQPointF() const
-{
-    return QPointF(d->_x, d->_y);
-}
+QPointF VPointF::toQPointF() const { return QPointF(d->_x, d->_y); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief x return x coordinate
  * @return value
  */
-qreal VPointF::x() const
-{
-    return d->_x;
-}
+qreal VPointF::x() const { return d->_x; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setX set x coordinate
  * @param value x coordinate
  */
-void VPointF::setX(const qreal &value)
-{
-    d->_x = value;
-}
+void VPointF::setX(const qreal& value) { d->_x = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief y return y coordinate
  * @return value
  */
-qreal VPointF::y() const
-{
-    return d->_y;
-}
+qreal VPointF::y() const { return d->_y; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setY set y coordinate
  * @param value y coordinate
  */
-void VPointF::setY(const qreal &value)
-{
-    d->_y = value;
-}
+void VPointF::setY(const qreal& value) { d->_y = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VPointF::isShowPointName() const
-{
-    return d->m_showPointName;
-}
+bool VPointF::isShowPointName() const { return d->m_showPointName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPointF::setShowPointName(bool show)
-{
-    d->m_showPointName = show;
-}
+void VPointF::setShowPointName(bool show) { d->m_showPointName = show; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VPointF::RotatePF(const QPointF &originPoint, const QPointF &point, qreal degrees)
+QPointF VPointF::RotatePF(const QPointF& originPoint, const QPointF& point, qreal degrees)
 {
     QLineF axis(originPoint, point);
     axis.setAngle(axis.angle() + degrees);
@@ -276,14 +252,14 @@ QPointF VPointF::RotatePF(const QPointF &originPoint, const QPointF &point, qrea
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VPointF::FlipPF(const QLineF &axis, const QPointF &point)
+QPointF VPointF::FlipPF(const QLineF& axis, const QPointF& point)
 {
     const QTransform transform = flipTransform(axis);
     return transform.map(point);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VPointF::MovePF(const QPointF &originPoint, qreal length, qreal angle)
+QPointF VPointF::MovePF(const QPointF& originPoint, qreal length, qreal angle)
 {
     QLineF line(originPoint.x(), originPoint.y(), originPoint.x() + length, originPoint.y());
     line.setAngle(angle);

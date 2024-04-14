@@ -57,13 +57,13 @@
 #include <QPainter>
 
 //---------------------------------------------------------------------------------------------------------------------
-NonScalingFillPathItem::NonScalingFillPathItem(QGraphicsItem *parent)
+NonScalingFillPathItem::NonScalingFillPathItem(QGraphicsItem* parent)
     : QGraphicsPathItem(parent)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-void NonScalingFillPathItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void NonScalingFillPathItem::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     /*
      * How to avoid transformation of QBrush fill
@@ -73,9 +73,9 @@ void NonScalingFillPathItem::paint(QPainter *painter, const QStyleOptionGraphics
      * Non Scaling QBrush fill style for qgraphicspathitem
      * http://www.qtcentre.org/archive/index.php/t-13950.html
      *
-     * You'll have to scale the brush down. The QStyleOptionGraphicsItem option passed in paint() will give you the
-     * transform being used, and you can set a transform on a QBrush. Put the two together and you can scale the brush
-     * inversely of the item.
+     * You'll have to scale the brush down. The QStyleOptionGraphicsItem option passed in paint()
+     * will give you the transform being used, and you can set a transform on a QBrush. Put the two
+     * together and you can scale the brush inversely of the item.
      */
     QBrush brush = this->brush();
     brush.setTransform(painter->combinedTransform().inverted());

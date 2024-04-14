@@ -27,36 +27,34 @@
 #include "vpropertymodel.h"
 #include "vpropertytreeview_p.h"
 
-VPE::VPropertyTreeView::VPropertyTreeView(QWidget *parent)
-    : QTreeView(parent), d_ptr(new VPropertyTreeViewPrivate())
+VPE::VPropertyTreeView::VPropertyTreeView(QWidget* parent)
+    : QTreeView(parent)
+    , d_ptr(new VPropertyTreeViewPrivate())
 {
     init();
 }
 
-VPE::VPropertyTreeView::VPropertyTreeView(VPropertyModel *model, QWidget *parent)
-    : QTreeView(parent), d_ptr(new VPropertyTreeViewPrivate())
+VPE::VPropertyTreeView::VPropertyTreeView(VPropertyModel* model, QWidget* parent)
+    : QTreeView(parent)
+    , d_ptr(new VPropertyTreeViewPrivate())
 {
     init();
 
-    if (model)
-    {
+    if (model) {
         setModel(model);
     }
 }
 
-VPE::VPropertyTreeView::VPropertyTreeView(VPropertyTreeViewPrivate *d, bool init_, QWidget *parent)
-    : QTreeView(parent), d_ptr(d)
+VPE::VPropertyTreeView::VPropertyTreeView(VPropertyTreeViewPrivate* d, bool init_, QWidget* parent)
+    : QTreeView(parent)
+    , d_ptr(d)
 {
-    if (init_)
-    {
+    if (init_) {
         init();
     }
 }
 
-VPE::VPropertyTreeView::~VPropertyTreeView()
-{
-    delete d_ptr;
-}
+VPE::VPropertyTreeView::~VPropertyTreeView() { delete d_ptr; }
 
 
 void VPE::VPropertyTreeView::setRowHeight(int height, bool add_to_standard)

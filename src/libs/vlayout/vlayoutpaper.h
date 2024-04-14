@@ -53,11 +53,11 @@
 #ifndef VLAYOUTPAPER_H
 #define VLAYOUTPAPER_H
 
-#include <qcompilerdetection.h>
 #include <QSharedDataPointer>
 #include <QTypeInfo>
 #include <QtGlobal>
 #include <atomic>
+#include <qcompilerdetection.h>
 
 #include "vlayoutdef.h"
 
@@ -67,64 +67,66 @@ class VLayoutPiece;
 class QGraphicsRectItem;
 class QRectF;
 class QGraphicsItem;
-template <typename T> class QList;
-template <typename T> class QVector;
+template <typename T>
+class QList;
+template <typename T>
+class QVector;
 
 class VLayoutPaper
 {
 public:
     VLayoutPaper();
     VLayoutPaper(int height, int width);
-    VLayoutPaper(const VLayoutPaper &paper);
+    VLayoutPaper(const VLayoutPaper& paper);
 
     ~VLayoutPaper();
 
-    VLayoutPaper &operator=(const VLayoutPaper &paper);
+    VLayoutPaper& operator=(const VLayoutPaper& paper);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VLayoutPaper &operator=(VLayoutPaper &&paper) Q_DECL_NOTHROW;
+    VLayoutPaper& operator=(VLayoutPaper&& paper) Q_DECL_NOTHROW;
 #endif
 
-	void    Swap(VLayoutPaper &paper) Q_DECL_NOTHROW;
+    void Swap(VLayoutPaper& paper) Q_DECL_NOTHROW;
 
-    int     GetHeight() const;
-    void    setHeight(int height);
+    int GetHeight() const;
+    void setHeight(int height);
 
-    int     GetWidth() const;
-    void    SetWidth(int width);
+    int GetWidth() const;
+    void SetWidth(int width);
 
-    qreal   GetLayoutWidth() const;
-    void    SetLayoutWidth(qreal width);
+    qreal GetLayoutWidth() const;
+    void SetLayoutWidth(qreal width);
 
     quint32 GetShift() const;
-    void    SetShift(quint32 shift);
+    void SetShift(quint32 shift);
 
-    bool    GetRotate() const;
-    void    SetRotate(bool value);
+    bool GetRotate() const;
+    void SetRotate(bool value);
 
-    int     GetRotationIncrease() const;
-    void    SetRotationIncrease(int value);
+    int GetRotationIncrease() const;
+    void SetRotationIncrease(int value);
 
-    bool    IsSaveLength() const;
-    void    SetSaveLength(bool value);
+    bool IsSaveLength() const;
+    void SetSaveLength(bool value);
 
-    void    SetPaperIndex(quint32 index);
+    void SetPaperIndex(quint32 index);
 
-    bool    arrangePiece(const VLayoutPiece &piece, std::atomic_bool &stop);
-    int     Count() const;
-    Q_REQUIRED_RESULT QGraphicsRectItem     *GetPaperItem(bool autoCrop, bool textAsPaths) const;
-    Q_REQUIRED_RESULT QList<QGraphicsItem *> getPieceItems(bool textAsPaths) const;
+    bool arrangePiece(const VLayoutPiece& piece, std::atomic_bool& stop);
+    int Count() const;
+    Q_REQUIRED_RESULT QGraphicsRectItem* GetPaperItem(bool autoCrop, bool textAsPaths) const;
+    Q_REQUIRED_RESULT QList<QGraphicsItem*> getPieceItems(bool textAsPaths) const;
 
     QVector<VLayoutPiece> getPieces() const;
-    void                  setPieces(const QList<VLayoutPiece>& pieces);
+    void setPieces(const QList<VLayoutPiece>& pieces);
 
-    QRectF                piecesBoundingRect() const;
+    QRectF piecesBoundingRect() const;
 
 private:
     QSharedDataPointer<VLayoutPaperData> d;
-    bool AddToSheet(const VLayoutPiece &piece, std::atomic_bool &stop);
-    bool SaveResult(const VBestSquare &bestResult, const VLayoutPiece &piece);
+    bool AddToSheet(const VLayoutPiece& piece, std::atomic_bool& stop);
+    bool SaveResult(const VBestSquare& bestResult, const VLayoutPiece& piece);
 };
 
 Q_DECLARE_TYPEINFO(VLayoutPaper, Q_MOVABLE_TYPE);
 
-#endif // VLAYOUTPAPER_H
+#endif   // VLAYOUTPAPER_H

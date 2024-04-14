@@ -63,15 +63,14 @@
 #include "../vmisc/vcommonsettings.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisOperation::VisOperation(const VContainer *data, QGraphicsItem *parent)
-    : VisLine(data, parent),
-      objects(),
-      supportColor2(QColor(qApp->Settings()->getSecondarySupportColor())),
-      supportColor3(QColor(qApp->Settings()->getTertiarySupportColor())),
-      points(),
-      curves()
-{
-}
+VisOperation::VisOperation(const VContainer* data, QGraphicsItem* parent)
+    : VisLine(data, parent)
+    , objects()
+    , supportColor2(QColor(qApp->Settings()->getSecondarySupportColor()))
+    , supportColor3(QColor(qApp->Settings()->getTertiarySupportColor()))
+    , points()
+    , curves()
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 VisOperation::~VisOperation()
@@ -81,16 +80,13 @@ VisOperation::~VisOperation()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisOperation::setObjects(QVector<quint32> objects)
-{
-    this->objects = objects;
-}
+void VisOperation::setObjects(QVector<quint32> objects) { this->objects = objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisOperation::VisualMode(const quint32 &pointId)
+void VisOperation::VisualMode(const quint32& pointId)
 {
     Q_UNUSED(pointId)
-    VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+    VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
     SCASSERT(scene != nullptr)
 
     Visualization::scenePos = scene->getScenePos();
@@ -100,20 +96,17 @@ void VisOperation::VisualMode(const quint32 &pointId)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VScaledEllipse *VisOperation::GetPoint(quint32 i, const QColor &color)
+VScaledEllipse* VisOperation::GetPoint(quint32 i, const QColor& color)
 {
     return GetPointItem(points, i, color, this);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurvePathItem *VisOperation::GetCurve(quint32 i, const QColor &color)
+VCurvePathItem* VisOperation::GetCurve(quint32 i, const QColor& color)
 {
-    if (not curves.isEmpty() && static_cast<quint32>(curves.size() - 1) >= i)
-    {
+    if (not curves.isEmpty() && static_cast<quint32>(curves.size() - 1) >= i) {
         return curves.at(static_cast<int>(i));
-    }
-    else
-    {
+    } else {
         auto curve = InitItem<VCurvePathItem>(color, this);
         curves.append(curve);
         return curve;
@@ -124,73 +117,65 @@ VCurvePathItem *VisOperation::GetCurve(quint32 i, const QColor &color)
 //---------------------------------------------------------------------------------------------------------------------
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Wswitch-default")
-void VisOperation::refreshMirroredObjects(const QPointF &firstPoint, const QPointF &secondPoint)
+void VisOperation::refreshMirroredObjects(const QPointF& firstPoint, const QPointF& secondPoint)
 {
     int iPoint = -1;
     int iCurve = -1;
-    for (int i = 0; i < objects.size(); ++i)
-    {
+    for (int i = 0; i < objects.size(); ++i) {
         const quint32 id = objects.at(i);
         const QSharedPointer<VGObject> obj = Visualization::data->GetGObject(id);
 
         // This check helps to find missed objects in the switch
         Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
-        switch(static_cast<GOType>(obj->getType()))
-        {
-            case GOType::Point:
-            {
-                const QSharedPointer<VPointF> p = Visualization::data->GeometricObject<VPointF>(id);
+        switch (static_cast<GOType>(obj->getType())) {
+        case GOType::Point: {
+            const QSharedPointer<VPointF> p = Visualization::data->GeometricObject<VPointF>(id);
 
-                ++iPoint;
-                VScaledEllipse *point = GetPoint(static_cast<quint32>(iPoint), supportColor2);
-                DrawPoint(point, static_cast<QPointF>(*p), supportColor2);
+            ++iPoint;
+            VScaledEllipse* point = GetPoint(static_cast<quint32>(iPoint), supportColor2);
+            DrawPoint(point, static_cast<QPointF>(*p), supportColor2);
 
-                ++iPoint;
-                point = GetPoint(static_cast<quint32>(iPoint), supportColor);
+            ++iPoint;
+            point = GetPoint(static_cast<quint32>(iPoint), supportColor);
 
-                if (object1Id != NULL_ID)
-                {
-                    DrawPoint(point, static_cast<QPointF>(p->Flip(QLineF(firstPoint, secondPoint))), supportColor);
-                }
-                break;
+            if (object1Id != NULL_ID) {
+                DrawPoint(
+                    point,
+                    static_cast<QPointF>(p->Flip(QLineF(firstPoint, secondPoint))),
+                    supportColor);
             }
-            case GOType::Arc:
-            {
-                iCurve = addFlippedCurve<VArc>(firstPoint, secondPoint, id, iCurve);
-                break;
-            }
-            case GOType::EllipticalArc:
-            {
-                iCurve = addFlippedCurve<VEllipticalArc>(firstPoint, secondPoint, id, iCurve);
-                break;
-            }
-            case GOType::Spline:
-            {
-                iCurve = addFlippedCurve<VSpline>(firstPoint, secondPoint, id, iCurve);
-                break;
-            }
-            case GOType::SplinePath:
-            {
-                iCurve = addFlippedCurve<VSplinePath>(firstPoint, secondPoint, id, iCurve);
-                break;
-            }
-            case GOType::CubicBezier:
-            {
-                iCurve = addFlippedCurve<VCubicBezier>(firstPoint, secondPoint, id, iCurve);
-                break;
-            }
-            case GOType::CubicBezierPath:
-            {
-                iCurve = addFlippedCurve<VCubicBezierPath>(firstPoint, secondPoint, id, iCurve);
-                break;
-            }
-            case GOType::Unknown:
-            case GOType::Curve:
-            case GOType::Path:
-            case GOType::AllCurves:
-            default:
-                break;
+            break;
+        }
+        case GOType::Arc: {
+            iCurve = addFlippedCurve<VArc>(firstPoint, secondPoint, id, iCurve);
+            break;
+        }
+        case GOType::EllipticalArc: {
+            iCurve = addFlippedCurve<VEllipticalArc>(firstPoint, secondPoint, id, iCurve);
+            break;
+        }
+        case GOType::Spline: {
+            iCurve = addFlippedCurve<VSpline>(firstPoint, secondPoint, id, iCurve);
+            break;
+        }
+        case GOType::SplinePath: {
+            iCurve = addFlippedCurve<VSplinePath>(firstPoint, secondPoint, id, iCurve);
+            break;
+        }
+        case GOType::CubicBezier: {
+            iCurve = addFlippedCurve<VCubicBezier>(firstPoint, secondPoint, id, iCurve);
+            break;
+        }
+        case GOType::CubicBezierPath: {
+            iCurve = addFlippedCurve<VCubicBezierPath>(firstPoint, secondPoint, id, iCurve);
+            break;
+        }
+        case GOType::Unknown:
+        case GOType::Curve:
+        case GOType::Path:
+        case GOType::AllCurves:
+        default: break;
         }
     }
 }

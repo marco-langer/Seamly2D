@@ -52,18 +52,17 @@
 #ifndef DIALOGCURVEINTERSECTAXIS_H
 #define DIALOGCURVEINTERSECTAXIS_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogCurveIntersectAxis;
+namespace Ui {
+class DialogCurveIntersectAxis;
 }
 
 class DialogCurveIntersectAxis : public DialogTool
@@ -71,40 +70,41 @@ class DialogCurveIntersectAxis : public DialogTool
     Q_OBJECT
 
 public:
-    DialogCurveIntersectAxis(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogCurveIntersectAxis(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogCurveIntersectAxis() Q_DECL_OVERRIDE;
 
-    void         SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    QString      getLineColor() const;
-    void         setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
-    QString      getLineType() const;
-    void         setLineType(const QString &value);
+    QString getLineType() const;
+    void setLineType(const QString& value);
 
-    QString      getLineWeight() const;
-    void         setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString      GetFormula() const;
-    void         SetFormula(const QString &value);
+    QString GetFormula() const;
+    void SetFormula(const QString& value);
 
-    QString      GetAngle() const;
-    void         SetAngle(const QString &value);
+    QString GetAngle() const;
+    void SetAngle(const QString& value);
 
-    quint32      GetBasePointId() const;
-    void         SetBasePointId(const quint32 &value);
+    quint32 GetBasePointId() const;
+    void SetBasePointId(const quint32& value);
 
-    quint32      getCurveId() const;
-    void         setCurveId(const quint32 &value);
+    quint32 getCurveId() const;
+    void setCurveId(const quint32& value);
 
     virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
-    
+
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    void         EvalAngle();
-    void         AngleTextChanged();
-    void         DeployAngleTextEdit();
-    void         FXAngle();
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    void EvalAngle();
+    void AngleTextChanged();
+    void DeployAngleTextEdit();
+    void FXAngle();
 
 protected:
     virtual void ShowVisualization() Q_DECL_OVERRIDE;
@@ -112,16 +112,16 @@ protected:
      * @brief SaveData Put dialog data in local variables
      */
     virtual void SaveData() Q_DECL_OVERRIDE;
-    virtual void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogCurveIntersectAxis)
-    Ui::DialogCurveIntersectAxis *ui;
+    Ui::DialogCurveIntersectAxis* ui;
 
-    QString      formulaAngle;
-    int          formulaBaseHeightAngle;
+    QString formulaAngle;
+    int formulaBaseHeightAngle;
 
-    bool         m_firstRelease;
+    bool m_firstRelease;
 };
 
-#endif // DIALOGCURVEINTERSECTAXIS_H
+#endif   // DIALOGCURVEINTERSECTAXIS_H

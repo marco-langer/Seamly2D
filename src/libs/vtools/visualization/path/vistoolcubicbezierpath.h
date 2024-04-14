@@ -52,13 +52,13 @@
 #ifndef VISTOOLCUBICBEZIERPATH_H
 #define VISTOOLCUBICBEZIERPATH_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vgeometry/vcubicbezierpath.h"
 #include "../vmisc/def.h"
@@ -68,31 +68,35 @@ class VisToolCubicBezierPath : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolCubicBezierPath(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolCubicBezierPath(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCubicBezierPath();
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void              setPath(const VCubicBezierPath &value);
-    VCubicBezierPath  getPath();
+    void setPath(const VCubicBezierPath& value);
+    VCubicBezierPath getPath();
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolCubicBezierPath)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolCubicBezierPath)
+    };
+
 protected:
     Q_DISABLE_COPY(VisToolCubicBezierPath)
-    QVector<VScaledEllipse *> mainPoints;
-    QVector<VScaledEllipse *> ctrlPoints;
-    QVector<VScaledLine *>    lines;
-    VCurvePathItem           *newCurveSegment;
-    VCubicBezierPath          path;
-    VScaledLine              *helpLine1;
-    VScaledLine              *helpLine2;
+    QVector<VScaledEllipse*> mainPoints;
+    QVector<VScaledEllipse*> ctrlPoints;
+    QVector<VScaledLine*> lines;
+    VCurvePathItem* newCurveSegment;
+    VCubicBezierPath path;
+    VScaledLine* helpLine1;
+    VScaledLine* helpLine2;
 
 private:
-    VScaledEllipse *getPoint(QVector<VScaledEllipse *> &points, quint32 i, qreal z = 0);
-    VScaledLine    *getLine(quint32 i);
-    void Creating(const QVector<VPointF> &pathPoints , int pointsLeft);
+    VScaledEllipse* getPoint(QVector<VScaledEllipse*>& points, quint32 i, qreal z = 0);
+    VScaledLine* getLine(quint32 i);
+    void Creating(const QVector<VPointF>& pathPoints, int pointsLeft);
     void RefreshToolTip();
 };
 
-#endif // VISTOOLCUBICBEZIERPATH_H
+#endif   // VISTOOLCUBICBEZIERPATH_H

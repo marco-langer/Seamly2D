@@ -52,28 +52,18 @@
 #include "vabstractsimple.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractSimple::VAbstractSimple(quint32 id, QObject *parent)
-    : QObject(parent),
-      id (id),
-      selectionType(SelectionType::ByMouseRelease),
-      type(GOType::Unknown)
-{
-}
+VAbstractSimple::VAbstractSimple(quint32 id, QObject* parent)
+    : QObject(parent)
+    , id(id)
+    , selectionType(SelectionType::ByMouseRelease)
+    , type(GOType::Unknown)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractSimple::ToolSelectionType(const SelectionType &type)
-{
-    selectionType = type;
-}
+void VAbstractSimple::ToolSelectionType(const SelectionType& type) { selectionType = type; }
 
 //---------------------------------------------------------------------------------------------------------------------
-GOType VAbstractSimple::GetType() const
-{
-    return type;
-}
+GOType VAbstractSimple::GetType() const { return type; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractSimple::SetType(const GOType &value)
-{
-    type = value;
-}
+void VAbstractSimple::SetType(const GOType& value) { type = value; }

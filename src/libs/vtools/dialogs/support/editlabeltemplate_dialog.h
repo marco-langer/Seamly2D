@@ -57,9 +57,8 @@
 #include <QDialog>
 #include <QMap>
 
-namespace Ui
-{
-    class EditLabelTemplateDialog;
+namespace Ui {
+class EditLabelTemplateDialog;
 }
 
 struct VLabelTemplateLine;
@@ -73,19 +72,19 @@ class EditLabelTemplateDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EditLabelTemplateDialog(VAbstractPattern *doc, QWidget *parent = nullptr);
+    explicit EditLabelTemplateDialog(VAbstractPattern* doc, QWidget* parent = nullptr);
     virtual ~EditLabelTemplateDialog();
 
     QVector<VLabelTemplateLine> GetTemplate() const;
-    void SetTemplate(const QVector<VLabelTemplateLine> &lines);
+    void SetTemplate(const QVector<VLabelTemplateLine>& lines);
 
-    void SetPiece(const VPiece &piece);
+    void SetPiece(const VPiece& piece);
 
 private slots:
     void ShowLineDetails();
     void AddLine();
     void RemoveLine();
-    void SaveLineText(const QString &text);
+    void SaveLineText(const QString& text);
     void SaveFontStyle(bool checked);
     void SaveTextFormating(bool checked);
     void NewTemplate();
@@ -97,9 +96,9 @@ private slots:
 
 private:
     Q_DISABLE_COPY(EditLabelTemplateDialog)
-    Ui::EditLabelTemplateDialog *ui;
-    QMenu               *m_placeholdersMenu;
-    VAbstractPattern    *m_doc;
+    Ui::EditLabelTemplateDialog* ui;
+    QMenu* m_placeholdersMenu;
+    VAbstractPattern* m_doc;
 
     QMap<QString, QPair<QString, QString>> m_placeholders;
 
@@ -109,7 +108,7 @@ private:
 
     QString ReplacePlaceholders(QString line) const;
 
-    void InitPreviewLines(const QVector<VLabelTemplateLine> &lines);
+    void InitPreviewLines(const QVector<VLabelTemplateLine>& lines);
 };
 
-#endif // EDITLABELTEMPLATE_DIALOG_H
+#endif   // EDITLABELTEMPLATE_DIALOG_H

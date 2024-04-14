@@ -53,19 +53,18 @@
 #ifndef UNION_DIALOG_H
 #define UNION_DIALOG_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QSound>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class UnionDialog;
+namespace Ui {
+class UnionDialog;
 }
 
 /**
@@ -75,40 +74,38 @@ class UnionDialog : public DialogTool
 {
     Q_OBJECT
 public:
-                 UnionDialog(const VContainer *data, const quint32 &toolId,
-                             QWidget *parent = nullptr);
-    virtual     ~UnionDialog() Q_DECL_OVERRIDE;
+    UnionDialog(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    virtual ~UnionDialog() Q_DECL_OVERRIDE;
 
-    quint32      getPiece1Id() const;
-    quint32      getPiece2Id() const;
-    int          getPiece1Index() const;
-    int          getPiece2Index() const;
+    quint32 getPiece1Id() const;
+    quint32 getPiece2Id() const;
+    int getPiece1Index() const;
+    int getPiece2Index() const;
 
-    bool         retainPieces() const;
+    bool retainPieces() const;
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(UnionDialog)
 
 
-    Ui::UnionDialog *ui;   /** @brief ui keeps information about user interface */
-    int      piece1_Index; /** @brief piece1_Index index edge first piece */
-    int      piece2_Index; /** @brief piece2_Index index edge second piece */
-    quint32  d1;           /** @brief d1 id first piece */
-    quint32  d2;           /** @brief d2 id second piece */
-    qint32   numberD;      /** @brief numberD number of piece, what we already have */
-    qint32   numberP;      /** @brief numberP number of points, what we already have */
-    quint32  p1;           /** @brief p1 id first point of piece */
-    quint32  p2;           /** @brief p2 id second point of piece */
-    QSound  *m_beep;
+    Ui::UnionDialog* ui; /** @brief ui keeps information about user interface */
+    int piece1_Index;    /** @brief piece1_Index index edge first piece */
+    int piece2_Index;    /** @brief piece2_Index index edge second piece */
+    quint32 d1;          /** @brief d1 id first piece */
+    quint32 d2;          /** @brief d2 id second piece */
+    qint32 numberD;      /** @brief numberD number of piece, what we already have */
+    qint32 numberP;      /** @brief numberP number of points, what we already have */
+    quint32 p1;          /** @brief p1 id first point of piece */
+    quint32 p2;          /** @brief p2 id second point of piece */
+    QSound* m_beep;
 
-    bool     CheckObject(const quint32 &id, const quint32 &pieceId) const;
-    bool     checkPiece(const quint32 &pieceId) const;
+    bool CheckObject(const quint32& id, const quint32& pieceId) const;
+    bool checkPiece(const quint32& pieceId) const;
 
-    void     chosenPiece(const quint32 &id, const SceneObject &type, quint32 &pieceId,
-                         int &index);
+    void chosenPiece(const quint32& id, const SceneObject& type, quint32& pieceId, int& index);
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -116,39 +113,27 @@ private:
  * @brief getPiece1Id return id first piece
  * @return id
  */
-inline quint32 UnionDialog::getPiece1Id() const
-{
-    return d1;
-}
+inline quint32 UnionDialog::getPiece1Id() const { return d1; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getPiece2Id return id second piece
  * @return id
  */
-inline quint32 UnionDialog::getPiece2Id() const
-{
-    return d2;
-}
+inline quint32 UnionDialog::getPiece2Id() const { return d2; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getPiece1Index return index edge first piece
  * @return index
  */
-inline int UnionDialog::getPiece1Index() const
-{
-    return piece1_Index;
-}
+inline int UnionDialog::getPiece1Index() const { return piece1_Index; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getPiece2Index return index edge second piece
  * @return index
  */
-inline int UnionDialog::getPiece2Index() const
-{
-    return piece2_Index;
-}
+inline int UnionDialog::getPiece2Index() const { return piece2_Index; }
 
-#endif // UNION_DIALOG_H
+#endif   // UNION_DIALOG_H

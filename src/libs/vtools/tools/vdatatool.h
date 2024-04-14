@@ -52,18 +52,18 @@
 #ifndef VDATATOOL_H
 #define VDATATOOL_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/logging.h"
 #include "../vpatterndb/vcontainer.h"
 
 Q_DECLARE_LOGGING_CATEGORY(vTool)
 
-//We need QObject class because we use qobject_cast.
+// We need QObject class because we use qobject_cast.
 /**
  * @brief The VDataTool class need for getting access to data container of tool.
  */
@@ -71,20 +71,23 @@ class VDataTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit VDataTool(VContainer *data, QObject *parent = nullptr);
+    explicit VDataTool(VContainer* data, QObject* parent = nullptr);
     virtual ~VDataTool() Q_DECL_EQ_DEFAULT;
-    VContainer      getData() const;
-    void            setData(const VContainer *value);
+    VContainer getData() const;
+    void setData(const VContainer* value);
     virtual quint32 referens() const;
-    virtual void    incrementReferens();
-    virtual void    decrementReferens();
-    virtual void    GroupVisibility(quint32 object, bool visible)=0;
+    virtual void incrementReferens();
+    virtual void decrementReferens();
+    virtual void GroupVisibility(quint32 object, bool visible) = 0;
+
 protected:
     /** @brief data container with data */
-    VContainer            data;
+    VContainer data;
 
-    /** @brief _referens keep count tools what use this tool. If value more than 1 you can't delete tool. */
-    quint32                _referens;
+    /** @brief _referens keep count tools what use this tool. If value more than 1 you can't delete
+     * tool. */
+    quint32 _referens;
+
 private:
     Q_DISABLE_COPY(VDataTool)
 };
@@ -94,38 +97,26 @@ private:
  * @brief getData return data container.
  * @return container.
  */
-inline VContainer VDataTool::getData() const
-{
-    return data;
-}
+inline VContainer VDataTool::getData() const { return data; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setData set data container.
  * @param value container.
  */
-inline void VDataTool::setData(const VContainer *value)
-{
-    data = *value;
-}
+inline void VDataTool::setData(const VContainer* value) { data = *value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief referens return count of referens.
  * @return count count of referens.
  */
-inline quint32 VDataTool::referens() const
-{
-    return _referens;
-}
+inline quint32 VDataTool::referens() const { return _referens; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief incrementReferens increment referens.
  */
-inline void VDataTool::incrementReferens()
-{
-    ++_referens;
-}
+inline void VDataTool::incrementReferens() { ++_referens; }
 
-#endif // VDATATOOL_H
+#endif   // VDATATOOL_H

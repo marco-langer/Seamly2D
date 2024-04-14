@@ -68,85 +68,96 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class MeasurementVariableData : public QSharedData
 {
 public:
-
-    MeasurementVariableData(quint32 index, const QString &gui_text, const QString &tagName, qreal baseSize, qreal baseHeight,
-                     qreal base, qreal ksize, qreal kheight )
-        : data(VContainer(nullptr, nullptr)),
-          index(index),
-          formula(),
-          gui_text(gui_text),
-          _tagName(tagName),
-          formulaOk(true),
-          currentSize(nullptr),
-          currentHeight(nullptr),
-          currentUnit(nullptr),
-          base(base),
-          ksize(ksize),
-          kheight(kheight),
-          baseSize(baseSize),
-          baseHeight(baseHeight)
+    MeasurementVariableData(
+        quint32 index,
+        const QString& gui_text,
+        const QString& tagName,
+        qreal baseSize,
+        qreal baseHeight,
+        qreal base,
+        qreal ksize,
+        qreal kheight)
+        : data(VContainer(nullptr, nullptr))
+        , index(index)
+        , formula()
+        , gui_text(gui_text)
+        , _tagName(tagName)
+        , formulaOk(true)
+        , currentSize(nullptr)
+        , currentHeight(nullptr)
+        , currentUnit(nullptr)
+        , base(base)
+        , ksize(ksize)
+        , kheight(kheight)
+        , baseSize(baseSize)
+        , baseHeight(baseHeight)
     {}
 
-    MeasurementVariableData(VContainer *data, quint32 index, const QString &formula, bool ok, const QString &gui_text,
-                     const QString &tagName, qreal base)
-        : data(*data),
-          index(index),
-          formula(formula),
-          gui_text(gui_text),
-          _tagName(tagName),
-          formulaOk(ok),
-          currentSize(nullptr),
-          currentHeight(nullptr),
-          currentUnit(nullptr),
-          base(base),
-          ksize(0),
-          kheight(0),
-          baseSize(0),
-          baseHeight(0)
+    MeasurementVariableData(
+        VContainer* data,
+        quint32 index,
+        const QString& formula,
+        bool ok,
+        const QString& gui_text,
+        const QString& tagName,
+        qreal base)
+        : data(*data)
+        , index(index)
+        , formula(formula)
+        , gui_text(gui_text)
+        , _tagName(tagName)
+        , formulaOk(ok)
+        , currentSize(nullptr)
+        , currentHeight(nullptr)
+        , currentUnit(nullptr)
+        , base(base)
+        , ksize(0)
+        , kheight(0)
+        , baseSize(0)
+        , baseHeight(0)
     {}
 
-    MeasurementVariableData(const MeasurementVariableData &m)
-        : QSharedData(m),
-          data(m.data),
-          index(m.index),
-          formula(m.formula),
-          gui_text(m.gui_text),
-          _tagName(m._tagName),
-          formulaOk(m.formulaOk),
-          currentSize(m.currentSize),
-          currentHeight(m.currentHeight),
-          currentUnit(m.currentUnit),
-          base(m.base),
-          ksize(m.ksize),
-          kheight(m.kheight),
-          baseSize(m.baseSize),
-          baseHeight(m.baseHeight)
+    MeasurementVariableData(const MeasurementVariableData& m)
+        : QSharedData(m)
+        , data(m.data)
+        , index(m.index)
+        , formula(m.formula)
+        , gui_text(m.gui_text)
+        , _tagName(m._tagName)
+        , formulaOk(m.formulaOk)
+        , currentSize(m.currentSize)
+        , currentHeight(m.currentHeight)
+        , currentUnit(m.currentUnit)
+        , base(m.base)
+        , ksize(m.ksize)
+        , kheight(m.kheight)
+        , baseSize(m.baseSize)
+        , baseHeight(m.baseHeight)
     {}
 
-    virtual    ~MeasurementVariableData();
+    virtual ~MeasurementVariableData();
 
-    VContainer  data;
-    quint32     index;
-    QString     formula;
-    QString     gui_text;
-    QString     _tagName;
-    bool        formulaOk;
-    qreal      *currentSize;
-    qreal      *currentHeight;
-    const Unit *currentUnit;
-    qreal       base;           //! @brief base value in base size and height */
-    qreal       ksize;          //! @brief ksize increment in sizes */
-    qreal       kheight;        //! @brief kgrowth increment in heights */
-    qreal       baseSize;
-    qreal       baseHeight;
+    VContainer data;
+    quint32 index;
+    QString formula;
+    QString gui_text;
+    QString _tagName;
+    bool formulaOk;
+    qreal* currentSize;
+    qreal* currentHeight;
+    const Unit* currentUnit;
+    qreal base;      //! @brief base value in base size and height */
+    qreal ksize;     //! @brief ksize increment in sizes */
+    qreal kheight;   //! @brief kgrowth increment in heights */
+    qreal baseSize;
+    qreal baseHeight;
 
 private:
-    MeasurementVariableData &operator=(const MeasurementVariableData &) Q_DECL_EQ_DELETE;
+    MeasurementVariableData& operator=(const MeasurementVariableData&) Q_DECL_EQ_DELETE;
 };
 
-MeasurementVariableData::~MeasurementVariableData()
-{}
+MeasurementVariableData::~MeasurementVariableData() {}
 
 QT_WARNING_POP
 
-#endif // MEASUREMENT_VARIABLE_P_H
+#endif   // MEASUREMENT_VARIABLE_P_H

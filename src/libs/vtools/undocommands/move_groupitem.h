@@ -25,12 +25,12 @@
 #ifndef MOVE_GROUPITEM_H
 #define MOVE_GROUPITEM_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -38,22 +38,27 @@ class MoveGroupItem : public VUndoCommand
 {
     Q_OBJECT
 public:
-                   MoveGroupItem(const QDomElement &source, const QDomElement &dest, VAbstractPattern *doc, quint32 sourceId,
-                                 quint32 destinationId, QUndoCommand *parent = nullptr);
-    virtual       ~MoveGroupItem();
-    virtual void   undo() Q_DECL_OVERRIDE;
-    virtual void   redo() Q_DECL_OVERRIDE;
+    MoveGroupItem(
+        const QDomElement& source,
+        const QDomElement& dest,
+        VAbstractPattern* doc,
+        quint32 sourceId,
+        quint32 destinationId,
+        QUndoCommand* parent = nullptr);
+    virtual ~MoveGroupItem();
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
 
 signals:
-    void           updateGroups();
+    void updateGroups();
 
 private:
-                   Q_DISABLE_COPY(MoveGroupItem)
-    QDomElement    m_source;
-    QDomElement    m_dest;
-    const QString  m_activeDraftblockName;
-    quint32        m_sourceGroupId;
-    quint32        m_destinationGroupId;
+    Q_DISABLE_COPY(MoveGroupItem)
+    QDomElement m_source;
+    QDomElement m_dest;
+    const QString m_activeDraftblockName;
+    quint32 m_sourceGroupId;
+    quint32 m_destinationGroupId;
 };
 
-#endif // MOVE_GROUPITEM_H
+#endif   // MOVE_GROUPITEM_H

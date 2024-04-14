@@ -52,7 +52,6 @@
 #ifndef VTOOLSINGLEPOINT_H
 #define VTOOLSINGLEPOINT_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
@@ -60,63 +59,74 @@
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vabstractpoint.h"
 #include "../vmisc/def.h"
 #include "../vwidgets/vscenepoint.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 /**
  * @brief The VToolSinglePoint class parent for all tools what create points.
  */
-class VToolSinglePoint: public VAbstractPoint, public VScenePoint
+class VToolSinglePoint
+    : public VAbstractPoint
+    , public VScenePoint
 {
     Q_OBJECT
 public:
-                     VToolSinglePoint(VAbstractPattern *doc, VContainer *data, quint32 id,
-                                      const QColor &lineColor, QGraphicsItem * parent = nullptr);
-    virtual         ~VToolSinglePoint() Q_DECL_EQ_DEFAULT;
+    VToolSinglePoint(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        const QColor& lineColor,
+        QGraphicsItem* parent = nullptr);
+    virtual ~VToolSinglePoint() Q_DECL_EQ_DEFAULT;
 
-    virtual int      type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::SinglePoint)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::SinglePoint)
+    };
 
-    QString          name() const;
-    void             setName(const QString &name);
+    QString name() const;
+    void setName(const QString& name);
 
-    void             SetEnabled(bool enabled);
+    void SetEnabled(bool enabled);
 
-    virtual void     GroupVisibility(quint32 object, bool visible) Q_DECL_OVERRIDE;
-    virtual bool     isPointNameVisible(quint32 id) const Q_DECL_OVERRIDE;
-    virtual void     setPointNameVisiblity(quint32 id, bool visible) Q_DECL_OVERRIDE;
-    virtual void     setPointNamePosition(quint32 id, const QPointF &pos) Q_DECL_OVERRIDE;
+    virtual void GroupVisibility(quint32 object, bool visible) Q_DECL_OVERRIDE;
+    virtual bool isPointNameVisible(quint32 id) const Q_DECL_OVERRIDE;
+    virtual void setPointNameVisiblity(quint32 id, bool visible) Q_DECL_OVERRIDE;
+    virtual void setPointNamePosition(quint32 id, const QPointF& pos) Q_DECL_OVERRIDE;
 
 public slots:
-    void             pointnameChangedPosition(const QPointF &pos);
-    virtual void     Disable(bool disable, const QString &draftBlockName) Q_DECL_OVERRIDE;
-    virtual void     EnableToolMove(bool move) Q_DECL_OVERRIDE;
-    void             pointChosen();
-    void             pointSelected(bool selected);
-    virtual void     FullUpdateFromFile() Q_DECL_OVERRIDE;
-    virtual void     AllowHover(bool enabled) Q_DECL_OVERRIDE;
-    virtual void     AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
-    void             allowTextHover(bool enabled);
-    void             allowTextSelectable(bool enabled);
-    virtual void     ToolSelectionType(const SelectionType &type) Q_DECL_OVERRIDE;
+    void pointnameChangedPosition(const QPointF& pos);
+    virtual void Disable(bool disable, const QString& draftBlockName) Q_DECL_OVERRIDE;
+    virtual void EnableToolMove(bool move) Q_DECL_OVERRIDE;
+    void pointChosen();
+    void pointSelected(bool selected);
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
+    virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
+    virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+    void allowTextHover(bool enabled);
+    void allowTextSelectable(bool enabled);
+    virtual void ToolSelectionType(const SelectionType& type) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void     updatePointNameVisibility(quint32 id, bool visible) Q_DECL_OVERRIDE;
-    virtual void     updatePointNamePosition(quint32 id, const QPointF &pos) Q_DECL_OVERRIDE;
-    virtual void     mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual void     mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    virtual QVariant itemChange ( GraphicsItemChange change, const QVariant &value ) Q_DECL_OVERRIDE;
-    virtual void     keyReleaseEvent(QKeyEvent * event) Q_DECL_OVERRIDE;
-    virtual void     contextMenuEvent (QGraphicsSceneContextMenuEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
+    virtual void updatePointNameVisibility(quint32 id, bool visible) Q_DECL_OVERRIDE;
+    virtual void updatePointNamePosition(quint32 id, const QPointF& pos) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) Q_DECL_OVERRIDE;
+    virtual void keyReleaseEvent(QKeyEvent* event) Q_DECL_OVERRIDE;
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VToolSinglePoint)
 };
 
-#endif // VTOOLSINGLEPOINT_H
+#endif   // VTOOLSINGLEPOINT_H

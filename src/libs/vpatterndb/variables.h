@@ -52,14 +52,14 @@
 #ifndef VARIABLES_H
 #define VARIABLES_H
 
-#include "variables/vinternalvariable.h"
-#include "variables/measurement_variable.h"
 #include "variables/custom_variable.h"
-#include "variables/vcurvelength.h"
-#include "variables/vlinelength.h"
-#include "variables/vlineangle.h"
+#include "variables/measurement_variable.h"
 #include "variables/varcradius.h"
 #include "variables/vcurveangle.h"
 #include "variables/vcurveclength.h"
+#include "variables/vcurvelength.h"
+#include "variables/vinternalvariable.h"
+#include "variables/vlineangle.h"
+#include "variables/vlinelength.h"
 
-#endif // VARIABLES_H
+#endif   // VARIABLES_H

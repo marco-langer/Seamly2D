@@ -10,13 +10,13 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.    **
 ******************************************************************************/
 
+#include "dxfwriter.h"
+#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <string>
-#include <algorithm>
-#include "dxfwriter.h"
 
-//RLZ TODO change std::endl to x0D x0A (13 10)
+// RLZ TODO change std::endl to x0D x0A (13 10)
 /*bool dxfWriter::readRec(int *codeData, bool skip) {
 //    std::string text;
     int code;
@@ -91,22 +91,25 @@
     return (filestr->good());
 }*/
 
-bool dxfWriter::writeUtf8String(int code, const std::string &text) {
+bool dxfWriter::writeUtf8String(int code, const std::string& text)
+{
     std::string t = encoder.fromUtf8(text);
     return writeString(code, t);
 }
 
-bool dxfWriter::writeUtf8Caps(int code, const std::string &text) {
+bool dxfWriter::writeUtf8Caps(int code, const std::string& text)
+{
     std::string strname = text;
-    std::transform(strname.begin(), strname.end(), strname.begin(),::toupper);
+    std::transform(strname.begin(), strname.end(), strname.begin(), ::toupper);
     std::string t = encoder.fromUtf8(strname);
     return writeString(code, t);
 }
 
-bool dxfWriterBinary::writeString(int code, std::string text) {
+bool dxfWriterBinary::writeString(int code, std::string text)
+{
     char bufcode[2];
     bufcode[0] = static_cast<char>(code & 0xFF);
-    bufcode[1] = static_cast<char>(code  >> 8);
+    bufcode[1] = static_cast<char>(code >> 8);
     filestr->write(bufcode, 2);
     *filestr << text << '\0';
     return (filestr->good());
@@ -142,69 +145,74 @@ bool dxfWriterBinary::writeString(int code, std::string text) {
     return (filestr->good());
 }*/
 
-bool dxfWriterBinary::writeInt16(int code, int data) {
+bool dxfWriterBinary::writeInt16(int code, int data)
+{
     char bufcode[2];
     char buffer[2];
     bufcode[0] = static_cast<char>(code & 0xFF);
-    bufcode[1] = static_cast<char>(code  >> 8);
+    bufcode[1] = static_cast<char>(code >> 8);
     buffer[0] = static_cast<char>(data & 0xFF);
-    buffer[1] = static_cast<char>(data  >> 8);
+    buffer[1] = static_cast<char>(data >> 8);
     filestr->write(bufcode, 2);
     filestr->write(buffer, 2);
     return (filestr->good());
 }
 
-bool dxfWriterBinary::writeInt32(int code, int data) {
+bool dxfWriterBinary::writeInt32(int code, int data)
+{
     char buffer[4];
     buffer[0] = static_cast<char>(code & 0xFF);
-    buffer[1] = static_cast<char>(code  >> 8);
+    buffer[1] = static_cast<char>(code >> 8);
     filestr->write(buffer, 2);
 
     buffer[0] = static_cast<char>(data & 0xFF);
-    buffer[1] = static_cast<char>(data  >> 8);
-    buffer[2] = static_cast<char>(data  >> 16);
-    buffer[3] = static_cast<char>(data  >> 24);
+    buffer[1] = static_cast<char>(data >> 8);
+    buffer[2] = static_cast<char>(data >> 16);
+    buffer[3] = static_cast<char>(data >> 24);
     filestr->write(buffer, 4);
     return (filestr->good());
 }
 
-bool dxfWriterBinary::writeInt64(int code, unsigned long long int data) {
+bool dxfWriterBinary::writeInt64(int code, unsigned long long int data)
+{
     char buffer[8];
     buffer[0] = static_cast<char>(code & 0xFF);
-    buffer[1] = static_cast<char>(code  >> 8);
+    buffer[1] = static_cast<char>(code >> 8);
     filestr->write(buffer, 2);
 
     buffer[0] = static_cast<char>(data & 0xFF);
-    buffer[1] = static_cast<char>(data  >> 8);
-    buffer[2] = static_cast<char>(data  >> 16);
-    buffer[3] = static_cast<char>(data  >> 24);
-    buffer[4] = static_cast<char>(data  >> 32);
-    buffer[5] = static_cast<char>(data  >> 40);
-    buffer[6] = static_cast<char>(data  >> 48);
-    buffer[7] = static_cast<char>(data  >> 56);
+    buffer[1] = static_cast<char>(data >> 8);
+    buffer[2] = static_cast<char>(data >> 16);
+    buffer[3] = static_cast<char>(data >> 24);
+    buffer[4] = static_cast<char>(data >> 32);
+    buffer[5] = static_cast<char>(data >> 40);
+    buffer[6] = static_cast<char>(data >> 48);
+    buffer[7] = static_cast<char>(data >> 56);
     filestr->write(buffer, 8);
     return (filestr->good());
 }
 
-bool dxfWriterBinary::writeDouble(int code, double data) {
+bool dxfWriterBinary::writeDouble(int code, double data)
+{
     char bufcode[2];
     char buffer[8];
     bufcode[0] = static_cast<char>(code & 0xFF);
-    bufcode[1] = static_cast<char>(code  >> 8);
+    bufcode[1] = static_cast<char>(code >> 8);
     filestr->write(bufcode, 2);
 
-    unsigned char *val;
+    unsigned char* val;
     // cppcheck-suppress invalidPointerCast
-    val = reinterpret_cast<unsigned char *>(&data);
-    for (int i=0; i<8; i++) {
+    val = reinterpret_cast<unsigned char*>(&data);
+    for (int i = 0; i < 8; i++) {
         buffer[i] = static_cast<char>(val[i]);
     }
     filestr->write(buffer, 8);
     return (filestr->good());
 }
 
-//saved as int or add a bool member??
-bool dxfWriterBinary::writeBool(int code, bool data) {
+// saved as int or add a bool member??
+bool dxfWriterBinary::writeBool(int code, bool data)
+{
     char buffer[1];
     char bufcode[2];
     bufcode[0] = static_cast<char>(code & 0xFF);
@@ -215,12 +223,15 @@ bool dxfWriterBinary::writeBool(int code, bool data) {
     return (filestr->good());
 }
 
-dxfWriterAscii::dxfWriterAscii(std::ofstream *stream):dxfWriter(stream){
+dxfWriterAscii::dxfWriterAscii(std::ofstream* stream)
+    : dxfWriter(stream)
+{
     filestr->precision(16);
 }
 
-bool dxfWriterAscii::writeString(int code, std::string text) {
-//    *filestr << code << std::endl << text << std::endl ;
+bool dxfWriterAscii::writeString(int code, std::string text)
+{
+    //    *filestr << code << std::endl << text << std::endl ;
     filestr->width(3);
     *filestr << std::right << code << std::endl;
     filestr->width(0);
@@ -230,8 +241,9 @@ bool dxfWriterAscii::writeString(int code, std::string text) {
     return (filestr->good());
 }
 
-bool dxfWriterAscii::writeInt16(int code, int data) {
-//    *filestr << std::right << code << std::endl << data << std::endl;
+bool dxfWriterAscii::writeInt16(int code, int data)
+{
+    //    *filestr << std::right << code << std::endl << data << std::endl;
     filestr->width(3);
     *filestr << std::right << code << std::endl;
     filestr->width(5);
@@ -239,12 +251,11 @@ bool dxfWriterAscii::writeInt16(int code, int data) {
     return (filestr->good());
 }
 
-bool dxfWriterAscii::writeInt32(int code, int data) {
-    return writeInt16(code, data);
-}
+bool dxfWriterAscii::writeInt32(int code, int data) { return writeInt16(code, data); }
 
-bool dxfWriterAscii::writeInt64(int code, unsigned long long int data) {
-//    *filestr << code << std::endl << data << std::endl;
+bool dxfWriterAscii::writeInt64(int code, unsigned long long int data)
+{
+    //    *filestr << code << std::endl << data << std::endl;
     filestr->width(3);
     *filestr << std::right << code << std::endl;
     filestr->width(5);
@@ -252,20 +263,21 @@ bool dxfWriterAscii::writeInt64(int code, unsigned long long int data) {
     return (filestr->good());
 }
 
-bool dxfWriterAscii::writeDouble(int code, double data) {
-//    std::streamsize prec = filestr->precision();
-//    filestr->precision(12);
-//    *filestr << code << std::endl << data << std::endl;
+bool dxfWriterAscii::writeDouble(int code, double data)
+{
+    //    std::streamsize prec = filestr->precision();
+    //    filestr->precision(12);
+    //    *filestr << code << std::endl << data << std::endl;
     filestr->width(3);
     *filestr << std::right << code << std::endl;
     *filestr << data << std::endl;
-//    filestr->precision(prec);
+    //    filestr->precision(prec);
     return (filestr->good());
 }
 
-//saved as int or add a bool member??
-bool dxfWriterAscii::writeBool(int code, bool data) {
+// saved as int or add a bool member??
+bool dxfWriterAscii::writeBool(int code, bool data)
+{
     *filestr << code << std::endl << data << std::endl;
     return (filestr->good());
 }
-

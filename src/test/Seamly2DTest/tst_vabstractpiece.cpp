@@ -58,7 +58,7 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VAbstractPiece::TST_VAbstractPiece(QObject *parent)
+TST_VAbstractPiece::TST_VAbstractPiece(QObject* parent)
     : AbstractTest(parent)
 {}
 
@@ -71,50 +71,51 @@ void TST_VAbstractPiece::EquidistantRemoveLoop_data()
 
     // See file src/app/share/collection/test/seamtest1.val
     QTest::newRow("Seam test 1") << InputPointsCase1()
-                                 << 37.795275590551185 // seam allowance width
+                                 << 37.795275590551185   // seam allowance width
                                  << OutputPointsCase1();
 
     // See file src/app/share/collection/test/seamtest2.val
     QTest::newRow("Seam test 2") << InputPointsCase2()
-                                 << 37.795275590551185 // seam allowance width
+                                 << 37.795275590551185   // seam allowance width
                                  << OutputPointsCase2();
 
     // See file src/app/share/collection/test/seamtest3.val
     QTest::newRow("Seam test 3") << InputPointsCase3()
-                                 << 37.795275590551185 // seam allowance width
+                                 << 37.795275590551185   // seam allowance width
                                  << OutputPointsCase3();
 
     // These are two real cases where equdistant has loop.
     // Code should clean loops in path.
-    QTest::newRow("Issue 298. Case1") << InputPointsIssue298Case1()
-                                      << 75.5906 // seam allowance width
-                                      << OutputPointsIssue298Case1();
+    QTest::newRow("Issue 298. Case1")
+        << InputPointsIssue298Case1() << 75.5906   // seam allowance width
+        << OutputPointsIssue298Case1();
 
-    QTest::newRow("Issue 298. Case2") << InputPointsIssue298Case2()
-                                      << 37.7953 // seam allowance width
-                                      << OutputPointsIssue298Case2();
+    QTest::newRow("Issue 298. Case2")
+        << InputPointsIssue298Case2() << 37.7953   // seam allowance width
+        << OutputPointsIssue298Case2();
 
 
     // Files: Steampunk_trousers.val and marie.vit
-    // Actually buggy detail see in file src/app/share/collection/bugs/Steampunk_trousers_issue_#548.val
-    // Code should clean loops in path.
-    QTest::newRow("Issue 548. Case1") << InputPointsIssue548Case1()
-                                      << 11.338582677165354 // seam allowance width (0.3 cm)
-                                      << OutputPointsIssue548Case1();
+    // Actually buggy detail see in file
+    // src/app/share/collection/bugs/Steampunk_trousers_issue_#548.val Code should clean loops in
+    // path.
+    QTest::newRow("Issue 548. Case1")
+        << InputPointsIssue548Case1() << 11.338582677165354   // seam allowance width (0.3 cm)
+        << OutputPointsIssue548Case1();
 
     // Disabled due to "undefined behavior" problem
 #if !defined(Q_OS_WIN) && !defined(Q_CC_CLANG) && !defined(Q_PROCESSOR_X86_64)
-    QTest::newRow("Issue 548. Case2") << InputPointsIssue548Case2()
-                                      << 37.795275590551185 // seam allowance width (1.0 cm)
-                                      << OutputPointsIssue548Case2();
+    QTest::newRow("Issue 548. Case2")
+        << InputPointsIssue548Case2() << 37.795275590551185   // seam allowance width (1.0 cm)
+        << OutputPointsIssue548Case2();
 
-    QTest::newRow("Issue 548. Case3") << InputPointsIssue548Case3()
-                                      << 75.59055118110237 // seam allowance width (2.0 cm)
-                                      << OutputPointsIssue548Case3();
+    QTest::newRow("Issue 548. Case3")
+        << InputPointsIssue548Case3() << 75.59055118110237   // seam allowance width (2.0 cm)
+        << OutputPointsIssue548Case3();
 #endif
 
     QTest::newRow("Issue 646.") << InputPointsIssue646()
-                                << 37.795275590551185 // seam allowance width (1.0 cm
+                                << 37.795275590551185   // seam allowance width (1.0 cm
                                 << OutputPointsIssue646();
 }
 
@@ -134,7 +135,6 @@ void TST_VAbstractPiece::EquidistantRemoveLoop() const
 //---------------------------------------------------------------------------------------------------------------------
 QVector<VSAPoint> TST_VAbstractPiece::InputPointsCase1() const
 {
-
     QVector<VSAPoint> points;
 
     VSAPoint p = VSAPoint(30.0, 894.8030236220472);
@@ -658,7 +658,6 @@ QVector<QPointF> TST_VAbstractPiece::OutputPointsCase1() const
 //---------------------------------------------------------------------------------------------------------------------
 QVector<VSAPoint> TST_VAbstractPiece::InputPointsCase2() const
 {
-
     QVector<VSAPoint> points;
 
     VSAPoint p = VSAPoint(30.0, 39.999874015748034);
@@ -1094,23 +1093,23 @@ QVector<VSAPoint> TST_VAbstractPiece::InputPointsCase3() const
     QVector<VSAPoint> points;
 
     VSAPoint p = VSAPoint(30.0, 39.999874015748034);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(407.9527559055118, 39.999874015748034);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(407.9527559055118, 228.97625196850396);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(407.9527559055118, 228.97625196850396);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(406.33770829042953, 232.38064611626584);
@@ -1439,18 +1438,18 @@ QVector<VSAPoint> TST_VAbstractPiece::InputPointsCase3() const
     points.append(p);
 
     p = VSAPoint(218.97637795275608, 134.48806299212646);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(218.97637795275608, 134.48806299212646);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(218.97637795275608, 134.48806299212646);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(218.97637795275608, 134.48806299212646);
@@ -1604,158 +1603,158 @@ QVector<VSAPoint> TST_VAbstractPiece::InputPointsCase3() const
     points.append(p);
 
     p = VSAPoint(124.4881889763782, 87.24396850393732);
-    //p.SetSAAfter(-1);
+    // p.SetSAAfter(-1);
     p.SetSABefore(7.559055118110237);
     points.append(p);
 
     p = VSAPoint(124.4881889763782, 87.24396850393732);
-    //p.SetSAAfter(-1);
+    // p.SetSAAfter(-1);
     p.SetSABefore(7.559055118110237);
     points.append(p);
 
     p = VSAPoint(124.4881889763782, 87.24396850393732);
-    //p.SetSAAfter(-1);
+    // p.SetSAAfter(-1);
     p.SetSABefore(7.559055118110237);
     points.append(p);
 
     p = VSAPoint(124.4881889763782, 87.24396850393732);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(124.4881889763782, 87.24396850393732);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(121.4053345233613, 90.85541892105327);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(115.36650087404239, 97.1700051724747);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(109.48439793077911, 102.44240810316538);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(103.76400391356904, 106.72573235606063);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(98.2102970424097, 110.0730825740958);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(92.8282555372987, 112.53756340020624);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(87.62285761823352, 114.17227947732721);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(82.59908150521179, 115.03033544839411);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(77.76190541823104, 115.16483595634224);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(73.11630757728881, 114.62888564410696);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(68.66726620238268, 113.47558915462355);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(64.41975951351019, 111.7580511308274);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(60.3787657306689, 109.52937621565376);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(56.54926307385639, 106.84266905203805);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(52.93622976307019, 103.75103428291555);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(49.54464401830785, 100.30757655122164);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(44.854132804201555, 94.62627097468447);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(39.45938535079082, 86.2656734510919);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(35.040036121431584, 77.45366765004954);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(31.635910876104337, 68.61509071504);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(29.28683537478949, 60.17477978954592);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(28.03263537746753, 52.55757201704999);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(27.913136644118886, 46.188304541034846);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(28.62975536807624, 42.54811226326452);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(29.458368599363588, 40.697718569632514);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     p = VSAPoint(30.0, 39.999874015748034);
-    //p.SetSAAfter(-1);
-    //p.SetSABefore(-1);
+    // p.SetSAAfter(-1);
+    // p.SetSABefore(-1);
     points.append(p);
 
     return points;
@@ -1869,9 +1868,10 @@ QVector<QPointF> TST_VAbstractPiece::OutputPointsCase3() const
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VAbstractPiece::sumTrapezoids() const
 {
-    // Case3 checks that the method 'sumTrapezoids' returns negative value for three clockwise allocated points
-    // Case4 checks that the method 'sumTrapezoids' returns positive value for three counterclock-wise allocated points
-    // Case5 checks that the method 'sumTrapezoids' returns 0 for one point
+    // Case3 checks that the method 'sumTrapezoids' returns negative value for three clockwise
+    // allocated points Case4 checks that the method 'sumTrapezoids' returns positive value for
+    // three counterclock-wise allocated points Case5 checks that the method 'sumTrapezoids' returns
+    // 0 for one point
     Case3();
     Case4();
     Case5();
@@ -2415,9 +2415,9 @@ void TST_VAbstractPiece::BrokenDetailEquidistant_data() const
     QTest::addColumn<QVector<QPointF>>("ekvOrig");
 
     // For more details see the file "collection/bugs/GAVAUDAN Laure - corsage - figure 4.sm2d".
-    // We will test only one detail. The second require too accurate data that we cannot get from debuger.
-    // The test check an open equdistant of correct detail.
-    QVector<VSAPoint> points;// Input points.
+    // We will test only one detail. The second require too accurate data that we cannot get from
+    // debuger. The test check an open equdistant of correct detail.
+    QVector<VSAPoint> points;   // Input points.
 
     VSAPoint point = VSAPoint(787.5835464566929, 1701.3138897637796);
     point.SetSAAfter(-1);
@@ -2697,7 +2697,7 @@ void TST_VAbstractPiece::BrokenDetailEquidistant() const
     QFETCH(qreal, width);
     QFETCH(QVector<QPointF>, ekvOrig);
 
-    const QVector<QPointF> ekv = VAbstractPiece::Equidistant(points, width);// Take result
+    const QVector<QPointF> ekv = VAbstractPiece::Equidistant(points, width);   // Take result
 
     // Begin comparison
     Comparison(ekv, ekvOrig);
@@ -2787,7 +2787,8 @@ void TST_VAbstractPiece::CorrectEquidistantPoints() const
     QFETCH(QVector<QPointF>, expect);
     QFETCH(bool, removeFirstAndLast);
 
-    const QVector<QPointF> res = VAbstractPiece::CorrectEquidistantPoints(points, removeFirstAndLast);
+    const QVector<QPointF> res =
+        VAbstractPiece::CorrectEquidistantPoints(points, removeFirstAndLast);
 
     // Begin comparison
     Comparison(res, expect);
@@ -3111,12 +3112,12 @@ void TST_VAbstractPiece::PossibleInfiniteClearLoops() const
     QVector<QPointF> res = VAbstractPiece::CheckLoops(path);
     Comparison(res, expect);
 }
-#endif //#ifndef Q_OS_WIN
+#endif   //#ifndef Q_OS_WIN
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VAbstractPiece::Case3() const
 {
-    const QVector<QPointF> points = InputPointsCase3a(); // Input points.
+    const QVector<QPointF> points = InputPointsCase3a();   // Input points.
 
     const qreal result = VAbstractPiece::sumTrapezoids(points);
     QVERIFY(result < 0);
@@ -3125,7 +3126,7 @@ void TST_VAbstractPiece::Case3() const
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VAbstractPiece::Case4() const
 {
-    const QVector<QPointF> points = InputPointsCase4a(); // Input points.
+    const QVector<QPointF> points = InputPointsCase4a();   // Input points.
 
     const qreal result = VAbstractPiece::sumTrapezoids(points);
     QVERIFY(result > 0);
@@ -3134,7 +3135,7 @@ void TST_VAbstractPiece::Case4() const
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VAbstractPiece::Case5() const
 {
-    const QVector<QPointF> points = InputPointsCase5a(); // Input points.
+    const QVector<QPointF> points = InputPointsCase5a();   // Input points.
 
     const qreal result = VAbstractPiece::sumTrapezoids(points);
     QVERIFY(qFuzzyIsNull(result));

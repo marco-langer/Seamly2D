@@ -52,10 +52,10 @@
 #ifndef VPOINTF_P_H
 #define VPOINTF_P_H
 
-#include <QSharedData>
-#include "vgeometrydef.h"
 #include "../vmisc/diagnostic.h"
+#include "vgeometrydef.h"
 #include <QPointF>
+#include <QSharedData>
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -64,7 +64,6 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VPointFData : public QSharedData
 {
 public:
-
     VPointFData()
         : _mx(0)
         , _my(0)
@@ -73,7 +72,7 @@ public:
         , m_showPointName(true)
     {}
 
-    VPointFData(const VPointFData &point)
+    VPointFData(const VPointFData& point)
         : QSharedData(point)
         , _mx(point._mx)
         , _my(point._my)
@@ -82,7 +81,7 @@ public:
         , m_showPointName(point.m_showPointName)
     {}
 
-    explicit VPointFData(const QPointF &point)
+    explicit VPointFData(const QPointF& point)
         : _mx(0)
         , _my(0)
         , _x(point.x())
@@ -98,7 +97,7 @@ public:
         , m_showPointName(true)
     {}
 
-    VPointFData(const QPointF &point, qreal mx, qreal my)
+    VPointFData(const QPointF& point, qreal mx, qreal my)
         : _mx(mx)
         , _my(my)
         , _x(point.x())
@@ -109,27 +108,26 @@ public:
     virtual ~VPointFData();
 
     /** @brief _mx offset name respect to x */
-    qreal   _mx;
+    qreal _mx;
 
     /** @brief _my offset name respect to y */
-    qreal   _my;
+    qreal _my;
 
     /** @brief _x x coordinate */
-    qreal   _x;
+    qreal _x;
 
     /** @brief _y y coordinate */
-    qreal   _y;
+    qreal _y;
 
     /** @brief m_showPointName hide or show name for this point */
-    bool    m_showPointName;
+    bool m_showPointName;
 
 private:
-    VPointFData &operator=(const VPointFData &) Q_DECL_EQ_DELETE;
+    VPointFData& operator=(const VPointFData&) Q_DECL_EQ_DELETE;
 };
 
-VPointFData::~VPointFData()
-{}
+VPointFData::~VPointFData() {}
 
 QT_WARNING_POP
 
-#endif // VPOINTF_P_H
+#endif   // VPOINTF_P_H

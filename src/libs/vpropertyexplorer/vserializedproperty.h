@@ -28,8 +28,7 @@
 #include "vproperty.h"
 #include "vpropertyset.h"
 
-namespace VPE
-{
+namespace VPE {
 
 class VSerializedProperty
 {
@@ -62,6 +61,6 @@ private:
     void initChildren(const VProperty* property, const VPropertySet* set);
 };
 
-}
+}   // namespace VPE
 
-#endif // VSERIALIZEDPROPERTY_H
+#endif   // VSERIALIZEDPROPERTY_H

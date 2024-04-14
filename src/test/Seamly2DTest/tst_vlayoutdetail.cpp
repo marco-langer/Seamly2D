@@ -55,10 +55,9 @@
 #include <QtDebug>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VLayoutDetail::TST_VLayoutDetail(QObject *parent)
-    :AbstractTest(parent)
-{
-}
+TST_VLayoutDetail::TST_VLayoutDetail(QObject* parent)
+    : AbstractTest(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VLayoutDetail::RemoveDublicates() const
@@ -76,7 +75,6 @@ void TST_VLayoutDetail::RemoveDublicates() const
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VLayoutDetail::Case1() const
 {
-
     VLayoutPiece piece = VLayoutPiece();
     piece.SetCountourPoints(InputPointsCase1());
 
@@ -111,7 +109,7 @@ QVector<QPointF> TST_VLayoutDetail::InputPointsCase1() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> TST_VLayoutDetail::OutputPointsCase1() const //-V524
+QVector<QPointF> TST_VLayoutDetail::OutputPointsCase1() const   //-V524
 {
     QVector<QPointF> points;
 
@@ -153,9 +151,9 @@ QVector<QPointF> TST_VLayoutDetail::InputPointsCase2() const
 
     points += QPointF(557.0, -94.0);
     points += QPointF(760.0, -53.0);
-    points += QPointF(760.0, -53.0);// Need delete this part
-    points += QPointF(760.0, -53.0);// Need delete this part
-    points += QPointF(760.0, -53.0);// Need delete this part
+    points += QPointF(760.0, -53.0);   // Need delete this part
+    points += QPointF(760.0, -53.0);   // Need delete this part
+    points += QPointF(760.0, -53.0);   // Need delete this part
     points += QPointF(661.0, 411.0);
     points += QPointF(708.0, 467.0);
     points += QPointF(366.0, 845.0);
@@ -192,17 +190,17 @@ QVector<QPointF> TST_VLayoutDetail::InputPointsCase3() const
 {
     QVector<QPointF> points;
 
-    points += QPointF(557.0, -94.0);// Only one point
+    points += QPointF(557.0, -94.0);   // Only one point
 
     return points;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> TST_VLayoutDetail::OutputPointsCase3() const //-V524
+QVector<QPointF> TST_VLayoutDetail::OutputPointsCase3() const   //-V524
 {
     QVector<QPointF> points;
 
-    points += QPointF(557.0, -94.0);// Only one point
+    points += QPointF(557.0, -94.0);   // Only one point
 
     return points;
 }

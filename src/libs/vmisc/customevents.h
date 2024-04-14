@@ -52,13 +52,18 @@
 #ifndef CUSTOMEVENTS_H
 #define CUSTOMEVENTS_H
 
-#include <qcompilerdetection.h>
 #include <QEvent>
+#include <qcompilerdetection.h>
 
-enum CustomEventType { UndoEventType = 1, LiteParseEventType = 2 };
+enum CustomEventType
+{
+    UndoEventType = 1,
+    LiteParseEventType = 2
+};
 
 // Define undo event identifier
-const QEvent::Type UNDO_EVENT = static_cast<QEvent::Type>(QEvent::User + CustomEventType::UndoEventType);
+const QEvent::Type UNDO_EVENT =
+    static_cast<QEvent::Type>(QEvent::User + CustomEventType::UndoEventType);
 
 class UndoEvent : public QEvent
 {
@@ -67,10 +72,11 @@ public:
         : QEvent(UNDO_EVENT)
     {}
 
-    virtual ~UndoEvent() =default;
+    virtual ~UndoEvent() = default;
 };
 
-const QEvent::Type LITE_PARSE_EVENT = static_cast<QEvent::Type>(QEvent::User + CustomEventType::LiteParseEventType);
+const QEvent::Type LITE_PARSE_EVENT =
+    static_cast<QEvent::Type>(QEvent::User + CustomEventType::LiteParseEventType);
 
 class LiteParseEvent : public QEvent
 {
@@ -79,7 +85,7 @@ public:
         : QEvent(LITE_PARSE_EVENT)
     {}
 
-    virtual ~LiteParseEvent() =default;
+    virtual ~LiteParseEvent() = default;
 };
 
-#endif // CUSTOMEVENTS_H
+#endif   // CUSTOMEVENTS_H

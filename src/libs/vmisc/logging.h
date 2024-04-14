@@ -15,7 +15,7 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
-#include <QtGlobal>
 #include <QLoggingCategory>
+#include <QtGlobal>
 
-#endif // LOGGING_H
+#endif   // LOGGING_H

@@ -25,8 +25,7 @@
 
 #include "vproperty_p.h"
 
-namespace VPE
-{
+namespace VPE {
 
 class VFilePropertyPrivate : public VPropertyPrivate
 {
@@ -40,18 +39,23 @@ public:
 
     //! Constructor passing name and type
     VFilePropertyPrivate(const QString& name, QVariant::Type type, bool directory = false)
-        : VPropertyPrivate(name, type), FileFilters(), Directory(directory) {}
+        : VPropertyPrivate(name, type)
+        , FileFilters()
+        , Directory(directory)
+    {}
 
     //! Constructor
     VFilePropertyPrivate()
-        : VPropertyPrivate(), FileFilters(), Directory(false) {}
+        : VPropertyPrivate()
+        , FileFilters()
+        , Directory(false)
+    {}
 
     virtual ~VFilePropertyPrivate() Q_DECL_OVERRIDE;
 };
 
-VFilePropertyPrivate::~VFilePropertyPrivate()
-{}
+VFilePropertyPrivate::~VFilePropertyPrivate() {}
 
-}
+}   // namespace VPE
 
-#endif // VFILEPROPERTY_P_H
+#endif   // VFILEPROPERTY_P_H

@@ -64,7 +64,6 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class CustomVariableData : public QSharedData
 {
 public:
-
     CustomVariableData()
         : index(NULL_ID)
         , formula(QString())
@@ -72,14 +71,14 @@ public:
         , data(VContainer(nullptr, nullptr))
     {}
 
-    CustomVariableData(VContainer *data, quint32 index, const QString &formula, bool ok)
+    CustomVariableData(VContainer* data, quint32 index, const QString& formula, bool ok)
         : index(index)
         , formula(formula)
         , formulaOk(ok)
         , data(*data)
     {}
 
-    CustomVariableData(const CustomVariableData &variable)
+    CustomVariableData(const CustomVariableData& variable)
         : QSharedData(variable)
         , index(variable.index)
         , formula(variable.formula)
@@ -87,21 +86,20 @@ public:
         , data(variable.data)
     {}
 
-    virtual  ~CustomVariableData();
+    virtual ~CustomVariableData();
 
     /** @brief id each variable have unique identificator */
-    quint32    index;
-    QString    formula;
-    bool       formulaOk;
+    quint32 index;
+    QString formula;
+    bool formulaOk;
     VContainer data;
 
 private:
-    CustomVariableData &operator=(const CustomVariableData &) Q_DECL_EQ_DELETE;
+    CustomVariableData& operator=(const CustomVariableData&) Q_DECL_EQ_DELETE;
 };
 
-CustomVariableData::~CustomVariableData()
-{}
+CustomVariableData::~CustomVariableData() {}
 
 QT_WARNING_POP
 
-#endif // CUSTOM_VARIABLE_P_H
+#endif   // CUSTOM_VARIABLE_P_H

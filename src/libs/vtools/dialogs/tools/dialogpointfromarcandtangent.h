@@ -52,19 +52,18 @@
 #ifndef DIALOGPOINTFROMARCANDTANGENT_H
 #define DIALOGPOINTFROMARCANDTANGENT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogPointFromArcAndTangent;
+namespace Ui {
+class DialogPointFromArcAndTangent;
 }
 
 class DialogPointFromArcAndTangent : public DialogTool
@@ -72,35 +71,36 @@ class DialogPointFromArcAndTangent : public DialogTool
     Q_OBJECT
 
 public:
-    DialogPointFromArcAndTangent(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogPointFromArcAndTangent(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogPointFromArcAndTangent();
 
 
-    void           SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    quint32        GetArcId() const;
-    void           SetArcId(const quint32 &value);
+    quint32 GetArcId() const;
+    void SetArcId(const quint32& value);
 
-    quint32        GetTangentPointId() const;
-    void           SetTangentPointId(const quint32 &value);
+    quint32 GetTangentPointId() const;
+    void SetTangentPointId(const quint32& value);
 
     CrossCirclesPoint GetCrossCirclesPoint() const;
-    void              setCirclesCrossPoint(const CrossCirclesPoint &p);
+    void setCirclesCrossPoint(const CrossCirclesPoint& p);
 
 public slots:
-    virtual void   ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void   ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void   SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogPointFromArcAndTangent)
 
-    Ui::DialogPointFromArcAndTangent *ui;
+    Ui::DialogPointFromArcAndTangent* ui;
 };
 
-#endif // DIALOGPOINTFROMARCANDTANGENT_H
+#endif   // DIALOGPOINTFROMARCANDTANGENT_H

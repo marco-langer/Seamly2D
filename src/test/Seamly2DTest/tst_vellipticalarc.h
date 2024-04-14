@@ -35,7 +35,7 @@ class TST_VEllipticalArc : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_VEllipticalArc(QObject *parent = nullptr);
+    explicit TST_VEllipticalArc(QObject* parent = nullptr);
 
 private slots:
     void CompareTwoWays_data();
@@ -59,4 +59,4 @@ private:
     void TestData();
 };
 
-#endif // TST_VELLIPTICALARC_H
+#endif   // TST_VELLIPTICALARC_H

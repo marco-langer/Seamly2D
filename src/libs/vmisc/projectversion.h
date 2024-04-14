@@ -67,23 +67,23 @@ extern const QString APP_VERSION_STR;
 #define APP_VERSION ((MAJOR_VERSION << 16) + (MINOR_VERSION << 8) + DEBUG_VERSION)
 
 // Start: Do not edit here, use scripts/version.sh to update
-#define VER_FILEVERSION 0,6,0,1
+#define VER_FILEVERSION     0, 6, 0, 1
 #define VER_FILEVERSION_STR "0.6.0.1"
 // End: Do not edit here
 
-#define V_PRERELEASE // Mark prerelease builds
+#define V_PRERELEASE   // Mark prerelease builds
 
-#define VER_PRODUCTVERSION          VER_FILEVERSION
-#define VER_PRODUCTVERSION_STR      VER_FILEVERSION_STR
+#define VER_PRODUCTVERSION     VER_FILEVERSION
+#define VER_PRODUCTVERSION_STR VER_FILEVERSION_STR
 
-#define VER_INTERNALNAME_2D_STR     "Seamly2D"
-#define VER_COMPANYNAME_STR         "Seamly2DTeam"
-#define VER_LEGALCOPYRIGHT_STR      "Copyright © 2014-2022 Seamly2D Team"
-#define VER_LEGALTRADEMARKS1_STR    "All Rights Reserved"
-#define VER_LEGALTRADEMARKS2_STR    VER_LEGALTRADEMARKS1_STR
-#define VER_COMPANYDOMAIN_STR       "https://seamly.io"
+#define VER_INTERNALNAME_2D_STR  "Seamly2D"
+#define VER_COMPANYNAME_STR      "Seamly2DTeam"
+#define VER_LEGALCOPYRIGHT_STR   "Copyright © 2014-2022 Seamly2D Team"
+#define VER_LEGALTRADEMARKS1_STR "All Rights Reserved"
+#define VER_LEGALTRADEMARKS2_STR VER_LEGALTRADEMARKS1_STR
+#define VER_COMPANYDOMAIN_STR    "https://seamly.io"
 
 QString compilerString();
 QString buildCompatibilityString();
 
-#endif // PROJECTVERSION_H
+#endif   // PROJECTVERSION_H

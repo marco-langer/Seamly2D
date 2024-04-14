@@ -53,29 +53,27 @@
 
 #include <QPainterPath>
 
-#include "../vmisc/def.h"
-#include "../ifc/ifcdef.h"
 #include "../ifc/exception/vexception.h"
+#include "../ifc/ifcdef.h"
+#include "../vmisc/def.h"
 #include "vpointf.h"
 #include "vspline.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractCubicBezierPath::VAbstractCubicBezierPath(const GOType &type, const quint32 &idObject, const Draw &mode)
+VAbstractCubicBezierPath::VAbstractCubicBezierPath(
+    const GOType& type, const quint32& idObject, const Draw& mode)
     : VAbstractBezier(type, idObject, mode)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractCubicBezierPath::VAbstractCubicBezierPath(const VAbstractCubicBezierPath &curve)
+VAbstractCubicBezierPath::VAbstractCubicBezierPath(const VAbstractCubicBezierPath& curve)
     : VAbstractBezier(curve)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractCubicBezierPath &VAbstractCubicBezierPath::operator=(const VAbstractCubicBezierPath &curve)
+VAbstractCubicBezierPath& VAbstractCubicBezierPath::operator=(const VAbstractCubicBezierPath& curve)
 {
-    if ( &curve == this )
-    {
+    if (&curve == this) {
         return *this;
     }
     VAbstractBezier::operator=(curve);
@@ -83,9 +81,7 @@ VAbstractCubicBezierPath &VAbstractCubicBezierPath::operator=(const VAbstractCub
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractCubicBezierPath::~VAbstractCubicBezierPath()
-{
-}
+VAbstractCubicBezierPath::~VAbstractCubicBezierPath() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -95,8 +91,7 @@ VAbstractCubicBezierPath::~VAbstractCubicBezierPath()
 QPainterPath VAbstractCubicBezierPath::GetPath() const
 {
     QPainterPath painterPath;
-    for (qint32 i = 1; i <= CountSubSpl(); ++i)
-    {
+    for (qint32 i = 1; i <= CountSubSpl(); ++i) {
         painterPath.addPath(GetSpline(i).GetPath());
     }
     return painterPath;
@@ -110,10 +105,8 @@ QPainterPath VAbstractCubicBezierPath::GetPath() const
 QVector<QPointF> VAbstractCubicBezierPath::getPoints() const
 {
     QVector<QPointF> pathPoints;
-    for (qint32 i = 1; i <= CountSubSpl(); ++i)
-    {
-        if (not pathPoints.isEmpty())
-        {
+    for (qint32 i = 1; i <= CountSubSpl(); ++i) {
+        if (not pathPoints.isEmpty()) {
             pathPoints.removeLast();
         }
 
@@ -130,8 +123,7 @@ QVector<QPointF> VAbstractCubicBezierPath::getPoints() const
 qreal VAbstractCubicBezierPath::GetLength() const
 {
     qreal length = 0;
-    for (qint32 i = 1; i <= CountSubSpl(); ++i)
-    {
+    for (qint32 i = 1; i <= CountSubSpl(); ++i) {
         length += GetSpline(i).GetLength();
     }
     return length;
@@ -141,22 +133,19 @@ qreal VAbstractCubicBezierPath::GetLength() const
 QVector<DirectionArrow> VAbstractCubicBezierPath::DirectionArrows() const
 {
     QVector<DirectionArrow> arrows;
-    for (qint32 i = 1; i <= CountSubSpl(); ++i)
-    {
+    for (qint32 i = 1; i <= CountSubSpl(); ++i) {
         arrows += GetSpline(i).DirectionArrows();
     }
     return arrows;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VAbstractCubicBezierPath::Segment(const QPointF &p) const
+int VAbstractCubicBezierPath::Segment(const QPointF& p) const
 {
     int index = -1;
-    for (qint32 i = 1; i <= CountSubSpl(); ++i)
-    {
+    for (qint32 i = 1; i <= CountSubSpl(); ++i) {
         const qreal t = GetSpline(i).ParamT(p);
-        if (qFuzzyIsNull(t) || not qFuzzyCompare(t, -1))
-        {
+        if (qFuzzyIsNull(t) || not qFuzzyCompare(t, -1)) {
             index = i;
             break;
         }
@@ -166,12 +155,9 @@ int VAbstractCubicBezierPath::Segment(const QPointF &p) const
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
- * @brief CutSplinePath cut spline path into two. This method don't return two spline path. You must create spline
- * paths by yourself.
- * Example:
- * QPointF spl1p2, spl1p3, spl2p2, spl2p3;
- * qint32 p1 = 0, p2 = 0;
- * QPointF point = splPath->CutSplinePath(length, p1, p2, spl1p2, spl1p3, spl2p2, spl2p3);
+ * @brief CutSplinePath cut spline path into two. This method don't return two spline path. You must
+ * create spline paths by yourself. Example: QPointF spl1p2, spl1p3, spl2p2, spl2p3; qint32 p1 = 0,
+ * p2 = 0; QPointF point = splPath->CutSplinePath(length, p1, p2, spl1p2, spl1p3, spl2p2, spl2p3);
  *
  * VSplinePoint splP1 = splPath->at(p1);
  * VSplinePoint splP2 = splPath->at(p2);
@@ -186,20 +172,24 @@ int VAbstractCubicBezierPath::Segment(const QPointF &p) const
  * @param spl2p3 second control point second spline.
  * @return cutting point.
  */
-QPointF VAbstractCubicBezierPath::CutSplinePath(qreal length, qint32 &p1, qint32 &p2, QPointF &spl1p2, QPointF &spl1p3,
-                                                QPointF &spl2p2, QPointF &spl2p3) const
+QPointF VAbstractCubicBezierPath::CutSplinePath(
+    qreal length,
+    qint32& p1,
+    qint32& p2,
+    QPointF& spl1p2,
+    QPointF& spl1p3,
+    QPointF& spl2p2,
+    QPointF& spl2p3) const
 {
-    if (CountSubSpl() < 1)
-    {
+    if (CountSubSpl() < 1) {
         throw VException(tr("Can't cut this spline"));
     }
 
-    //Always need return two spline paths, so we must correct wrong length.
+    // Always need return two spline paths, so we must correct wrong length.
     const qreal minLength = ToPixel(1, Unit::Mm);
     qreal fullLength = GetLength();
 
-    if (fullLength <= minLength)
-    {
+    if (fullLength <= minLength) {
         p1 = p2 = -1;
         spl1p2 = spl1p3 = spl2p2 = spl2p3 = QPointF();
         return QPointF();
@@ -207,24 +197,19 @@ QPointF VAbstractCubicBezierPath::CutSplinePath(qreal length, qint32 &p1, qint32
 
     const qreal maxLength = fullLength - minLength;
 
-    if (length < minLength)
-    {
+    if (length < minLength) {
         length = minLength;
-    }
-    else if (length > maxLength)
-    {
+    } else if (length > maxLength) {
         length = maxLength;
     }
 
     fullLength = 0;
-    for (qint32 i = 1; i <= CountSubSpl(); ++i)
-    {
+    for (qint32 i = 1; i <= CountSubSpl(); ++i) {
         const VSpline spl = GetSpline(i);
         const qreal splLength = spl.GetLength();
         fullLength += splLength;
-        if (fullLength > length)
-        {
-            p1 = i-1;
+        if (fullLength > length) {
+            p1 = i - 1;
             p2 = i;
             return spl.CutSpline(length - (fullLength - splLength), spl1p2, spl1p3, spl2p2, spl2p3);
         }
@@ -240,19 +225,16 @@ QPointF VAbstractCubicBezierPath::CutSplinePath(qreal length, qint32 &p1, qint32
  * @param toolName first part of name. Like 'Spline path' or 'Cubic Bezier path'.
  * @return name of curve for history records.
  */
-QString VAbstractCubicBezierPath::NameForHistory(const QString &toolName) const
+QString VAbstractCubicBezierPath::NameForHistory(const QString& toolName) const
 {
     QString name = toolName;
-    if (CountPoints() > 0)
-    {
+    if (CountPoints() > 0) {
         name += QString(" %1").arg(FirstPoint().name());
-        if (CountSubSpl() >= 1)
-        {
+        if (CountSubSpl() >= 1) {
             name += QString("_%1").arg(LastPoint().name());
         }
 
-        if (GetDuplicate() > 0)
-        {
+        if (GetDuplicate() > 0) {
             name += QString("_%1").arg(GetDuplicate());
         }
     }
@@ -263,16 +245,13 @@ QString VAbstractCubicBezierPath::NameForHistory(const QString &toolName) const
 void VAbstractCubicBezierPath::CreateName()
 {
     QString name;
-    if (CountPoints() > 0)
-    {
+    if (CountPoints() > 0) {
         name = splPath;
         name.append(QString("_%1").arg(FirstPoint().name()));
-        if (CountSubSpl() >= 1)
-        {
+        if (CountSubSpl() >= 1) {
             name.append(QString("_%1").arg(LastPoint().name()));
 
-            if (GetDuplicate() > 0)
-            {
+            if (GetDuplicate() > 0) {
                 name += QString("_%1").arg(GetDuplicate());
             }
         }

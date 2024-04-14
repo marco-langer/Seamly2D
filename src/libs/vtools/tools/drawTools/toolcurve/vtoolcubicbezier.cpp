@@ -60,11 +60,13 @@
 #include <Qt>
 #include <new>
 
-#include "../../../dialogs/tools/dialogtool.h"
 #include "../../../dialogs/tools/dialogcubicbezier.h"
-#include "../../../visualization/visualization.h"
+#include "../../../dialogs/tools/dialogtool.h"
 #include "../../../visualization/path/vistoolcubicbezier.h"
+#include "../../../visualization/visualization.h"
+#include "../../vabstracttool.h"
 #include "../ifc/exception/vexception.h"
+#include "../vdrawtool.h"
 #include "../vgeometry/../ifc/ifcdef.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vcubicbezier.h"
@@ -73,20 +75,22 @@
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "../../vabstracttool.h"
-#include "../vdrawtool.h"
 #include "vabstractspline.h"
 
 const QString VToolCubicBezier::ToolType = QStringLiteral("cubicBezier");
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolCubicBezier::VToolCubicBezier(VAbstractPattern *doc, VContainer *data, quint32 id,
-                                   const Source &typeCreation, QGraphicsItem *parent)
-    :VAbstractSpline(doc, data, id, parent)
+VToolCubicBezier::VToolCubicBezier(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    const Source& typeCreation,
+    QGraphicsItem* parent)
+    : VAbstractSpline(doc, data, id, parent)
 {
     sceneType = SceneObject::Spline;
 
-    this->setFlag(QGraphicsItem::ItemIsFocusable, true);// For keyboard input focus
+    this->setFlag(QGraphicsItem::ItemIsFocusable, true);   // For keyboard input focus
 
     ToolCreation(typeCreation);
 }
@@ -105,50 +109,52 @@ void VToolCubicBezier::setDialog()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolCubicBezier *VToolCubicBezier::Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene,
-                                           VAbstractPattern *doc, VContainer *data)
+VToolCubicBezier* VToolCubicBezier::Create(
+    QSharedPointer<DialogTool> dialog,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data)
 {
     SCASSERT(not dialog.isNull())
     QSharedPointer<DialogCubicBezier> dialogTool = dialog.objectCast<DialogCubicBezier>();
     SCASSERT(not dialogTool.isNull())
 
-    VCubicBezier *spline = new VCubicBezier(dialogTool->GetSpline());
+    VCubicBezier* spline = new VCubicBezier(dialogTool->GetSpline());
     spline->setLineColor(dialogTool->getLineColor());
     spline->SetPenStyle(dialogTool->getPenStyle());
     spline->setLineWeight(dialogTool->getLineWeight());
 
     auto spl = Create(0, spline, scene, doc, data, Document::FullParse, Source::FromGui);
 
-    if (spl != nullptr)
-    {
+    if (spl != nullptr) {
         spl->m_dialog = dialogTool;
     }
     return spl;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolCubicBezier *VToolCubicBezier::Create(const quint32 _id, VCubicBezier *spline, VMainGraphicsScene *scene,
-                                           VAbstractPattern *doc, VContainer *data, const Document &parse,
-                                           const Source &typeCreation)
+VToolCubicBezier* VToolCubicBezier::Create(
+    const quint32 _id,
+    VCubicBezier* spline,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data,
+    const Document& parse,
+    const Source& typeCreation)
 {
     quint32 id = _id;
-    if (typeCreation == Source::FromGui)
-    {
+    if (typeCreation == Source::FromGui) {
         id = data->AddGObject(spline);
         data->AddSpline(data->GeometricObject<VAbstractBezier>(id), id);
-    }
-    else
-    {
+    } else {
         data->UpdateGObject(id, spline);
         data->AddSpline(data->GeometricObject<VAbstractBezier>(id), id);
-        if (parse != Document::FullParse)
-        {
+        if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }
     }
 
-    if (parse == Document::FullParse)
-    {
+    if (parse == Document::FullParse) {
         VDrawTool::AddRecord(id, Tool::CubicBezier, doc);
         auto _spl = new VToolCubicBezier(doc, data, id, typeCreation);
         scene->addItem(_spl);
@@ -199,7 +205,7 @@ VCubicBezier VToolCubicBezier::getSpline() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCubicBezier::setSpline(const VCubicBezier &spl)
+void VToolCubicBezier::setSpline(const VCubicBezier& spl)
 {
     QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
     QSharedPointer<VCubicBezier> spline = qSharedPointerDynamicCast<VCubicBezier>(obj);
@@ -214,18 +220,15 @@ void VToolCubicBezier::ShowVisualization(bool show)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCubicBezier::showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id)
+void VToolCubicBezier::showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id)
 {
     Q_UNUSED(id)
 
-    try
-    {
+    try {
         ContextMenu<DialogCubicBezier>(event);
-    }
-    catch(const VExceptionToolWasDeleted &error)
-    {
+    } catch (const VExceptionToolWasDeleted& error) {
         Q_UNUSED(error)
-        return;//Leave this method immediately!!!
+        return;   // Leave this method immediately!!!
     }
 }
 
@@ -240,7 +243,7 @@ void VToolCubicBezier::RemoveReferens()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCubicBezier::SaveDialog(QDomElement &domElement)
+void VToolCubicBezier::SaveDialog(QDomElement& domElement)
 {
     SCASSERT(not m_dialog.isNull())
     auto dialogTool = qobject_cast<DialogCubicBezier*>(m_dialog);
@@ -249,13 +252,13 @@ void VToolCubicBezier::SaveDialog(QDomElement &domElement)
     const VCubicBezier spl = dialogTool->GetSpline();
 
     SetSplineAttributes(domElement, spl);
-    doc->SetAttribute(domElement, AttrColor,      dialogTool->getLineColor());
+    doc->SetAttribute(domElement, AttrColor, dialogTool->getLineColor());
     doc->SetAttribute(domElement, AttrLineWeight, dialogTool->getLineWeight());
-    doc->SetAttribute(domElement, AttrPenStyle,   dialogTool->getPenStyle());
+    doc->SetAttribute(domElement, AttrPenStyle, dialogTool->getPenStyle());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCubicBezier::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void VToolCubicBezier::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     VAbstractSpline::SaveOptions(tag, obj);
 
@@ -267,12 +270,12 @@ void VToolCubicBezier::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &o
 //---------------------------------------------------------------------------------------------------------------------
 void VToolCubicBezier::SetVisualization()
 {
-    if (not vis.isNull())
-    {
-        auto visual = qobject_cast<VisToolCubicBezier *>(vis);
+    if (not vis.isNull()) {
+        auto visual = qobject_cast<VisToolCubicBezier*>(vis);
         SCASSERT(visual != nullptr)
 
-        const QSharedPointer<VCubicBezier> spl = VAbstractTool::data.GeometricObject<VCubicBezier>(m_id);
+        const QSharedPointer<VCubicBezier> spl =
+            VAbstractTool::data.GeometricObject<VCubicBezier>(m_id);
         visual->setObject1Id(spl->GetP1().id());
         visual->setObject2Id(spl->GetP2().id());
         visual->setObject3Id(spl->GetP3().id());
@@ -287,31 +290,28 @@ void VToolCubicBezier::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 void VToolCubicBezier::RefreshGeometry()
 {
-    const QSharedPointer<VCubicBezier> spl = VAbstractTool::data.GeometricObject<VCubicBezier>(m_id);
+    const QSharedPointer<VCubicBezier> spl =
+        VAbstractTool::data.GeometricObject<VCubicBezier>(m_id);
     this->setPath(spl->GetPath());
 
     SetVisualization();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCubicBezier::SetSplineAttributes(QDomElement &domElement, const VCubicBezier &spl)
+void VToolCubicBezier::SetSplineAttributes(QDomElement& domElement, const VCubicBezier& spl)
 {
     SCASSERT(doc != nullptr)
 
-    doc->SetAttribute(domElement, AttrType,    ToolType);
-    doc->SetAttribute(domElement, AttrPoint1,  spl.GetP1().id());
-    doc->SetAttribute(domElement, AttrPoint2,  spl.GetP2().id());
-    doc->SetAttribute(domElement, AttrPoint3,  spl.GetP3().id());
-    doc->SetAttribute(domElement, AttrPoint4,  spl.GetP4().id());
+    doc->SetAttribute(domElement, AttrType, ToolType);
+    doc->SetAttribute(domElement, AttrPoint1, spl.GetP1().id());
+    doc->SetAttribute(domElement, AttrPoint2, spl.GetP2().id());
+    doc->SetAttribute(domElement, AttrPoint3, spl.GetP3().id());
+    doc->SetAttribute(domElement, AttrPoint4, spl.GetP4().id());
 
-    if (spl.GetDuplicate() > 0)
-    {
+    if (spl.GetDuplicate() > 0) {
         doc->SetAttribute(domElement, AttrDuplicate, spl.GetDuplicate());
-    }
-    else
-    {
-        if (domElement.hasAttribute(AttrDuplicate))
-        {
+    } else {
+        if (domElement.hasAttribute(AttrDuplicate)) {
             domElement.removeAttribute(AttrDuplicate);
         }
     }

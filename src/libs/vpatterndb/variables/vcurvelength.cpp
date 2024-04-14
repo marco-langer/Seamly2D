@@ -61,14 +61,15 @@
 
 //---------------------------------------------------------------------------------------------------------------------
 VCurveLength::VCurveLength()
-    :VCurveVariable()
+    : VCurveVariable()
 {
     SetType(VarType::CurveLength);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveLength::VCurveLength(const quint32 &id, const quint32 &parentId, const VAbstractCurve *curve, Unit patternUnit)
-    :VCurveVariable(id, parentId)
+VCurveLength::VCurveLength(
+    const quint32& id, const quint32& parentId, const VAbstractCurve* curve, Unit patternUnit)
+    : VCurveVariable(id, parentId)
 {
     SetType(VarType::CurveLength);
     SCASSERT(curve != nullptr)
@@ -77,9 +78,14 @@ VCurveLength::VCurveLength(const quint32 &id, const quint32 &parentId, const VAb
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveLength::VCurveLength(const quint32 &id, const quint32 &parentId, const QString &baseCurveName, const VSpline &spl,
-                           Unit patternUnit, qint32 segment)
-    :VCurveVariable(id, parentId)
+VCurveLength::VCurveLength(
+    const quint32& id,
+    const quint32& parentId,
+    const QString& baseCurveName,
+    const VSpline& spl,
+    Unit patternUnit,
+    qint32 segment)
+    : VCurveVariable(id, parentId)
 {
     SCASSERT(not baseCurveName.isEmpty())
 
@@ -89,15 +95,14 @@ VCurveLength::VCurveLength(const quint32 &id, const quint32 &parentId, const QSt
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveLength::VCurveLength(const VCurveLength &var)
-    :VCurveVariable(var)
+VCurveLength::VCurveLength(const VCurveLength& var)
+    : VCurveVariable(var)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveLength &VCurveLength::operator=(const VCurveLength &var)
+VCurveLength& VCurveLength::operator=(const VCurveLength& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     VCurveVariable::operator=(var);
@@ -105,5 +110,4 @@ VCurveLength &VCurveLength::operator=(const VCurveLength &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveLength::~VCurveLength()
-{}
+VCurveLength::~VCurveLength() {}

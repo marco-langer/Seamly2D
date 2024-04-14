@@ -27,10 +27,10 @@
 /* Add C++ includes here */
 
 /*In all cases we need include core header for getting defined values*/
-#ifdef QT_CORE_LIB
-#   include <QtCore>
-#endif
+#    ifdef QT_CORE_LIB
+#        include <QtCore>
+#    endif
 
 #endif /*__cplusplus*/
 
-#endif // STABLE_H
+#endif   // STABLE_H

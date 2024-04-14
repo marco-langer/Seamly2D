@@ -56,14 +56,14 @@
 
 #include "../ifcdef.h"
 
-//Q_LOGGING_CATEGORY(vExcep, "v.excep") //Commented because don't use now
+// Q_LOGGING_CATEGORY(vExcep, "v.excep") //Commented because don't use now
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VException constructor exception
  * @param error string with error
  */
-VException::VException(const QString &error)
+VException::VException(const QString& error)
     : QException()
     , error(error)
     , moreInfo(QString())
@@ -76,14 +76,15 @@ VException::VException(const QString &error)
  * @brief VException copy constructor
  * @param e exception
  */
-VException::VException(const VException &error):error(error.WhatUtf8()), moreInfo(error.MoreInformation())
+VException::VException(const VException& error)
+    : error(error.WhatUtf8())
+    , moreInfo(error.MoreInformation())
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VException &VException::operator=(const VException &error)
+VException& VException::operator=(const VException& error)
 {
-    if (&error == this)
-    {
+    if (&error == this) {
         return *this;
     }
     this->error = error.WhatUtf8();
@@ -96,34 +97,27 @@ VException &VException::operator=(const VException &error)
  * @brief ErrorMessage return main error message
  * @return error message
  */
-QString VException::ErrorMessage() const
-{
-    return tr("Exception: %1").arg(error);
-}
+QString VException::ErrorMessage() const { return tr("Exception: %1").arg(error); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief AddMoreInformation add more information for error
  * @param info information
  */
-void VException::AddMoreInformation(const QString &info)
+void VException::AddMoreInformation(const QString& info)
 {
-    if (info.isEmpty())
-    {
+    if (info.isEmpty()) {
         return;
     }
     moreInfo = QString("%1\n%2").arg(moreInfo, info);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VException::MoreInfo(const QString &detInfo) const
+QString VException::MoreInfo(const QString& detInfo) const
 {
-    if (moreInfo.isEmpty() == false)
-    {
+    if (moreInfo.isEmpty() == false) {
         return QString("%1\n%2").arg(moreInfo, detInfo);
-    }
-    else
-    {
+    } else {
         return detInfo;
     }
 }
@@ -133,10 +127,7 @@ QString VException::MoreInfo(const QString &detInfo) const
  * @brief DetailedInformation return detailed information about error
  * @return detailed information
  */
-QString VException::DetailedInformation() const
-{
-    return moreInfo;
-}
+QString VException::DetailedInformation() const { return moreInfo; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -144,47 +135,35 @@ QString VException::DetailedInformation() const
  * @return new exception
  */
 // cppcheck-suppress unusedFunction
-VException *VException::clone() const
-{
-    return new VException(*this);
-}
+VException* VException::clone() const { return new VException(*this); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief raise method raise for exception
  */
 // cppcheck-suppress unusedFunction
-Q_NORETURN void VException::raise() const
-{
-    throw *this;
-}
+Q_NORETURN void VException::raise() const { throw *this; }
 
 //---------------------------------------------------------------------------------------------------------------------
-const char* VException::what() const V_NOEXCEPT_EXPR (true)
-{
-    return error.toUtf8().constData();
-}
+const char* VException::what() const V_NOEXCEPT_EXPR(true) { return error.toUtf8().constData(); }
 
 //-----------------------------------------VExceptionToolWasDeleted----------------------------------------------------
-VExceptionToolWasDeleted::VExceptionToolWasDeleted(const QString &error)
+VExceptionToolWasDeleted::VExceptionToolWasDeleted(const QString& error)
     : VException(error)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionToolWasDeleted::VExceptionToolWasDeleted(const VExceptionToolWasDeleted &error)
+VExceptionToolWasDeleted::VExceptionToolWasDeleted(const VExceptionToolWasDeleted& error)
     : VException(error)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionToolWasDeleted &VExceptionToolWasDeleted::operator=(const VExceptionToolWasDeleted &error)
+VExceptionToolWasDeleted& VExceptionToolWasDeleted::operator=(const VExceptionToolWasDeleted& error)
 {
-    if (&error == this)
-    {
+    if (&error == this) {
         return *this;
     }
-    VException::operator = (error);
+    VException::operator=(error);
     return *this;
 }
 
@@ -193,13 +172,10 @@ VExceptionToolWasDeleted &VExceptionToolWasDeleted::operator=(const VExceptionTo
  * @brief raise method raise for exception
  */
 // cppcheck-suppress unusedFunction
-Q_NORETURN void VExceptionToolWasDeleted::raise() const
-{
-    throw *this;
-}
+Q_NORETURN void VExceptionToolWasDeleted::raise() const { throw *this; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionToolWasDeleted *VExceptionToolWasDeleted::clone() const
+VExceptionToolWasDeleted* VExceptionToolWasDeleted::clone() const
 {
     return new VExceptionToolWasDeleted(*this);
 }

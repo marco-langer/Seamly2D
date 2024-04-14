@@ -60,21 +60,25 @@ class VisToolMirrorByLine : public VisOperation
 {
     Q_OBJECT
 public:
-    explicit VisToolMirrorByLine(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolMirrorByLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolMirrorByLine() = default;
 
-    virtual void   RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
     void setFirstLinePointId(quint32 value);
     void setSecondLinePointId(quint32 value);
 
-    virtual int type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolMirrorByLine)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolMirrorByLine)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolMirrorByLine)
-    quint32         object2Id;
-    VScaledEllipse *point1;
-    VScaledEllipse *point2;
+    quint32 object2Id;
+    VScaledEllipse* point1;
+    VScaledEllipse* point2;
 };
 
-#endif // VISTOOLMIRRORBYLINE_H
+#endif   // VISTOOLMIRRORBYLINE_H

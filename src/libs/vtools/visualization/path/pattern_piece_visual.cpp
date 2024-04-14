@@ -51,12 +51,12 @@
  *************************************************************************/
 
 #include "pattern_piece_visual.h"
-#include "../vpatterndb/vpiecepath.h"
 #include "../vgeometry/vpointf.h"
+#include "../vpatterndb/vpiecepath.h"
 #include "../vwidgets/scalesceneitems.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-PatternPieceVisual::PatternPieceVisual(const VContainer *data, QGraphicsItem *parent)
+PatternPieceVisual::PatternPieceVisual(const VContainer* data, QGraphicsItem* parent)
     : VisPath(data, parent)
     , m_points()
     , m_line1(nullptr)
@@ -72,15 +72,18 @@ void PatternPieceVisual::RefreshGeometry()
 {
     HideAllItems();
 
-    if (m_piece.GetPath().CountNodes() > 0)
-    {
-        DrawPath(this, m_piece.MainPathPath(Visualization::data), mainColor, Qt::SolidLine, Qt::RoundCap);
+    if (m_piece.GetPath().CountNodes() > 0) {
+        DrawPath(
+            this,
+            m_piece.MainPathPath(Visualization::data),
+            mainColor,
+            Qt::SolidLine,
+            Qt::RoundCap);
 
         const QVector<VPointF> nodes = m_piece.MainPathNodePoints(Visualization::data);
 
-        for (int i = 0; i < nodes.size(); ++i)
-        {
-            VScaledEllipse *point = GetPoint(static_cast<quint32>(i), mainColor);
+        for (int i = 0; i < nodes.size(); ++i) {
+            VScaledEllipse* point = GetPoint(static_cast<quint32>(i), mainColor);
             point->setBrush(QBrush(mainColor, Qt::SolidPattern));
             DrawPoint(point, nodes.at(i).toQPointF(), mainColor);
         }
@@ -88,13 +91,10 @@ void PatternPieceVisual::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PatternPieceVisual::SetPiece(const VPiece &piece)
-{
-    m_piece = piece;
-}
+void PatternPieceVisual::SetPiece(const VPiece& piece) { m_piece = piece; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VScaledEllipse *PatternPieceVisual::GetPoint(quint32 i, const QColor &color)
+VScaledEllipse* PatternPieceVisual::GetPoint(quint32 i, const QColor& color)
 {
     return GetPointItem(m_points, i, color, this);
 }
@@ -102,20 +102,16 @@ VScaledEllipse *PatternPieceVisual::GetPoint(quint32 i, const QColor &color)
 //---------------------------------------------------------------------------------------------------------------------
 void PatternPieceVisual::HideAllItems()
 {
-    if (m_line1)
-    {
+    if (m_line1) {
         m_line1->setVisible(false);
     }
 
-    if (m_line2)
-    {
+    if (m_line2) {
         m_line2->setVisible(false);
     }
 
-    for (int i=0; i < m_points.size(); ++i)
-    {
-        if (QGraphicsEllipseItem *item = m_points.at(i))
-        {
+    for (int i = 0; i < m_points.size(); ++i) {
+        if (QGraphicsEllipseItem* item = m_points.at(i)) {
             item->setVisible(false);
         }
     }

@@ -25,33 +25,33 @@
  **
  *************************************************************************/
 
- /************************************************************************
- **
- **  @file   VVITConverter.cpp
- **  @author Roman Telezhynskyi <dismine(at)gmail.com>
- **  @date   15 7, 2015
- **
- **  @brief
- **  @copyright
- **  This source code is part of the Valentina project, a pattern making
- **  program, whose allow create and modeling patterns of clothing.
- **  Copyright (C) 2015 Valentina project
- **  <https://bitbucket.org/dismine/valentina> All Rights Reserved.
- **
- **  Valentina is free software: you can redistribute it and/or modify
- **  it under the terms of the GNU General Public License as published by
- **  the Free Software Foundation, either version 3 of the License, or
- **  (at your option) any later version.
- **
- **  Valentina is distributed in the hope that it will be useful,
- **  but WITHOUT ANY WARRANTY; without even the implied warranty of
- **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- **  GNU General Public License for more details.
- **
- **  You should have received a copy of the GNU General Public License
- **  along with Valentina.  If not, see <http://www.gnu.org/licenses/>.
- **
- *************************************************************************/
+/************************************************************************
+**
+**  @file   VVITConverter.cpp
+**  @author Roman Telezhynskyi <dismine(at)gmail.com>
+**  @date   15 7, 2015
+**
+**  @brief
+**  @copyright
+**  This source code is part of the Valentina project, a pattern making
+**  program, whose allow create and modeling patterns of clothing.
+**  Copyright (C) 2015 Valentina project
+**  <https://bitbucket.org/dismine/valentina> All Rights Reserved.
+**
+**  Valentina is free software: you can redistribute it and/or modify
+**  it under the terms of the GNU General Public License as published by
+**  the Free Software Foundation, either version 3 of the License, or
+**  (at your option) any later version.
+**
+**  Valentina is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+**
+**  You should have received a copy of the GNU General Public License
+**  along with Valentina.  If not, see <http://www.gnu.org/licenses/>.
+**
+*************************************************************************/
 
 #include "multi_size_converter.h"
 
@@ -81,16 +81,17 @@
 
 const QString MultiSizeConverter::MeasurementMinVerStr = QStringLiteral("0.3.0");
 const QString MultiSizeConverter::MeasurementMaxVerStr = QStringLiteral("0.4.5");
-const QString MultiSizeConverter::CurrentSchema        = QStringLiteral("://schema/multi_size_measurements/v0.4.5.xsd");
+const QString MultiSizeConverter::CurrentSchema =
+    QStringLiteral("://schema/multi_size_measurements/v0.4.5.xsd");
 
-//MultiSizeConverter::MeasurementMinVer; // <== DON'T FORGET TO UPDATE TOO!!!!
-//MultiSizeConverter::MeasurementMaxVer; // <== DON'T FORGET TO UPDATE TOO!!!!
+// MultiSizeConverter::MeasurementMinVer; // <== DON'T FORGET TO UPDATE TOO!!!!
+// MultiSizeConverter::MeasurementMaxVer; // <== DON'T FORGET TO UPDATE TOO!!!!
 
 static const QString strTagRead_Only = QStringLiteral("read-only");
 
 //---------------------------------------------------------------------------------------------------------------------
-MultiSizeConverter::MultiSizeConverter(const QString &fileName)
-    :AbstractMConverter(fileName)
+MultiSizeConverter::MultiSizeConverter(const QString& fileName)
+    : AbstractMConverter(fileName)
 {
     ValidateInputFile(CurrentSchema);
 }
@@ -98,63 +99,49 @@ MultiSizeConverter::MultiSizeConverter(const QString &fileName)
 //---------------------------------------------------------------------------------------------------------------------
 QString MultiSizeConverter::getSchema(int ver) const
 {
-    switch (ver)
-    {
-        case (0x000300):
-            return QStringLiteral("://schema/multi_size_measurements/v0.3.0.xsd");
-        case (0x000400):
-            return QStringLiteral("://schema/multi_size_measurements/v0.4.0.xsd");
-        case (0x000401):
-            return QStringLiteral("://schema/multi_size_measurements/v0.4.1.xsd");
-        case (0x000402):
-            return QStringLiteral("://schema/multi_size_measurements/v0.4.2.xsd");
-        case (0x000403):
-            return QStringLiteral("://schema/multi_size_measurements/v0.4.3.xsd");
-        case (0x000404):
-            return QStringLiteral("://schema/multi_size_measurements/v0.4.4.xsd");
-        case (0x000405):
-            return CurrentSchema;
-        default:
-            InvalidVersion(ver);
-            break;
+    switch (ver) {
+    case (0x000300): return QStringLiteral("://schema/multi_size_measurements/v0.3.0.xsd");
+    case (0x000400): return QStringLiteral("://schema/multi_size_measurements/v0.4.0.xsd");
+    case (0x000401): return QStringLiteral("://schema/multi_size_measurements/v0.4.1.xsd");
+    case (0x000402): return QStringLiteral("://schema/multi_size_measurements/v0.4.2.xsd");
+    case (0x000403): return QStringLiteral("://schema/multi_size_measurements/v0.4.3.xsd");
+    case (0x000404): return QStringLiteral("://schema/multi_size_measurements/v0.4.4.xsd");
+    case (0x000405): return CurrentSchema;
+    default: InvalidVersion(ver); break;
     }
-    return QString();//unreachable code
+    return QString();   // unreachable code
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MultiSizeConverter::applyPatches()
 {
-    switch (m_ver)
-    {
-        case (0x000300):
-            convertToVer0_4_0();
-            ValidateXML(getSchema(0x000400), m_convertedFileName);
-            V_FALLTHROUGH
-        case (0x000400):
-            convertToVer0_4_1();
-            ValidateXML(getSchema(0x000401), m_convertedFileName);
-            V_FALLTHROUGH
-        case (0x000401):
-            convertToVer0_4_2();
-            ValidateXML(getSchema(0x000402), m_convertedFileName);
-            V_FALLTHROUGH
-        case (0x000402):
-            convertToVer0_4_3();
-            ValidateXML(getSchema(0x000403), m_convertedFileName);
-            V_FALLTHROUGH
-        case (0x000403):
-            convertToVer0_4_4();
-            ValidateXML(getSchema(0x000404), m_convertedFileName);
-            V_FALLTHROUGH
-        case (0x000404):
-            convertToVer0_4_5();
-            ValidateXML(getSchema(0x000405), m_convertedFileName);
-            V_FALLTHROUGH
-        case (0x000405):
-            break;
-        default:
-            InvalidVersion(m_ver);
-            break;
+    switch (m_ver) {
+    case (0x000300):
+        convertToVer0_4_0();
+        ValidateXML(getSchema(0x000400), m_convertedFileName);
+        V_FALLTHROUGH
+    case (0x000400):
+        convertToVer0_4_1();
+        ValidateXML(getSchema(0x000401), m_convertedFileName);
+        V_FALLTHROUGH
+    case (0x000401):
+        convertToVer0_4_2();
+        ValidateXML(getSchema(0x000402), m_convertedFileName);
+        V_FALLTHROUGH
+    case (0x000402):
+        convertToVer0_4_3();
+        ValidateXML(getSchema(0x000403), m_convertedFileName);
+        V_FALLTHROUGH
+    case (0x000403):
+        convertToVer0_4_4();
+        ValidateXML(getSchema(0x000404), m_convertedFileName);
+        V_FALLTHROUGH
+    case (0x000404):
+        convertToVer0_4_5();
+        ValidateXML(getSchema(0x000405), m_convertedFileName);
+        V_FALLTHROUGH
+    case (0x000405): break;
+    default: InvalidVersion(m_ver); break;
     }
 }
 
@@ -169,8 +156,9 @@ void MultiSizeConverter::downgradeToCurrentMaxVersion()
 bool MultiSizeConverter::isReadOnly() const
 {
     // Check if attribute read-only was not changed in file format
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMaxVer == CONVERTER_VERSION_CHECK(0, 4, 5),
-                      "Check attribute read-only.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMaxVer == CONVERTER_VERSION_CHECK(0, 4, 5),
+        "Check attribute read-only.");
 
     // Possibly in future attribute read-only will change position etc.
     // For now position is the same for all supported format versions.
@@ -183,8 +171,9 @@ bool MultiSizeConverter::isReadOnly() const
 void MultiSizeConverter::addNewTagsForVer0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
+        "Time to refactor the code.");
 
     QDomElement rootElement = this->documentElement();
     QDomNode refChild = rootElement.firstChildElement("version");
@@ -208,23 +197,22 @@ void MultiSizeConverter::addNewTagsForVer0_4_0()
 void MultiSizeConverter::removeTagsForVer0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
+        "Time to refactor the code.");
 
     QDomElement rootElement = this->documentElement();
 
     {
         const QDomNodeList nodeList = this->elementsByTagName(QStringLiteral("description"));
-        if (not nodeList.isEmpty())
-        {
+        if (not nodeList.isEmpty()) {
             rootElement.removeChild(nodeList.at(0));
         }
     }
 
     {
         const QDomNodeList nodeList = this->elementsByTagName(QStringLiteral("id"));
-        if (not nodeList.isEmpty())
-        {
+        if (not nodeList.isEmpty()) {
             rootElement.removeChild(nodeList.at(0));
         }
     }
@@ -234,8 +222,9 @@ void MultiSizeConverter::removeTagsForVer0_4_0()
 void MultiSizeConverter::convertMeasurementsToV0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
+        "Time to refactor the code.");
 
     const QString tagBM = QStringLiteral("body-measurements");
 
@@ -243,36 +232,35 @@ void MultiSizeConverter::convertMeasurementsToV0_4_0()
 
     const QMultiMap<QString, QString> names = OldNamesToNewNames_InV0_3_0();
     const QList<QString> keys = names.uniqueKeys();
-    for (int i = 0; i < keys.size(); ++i)
-    {
+    for (int i = 0; i < keys.size(); ++i) {
         qreal resValue = 0;
         qreal resSizeIncrease = 0;
         qreal resHeightIncrease = 0;
 
         // This has the same effect as a .values(), just isn't as elegant
-        const QList<QString> list = names.values( keys.at(i) );
-        foreach(const QString &val, list )
-        {
+        const QList<QString> list = names.values(keys.at(i));
+        foreach (const QString& val, list) {
             const QDomNodeList nodeList = this->elementsByTagName(val);
-            if (nodeList.isEmpty())
-            {
+            if (nodeList.isEmpty()) {
                 continue;
             }
 
             QDomElement m = nodeList.at(0).toElement();
             const qreal value = GetParametrDouble(m, QStringLiteral("value"), "0.0");
-            const qreal size_increase = GetParametrDouble(m, QStringLiteral("size_increase"), "0.0");
-            const qreal height_increase = GetParametrDouble(m, QStringLiteral("height_increase"), "0.0");
+            const qreal size_increase =
+                GetParametrDouble(m, QStringLiteral("size_increase"), "0.0");
+            const qreal height_increase =
+                GetParametrDouble(m, QStringLiteral("height_increase"), "0.0");
 
-            if (not qFuzzyIsNull(value))
-            {
+            if (not qFuzzyIsNull(value)) {
                 resValue = value;
                 resSizeIncrease = size_increase;
                 resHeightIncrease = height_increase;
             }
         }
 
-        bm.appendChild(addMeasurementsVer0_4_0(keys.at(i), resValue, resSizeIncrease, resHeightIncrease));
+        bm.appendChild(
+            addMeasurementsVer0_4_0(keys.at(i), resValue, resSizeIncrease, resHeightIncrease));
     }
 
     QDomElement rootElement = this->documentElement();
@@ -281,11 +269,13 @@ void MultiSizeConverter::convertMeasurementsToV0_4_0()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QDomElement MultiSizeConverter::addMeasurementsVer0_4_0(const QString &name, qreal value, qreal sizeIncrease, qreal heightIncrease)
+QDomElement MultiSizeConverter::addMeasurementsVer0_4_0(
+    const QString& name, qreal value, qreal sizeIncrease, qreal heightIncrease)
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
+        "Time to refactor the code.");
 
     QDomElement element = createElement(QStringLiteral("m"));
 
@@ -303,8 +293,9 @@ QDomElement MultiSizeConverter::addMeasurementsVer0_4_0(const QString &name, qre
 void MultiSizeConverter::convertPmSystemToVer0_4_1()
 {
     // TODO. Delete if minimal supported version is 0.4.1
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 1),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 1),
+        "Time to refactor the code.");
 
     QDomElement pm_system = createElement(QStringLiteral("pm_system"));
     pm_system.appendChild(createTextNode(QStringLiteral("998")));
@@ -320,27 +311,24 @@ void MultiSizeConverter::convertPmSystemToVer0_4_1()
 void MultiSizeConverter::convertMeasurementsToV0_4_2()
 {
     // TODO. Delete if minimal supported version is 0.4.2
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 2),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 2),
+        "Time to refactor the code.");
 
     const QMap<QString, QString> names = OldNamesToNewNames_InV0_3_3();
     auto i = names.constBegin();
-    while (i != names.constEnd())
-    {
+    while (i != names.constEnd()) {
         const QDomNodeList nodeList = this->elementsByTagName(QStringLiteral("m"));
-        if (nodeList.isEmpty())
-        {
+        if (nodeList.isEmpty()) {
             ++i;
             continue;
         }
 
-        for (int ii = 0; ii < nodeList.size(); ++ii)
-        {
+        for (int ii = 0; ii < nodeList.size(); ++ii) {
             const QString attrName = QStringLiteral("name");
             QDomElement element = nodeList.at(ii).toElement();
             const QString name = GetParametrString(element, attrName);
-            if (name == i.value())
-            {
+            if (name == i.value()) {
                 SetAttribute(element, attrName, i.key());
             }
         }
@@ -353,8 +341,9 @@ void MultiSizeConverter::convertMeasurementsToV0_4_2()
 void MultiSizeConverter::convertToVer0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
+        "Time to refactor the code.");
 
     AddRootComment();
     setVersion(QStringLiteral("0.4.0"));
@@ -368,8 +357,9 @@ void MultiSizeConverter::convertToVer0_4_0()
 void MultiSizeConverter::convertToVer0_4_1()
 {
     // TODO. Delete if minimal supported version is 0.4.1
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 1),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 1),
+        "Time to refactor the code.");
 
     setVersion(QStringLiteral("0.4.1"));
     convertPmSystemToVer0_4_1();
@@ -380,8 +370,9 @@ void MultiSizeConverter::convertToVer0_4_1()
 void MultiSizeConverter::convertToVer0_4_2()
 {
     // TODO. Delete if minimal supported version is 0.4.2
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 2),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 2),
+        "Time to refactor the code.");
 
     setVersion(QStringLiteral("0.4.2"));
     convertMeasurementsToV0_4_2();
@@ -392,8 +383,9 @@ void MultiSizeConverter::convertToVer0_4_2()
 void MultiSizeConverter::convertToVer0_4_3()
 {
     // TODO. Delete if minimal supported version is 0.4.3
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 3),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 3),
+        "Time to refactor the code.");
 
     setVersion(QStringLiteral("0.4.3"));
     Save();
@@ -403,8 +395,9 @@ void MultiSizeConverter::convertToVer0_4_3()
 void MultiSizeConverter::convertToVer0_4_4()
 {
     // TODO. Delete if minimal supported version is 0.4.4
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 4),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 4),
+        "Time to refactor the code.");
 
     setVersion(QStringLiteral("0.4.4"));
     Save();
@@ -414,15 +407,14 @@ void MultiSizeConverter::convertToVer0_4_4()
 void MultiSizeConverter::convertToVer0_4_5()
 {
     // TODO. Delete if minimal supported version is 0.4.5
-    Q_STATIC_ASSERT_X(MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 5),
-                      "Time to refactor the code.");
+    Q_STATIC_ASSERT_X(
+        MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 5),
+        "Time to refactor the code.");
 
     const QDomNodeList list = elementsByTagName("vst");
-    for (int i=0; i < list.size(); ++i)
-    {
+    for (int i = 0; i < list.size(); ++i) {
         QDomElement element = list.at(i).toElement();
-        if (!element.isNull())
-        {
+        if (!element.isNull()) {
             element.setTagName("smms");
         }
     }

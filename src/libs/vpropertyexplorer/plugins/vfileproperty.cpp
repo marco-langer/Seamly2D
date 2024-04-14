@@ -26,14 +26,12 @@
 #include <QWidget>
 
 #include "../vfileproperty_p.h"
-#include "vfilepropertyeditor.h"
 #include "../vproperty_p.h"
+#include "vfilepropertyeditor.h"
 
 VPE::VFileProperty::VFileProperty(const QString& name)
     : VProperty(new VFilePropertyPrivate(name, QVariant::String))
-{
-
-}
+{}
 
 VPE::VFileProperty::~VFileProperty()
 {
@@ -53,43 +51,35 @@ QString VPE::VFileProperty::getFileFilters() const
 }
 
 
-void VPE::VFileProperty::setFile(const QString& file)
+void VPE::VFileProperty::setFile(const QString& file) { d_ptr->VariantValue.setValue(file); }
+
+
+QString VPE::VFileProperty::getFile() const { return d_ptr->VariantValue.toString(); }
+
+
+QVariant VPE::VFileProperty::data(int column, int role) const
 {
-    d_ptr->VariantValue.setValue(file);
-}
-
-
-QString VPE::VFileProperty::getFile() const
-{
-    return d_ptr->VariantValue.toString();
-}
-
-
-QVariant VPE::VFileProperty::data (int column, int role) const
-{
-    if (column == DPC_Data && (Qt::DisplayRole == role || Qt::EditRole == role))
-    {
+    if (column == DPC_Data && (Qt::DisplayRole == role || Qt::EditRole == role)) {
         QFileInfo tmpFile(d_ptr->VariantValue.toString());
         return tmpFile.fileName();
-    }
-    else
+    } else
         return VProperty::data(column, role);
 }
 
 
-QWidget* VPE::VFileProperty::createEditor(QWidget * parent, const QStyleOptionViewItem& options,
-                                     const QAbstractItemDelegate* delegate)
+QWidget* VPE::VFileProperty::createEditor(
+    QWidget* parent, const QStyleOptionViewItem& options, const QAbstractItemDelegate* delegate)
 {
     Q_UNUSED(options)
 
     VFileEditWidget* tmpWidget = new VFileEditWidget(parent);
-    if (delegate)
-    {
-        VFileEditWidget::connect(tmpWidget, SIGNAL(commitData(QWidget*)), delegate, SIGNAL(commitData(QWidget*)));
-
+    if (delegate) {
+        VFileEditWidget::connect(
+            tmpWidget, SIGNAL(commitData(QWidget*)), delegate, SIGNAL(commitData(QWidget*)));
     }
     tmpWidget->setLocale(parent->locale());
-    tmpWidget->setFilter(static_cast<VFilePropertyPrivate*>(d_ptr)->FileFilters);   // todo: parse this string
+    tmpWidget->setFilter(
+        static_cast<VFilePropertyPrivate*>(d_ptr)->FileFilters);   // todo: parse this string
     tmpWidget->setFile(d_ptr->VariantValue.toString());
     tmpWidget->setDirectory(static_cast<VFilePropertyPrivate*>(d_ptr)->Directory);
     return tmpWidget;
@@ -99,22 +89,19 @@ QWidget* VPE::VFileProperty::createEditor(QWidget * parent, const QStyleOptionVi
 bool VPE::VFileProperty::setEditorData(QWidget* editor)
 {
     VFileEditWidget* tmpWidget = qobject_cast<VFileEditWidget*>(editor);
-    if (tmpWidget)
-    {
+    if (tmpWidget) {
         tmpWidget->setFile(d_ptr->VariantValue.toString());
-    }
-    else
+    } else
         return false;
 
     return true;
 }
 
 
-QVariant VPE::VFileProperty::getEditorData(const QWidget *editor) const
+QVariant VPE::VFileProperty::getEditorData(const QWidget* editor) const
 {
     const VFileEditWidget* tmpWidget = qobject_cast<const VFileEditWidget*>(editor);
-    if (tmpWidget)
-    {
+    if (tmpWidget) {
         return tmpWidget->getFile();
     }
 
@@ -123,27 +110,20 @@ QVariant VPE::VFileProperty::getEditorData(const QWidget *editor) const
 
 void VPE::VFileProperty::setSetting(const QString& key, const QVariant& value)
 {
-    if (key == "FileFilters")
-    {
+    if (key == "FileFilters") {
         setFileFilters(value.toString());
-    }
-    else if (key == "Directory")
-    {
+    } else if (key == "Directory") {
         setDirectory(value.toBool());
     }
 }
 
 QVariant VPE::VFileProperty::getSetting(const QString& key) const
 {
-    if (key == "FileFilters")
-    {
+    if (key == "FileFilters") {
         return getFileFilters();
-    }
-    else if (key == "Directory")
-    {
+    } else if (key == "Directory") {
         return isDirectory();
-    }
-    else
+    } else
         return VProperty::getSetting(key);
 }
 
@@ -152,10 +132,7 @@ QStringList VPE::VFileProperty::getSettingKeys() const
     return QStringList("FileFilters") << "Directory";
 }
 
-QString VPE::VFileProperty::type() const
-{
-    return "file";
-}
+QString VPE::VFileProperty::type() const { return "file"; }
 
 VPE::VProperty* VPE::VFileProperty::clone(bool include_children, VProperty* container) const
 {

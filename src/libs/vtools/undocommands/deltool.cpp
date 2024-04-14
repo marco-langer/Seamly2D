@@ -59,9 +59,11 @@
 #include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DelTool::DelTool(VAbstractPattern *doc, quint32 id, QUndoCommand *parent)
-    : VUndoCommand(QDomElement(), doc, parent), parentNode(QDomNode()), siblingId(NULL_ID),
-      activeBlockName(doc->getActiveDraftBlockName())
+DelTool::DelTool(VAbstractPattern* doc, quint32 id, QUndoCommand* parent)
+    : VUndoCommand(QDomElement(), doc, parent)
+    , parentNode(QDomNode())
+    , siblingId(NULL_ID)
+    , activeBlockName(doc->getActiveDraftBlockName())
 {
     setText(tr("delete tool"));
     nodeId = id;
@@ -71,8 +73,7 @@ DelTool::DelTool(VAbstractPattern *doc, quint32 id, QUndoCommand *parent)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DelTool::~DelTool()
-{}
+DelTool::~DelTool() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void DelTool::undo()
@@ -81,8 +82,8 @@ void DelTool::undo()
 
     UndoDeleteAfterSibling(parentNode, siblingId);
     emit NeedFullParsing();
-    //Keep last!
-    doc->setCurrentDraftBlock(activeBlockName);//Without this user will not see this change
+    // Keep last!
+    doc->setCurrentDraftBlock(activeBlockName);   // Without this user will not see this change
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -90,8 +91,8 @@ void DelTool::redo()
 {
     qCDebug(vUndo, "Redo.");
 
-    //Keep first!
-    doc->setCurrentDraftBlock(activeBlockName);//Without this user will not see this change
+    // Keep first!
+    doc->setCurrentDraftBlock(activeBlockName);   // Without this user will not see this change
     QDomElement domElement = doc->NodeById(nodeId);
     parentNode.removeChild(domElement);
     emit NeedFullParsing();

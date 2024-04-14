@@ -52,18 +52,17 @@
 #ifndef DIALOGHEIGHT_H
 #define DIALOGHEIGHT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogHeight;
+namespace Ui {
+class DialogHeight;
 }
 
 /**
@@ -73,45 +72,45 @@ class DialogHeight : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogHeight(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogHeight(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogHeight() Q_DECL_OVERRIDE;
 
-    void             SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    QString          getLineType() const;
-    void             setLineType(const QString &value);
+    QString getLineType() const;
+    void setLineType(const QString& value);
 
-    QString          getLineWeight() const;
-    void             setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString          getLineColor() const;
-    void             setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
-    quint32          GetBasePointId() const;
-    void             SetBasePointId(const quint32 &value);
+    quint32 GetBasePointId() const;
+    void SetBasePointId(const quint32& value);
 
-    quint32          GetP1LineId() const;
-    void             SetP1LineId(const quint32 &value);
+    quint32 GetP1LineId() const;
+    void SetP1LineId(const quint32& value);
 
-    quint32          GetP2LineId() const;
-    void             SetP2LineId(const quint32 &value);
+    quint32 GetP2LineId() const;
+    void SetP2LineId(const quint32& value);
 
 public slots:
-    virtual void     ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void     PointNameChanged() Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
 
 protected:
-    virtual void     ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void     SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogHeight)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogHeight *ui;
+    Ui::DialogHeight* ui;
 };
 
-#endif // DIALOGHEIGHT_H
+#endif   // DIALOGHEIGHT_H

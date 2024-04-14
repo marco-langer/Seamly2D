@@ -27,7 +27,6 @@
 
 #include "../tools/dialogtool.h"
 
-#include <qcompilerdetection.h>
 #include <QDialog>
 #include <QMap>
 #include <QMetaObject>
@@ -35,12 +34,12 @@
 #include <QSound>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 class VContainer;
 
-namespace Ui
-{
-    class AddToGroupDialog;
+namespace Ui {
+class AddToGroupDialog;
 }
 
 class AddToGroupDialog : public DialogTool
@@ -48,26 +47,26 @@ class AddToGroupDialog : public DialogTool
     Q_OBJECT
 
 public:
-                              AddToGroupDialog(VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
-    virtual                  ~AddToGroupDialog();
+    AddToGroupDialog(VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    virtual ~AddToGroupDialog();
 
-    void                      fillNameBox();
+    void fillNameBox();
 
-    QString                   getName() const;
+    QString getName() const;
 
-    QMap<quint32, quint32>    getGroupData() const;
+    QMap<quint32, quint32> getGroupData() const;
 
-    virtual void              ShowDialog(bool click) Q_DECL_OVERRIDE;
+    virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void              SelectedObject(bool selected, quint32 object, quint32 tool) Q_DECL_OVERRIDE;
+    virtual void SelectedObject(bool selected, quint32 object, quint32 tool) Q_DECL_OVERRIDE;
 
 private:
-                              Q_DISABLE_COPY(AddToGroupDialog)
-    Ui::AddToGroupDialog     *ui;
-    VAbstractPattern         *m_doc;
-    QMap<quint32, quint32>    m_groupData;
-    QSound                   *m_beep;
+    Q_DISABLE_COPY(AddToGroupDialog)
+    Ui::AddToGroupDialog* ui;
+    VAbstractPattern* m_doc;
+    QMap<quint32, quint32> m_groupData;
+    QSound* m_beep;
 };
 
-#endif // ADD_TO_GROUP_DIALOG_H
+#endif   // ADD_TO_GROUP_DIALOG_H

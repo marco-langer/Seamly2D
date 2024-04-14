@@ -52,7 +52,6 @@
 #ifndef VISTOOLROTATION_H
 #define VISTOOLROTATION_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -61,6 +60,7 @@
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
@@ -70,27 +70,31 @@ class VisToolRotation : public VisOperation
 {
     Q_OBJECT
 public:
-    explicit VisToolRotation(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolRotation(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolRotation();
 
-    virtual void   RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
     void SetOriginPointId(quint32 value);
 
     QString Angle() const;
-    void    SetAngle(const QString &expression);
+    void SetAngle(const QString& expression);
 
-    virtual int type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolRotation)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolRotation)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolRotation)
-    qreal           angle;
-    VScaledEllipse *point;
-    VCurvePathItem *angleArc;
-    VScaledLine    *xAxis;
+    qreal angle;
+    VScaledEllipse* point;
+    VCurvePathItem* angleArc;
+    VScaledLine* xAxis;
 
     template <class Item>
-    int AddCurve(qreal angle, const QPointF &origin, quint32 id, int i);
+    int AddCurve(qreal angle, const QPointF& origin, quint32 id, int i);
 };
 
-#endif // VISTOOLROTATION_H
+#endif   // VISTOOLROTATION_H

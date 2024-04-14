@@ -24,11 +24,10 @@
 // ONLY INCLUDE THIS IN .CPP FILES
 
 #include <QMap>
-#include <QString>
 #include <QObject>
+#include <QString>
 
-namespace VPE
-{
+namespace VPE {
 
 class VProperty;
 class VPropertySet;
@@ -37,7 +36,7 @@ class VPropertyModelPrivate
 {
 public:
     //! The property set holding the properties
-    VPropertySet *Properties;
+    VPropertySet* Properties;
 
     //! The header data for the property name column
     QString HeadlineProperty;
@@ -47,7 +46,9 @@ public:
 
     //! Constructor
     VPropertyModelPrivate()
-        : Properties(nullptr), HeadlineProperty(QString()), HeadlineValue(QString())
+        : Properties(nullptr)
+        , HeadlineProperty(QString())
+        , HeadlineValue(QString())
     {
         //: The text that appears in the first column header
         HeadlineProperty = QObject::tr("Property");
@@ -60,6 +61,6 @@ private:
     Q_DISABLE_COPY(VPropertyModelPrivate)
 };
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYMODEL_P_H
+#endif   // VPROPERTYMODEL_P_H

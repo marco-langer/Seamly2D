@@ -55,10 +55,9 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VCubicBezierPath::TST_VCubicBezierPath(QObject *parent) :
-    QObject(parent)
-{
-}
+TST_VCubicBezierPath::TST_VCubicBezierPath(QObject* parent)
+    : QObject(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VCubicBezierPath::TestCountSubSpl_data() const
@@ -66,16 +65,16 @@ void TST_VCubicBezierPath::TestCountSubSpl_data() const
     QTest::addColumn<qint32>("points");
     QTest::addColumn<qint32>("countSubSpl");
 
-    QTest::newRow("Empty")     << 0  << 0;
-    QTest::newRow("1 point")   << 1  << 0;
-    QTest::newRow("2 points")  << 2  << 0;
-    QTest::newRow("3 points")  << 3  << 0;
-    QTest::newRow("4 points")  << 4  << 1;
-    QTest::newRow("5 points")  << 5  << 1;
-    QTest::newRow("6 points")  << 6  << 1;
-    QTest::newRow("7 points")  << 7  << 2;
-    QTest::newRow("8 points")  << 8  << 2;
-    QTest::newRow("9 points")  << 9  << 2;
+    QTest::newRow("Empty") << 0 << 0;
+    QTest::newRow("1 point") << 1 << 0;
+    QTest::newRow("2 points") << 2 << 0;
+    QTest::newRow("3 points") << 3 << 0;
+    QTest::newRow("4 points") << 4 << 1;
+    QTest::newRow("5 points") << 5 << 1;
+    QTest::newRow("6 points") << 6 << 1;
+    QTest::newRow("7 points") << 7 << 2;
+    QTest::newRow("8 points") << 8 << 2;
+    QTest::newRow("9 points") << 9 << 2;
     QTest::newRow("10 points") << 10 << 3;
     QTest::newRow("11 points") << 11 << 3;
     QTest::newRow("12 points") << 12 << 3;
@@ -99,13 +98,13 @@ void TST_VCubicBezierPath::TestSubSplOffset_data() const
     QTest::addColumn<qint32>("offset");
 
     QTest::newRow("Wrong index") << -1 << -1;
-    QTest::newRow("Wrong index") << 0  << -1;
-    QTest::newRow("1 subSpl")    << 1  << 0;
-    QTest::newRow("2 subSpls")   << 2  << 3;
-    QTest::newRow("3 subSpls")   << 3  << 6;
-    QTest::newRow("4 subSpls")   << 4  << 9;
-    QTest::newRow("5 subSpls")   << 5  << 12;
-    QTest::newRow("6 subSpls")   << 6  << 15;
+    QTest::newRow("Wrong index") << 0 << -1;
+    QTest::newRow("1 subSpl") << 1 << 0;
+    QTest::newRow("2 subSpls") << 2 << 3;
+    QTest::newRow("3 subSpls") << 3 << 6;
+    QTest::newRow("4 subSpls") << 4 << 9;
+    QTest::newRow("5 subSpls") << 5 << 12;
+    QTest::newRow("6 subSpls") << 6 << 15;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -125,13 +124,13 @@ void TST_VCubicBezierPath::TestSubSplPointsCount_data() const
     QTest::addColumn<qint32>("points");
 
     QTest::newRow("Wrong count") << -1 << 0;
-    QTest::newRow("Wrong count") << 0  << 0;
-    QTest::newRow("1 subSpl")    << 1  << 4;
-    QTest::newRow("2 subSpls")   << 2  << 7;
-    QTest::newRow("3 subSpls")   << 3  << 10;
-    QTest::newRow("4 subSpls")   << 4  << 13;
-    QTest::newRow("5 subSpls")   << 5  << 16;
-    QTest::newRow("6 subSpls")   << 6  << 19;
+    QTest::newRow("Wrong count") << 0 << 0;
+    QTest::newRow("1 subSpl") << 1 << 4;
+    QTest::newRow("2 subSpls") << 2 << 7;
+    QTest::newRow("3 subSpls") << 3 << 10;
+    QTest::newRow("4 subSpls") << 4 << 13;
+    QTest::newRow("5 subSpls") << 5 << 16;
+    QTest::newRow("6 subSpls") << 6 << 19;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

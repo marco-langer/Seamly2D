@@ -62,14 +62,14 @@
 #include <QSet>
 #include <QToolButton>
 
-#include "../vpatterndb/vtranslatevars.h"
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/vistoolpointofcontact.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../support/edit_formula_dialog.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/vtranslatevars.h"
 #include "ui_dialogpointofcontact.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -78,7 +78,8 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogPointOfContact::DialogPointOfContact(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogPointOfContact::DialogPointOfContact(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogPointOfContact)
     , radius(QString())
@@ -104,28 +105,46 @@ DialogPointOfContact::DialogPointOfContact(const VContainer *data, const quint32
     FillComboBoxPoints(ui->comboBoxSecondPoint);
     FillComboBoxPoints(ui->comboBoxCenter);
 
-    connect(ui->toolButtonExprRadius, &QPushButton::clicked,        this, &DialogPointOfContact::FXRadius);
-    connect(ui->lineEditNamePoint,    &QLineEdit::textChanged,      this, &DialogPointOfContact::NamePointChanged);
-    connect(ui->plainTextEditFormula, &QPlainTextEdit::textChanged, this, &DialogPointOfContact::FormulaTextChanged);
-    connect(ui->pushButtonGrowLength, &QPushButton::clicked,        this, &DialogPointOfContact::DeployFormulaTextEdit);
-    connect(ui->comboBoxFirstPoint,   &QComboBox::currentTextChanged, this, &DialogPointOfContact::PointNameChanged);
-    connect(ui->comboBoxSecondPoint,  &QComboBox::currentTextChanged, this, &DialogPointOfContact::PointNameChanged);
-    connect(ui->comboBoxCenter,       &QComboBox::currentTextChanged, this, &DialogPointOfContact::PointNameChanged);
+    connect(ui->toolButtonExprRadius, &QPushButton::clicked, this, &DialogPointOfContact::FXRadius);
+    connect(
+        ui->lineEditNamePoint,
+        &QLineEdit::textChanged,
+        this,
+        &DialogPointOfContact::NamePointChanged);
+    connect(
+        ui->plainTextEditFormula,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogPointOfContact::FormulaTextChanged);
+    connect(
+        ui->pushButtonGrowLength,
+        &QPushButton::clicked,
+        this,
+        &DialogPointOfContact::DeployFormulaTextEdit);
+    connect(
+        ui->comboBoxFirstPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogPointOfContact::PointNameChanged);
+    connect(
+        ui->comboBoxSecondPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogPointOfContact::PointNameChanged);
+    connect(
+        ui->comboBoxCenter,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogPointOfContact::PointNameChanged);
 
     vis = new VisToolPointOfContact(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogPointOfContact::~DialogPointOfContact()
-{
-    delete ui;
-}
+DialogPointOfContact::~DialogPointOfContact() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfContact::FormulaTextChanged()
-{
-    this->FormulaChangedPlainText();
-}
+void DialogPointOfContact::FormulaTextChanged() { this->FormulaChangedPlainText(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogPointOfContact::PointNameChanged()
@@ -136,13 +155,10 @@ void DialogPointOfContact::PointNameChanged()
     set.insert(getCurrentObjectId(ui->comboBoxCenter));
 
     QColor color = okColor;
-    if (set.size() != 3)
-    {
+    if (set.size() != 3) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -155,22 +171,18 @@ void DialogPointOfContact::PointNameChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogPointOfContact::FXRadius()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit radius"));
     dialog->SetFormula(getRadius());
     dialog->setPostfix(UnitsToStr(qApp->patternUnit(), true));
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         setRadius(dialog->GetFormula());
     }
     delete dialog;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfContact::ShowVisualization()
-{
-    AddVisualization<VisToolPointOfContact>();
-}
+void DialogPointOfContact::ShowVisualization() { AddVisualization<VisToolPointOfContact>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogPointOfContact::DeployFormulaTextEdit()
@@ -184,57 +196,48 @@ void DialogPointOfContact::DeployFormulaTextEdit()
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogPointOfContact::ChosenObject(quint32 id, const SceneObject &type)
+void DialogPointOfContact::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            VisToolPointOfContact *line = qobject_cast<VisToolPointOfContact *>(vis);
+        if (type == SceneObject::Point) {
+            VisToolPointOfContact* line = qobject_cast<VisToolPointOfContact*>(vis);
             SCASSERT(line != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point of line")))
-                    {
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point of line"))) {
+                    number++;
+                    line->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->comboBoxFirstPoint) != id) {
+                    if (SetObject(
+                            id, ui->comboBoxSecondPoint, tr("Select point of center of arc"))) {
                         number++;
-                        line->VisualMode(id);
-                    }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->comboBoxFirstPoint) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxSecondPoint, tr("Select point of center of arc")))
-                        {
-                            number++;
-                            line->setLineP2Id(id);
-                            line->RefreshGeometry();
-                        }
-                    }
-                    break;
-                case 2:
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
-                    set.insert(getCurrentObjectId(ui->comboBoxSecondPoint));
-                    set.insert(id);
-
-                    if (set.size() == 3)
-                    {
-                        if (SetObject(id, ui->comboBoxCenter, ""))
-                        {
-                            line->setRadiusId(id);
-                            line->RefreshGeometry();
-                            prepare = true;
-                            this->setModal(true);
-                            this->show();
-                        }
+                        line->setLineP2Id(id);
+                        line->RefreshGeometry();
                     }
                 }
-                    break;
-                default:
-                    break;
+                break;
+            case 2: {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
+                set.insert(getCurrentObjectId(ui->comboBoxSecondPoint));
+                set.insert(id);
+
+                if (set.size() == 3) {
+                    if (SetObject(id, ui->comboBoxCenter, "")) {
+                        line->setRadiusId(id);
+                        line->RefreshGeometry();
+                        prepare = true;
+                        this->setModal(true);
+                        this->show();
+                    }
+                }
+            } break;
+            default: break;
             }
         }
     }
@@ -247,7 +250,7 @@ void DialogPointOfContact::SaveData()
     radius = ui->plainTextEditFormula->toPlainText();
     radius.replace("\n", " ");
 
-    VisToolPointOfContact *line = qobject_cast<VisToolPointOfContact *>(vis);
+    VisToolPointOfContact* line = qobject_cast<VisToolPointOfContact*>(vis);
     SCASSERT(line != nullptr)
 
     line->setObject1Id(GetFirstPoint());
@@ -258,7 +261,7 @@ void DialogPointOfContact::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogPointOfContact::closeEvent(QCloseEvent *event)
+void DialogPointOfContact::closeEvent(QCloseEvent* event)
 {
     ui->plainTextEditFormula->blockSignals(true);
     DialogTool::closeEvent(event);
@@ -269,11 +272,11 @@ void DialogPointOfContact::closeEvent(QCloseEvent *event)
  * @brief SetSecondPoint set id second point
  * @param value id
  */
-void DialogPointOfContact::SetSecondPoint(const quint32 &value)
+void DialogPointOfContact::SetSecondPoint(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxSecondPoint, value);
 
-    VisToolPointOfContact *line = qobject_cast<VisToolPointOfContact *>(vis);
+    VisToolPointOfContact* line = qobject_cast<VisToolPointOfContact*>(vis);
     SCASSERT(line != nullptr)
     line->setLineP2Id(value);
 }
@@ -283,11 +286,11 @@ void DialogPointOfContact::SetSecondPoint(const quint32 &value)
  * @brief SetFirstPoint set id first point
  * @param value id
  */
-void DialogPointOfContact::SetFirstPoint(const quint32 &value)
+void DialogPointOfContact::SetFirstPoint(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxFirstPoint, value);
 
-    VisToolPointOfContact *line = qobject_cast<VisToolPointOfContact *>(vis);
+    VisToolPointOfContact* line = qobject_cast<VisToolPointOfContact*>(vis);
     SCASSERT(line != nullptr)
     line->setObject1Id(value);
 }
@@ -297,11 +300,11 @@ void DialogPointOfContact::SetFirstPoint(const quint32 &value)
  * @brief SetCenter set id of center point
  * @param value id
  */
-void DialogPointOfContact::setCenter(const quint32 &value)
+void DialogPointOfContact::setCenter(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxCenter, value);
 
-    VisToolPointOfContact *line = qobject_cast<VisToolPointOfContact *>(vis);
+    VisToolPointOfContact* line = qobject_cast<VisToolPointOfContact*>(vis);
     SCASSERT(line != nullptr)
     line->setRadiusId(value);
 }
@@ -311,17 +314,16 @@ void DialogPointOfContact::setCenter(const quint32 &value)
  * @brief setRadius set formula radius of arc
  * @param value formula
  */
-void DialogPointOfContact::setRadius(const QString &value)
+void DialogPointOfContact::setRadius(const QString& value)
 {
     radius = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed.
-    if (radius.length() > 80)
-    {
+    if (radius.length() > 80) {
         this->DeployFormulaTextEdit();
     }
     ui->plainTextEditFormula->setPlainText(radius);
 
-    VisToolPointOfContact *line = qobject_cast<VisToolPointOfContact *>(vis);
+    VisToolPointOfContact* line = qobject_cast<VisToolPointOfContact*>(vis);
     SCASSERT(line != nullptr)
     line->setRadius(radius);
 
@@ -333,7 +335,7 @@ void DialogPointOfContact::setRadius(const QString &value)
  * @brief SetPointName set name of point
  * @param value name
  */
-void DialogPointOfContact::SetPointName(const QString &value)
+void DialogPointOfContact::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -346,7 +348,8 @@ void DialogPointOfContact::SetPointName(const QString &value)
  */
 QString DialogPointOfContact::getRadius() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(radius, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        radius, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -354,10 +357,7 @@ QString DialogPointOfContact::getRadius() const
  * @brief GetCenter return id of center point
  * @return id
  */
-quint32 DialogPointOfContact::getCenter() const
-{
-    return getCurrentObjectId(ui->comboBoxCenter);
-}
+quint32 DialogPointOfContact::getCenter() const { return getCurrentObjectId(ui->comboBoxCenter); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

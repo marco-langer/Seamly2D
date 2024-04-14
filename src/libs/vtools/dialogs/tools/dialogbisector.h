@@ -52,18 +52,17 @@
 #ifndef DIALOGBISECTOR_H
 #define DIALOGBISECTOR_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogBisector;
+namespace Ui {
+class DialogBisector;
 }
 
 /**
@@ -73,63 +72,64 @@ class DialogBisector : public DialogTool
 {
     Q_OBJECT
 public:
-
-    DialogBisector(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogBisector(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogBisector() Q_DECL_OVERRIDE;
 
-    void               SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    QString            getLineType() const;
-    void               setLineType(const QString &value);
+    QString getLineType() const;
+    void setLineType(const QString& value);
 
-    QString            getLineWeight() const;
-    void               setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString            getLineColor() const;
-    void               setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
-    QString            GetFormula() const;
-    void               SetFormula(const QString &value);
+    QString GetFormula() const;
+    void SetFormula(const QString& value);
 
-    quint32            GetFirstPointId() const;
-    void               SetFirstPointId(const quint32 &value);
+    quint32 GetFirstPointId() const;
+    void SetFirstPointId(const quint32& value);
 
-    quint32            GetSecondPointId() const;
-    void               SetSecondPointId(const quint32 &value);
+    quint32 GetSecondPointId() const;
+    void SetSecondPointId(const quint32& value);
 
-    quint32            GetThirdPointId() const;
-    void               SetThirdPointId(const quint32 &value);
+    quint32 GetThirdPointId() const;
+    void SetThirdPointId(const quint32& value);
 
 public slots:
-    virtual void       ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
-    void               DeployFormulaTextEdit();
+    void DeployFormulaTextEdit();
     /**
      * @brief FormulaTextChanged when formula text changes for validation and calc
      */
-    void               FormulaTextChanged();
-    virtual void       PointNameChanged() Q_DECL_OVERRIDE;
-    void               FXLength();
+    void FormulaTextChanged();
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
+    void FXLength();
+
 protected:
-    virtual void       ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void       SaveData() Q_DECL_OVERRIDE;
-    virtual void       closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(DialogBisector)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogBisector *ui;
+    Ui::DialogBisector* ui;
 
     /** @brief formula formula */
-    QString            formula;
+    QString formula;
 
     /** @brief formulaBaseHeight base height defined by dialogui */
-    int                formulaBaseHeight;
+    int formulaBaseHeight;
 };
 
-#endif // DIALOGBISECTOR_H
+#endif   // DIALOGBISECTOR_H

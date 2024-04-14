@@ -62,15 +62,16 @@
 #include <Qt>
 #include <QtDebug>
 
-#include "global.h"
+#include "../ifc/xml/vabstractpattern.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../ifc/xml/vabstractpattern.h"
+#include "global.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 //---------------------------------------------------------------------------------------------------------------------
-VSimpleCurve::VSimpleCurve(quint32 id, const QSharedPointer<VAbstractCurve> &curve, QObject *parent)
+VSimpleCurve::VSimpleCurve(quint32 id, const QSharedPointer<VAbstractCurve>& curve, QObject* parent)
     : VAbstractSimple(id, parent)
     , VCurvePathItem()
     , m_curve(curve)
@@ -78,70 +79,56 @@ VSimpleCurve::VSimpleCurve(quint32 id, const QSharedPointer<VAbstractCurve> &cur
 {
     this->setBrush(QBrush(Qt::NoBrush));
     this->setAcceptHoverEvents(true);
-    this->setFlag(QGraphicsItem::ItemIsFocusable, true);// For keyboard input focus
+    this->setFlag(QGraphicsItem::ItemIsFocusable, true);   // For keyboard input focus
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::RefreshGeometry(const QSharedPointer<VAbstractCurve> &curve)
+void VSimpleCurve::RefreshGeometry(const QSharedPointer<VAbstractCurve>& curve)
 {
     m_curve = curve;
 
-    if (not m_curve.isNull())
-    {
-        m_isHovered ? SetDirectionArrows(m_curve->DirectionArrows()) : SetDirectionArrows(QVector<DirectionArrow>());
+    if (not m_curve.isNull()) {
+        m_isHovered ? SetDirectionArrows(m_curve->DirectionArrows())
+                    : SetDirectionArrows(QVector<DirectionArrow>());
         setPath(m_curve->GetPath());
         SetPoints(m_curve->getPoints());
-    }
-    else
-    {
+    } else {
         qWarning() << "VSimpleCurve::RefreshGeometry: pointer to curve is null.";
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::CurveChoosed()
-{
-    emit Choosed(id);
-}
+void VSimpleCurve::CurveChoosed() { emit Choosed(id); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::CurveSelected(bool selected)
-{
-    emit Selected(selected, id);
-}
+void VSimpleCurve::CurveSelected(bool selected) { emit Selected(selected, id); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void VSimpleCurve::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     // Special for not selectable item first need to call standard mousePressEvent then accept event
     QGraphicsPathItem::mousePressEvent(event);
 
     // Somehow clicking on notselectable object do not clean previous selections.
-    if (not (flags() & ItemIsSelectable) && scene())
-    {
+    if (not(flags() & ItemIsSelectable) && scene()) {
         scene()->clearSelection();
     }
 
-    if (selectionType == SelectionType::ByMouseRelease)
-    {
-        event->accept();// Special for not selectable item first need to call standard mousePressEvent then accept event
-    }
-    else
-    {
-        if (event->button() == Qt::LeftButton)
-        {
+    if (selectionType == SelectionType::ByMouseRelease) {
+        event->accept();   // Special for not selectable item first need to call standard
+                           // mousePressEvent then accept event
+    } else {
+        if (event->button() == Qt::LeftButton) {
             emit Choosed(id);
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void VSimpleCurve::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (selectionType == SelectionType::ByMouseRelease)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
+    if (selectionType == SelectionType::ByMouseRelease) {
+        if (event->button() == Qt::LeftButton) {
             emit Choosed(id);
         }
     }
@@ -149,18 +136,17 @@ void VSimpleCurve::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void VSimpleCurve::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
     m_isHovered = true;
-    if (not m_curve.isNull())
-    {
+    if (not m_curve.isNull()) {
         SetDirectionArrows(m_curve->DirectionArrows());
     }
     QGraphicsPathItem::hoverEnterEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void VSimpleCurve::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
     m_isHovered = false;
     SetDirectionArrows(QVector<DirectionArrow>());
@@ -168,10 +154,9 @@ void VSimpleCurve::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVariant VSimpleCurve::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant VSimpleCurve::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
 {
-    if (change == QGraphicsItem::ItemSelectedChange)
-    {
+    if (change == QGraphicsItem::ItemSelectedChange) {
         emit Selected(value.toBool(), id);
     }
 
@@ -179,40 +164,37 @@ QVariant VSimpleCurve::itemChange(QGraphicsItem::GraphicsItemChange change, cons
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+void VSimpleCurve::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
     emit showContextMenu(event, id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSimpleCurve::keyReleaseEvent(QKeyEvent *event)
+void VSimpleCurve::keyReleaseEvent(QKeyEvent* event)
 {
-    switch (event->key())
-    {
-        case Qt::Key_Delete:
-            emit Delete();
-            return; //Leave this method immediately after call!!!
-        default:
-            break;
+    switch (event->key()) {
+    case Qt::Key_Delete: emit Delete(); return;   // Leave this method immediately after call!!!
+    default: break;
     }
-    QGraphicsPathItem::keyReleaseEvent ( event );
+    QGraphicsPathItem::keyReleaseEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSimpleCurve::ScalePenWidth()
 {
     qreal width = 1;
-    if (m_isHovered)
-    {
+    if (m_isHovered) {
         width = widthMainLine;
-    }
-    else
-    {
-        width = ToPixel(qApp->getCurrentDocument()->useGroupLineWeight(id, m_curve->getLineWeight()).toDouble(), Unit::Mm);
+    } else {
+        width = ToPixel(
+            qApp->getCurrentDocument()->useGroupLineWeight(id, m_curve->getLineWeight()).toDouble(),
+            Unit::Mm);
     }
 
     width = scaleWidth(width, sceneScale(scene()));
-    setPen(QPen(correctColor(this, qApp->getCurrentDocument()->useGroupColor(id, m_curve->getLineColor())),
-                width,
-                lineTypeToPenStyle(qApp->getCurrentDocument()->useGroupLineType(id, m_curve->GetPenStyle()))));
+    setPen(QPen(
+        correctColor(this, qApp->getCurrentDocument()->useGroupColor(id, m_curve->getLineColor())),
+        width,
+        lineTypeToPenStyle(
+            qApp->getCurrentDocument()->useGroupLineType(id, m_curve->GetPenStyle()))));
 }

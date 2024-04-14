@@ -56,44 +56,58 @@
 #include <QObject>
 #include <QString>
 
-template <class T> class QVector;
+template <class T>
+class QVector;
 
 #ifdef Q_CC_MSVC
-#include <ciso646>
+#    include <ciso646>
 #endif /* Q_CC_MSVC */
 
 #ifdef __GNUC__
-#define V_UNUSED __attribute__ ((unused))
+#    define V_UNUSED __attribute__((unused))
 #else
-#define V_UNUSED
+#    define V_UNUSED
 #endif
 
 // Return codes for testing run application
-static const auto V_UNUSED TST_EX_BIN = -1;      // Can't find binary.
-static const auto V_UNUSED TST_EX_FINISH_TIME_OUT = -2; // The operation timed out or an error occurred.
-static const auto V_UNUSED TST_EX_START_TIME_OUT = -3; // The operation timed out or an error occurred.
-static const auto V_UNUSED TST_EX_CRASH = -4;    // Program crashed.
+static const auto V_UNUSED TST_EX_BIN = -1;   // Can't find binary.
+static const auto V_UNUSED TST_EX_FINISH_TIME_OUT =
+    -2;   // The operation timed out or an error occurred.
+static const auto V_UNUSED TST_EX_START_TIME_OUT =
+    -3;                                         // The operation timed out or an error occurred.
+static const auto V_UNUSED TST_EX_CRASH = -4;   // Program crashed.
 
 #undef V_UNUSED
 
-enum ErrorState {ErrorLoad = 0, ErrorInstall, ErrorSize, NoError};
+enum ErrorState
+{
+    ErrorLoad = 0,
+    ErrorInstall,
+    ErrorSize,
+    NoError
+};
 
 class AbstractTest : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractTest(QObject *parent = nullptr);
+    explicit AbstractTest(QObject* parent = nullptr);
 
 protected:
-    void Comparison(const QVector<QPointF> &ekv, const QVector<QPointF> &ekvOrig) const;
-    void Comparison(const QPointF &result, const QPointF &expected, qreal testAccuracy) const;
+    void Comparison(const QVector<QPointF>& ekv, const QVector<QPointF>& ekvOrig) const;
+    void Comparison(const QPointF& result, const QPointF& expected, qreal testAccuracy) const;
 
     QString Seamly2DPath() const;
     QString SeamlyMePath() const;
     QString TranslationsPath() const;
 
-    int Run(int exit, const QString &program, const QStringList &arguments, QString &error, int msecs = 120000);
-    bool CopyRecursively(const QString &srcFilePath, const QString &tgtFilePath) const;
+    int
+    Run(int exit,
+        const QString& program,
+        const QStringList& arguments,
+        QString& error,
+        int msecs = 120000);
+    bool CopyRecursively(const QString& srcFilePath, const QString& tgtFilePath) const;
 };
 
-#endif // ABSTRACTTEST_H
+#endif   // ABSTRACTTEST_H

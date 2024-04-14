@@ -51,7 +51,6 @@
 
 #include "projectversion.h"
 
-#include <qcompilerdetection.h>
 #include <QCoreApplication>
 #include <QLatin1Char>
 #include <QLatin1String>
@@ -62,6 +61,7 @@
 #include <QStringDataPtr>
 #include <QSysInfo>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 // Start: Do not edit here, use scripts/version.sh to update
 extern const int MAJOR_VERSION = 0;
@@ -70,56 +70,57 @@ extern const int DEBUG_VERSION = 0;
 extern const int SUPER_MINOR__VERSION = 1;
 // End: Do not edit here
 
-extern const QString APP_VERSION_STR(QStringLiteral("%1.%2.%3.%4").arg(MAJOR_VERSION).arg(MINOR_VERSION)
-                                 .arg(DEBUG_VERSION).arg(SUPER_MINOR__VERSION));
+extern const QString APP_VERSION_STR(QStringLiteral("%1.%2.%3.%4")
+                                         .arg(MAJOR_VERSION)
+                                         .arg(MINOR_VERSION)
+                                         .arg(DEBUG_VERSION)
+                                         .arg(SUPER_MINOR__VERSION));
 
 //---------------------------------------------------------------------------------------------------------------------
 QString compilerString()
 {
-#if defined(Q_CC_INTEL) // must be before GNU, Clang and MSVC because ICC/ICL claim to be them
+#if defined(Q_CC_INTEL)   // must be before GNU, Clang and MSVC because ICC/ICL claim to be them
     QString iccCompact;
-#ifdef __INTEL_CLANG_COMPILER
+#    ifdef __INTEL_CLANG_COMPILER
     iccCompact = QLatin1String("Clang");
-#elif defined(__INTEL_MS_COMPAT_LEVEL)
+#    elif defined(__INTEL_MS_COMPAT_LEVEL)
     iccCompact = QLatin1String("Microsoft");
-#elif defined(__GNUC__)
+#    elif defined(__GNUC__)
     iccCompact = QLatin1String("GCC");
-#else
+#    else
     iccCompact = QLatin1String("no");
-#endif
+#    endif
     QString iccVersion;
-    if (__INTEL_COMPILER >= 1300)
-    {
-        iccVersion = QString::number(__INTEL_COMPILER/100);
-    }
-    else
-    {
+    if (__INTEL_COMPILER >= 1300) {
+        iccVersion = QString::number(__INTEL_COMPILER / 100);
+    } else {
         iccVersion = QLatin1String(__INTEL_COMPILER);
     }
-#ifdef __INTEL_COMPILER_UPDATE
-    return QLatin1String("Intel(R) C++ ") + iccVersion + QLatin1String(".") + QLatin1String(__INTEL_COMPILER_UPDATE) +
-           QLatin1String(" build ") + QLatin1String(__INTEL_COMPILER_BUILD_DATE) + QLatin1String(" [") +
-           QLatin1String(iccCompact) + QLatin1String(" compatibility]");
-#else
-    return QLatin1String("Intel(R) C++ ") + iccVersion + QLatin1String(" build ") +
-           QLatin1String(__INTEL_COMPILER_BUILD_DATE) + QLatin1String(" [") + iccCompact +
-           QLatin1String(" compatibility]");
-#endif
-#elif defined(Q_CC_CLANG) // must be before GNU, because clang claims to be GNU too
+#    ifdef __INTEL_COMPILER_UPDATE
+    return QLatin1String("Intel(R) C++ ") + iccVersion + QLatin1String(".")
+         + QLatin1String(__INTEL_COMPILER_UPDATE) + QLatin1String(" build ")
+         + QLatin1String(__INTEL_COMPILER_BUILD_DATE) + QLatin1String(" [")
+         + QLatin1String(iccCompact) + QLatin1String(" compatibility]");
+#    else
+    return QLatin1String("Intel(R) C++ ") + iccVersion + QLatin1String(" build ")
+         + QLatin1String(__INTEL_COMPILER_BUILD_DATE) + QLatin1String(" [") + iccCompact
+         + QLatin1String(" compatibility]");
+#    endif
+#elif defined(Q_CC_CLANG)                  // must be before GNU, because clang claims to be GNU too
     QString isAppleString;
-#if defined(__apple_build_version__) // Apple clang has other version numbers
+#    if defined(__apple_build_version__)   // Apple clang has other version numbers
     isAppleString = QLatin1String(" (Apple)");
-#endif
-    return QLatin1String("Clang " ) + QString::number(__clang_major__) + QLatin1Char('.')
-            + QString::number(__clang_minor__) + isAppleString;
+#    endif
+    return QLatin1String("Clang ") + QString::number(__clang_major__) + QLatin1Char('.')
+         + QString::number(__clang_minor__) + isAppleString;
 #elif defined(Q_CC_GNU)
-    return QLatin1String("GCC " ) + QLatin1String(__VERSION__);
+    return QLatin1String("GCC ") + QLatin1String(__VERSION__);
 #elif defined(Q_CC_MSVC)
-    if (_MSC_VER >= 1800) // 1800: MSVC 2013 (yearly release cycle)
+    if (_MSC_VER >= 1800)   // 1800: MSVC 2013 (yearly release cycle)
     {
         return QLatin1String("MSVC ") + QString::number(2008 + ((_MSC_VER / 100) - 13));
     }
-    if (_MSC_VER >= 1500) // 1500: MSVC 2008, 1600: MSVC 2010, ... (2-year release cycle)
+    if (_MSC_VER >= 1500)   // 1500: MSVC 2008, 1600: MSVC 2010, ... (2-year release cycle)
     {
         return QLatin1String("MSVC ") + QString::number(2008 + 2 * ((_MSC_VER / 100) - 15));
     }
@@ -131,6 +132,6 @@ QString compilerString()
 //---------------------------------------------------------------------------------------------------------------------
 QString buildCompatibilityString()
 {
-    return QCoreApplication::tr("Based on Qt %1 (%2, %3 bit)").arg(QLatin1String(qVersion()), compilerString(),
-                                                                   QString::number(QSysInfo::WordSize));
+    return QCoreApplication::tr("Based on Qt %1 (%2, %3 bit)")
+        .arg(QLatin1String(qVersion()), compilerString(), QString::number(QSysInfo::WordSize));
 }

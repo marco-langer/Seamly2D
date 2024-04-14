@@ -25,11 +25,11 @@
 #ifndef TOGGLE_PIECELOCK_H
 #define TOGGLE_PIECELOCK_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -37,25 +37,30 @@ class TogglePieceLock : public VUndoCommand
 {
     Q_OBJECT
 public:
-    TogglePieceLock(quint32 id, bool lock, VContainer *data, VAbstractPattern *doc, QUndoCommand *parent = nullptr);
-    virtual     ~TogglePieceLock();
+    TogglePieceLock(
+        quint32 id,
+        bool lock,
+        VContainer* data,
+        VAbstractPattern* doc,
+        QUndoCommand* parent = nullptr);
+    virtual ~TogglePieceLock();
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
-    virtual int  id() const Q_DECL_OVERRIDE;
-    quint32      getpieceId() const;
-    bool         getNewLock() const;
+    virtual int id() const Q_DECL_OVERRIDE;
+    quint32 getpieceId() const;
+    bool getNewLock() const;
 
 signals:
-    void         updateList(quint32 m_id);
+    void updateList(quint32 m_id);
 
 private:
     Q_DISABLE_COPY(TogglePieceLock)
-    quint32      m_id;
-    VContainer  *m_data;
-    bool         m_oldLock;
-    bool         m_newLock;
+    quint32 m_id;
+    VContainer* m_data;
+    bool m_oldLock;
+    bool m_newLock;
 
-    void         doCmd(bool lock);
+    void doCmd(bool lock);
 };
 
-#endif // TOGGLE_PIECELOCK_H
+#endif   // TOGGLE_PIECELOCK_H

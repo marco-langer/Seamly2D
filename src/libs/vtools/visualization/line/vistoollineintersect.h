@@ -52,41 +52,45 @@
 #ifndef VISTOOLLINEINTERSECT_H
 #define VISTOOLLINEINTERSECT_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
 
-class VisToolLineIntersect :public VisLine
+class VisToolLineIntersect : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolLineIntersect(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolLineIntersect(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolLineIntersect() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void         setLine1P2Id(const quint32 &value);
-    void         setLine2P1Id(const quint32 &value);
-    void         setLine2P2Id(const quint32 &value);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolLineIntersect)};
+    void setLine1P2Id(const quint32& value);
+    void setLine2P1Id(const quint32& value);
+    void setLine2P2Id(const quint32& value);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolLineIntersect)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolLineIntersect)
-    quint32              line1P2Id;
-    quint32              line2P1Id;
-    quint32              line2P2Id;
-    VScaledEllipse *point;
-    VScaledEllipse *line1P1;
-    VScaledEllipse *line1P2;
-    VScaledLine    *line1;
-    VScaledEllipse *line2P1;
-    VScaledEllipse *line2P2;
+    quint32 line1P2Id;
+    quint32 line2P1Id;
+    quint32 line2P2Id;
+    VScaledEllipse* point;
+    VScaledEllipse* line1P1;
+    VScaledEllipse* line1P2;
+    VScaledLine* line1;
+    VScaledEllipse* line2P1;
+    VScaledEllipse* line2P2;
 };
 
-#endif // VISTOOLLINEINTERSECT_H
+#endif   // VISTOOLLINEINTERSECT_H

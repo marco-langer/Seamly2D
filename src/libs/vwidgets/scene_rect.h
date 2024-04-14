@@ -27,44 +27,48 @@
 #ifndef SCENE_RECT_H
 #define SCENE_RECT_H
 
-#include <QtGlobal>
 #include <QGraphicsRectItem>
+#include <QtGlobal>
 
 #include "../vmisc/def.h"
 
 class VPointF;
 class VScaledLine;
 
-class SceneRect: public QGraphicsRectItem
+class SceneRect : public QGraphicsRectItem
 {
 public:
-    explicit                 SceneRect(const QColor &lineColor, QGraphicsItem *parent = nullptr);
-    virtual                 ~SceneRect() = default;
-    virtual int              type() const Q_DECL_OVERRIDE {return Type;}
-                             enum { Type = UserType + static_cast<int>(Vis::ScenePoint)};
+    explicit SceneRect(const QColor& lineColor, QGraphicsItem* parent = nullptr);
+    virtual ~SceneRect() = default;
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ScenePoint)
+    };
 
-    virtual void             paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                                   QWidget *widget = nullptr) Q_DECL_OVERRIDE;
-    virtual void             refreshPointGeometry(const VPointF &point);
+    virtual void
+    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        Q_DECL_OVERRIDE;
+    virtual void refreshPointGeometry(const VPointF& point);
 
 protected:
-    QColor                   m_rectColor; /** @brief m_rectColor color of point. */
-    bool                     m_onlyPoint;
-    bool                     m_isHovered;
-    bool                     m_showPointName;
+    QColor m_rectColor; /** @brief m_rectColor color of point. */
+    bool m_onlyPoint;
+    bool m_isHovered;
+    bool m_showPointName;
 
-    virtual void             hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    virtual void             hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
 
-    void                     setOnlyPoint(bool value);
-    bool                     isOnlyPoint() const;
+    void setOnlyPoint(bool value);
+    bool isOnlyPoint() const;
 
-    void                     setPointColor(const QString &value);
+    void setPointColor(const QString& value);
 
 private:
     Q_DISABLE_COPY(SceneRect)
 
-    void                     setRectPen(qreal scale);
+    void setRectPen(qreal scale);
 };
 
-#endif // SCENE_RECT_H
+#endif   // SCENE_RECT_H

@@ -30,9 +30,8 @@
 #include "../vmisc/def.h"
 #include "../vmisc/vsettings.h"
 
-namespace Ui
-{
-    class SeamlyWelcomeDialog;
+namespace Ui {
+class SeamlyWelcomeDialog;
 }
 
 class SeamlyWelcomeDialog : public QDialog
@@ -40,22 +39,22 @@ class SeamlyWelcomeDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit                   SeamlyWelcomeDialog(QWidget *parent = nullptr);
-                              ~SeamlyWelcomeDialog();
-    void                       apply();
+    explicit SeamlyWelcomeDialog(QWidget* parent = nullptr);
+    ~SeamlyWelcomeDialog();
+    void apply();
 
 protected:
-    virtual void               changeEvent(QEvent* event) Q_DECL_OVERRIDE;
-    void                       seperatorChanged();
+    virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
+    void seperatorChanged();
 
 private:
     Q_DISABLE_COPY(SeamlyWelcomeDialog)
-    Ui::SeamlyWelcomeDialog *ui;
-    bool                       m_langChanged;
-    bool                       m_selectionSoundChanged;
-    VSettings                 *settings;
+    Ui::SeamlyWelcomeDialog* ui;
+    bool m_langChanged;
+    bool m_selectionSoundChanged;
+    VSettings* settings;
 
-    void                       initUnits(const MeasurementsType &type);
+    void initUnits(const MeasurementsType& type);
 };
 
-#endif // WELCOME_DIALOG_H
+#endif   // WELCOME_DIALOG_H

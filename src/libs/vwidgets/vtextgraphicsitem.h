@@ -40,8 +40,8 @@
 #include <QString>
 #include <QtGlobal>
 
-#include "vpieceitem.h"
 #include "../vlayout/vtextmanager.h"
+#include "vpieceitem.h"
 
 /**
  * @brief The VTextGraphicsItem class. This class implements text graphics item,
@@ -55,26 +55,30 @@ public:
     explicit VTextGraphicsItem(QGraphicsItem* pParent = nullptr);
     virtual ~VTextGraphicsItem() Q_DECL_EQ_DEFAULT;
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+        Q_DECL_OVERRIDE;
     virtual void Update() Q_DECL_OVERRIDE;
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::TextGraphicsItem)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::TextGraphicsItem)
+    };
 
-    void setFont(const QFont &font);
-    int  getFontSize() const;
+    void setFont(const QFont& font);
+    int getFontSize() const;
     void setSize(qreal width, qreal height);
-    bool isContained(QRectF rectBB, qreal rotation, qreal &xPos, qreal &yPos) const;
-    void updateData(const QString &name, const VPieceLabelData &data);
-    void updateData(VAbstractPattern *doc);
-    int  getTextLines() const;
+    bool isContained(QRectF rectBB, qreal rotation, qreal& xPos, qreal& yPos) const;
+    void updateData(const QString& name, const VPieceLabelData& data);
+    void updateData(VAbstractPattern* doc);
+    int getTextLines() const;
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
 
     void UpdateBox();
     void correctLabel();
@@ -86,17 +90,17 @@ signals:
 
 private:
     Q_DISABLE_COPY(VTextGraphicsItem)
-    QPointF      m_startPos;
-    QPointF      m_start;
-    QSizeF       m_startSize;
-    double       m_rotation;
-    double       m_angle;
-    QRectF       m_rectResize;
+    QPointF m_startPos;
+    QPointF m_start;
+    QSizeF m_startSize;
+    double m_rotation;
+    double m_angle;
+    QRectF m_rectResize;
     VTextManager m_textMananger;
 
-    void allUserModifications(const QPointF &pos);
+    void allUserModifications(const QPointF& pos);
     void userRotateAndMove();
-    void userMoveAndResize(const QPointF &pos);
+    void userMoveAndResize(const QPointF& pos);
 };
 
-#endif // VTEXTGRAPHICSITEM_H
+#endif   // VTEXTGRAPHICSITEM_H

@@ -54,11 +54,11 @@
 
 #include <QObject>
 
-class TST_Misc :public QObject
+class TST_Misc : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_Misc(QObject *parent = nullptr);
+    explicit TST_Misc(QObject* parent = nullptr);
 
 private slots:
     void TestRelativeFilePath_data();
@@ -76,4 +76,4 @@ private:
     Q_DISABLE_COPY(TST_Misc)
 };
 
-#endif // TST_MISC_H
+#endif   // TST_MISC_H

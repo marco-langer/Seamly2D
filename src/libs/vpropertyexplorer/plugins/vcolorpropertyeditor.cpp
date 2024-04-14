@@ -33,8 +33,13 @@
 
 #include "../vproperty.h"
 
-VPE::VColorPropertyEditor::VColorPropertyEditor(QWidget *parent)
-    : QWidget(parent), Color(), ToolButton(nullptr), TextLabel(nullptr), ColorLabel(nullptr), Spacer(nullptr)
+VPE::VColorPropertyEditor::VColorPropertyEditor(QWidget* parent)
+    : QWidget(parent)
+    , Color()
+    , ToolButton(nullptr)
+    , TextLabel(nullptr)
+    , ColorLabel(nullptr)
+    , Spacer(nullptr)
 {
     setAutoFillBackground(true);
 
@@ -44,7 +49,7 @@ VPE::VColorPropertyEditor::VColorPropertyEditor(QWidget *parent)
     ToolButton->setText("...");
     ToolButton->setFixedWidth(20);
     ToolButton->installEventFilter(this);
-    setFocusProxy(ToolButton);  // Make the ToolButton the focus proxy
+    setFocusProxy(ToolButton);   // Make the ToolButton the focus proxy
     setFocusPolicy(ToolButton->focusPolicy());
     connect(ToolButton, &QToolButton::clicked, this, &VColorPropertyEditor::onToolButtonClicked);
 
@@ -60,56 +65,59 @@ VPE::VColorPropertyEditor::VColorPropertyEditor(QWidget *parent)
     Spacer = new QSpacerItem(1, 0, QSizePolicy::Expanding, QSizePolicy::Ignored);
 
     // The layout (a horizontal layout)
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout* layout = new QHBoxLayout(this);
     layout->setSpacing(3);
     layout->setMargin(0);
     layout->addWidget(ColorLabel);
     layout->addWidget(TextLabel);
     layout->addItem(Spacer);
     layout->addWidget(ToolButton);
-    //TextLabel->hide();
-    //ColorLabel->hide();   // for now, we just use the standard display and only add the button
+    // TextLabel->hide();
+    // ColorLabel->hide();   // for now, we just use the standard display and only add the button
 }
 
-void VPE::VColorPropertyEditor::setLineColor(const QColor &color_)
+void VPE::VColorPropertyEditor::setLineColor(const QColor& color_)
 {
-    if (Color != color_)
-    {
+    if (Color != color_) {
         Color = color_;
         ColorLabel->setPixmap(GetColorPixmap(Color));
         TextLabel->setText(GetColorString(Color));
     }
 }
 
-QPixmap VPE::VColorPropertyEditor::GetColorPixmap(const QColor &color, quint32 size)
+QPixmap VPE::VColorPropertyEditor::GetColorPixmap(const QColor& color, quint32 size)
 {
-    QImage tmpImgage(static_cast<int>(size), static_cast<int>(size), QImage::Format_ARGB32_Premultiplied);
+    QImage tmpImgage(
+        static_cast<int>(size), static_cast<int>(size), QImage::Format_ARGB32_Premultiplied);
     tmpImgage.fill(static_cast<quint32>(color.rgb()));
     return QPixmap::fromImage(tmpImgage);
     // todo: support alpha channel
 }
 
-QString VPE::VColorPropertyEditor::GetColorString(const QColor &color)
+QString VPE::VColorPropertyEditor::GetColorString(const QColor& color)
 {
-    return QString("[%1, %2, %3] (%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+    return QString("[%1, %2, %3] (%4)")
+        .arg(color.red())
+        .arg(color.green())
+        .arg(color.blue())
+        .arg(color.alpha());
 }
 
 void VPE::VColorPropertyEditor::onToolButtonClicked()
 {
-    const QColor newColor = QColorDialog::getColor(Color, this, QString(), QColorDialog::ShowAlphaChannel);
-    if (newColor.isValid() && newColor != Color)
-    {
+    const QColor newColor =
+        QColorDialog::getColor(Color, this, QString(), QColorDialog::ShowAlphaChannel);
+    if (newColor.isValid() && newColor != Color) {
         setLineColor(newColor);
         emit dataChangedByUser(Color, this);
-        UserChangeEvent *event = new UserChangeEvent();
-        QCoreApplication::postEvent ( this, event );
+        UserChangeEvent* event = new UserChangeEvent();
+        QCoreApplication::postEvent(this, event);
     }
 }
 
-bool VPE::VColorPropertyEditor::eventFilter(QObject *obj, QEvent *ev)
+bool VPE::VColorPropertyEditor::eventFilter(QObject* obj, QEvent* ev)
 {
-    if (obj == ToolButton && ev->type() == QEvent::KeyPress)
-    {
+    if (obj == ToolButton && ev->type() == QEvent::KeyPress) {
         // Ignore the event, so that eventually the delegate gets the event.
         ev->ignore();
         return true;
@@ -124,7 +132,4 @@ VPE::VColorPropertyEditor::~VColorPropertyEditor()
     //
 }
 
-QColor VPE::VColorPropertyEditor::getLineColor() const
-{
-    return Color;
-}
+QColor VPE::VColorPropertyEditor::getLineColor() const { return Color; }

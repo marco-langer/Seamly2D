@@ -32,10 +32,9 @@
 #ifndef POINT_INTERSECTXY_VISUAL_H
 #define POINT_INTERSECTXY_VISUAL_H
 
-#include "visline.h"
 #include "../vmisc/def.h"
+#include "visline.h"
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QLineF>
@@ -43,31 +42,35 @@
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 class PointIntersectXYVisual : public VisLine
 {
     Q_OBJECT
 
 public:
-    explicit        PointIntersectXYVisual(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual        ~PointIntersectXYVisual() = default;
+    explicit PointIntersectXYVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~PointIntersectXYVisual() = default;
 
-    virtual void    RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void            setPoint2Id(const quint32 &value);
-    void            setPoint1Id(const quint32 &value);
-    virtual int     type() const Q_DECL_OVERRIDE {return Type;}
-    enum            {Type = UserType + static_cast<int>(Vis::ToolPointOfIntersection)};
+    void setPoint2Id(const quint32& value);
+    void setPoint1Id(const quint32& value);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPointOfIntersection)
+    };
 
 private:
-                    Q_DISABLE_COPY(PointIntersectXYVisual)
-    quint32         point2Id;
-    VScaledEllipse *point;
-    VScaledEllipse *axisP1;
-    VScaledEllipse *axisP2;
-    VScaledLine    *axis2;
+    Q_DISABLE_COPY(PointIntersectXYVisual)
+    quint32 point2Id;
+    VScaledEllipse* point;
+    VScaledEllipse* axisP1;
+    VScaledEllipse* axisP2;
+    VScaledLine* axis2;
 
-    void            showIntersection(const QLineF &axis1, const QLineF &axis2, const QColor &color);
+    void showIntersection(const QLineF& axis1, const QLineF& axis2, const QColor& color);
 };
 
-#endif // POINT_INTERSECTXY_VISUAL_H
+#endif   // POINT_INTERSECTXY_VISUAL_H

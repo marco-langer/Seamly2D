@@ -58,7 +58,7 @@ class TST_VCubicBezierPath : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VCubicBezierPath(QObject *parent = nullptr);
+    explicit TST_VCubicBezierPath(QObject* parent = nullptr);
 
 private slots:
     void TestCountSubSpl_data() const;
@@ -70,7 +70,6 @@ private slots:
 
 private:
     Q_DISABLE_COPY(TST_VCubicBezierPath)
-
 };
 
-#endif // TST_VCUBICBEZIERPATH_H
+#endif   // TST_VCUBICBEZIERPATH_H

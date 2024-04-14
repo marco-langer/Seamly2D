@@ -58,14 +58,15 @@ class TST_VSplinePath : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VSplinePath(QObject *parent = nullptr);
+    explicit TST_VSplinePath(QObject* parent = nullptr);
 private slots:
     void TestRotation_data();
     void TestRotation();
     void TestFlip_data();
     void TestFlip();
+
 private:
     Q_DISABLE_COPY(TST_VSplinePath)
 };
 
-#endif // TST_VSPLINEPATH_H
+#endif   // TST_VSPLINEPATH_H

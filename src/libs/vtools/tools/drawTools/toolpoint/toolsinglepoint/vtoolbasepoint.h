@@ -52,7 +52,6 @@
 #ifndef VTOOLBASEPOINT_H
 #define VTOOLBASEPOINT_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -61,73 +60,89 @@
 #include <QVariant>
 #include <Qt>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "../vmisc/def.h"
 #include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/def.h"
 #include "vtoolsinglepoint.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 /**
- * @brief The VToolBasePoint class tool for creation pattern base point. Only base point can move. All object
- * pattern peace depend on base point.
+ * @brief The VToolBasePoint class tool for creation pattern base point. Only base point can move.
+ * All object pattern peace depend on base point.
  */
 class VToolBasePoint : public VToolSinglePoint
 {
     Q_OBJECT
 public:
-    virtual               ~VToolBasePoint() =default;
-    virtual void           setDialog() Q_DECL_OVERRIDE;
+    virtual ~VToolBasePoint() = default;
+    virtual void setDialog() Q_DECL_OVERRIDE;
 
-    static VToolBasePoint *Create(quint32 _id, const QString &activeDraftBlock, VPointF *point,
-                                  VMainGraphicsScene *scene, VAbstractPattern *doc, VContainer *data,
-                                  const Document &parse, const Source &typeCreation);
+    static VToolBasePoint* Create(
+        quint32 _id,
+        const QString& activeDraftBlock,
+        VPointF* point,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
 
-    static const QString   ToolType;
-    virtual int            type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::BasePoint)};
+    static const QString ToolType;
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::BasePoint)
+    };
 
-    virtual void           ShowVisualization(bool show) Q_DECL_OVERRIDE;
-    virtual void           decrementReferens() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void decrementReferens() Q_DECL_OVERRIDE;
 
-    QPointF                GetBasePointPos() const;
-    void                   SetBasePointPos(const QPointF &pos);
+    QPointF GetBasePointPos() const;
+    void SetBasePointPos(const QPointF& pos);
 
 public slots:
-    virtual void           FullUpdateFromFile() Q_DECL_OVERRIDE;
-    virtual void           EnableToolMove(bool move) Q_DECL_OVERRIDE;
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
+    virtual void EnableToolMove(bool move) Q_DECL_OVERRIDE;
 
 signals:
     /**
      * @brief FullUpdateTree handle if need update pattern file.
      */
-    void                   LiteUpdateTree();
+    void LiteUpdateTree();
 
 protected slots:
-    virtual void           showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void           AddToFile() Q_DECL_OVERRIDE;
-    virtual QVariant       itemChange ( GraphicsItemChange change, const QVariant &value ) Q_DECL_OVERRIDE;
-    virtual void           deleteTool(bool ask = true) Q_DECL_OVERRIDE;
-    virtual void           SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void           hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) Q_DECL_OVERRIDE;
-    virtual void           hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ) Q_DECL_OVERRIDE;
-    virtual void           mousePressEvent( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void           mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void           SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void           ReadToolAttributes(const QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void           SetVisualization() Q_DECL_OVERRIDE {}
-    virtual QString        makeToolTip() const Q_DECL_OVERRIDE;
+    virtual void AddToFile() Q_DECL_OVERRIDE;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) Q_DECL_OVERRIDE;
+    virtual void deleteTool(bool ask = true) Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE {}
+    virtual QString makeToolTip() const Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VToolBasePoint)
 
-    QString                draftBlockName;
+    QString draftBlockName;
 
-                           VToolBasePoint (VAbstractPattern *doc, VContainer *data, quint32 id,
-                                           const Source &typeCreation, const QString &draftBlockName,
-                                           QGraphicsItem * parent = nullptr );
+    VToolBasePoint(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        const Source& typeCreation,
+        const QString& draftBlockName,
+        QGraphicsItem* parent = nullptr);
 };
 
-#endif // VTOOLBASEPOINT_H
+#endif   // VTOOLBASEPOINT_H

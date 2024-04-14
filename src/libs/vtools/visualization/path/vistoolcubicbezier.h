@@ -52,12 +52,12 @@
 #ifndef VISTOOLCUBICBEZIER_H
 #define VISTOOLCUBICBEZIER_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "vispath.h"
@@ -66,28 +66,32 @@ class VisToolCubicBezier : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolCubicBezier(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolCubicBezier(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCubicBezier() Q_DECL_EQ_DEFAULT;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void         setObject2Id(const quint32 &value);
-    void         setObject3Id(const quint32 &value);
-    void         setObject4Id(const quint32 &value);
+    void setObject2Id(const quint32& value);
+    void setObject3Id(const quint32& value);
+    void setObject4Id(const quint32& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolCubicBezier)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolCubicBezier)
+    };
+
 protected:
     Q_DISABLE_COPY(VisToolCubicBezier)
-    quint32         object2Id;
-    quint32         object3Id;
-    quint32         object4Id;
-    VScaledEllipse *point1;
-    VScaledEllipse *point2;
-    VScaledEllipse *point3;
-    VScaledEllipse *point4;
-    VScaledLine    *helpLine1;
-    VScaledLine    *helpLine2;
+    quint32 object2Id;
+    quint32 object3Id;
+    quint32 object4Id;
+    VScaledEllipse* point1;
+    VScaledEllipse* point2;
+    VScaledEllipse* point3;
+    VScaledEllipse* point4;
+    VScaledLine* helpLine1;
+    VScaledLine* helpLine2;
 };
 
-#endif // VISTOOLCUBICBEZIER_H
+#endif   // VISTOOLCUBICBEZIER_H

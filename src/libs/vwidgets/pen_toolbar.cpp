@@ -36,52 +36,53 @@ Q_LOGGING_CATEGORY(penToolBar, "pentoolbar")
 /**
  * Constructor.
  */
-PenToolBar::PenToolBar( const QString &title, QWidget *parent )
-		: QToolBar(title, parent)
-		, currentPen(Pen{})
-		, colorBox(new ColorComboBox{40, 14, this, "colorbox"})
-		, lineTypeBox(new LineTypeComboBox{40, 14, this, "lineTypebox"})
-        , lineWeightBox(new LineWeightComboBox{40, 14, this, "lineWeightbox"})
+PenToolBar::PenToolBar(const QString& title, QWidget* parent)
+    : QToolBar(title, parent)
+    , currentPen(Pen{})
+    , colorBox(new ColorComboBox{ 40, 14, this, "colorbox" })
+    , lineTypeBox(new LineTypeComboBox{ 40, 14, this, "lineTypebox" })
+    , lineWeightBox(new LineWeightComboBox{ 40, 14, this, "lineWeightbox" })
 {
-    currentPen.color      = qApp->Settings()->getDefaultLineColor();
-    currentPen.lineType   = qApp->Settings()->getDefaultLineType();
+    currentPen.color = qApp->Settings()->getDefaultLineColor();
+    currentPen.lineType = qApp->Settings()->getDefaultLineType();
     currentPen.lineWeight = qApp->Settings()->getDefaultLineWeight();
 
     int index = colorBox->findData(currentPen.color);
-    if (index != -1)
-    {
+    if (index != -1) {
         colorBox->setCurrentIndex(index);
     }
     index = lineTypeBox->findData(currentPen.lineType);
-    if (index != -1)
-    {
+    if (index != -1) {
         lineTypeBox->setCurrentIndex(index);
     }
     index = lineWeightBox->findData(currentPen.lineWeight);
-    if (index != -1)
-    {
+    if (index != -1) {
         lineWeightBox->setCurrentIndex(index);
     }
 
-  	addWidget(colorBox);
+    addWidget(colorBox);
     colorBox->setToolTip(tr("Current line color"));
     connect(colorBox, &ColorComboBox::colorChangedSignal, this, &PenToolBar::colorChanged);
 
     addWidget(lineTypeBox);
     lineTypeBox->setToolTip(tr("Current line type"));
-    connect(lineTypeBox, &LineTypeComboBox::lineTypeChanged,  this, &PenToolBar::lineTypeChanged);
+    connect(lineTypeBox, &LineTypeComboBox::lineTypeChanged, this, &PenToolBar::lineTypeChanged);
 
-	addWidget(lineWeightBox);
+    addWidget(lineWeightBox);
     lineWeightBox->setToolTip(tr("Current line weight"));
-    connect(lineWeightBox, &LineWeightComboBox::lineWeightChanged, this, &PenToolBar::lineWeightChanged);
+    connect(
+        lineWeightBox,
+        &LineWeightComboBox::lineWeightChanged,
+        this,
+        &PenToolBar::lineWeightChanged);
 
-    QToolButton *resetButton = new QToolButton;
+    QToolButton* resetButton = new QToolButton;
     resetButton->setIcon(QIcon(":/icons/win.icon.theme/24x24/actions/edit-undo.png"));
     resetButton->setToolTip(tr("Reset current pen to defaults"));
     addWidget(resetButton);
     connect(resetButton, &QToolButton::clicked, this, &PenToolBar::penReset);
 
-    QToolButton *savePresetButton = new QToolButton;
+    QToolButton* savePresetButton = new QToolButton;
     savePresetButton->setIcon(QIcon(":/icons/win.icon.theme/24x24/actions/document-save-as.png"));
     savePresetButton->setToolTip(tr("Save current pen preset"));
     addWidget(savePresetButton);
@@ -94,42 +95,39 @@ PenToolBar::PenToolBar( const QString &title, QWidget *parent )
  */
 PenToolBar::~PenToolBar() = default;
 
-Pen PenToolBar::getPen() const
-{
-	return currentPen;
-}
+Pen PenToolBar::getPen() const { return currentPen; }
 
 /**
  * Called when the linetype was changed by the user.
  */
-void PenToolBar::lineTypeChanged(const QString &type)
+void PenToolBar::lineTypeChanged(const QString& type)
 {
     qCDebug(penToolBar, "PenToolBar::lineTypeChanged - Pen type changed\n");
-	currentPen.lineType = type;
+    currentPen.lineType = type;
 
-	emit penChanged(currentPen);
+    emit penChanged(currentPen);
 }
 
 /**
  * Called when the color was changed by the user.
  */
-void PenToolBar::colorChanged(const QString &color)
+void PenToolBar::colorChanged(const QString& color)
 {
-	qCDebug(penToolBar, "PenToolBar::colorChanged - Pen color changed\n");
-	currentPen.color = color;
+    qCDebug(penToolBar, "PenToolBar::colorChanged - Pen color changed\n");
+    currentPen.color = color;
 
-	emit penChanged(currentPen);
+    emit penChanged(currentPen);
 }
 
 /**
  * Called when the width was changed by the user.
  */
-void PenToolBar::lineWeightChanged(const qreal &weight)
+void PenToolBar::lineWeightChanged(const qreal& weight)
 {
     qCDebug(penToolBar, "PenToolBar::lineWeightChanged - Pen width changed\n");
-	currentPen.lineWeight = weight;
+    currentPen.lineWeight = weight;
 
-	emit penChanged(currentPen);
+    emit penChanged(currentPen);
 }
 
 /**
@@ -141,26 +139,23 @@ void PenToolBar::penReset()
     blockSignals(true);
 
     int index = colorBox->findData(qApp->Settings()->getDefaultLineColor());
-	if (index != -1)
-	{
-		colorBox->setCurrentIndex(index);
+    if (index != -1) {
+        colorBox->setCurrentIndex(index);
         currentPen.color = colorBox->getColor();
-	}
-	index = lineTypeBox->findData(qApp->Settings()->getDefaultLineType());
-	if (index != -1)
-	{
-		lineTypeBox->setCurrentIndex(index);
+    }
+    index = lineTypeBox->findData(qApp->Settings()->getDefaultLineType());
+    if (index != -1) {
+        lineTypeBox->setCurrentIndex(index);
         currentPen.lineType = lineTypeBox->getLineType();
-	}
+    }
     index = lineWeightBox->findData(qApp->Settings()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         lineWeightBox->setCurrentIndex(index);
         currentPen.lineWeight = lineWeightBox->getLineWeight();
     }
 
     blockSignals(false);
-	emit penChanged(currentPen);
+    emit penChanged(currentPen);
 }
 
 /**

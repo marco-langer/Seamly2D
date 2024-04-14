@@ -52,18 +52,17 @@
 #ifndef DIALOGSINGLEPOINT_H
 #define DIALOGSINGLEPOINT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogSinglePoint;
+namespace Ui {
+class DialogSinglePoint;
 }
 
 /**
@@ -73,27 +72,29 @@ class DialogSinglePoint : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogSinglePoint(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogSinglePoint(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogSinglePoint() Q_DECL_OVERRIDE;
 
-    void           SetData(const QString &name, const QPointF &point);
-    QPointF        GetPoint()const;
+    void SetData(const QString& name, const QPointF& point);
+    QPointF GetPoint() const;
 
 public slots:
-    void           mousePress(const QPointF &scenePos);
+    void mousePress(const QPointF& scenePos);
+
 protected:
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void   SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(DialogSinglePoint)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogSinglePoint *ui;
+    Ui::DialogSinglePoint* ui;
 
     /** @brief point data of point */
-    QPointF        point;
+    QPointF point;
 };
 
-#endif // DIALOGSINGLEPOINT_H
+#endif   // DIALOGSINGLEPOINT_H

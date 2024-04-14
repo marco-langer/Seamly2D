@@ -60,7 +60,10 @@
 
 //---------------------------------------------------------------------------------------------------------------------
 VObjPaintDevice::VObjPaintDevice()
-    :QPaintDevice(), engine(new VObjEngine()), fileName(), owns_iodevice(1)
+    : QPaintDevice()
+    , engine(new VObjEngine())
+    , fileName()
+    , owns_iodevice(1)
 {
     owns_iodevice = static_cast<int>(false);
 }
@@ -68,58 +71,46 @@ VObjPaintDevice::VObjPaintDevice()
 //---------------------------------------------------------------------------------------------------------------------
 VObjPaintDevice::~VObjPaintDevice()
 {
-    if (owns_iodevice)
-    {
+    if (owns_iodevice) {
         delete engine->getOutputDevice();
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-QPaintEngine *VObjPaintDevice::paintEngine() const
-{
-    return engine.data();
-}
+QPaintEngine* VObjPaintDevice::paintEngine() const { return engine.data(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-QString VObjPaintDevice::getFileName() const
-{
-    return fileName;
-}
+QString VObjPaintDevice::getFileName() const { return fileName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjPaintDevice::setFileName(const QString &value)
+void VObjPaintDevice::setFileName(const QString& value)
 {
-    if (engine->isActive())
-    {
-        qWarning("VObjPaintDevice::setFileName(), cannot set file name while OBJ is being generated");
+    if (engine->isActive()) {
+        qWarning(
+            "VObjPaintDevice::setFileName(), cannot set file name while OBJ is being generated");
         return;
     }
 
-    if (owns_iodevice)
-    {
+    if (owns_iodevice) {
         delete engine->getOutputDevice();
     }
 
     owns_iodevice = static_cast<int>(true);
 
     fileName = value;
-    QFile *file = new QFile(fileName);
+    QFile* file = new QFile(fileName);
     engine->setOutputDevice(file);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QSize VObjPaintDevice::getSize()
-{
-    return engine->getSize();
-}
+QSize VObjPaintDevice::getSize() { return engine->getSize(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjPaintDevice::setSize(const QSize &size)
+void VObjPaintDevice::setSize(const QSize& size)
 {
-    if (engine->isActive())
-    {
+    if (engine->isActive()) {
         qWarning("VObjPaintDevice::setSize(), cannot set size while OBJ is being generated");
         return;
     }
@@ -127,17 +118,15 @@ void VObjPaintDevice::setSize(const QSize &size)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QIODevice *VObjPaintDevice::getOutputDevice()
-{
-    return engine->getOutputDevice();
-}
+QIODevice* VObjPaintDevice::getOutputDevice() { return engine->getOutputDevice(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjPaintDevice::setOutputDevice(QIODevice *outputDevice)
+void VObjPaintDevice::setOutputDevice(QIODevice* outputDevice)
 {
-    if (engine->isActive())
-    {
-        qWarning("VObjPaintDevice::setOutputDevice(), cannot set output device while OBJ is being generated");
+    if (engine->isActive()) {
+        qWarning(
+            "VObjPaintDevice::setOutputDevice(), cannot set output device while OBJ is being "
+            "generated");
         return;
     }
     owns_iodevice = static_cast<int>(false);
@@ -146,45 +135,30 @@ void VObjPaintDevice::setOutputDevice(QIODevice *outputDevice)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VObjPaintDevice::getResolution() const
-{
-    return engine->getResolution();
-}
+int VObjPaintDevice::getResolution() const { return engine->getResolution(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjPaintDevice::setResolution(int dpi)
-{
-    engine->setResolution(dpi);
-}
+void VObjPaintDevice::setResolution(int dpi) { engine->setResolution(dpi); }
 
 //---------------------------------------------------------------------------------------------------------------------
 int VObjPaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
 {
-    switch (metric)
-    {
-        case QPaintDevice::PdmDepth:
-            return 32;
-        case QPaintDevice::PdmWidth:
-            return engine->getSize().width();
-        case QPaintDevice::PdmHeight:
-            return engine->getSize().height();
-        case QPaintDevice::PdmHeightMM:
-            return qRound(engine->getSize().height() * 25.4 / engine->getResolution());
-        case QPaintDevice::PdmWidthMM:
-            return qRound(engine->getSize().width() * 25.4 / engine->getResolution());
-        case QPaintDevice::PdmNumColors:
-            return static_cast<int>(0xffffffff);
-        case QPaintDevice::PdmDpiX:
-        case QPaintDevice::PdmDpiY:
-        case QPaintDevice::PdmPhysicalDpiX:
-        case QPaintDevice::PdmPhysicalDpiY:
-            return engine->getResolution();
-        case QPaintDevice::PdmDevicePixelRatio:
-        case QPaintDevice::PdmDevicePixelRatioScaled:
-            return 1;
-        default:
-            qWarning("VObjPaintDevice::metric(), unhandled metric %d\n", metric);
-            break;
+    switch (metric) {
+    case QPaintDevice::PdmDepth: return 32;
+    case QPaintDevice::PdmWidth: return engine->getSize().width();
+    case QPaintDevice::PdmHeight: return engine->getSize().height();
+    case QPaintDevice::PdmHeightMM:
+        return qRound(engine->getSize().height() * 25.4 / engine->getResolution());
+    case QPaintDevice::PdmWidthMM:
+        return qRound(engine->getSize().width() * 25.4 / engine->getResolution());
+    case QPaintDevice::PdmNumColors: return static_cast<int>(0xffffffff);
+    case QPaintDevice::PdmDpiX:
+    case QPaintDevice::PdmDpiY:
+    case QPaintDevice::PdmPhysicalDpiX:
+    case QPaintDevice::PdmPhysicalDpiY: return engine->getResolution();
+    case QPaintDevice::PdmDevicePixelRatio:
+    case QPaintDevice::PdmDevicePixelRatioScaled: return 1;
+    default: qWarning("VObjPaintDevice::metric(), unhandled metric %d\n", metric); break;
     }
     return 0;
 }

@@ -61,11 +61,11 @@
 #include "../../undocommands/adddetnode.h"
 #include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vgeometry/vgobject.h"
-#include "../vmisc/vabstractapplication.h"
-#include "../vmisc/def.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../vabstracttool.h"
+#include "../vgeometry/vgobject.h"
+#include "../vmisc/def.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vpatterndb/vcontainer.h"
 
 const QString VAbstractNode::AttrIdTool = QStringLiteral("idTool");
 
@@ -79,8 +79,14 @@ const QString VAbstractNode::AttrIdTool = QStringLiteral("idTool");
  * @param idTool id tool.
  * @param parent parent object.
  */
-VAbstractNode::VAbstractNode(VAbstractPattern *doc, VContainer *data, const quint32 &id, const quint32 &idNode,
-                             const QString &blockName, const quint32 &idTool, QObject *parent)
+VAbstractNode::VAbstractNode(
+    VAbstractPattern* doc,
+    VContainer* data,
+    const quint32& id,
+    const quint32& idNode,
+    const QString& blockName,
+    const quint32& idTool,
+    QObject* parent)
     : VAbstractTool(doc, data, id, parent)
     , parentType(ParentType::Item)
     , idNode(idNode)
@@ -92,30 +98,22 @@ VAbstractNode::VAbstractNode(VAbstractPattern *doc, VContainer *data, const quin
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractNode::ShowVisualization(bool show)
-{
-    Q_UNUSED(show)
-}
+void VAbstractNode::ShowVisualization(bool show) { Q_UNUSED(show) }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractNode::incrementReferens()
 {
     VAbstractTool::incrementReferens();
-    if (_referens == 1)
-    {
-        if (idTool != NULL_ID)
-        {
+    if (_referens == 1) {
+        if (idTool != NULL_ID) {
             doc->IncrementReferens(idTool);
-        }
-        else
-        {
+        } else {
             const QSharedPointer<VGObject> node = VAbstractTool::data.GetGObject(idNode);
             doc->IncrementReferens(node->getIdTool());
         }
         ShowNode();
         QDomElement domElement = doc->elementById(m_id, getTagName());
-        if (domElement.isElement())
-        {
+        if (domElement.isElement()) {
             doc->SetParametrUsage(domElement, AttrInUse, NodeUsage::InUse);
         }
     }
@@ -128,37 +126,26 @@ void VAbstractNode::incrementReferens()
 void VAbstractNode::decrementReferens()
 {
     VAbstractTool::decrementReferens();
-    if (_referens == 0)
-    {
-        if (idTool != NULL_ID)
-        {
+    if (_referens == 0) {
+        if (idTool != NULL_ID) {
             doc->DecrementReferens(idTool);
-        }
-        else
-        {
+        } else {
             const QSharedPointer<VGObject> node = VAbstractTool::data.GetGObject(idNode);
             doc->DecrementReferens(node->getIdTool());
         }
         HideNode();
         QDomElement domElement = doc->elementById(m_id, getTagName());
-        if (domElement.isElement())
-        {
+        if (domElement.isElement()) {
             doc->SetParametrUsage(domElement, AttrInUse, NodeUsage::NotInUse);
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-ParentType VAbstractNode::GetParentType() const
-{
-    return parentType;
-}
+ParentType VAbstractNode::GetParentType() const { return parentType; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractNode::SetParentType(const ParentType &value)
-{
-    parentType = value;
-}
+void VAbstractNode::SetParentType(const ParentType& value) { parentType = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractNode::GroupVisibility(quint32 object, bool visible)
@@ -168,26 +155,17 @@ void VAbstractNode::GroupVisibility(quint32 object, bool visible)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VAbstractNode::IsExluded() const
-{
-    return m_exluded;
-}
+bool VAbstractNode::IsExluded() const { return m_exluded; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractNode::SetExluded(bool exluded)
-{
-    m_exluded = exluded;
-}
+void VAbstractNode::SetExluded(bool exluded) { m_exluded = exluded; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractNode::ToolCreation(const Source &typeCreation)
+void VAbstractNode::ToolCreation(const Source& typeCreation)
 {
-    if (typeCreation == Source::FromGui || typeCreation == Source::FromTool)
-    {
+    if (typeCreation == Source::FromGui || typeCreation == Source::FromTool) {
         AddToFile();
-    }
-    else
-    {
+    } else {
         RefreshDataInFile();
     }
 }
@@ -197,8 +175,8 @@ void VAbstractNode::ToolCreation(const Source &typeCreation)
  * @brief AddToModeling add tag to modeling tag current pattern peace.
  * @param domElement tag.
  */
-void VAbstractNode::AddToModeling(const QDomElement &domElement)
+void VAbstractNode::AddToModeling(const QDomElement& domElement)
 {
-    AddDetNode *addNode = new AddDetNode(domElement, doc, m_blockName);
+    AddDetNode* addNode = new AddDetNode(domElement, doc, m_blockName);
     qApp->getUndoStack()->push(addNode);
 }

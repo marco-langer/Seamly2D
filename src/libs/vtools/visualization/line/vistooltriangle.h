@@ -52,7 +52,6 @@
 #ifndef VISTOOLTRIANGLE_H
 #define VISTOOLTRIANGLE_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QLineF>
@@ -61,6 +60,7 @@
 #include <QString>
 #include <Qt>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -69,30 +69,34 @@ class VisToolTriangle : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolTriangle(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolTriangle(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolTriangle() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void         setObject2Id(const quint32 &value);
-    void         setHypotenuseP1Id(const quint32 &value);
-    void         setHypotenuseP2Id(const quint32 &value);
+    void setObject2Id(const quint32& value);
+    void setHypotenuseP1Id(const quint32& value);
+    void setHypotenuseP2Id(const quint32& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolTriangle)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolTriangle)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolTriangle)
-    quint32            object2Id;//axis second point
-    quint32            hypotenuseP1Id;
-    quint32            hypotenuseP2Id;
-    VScaledEllipse    *point;
-    VScaledEllipse    *axisP1;
-    VScaledEllipse    *axisP2;
-    ArrowedLineItem   *axis;
-    VScaledEllipse    *hypotenuseP1;
-    VScaledEllipse    *hypotenuseP2;
-    VScaledLine       *foot1;
-    VScaledLine       *foot2;
+    quint32 object2Id;   // axis second point
+    quint32 hypotenuseP1Id;
+    quint32 hypotenuseP2Id;
+    VScaledEllipse* point;
+    VScaledEllipse* axisP1;
+    VScaledEllipse* axisP2;
+    ArrowedLineItem* axis;
+    VScaledEllipse* hypotenuseP1;
+    VScaledEllipse* hypotenuseP2;
+    VScaledLine* foot1;
+    VScaledLine* foot2;
 };
 
-#endif // VISTOOLTRIANGLE_H
+#endif   // VISTOOLTRIANGLE_H

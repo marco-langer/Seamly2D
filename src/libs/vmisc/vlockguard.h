@@ -54,24 +54,24 @@
 #define VLOCKGUARD_H
 
 #include <QString>
-#include <stdint.h>
 #include <memory>
+#include <stdint.h>
 
 #include "../vmisc/diagnostic.h"
 
 #include <QFileInfo>
 #include <QLockFile>
 #if defined(Q_OS_WIN)
-#include <windows.h>
+#    include <windows.h>
 #endif
 
 /*@brief
- * This class creates Guarded object if and only if lock file taken. It keeps shared_ptr to object and lock-file.
- * Can use optional object allocator and deleter.
+ * This class creates Guarded object if and only if lock file taken. It keeps shared_ptr to object
+ * and lock-file. Can use optional object allocator and deleter.
  *
  * On older Qt lock assumed always taken and compile-time warning is shown.
  *
-*/
+ */
 template <typename Guarded>
 class VLockGuard
 {
@@ -79,66 +79,74 @@ public:
     explicit VLockGuard(const QString& lockName, int stale = 0, int timeout = 0);
 
     template <typename Alloc>
-    VLockGuard(const QString& lockName, Alloc a, int stale = 0, int timeout=0);
+    VLockGuard(const QString& lockName, Alloc a, int stale = 0, int timeout = 0);
 
     template <typename Alloc, typename Delete>
-    VLockGuard(const QString& lockName, Alloc a, Delete d, int stale = 0, int timeout=0);
+    VLockGuard(const QString& lockName, Alloc a, Delete d, int stale = 0, int timeout = 0);
 
-    const std::shared_ptr<Guarded> &GetProtected() const;
-    int             GetLockError() const;
-    bool            IsLocked() const;
-    QString         GetLockFile() const;
+    const std::shared_ptr<Guarded>& GetProtected() const;
+    int GetLockError() const;
+    bool IsLocked() const;
+    QString GetLockFile() const;
 
 private:
     Q_DISABLE_COPY(VLockGuard<Guarded>)
 
     std::shared_ptr<Guarded> holder;
-    int                      lockError;
-    QString                  lockFile;
+    int lockError;
+    QString lockFile;
     std::shared_ptr<QLockFile> lock;
 
     // cppcheck-suppress functionStatic
-    bool TryLock(const QString &lockName, int stale, int timeout);
+    bool TryLock(const QString& lockName, int stale, int timeout);
 };
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename Guarded>
-VLockGuard<Guarded>::VLockGuard(const QString &lockName, int stale, int timeout)
-    : holder(nullptr), lockError(0), lockFile(), lock(nullptr)
+VLockGuard<Guarded>::VLockGuard(const QString& lockName, int stale, int timeout)
+    : holder(nullptr)
+    , lockError(0)
+    , lockFile()
+    , lock(nullptr)
 {
-    if (TryLock(lockName, stale, timeout))
-    {
+    if (TryLock(lockName, stale, timeout)) {
         holder.reset(new Guarded());
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-//using allocator lambdas seems logically better than supplying pointer, because we will take ownership of allocated
-//object
-template <typename Guarded> template <typename Alloc>
+// using allocator lambdas seems logically better than supplying pointer, because we will take
+// ownership of allocated object
+template <typename Guarded>
+template <typename Alloc>
 VLockGuard<Guarded>::VLockGuard(const QString& lockName, Alloc a, int stale, int timeout)
-    : holder(nullptr), lockError(0), lockFile(), lock(nullptr)
+    : holder(nullptr)
+    , lockError(0)
+    , lockFile()
+    , lock(nullptr)
 {
-    if (TryLock(lockName, stale, timeout))
-    {
+    if (TryLock(lockName, stale, timeout)) {
         holder.reset(a());
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-template <typename Guarded> template <typename Alloc, typename Delete>
+template <typename Guarded>
+template <typename Alloc, typename Delete>
 VLockGuard<Guarded>::VLockGuard(const QString& lockName, Alloc a, Delete d, int stale, int timeout)
-    : holder(nullptr), lockError(0), lockFile(), lock(nullptr)
+    : holder(nullptr)
+    , lockError(0)
+    , lockFile()
+    , lock(nullptr)
 {
-    if (TryLock(lockName, stale, timeout))
-    {
+    if (TryLock(lockName, stale, timeout)) {
         holder.reset(a(), d);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename Guarded>
-const std::shared_ptr<Guarded> &VLockGuard<Guarded>::GetProtected() const
+const std::shared_ptr<Guarded>& VLockGuard<Guarded>::GetProtected() const
 {
     return holder;
 }
@@ -166,7 +174,7 @@ QString VLockGuard<Guarded>::GetLockFile() const
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename Guarded>
-bool VLockGuard<Guarded>::TryLock(const QString &lockName, int stale, int timeout)
+bool VLockGuard<Guarded>::TryLock(const QString& lockName, int stale, int timeout)
 {
     bool res = true;
 
@@ -180,8 +188,7 @@ bool VLockGuard<Guarded>::TryLock(const QString &lockName, int stale, int timeou
     lock->setStaleLockTime(stale);
     lock->tryLock(timeout);
 
-    if (QLockFile::LockFailedError == lock->error())
-    {
+    if (QLockFile::LockFailedError == lock->error()) {
         // This happens if a stale lock file exists and another process uses that PID.
         // Try removing the stale file, which will fail if a real process is holding a
         // file-level lock. A false error is more problematic than not locking properly
@@ -190,45 +197,56 @@ bool VLockGuard<Guarded>::TryLock(const QString &lockName, int stale, int timeou
         lock->tryLock(timeout);
     }
     res = QLockFile::NoError == (lockError = lock->error());
-    if (!res)
-    {
+    if (!res) {
         lock.reset();
     }
 #if defined(Q_OS_WIN)
-    else
-    {
+    else {
         SetFileAttributesW(lockFile.toStdWString().c_str(), FILE_ATTRIBUTE_HIDDEN);
     }
 #endif
     return res;
 }
 
-//use pointer and function below to persistent things like class-member, because lock is taken by constructor
-//helper functions allow to write shorter creating and setting new lock-pointer
+// use pointer and function below to persistent things like class-member, because lock is taken by
+// constructor helper functions allow to write shorter creating and setting new lock-pointer
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_INTEL(1418)
 
 template <typename Guarded>
-void VlpCreateLock(std::shared_ptr<VLockGuard<Guarded>>& r, const QString& lockName, int stale = 0, int timeout = 0)
+void VlpCreateLock(
+    std::shared_ptr<VLockGuard<Guarded>>& r,
+    const QString& lockName,
+    int stale = 0,
+    int timeout = 0)
 {
     r.reset(new VLockGuard<Guarded>(lockName, stale, timeout));
 }
 
 template <typename Guarded, typename Alloc>
-void VlpCreateLock(std::shared_ptr<VLockGuard<Guarded>>& r, const QString& lockName, Alloc a, int stale = 0,
-                   int timeout = 0)
+void VlpCreateLock(
+    std::shared_ptr<VLockGuard<Guarded>>& r,
+    const QString& lockName,
+    Alloc a,
+    int stale = 0,
+    int timeout = 0)
 {
     r.reset(new VLockGuard<Guarded>(lockName, a, stale, timeout));
 }
 
 template <typename Guarded, typename Alloc, typename Del>
-void VlpCreateLock(std::shared_ptr<VLockGuard<Guarded>>& r, const QString& lockName, Alloc a, Del d, int stale = 0,
-                   int timeout = 0)
+void VlpCreateLock(
+    std::shared_ptr<VLockGuard<Guarded>>& r,
+    const QString& lockName,
+    Alloc a,
+    Del d,
+    int stale = 0,
+    int timeout = 0)
 {
     r.reset(new VLockGuard<Guarded>(lockName, a, d, stale, timeout));
 }
 
 QT_WARNING_POP
 
-#endif // VLOCKGUARD_H
+#endif   // VLOCKGUARD_H

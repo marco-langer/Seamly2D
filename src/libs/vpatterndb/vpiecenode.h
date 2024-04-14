@@ -52,9 +52,9 @@
 #ifndef VPIECENODE_H
 #define VPIECENODE_H
 
-#include <QtGlobal>
-#include <QSharedDataPointer>
 #include <QMetaType>
+#include <QSharedDataPointer>
+#include <QtGlobal>
 
 #include "../vmisc/def.h"
 
@@ -64,79 +64,79 @@ class VContainer;
 class VPieceNode
 {
 public:
-                       VPieceNode();
-                       VPieceNode(quint32 id, Tool typeTool, bool reverse = false);
-                       VPieceNode(const VPieceNode &node);
+    VPieceNode();
+    VPieceNode(quint32 id, Tool typeTool, bool reverse = false);
+    VPieceNode(const VPieceNode& node);
 
-                      ~VPieceNode();
+    ~VPieceNode();
 
-    VPieceNode         &operator=(const VPieceNode &node);
+    VPieceNode& operator=(const VPieceNode& node);
 
 #ifdef Q_COMPILER_RVALUE_REFS
-	VPieceNode           &operator=(VPieceNode &&node) Q_DECL_NOTHROW;
+    VPieceNode& operator=(VPieceNode&& node) Q_DECL_NOTHROW;
 #endif
 
-	void                  Swap(VPieceNode &node) Q_DECL_NOTHROW;
+    void Swap(VPieceNode& node) Q_DECL_NOTHROW;
 
-    friend QDataStream &operator<<(QDataStream &out, const VPieceNode &);
-    friend QDataStream &operator>>(QDataStream &in, VPieceNode &p);
+    friend QDataStream& operator<<(QDataStream& out, const VPieceNode&);
+    friend QDataStream& operator>>(QDataStream& in, VPieceNode& p);
 
-    quint32             GetId() const;
-    void                SetId(quint32 id);
+    quint32 GetId() const;
+    void SetId(quint32 id);
 
-    Tool                GetTypeTool() const;
-    void                SetTypeTool(Tool value);
+    Tool GetTypeTool() const;
+    void SetTypeTool(Tool value);
 
-    bool                GetReverse() const;
-    void                SetReverse(bool reverse);
+    bool GetReverse() const;
+    void SetReverse(bool reverse);
 
-    bool                isExcluded() const;
-    void                SetExcluded(bool exclude);
+    bool isExcluded() const;
+    void SetExcluded(bool exclude);
 
-    qreal               GetSABefore(const VContainer *data) const;
-    qreal               GetSABefore(const VContainer *data, Unit unit) const;
+    qreal GetSABefore(const VContainer* data) const;
+    qreal GetSABefore(const VContainer* data, Unit unit) const;
 
-    QString             GetFormulaSABefore() const;
-    void                setBeforeSAFormula(const QString &formula);
+    QString GetFormulaSABefore() const;
+    void setBeforeSAFormula(const QString& formula);
 
-    qreal               GetSAAfter(const VContainer *data) const;
-    qreal               GetSAAfter(const VContainer *data, Unit unit) const;
+    qreal GetSAAfter(const VContainer* data) const;
+    qreal GetSAAfter(const VContainer* data, Unit unit) const;
 
-    QString             GetFormulaSAAfter() const;
-    void                setAfterSAFormula(const QString &formula);
+    QString GetFormulaSAAfter() const;
+    void setAfterSAFormula(const QString& formula);
 
-    PieceNodeAngle      GetAngleType() const;
-    void                SetAngleType(PieceNodeAngle type);
+    PieceNodeAngle GetAngleType() const;
+    void SetAngleType(PieceNodeAngle type);
 
-    bool                isNotch() const;
-    void                setNotch(bool notch);
+    bool isNotch() const;
+    void setNotch(bool notch);
 
-    bool                IsMainPathNode() const;
-    void                SetMainPathNode(bool value);
+    bool IsMainPathNode() const;
+    void SetMainPathNode(bool value);
 
-    NotchType           getNotchType() const;
-    void                setNotchType(NotchType notchType);
+    NotchType getNotchType() const;
+    void setNotchType(NotchType notchType);
 
-    NotchSubType        getNotchSubType() const;
-    void                setNotchSubType(NotchSubType notchSubType);
+    NotchSubType getNotchSubType() const;
+    void setNotchSubType(NotchSubType notchSubType);
 
-    bool                showSeamlineNotch() const;
-    void                setShowSeamlineNotch(bool value);
+    bool showSeamlineNotch() const;
+    void setShowSeamlineNotch(bool value);
 
-    bool                showNotch() const;
-    void                setShowNotch(bool value);
+    bool showNotch() const;
+    void setShowNotch(bool value);
 
-    qreal               getNotchLength() const;
-    void                setNotchLength(qreal notchLength);
+    qreal getNotchLength() const;
+    void setNotchLength(qreal notchLength);
 
-    qreal               getNotchWidth() const;
-    void                setNotchWidth(qreal notchWidth);
+    qreal getNotchWidth() const;
+    void setNotchWidth(qreal notchWidth);
 
-    qreal               getNotchAngle() const;
-    void                setNotchAngle(qreal notchAngle);
+    qreal getNotchAngle() const;
+    void setNotchAngle(qreal notchAngle);
 
-    int                 getNotchCount() const;
-    void                setNotchCount(int notchCount);
+    int getNotchCount() const;
+    void setNotchCount(int notchCount);
 
 private:
     QSharedDataPointer<VPieceNodeData> d;
@@ -145,4 +145,4 @@ private:
 Q_DECLARE_METATYPE(VPieceNode)
 Q_DECLARE_TYPEINFO(VPieceNode, Q_MOVABLE_TYPE);
 
-#endif // VPIECENODE_H
+#endif   // VPIECENODE_H

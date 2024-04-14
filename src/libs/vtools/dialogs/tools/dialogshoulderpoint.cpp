@@ -62,15 +62,15 @@
 #include <QSet>
 #include <QToolButton>
 
-#include "../vpatterndb/vtranslatevars.h"
 #include "../../tools/vabstracttool.h"
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/vistoolshoulderpoint.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../support/edit_formula_dialog.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/vtranslatevars.h"
 #include "ui_dialogshoulderpoint.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -79,9 +79,12 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogShoulderPoint::DialogShoulderPoint(const VContainer *data, const quint32 &toolId, QWidget *parent)
-    : DialogTool(data, toolId, parent), ui(new Ui::DialogShoulderPoint), formula(QString()),
-      formulaBaseHeight(0)
+DialogShoulderPoint::DialogShoulderPoint(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
+    : DialogTool(data, toolId, parent)
+    , ui(new Ui::DialogShoulderPoint)
+    , formula(QString())
+    , formulaBaseHeight(0)
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -104,30 +107,51 @@ DialogShoulderPoint::DialogShoulderPoint(const VContainer *data, const quint32 &
     FillComboBoxPoints(ui->comboBoxP3);
 
     int index = ui->lineColor_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineColor());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineColor_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineWeight_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineWeight_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineType_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineType());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->setCurrentIndex(index);
     }
 
-    connect(ui->toolButtonExprLength, &QPushButton::clicked,        this, &DialogShoulderPoint::FXLength);
-    connect(ui->lineEditNamePoint,    &QLineEdit::textChanged,      this, &DialogShoulderPoint::NamePointChanged);
-    connect(ui->plainTextEditFormula, &QPlainTextEdit::textChanged, this, &DialogShoulderPoint::FormulaTextChanged);
-    connect(ui->pushButtonGrowLength, &QPushButton::clicked,        this, &DialogShoulderPoint::DeployFormulaTextEdit);
-    connect(ui->comboBoxP1Line,       &QComboBox::currentTextChanged, this, &DialogShoulderPoint::PointNameChanged);
-    connect(ui->comboBoxP2Line,       &QComboBox::currentTextChanged, this, &DialogShoulderPoint::PointNameChanged);
-    connect(ui->comboBoxP3,           &QComboBox::currentTextChanged, this, &DialogShoulderPoint::PointNameChanged);
+    connect(ui->toolButtonExprLength, &QPushButton::clicked, this, &DialogShoulderPoint::FXLength);
+    connect(
+        ui->lineEditNamePoint,
+        &QLineEdit::textChanged,
+        this,
+        &DialogShoulderPoint::NamePointChanged);
+    connect(
+        ui->plainTextEditFormula,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogShoulderPoint::FormulaTextChanged);
+    connect(
+        ui->pushButtonGrowLength,
+        &QPushButton::clicked,
+        this,
+        &DialogShoulderPoint::DeployFormulaTextEdit);
+    connect(
+        ui->comboBoxP1Line,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogShoulderPoint::PointNameChanged);
+    connect(
+        ui->comboBoxP2Line,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogShoulderPoint::PointNameChanged);
+    connect(
+        ui->comboBoxP3,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogShoulderPoint::PointNameChanged);
 
     vis = new VisToolShoulderPoint(data);
 
@@ -137,10 +161,7 @@ DialogShoulderPoint::DialogShoulderPoint(const VContainer *data, const quint32 &
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogShoulderPoint::FormulaTextChanged()
-{
-    this->FormulaChangedPlainText();
-}
+void DialogShoulderPoint::FormulaTextChanged() { this->FormulaChangedPlainText(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogShoulderPoint::PointNameChanged()
@@ -151,13 +172,10 @@ void DialogShoulderPoint::PointNameChanged()
     set.insert(getCurrentObjectId(ui->comboBoxP3));
 
     QColor color = okColor;
-    if (set.size() != 3)
-    {
+    if (set.size() != 3) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -170,22 +188,18 @@ void DialogShoulderPoint::PointNameChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogShoulderPoint::FXLength()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit length"));
     dialog->SetFormula(GetFormula());
     dialog->setPostfix(UnitsToStr(qApp->patternUnit(), true));
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetFormula(dialog->GetFormula());
     }
     delete dialog;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogShoulderPoint::ShowVisualization()
-{
-    AddVisualization<VisToolShoulderPoint>();
-}
+void DialogShoulderPoint::ShowVisualization() { AddVisualization<VisToolShoulderPoint>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogShoulderPoint::DeployFormulaTextEdit()
@@ -194,10 +208,7 @@ void DialogShoulderPoint::DeployFormulaTextEdit()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogShoulderPoint::~DialogShoulderPoint()
-{
-    delete ui;
-}
+DialogShoulderPoint::~DialogShoulderPoint() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -205,57 +216,46 @@ DialogShoulderPoint::~DialogShoulderPoint()
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogShoulderPoint::ChosenObject(quint32 id, const SceneObject &type)
+void DialogShoulderPoint::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)
-    {
-        if (type == SceneObject::Point)
-        {
-            VisToolShoulderPoint *line = qobject_cast<VisToolShoulderPoint *>(vis);
+    if (prepare == false) {
+        if (type == SceneObject::Point) {
+            VisToolShoulderPoint* line = qobject_cast<VisToolShoulderPoint*>(vis);
             SCASSERT(line != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxP3, tr("Select first point of line")))
-                    {
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxP3, tr("Select first point of line"))) {
+                    number++;
+                    line->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->comboBoxP3) != id) {
+                    if (SetObject(id, ui->comboBoxP1Line, tr("Select second point of line"))) {
                         number++;
-                        line->VisualMode(id);
-                    }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->comboBoxP3) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxP1Line, tr("Select second point of line")))
-                        {
-                            number++;
-                            line->setLineP1Id(id);
-                            line->RefreshGeometry();
-                        }
-                    }
-                    break;
-                case 2:
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxP3));
-                    set.insert(getCurrentObjectId(ui->comboBoxP1Line));
-                    set.insert(id);
-
-                    if (set.size() == 3)
-                    {
-                        if (SetObject(id, ui->comboBoxP2Line, ""))
-                        {
-                            line->setLineP2Id(id);
-                            line->RefreshGeometry();
-                            prepare = true;
-                            this->setModal(true);
-                            this->show();
-                        }
+                        line->setLineP1Id(id);
+                        line->RefreshGeometry();
                     }
                 }
-                    break;
-                default:
-                    break;
+                break;
+            case 2: {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxP3));
+                set.insert(getCurrentObjectId(ui->comboBoxP1Line));
+                set.insert(id);
+
+                if (set.size() == 3) {
+                    if (SetObject(id, ui->comboBoxP2Line, "")) {
+                        line->setLineP2Id(id);
+                        line->RefreshGeometry();
+                        prepare = true;
+                        this->setModal(true);
+                        this->show();
+                    }
+                }
+            } break;
+            default: break;
             }
         }
     }
@@ -268,7 +268,7 @@ void DialogShoulderPoint::SaveData()
     formula = ui->plainTextEditFormula->toPlainText();
     formula.replace("\n", " ");
 
-    VisToolShoulderPoint *line = qobject_cast<VisToolShoulderPoint *>(vis);
+    VisToolShoulderPoint* line = qobject_cast<VisToolShoulderPoint*>(vis);
     SCASSERT(line != nullptr)
 
     line->setObject1Id(GetP3());
@@ -281,7 +281,7 @@ void DialogShoulderPoint::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogShoulderPoint::closeEvent(QCloseEvent *event)
+void DialogShoulderPoint::closeEvent(QCloseEvent* event)
 {
     ui->plainTextEditFormula->blockSignals(true);
     DialogTool::closeEvent(event);
@@ -292,11 +292,11 @@ void DialogShoulderPoint::closeEvent(QCloseEvent *event)
  * @brief setPShoulder set id shoulder point
  * @param value id
  */
-void DialogShoulderPoint::SetP3(const quint32 &value)
+void DialogShoulderPoint::SetP3(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxP3, value);
 
-    VisToolShoulderPoint *line = qobject_cast<VisToolShoulderPoint *>(vis);
+    VisToolShoulderPoint* line = qobject_cast<VisToolShoulderPoint*>(vis);
     SCASSERT(line != nullptr)
     line->setObject1Id(value);
 }
@@ -308,7 +308,7 @@ QString DialogShoulderPoint::getLineColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogShoulderPoint::setLineColor(const QString &value)
+void DialogShoulderPoint::setLineColor(const QString& value)
 {
     ChangeCurrentData(ui->lineColor_ComboBox, value);
 }
@@ -318,11 +318,11 @@ void DialogShoulderPoint::setLineColor(const QString &value)
  * @brief SetP2Line set id second point of line
  * @param value id
  */
-void DialogShoulderPoint::SetP2Line(const quint32 &value)
+void DialogShoulderPoint::SetP2Line(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxP2Line, value);
 
-    VisToolShoulderPoint *line = qobject_cast<VisToolShoulderPoint *>(vis);
+    VisToolShoulderPoint* line = qobject_cast<VisToolShoulderPoint*>(vis);
     SCASSERT(line != nullptr)
     line->setLineP2Id(value);
 }
@@ -332,11 +332,11 @@ void DialogShoulderPoint::SetP2Line(const quint32 &value)
  * @brief SetP1Line set id first point of line
  * @param value id
  */
-void DialogShoulderPoint::SetP1Line(const quint32 &value)
+void DialogShoulderPoint::SetP1Line(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxP1Line, value);
 
-    VisToolShoulderPoint *line = qobject_cast<VisToolShoulderPoint *>(vis);
+    VisToolShoulderPoint* line = qobject_cast<VisToolShoulderPoint*>(vis);
     SCASSERT(line != nullptr)
     line->setLineP1Id(value);
 }
@@ -346,17 +346,16 @@ void DialogShoulderPoint::SetP1Line(const quint32 &value)
  * @brief SetFormula set string of formula
  * @param value formula
  */
-void DialogShoulderPoint::SetFormula(const QString &value)
+void DialogShoulderPoint::SetFormula(const QString& value)
 {
     formula = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed.
-    if (formula.length() > 80)
-    {
+    if (formula.length() > 80) {
         this->DeployFormulaTextEdit();
     }
     ui->plainTextEditFormula->setPlainText(formula);
 
-    VisToolShoulderPoint *line = qobject_cast<VisToolShoulderPoint *>(vis);
+    VisToolShoulderPoint* line = qobject_cast<VisToolShoulderPoint*>(vis);
     SCASSERT(line != nullptr)
     line->setLength(formula);
     MoveCursorToEnd(ui->plainTextEditFormula);
@@ -377,7 +376,7 @@ QString DialogShoulderPoint::getLineType() const
  * @brief setLineType set type of line
  * @param value type
  */
-void DialogShoulderPoint::setLineType(const QString &value)
+void DialogShoulderPoint::setLineType(const QString& value)
 {
     ChangeCurrentData(ui->lineType_ComboBox, value);
     vis->setLineStyle(lineTypeToPenStyle(value));
@@ -390,7 +389,7 @@ void DialogShoulderPoint::setLineType(const QString &value)
  */
 QString DialogShoulderPoint::getLineWeight() const
 {
-        return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
+    return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -398,7 +397,7 @@ QString DialogShoulderPoint::getLineWeight() const
  * @brief setLineWeight set weight of the lines
  * @param value type
  */
-void DialogShoulderPoint::setLineWeight(const QString &value)
+void DialogShoulderPoint::setLineWeight(const QString& value)
 {
     ChangeCurrentData(ui->lineWeight_ComboBox, value);
     vis->setLineWeight(value);
@@ -409,7 +408,7 @@ void DialogShoulderPoint::setLineWeight(const QString &value)
  * @brief SetPointName set name of point
  * @param value name
  */
-void DialogShoulderPoint::SetPointName(const QString &value)
+void DialogShoulderPoint::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -422,7 +421,8 @@ void DialogShoulderPoint::SetPointName(const QString &value)
  */
 QString DialogShoulderPoint::GetFormula() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(formula, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        formula, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -430,27 +430,18 @@ QString DialogShoulderPoint::GetFormula() const
  * @brief GetP1Line return id first point of line
  * @return id
  */
-quint32 DialogShoulderPoint::GetP1Line() const
-{
-    return getCurrentObjectId(ui->comboBoxP1Line);
-}
+quint32 DialogShoulderPoint::GetP1Line() const { return getCurrentObjectId(ui->comboBoxP1Line); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetP2Line return id second point of line
  * @return id
  */
-quint32 DialogShoulderPoint::GetP2Line() const
-{
-    return getCurrentObjectId(ui->comboBoxP2Line);
-}
+quint32 DialogShoulderPoint::GetP2Line() const { return getCurrentObjectId(ui->comboBoxP2Line); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getPShoulder return id shoulder point
  * @return id
  */
-quint32 DialogShoulderPoint::GetP3() const
-{
-    return getCurrentObjectId(ui->comboBoxP3);
-}
+quint32 DialogShoulderPoint::GetP3() const { return getCurrentObjectId(ui->comboBoxP3); }

@@ -54,30 +54,29 @@
 
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class AnchorPointDialog;
+namespace Ui {
+class AnchorPointDialog;
 }
 
 class AnchorPointDialog : public DialogTool
 {
     Q_OBJECT
 public:
-    explicit AnchorPointDialog(const VContainer *data, quint32 toolId, QWidget *parent = nullptr);
+    explicit AnchorPointDialog(const VContainer* data, quint32 toolId, QWidget* parent = nullptr);
     virtual ~AnchorPointDialog();
 
     void EnbleShowMode(bool disable);
 
     quint32 GetPieceId() const;
-    void    SetPieceId(quint32 id);
+    void SetPieceId(quint32 id);
 
     quint32 GetPointId() const;
-    void    SetPointId(quint32 id);
+    void SetPointId(quint32 id);
 
-    virtual void SetPiecesList(const QVector<quint32> &list) Q_DECL_OVERRIDE;
+    virtual void SetPiecesList(const QVector<quint32>& list) Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
 
 protected:
     virtual void CheckState() Q_DECL_FINAL;
@@ -85,12 +84,12 @@ protected:
 
 private:
     Q_DISABLE_COPY(AnchorPointDialog)
-    Ui::AnchorPointDialog *ui;
-    bool  m_showMode;
-    bool  m_flagPoint;
+    Ui::AnchorPointDialog* ui;
+    bool m_showMode;
+    bool m_flagPoint;
 
     void CheckPieces();
     void CheckPoint();
 };
 
-#endif // DIALOGPIN_H
+#endif   // DIALOGPIN_H

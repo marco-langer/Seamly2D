@@ -27,17 +27,17 @@
  *************************************************************************/
 
 #include "anchorpoint_visual.h"
-#include "../vwidgets/vsimplepoint.h"
 #include "../vgeometry/vpointf.h"
 #include "../vpatterndb/vcontainer.h"
+#include "../vwidgets/vsimplepoint.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-AnchorPointVisual::AnchorPointVisual(const VContainer *data, QGraphicsItem *parent)
+AnchorPointVisual::AnchorPointVisual(const VContainer* data, QGraphicsItem* parent)
     : VisLine(data, parent)
     , m_point()
 {
     this->mainColor = Qt::red;
-    this->setZValue(2);// Show on top real tool
+    this->setZValue(2);   // Show on top real tool
 
     m_point = new VSimplePoint(NULL_ID, mainColor);
     m_point->SetPointHighlight(true);
@@ -49,8 +49,7 @@ AnchorPointVisual::AnchorPointVisual(const VContainer *data, QGraphicsItem *pare
 //---------------------------------------------------------------------------------------------------------------------
 AnchorPointVisual::~AnchorPointVisual()
 {
-    if (not m_point.isNull())
-    {
+    if (not m_point.isNull()) {
         delete m_point;
     }
 }
@@ -58,9 +57,9 @@ AnchorPointVisual::~AnchorPointVisual()
 //---------------------------------------------------------------------------------------------------------------------
 void AnchorPointVisual::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
-        const QSharedPointer<VPointF> point = Visualization::data->GeometricObject<VPointF>(object1Id);
+    if (object1Id > NULL_ID) {
+        const QSharedPointer<VPointF> point =
+            Visualization::data->GeometricObject<VPointF>(object1Id);
 
         m_point->setOnlyPoint(mode == Mode::Creation);
         m_point->refreshPointGeometry(*point);

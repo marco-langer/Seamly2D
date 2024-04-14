@@ -30,35 +30,31 @@
 
 VPE::VShortcutProperty::VShortcutProperty(const QString& name)
     : VProperty(name, QVariant::String)
-{
-
-}
+{}
 
 VPE::VShortcutProperty::~VShortcutProperty()
 {
     //
 }
 
-QVariant VPE::VShortcutProperty::data (int column, int role) const
+QVariant VPE::VShortcutProperty::data(int column, int role) const
 {
-    if (column == DPC_Data && (Qt::DisplayRole == role || Qt::EditRole == role))
-    {
+    if (column == DPC_Data && (Qt::DisplayRole == role || Qt::EditRole == role)) {
         return d_ptr->VariantValue;
-    }
-    else
+    } else
         return VProperty::data(column, role);
 }
 
 
-QWidget* VPE::VShortcutProperty::createEditor(QWidget * parent, const QStyleOptionViewItem& options,
-                                              const QAbstractItemDelegate* delegate)
+QWidget* VPE::VShortcutProperty::createEditor(
+    QWidget* parent, const QStyleOptionViewItem& options, const QAbstractItemDelegate* delegate)
 {
     Q_UNUSED(options)
 
     VShortcutEditWidget* tmpWidget = new VShortcutEditWidget(parent);
-    if (delegate)
-    {
-        VShortcutEditWidget::connect(tmpWidget, SIGNAL(commitData(QWidget*)), delegate, SIGNAL(commitData(QWidget*)));
+    if (delegate) {
+        VShortcutEditWidget::connect(
+            tmpWidget, SIGNAL(commitData(QWidget*)), delegate, SIGNAL(commitData(QWidget*)));
     }
     tmpWidget->setLocale(parent->locale());
     return tmpWidget;
@@ -68,22 +64,19 @@ QWidget* VPE::VShortcutProperty::createEditor(QWidget * parent, const QStyleOpti
 bool VPE::VShortcutProperty::setEditorData(QWidget* editor)
 {
     VShortcutEditWidget* tmpWidget = qobject_cast<VShortcutEditWidget*>(editor);
-    if (tmpWidget)
-    {
+    if (tmpWidget) {
         tmpWidget->setShortcut(d_ptr->VariantValue.toString(), false);
-    }
-    else
+    } else
         return false;
 
     return true;
 }
 
 
-QVariant VPE::VShortcutProperty::getEditorData(const QWidget *editor) const
+QVariant VPE::VShortcutProperty::getEditorData(const QWidget* editor) const
 {
     const VShortcutEditWidget* tmpWidget = qobject_cast<const VShortcutEditWidget*>(editor);
-    if (tmpWidget)
-    {
+    if (tmpWidget) {
         return tmpWidget->getShortcutAsString();
     }
 
@@ -91,17 +84,15 @@ QVariant VPE::VShortcutProperty::getEditorData(const QWidget *editor) const
 }
 
 
-QString VPE::VShortcutProperty::type() const
-{
-    return "shortcut";
-}
+QString VPE::VShortcutProperty::type() const { return "shortcut"; }
 
 VPE::VProperty* VPE::VShortcutProperty::clone(bool include_children, VProperty* container) const
 {
-    return VProperty::clone(include_children, container ? container : new VShortcutProperty(getName()));
+    return VProperty::clone(
+        include_children, container ? container : new VShortcutProperty(getName()));
 }
 
-void VPE::VShortcutProperty::setValue(const QVariant &value)
+void VPE::VShortcutProperty::setValue(const QVariant& value)
 {
     VProperty::setValue(QKeySequence::fromString(value.toString()).toString());
 }

@@ -52,12 +52,12 @@
 #ifndef ADDTOCALC_H
 #define ADDTOCALC_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -65,16 +65,18 @@ class AddToCalc : public VUndoCommand
 {
     Q_OBJECT
 public:
-    AddToCalc(const QDomElement &xml, VAbstractPattern *doc, QUndoCommand *parent = nullptr);
-    virtual ~AddToCalc() =default;
+    AddToCalc(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent = nullptr);
+    virtual ~AddToCalc() = default;
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
+
 protected:
     virtual void RedoFullParsing() Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(AddToCalc)
-    const QString     activeBlockName;
-    quint32           cursor;
+    const QString activeBlockName;
+    quint32 cursor;
 };
 
-#endif // ADDTOCALC_H
+#endif   // ADDTOCALC_H

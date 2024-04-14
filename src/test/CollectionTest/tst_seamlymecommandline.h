@@ -58,7 +58,7 @@ class TST_SeamlyMeCommandLine : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_SeamlyMeCommandLine(QObject *parent = nullptr);
+    explicit TST_SeamlyMeCommandLine(QObject* parent = nullptr);
 
 private slots:
     void initTestCase();
@@ -68,7 +68,6 @@ private slots:
 
 private:
     Q_DISABLE_COPY(TST_SeamlyMeCommandLine)
-
 };
 
-#endif // TST_SEAMLYMECOMMANDLINE_H
+#endif   // TST_SEAMLYMECOMMANDLINE_H

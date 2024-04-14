@@ -58,29 +58,30 @@
 
 class VContainer;
 
-namespace Ui
-{
-    class DialogNewPattern;
+namespace Ui {
+class DialogNewPattern;
 }
 
 class DialogNewPattern : public QDialog
 {
     Q_OBJECT
 public:
-    DialogNewPattern(VContainer *data, const QString &patternPieceName, QWidget *parent = nullptr);
+    DialogNewPattern(VContainer* data, const QString& patternPieceName, QWidget* parent = nullptr);
     virtual ~DialogNewPattern();
     QString name() const;
     Unit PatternUnit() const;
+
 protected:
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 private slots:
     void CheckState();
+
 private:
     Q_DISABLE_COPY(DialogNewPattern)
-    Ui::DialogNewPattern *ui;
-    VContainer *data;
+    Ui::DialogNewPattern* ui;
+    VContainer* data;
     bool isInitialized;
     void InitUnits();
 };
 
-#endif // DIALOGINDIVIDUALMEASUREMENTS_H
+#endif   // DIALOGINDIVIDUALMEASUREMENTS_H

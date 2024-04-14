@@ -35,15 +35,15 @@ class ExpandingTextEdit : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    explicit     ExpandingTextEdit(QWidget *parent = nullptr);
-                 ExpandingTextEdit(const QString &contents, QWidget *parent = nullptr);
+    explicit ExpandingTextEdit(QWidget* parent = nullptr);
+    ExpandingTextEdit(const QString& contents, QWidget* parent = nullptr);
 
 protected:
-    virtual void focusInEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    virtual void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
+    virtual void focusInEvent(QFocusEvent* event) Q_DECL_OVERRIDE;
+    virtual void focusOutEvent(QFocusEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(ExpandingTextEdit)
 };
 
-#endif // EXPANDINGTEXTEDIT_H
+#endif   // EXPANDINGTEXTEDIT_H

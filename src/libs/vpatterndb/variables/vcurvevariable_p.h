@@ -64,31 +64,33 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VCurveVariableData : public QSharedData
 {
 public:
-
     VCurveVariableData()
-        :id(NULL_ID), parentId(NULL_ID)
+        : id(NULL_ID)
+        , parentId(NULL_ID)
     {}
 
-    VCurveVariableData(const quint32 &id, const quint32 &parentId)
-        :id(id), parentId(parentId)
+    VCurveVariableData(const quint32& id, const quint32& parentId)
+        : id(id)
+        , parentId(parentId)
     {}
 
-    VCurveVariableData(const VCurveVariableData &var)
-        :QSharedData(var), id(var.id), parentId(var.parentId)
+    VCurveVariableData(const VCurveVariableData& var)
+        : QSharedData(var)
+        , id(var.id)
+        , parentId(var.parentId)
     {}
 
-    virtual  ~VCurveVariableData();
+    virtual ~VCurveVariableData();
 
     quint32 id;
     quint32 parentId;
 
 private:
-    VCurveVariableData &operator=(const VCurveVariableData &) Q_DECL_EQ_DELETE;
+    VCurveVariableData& operator=(const VCurveVariableData&) Q_DECL_EQ_DELETE;
 };
 
-VCurveVariableData::~VCurveVariableData()
-{}
+VCurveVariableData::~VCurveVariableData() {}
 
 QT_WARNING_POP
 
-#endif // VCURVELENGTH_P_H
+#endif   // VCURVELENGTH_P_H

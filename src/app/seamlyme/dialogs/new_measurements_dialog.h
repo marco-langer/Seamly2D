@@ -57,9 +57,8 @@
 
 #include "../vmisc/def.h"
 
-namespace Ui
-{
-    class NewMeasurementsDialog;
+namespace Ui {
+class NewMeasurementsDialog;
 }
 
 class NewMeasurementsDialog : public QDialog
@@ -67,31 +66,31 @@ class NewMeasurementsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit                   NewMeasurementsDialog(QWidget *parent = nullptr);
-                              ~NewMeasurementsDialog();
+    explicit NewMeasurementsDialog(QWidget* parent = nullptr);
+    ~NewMeasurementsDialog();
 
-    MeasurementsType           type() const;
-    Unit                       measurementUnits() const;
-    int                        baseSize() const;
-    int                        baseHeight() const;
+    MeasurementsType type() const;
+    Unit measurementUnits() const;
+    int baseSize() const;
+    int baseHeight() const;
 
 protected:
-    virtual void               changeEvent(QEvent* event) Q_DECL_OVERRIDE;
-    virtual void               showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
-    void                       currentTypeChanged(int index);
-    void                       currentUnitChanged(int index);
+    void currentTypeChanged(int index);
+    void currentUnitChanged(int index);
 
 private:
-                               Q_DISABLE_COPY(NewMeasurementsDialog)
-    Ui::NewMeasurementsDialog *ui;
-    bool                       isInitialized;
+    Q_DISABLE_COPY(NewMeasurementsDialog)
+    Ui::NewMeasurementsDialog* ui;
+    bool isInitialized;
 
-    void                       initializeMeasurementTypes();
-    void                       initializeHeightsList();
-    void                       initializeSizesList();
-    void                       initializeUnits(const MeasurementsType &type);
+    void initializeMeasurementTypes();
+    void initializeHeightsList();
+    void initializeSizesList();
+    void initializeUnits(const MeasurementsType& type);
 };
 
-#endif // NEW_MEASUREMENTS_DIALOG_H
+#endif   // NEW_MEASUREMENTS_DIALOG_H

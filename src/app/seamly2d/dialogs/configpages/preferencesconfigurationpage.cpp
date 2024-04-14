@@ -1,29 +1,29 @@
 /******************************************************************************
-*   @file   preferencesconfigurationpage.h
-**  @author Douglas S Caskey
-**  @date   26 Oct, 2023
-**
-**  @brief
-**  @copyright
-**  This source code is part of the Seamly2D project, a pattern making
-**  program to create and model patterns of clothing.
-**  Copyright (C) 2017-2023 Seamly2D project
-**  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
-**
-**  Seamly2D is free software: you can redistribute it and/or modify
-**  it under the terms of the GNU General Public License as published by
-**  the Free Software Foundation, either version 3 of the License, or
-**  (at your option) any later version.
-**
-**  Seamly2D is distributed in the hope that it will be useful,
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**  GNU General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
-**
-*************************************************************************/
+ *   @file   preferencesconfigurationpage.h
+ **  @author Douglas S Caskey
+ **  @date   26 Oct, 2023
+ **
+ **  @brief
+ **  @copyright
+ **  This source code is part of the Seamly2D project, a pattern making
+ **  program to create and model patterns of clothing.
+ **  Copyright (C) 2017-2023 Seamly2D project
+ **  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ *************************************************************************/
 
 /************************************************************************
  **
@@ -54,10 +54,10 @@
  *************************************************************************/
 
 #include "preferencesconfigurationpage.h"
-#include "ui_preferencesconfigurationpage.h"
 #include "../../core/application_2d.h"
 #include "../vpatterndb/pmsystems.h"
 #include "../vwidgets/export_format_combobox.h"
+#include "ui_preferencesconfigurationpage.h"
 
 #include <QDir>
 #include <QDirIterator>
@@ -68,7 +68,7 @@
 #include <QTimer>
 
 //---------------------------------------------------------------------------------------------------------------------
-PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget *parent)
+PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::PreferencesConfigurationPage)
     , m_langChanged(false)
@@ -84,11 +84,11 @@ PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget *parent)
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    QRegularExpression rx("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
-                          QRegularExpression::CaseInsensitiveOption);
+    QRegularExpression rx(
+        "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b", QRegularExpression::CaseInsensitiveOption);
     ui->email_LineEdit->setValidator(new QRegularExpressionValidator(rx, this));
 
-    //Designer Info
+    // Designer Info
     ui->companyName_LineEdit->setText(qApp->Seamly2DSettings()->getCompanyName());
     ui->contact_LineEdit->setText(qApp->Seamly2DSettings()->getContact());
     ui->address_LineEdit->setText(qApp->Seamly2DSettings()->getAddress());
@@ -101,33 +101,42 @@ PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget *parent)
     ui->email_LineEdit->setText(qApp->Seamly2DSettings()->getEmail());
     ui->website_LineEdit->setText(qApp->Seamly2DSettings()->getWebsite());
 
-    connect(ui->email_LineEdit, &QLineEdit::textChanged, this, &PreferencesConfigurationPage::adjustTextColor);
+    connect(
+        ui->email_LineEdit,
+        &QLineEdit::textChanged,
+        this,
+        &PreferencesConfigurationPage::adjustTextColor);
 
-    //Editing
+    // Editing
     // Undo
     ui->undoCount_SpinBox->setValue(qApp->Seamly2DSettings()->GetUndoCount());
 
-    //Selection sound
+    // Selection sound
     int index = ui->selectionSound_ComboBox->findText(qApp->Seamly2DSettings()->getSound());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->selectionSound_ComboBox->setCurrentIndex(index);
     }
-    connect(ui->selectionSound_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_selectionSoundChanged = true;
-        QSound::play("qrc:/sounds/" + ui->selectionSound_ComboBox->currentText() + ".wav");
-    });
+    connect(
+        ui->selectionSound_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() {
+            m_selectionSoundChanged = true;
+            QSound::play("qrc:/sounds/" + ui->selectionSound_ComboBox->currentText() + ".wav");
+        });
 
     // Warnings
     ui->confirmItemDelete_CheckBox->setChecked(qApp->Seamly2DSettings()->getConfirmItemDelete());
-    ui->confirmFormatRewriting_CheckBox->setChecked(qApp->Seamly2DSettings()->getConfirmFormatRewriting());
+    ui->confirmFormatRewriting_CheckBox->setChecked(
+        qApp->Seamly2DSettings()->getConfirmFormatRewriting());
     // Send crash reports
-    //ui->sendReportCheck->setChecked(qApp->Seamly2DSettings()->GetSendReportState());
-    //ui->description = new QLabel(tr("After each crash Seamly2D collects information that may help us fix the "
-    //                                "problem. We do not collect any personal information. Find more about what %1"
-    //                                "kind of information%2 we collect.")
-    //                             .arg("<a href=\"https://wiki.seamly.net/wiki/UserManual:Crash_reports\">")
+    // ui->sendReportCheck->setChecked(qApp->Seamly2DSettings()->GetSendReportState());
+    // ui->description = new QLabel(tr("After each crash Seamly2D collects information that may help
+    // us fix the "
+    //                                "problem. We do not collect any personal information. Find
+    //                                more about what %1" "kind of information%2 we collect.")
+    //                             .arg("<a
+    //                             href=\"https://wiki.seamly.net/wiki/UserManual:Crash_reports\">")
     //                             .arg("</a>"));
 
     // Default operations suffixes
@@ -135,52 +144,54 @@ PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget *parent)
     ui->moveSuffix_ComboBox->addItem(tr("_M"), "_M");
     ui->moveSuffix_ComboBox->addItem(tr("_MOV"), "_MOV");
     index = ui->moveSuffix_ComboBox->findData(qApp->Seamly2DSettings()->getMoveSuffix());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->moveSuffix_ComboBox->setCurrentIndex(index);
     }
-    connect(ui->moveSuffix_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_moveSuffixChanged = true;
-    });
+    connect(
+        ui->moveSuffix_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_moveSuffixChanged = true; });
     ui->rotateSuffix_ComboBox->addItem(tr("None"), "");
     ui->rotateSuffix_ComboBox->addItem(tr("_R"), "_R");
     ui->rotateSuffix_ComboBox->addItem(tr("_ROT"), "_ROT");
     index = ui->rotateSuffix_ComboBox->findData(qApp->Seamly2DSettings()->getRotateSuffix());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->rotateSuffix_ComboBox->setCurrentIndex(index);
     }
-    connect(ui->rotateSuffix_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_rotateSuffixChanged = true;
-    });
+    connect(
+        ui->rotateSuffix_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_rotateSuffixChanged = true; });
 
     ui->mirrorByAxisSuffix_ComboBox->addItem(tr("None"), "");
     ui->mirrorByAxisSuffix_ComboBox->addItem(tr("_MA"), "_MA");
     ui->mirrorByAxisSuffix_ComboBox->addItem(tr("_MBA"), "_MBA");
-    index = ui->mirrorByAxisSuffix_ComboBox->findData(qApp->Seamly2DSettings()->getMirrorByAxisSuffix());
-    if (index != -1)
-    {
+    index = ui->mirrorByAxisSuffix_ComboBox->findData(
+        qApp->Seamly2DSettings()->getMirrorByAxisSuffix());
+    if (index != -1) {
         ui->mirrorByAxisSuffix_ComboBox->setCurrentIndex(index);
     }
-    connect(ui->mirrorByAxisSuffix_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_mirrorByAxisSuffixChanged = true;
-    });
+    connect(
+        ui->mirrorByAxisSuffix_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_mirrorByAxisSuffixChanged = true; });
 
     ui->mirrorByLineSuffix_ComboBox->addItem(tr("None"), "");
     ui->mirrorByLineSuffix_ComboBox->addItem(tr("_MB"), "_MB");
     ui->mirrorByLineSuffix_ComboBox->addItem(tr("_MBL"), "_MBL");
-    index = ui->mirrorByLineSuffix_ComboBox->findData(qApp->Seamly2DSettings()->getMirrorByLineSuffix());
-    if (index != -1)
-    {
+    index = ui->mirrorByLineSuffix_ComboBox->findData(
+        qApp->Seamly2DSettings()->getMirrorByLineSuffix());
+    if (index != -1) {
         ui->mirrorByLineSuffix_ComboBox->setCurrentIndex(index);
     }
-    connect(ui->mirrorByLineSuffix_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_mirrorByLineSuffixChanged = true;
-    });
+    connect(
+        ui->mirrorByLineSuffix_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_mirrorByLineSuffixChanged = true; });
 
     // File handling
     // Autosave
@@ -191,24 +202,25 @@ PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget *parent)
     ui->useModeType_CheckBox->setChecked(qApp->Seamly2DSettings()->useModeType());
     ui->uselastExportFormat_CheckBox->setChecked(qApp->Seamly2DSettings()->useLastExportFormat());
     index = ui->defaultExportFormat_ComboBox->findText(qApp->Seamly2DSettings()->getExportFormat());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->defaultExportFormat_ComboBox->setCurrentIndex(index);
     }
-    connect(ui->defaultExportFormat_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_defaultExportFormatChanged = true;
-    });
+    connect(
+        ui->defaultExportFormat_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_defaultExportFormatChanged = true; });
 
     //-------------------- Startup
     ui->showWelcome_CheckBox->setChecked(qApp->Seamly2DSettings()->getShowWelcome());
 
     // Language
     InitLanguages(ui->langCombo);
-    connect(ui->langCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_langChanged = true;
-    });
+    connect(
+        ui->langCombo,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_langChanged = true; });
 
     // Decimal separator setup
     ui->osOptionCheck->setText(tr("User locale") + QString(" (%1)").arg(QLocale().decimalPoint()));
@@ -216,48 +228,44 @@ PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget *parent)
 
     // Unit setup
     InitUnits();
-    connect(ui->unitCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_unitChanged = true;
-    });
+    connect(
+        ui->unitCombo,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_unitChanged = true; });
     setPointNameComboBox(Application2D::pointNameLanguages());
 
     index = ui->labelCombo->findData(qApp->Seamly2DSettings()->getPointNameLanguage());
-    if (index == -1)
-    {
+    if (index == -1) {
         index = ui->labelCombo->findData("en");
     }
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->labelCombo->setCurrentIndex(index);
     }
 
-    connect(ui->labelCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_labelLangChanged = true;
-    });
+    connect(
+        ui->labelCombo,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_labelLangChanged = true; });
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-PreferencesConfigurationPage::~PreferencesConfigurationPage()
-{
-    delete ui;
-}
+PreferencesConfigurationPage::~PreferencesConfigurationPage() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void PreferencesConfigurationPage::Apply()
 {
-    if(!ui->email_LineEdit->text().isEmpty() && !ui->email_LineEdit->hasAcceptableInput())
-    {
-        QMessageBox::warning(this, tr("Email verification"),
-                             tr("Email format is not valid."), QMessageBox::Ok);
+    if (!ui->email_LineEdit->text().isEmpty() && !ui->email_LineEdit->hasAcceptableInput()) {
+        QMessageBox::warning(
+            this, tr("Email verification"), tr("Email format is not valid."), QMessageBox::Ok);
 
         ui->email_LineEdit->setText(QString(""));
     }
 
-    VSettings *settings = qApp->Seamly2DSettings();
+    VSettings* settings = qApp->Seamly2DSettings();
 
-    //Designer Info
+    // Designer Info
     settings->setCompanyName(ui->companyName_LineEdit->text());
     settings->setContact(ui->contact_LineEdit->text());
     settings->setAddress(ui->address_LineEdit->text());
@@ -270,12 +278,11 @@ void PreferencesConfigurationPage::Apply()
     settings->setEmail(ui->email_LineEdit->text());
     settings->setWebsite(ui->website_LineEdit->text());
 
-    /* Maximum number of commands in undo stack may only be set when the undo stack is empty, since setting it on a
-     * non-empty stack might delete the command at the current index. Calling setUndoLimit() on a non-empty stack
-     * prints a warning and does nothing.*/
+    /* Maximum number of commands in undo stack may only be set when the undo stack is empty, since
+     * setting it on a non-empty stack might delete the command at the current index. Calling
+     * setUndoLimit() on a non-empty stack prints a warning and does nothing.*/
     settings->setUndoCount(ui->undoCount_SpinBox->value());
-    if (m_selectionSoundChanged)
-    {
+    if (m_selectionSoundChanged) {
         const QString locale = qvariant_cast<QString>(ui->selectionSound_ComboBox->currentText());
         settings->setSelectionSound(locale);
         m_selectionSoundChanged = false;
@@ -286,16 +293,18 @@ void PreferencesConfigurationPage::Apply()
     settings->setAutosaveState(ui->autoSave_CheckBox->isChecked());
     settings->setAutosaveInterval(ui->autoInterval_Spinbox->value());
 
-    QTimer *autoSaveTimer = qApp->getAutoSaveTimer();
+    QTimer* autoSaveTimer = qApp->getAutoSaveTimer();
     SCASSERT(autoSaveTimer)
 
-    ui->autoSave_CheckBox->isChecked() ? autoSaveTimer->start(ui->autoInterval_Spinbox->value()*60000) : autoSaveTimer->stop();
+    ui->autoSave_CheckBox->isChecked()
+        ? autoSaveTimer->start(ui->autoInterval_Spinbox->value() * 60000)
+        : autoSaveTimer->stop();
 
     settings->setUseModeType(ui->useModeType_CheckBox->isChecked());
     settings->setUseLastExportFormat(ui->uselastExportFormat_CheckBox->isChecked());
-    if (m_defaultExportFormatChanged)
-    {
-        const QString format = qvariant_cast<QString>(ui->defaultExportFormat_ComboBox->currentText());
+    if (m_defaultExportFormatChanged) {
+        const QString format =
+            qvariant_cast<QString>(ui->defaultExportFormat_ComboBox->currentText());
         settings->setExportFormat(format);
         m_defaultExportFormatChanged = false;
     }
@@ -303,71 +312,66 @@ void PreferencesConfigurationPage::Apply()
     settings->setShowWelcome(ui->showWelcome_CheckBox->isChecked());
     settings->setOsSeparator(ui->osOptionCheck->isChecked());
 
-    if (m_langChanged)
-    {
+    if (m_langChanged) {
         const QString locale = qvariant_cast<QString>(ui->langCombo->currentData());
         settings->setLocale(locale);
         m_langChanged = false;
 
         qApp->loadTranslations(locale);
     }
-    if (m_unitChanged)
-    {
+    if (m_unitChanged) {
         const QString unit = qvariant_cast<QString>(ui->unitCombo->currentData());
         settings->SetUnit(unit);
         m_unitChanged = false;
-        const QString text = tr("The Default unit has been updated and will be used as the default for the next "
-                                "pattern you create.");
+        const QString text =
+            tr("The Default unit has been updated and will be used as the default for the next "
+               "pattern you create.");
         QMessageBox::information(this, QCoreApplication::applicationName(), text);
     }
-    if (m_labelLangChanged)
-    {
+    if (m_labelLangChanged) {
         const QString locale = qvariant_cast<QString>(ui->labelCombo->currentData());
         settings->setPointNameLanguage(locale);
         m_labelLangChanged = false;
     }
-    if (m_moveSuffixChanged)
-    {
+    if (m_moveSuffixChanged) {
         const QString locale = qvariant_cast<QString>(ui->moveSuffix_ComboBox->currentData());
         settings->setMoveSuffix(locale);
         m_moveSuffixChanged = false;
     }
-    if (m_rotateSuffixChanged)
-    {
+    if (m_rotateSuffixChanged) {
         const QString locale = qvariant_cast<QString>(ui->rotateSuffix_ComboBox->currentData());
         settings->setRotateSuffix(locale);
         m_rotateSuffixChanged = false;
     }
-    if (m_mirrorByAxisSuffixChanged)
-    {
-        const QString locale = qvariant_cast<QString>(ui->mirrorByAxisSuffix_ComboBox->currentData());
+    if (m_mirrorByAxisSuffixChanged) {
+        const QString locale =
+            qvariant_cast<QString>(ui->mirrorByAxisSuffix_ComboBox->currentData());
         settings->setMirrorByAxisSuffix(locale);
         m_mirrorByAxisSuffixChanged = false;
     }
-    if (m_mirrorByLineSuffixChanged)
-    {
-        const QString locale = qvariant_cast<QString>(ui->mirrorByLineSuffix_ComboBox->currentData());
+    if (m_mirrorByLineSuffixChanged) {
+        const QString locale =
+            qvariant_cast<QString>(ui->mirrorByLineSuffix_ComboBox->currentData());
         settings->setMirrorByLineSuffix(locale);
         m_mirrorByLineSuffixChanged = false;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PreferencesConfigurationPage::changeEvent(QEvent *event)
+void PreferencesConfigurationPage::changeEvent(QEvent* event)
 {
-    if (event->type() == QEvent::LanguageChange)
-    {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
-        ui->osOptionCheck->setText(tr("User locale") + QString(" (%1)").arg(QLocale().decimalPoint()));
+        ui->osOptionCheck->setText(
+            tr("User locale") + QString(" (%1)").arg(QLocale().decimalPoint()));
     }
     QWidget::changeEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PreferencesConfigurationPage::setPointNameComboBox(const QStringList &list)
+void PreferencesConfigurationPage::setPointNameComboBox(const QStringList& list)
 {
-    for (int i = 0; i < list.size(); ++i)
-    {
+    for (int i = 0; i < list.size(); ++i) {
         QLocale loc = QLocale(list.at(i));
         QString country = QLocale::countryToString(loc.country());
         QIcon ico(QString("%1/%2.png").arg(":/flags").arg(country));
@@ -384,15 +388,14 @@ void PreferencesConfigurationPage::InitUnits()
 
     // set default unit
     const qint32 indexUnit = ui->unitCombo->findData(qApp->Seamly2DSettings()->GetUnit());
-    if (indexUnit != -1)
-    {
+    if (indexUnit != -1) {
         ui->unitCombo->setCurrentIndex(indexUnit);
     }
 }
 
 void PreferencesConfigurationPage::adjustTextColor()
 {
-    if(!ui->email_LineEdit->hasAcceptableInput())
+    if (!ui->email_LineEdit->hasAcceptableInput())
         ui->email_LineEdit->setStyleSheet("QLineEdit {color: red;}");
     else
         ui->email_LineEdit->setStyleSheet("QLineEdit {color: black;}");

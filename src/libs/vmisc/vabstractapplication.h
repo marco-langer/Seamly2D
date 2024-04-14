@@ -52,7 +52,6 @@
 #ifndef VABSTRACTAPPLICATION_H
 #define VABSTRACTAPPLICATION_H
 
-#include <qcompilerdetection.h>
 #include <QApplication>
 #include <QCoreApplication>
 #include <QGraphicsScene>
@@ -62,6 +61,7 @@
 #include <QPointer>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "../vpatterndb/vcontainer.h"
@@ -72,13 +72,13 @@
 #include "vsettings.h"
 
 class QUndoStack;
-class VAbstractApplication;// use in define
+class VAbstractApplication;   // use in define
 class VAbstractPattern;
 class VContainer;
 class VMainGraphicsView;
 
 #if defined(qApp)
-#undef qApp
+#    undef qApp
 #endif
 #define qApp (static_cast<VAbstractApplication*>(QCoreApplication::instance()))
 
@@ -86,69 +86,70 @@ class VAbstractApplication : public QApplication
 {
     Q_OBJECT
 public:
-    VAbstractApplication(int &argc, char ** argv);
+    VAbstractApplication(int& argc, char** argv);
     virtual ~VAbstractApplication() Q_DECL_OVERRIDE;
 
-    virtual const VTranslateVars *translateVariables()=0;
+    virtual const VTranslateVars* translateVariables() = 0;
 
-    QString          translationsPath(const QString &locale = QString()) const;
+    QString translationsPath(const QString& locale = QString()) const;
 
-    void             loadTranslations(const QString &locale);
+    void loadTranslations(const QString& locale);
 
-    Unit             patternUnit() const;
-    const Unit      *patternUnitP() const;
-    void             setPatternUnit(const Unit &patternUnit);
+    Unit patternUnit() const;
+    const Unit* patternUnitP() const;
+    void setPatternUnit(const Unit& patternUnit);
 
     MeasurementsType patternType() const;
-    void             setPatternType(const MeasurementsType &patternType);
+    void setPatternType(const MeasurementsType& patternType);
 
-    virtual void     openSettings()=0;
-    VCommonSettings *Settings();
+    virtual void openSettings() = 0;
+    VCommonSettings* Settings();
 
     template <typename T>
-    QString          LocaleToString(const T &value);
+    QString LocaleToString(const T& value);
 
-    QGraphicsScene  *getCurrentScene() const;
-    void             setCurrentScene(QGraphicsScene **value);
+    QGraphicsScene* getCurrentScene() const;
+    void setCurrentScene(QGraphicsScene** value);
 
-    VMainGraphicsView *getSceneView() const;
-    void               setSceneView(VMainGraphicsView *value);
+    VMainGraphicsView* getSceneView() const;
+    void setSceneView(VMainGraphicsView* value);
 
-    double           toPixel(double val) const;
-    double           fromPixel(double pix) const;
+    double toPixel(double val) const;
+    double fromPixel(double pix) const;
 
-    void             setCurrentDocument(VAbstractPattern *doc);
-    VAbstractPattern *getCurrentDocument()const;
+    void setCurrentDocument(VAbstractPattern* doc);
+    VAbstractPattern* getCurrentDocument() const;
 
-    void             setCurrentData(VContainer *data);
-    VContainer      *getCurrentData()const;
+    void setCurrentData(VContainer* data);
+    VContainer* getCurrentData() const;
 
-    bool             getOpeningPattern() const;
-    void             setOpeningPattern();
+    bool getOpeningPattern() const;
+    void setOpeningPattern();
 
-    QWidget         *getMainWindow() const;
-    void             setMainWindow(QWidget *value);
+    QWidget* getMainWindow() const;
+    void setMainWindow(QWidget* value);
 
-    QUndoStack      *getUndoStack() const;
+    QUndoStack* getUndoStack() const;
 
-    virtual bool     isAppInGUIMode()const =0;
+    virtual bool isAppInGUIMode() const = 0;
 
-    QString         getFilePath() const;
-    void            setFilePath(const QString &value);
+    QString getFilePath() const;
+    void setFilePath(const QString& value);
 
 protected:
-    QUndoStack         *undoStack;
+    QUndoStack* undoStack;
 
     /**
-     * @brief mainWindow pointer to main window. Usefull if need create modal dialog. Without pointer to main window
-     * modality doesn't work.
+     * @brief mainWindow pointer to main window. Usefull if need create modal dialog. Without
+     * pointer to main window modality doesn't work.
      */
-    QWidget            *mainWindow;
+    QWidget* mainWindow;
 
     /**
-     * @brief settings pointer to settings. Help hide constructor creation settings. Make make code more readable.
+     * @brief settings pointer to settings. Help hide constructor creation settings. Make make code
+     * more readable.
      */
-    VCommonSettings    *settings;
+    VCommonSettings* settings;
 
     QPointer<QTranslator> qtTranslator;
     QPointer<QTranslator> qtxmlTranslator;
@@ -156,48 +157,42 @@ protected:
     QPointer<QTranslator> appTranslator;
     QPointer<QTranslator> pmsTranslator;
 
-    virtual void initTranslateVariables()=0;
+    virtual void initTranslateVariables() = 0;
 
 private:
     Q_DISABLE_COPY(VAbstractApplication)
-    Unit               _patternUnit;
-    MeasurementsType   _patternType;
-    QString            patternFilePath;
+    Unit _patternUnit;
+    MeasurementsType _patternType;
+    QString patternFilePath;
 
-    QGraphicsScene     **currentScene;
-    VMainGraphicsView  *sceneView;
+    QGraphicsScene** currentScene;
+    VMainGraphicsView* sceneView;
 
-    VAbstractPattern   *doc;
-    VContainer         *data;
+    VAbstractPattern* doc;
+    VContainer* data;
 
     /**
-     * @brief openingPattern true when we opening pattern. If something will be wrong in formula this help understand if
-     * we can allow user use Undo option.
+     * @brief openingPattern true when we opening pattern. If something will be wrong in formula
+     * this help understand if we can allow user use Undo option.
      */
-    bool               openingPattern;
+    bool openingPattern;
 
     void ClearTranslation();
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString VAbstractApplication::getFilePath() const
-{
-    return patternFilePath;
-}
+inline QString VAbstractApplication::getFilePath() const { return patternFilePath; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline void VAbstractApplication::setFilePath(const QString &value)
-{
-    patternFilePath = value;
-}
+inline void VAbstractApplication::setFilePath(const QString& value) { patternFilePath = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
-inline QString VAbstractApplication::LocaleToString(const T &value)
+inline QString VAbstractApplication::LocaleToString(const T& value)
 {
     QLocale loc;
     qApp->Settings()->getOsSeparator() ? loc = QLocale() : loc = QLocale::c();
     return loc.toString(value);
 }
 
-#endif // VABSTRACTAPPLICATION_H
+#endif   // VABSTRACTAPPLICATION_H

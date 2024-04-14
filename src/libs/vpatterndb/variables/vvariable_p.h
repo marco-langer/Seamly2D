@@ -63,18 +63,17 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VVariableData : public QSharedData
 {
 public:
-
     VVariableData()
         : description()
     {}
 
-    explicit VVariableData(const QString &description)
+    explicit VVariableData(const QString& description)
         : description(description)
     {}
 
-    VVariableData(const VVariableData &var)
-        : QSharedData(var),
-          description(var.description)
+    VVariableData(const VVariableData& var)
+        : QSharedData(var)
+        , description(var.description)
     {}
 
     virtual ~VVariableData();
@@ -83,12 +82,11 @@ public:
     QString description;
 
 private:
-    VVariableData &operator=(const VVariableData &) Q_DECL_EQ_DELETE;
+    VVariableData& operator=(const VVariableData&) Q_DECL_EQ_DELETE;
 };
 
-VVariableData::~VVariableData()
-{}
+VVariableData::~VVariableData() {}
 
 QT_WARNING_POP
 
-#endif // VVARIABLE_P_H
+#endif   // VVARIABLE_P_H

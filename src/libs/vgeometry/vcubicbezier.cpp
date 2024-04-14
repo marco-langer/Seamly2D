@@ -56,38 +56,49 @@
 #include "vcubicbezier_p.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VCubicBezier &VCubicBezier::operator=(VCubicBezier &&curve) Q_DECL_NOTHROW
-{ Swap(curve); return *this; }
+VCubicBezier& VCubicBezier::operator=(VCubicBezier&& curve) Q_DECL_NOTHROW
+{
+    Swap(curve);
+    return *this;
+}
 #endif
 
-void VCubicBezier::Swap(VCubicBezier &curve) Q_DECL_NOTHROW
-{ VAbstractCubicBezier::Swap(curve); std::swap(d, curve.d); }
+void VCubicBezier::Swap(VCubicBezier& curve) Q_DECL_NOTHROW
+{
+    VAbstractCubicBezier::Swap(curve);
+    std::swap(d, curve.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VCubicBezier::VCubicBezier()
-    : VAbstractCubicBezier(GOType::CubicBezier), d(new VCubicBezierData)
-{
-}
+    : VAbstractCubicBezier(GOType::CubicBezier)
+    , d(new VCubicBezierData)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier::VCubicBezier(const VCubicBezier &curve)
-    : VAbstractCubicBezier(curve), d(curve.d)
-{
-}
+VCubicBezier::VCubicBezier(const VCubicBezier& curve)
+    : VAbstractCubicBezier(curve)
+    , d(curve.d)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier::VCubicBezier(const VPointF &p1, const VPointF &p2, const VPointF &p3, const VPointF &p4, quint32 idObject,
-                           Draw mode)
-    : VAbstractCubicBezier(GOType::CubicBezier, idObject, mode), d(new VCubicBezierData(p1, p2, p3, p4))
+VCubicBezier::VCubicBezier(
+    const VPointF& p1,
+    const VPointF& p2,
+    const VPointF& p3,
+    const VPointF& p4,
+    quint32 idObject,
+    Draw mode)
+    : VAbstractCubicBezier(GOType::CubicBezier, idObject, mode)
+    , d(new VCubicBezierData(p1, p2, p3, p4))
 {
     CreateName();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier &VCubicBezier::operator=(const VCubicBezier &curve)
+VCubicBezier& VCubicBezier::operator=(const VCubicBezier& curve)
 {
-    if ( &curve == this )
-    {
+    if (&curve == this) {
         return *this;
     }
     VAbstractCubicBezier::operator=(curve);
@@ -96,7 +107,8 @@ VCubicBezier &VCubicBezier::operator=(const VCubicBezier &curve)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier VCubicBezier::Rotate(const QPointF &originPoint, qreal degrees, const QString &prefix) const
+VCubicBezier
+VCubicBezier::Rotate(const QPointF& originPoint, qreal degrees, const QString& prefix) const
 {
     const VPointF p1 = GetP1().Rotate(originPoint, degrees);
     const VPointF p2 = GetP2().Rotate(originPoint, degrees);
@@ -111,7 +123,7 @@ VCubicBezier VCubicBezier::Rotate(const QPointF &originPoint, qreal degrees, con
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier VCubicBezier::Flip(const QLineF &axis, const QString &prefix) const
+VCubicBezier VCubicBezier::Flip(const QLineF& axis, const QString& prefix) const
 {
     const VPointF p1 = GetP1().Flip(axis);
     const VPointF p2 = GetP2().Flip(axis);
@@ -126,7 +138,7 @@ VCubicBezier VCubicBezier::Flip(const QLineF &axis, const QString &prefix) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier VCubicBezier::Move(qreal length, qreal angle, const QString &prefix) const
+VCubicBezier VCubicBezier::Move(qreal length, qreal angle, const QString& prefix) const
 {
     const VPointF p1 = GetP1().Move(length, angle);
     const VPointF p2 = GetP2().Move(length, angle);
@@ -141,57 +153,31 @@ VCubicBezier VCubicBezier::Move(qreal length, qreal angle, const QString &prefix
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier::~VCubicBezier()
-{
-}
+VCubicBezier::~VCubicBezier() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VCubicBezier::GetP1() const
-{
-    return d->p1;
-}
+VPointF VCubicBezier::GetP1() const { return d->p1; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCubicBezier::SetP1(const VPointF &p)
-{
-    d->p1 = p;
-}
+void VCubicBezier::SetP1(const VPointF& p) { d->p1 = p; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VCubicBezier::GetP2() const
-{
-    return d->p2;
-}
+VPointF VCubicBezier::GetP2() const { return d->p2; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCubicBezier::SetP2(const VPointF &p)
-{
-    d->p2 = p;
-}
+void VCubicBezier::SetP2(const VPointF& p) { d->p2 = p; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VCubicBezier::GetP3() const
-{
-    return d->p3;
-}
+VPointF VCubicBezier::GetP3() const { return d->p3; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCubicBezier::SetP3(const VPointF &p)
-{
-    d->p3 = p;
-}
+void VCubicBezier::SetP3(const VPointF& p) { d->p3 = p; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VCubicBezier::GetP4() const
-{
-    return d->p4;
-}
+VPointF VCubicBezier::GetP4() const { return d->p4; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCubicBezier::SetP4(const VPointF &p)
-{
-    d->p4 = p;
-}
+void VCubicBezier::SetP4(const VPointF& p) { d->p4 = p; }
 
 //---------------------------------------------------------------------------------------------------------------------
 qreal VCubicBezier::GetStartAngle() const
@@ -212,8 +198,11 @@ qreal VCubicBezier::GetEndAngle() const
  */
 qreal VCubicBezier::GetLength() const
 {
-    return LengthBezier (static_cast<QPointF>(GetP1()), static_cast<QPointF>(GetP2()),
-                         static_cast<QPointF>(GetP3()), static_cast<QPointF>(GetP4()));
+    return LengthBezier(
+        static_cast<QPointF>(GetP1()),
+        static_cast<QPointF>(GetP2()),
+        static_cast<QPointF>(GetP3()),
+        static_cast<QPointF>(GetP4()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -223,8 +212,11 @@ qreal VCubicBezier::GetLength() const
  */
 QVector<QPointF> VCubicBezier::getPoints() const
 {
-    return GetCubicBezierPoints(static_cast<QPointF>(GetP1()), static_cast<QPointF>(GetP2()),
-                                static_cast<QPointF>(GetP3()), static_cast<QPointF>(GetP4()));
+    return GetCubicBezierPoints(
+        static_cast<QPointF>(GetP1()),
+        static_cast<QPointF>(GetP2()),
+        static_cast<QPointF>(GetP3()),
+        static_cast<QPointF>(GetP4()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -240,13 +232,7 @@ qreal VCubicBezier::GetC2Length() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VCubicBezier::GetControlPoint1() const
-{
-    return static_cast<QPointF>(GetP2());
-}
+QPointF VCubicBezier::GetControlPoint1() const { return static_cast<QPointF>(GetP2()); }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VCubicBezier::GetControlPoint2() const
-{
-    return static_cast<QPointF>(GetP3());
-}
+QPointF VCubicBezier::GetControlPoint2() const { return static_cast<QPointF>(GetP3()); }

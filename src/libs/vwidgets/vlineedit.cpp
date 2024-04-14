@@ -52,19 +52,19 @@
 #include "vlineedit.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VLineEdit::VLineEdit(QWidget *parent)
-    : QLineEdit(parent),
-      m_selectOnMousePress(false)
+VLineEdit::VLineEdit(QWidget* parent)
+    : QLineEdit(parent)
+    , m_selectOnMousePress(false)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VLineEdit::VLineEdit(const QString &contents, QWidget *parent)
-    : QLineEdit(contents, parent),
-      m_selectOnMousePress(false)
+VLineEdit::VLineEdit(const QString& contents, QWidget* parent)
+    : QLineEdit(contents, parent)
+    , m_selectOnMousePress(false)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLineEdit::focusInEvent(QFocusEvent *e)
+void VLineEdit::focusInEvent(QFocusEvent* e)
 {
     QLineEdit::focusInEvent(e);
     selectAll();
@@ -72,7 +72,7 @@ void VLineEdit::focusInEvent(QFocusEvent *e)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLineEdit::focusOutEvent(QFocusEvent *e)
+void VLineEdit::focusOutEvent(QFocusEvent* e)
 {
     const int start = selectionStart();
     const int selectionLength = selectedText().length();
@@ -80,20 +80,17 @@ void VLineEdit::focusOutEvent(QFocusEvent *e)
 
     QLineEdit::focusOutEvent(e);
 
-    if (wasTextSelected)
-    {
+    if (wasTextSelected) {
         setSelection(start, selectionLength);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLineEdit::mousePressEvent(QMouseEvent *e)
+void VLineEdit::mousePressEvent(QMouseEvent* e)
 {
     QLineEdit::mousePressEvent(e);
-    if(m_selectOnMousePress)
-    {
+    if (m_selectOnMousePress) {
         selectAll();
         m_selectOnMousePress = false;
     }
 }
-

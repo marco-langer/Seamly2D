@@ -52,12 +52,12 @@
 #ifndef VISTOOLPOINTOFINTERSECTIONARCS_H
 #define VISTOOLPOINTOFINTERSECTIONARCS_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
@@ -67,26 +67,31 @@ class VisToolPointOfIntersectionArcs : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolPointOfIntersectionArcs(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolPointOfIntersectionArcs(
+        const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolPointOfIntersectionArcs() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    virtual void VisualMode(const quint32 &id) Q_DECL_OVERRIDE;
+    virtual void VisualMode(const quint32& id) Q_DECL_OVERRIDE;
 
-    void         setArc1Id(const quint32 &value);
-    void         setArc2Id(const quint32 &value);
-    void         setCrossPoint(const CrossCirclesPoint &value);
+    void setArc1Id(const quint32& value);
+    void setArc2Id(const quint32& value);
+    void setCrossPoint(const CrossCirclesPoint& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionArcs)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionArcs)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolPointOfIntersectionArcs)
-    quint32            arc1Id;
-    quint32            arc2Id;
-    CrossCirclesPoint  crossPoint;
-    VScaledEllipse    *point;
-    VCurvePathItem    *arc1Path;
-    VCurvePathItem    *arc2Path;
+    quint32 arc1Id;
+    quint32 arc2Id;
+    CrossCirclesPoint crossPoint;
+    VScaledEllipse* point;
+    VCurvePathItem* arc1Path;
+    VCurvePathItem* arc2Path;
 };
 
-#endif // VISTOOLPOINTOFINTERSECTIONARCS_H
+#endif   // VISTOOLPOINTOFINTERSECTIONARCS_H

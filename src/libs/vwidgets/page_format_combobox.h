@@ -28,35 +28,35 @@
 #include <QComboBox>
 #include <QWidget>
 
-#include "../vmisc/def.h"
 #include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/def.h"
 
 /**
  * A comboBox for choosing an export format type.
  */
-class PageFormatCombobox: public QComboBox
+class PageFormatCombobox : public QComboBox
 {
     Q_OBJECT
 
 public:
-                        PageFormatCombobox(QWidget *parent = nullptr, const char *name = nullptr);
-    virtual            ~PageFormatCombobox();
+    PageFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
+    virtual ~PageFormatCombobox();
 
-    void                init();
-    PaperSizeFormat     getPageFormat() const;
-    void                setPageFormat(PaperSizeFormat &format);
-    static QString      MakeHelpTemplateList();
+    void init();
+    PaperSizeFormat getPageFormat() const;
+    void setPageFormat(PaperSizeFormat& format);
+    static QString MakeHelpTemplateList();
 
 private slots:
-    void                updatePageFormat(int index);
+    void updatePageFormat(int index);
 
 signals:
-    void                pageFormatChanged(const PaperSizeFormat &format);
+    void pageFormatChanged(const PaperSizeFormat& format);
 
 private:
     static QVector<std::pair<QString, PaperSizeFormat>> initFormats();
-    static QString      getFormatName(PaperSizeFormat format);
-    PaperSizeFormat     m_currentFormat;
+    static QString getFormatName(PaperSizeFormat format);
+    PaperSizeFormat m_currentFormat;
 };
 
-#endif //PAGE_FORMAT_COMBOBOX_H
+#endif   // PAGE_FORMAT_COMBOBOX_H

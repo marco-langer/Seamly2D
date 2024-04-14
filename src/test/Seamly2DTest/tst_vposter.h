@@ -61,7 +61,7 @@ class TST_VPoster : public QObject
     Q_OBJECT
 
 public:
-    explicit TST_VPoster(QObject *parent = nullptr);
+    explicit TST_VPoster(QObject* parent = nullptr);
 
 signals:
 
@@ -71,7 +71,7 @@ private slots:
 
 private:
     qreal ToPixel(qreal val) const;
-    QRect PageRect(const QPrinter &printer) const;
+    QRect PageRect(const QPrinter& printer) const;
 };
 
-#endif // TST_VPOSTER_H
+#endif   // TST_VPOSTER_H

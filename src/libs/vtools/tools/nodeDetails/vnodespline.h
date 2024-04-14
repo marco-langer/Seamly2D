@@ -52,12 +52,12 @@
 #ifndef VNODESPLINE_H
 #define VNODESPLINE_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsPathItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
@@ -66,30 +66,44 @@
 /**
  * @brief The VNodeSpline class spline detail node.
  */
-class VNodeSpline:public VAbstractNode
+class VNodeSpline : public VAbstractNode
 {
     Q_OBJECT
 public:
-    static VNodeSpline *Create(VAbstractPattern *doc, VContainer *data, quint32 id,
-                               quint32 idSpline, const Document &parse,
-                               const Source &typeCreation, const QString &blockName = QString(),
-                               const quint32 &idTool = 0);
+    static VNodeSpline* Create(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idSpline,
+        const Document& parse,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0);
 
     static const QString ToolType;
     virtual QString getTagName() const Q_DECL_OVERRIDE;
 public slots:
-    virtual void FullUpdateFromFile () Q_DECL_OVERRIDE {}
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE {}
     virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
     virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+
 protected:
-    virtual void AddToFile () Q_DECL_OVERRIDE;
+    virtual void AddToFile() Q_DECL_OVERRIDE;
     virtual void ShowNode() Q_DECL_OVERRIDE {}
     virtual void HideNode() Q_DECL_OVERRIDE {}
+
 private:
     Q_DISABLE_COPY(VNodeSpline)
 
-    VNodeSpline(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idSpline, const Source &typeCreation,
-                const QString &blockName = QString(), const quint32 &idTool = 0, QObject *qoParent = nullptr);
+    VNodeSpline(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idSpline,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0,
+        QObject* qoParent = nullptr);
 };
 
-#endif // VNODESPLINE_H
+#endif   // VNODESPLINE_H

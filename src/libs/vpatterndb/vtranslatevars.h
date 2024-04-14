@@ -52,8 +52,8 @@
 #ifndef VTRANSLATEVARS_H
 #define VTRANSLATEVARS_H
 
-#include <qcompilerdetection.h>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vtranslatemeasurements.h"
 
@@ -63,35 +63,38 @@ public:
     explicit VTranslateVars();
     virtual ~VTranslateVars() Q_DECL_OVERRIDE;
 
-    bool VariablesFromUser(QString &newFormula, int position, const QString &token, int &bias) const;
-    bool PostfixOperatorsFromUser(QString &newFormula, int position, const QString &token, int &bias) const;
-    bool FunctionsFromUser(QString &newFormula, int position, const QString &token, int &bias) const;
-    bool VariablesToUser(QString &newFormula, int position, const QString &token, int &bias) const;
+    bool
+    VariablesFromUser(QString& newFormula, int position, const QString& token, int& bias) const;
+    bool PostfixOperatorsFromUser(
+        QString& newFormula, int position, const QString& token, int& bias) const;
+    bool
+    FunctionsFromUser(QString& newFormula, int position, const QString& token, int& bias) const;
+    bool VariablesToUser(QString& newFormula, int position, const QString& token, int& bias) const;
 
-    QString InternalVarToUser(const QString &var) const;
-    QString PlaceholderToUser(const QString &var) const;
+    QString InternalVarToUser(const QString& var) const;
+    QString PlaceholderToUser(const QString& var) const;
 
     QString PlaceholderToUserText(QString text) const;
     QString PlaceholderFromUserText(QString text) const;
 
-    QString VarToUser(const QString &var) const;
-    QString VarFromUser(const QString &var) const;
+    QString VarToUser(const QString& var) const;
+    QString VarFromUser(const QString& var) const;
 
-    QString PMSystemName(const QString &code) const;
-    QString PMSystemAuthor(const QString &code) const;
-    QString PMSystemBook(const QString &code) const;
+    QString PMSystemName(const QString& code) const;
+    QString PMSystemAuthor(const QString& code) const;
+    QString PMSystemBook(const QString& code) const;
 
-    QString PostfixOperator(const QString &name) const;
+    QString PostfixOperator(const QString& name) const;
 
-    QString FormulaFromUser(const QString &formula, bool osSeparator) const;
-    static QString TryFormulaFromUser(const QString &formula, bool osSeparator);
-    QString FormulaToUser(const QString &formula, bool osSeparator) const;
+    QString FormulaFromUser(const QString& formula, bool osSeparator) const;
+    static QString TryFormulaFromUser(const QString& formula, bool osSeparator);
+    QString FormulaToUser(const QString& formula, bool osSeparator) const;
 
     virtual void Retranslate() Q_DECL_OVERRIDE;
 
     QMap<QString, qmu::QmuTranslation> getFunctions() const;
 
-    static void BiasTokens(int position, int bias, QMap<int, QString> &tokens);
+    static void BiasTokens(int position, int bias, QMap<int, QString>& tokens);
 
 private:
     Q_DISABLE_COPY(VTranslateVars)
@@ -110,11 +113,14 @@ private:
     void InitPostfixOperators();
     void InitPlaceholder();
 
-    void InitSystem(const QString &code, const qmu::QmuTranslation &name, const qmu::QmuTranslation &author,
-                    const qmu::QmuTranslation &book);
+    void InitSystem(
+        const QString& code,
+        const qmu::QmuTranslation& name,
+        const qmu::QmuTranslation& author,
+        const qmu::QmuTranslation& book);
 
-    void CorrectionsPositions(int position, int bias, QMap<int, QString> &tokens, QMap<int, QString> &numbers) const;
-
+    void CorrectionsPositions(
+        int position, int bias, QMap<int, QString>& tokens, QMap<int, QString>& numbers) const;
 };
 
-#endif // VTRANSLATEVARS_H
+#endif   // VTRANSLATEVARS_H

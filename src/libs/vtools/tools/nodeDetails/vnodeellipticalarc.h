@@ -52,24 +52,30 @@
 #ifndef VNODEELLIPTICALARC_H
 #define VNODEELLIPTICALARC_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsPathItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "vabstractnode.h"
 
-class VNodeEllipticalArc :public VAbstractNode
+class VNodeEllipticalArc : public VAbstractNode
 {
     Q_OBJECT
 public:
-    static void  Create(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idArc, const Document &parse,
-                        const Source &typeCreation, const QString &blockName = QString(),
-                        const quint32 &idTool = NULL_ID);
+    static void Create(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idArc,
+        const Document& parse,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = NULL_ID);
 
     static const QString ToolType;
     virtual QString getTagName() const Q_DECL_OVERRIDE;
@@ -77,15 +83,24 @@ public slots:
     virtual void FullUpdateFromFile() Q_DECL_OVERRIDE {}
     virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
     virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+
 protected:
     virtual void AddToFile() Q_DECL_OVERRIDE;
     virtual void ShowNode() Q_DECL_OVERRIDE {}
     virtual void HideNode() Q_DECL_OVERRIDE {}
+
 private:
     Q_DISABLE_COPY(VNodeEllipticalArc)
 
-    VNodeEllipticalArc(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idArc, const Source &typeCreation,
-                       const QString &blockName = QString(), const quint32 &idTool = 0, QObject *qoParent = nullptr);
+    VNodeEllipticalArc(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idArc,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0,
+        QObject* qoParent = nullptr);
 };
 
-#endif // VNODEELLIPTICALARC_H
+#endif   // VNODEELLIPTICALARC_H

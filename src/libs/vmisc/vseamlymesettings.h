@@ -66,20 +66,24 @@ class VSeamlyMeSettings : public VCommonSettings
 {
     Q_OBJECT
 public:
-    VSeamlyMeSettings(Format format, Scope scope, const QString &organization, const QString &application = QString(),
-                  QObject *parent = nullptr);
+    VSeamlyMeSettings(
+        Format format,
+        Scope scope,
+        const QString& organization,
+        const QString& application = QString(),
+        QObject* parent = nullptr);
 
     QByteArray getDataBaseGeometry() const;
-    void setDataBaseGeometry(const QByteArray &value);
+    void setDataBaseGeometry(const QByteArray& value);
 
     void SetDefHeight(int value);
-    int  GetDefHeight() const;
+    int GetDefHeight() const;
 
     void SetDefSize(int value);
-    int  GetDefSize() const;
+    int GetDefSize() const;
 
 private:
     Q_DISABLE_COPY(VSeamlyMeSettings)
 };
 
-#endif // VSEAMLYMESETTINGS_H
+#endif   // VSEAMLYMESETTINGS_H

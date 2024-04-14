@@ -52,31 +52,34 @@
 #ifndef MOVELABEL_H
 #define MOVELABEL_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "moveabstractlabel.h"
 
 class MoveLabel : public MoveAbstractLabel
 {
 public:
-                    MoveLabel(VAbstractPattern *doc, const QPointF &pos, const quint32 &id,
-                              QUndoCommand *parent = nullptr);
-    virtual        ~MoveLabel()=default;
+    MoveLabel(
+        VAbstractPattern* doc,
+        const QPointF& pos,
+        const quint32& id,
+        QUndoCommand* parent = nullptr);
+    virtual ~MoveLabel() = default;
 
-    virtual bool    mergeWith(const QUndoCommand *command) Q_DECL_OVERRIDE;
-    virtual int     id() const Q_DECL_OVERRIDE;
+    virtual bool mergeWith(const QUndoCommand* command) Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
 
 protected:
-    virtual void    Do(const QPointF &pos) Q_DECL_OVERRIDE;
-    
+    virtual void Do(const QPointF& pos) Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(MoveLabel)
-    //Need for resizing scene rect
-    QGraphicsScene *m_scene;
+    // Need for resizing scene rect
+    QGraphicsScene* m_scene;
 };
 
-#endif // MOVELABEL_H
+#endif   // MOVELABEL_H

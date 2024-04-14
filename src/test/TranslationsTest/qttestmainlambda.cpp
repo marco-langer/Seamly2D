@@ -51,8 +51,8 @@
 
 #include <QtTest>
 
-#include "tst_measurementregexp.h"
 #include "tst_buitinregexp.h"
+#include "tst_measurementregexp.h"
 #include "tst_qmuparsererrormsg.h"
 #include "tst_tstranslation.h"
 
@@ -60,11 +60,10 @@
 
 int main(int argc, char** argv)
 {
-    QApplication app( argc, argv );// For translation
+    QApplication app(argc, argv);   // For translation
 
     int status = 0;
-    auto ASSERT_TEST = [&status, argc, argv](QObject* obj)
-    {
+    auto ASSERT_TEST = [&status, argc, argv](QObject* obj) {
         status |= QTest::qExec(obj, argc, argv);
         delete obj;
     };
@@ -72,21 +71,17 @@ int main(int argc, char** argv)
     ASSERT_TEST(new TST_TSTranslation());
 
     const QStringList locales = SupportedLocales();
-    for(quint32 s = 0; s < TST_MeasurementRegExp::systemCounts; ++s)
-    {
-        for(int l = 0, sz = locales.size(); l < sz; ++l)
-        {
+    for (quint32 s = 0; s < TST_MeasurementRegExp::systemCounts; ++s) {
+        for (int l = 0, sz = locales.size(); l < sz; ++l) {
             ASSERT_TEST(new TST_MeasurementRegExp(s, locales.at(l)));
         }
     }
 
-    for(int l = 0, sz = locales.size(); l < sz; ++l)
-    {
+    for (int l = 0, sz = locales.size(); l < sz; ++l) {
         ASSERT_TEST(new TST_BuitInRegExp(locales.at(l)));
     }
 
-    for(int l = 0, sz = locales.size(); l < sz; ++l)
-    {
+    for (int l = 0, sz = locales.size(); l < sz; ++l) {
         ASSERT_TEST(new TST_QmuParserErrorMsg(locales.at(l)));
     }
 

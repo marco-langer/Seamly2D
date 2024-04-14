@@ -55,11 +55,12 @@
 
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vwidgets/vmaingraphicsview.h"
 #include "../vundocommand.h"
+#include "../vwidgets/vmaingraphicsview.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveAbstractLabel::MoveAbstractLabel(VAbstractPattern *doc, quint32 pointId, const QPointF &pos, QUndoCommand *parent)
+MoveAbstractLabel::MoveAbstractLabel(
+    VAbstractPattern* doc, quint32 pointId, const QPointF& pos, QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , m_oldPos()
     , m_newPos(pos)

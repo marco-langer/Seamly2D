@@ -52,11 +52,11 @@
 #ifndef MOVESPLINEPATH_H
 #define MOVESPLINEPATH_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vgeometry/vsplinepath.h"
 #include "vundocommand.h"
@@ -67,33 +67,32 @@ class MoveSplinePath : public VUndoCommand
 {
     Q_OBJECT
 public:
-    MoveSplinePath(VAbstractPattern *doc, const VSplinePath &oldSplPath, const VSplinePath &newSplPath,
-                   const quint32 &id, QUndoCommand *parent = nullptr);
+    MoveSplinePath(
+        VAbstractPattern* doc,
+        const VSplinePath& oldSplPath,
+        const VSplinePath& newSplPath,
+        const quint32& id,
+        QUndoCommand* parent = nullptr);
     virtual ~MoveSplinePath() Q_DECL_OVERRIDE;
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
-    virtual bool mergeWith(const QUndoCommand *command) Q_DECL_OVERRIDE;
-    virtual int  id() const Q_DECL_OVERRIDE;
-    quint32      getSplinePathId() const;
-    VSplinePath  getNewSplinePath() const;
+    virtual bool mergeWith(const QUndoCommand* command) Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
+    quint32 getSplinePathId() const;
+    VSplinePath getNewSplinePath() const;
+
 private:
     Q_DISABLE_COPY(MoveSplinePath)
     VSplinePath oldSplinePath;
     VSplinePath newSplinePath;
-    QGraphicsScene *scene;
-    void         Do(const VSplinePath &splPath);
+    QGraphicsScene* scene;
+    void Do(const VSplinePath& splPath);
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline quint32 MoveSplinePath::getSplinePathId() const
-{
-    return nodeId;
-}
+inline quint32 MoveSplinePath::getSplinePathId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline VSplinePath MoveSplinePath::getNewSplinePath() const
-{
-    return newSplinePath;
-}
+inline VSplinePath MoveSplinePath::getNewSplinePath() const { return newSplinePath; }
 
-#endif // MOVESPLINEPATH_H
+#endif   // MOVESPLINEPATH_H

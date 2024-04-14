@@ -57,8 +57,8 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VArc::TST_VArc(QObject *parent)
-    :QObject(parent)
+TST_VArc::TST_VArc(QObject* parent)
+    : QObject(parent)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ void TST_VArc::CompareTwoWays()
     const qreal radius = 100;
     const qreal f1 = 1;
     const qreal f2 = 46;
-    const qreal length = M_PI*radius/180*(f2-f1);
+    const qreal length = M_PI * radius / 180 * (f2 - f1);
 
     VArc arc1(center, radius, f1, f2);
     VArc arc2(length, center, radius, f1);
@@ -92,7 +92,7 @@ void TST_VArc::NegativeArc()
     const qreal radius = 100;
     const qreal f1 = 1;
     const qreal f2 = 316;
-    const qreal length = M_PI*radius/180*45;
+    const qreal length = M_PI * radius / 180 * 45;
     VArc arc(-length, center, radius, f1);
 
     QCOMPARE(arc.GetLength(), -length);
@@ -200,37 +200,38 @@ void TST_VArc::TestGetPoints()
     QVector<QPointF> points = arc.getPoints();
 
     {
-        const qreal epsRadius = 1.5; // computing error
+        const qreal epsRadius = 1.5;   // computing error
 
-        for (int i=0; i < points.size(); ++i)
-        {
+        for (int i = 0; i < points.size(); ++i) {
             QLineF rLine(static_cast<QPointF>(center), points.at(i));
             const qreal value = qAbs(rLine.length() - radius);
-            const QString errorMsg = QString("Broken the first rule. All points should be on the same distance from "
-                                             "the center. Error ='%1'.").arg(value);
+            const QString errorMsg =
+                QString(
+                    "Broken the first rule. All points should be on the same distance from "
+                    "the center. Error ='%1'.")
+                    .arg(value);
             QVERIFY2(value <= epsRadius, qUtf8Printable(errorMsg));
         }
     }
 
     {
-        qreal gSquere = 0.0;// geometry square
+        qreal gSquere = 0.0;   // geometry square
 
-        if (VFuzzyComparePossibleNulls(arc.AngleArc(), 360.0))
-        {// circle square
+        if (VFuzzyComparePossibleNulls(arc.AngleArc(), 360.0)) {   // circle square
             gSquere = M_PI * radius * radius;
-        }
-        else
-        {// sector square
+        } else {   // sector square
             gSquere = (M_PI * radius * radius) / 360.0 * arc.AngleArc();
             points.append(static_cast<QPointF>(center));
         }
 
         // calculated square
-        const qreal cSquare = qAbs(VAbstractPiece::sumTrapezoids(points)/2.0);
+        const qreal cSquare = qAbs(VAbstractPiece::sumTrapezoids(points) / 2.0);
         const qreal value = qAbs(gSquere - cSquare);
         const QString errorMsg =
-                QString("Broken the second rule. Interpolation has too big computing error. Error ='%1'.").arg(value);
-        const qreal epsSquere = gSquere * 0.24 / 100; // computing error 0.24 % from origin squere
+            QString(
+                "Broken the second rule. Interpolation has too big computing error. Error ='%1'.")
+                .arg(value);
+        const qreal epsSquere = gSquere * 0.24 / 100;   // computing error 0.24 % from origin squere
         QVERIFY2(value <= epsSquere, qUtf8Printable(errorMsg));
     }
 }
@@ -288,16 +289,16 @@ void TST_VArc::TestFlip_data()
 
     QLineF axis(QPointF(4, 6), QPointF(12, 6));
 
-    QTest::newRow("Vertical axis") << center << radius << QLineF(center, p1).angle() << QLineF(center, p2).angle()
-                                   << axis << "a2";
+    QTest::newRow("Vertical axis") << center << radius << QLineF(center, p1).angle()
+                                   << QLineF(center, p2).angle() << axis << "a2";
 
     p1 = QPointF(15, 5);
     p2 = QPointF(10, 0);
 
     axis = QLineF(QPointF(9, -1), QPointF(9, 6));
 
-    QTest::newRow("Horizontal axis") << center << radius << QLineF(center, p1).angle() << QLineF(center, p2).angle()
-                                     << axis << "a2";
+    QTest::newRow("Horizontal axis") << center << radius << QLineF(center, p1).angle()
+                                     << QLineF(center, p2).angle() << axis << "a2";
 
     QLineF l(center.x(), center.y(), center.x() + radius, center.y());
 
@@ -307,15 +308,15 @@ void TST_VArc::TestFlip_data()
     l.setAngle(225);
     p1 = l.p2();
 
-    l.setAngle(45+90);
+    l.setAngle(45 + 90);
     l.setLength(5);
 
     const QPointF p1Axis = l.p2();
     axis = QLineF(p1Axis.x(), p1Axis.y(), p1Axis.x() + radius, p1Axis.y());
     axis.setAngle(45);
 
-    QTest::newRow("Diagonal axis") << center << radius << QLineF(center, p1).angle() << QLineF(center, p2).angle()
-                                   << axis << "a2";
+    QTest::newRow("Diagonal axis") << center << radius << QLineF(center, p1).angle()
+                                   << QLineF(center, p2).angle() << axis << "a2";
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -336,7 +337,7 @@ void TST_VArc::TestFlip()
 
     QVERIFY2(res.IsFlipped(), qUtf8Printable("The arc is not flipped"));
 
-    QCOMPARE(originArc.GetLength()*-1, res.GetLength());
+    QCOMPARE(originArc.GetLength() * -1, res.GetLength());
     QCOMPARE(originArc.GetRadius(), res.GetRadius());
     QCOMPARE(originArc.AngleArc(), res.AngleArc());
 }

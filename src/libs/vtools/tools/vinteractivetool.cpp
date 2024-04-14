@@ -52,17 +52,14 @@
 #include "vinteractivetool.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VInteractiveTool::VInteractiveTool(VAbstractPattern *doc, VContainer *data, quint32 id, QObject *parent)
+VInteractiveTool::VInteractiveTool(
+    VAbstractPattern* doc, VContainer* data, quint32 id, QObject* parent)
     : VAbstractTool(doc, data, id, parent)
     , m_dialog()
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VInteractiveTool::DialogLinkDestroy()
-{
-    m_dialog.clear();
-}
+void VInteractiveTool::DialogLinkDestroy() { m_dialog.clear(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -71,8 +68,7 @@ void VInteractiveTool::DialogLinkDestroy()
  */
 void VInteractiveTool::FullUpdateFromGuiOk(int result)
 {
-    if (result == QDialog::Accepted)
-    {
+    if (result == QDialog::Accepted) {
         SaveDialogChange();
     }
     m_dialog.clear();
@@ -82,7 +78,4 @@ void VInteractiveTool::FullUpdateFromGuiOk(int result)
 /**
  * @brief FullUpdateFromGuiApply refresh tool data after change in options but do not delete dialog
  */
-void VInteractiveTool::FullUpdateFromGuiApply()
-{
-    SaveDialogChange();
-}
+void VInteractiveTool::FullUpdateFromGuiApply() { SaveDialogChange(); }

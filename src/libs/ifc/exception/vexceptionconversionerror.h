@@ -53,8 +53,8 @@
 #ifndef VEXCEPTIONCONVERSIONERROR_H
 #define VEXCEPTIONCONVERSIONERROR_H
 
-#include <qcompilerdetection.h>
 #include <QString>
+#include <qcompilerdetection.h>
 
 #include "../ifcdef.h"
 #include "vexception.h"
@@ -65,15 +65,16 @@
 class VExceptionConversionError : public VException
 {
 public:
-    VExceptionConversionError(const QString &error, const QString &str);
-    VExceptionConversionError(const VExceptionConversionError &error);
-    VExceptionConversionError &operator=(const VExceptionConversionError &error);
-    virtual         ~VExceptionConversionError() V_NOEXCEPT_EXPR (true) Q_DECL_EQ_DEFAULT;
+    VExceptionConversionError(const QString& error, const QString& str);
+    VExceptionConversionError(const VExceptionConversionError& error);
+    VExceptionConversionError& operator=(const VExceptionConversionError& error);
+    virtual ~VExceptionConversionError() V_NOEXCEPT_EXPR(true) Q_DECL_EQ_DEFAULT;
     virtual QString ErrorMessage() const Q_DECL_OVERRIDE;
-    QString         String() const;
+    QString String() const;
+
 protected:
     /** @brief str string, where happend error */
-    QString         str;
+    QString str;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -81,9 +82,6 @@ protected:
  * @brief String return string, where happend error
  * @return string
  */
-inline QString VExceptionConversionError::String() const
-{
-    return str;
-}
+inline QString VExceptionConversionError::String() const { return str; }
 
-#endif // VEXCEPTIONCONVERSIONERROR_H
+#endif   // VEXCEPTIONCONVERSIONERROR_H

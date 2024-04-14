@@ -21,8 +21,6 @@
 #ifndef VNUMBERPROPERTY_H
 #define VNUMBERPROPERTY_H
 
-#include <qcompilerdetection.h>
-#include <stddef.h>
 #include <QMap>
 #include <QMetaObject>
 #include <QObject>
@@ -31,11 +29,12 @@
 #include <QStyleOptionViewItem>
 #include <QVariant>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
+#include <stddef.h>
 
 #include "../vproperty.h"
 
-namespace VPE
-{
+namespace VPE {
 
 
 //! Class for holding an integer property
@@ -43,29 +42,32 @@ class SpinboxProperty : public VProperty
 {
     Q_OBJECT
 public:
-    SpinboxProperty(const QString &name, const QMap<QString, QVariant> &settings);
+    SpinboxProperty(const QString& name, const QMap<QString, QVariant>& settings);
 
-    explicit SpinboxProperty(const QString &name);
+    explicit SpinboxProperty(const QString& name);
 
     //! Returns an editor widget, or NULL if it doesn't supply one
     //! \param parent The widget to which the editor will be added as a child
     //! \options Render options
-    //! \delegate A pointer to the QAbstractItemDelegate requesting the editor. This can be used to connect signals and
-    //! slots.
-    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &options,
-                                  const QAbstractItemDelegate *delegate) Q_DECL_OVERRIDE;
+    //! \delegate A pointer to the QAbstractItemDelegate requesting the editor. This can be used to
+    //! connect signals and slots.
+    virtual QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem& options,
+        const QAbstractItemDelegate* delegate) Q_DECL_OVERRIDE;
 
     //! Gets the data from the widget
-    virtual QVariant getEditorData(const QWidget *editor) const Q_DECL_OVERRIDE;
+    virtual QVariant getEditorData(const QWidget* editor) const Q_DECL_OVERRIDE;
 
     //! Sets the settings. Available settings:
     //!
     //! key: "Min" - value: Minimum number as integer
     //! key: "Max" - value: Maximum number as integer
-    virtual void setSetting(const QString &key, const QVariant &value) Q_DECL_OVERRIDE;
+    virtual void setSetting(const QString& key, const QVariant& value) Q_DECL_OVERRIDE;
 
-    //! Get the settings. This function has to be implemented in a subclass in order to have an effect
-    virtual QVariant getSetting(const QString &key) const Q_DECL_OVERRIDE;
+    //! Get the settings. This function has to be implemented in a subclass in order to have an
+    //! effect
+    virtual QVariant getSetting(const QString& key) const Q_DECL_OVERRIDE;
 
     //! Returns the list of keys of the property's settings
     virtual QStringList getSettingKeys() const Q_DECL_OVERRIDE;
@@ -75,18 +77,20 @@ public:
 
     //! Clones this property
     //! \param include_children Indicates whether to also clone the children
-    //! \param container If a property is being passed here, no new VProperty is being created but instead it is tried
-    //! to fill all the data into container. This can also be used when subclassing this function.
-    //! \return Returns the newly created property (or container, if it was not NULL)
-    Q_REQUIRED_RESULT virtual VProperty *clone(bool include_children = true,
-                                               VProperty *container = nullptr) const Q_DECL_OVERRIDE;
+    //! \param container If a property is being passed here, no new VProperty is being created but
+    //! instead it is tried to fill all the data into container. This can also be used when
+    //! subclassing this function. \return Returns the newly created property (or container, if it
+    //! was not NULL)
+    Q_REQUIRED_RESULT virtual VProperty*
+    clone(bool include_children = true, VProperty* container = nullptr) const Q_DECL_OVERRIDE;
 public slots:
     void valueChanged(int i);
+
 protected:
     double minValue, maxValue, singleStep;
 
-    static const int StandardMin;// = -1000000;
-    static const int StandardMax;// = 1000000;
+    static const int StandardMin;   // = -1000000;
+    static const int StandardMax;   // = 1000000;
 
 private:
     Q_DISABLE_COPY(SpinboxProperty)
@@ -98,29 +102,32 @@ class DoubleSpinboxProperty : public SpinboxProperty
 {
     Q_OBJECT
 public:
-    DoubleSpinboxProperty(const QString &name, const QMap<QString, QVariant> &settings);
+    DoubleSpinboxProperty(const QString& name, const QMap<QString, QVariant>& settings);
 
-    explicit DoubleSpinboxProperty(const QString &name);
+    explicit DoubleSpinboxProperty(const QString& name);
 
     //! Returns an editor widget, or NULL if it doesn't supply one
     //! \param parent The widget to which the editor will be added as a child
     //! \options Render options
-    //! \delegate A pointer to the QAbstractItemDelegate requesting the editor. This can be used to connect signals and
-    //! slots.
-    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &options,
-                                  const QAbstractItemDelegate *delegate);
+    //! \delegate A pointer to the QAbstractItemDelegate requesting the editor. This can be used to
+    //! connect signals and slots.
+    virtual QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem& options,
+        const QAbstractItemDelegate* delegate);
 
     //! Gets the data from the widget
-    virtual QVariant getEditorData(const QWidget *editor) const;
+    virtual QVariant getEditorData(const QWidget* editor) const;
 
     //! Sets the settings. Available settings:
     //!
     //! key: "Min" - value: Minimum number as integer
     //! key: "Max" - value: Maximum number as integer
-    virtual void setSetting(const QString &key, const QVariant &value);
+    virtual void setSetting(const QString& key, const QVariant& value);
 
-    //! Get the settings. This function has to be implemented in a subclass in order to have an effect
-    virtual QVariant getSetting(const QString &key) const;
+    //! Get the settings. This function has to be implemented in a subclass in order to have an
+    //! effect
+    virtual QVariant getSetting(const QString& key) const;
 
     //! Returns the list of keys of the property's settings
     virtual QStringList getSettingKeys() const;
@@ -130,22 +137,23 @@ public:
 
     //! Clones this property
     //! \param include_children Indicates whether to also clone the children
-    //! \param container If a property is being passed here, no new VProperty is being created but instead it is tried
-    //! to fill all the data into container. This can also be used when subclassing this function.
-    //! \return Returns the newly created property (or container, if it was not NULL)
-    virtual VProperty *clone(bool include_children = true, VProperty *container = NULL) const;
+    //! \param container If a property is being passed here, no new VProperty is being created but
+    //! instead it is tried to fill all the data into container. This can also be used when
+    //! subclassing this function. \return Returns the newly created property (or container, if it
+    //! was not NULL)
+    virtual VProperty* clone(bool include_children = true, VProperty* container = NULL) const;
 
 protected:
     //! Number of decimals after the decimal point
     int Precision;
 
-    const static double StandardPrecision;// = 5;
+    const static double StandardPrecision;   // = 5;
 
 private:
     Q_DISABLE_COPY(DoubleSpinboxProperty)
 };
 
 
-}
+}   // namespace VPE
 
-#endif // VNUMBERPROPERTY_H
+#endif   // VNUMBERPROPERTY_H

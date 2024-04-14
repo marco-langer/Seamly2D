@@ -62,7 +62,7 @@
  * @param error string with error
  * @param str string, where happend error
  */
-VExceptionConversionError::VExceptionConversionError(const QString &error, const QString &str)
+VExceptionConversionError::VExceptionConversionError(const QString& error, const QString& str)
     : VException(error)
     , str(str)
 {
@@ -74,16 +74,16 @@ VExceptionConversionError::VExceptionConversionError(const QString &error, const
  * @brief VExceptionConversionError copy constructor
  * @param e exception
  */
-VExceptionConversionError::VExceptionConversionError(const VExceptionConversionError &error)
+VExceptionConversionError::VExceptionConversionError(const VExceptionConversionError& error)
     : VException(error)
     , str(error.String())
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionConversionError &VExceptionConversionError::operator=(const VExceptionConversionError &error)
+VExceptionConversionError&
+VExceptionConversionError::operator=(const VExceptionConversionError& error)
 {
-    if (&error == this)
-    {
+    if (&error == this) {
         return *this;
     }
     VException::operator=(error);

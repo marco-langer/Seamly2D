@@ -1,29 +1,29 @@
 /******************************************************************************
-*   @file   dialogseamlymepreferences.cpp
-**  @author Douglas S Caskey
-**  @date   26 Oct, 2023
-**
-**  @brief
-**  @copyright
-**  This source code is part of the Seamly2D project, a pattern making
-**  program to create and model patterns of clothing.
-**  Copyright (C) 2017-2023 Seamly2D project
-**  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
-**
-**  Seamly2D is free software: you can redistribute it and/or modify
-**  it under the terms of the GNU General Public License as published by
-**  the Free Software Foundation, either version 3 of the License, or
-**  (at your option) any later version.
-**
-**  Seamly2D is distributed in the hope that it will be useful,
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**  GNU General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
-**
-*************************************************************************/
+ *   @file   dialogseamlymepreferences.cpp
+ **  @author Douglas S Caskey
+ **  @date   26 Oct, 2023
+ **
+ **  @brief
+ **  @copyright
+ **  This source code is part of the Seamly2D project, a pattern making
+ **  program to create and model patterns of clothing.
+ **  Copyright (C) 2017-2023 Seamly2D project
+ **  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ *************************************************************************/
 
 /************************************************************************
  **
@@ -54,10 +54,10 @@
  *************************************************************************/
 
 #include "dialogseamlymepreferences.h"
-#include "ui_dialogseamlymepreferences.h"
 #include "../application_me.h"
 #include "configpages/seamlymepreferencesconfigurationpage.h"
 #include "configpages/seamlymepreferencespathpage.h"
+#include "ui_dialogseamlymepreferences.h"
 
 #include <QGuiApplication>
 #include <QPushButton>
@@ -65,7 +65,7 @@
 #include <QShowEvent>
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogSeamlyMePreferences::DialogSeamlyMePreferences(QWidget *parent)
+DialogSeamlyMePreferences::DialogSeamlyMePreferences(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::DialogSeamlyMePreferences)
     , m_isInitialized(false)
@@ -75,53 +75,51 @@ DialogSeamlyMePreferences::DialogSeamlyMePreferences(QWidget *parent)
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    //Limit dialog height to 80% of screen size
+    // Limit dialog height to 80% of screen size
     setMaximumHeight(qRound(QGuiApplication::primaryScreen()->availableGeometry().height() * .8));
 
     qApp->Settings()->getOsSeparator() ? setLocale(QLocale()) : setLocale(QLocale::c());
 
-    QPushButton *ok_Button = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* ok_Button = ui->buttonBox->button(QDialogButtonBox::Ok);
     SCASSERT(ok_Button != nullptr)
     connect(ok_Button, &QPushButton::clicked, this, &DialogSeamlyMePreferences::Ok);
 
-    QPushButton *apply_Button = ui->buttonBox->button(QDialogButtonBox::Apply);
+    QPushButton* apply_Button = ui->buttonBox->button(QDialogButtonBox::Apply);
     SCASSERT(apply_Button != nullptr)
     connect(apply_Button, &QPushButton::clicked, this, &DialogSeamlyMePreferences::Apply);
 
     ui->pagesWidget->insertWidget(0, m_configurationPage);
     ui->pagesWidget->insertWidget(1, m_pathPage);
 
-    connect(ui->contentsWidget, &QListWidget::currentItemChanged, this, &DialogSeamlyMePreferences::PageChanged);
+    connect(
+        ui->contentsWidget,
+        &QListWidget::currentItemChanged,
+        this,
+        &DialogSeamlyMePreferences::PageChanged);
     ui->pagesWidget->setCurrentIndex(0);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogSeamlyMePreferences::~DialogSeamlyMePreferences()
-{
-    delete ui;
-}
+DialogSeamlyMePreferences::~DialogSeamlyMePreferences() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogSeamlyMePreferences::changeEvent(QEvent *event)
+void DialogSeamlyMePreferences::changeEvent(QEvent* event)
 {
-    if (event->type() == QEvent::LanguageChange)
-    {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
     QWidget::changeEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogSeamlyMePreferences::showEvent(QShowEvent *event)
+void DialogSeamlyMePreferences::showEvent(QShowEvent* event)
 {
-    QDialog::showEvent( event );
-    if ( event->spontaneous() )
-    {
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
         return;
     }
 
-    if (m_isInitialized)
-    {
+    if (m_isInitialized) {
         return;
     }
     // do your init stuff here
@@ -129,23 +127,21 @@ void DialogSeamlyMePreferences::showEvent(QShowEvent *event)
     setMinimumSize(size());
 
     QSize sz = qApp->Settings()->getPreferenceDialogSize();
-    if (sz.isEmpty() == false)
-    {
+    if (sz.isEmpty() == false) {
         resize(sz);
     }
 
-    m_isInitialized = true;//first show windows are held
+    m_isInitialized = true;   // first show windows are held
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogSeamlyMePreferences::resizeEvent(QResizeEvent *event)
+void DialogSeamlyMePreferences::resizeEvent(QResizeEvent* event)
 {
     Q_UNUSED(event)
     // remember the size for the next time this dialog is opened, but only
     // if widget was already initialized, which rules out the resize at
     // dialog creating, which would
-    if (m_isInitialized)
-    {
+    if (m_isInitialized) {
         qApp->Settings()->setPreferenceDialogSize(size());
     }
 }
@@ -169,10 +165,9 @@ void DialogSeamlyMePreferences::Ok()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogSeamlyMePreferences::PageChanged(QListWidgetItem *current, QListWidgetItem *previous)
+void DialogSeamlyMePreferences::PageChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
-    if (current == nullptr)
-    {
+    if (current == nullptr) {
         current = previous;
     }
     int rowIndex = ui->contentsWidget->row(current);

@@ -32,17 +32,16 @@
 #include "../vtools/dialogs/tools/dialogtool.h"
 #include "../vtools/tools/drawTools/operation/vabstractoperation.h"
 
-#include <qcompilerdetection.h>
 #include <QList>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-namespace Ui
-{
-    class ImageDialog;
+namespace Ui {
+class ImageDialog;
 }
 
 class ImageDialog : public QDialog
@@ -50,97 +49,97 @@ class ImageDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit         ImageDialog(DraftImage image, qreal minDimension, qreal maxDimension);
-    virtual         ~ImageDialog();
+    explicit ImageDialog(DraftImage image, qreal minDimension, qreal maxDimension);
+    virtual ~ImageDialog();
 
-    DraftImage       getImage() const;
-    void             setImage(DraftImage image);
-    void             updateImage();
-    void             enableWidgets();
+    DraftImage getImage() const;
+    void setImage(DraftImage image);
+    void updateImage();
+    void enableWidgets();
 
-    QString          getName() const;
-    void             setName(const QString &name);
+    QString getName() const;
+    void setName(const QString& name);
 
-    Position       getOriginPoint() const;
-    void             setOriginPoint(const int &index);
+    Position getOriginPoint() const;
+    void setOriginPoint(const int& index);
 
-    qreal            getXPos() const;
-    void             setXPos(const qreal &value);
+    qreal getXPos() const;
+    void setXPos(const qreal& value);
 
-    qreal            getYPos() const;
-    void             setYPos(const qreal &value);
+    qreal getYPos() const;
+    void setYPos(const qreal& value);
 
-    qreal            getWidth() const;
-    void             setWidth(const qreal &value);
+    qreal getWidth() const;
+    void setWidth(const qreal& value);
 
-    qreal            getHeight() const;
-    void             setHeight(const qreal &value);
+    qreal getHeight() const;
+    void setHeight(const qreal& value);
 
-    qreal            getXScale() const;
-    void             setXScale(const qreal &value);
+    qreal getXScale() const;
+    void setXScale(const qreal& value);
 
-    qreal            getYScale() const;
-    void             setYScale(const qreal &value);
+    qreal getYScale() const;
+    void setYScale(const qreal& value);
 
-    bool             isAspectLocked() const;
-    void             setAspectLocked(const bool &state);
+    bool isAspectLocked() const;
+    void setAspectLocked(const bool& state);
 
-    bool             isLocked() const;
-    void             setLocked(const bool &state);
+    bool isLocked() const;
+    void setLocked(const bool& state);
 
-    qreal            getRotation() const;
-    void             setRotation(const qreal &value);
+    qreal getRotation() const;
+    void setRotation(const qreal& value);
 
-    bool             isVisible() const;
-    void             setVisibility(const bool &checked);
+    bool isVisible() const;
+    void setVisibility(const bool& checked);
 
-    qreal            getOpacity() const;
-    void             setOpacity(const qreal &opacity);
+    qreal getOpacity() const;
+    void setOpacity(const qreal& opacity);
 
 private slots:
-    void             nameChanged(const QString &name);
-    void             originChanged(const QString &text);
-    void             lockChanged(bool checked);
-    void             alignmentChanged();
-    void             xPosChanged(qreal value);
-    void             yPosChanged(qreal value);
-    void             widthChanged(qreal width);
-    void             heightChanged(qreal height);
-    void             xScaleChanged(qreal value);
-    void             yScaleChanged(qreal value);
-    void             lockAspectChanged(bool checked);
-    void             unitsChanged();
-    void             rotationChanged(qreal value);
-    void             visibilityChanged(bool checked);
-    void             opacityChanged(qreal value);
+    void nameChanged(const QString& name);
+    void originChanged(const QString& text);
+    void lockChanged(bool checked);
+    void alignmentChanged();
+    void xPosChanged(qreal value);
+    void yPosChanged(qreal value);
+    void widthChanged(qreal width);
+    void heightChanged(qreal height);
+    void xScaleChanged(qreal value);
+    void yScaleChanged(qreal value);
+    void lockAspectChanged(bool checked);
+    void unitsChanged();
+    void rotationChanged(qreal value);
+    void visibilityChanged(bool checked);
+    void opacityChanged(qreal value);
 
-    void             updateUnits();
-    void             updateSpinboxesRanges();
+    void updateUnits();
+    void updateSpinboxesRanges();
 
-    void             setSuffix(QString suffix);
-    void             setDecimals(int precision);
+    void setSuffix(QString suffix);
+    void setDecimals(int precision);
 
-    void             dialogApply(QAbstractButton *button);
+    void dialogApply(QAbstractButton* button);
 
 signals:
-    void             lockClicked(bool state);
-    //void             alignClicked();
-    void             lockAspectClicked(bool state);
-    void             imageUpdated(DraftImage image);
-    void             applyClicked(DraftImage image);
+    void lockClicked(bool state);
+    // void             alignClicked();
+    void lockAspectClicked(bool state);
+    void imageUpdated(DraftImage image);
+    void applyClicked(DraftImage image);
 
 private:
     Q_DISABLE_COPY(ImageDialog)
-    Ui::ImageDialog *ui;
-    DraftImage       m_image;
-    qreal            m_pixmapWidth;
-    qreal            m_pixmapHeight;
-    qreal            m_maxDimension;
-    qreal            m_minDimension;
-    qreal            m_minOpacity;
-    qreal            m_xScale;
-    qreal            m_yScale;
-    bool             m_flagName;
+    Ui::ImageDialog* ui;
+    DraftImage m_image;
+    qreal m_pixmapWidth;
+    qreal m_pixmapHeight;
+    qreal m_maxDimension;
+    qreal m_minDimension;
+    qreal m_minOpacity;
+    qreal m_xScale;
+    qreal m_yScale;
+    bool m_flagName;
 };
 
-#endif // IMAGE_DIALOG_H
+#endif   // IMAGE_DIALOG_H

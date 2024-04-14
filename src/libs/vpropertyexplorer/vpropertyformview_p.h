@@ -23,11 +23,10 @@
 
 // ONLY INCLUDE THIS IN .CPP FILES
 
-#include "vpropertyformwidget_p.h"
 #include "../vmisc/diagnostic.h"
+#include "vpropertyformwidget_p.h"
 
-namespace VPE
-{
+namespace VPE {
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wweak-vtables")
@@ -48,18 +47,27 @@ public:
     bool IgnoreDataChangedSignal;
 
     VPropertyFormViewPrivate()
-        : VPropertyFormWidgetPrivate(), Model(nullptr), PropertySet(nullptr), NeedsRebuild(false),
-          IgnoreDataChangedSignal(false)
+        : VPropertyFormWidgetPrivate()
+        , Model(nullptr)
+        , PropertySet(nullptr)
+        , NeedsRebuild(false)
+        , IgnoreDataChangedSignal(false)
     {}
 
     explicit VPropertyFormViewPrivate(VPropertyModel* prop_model)
-        : VPropertyFormWidgetPrivate(), Model(prop_model), PropertySet(nullptr), NeedsRebuild(false),
-          IgnoreDataChangedSignal(false)
+        : VPropertyFormWidgetPrivate()
+        , Model(prop_model)
+        , PropertySet(nullptr)
+        , NeedsRebuild(false)
+        , IgnoreDataChangedSignal(false)
     {}
 
     explicit VPropertyFormViewPrivate(VPropertySet* prop_set)
-        : VPropertyFormWidgetPrivate(), Model(nullptr), PropertySet(prop_set), NeedsRebuild(false),
-          IgnoreDataChangedSignal(false)
+        : VPropertyFormWidgetPrivate()
+        , Model(nullptr)
+        , PropertySet(prop_set)
+        , NeedsRebuild(false)
+        , IgnoreDataChangedSignal(false)
     {}
 
     virtual ~VPropertyFormViewPrivate() Q_DECL_OVERRIDE {}
@@ -70,6 +78,6 @@ private:
 
 QT_WARNING_POP
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYFORMVIEW_P_H
+#endif   // VPROPERTYFORMVIEW_P_H

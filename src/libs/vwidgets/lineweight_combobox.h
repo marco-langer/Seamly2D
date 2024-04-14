@@ -31,31 +31,32 @@
 /**
  * A comboBox for choosing a line weight.
  */
-class LineWeightComboBox: public QComboBox
+class LineWeightComboBox : public QComboBox
 {
     Q_OBJECT
 
 public:
-                     LineWeightComboBox(QWidget *parent = nullptr, const char *name = nullptr);
-                     LineWeightComboBox(int width, int height,	QWidget *parent = nullptr, const char *name=nullptr);
-    virtual         ~LineWeightComboBox();
+    LineWeightComboBox(QWidget* parent = nullptr, const char* name = nullptr);
+    LineWeightComboBox(
+        int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
+    virtual ~LineWeightComboBox();
 
-    void             init();
+    void init();
 
-    qreal            getLineWeight() const;
-    void             setLineWeight(const qreal &weight);
+    qreal getLineWeight() const;
+    void setLineWeight(const qreal& weight);
 
 private slots:
-    void             updateLineWeight(int index);
+    void updateLineWeight(int index);
 
 signals:
-    void             lineWeightChanged(const qreal &weight);
+    void lineWeightChanged(const qreal& weight);
 
 private:
-    QIcon            createIcon(const qreal &width);
-    qreal            m_currentWeight;
-    int              m_iconWidth;
-    int              m_iconHeight;
+    QIcon createIcon(const qreal& width);
+    qreal m_currentWeight;
+    int m_iconWidth;
+    int m_iconHeight;
 };
 
 #endif

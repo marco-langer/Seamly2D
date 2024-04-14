@@ -52,12 +52,12 @@
 #ifndef VISTOOLARC_H
 #define VISTOOLARC_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "vispath.h"
@@ -66,21 +66,25 @@ class VisToolArc : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolArc(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolArc(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolArc() Q_DECL_EQ_DEFAULT;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         setRadius(const QString &expression);
-    void         setF1(const QString &expression);
-    void         setF2(const QString &expression);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolArc)};
+    void setRadius(const QString& expression);
+    void setF1(const QString& expression);
+    void setF2(const QString& expression);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolArc)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolArc)
-    VScaledEllipse *arcCenter;
-    qreal           radius;
-    qreal           f1;
-    qreal           f2;
+    VScaledEllipse* arcCenter;
+    qreal radius;
+    qreal f1;
+    qreal f2;
 };
 
-#endif // VISTOOLARC_H
+#endif   // VISTOOLARC_H

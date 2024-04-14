@@ -53,12 +53,12 @@
 #ifndef DELETE_DRAFTBLOCK_H
 #define DELETE_DRAFTBLOCK_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -66,17 +66,17 @@ class DeleteDraftBlock : public VUndoCommand
 {
     Q_OBJECT
 public:
-                  DeleteDraftBlock(VAbstractPattern *doc, const QString &draftBlockName,
-                                   QUndoCommand *parent = nullptr);
-    virtual      ~DeleteDraftBlock() Q_DECL_OVERRIDE;
-    virtual void  undo() Q_DECL_OVERRIDE;
-    virtual void  redo() Q_DECL_OVERRIDE;
+    DeleteDraftBlock(
+        VAbstractPattern* doc, const QString& draftBlockName, QUndoCommand* parent = nullptr);
+    virtual ~DeleteDraftBlock() Q_DECL_OVERRIDE;
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DeleteDraftBlock)
-    QString       draftBlockName;
-    QDomElement   draftBlock;
-    QString       previousDraftBlockName;
+    QString draftBlockName;
+    QDomElement draftBlock;
+    QString previousDraftBlockName;
 };
 
-#endif // DELETE_DRAFTBLOCK_H
+#endif   // DELETE_DRAFTBLOCK_H

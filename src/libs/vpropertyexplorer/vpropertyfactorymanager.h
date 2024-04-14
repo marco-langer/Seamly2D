@@ -21,14 +21,13 @@
 #ifndef VPROPERTYFACTORYMANAGER_H
 #define VPROPERTYFACTORYMANAGER_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-namespace VPE
-{
+namespace VPE {
 
 class VAbstractPropertyFactory;
 class VProperty;
@@ -51,12 +50,14 @@ public:
 
     //! Removes a factory from the manager.
     //! \param factory The factory to unregister
-    //! \param type The type from which to remove the factory. If this is empty, all the types the factory is registered
-    //! for are being removed
-    //! \param delete_if_unused Determines whether the factory should be deleted, if it not used anymore by this
-    //! manager. Default: true. Otherwise, if the factory is unused by this manager, ownership is being passed on.
-    void unregisterFactory(VAbstractPropertyFactory* factory, const QString& type = QString(),
-                           bool delete_if_unused = true);
+    //! \param type The type from which to remove the factory. If this is empty, all the types the
+    //! factory is registered for are being removed \param delete_if_unused Determines whether the
+    //! factory should be deleted, if it not used anymore by this manager. Default: true. Otherwise,
+    //! if the factory is unused by this manager, ownership is being passed on.
+    void unregisterFactory(
+        VAbstractPropertyFactory* factory,
+        const QString& type = QString(),
+        bool delete_if_unused = true);
 
     //! Returns whether a factory is registered (and thus owned) by this factory manager
     bool isRegistered(VAbstractPropertyFactory* factory);
@@ -72,11 +73,14 @@ public:
     //! \param description The property's description. Optional.
     //! \param default_value The properties initial value as string. Optional.
     //! \return Returns the created property or NULL if it couldn't be be created
-    VProperty* createProperty(const QString& type, const QString& name, const QString& description = QString(),
-                              const QString& default_value = QString());
+    VProperty* createProperty(
+        const QString& type,
+        const QString& name,
+        const QString& description = QString(),
+        const QString& default_value = QString());
 
     //! Returns the default manager.
-    //static VPropertyFactoryManager* getDefaultManager();
+    // static VPropertyFactoryManager* getDefaultManager();
 
     //! Returns a list of all supported property types
     QStringList getSupportedTypes();
@@ -86,10 +90,11 @@ protected:
 
     //! The default manager
     static VPropertyFactoryManager* DefaultManager;
+
 private:
     Q_DISABLE_COPY(VPropertyFactoryManager)
 };
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYFACTORYMANAGER_H
+#endif   // VPROPERTYFACTORYMANAGER_H

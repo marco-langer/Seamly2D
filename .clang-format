@@ -1,0 +1,227 @@
+# everything above clang-format 11 is currently disabled
+---
+Language: Cpp
+BasedOnStyle: GNU
+AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
+# clang-format 13:
+# AlignArrayOfStructures: Right
+AlignConsecutiveAssignments: false
+AlignConsecutiveBitFields: false
+AlignConsecutiveDeclarations: false
+AlignConsecutiveMacros: true
+# clang-format 17:
+#AlignConsecutiveShortCaseStatements:
+#  Enabled: true
+#  AcrossEmptyLines: true
+#  AcrossComments: true
+#  AlignCaseColons: false
+AlignEscapedNewlines: Left
+AlignOperands: AlignAfterOperator
+AlignTrailingComments: true
+# clang-format 16:
+#AlignTrailingComments:
+#  Kind: Always
+#  OverEmptyLines: 2
+AllowAllArgumentsOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true # deprecated
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: true
+# clang-format 18
+#AllowShortCompoundRequirementOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: None # deprecated
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: false
+BinPackParameters: false
+# clang-format 12
+#BitFieldColonSpacing: Both
+BraceWrapping:
+  AfterCaseLabel:  false
+  AfterClass:      false
+  AfterControlStatement: Never
+  AfterEnum:       false
+  AfterFunction:   false
+  AfterNamespace:  false
+  AfterObjCDeclaration: false
+  AfterStruct:     false
+  AfterUnion:      false
+  AfterExternBlock: false
+  BeforeCatch:     false
+  BeforeElse:      false
+  BeforeLambdaBody: false
+  BeforeWhile:     false
+  IndentBraces:    false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
+# clang-format 18:
+#BreakAdjacentStringLiterals: true
+# clang-format 16:
+#BreakAfterAttributes: Leave
+BreakAfterJavaFieldAnnotations: false
+# clang-format 16:
+#BreakArrays: false
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBraces: Mozilla
+# clang-format 12
+#BreakBeforeConceptDeclarations: Always
+BreakBeforeInheritanceComma: false
+BreakBeforeTernaryOperators: true
+BreakInheritanceList: BeforeComma
+BreakConstructorInitializersBeforeComma: true
+BreakConstructorInitializers: BeforeComma
+BreakStringLiterals: true
+ColumnLimit:    100
+CommentPragmas:  '^ IWYU pragma:'
+CompactNamespaces: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: false # deprecated
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: false
+DeriveLineEnding: true # deprecated
+DerivePointerAlignment: false
+DisableFormat: false
+# clang-format 13
+#EmptyLineAfterAccessModifier: Never
+# clang-format 12
+#EmptyLineBeforeAccessModifier: Always
+ExperimentalAutoDetectBinPacking: true
+FixNamespaceComments: true
+ForEachMacros:
+  - foreach
+  - Q_FOREACH
+  - BOOST_FOREACH
+IncludeBlocks:   Preserve
+IncludeCategories:
+  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
+    Priority:        2
+    SortPriority:    0
+  - Regex:           '^(<|"(gtest|gmock|isl|json)/)'
+    Priority:        3
+    SortPriority:    0
+  - Regex:           '.*'
+    Priority:        1
+    SortPriority:    0
+IncludeIsMainRegex: '(Test)?$'
+IncludeIsMainSourceRegex: ''
+# clang-format 13
+#IndentAccessModifiers: false
+IndentCaseBlocks: false
+IndentCaseLabels: false
+IndentExternBlock: AfterExternBlock
+IndentGotoLabels: true
+IndentPPDirectives: AfterHash
+# clang-format 15
+#IndentRequiresClause: true
+IndentWidth: 4
+IndentWrappedFunctionNames: false
+# clang-format 15
+#InsertBraces: true
+# clang-format 16
+#InsertNewlineAtEOF: true
+InsertTrailingCommas: Wrapped
+# clang-format 16
+#IntegerLiteralSeparator
+#  Binary: 4
+#  Decimal: 3
+#  DecimalMinDigits: 5
+#  Hex: 4
+JavaScriptQuotes: Leave
+JavaScriptWrapImports: true
+# clang-format 17
+#KeepEmptyLinesAtEOF: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+# clang-format 13
+#LambdaBodyIndentation: Signature
+# clang-format 16
+#LineEnding: LF
+MacroBlockBegin: ''
+MacroBlockEnd:   ''
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: Inner
+ObjCBinPackProtocolList: Auto
+ObjCBlockIndentWidth: 2
+ObjCBreakBeforeNestedBlockParam: true
+ObjCSpaceAfterProperty: false
+ObjCSpaceBeforeProtocolList: true
+# clang-format 14
+#PackConstructorInitializers: NextLineOnly
+PenaltyBreakAssignment: 2
+PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakComment: 300
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakString: 1000
+PenaltyBreakTemplateDeclaration: 10
+PenaltyExcessCharacter: 1000000
+PenaltyReturnTypeOnItsOwnLine: 60
+PointerAlignment: Left
+# clang-format 14
+#QualifierAlignment: Custom
+#QualifierOrder: ['friend', 'inline', 'static', 'constexpr', 'const', 'type']
+ReflowComments: true
+# clang-format 17
+#RemoveParentheses: true
+# clang-format 16
+#RemoveSemicolon: true
+# clang-format 15
+#RequiresClausePosition: OwnLine
+# clang-format 16
+#RequiresExpressionIndentation: OuterScope
+# clang-format 14
+#SeparateDefinitionBlocks: Always
+# clang-format 13
+#ShortNamespaceLines: 0
+SortIncludes: true
+SortUsingDeclarations: true
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+# clang-format 12
+#SpaceAroundPointerQualifiers: Default
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+# clang-format 17
+#SpaceBeforeJsonColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false # deprecated
+SpacesBeforeTrailingComments: 3
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: false # deprecated
+SpacesInConditionalStatement: false # deprecated
+SpacesInContainerLiterals: true
+# clang-format 13
+#SpacesInLineCommentPrefix:
+#  Minimum: 1
+#  Maximum: 1
+# clang-format 17
+#SpacesInParens: Never
+SpacesInParentheses: false # deprecated
+SpacesInSquareBrackets: false
+Standard: Latest
+# clang-format 12
+#StatementAttributeLikeMacros: ['emit']
+StatementMacros:
+  - Q_UNUSED
+  - QT_REQUIRE_VERSION
+TabWidth: 4
+UseCRLF: false # deprecated
+UseTab: Never
+WhitespaceSensitiveMacros:
+  - STRINGIZE
+  - PP_STRINGIZE
+  - BOOST_PP_STRINGIZE
+...
+

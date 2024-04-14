@@ -56,12 +56,12 @@
 #ifndef VABSTRACTMAINWINDOW_H
 #define VABSTRACTMAINWINDOW_H
 
-#include <qcompilerdetection.h>
+#include <QGraphicsItem>
 #include <QMainWindow>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
-#include <QGraphicsItem>
+#include <qcompilerdetection.h>
 
 class DialogExportToCSV;
 
@@ -69,29 +69,30 @@ class VAbstractMainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit      VAbstractMainWindow(QWidget *parent = nullptr);
-    virtual      ~VAbstractMainWindow() Q_DECL_EQ_DEFAULT;
+    explicit VAbstractMainWindow(QWidget* parent = nullptr);
+    virtual ~VAbstractMainWindow() Q_DECL_EQ_DEFAULT;
 
 public slots:
-    virtual void  ShowToolTip(const QString &toolTip)=0;
-    virtual void  updateGroups()=0;
-    virtual void  zoomToSelected()=0;
+    virtual void ShowToolTip(const QString& toolTip) = 0;
+    virtual void updateGroups() = 0;
+    virtual void zoomToSelected() = 0;
 
 protected slots:
-    void          WindowsLocale();
-    void          exportToCSV(QString &file);
+    void WindowsLocale();
+    void exportToCSV(QString& file);
 
 protected:
-    int           m_curFileFormatVersion;
-    QString       m_curFileFormatVersionStr;
+    int m_curFileFormatVersion;
+    QString m_curFileFormatVersionStr;
 
-    bool          ContinueFormatRewrite(const QString &currentFormatVersion, const QString &maxFormatVersion);
-    void          ToolBarStyle(QToolBar *bar);
+    bool
+    ContinueFormatRewrite(const QString& currentFormatVersion, const QString& maxFormatVersion);
+    void ToolBarStyle(QToolBar* bar);
 
-    virtual void  exportToCSVData(const QString &fileName, const DialogExportToCSV &dialog)=0;
-    
+    virtual void exportToCSVData(const QString& fileName, const DialogExportToCSV& dialog) = 0;
+
 private:
     Q_DISABLE_COPY(VAbstractMainWindow)
 };
 
-#endif // VABSTRACTMAINWINDOW_H
+#endif   // VABSTRACTMAINWINDOW_H

@@ -55,18 +55,17 @@
 
 #include "tst_vmeasurements.h"
 
-#include "../ifc/xml/multi_size_converter.h"
 #include "../ifc/xml/individual_size_converter.h"
+#include "../ifc/xml/multi_size_converter.h"
 #include "../vformat/measurements.h"
 #include "../vpatterndb/pmsystems.h"
 
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_Measurements::TST_Measurements(QObject *parent) :
-    QObject(parent)
-{
-}
+TST_Measurements::TST_Measurements(QObject* parent)
+    : QObject(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -83,17 +82,18 @@ void TST_Measurements::CreateEmptyMultisizeFile()
     VContainer::setSize(size);
 
     QSharedPointer<MeasurementDoc> m =
-            QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, size, height, data.data()));
+        QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, size, height, data.data()));
     m->setSize(VContainer::rsize());
     m->setHeight(VContainer::rheight());
 
     QTemporaryFile file;
     QString fileName;
-    // In Windows we have problems when we try to open QSaveFile when QTemporaryFile with the same name is already open.
-    if (file.open())
-    {
-        // So, before we try to open file in m->SaveDocument function we need to close it and remove.
-        // Just closing - is not enough, if we just close QTemporaryFile we get "access denied" in Windows.
+    // In Windows we have problems when we try to open QSaveFile when QTemporaryFile with the same
+    // name is already open.
+    if (file.open()) {
+        // So, before we try to open file in m->SaveDocument function we need to close it and
+        // remove. Just closing - is not enough, if we just close QTemporaryFile we get "access
+        // denied" in Windows.
         fileName = file.fileName();
         file.close();
         file.remove();
@@ -101,18 +101,13 @@ void TST_Measurements::CreateEmptyMultisizeFile()
         const bool result = m->SaveDocument(fileName, error);
 
         QVERIFY2(result, error.toUtf8().constData());
-    }
-    else
-    {
+    } else {
         QFAIL("Can't open temporary file.");
     }
 
-    try
-    {
+    try {
         VDomDocument::ValidateXML(MultiSizeConverter::CurrentSchema, fileName);
-    }
-    catch (VException &error)
-    {
+    } catch (VException& error) {
         QFAIL(error.ErrorMessage().toUtf8().constData());
     }
 }
@@ -128,12 +123,11 @@ void TST_Measurements::CreateEmptyIndividualFile()
     QSharedPointer<VContainer> data = QSharedPointer<VContainer>(new VContainer(nullptr, &mUnit));
 
     QSharedPointer<MeasurementDoc> m =
-            QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, data.data()));
+        QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, data.data()));
 
     QTemporaryFile file;
     QString fileName;
-    if (file.open())
-    {
+    if (file.open()) {
         fileName = file.fileName();
         file.close();
         file.remove();
@@ -141,26 +135,21 @@ void TST_Measurements::CreateEmptyIndividualFile()
         const bool result = m->SaveDocument(fileName, error);
 
         QVERIFY2(result, error.toUtf8().constData());
-    }
-    else
-    {
+    } else {
         QFAIL("Can't open temporary file.");
     }
 
-    try
-    {
+    try {
         VDomDocument::ValidateXML(IndividualSizeConverter::CurrentSchema, fileName);
-    }
-    catch (VException &error)
-    {
+    } catch (VException& error) {
         QFAIL(error.ErrorMessage().toUtf8().constData());
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
- * @brief ValidPMCodesMultisizeFile helps to check that all current pattern making systems match pattern inside XSD
- * scheme.
+ * @brief ValidPMCodesMultisizeFile helps to check that all current pattern making systems match
+ * pattern inside XSD scheme.
  */
 void TST_Measurements::ValidPMCodesMultisizeFile()
 {
@@ -173,42 +162,37 @@ void TST_Measurements::ValidPMCodesMultisizeFile()
     VContainer::setSize(size);
 
     QSharedPointer<MeasurementDoc> m =
-            QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, size, height, data.data()));
+        QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, size, height, data.data()));
     m->setSize(VContainer::rsize());
     m->setHeight(VContainer::rheight());
 
     const QStringList listSystems = ListPMSystems();
-    for (int i = 0; i < listSystems.size(); ++i)
-    {
+    for (int i = 0; i < listSystems.size(); ++i) {
         QString code = listSystems.at(i);
-        code.remove(0, 1); // remove 'p'
+        code.remove(0, 1);   // remove 'p'
         m->SetPMSystem(code);
 
         QTemporaryFile file;
         QString fileName;
-        if (file.open())
-        {
+        if (file.open()) {
             fileName = file.fileName();
             file.close();
             file.remove();
             QString error;
             const bool result = m->SaveDocument(fileName, error);
 
-            const QString message = QString("Error: %1 for code=%2").arg(error).arg(listSystems.at(i));
+            const QString message =
+                QString("Error: %1 for code=%2").arg(error).arg(listSystems.at(i));
             QVERIFY2(result, qUtf8Printable(message));
-        }
-        else
-        {
+        } else {
             QFAIL("Can't open temporary file.");
         }
 
-        try
-        {
+        try {
             VDomDocument::ValidateXML(MultiSizeConverter::CurrentSchema, fileName);
-        }
-        catch (VException &error)
-        {
-            const QString message = QString("Error: %1 for code=%2").arg(error.ErrorMessage()).arg(listSystems.at(i));
+        } catch (VException& error) {
+            const QString message =
+                QString("Error: %1 for code=%2").arg(error.ErrorMessage()).arg(listSystems.at(i));
             QFAIL(qUtf8Printable(message));
         }
     }
@@ -216,8 +200,8 @@ void TST_Measurements::ValidPMCodesMultisizeFile()
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
- * @brief ValidPMCodesIndividualFile helps to check that all current pattern making systems match pattern inside XSD
- * scheme.
+ * @brief ValidPMCodesIndividualFile helps to check that all current pattern making systems match
+ * pattern inside XSD scheme.
  */
 void TST_Measurements::ValidPMCodesIndividualFile()
 {
@@ -226,40 +210,35 @@ void TST_Measurements::ValidPMCodesIndividualFile()
     QSharedPointer<VContainer> data = QSharedPointer<VContainer>(new VContainer(nullptr, &mUnit));
 
     QSharedPointer<MeasurementDoc> m =
-            QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, data.data()));
+        QSharedPointer<MeasurementDoc>(new MeasurementDoc(mUnit, data.data()));
 
     const QStringList listSystems = ListPMSystems();
-    for (int i = 0; i < listSystems.size(); ++i)
-    {
+    for (int i = 0; i < listSystems.size(); ++i) {
         QString code = listSystems.at(i);
-        code.remove(0, 1); // remove 'p'
+        code.remove(0, 1);   // remove 'p'
         m->SetPMSystem(code);
 
         QTemporaryFile file;
         QString fileName;
-        if (file.open())
-        {
+        if (file.open()) {
             fileName = file.fileName();
             file.close();
             file.remove();
             QString error;
             const bool result = m->SaveDocument(fileName, error);
 
-            const QString message = QString("Error: %1 for code=%2").arg(error).arg(listSystems.at(i));
+            const QString message =
+                QString("Error: %1 for code=%2").arg(error).arg(listSystems.at(i));
             QVERIFY2(result, qUtf8Printable(message));
-        }
-        else
-        {
+        } else {
             QFAIL("Can't open temporary file.");
         }
 
-        try
-        {
+        try {
             VDomDocument::ValidateXML(IndividualSizeConverter::CurrentSchema, fileName);
-        }
-        catch (VException &error)
-        {
-            const QString message = QString("Error: %1 for code=%2").arg(error.ErrorMessage()).arg(listSystems.at(i));
+        } catch (VException& error) {
+            const QString message =
+                QString("Error: %1 for code=%2").arg(error.ErrorMessage()).arg(listSystems.at(i));
             QFAIL(qUtf8Printable(message));
         }
     }

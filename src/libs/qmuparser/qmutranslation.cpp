@@ -11,7 +11,8 @@
  **  The above copyright notice and this permission notice shall be included in all copies or
  **  substantial portions of the Software.
  **
- **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *BUT
  **  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  **  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  **  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -24,15 +25,13 @@
 #include <QByteArray>
 #include <QCoreApplication>
 
-namespace qmu
-{
+namespace qmu {
 
 //---------------------------------------------------------------------------------------------------------------------
-QmuTranslation QmuTranslation::translate(const QString &context, const QString &sourceText,
-                                         const QString &disambiguation, int n)
+QmuTranslation QmuTranslation::translate(
+    const QString& context, const QString& sourceText, const QString& disambiguation, int n)
 {
-    if (n < 0)
-    {
+    if (n < 0) {
         n = -1;
     }
     QmuTranslation t(context, sourceText, disambiguation, n);
@@ -41,19 +40,25 @@ QmuTranslation QmuTranslation::translate(const QString &context, const QString &
 
 //---------------------------------------------------------------------------------------------------------------------
 QmuTranslation::QmuTranslation()
-    :mcontext(QString()), msourceText(QString()), mdisambiguation(QString()), mn(-1)
+    : mcontext(QString())
+    , msourceText(QString())
+    , mdisambiguation(QString())
+    , mn(-1)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-QmuTranslation::QmuTranslation(const QString &context, const QString &sourceText, const QString &disambiguation, int n)
-    :mcontext(context), msourceText(sourceText), mdisambiguation(disambiguation), mn(n)
+QmuTranslation::QmuTranslation(
+    const QString& context, const QString& sourceText, const QString& disambiguation, int n)
+    : mcontext(context)
+    , msourceText(sourceText)
+    , mdisambiguation(disambiguation)
+    , mn(n)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-QmuTranslation &QmuTranslation::operator=(const QmuTranslation &tr)
+QmuTranslation& QmuTranslation::operator=(const QmuTranslation& tr)
 {
-    if ( &tr == this )
-    {
+    if (&tr == this) {
         return *this;
     }
     this->mcontext = tr.getMcontext();
@@ -64,16 +69,21 @@ QmuTranslation &QmuTranslation::operator=(const QmuTranslation &tr)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QmuTranslation::QmuTranslation(const QmuTranslation &tr)
-    :mcontext(tr.getMcontext()), msourceText(tr.getMsourceText()), mdisambiguation(tr.getMdisambiguation()),
-      mn(tr.getN())
+QmuTranslation::QmuTranslation(const QmuTranslation& tr)
+    : mcontext(tr.getMcontext())
+    , msourceText(tr.getMsourceText())
+    , mdisambiguation(tr.getMdisambiguation())
+    , mn(tr.getN())
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
 QString QmuTranslation::translate() const
 {
-    return QCoreApplication::translate(mcontext.toUtf8().constData(), msourceText.toUtf8().constData(),
-                                       mdisambiguation.toUtf8().constData(), mn);
+    return QCoreApplication::translate(
+        mcontext.toUtf8().constData(),
+        msourceText.toUtf8().constData(),
+        mdisambiguation.toUtf8().constData(),
+        mn);
 }
 
-} // namespace qmu
+}   // namespace qmu

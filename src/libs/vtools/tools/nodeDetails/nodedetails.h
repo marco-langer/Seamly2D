@@ -52,12 +52,12 @@
 #ifndef NODEDETAILS_H
 #define NODEDETAILS_H
 
+#include "anchorpoint_tool.h"
 #include "vnodearc.h"
 #include "vnodeellipticalarc.h"
 #include "vnodepoint.h"
 #include "vnodespline.h"
 #include "vnodesplinepath.h"
 #include "vtoolinternalpath.h"
-#include "anchorpoint_tool.h"
 
-#endif // NODEDETAILS_H
+#endif   // NODEDETAILS_H

@@ -54,45 +54,45 @@
  *************************************************************************/
 
 #include "vabstractmainwindow.h"
-#include "../vpropertyexplorer/checkablemessagebox.h"
 #include "../vmisc/vabstractapplication.h"
+#include "../vpropertyexplorer/checkablemessagebox.h"
 #include "dialogs/dialogexporttocsv.h"
 
+#include <QFileDialog>
 #include <QStyle>
 #include <QToolBar>
-#include <QFileDialog>
 
-VAbstractMainWindow::VAbstractMainWindow(QWidget *parent)
-    : QMainWindow(parent),
-      m_curFileFormatVersion(0x0),
-      m_curFileFormatVersionStr(QLatin1String("0.0.0"))
+VAbstractMainWindow::VAbstractMainWindow(QWidget* parent)
+    : QMainWindow(parent)
+    , m_curFileFormatVersion(0x0)
+    , m_curFileFormatVersionStr(QLatin1String("0.0.0"))
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VAbstractMainWindow::ContinueFormatRewrite(const QString &currentFormatVersion,
-                                                const QString &maxFormatVersion)
+bool VAbstractMainWindow::ContinueFormatRewrite(
+    const QString& currentFormatVersion, const QString& maxFormatVersion)
 {
-    if (qApp->Settings()->getConfirmFormatRewriting())
-    {
+    if (qApp->Settings()->getConfirmFormatRewriting()) {
         Utils::CheckableMessageBox msgBox(this);
         msgBox.setWindowTitle(tr("Confirm format rewriting"));
-        msgBox.setText(tr("This file is using previous format version v%1. The current is v%2. "
-                          "Saving the file with this app version will update the format version for this "
-                          "file. This may prevent you from be able to open the file with older app versions. "
-                          "Do you really want to continue?").arg(currentFormatVersion).arg(maxFormatVersion));
+        msgBox.setText(
+            tr("This file is using previous format version v%1. The current is v%2. "
+               "Saving the file with this app version will update the format version for this "
+               "file. This may prevent you from be able to open the file with older app versions. "
+               "Do you really want to continue?")
+                .arg(currentFormatVersion)
+                .arg(maxFormatVersion));
         msgBox.setStandardButtons(QDialogButtonBox::Yes | QDialogButtonBox::No);
         msgBox.setDefaultButton(QDialogButtonBox::No);
-        msgBox.setIconPixmap(QApplication::style()->standardIcon(QStyle::SP_MessageBoxQuestion).pixmap(32, 32));
+        msgBox.setIconPixmap(
+            QApplication::style()->standardIcon(QStyle::SP_MessageBoxQuestion).pixmap(32, 32));
 
         int dialogResult = msgBox.exec();
 
-        if (dialogResult == QDialog::Accepted)
-        {
+        if (dialogResult == QDialog::Accepted) {
             qApp->Settings()->setConfirmFormatRewriting(not msgBox.isChecked());
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -100,15 +100,12 @@ bool VAbstractMainWindow::ContinueFormatRewrite(const QString &currentFormatVers
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractMainWindow::ToolBarStyle(QToolBar *bar)
+void VAbstractMainWindow::ToolBarStyle(QToolBar* bar)
 {
     SCASSERT(bar != nullptr)
-    if (qApp->Settings()->getToolBarStyle())
-    {
+    if (qApp->Settings()->getToolBarStyle()) {
         bar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    }
-    else
-    {
+    } else {
         bar->setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
 }
@@ -120,29 +117,26 @@ void VAbstractMainWindow::WindowsLocale()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractMainWindow::exportToCSV(QString &file)
+void VAbstractMainWindow::exportToCSV(QString& file)
 {
     const QString filters = tr("Comma-Separated Values") + QLatin1String(" (*.csv)");
     const QString suffix("csv");
     const QString path = QDir::homePath() + QLatin1String("/") + file + QLatin1String(".") + suffix;
 
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export to CSV"), path, filters, nullptr,
-                                                    QFileDialog::DontUseNativeDialog);
+    QString fileName = QFileDialog::getSaveFileName(
+        this, tr("Export to CSV"), path, filters, nullptr, QFileDialog::DontUseNativeDialog);
 
-    if (fileName.isEmpty())
-    {
+    if (fileName.isEmpty()) {
         return;
     }
 
-    QFileInfo f( fileName );
-    if (f.suffix().isEmpty() && f.suffix() != suffix)
-    {
+    QFileInfo f(fileName);
+    if (f.suffix().isEmpty() && f.suffix() != suffix) {
         fileName += QLatin1String(".") + suffix;
     }
 
     DialogExportToCSV dialog(this);
-    if (dialog.exec() == QDialog::Accepted)
-    {
+    if (dialog.exec() == QDialog::Accepted) {
         exportToCSVData(fileName, dialog);
 
         qApp->Settings()->SetCSVSeparator(dialog.Separator());

@@ -63,11 +63,11 @@ class TST_BuitInRegExp : public TST_AbstractRegExp
 {
     Q_OBJECT
 public:
-    explicit TST_BuitInRegExp(const QString &locale, QObject *parent = nullptr);
+    explicit TST_BuitInRegExp(const QString& locale, QObject* parent = nullptr);
     virtual ~TST_BuitInRegExp() Q_DECL_EQ_DEFAULT;
 
 protected:
-    virtual void        PrepareData() Q_DECL_OVERRIDE;
+    virtual void PrepareData() Q_DECL_OVERRIDE;
     virtual QStringList AllNames() Q_DECL_OVERRIDE;
 
 private slots:
@@ -91,4 +91,4 @@ private:
     Q_DISABLE_COPY(TST_BuitInRegExp)
 };
 
-#endif // TST_BUITINREGEXP_H
+#endif   // TST_BUITINREGEXP_H

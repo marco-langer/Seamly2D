@@ -55,13 +55,13 @@
 #include <QSharedData>
 #include <QVector>
 
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/def.h"
+#include "../vmisc/diagnostic.h"
+#include "floatItemData/vgrainlinedata.h"
+#include "floatItemData/vpatternlabeldata.h"
+#include "floatItemData/vpiecelabeldata.h"
 #include "vpiecenode.h"
 #include "vpiecepath.h"
-#include "floatItemData/vpiecelabeldata.h"
-#include "floatItemData/vpatternlabeldata.h"
-#include "floatItemData/vgrainlinedata.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -84,7 +84,7 @@ public:
         , m_formulaWidth('0')
     {}
 
-    VPieceData(const VPieceData &piece)
+    VPieceData(const VPieceData& piece)
         : QSharedData(piece)
         , m_path(piece.m_path)
         , m_inLayout(piece.m_inLayout)
@@ -101,25 +101,24 @@ public:
 
     ~VPieceData();
 
-    VPiecePath              m_path;          //! @brief nodes list piece nodes.
-    bool                    m_inLayout;
-    bool                    m_isLocked;
-    bool                    m_united;
+    VPiecePath m_path;   //! @brief nodes list piece nodes.
+    bool m_inLayout;
+    bool m_isLocked;
+    bool m_united;
     QVector<CustomSARecord> m_customSARecords;
-    QVector<quint32>        m_internalPaths;
-    QVector<quint32>        m_anchors;
-    VPieceLabelData         m_ppData;        //! @brief Pattern piece data
-    VPatternLabelData       m_piPatternInfo; //! @brief Pattern info coordinates
-    VGrainlineData          m_glGrainline;   //! @brief m_glGrainline grainline geometry object
-    QString                 m_formulaWidth;
+    QVector<quint32> m_internalPaths;
+    QVector<quint32> m_anchors;
+    VPieceLabelData m_ppData;            //! @brief Pattern piece data
+    VPatternLabelData m_piPatternInfo;   //! @brief Pattern info coordinates
+    VGrainlineData m_glGrainline;        //! @brief m_glGrainline grainline geometry object
+    QString m_formulaWidth;
 
 private:
-    VPieceData              &operator=(const VPieceData &) Q_DECL_EQ_DELETE;
+    VPieceData& operator=(const VPieceData&) Q_DECL_EQ_DELETE;
 };
 
-VPieceData::~VPieceData()
-{}
+VPieceData::~VPieceData() {}
 
 QT_WARNING_POP
 
-#endif // VPIECE_P_H
+#endif   // VPIECE_P_H

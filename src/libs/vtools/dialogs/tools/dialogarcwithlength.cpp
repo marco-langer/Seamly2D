@@ -46,7 +46,6 @@
 
 #include "dialogarcwithlength.h"
 
-#include <limits.h>
 #include <QDialog>
 #include <QLabel>
 #include <QPlainTextEdit>
@@ -55,19 +54,21 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
+#include <limits.h>
 
+#include "../../visualization/path/vistoolarcwithlength.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../support/edit_formula_dialog.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
 #include "../vpatterndb/vtranslatevars.h"
-#include "../../visualization/visualization.h"
-#include "../../visualization/path/vistoolarcwithlength.h"
 
 #include "ui_dialogarcwithlength.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogArcWithLength::DialogArcWithLength(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogArcWithLength::DialogArcWithLength(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogArcWithLength)
     , flagRadius(false)
@@ -91,7 +92,7 @@ DialogArcWithLength::DialogArcWithLength(const VContainer *data, const quint32 &
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowIcon(QIcon(":/toolicon/32x32/arc_with_length.png"));
 
-    m_Id  = data->getId() + 1;
+    m_Id = data->getId() + 1;
 
     plainTextEditFormula = ui->plainTextEditRadius;
     this->formulaBaseHeightLength = ui->plainTextEditRadius->height();
@@ -116,62 +117,77 @@ DialogArcWithLength::DialogArcWithLength(const VContainer *data, const quint32 &
     FillComboBoxPoints(ui->centerPoint_ComboBox);
 
     int index = ui->lineType_ComboBox->findData(LineTypeNone);
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->removeItem(index);
     }
 
     index = ui->lineColor_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineColor());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineColor_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineWeight_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineWeight_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineType_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineType());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->setCurrentIndex(index);
     }
 
     CheckState();
 
     connect(ui->toolButtonExprRadius, &QPushButton::clicked, this, &DialogArcWithLength::FXRadius);
-    connect(ui->toolButtonExprF1,     &QPushButton::clicked, this, &DialogArcWithLength::FXF1);
+    connect(ui->toolButtonExprF1, &QPushButton::clicked, this, &DialogArcWithLength::FXF1);
     connect(ui->toolButtonExprLength, &QPushButton::clicked, this, &DialogArcWithLength::FXLength);
 
-    connect(ui->plainTextEditRadius, &QPlainTextEdit::textChanged, this, &DialogArcWithLength::RadiusChanged);
-    connect(ui->plainTextEditF1,     &QPlainTextEdit::textChanged, this, &DialogArcWithLength::F1Changed);
-    connect(ui->plainTextEditLength, &QPlainTextEdit::textChanged, this, &DialogArcWithLength::LengthChanged);
+    connect(
+        ui->plainTextEditRadius,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogArcWithLength::RadiusChanged);
+    connect(
+        ui->plainTextEditF1, &QPlainTextEdit::textChanged, this, &DialogArcWithLength::F1Changed);
+    connect(
+        ui->plainTextEditLength,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogArcWithLength::LengthChanged);
 
-    connect(ui->pushButtonGrowLengthRadius,    &QPushButton::clicked, this, &DialogArcWithLength::DeployRadiusTextEdit);
-    connect(ui->pushButtonGrowLengthF1,        &QPushButton::clicked, this, &DialogArcWithLength::DeployF1TextEdit);
-    connect(ui->pushButtonGrowLengthArcLength, &QPushButton::clicked, this, &DialogArcWithLength::DeployLengthTextEdit);
+    connect(
+        ui->pushButtonGrowLengthRadius,
+        &QPushButton::clicked,
+        this,
+        &DialogArcWithLength::DeployRadiusTextEdit);
+    connect(
+        ui->pushButtonGrowLengthF1,
+        &QPushButton::clicked,
+        this,
+        &DialogArcWithLength::DeployF1TextEdit);
+    connect(
+        ui->pushButtonGrowLengthArcLength,
+        &QPushButton::clicked,
+        this,
+        &DialogArcWithLength::DeployLengthTextEdit);
 
-    connect(ui->centerPoint_ComboBox, &QComboBox::currentTextChanged, this, &DialogArcWithLength::pointNameChanged);
+    connect(
+        ui->centerPoint_ComboBox,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogArcWithLength::pointNameChanged);
 
     vis = new VisToolArcWithLength(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogArcWithLength::~DialogArcWithLength()
-{
-    delete ui;
-}
+DialogArcWithLength::~DialogArcWithLength() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArc DialogArcWithLength::getArc() const
-{
-    return m_arc;
-}
+VArc DialogArcWithLength::getArc() const { return m_arc; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::setArc(const VArc &arc)
+void DialogArcWithLength::setArc(const VArc& arc)
 {
     m_arc = arc;
     ui->name_LineEdit->setText(qApp->translateVariables()->VarToUser(m_arc.name()));
@@ -184,7 +200,7 @@ quint32 DialogArcWithLength::GetCenter() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::SetCenter(const quint32 &value)
+void DialogArcWithLength::SetCenter(const quint32& value)
 {
     ChangeCurrentData(ui->centerPoint_ComboBox, value);
     vis->setObject1Id(value);
@@ -193,21 +209,21 @@ void DialogArcWithLength::SetCenter(const quint32 &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString DialogArcWithLength::GetRadius() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(radius, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        radius, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::SetRadius(const QString &value)
+void DialogArcWithLength::SetRadius(const QString& value)
 {
     radius = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed.
-    if (radius.length() > 80)
-    {
+    if (radius.length() > 80) {
         this->DeployRadiusTextEdit();
     }
     ui->plainTextEditRadius->setPlainText(radius);
 
-    VisToolArcWithLength *path = qobject_cast<VisToolArcWithLength *>(vis);
+    VisToolArcWithLength* path = qobject_cast<VisToolArcWithLength*>(vis);
     SCASSERT(path != nullptr)
     path->setRadius(radius);
 
@@ -220,17 +236,16 @@ QString DialogArcWithLength::GetF1() const
     return qApp->translateVariables()->TryFormulaFromUser(f1, qApp->Settings()->getOsSeparator());
 }
 
-void DialogArcWithLength::SetF1(const QString &value)
+void DialogArcWithLength::SetF1(const QString& value)
 {
     f1 = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed.
-    if (f1.length() > 80)
-    {
+    if (f1.length() > 80) {
         this->DeployF1TextEdit();
     }
     ui->plainTextEditF1->setPlainText(f1);
 
-    VisToolArcWithLength *path = qobject_cast<VisToolArcWithLength *>(vis);
+    VisToolArcWithLength* path = qobject_cast<VisToolArcWithLength*>(vis);
     SCASSERT(path != nullptr)
     path->setF1(f1);
 
@@ -240,21 +255,21 @@ void DialogArcWithLength::SetF1(const QString &value)
 //---------------------------------------------------------------------------------------------------------------------
 QString DialogArcWithLength::GetLength() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(length, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        length, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::SetLength(const QString &value)
+void DialogArcWithLength::SetLength(const QString& value)
 {
     length = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed.
-    if (length.length() > 80)
-    {
+    if (length.length() > 80) {
         this->DeployLengthTextEdit();
     }
     ui->plainTextEditLength->setPlainText(length);
 
-    VisToolArcWithLength *path = qobject_cast<VisToolArcWithLength *>(vis);
+    VisToolArcWithLength* path = qobject_cast<VisToolArcWithLength*>(vis);
     SCASSERT(path != nullptr)
     path->setLength(radius);
 
@@ -268,7 +283,7 @@ QString DialogArcWithLength::getPenStyle() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::setPenStyle(const QString &value)
+void DialogArcWithLength::setPenStyle(const QString& value)
 {
     ChangeCurrentData(ui->lineType_ComboBox, value);
 }
@@ -280,7 +295,7 @@ void DialogArcWithLength::setPenStyle(const QString &value)
  */
 QString DialogArcWithLength::getLineWeight() const
 {
-        return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
+    return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -288,7 +303,7 @@ QString DialogArcWithLength::getLineWeight() const
  * @brief setLineWeight set weight of the lines
  * @param value type
  */
-void DialogArcWithLength::setLineWeight(const QString &value)
+void DialogArcWithLength::setLineWeight(const QString& value)
 {
     ChangeCurrentData(ui->lineWeight_ComboBox, value);
 }
@@ -300,20 +315,18 @@ QString DialogArcWithLength::getLineColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::setLineColor(const QString &value)
+void DialogArcWithLength::setLineColor(const QString& value)
 {
     ChangeCurrentData(ui->lineColor_ComboBox, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::ChosenObject(quint32 id, const SceneObject &type)
+void DialogArcWithLength::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            if (SetObject(id, ui->centerPoint_ComboBox, ""))
-            {
+        if (type == SceneObject::Point) {
+            if (SetObject(id, ui->centerPoint_ComboBox, "")) {
                 vis->VisualMode(id);
                 prepare = true;
                 this->setModal(true);
@@ -326,7 +339,8 @@ void DialogArcWithLength::ChosenObject(quint32 id, const SceneObject &type)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArcWithLength::DeployRadiusTextEdit()
 {
-    DeployFormula(ui->plainTextEditRadius, ui->pushButtonGrowLengthArcLength, formulaBaseHeightRadius);
+    DeployFormula(
+        ui->plainTextEditRadius, ui->pushButtonGrowLengthArcLength, formulaBaseHeightRadius);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -338,7 +352,8 @@ void DialogArcWithLength::DeployF1TextEdit()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArcWithLength::DeployLengthTextEdit()
 {
-    DeployFormula(ui->plainTextEditLength, ui->pushButtonGrowLengthArcLength, formulaBaseHeightLength);
+    DeployFormula(
+        ui->plainTextEditLength, ui->pushButtonGrowLengthArcLength, formulaBaseHeightLength);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -370,12 +385,11 @@ void DialogArcWithLength::LengthChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArcWithLength::FXRadius()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit radius"));
     dialog->SetFormula(GetRadius());
     dialog->setPostfix(UnitsToStr(qApp->patternUnit(), true));
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetRadius(dialog->GetFormula());
     }
     delete dialog;
@@ -384,12 +398,11 @@ void DialogArcWithLength::FXRadius()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArcWithLength::FXF1()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit the first angle"));
     dialog->SetFormula(GetF1());
     dialog->setPostfix(degreeSymbol);
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetF1(dialog->GetFormula());
     }
     delete dialog;
@@ -398,12 +411,11 @@ void DialogArcWithLength::FXF1()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArcWithLength::FXLength()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit the arc length"));
     dialog->SetFormula(GetLength());
     dialog->setPostfix(UnitsToStr(qApp->patternUnit(), true));
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetLength(dialog->GetFormula());
     }
     delete dialog;
@@ -417,24 +429,22 @@ void DialogArcWithLength::pointNameChanged()
     flagError = true;
     color = okColor;
 
-    if (getCurrentObjectId(ui->centerPoint_ComboBox) == m_arc.GetCenter().id())
-    {
+    if (getCurrentObjectId(ui->centerPoint_ComboBox) == m_arc.GetCenter().id()) {
         newDuplicate = -1;
         ui->name_LineEdit->setText(qApp->translateVariables()->VarToUser(m_arc.name()));
-    }
-    else
-    {
-        VArc arc(*data->GeometricObject<VPointF>(getCurrentObjectId(ui->centerPoint_ComboBox)),
-             GetRadius().toDouble(),
-             GetF1().toDouble(),
-             GetLength().toDouble());
+    } else {
+        VArc arc(
+            *data->GeometricObject<VPointF>(getCurrentObjectId(ui->centerPoint_ComboBox)),
+            GetRadius().toDouble(),
+            GetF1().toDouble(),
+            GetLength().toDouble());
 
-        if (!data->IsUnique(arc.name()))
-        {
+        if (!data->IsUnique(arc.name())) {
             newDuplicate = static_cast<qint32>(DNumber(arc.name()));
             arc.SetDuplicate(static_cast<quint32>(newDuplicate));
         }
-        ui->name_LineEdit->setText(qApp->translateVariables()->VarToUser(arc.name() + "_" + QString().setNum(m_Id)));
+        ui->name_LineEdit->setText(
+            qApp->translateVariables()->VarToUser(arc.name() + "_" + QString().setNum(m_Id)));
     }
 
     ChangeColor(ui->name_Label, color);
@@ -448,17 +458,13 @@ void DialogArcWithLength::CheckState()
     SCASSERT(ok_Button != nullptr)
     ok_Button->setEnabled(flagRadius && flagF1 && flagLength);
     // In case dialog hasn't apply button
-    if (apply_Button != nullptr)
-    {
+    if (apply_Button != nullptr) {
         apply_Button->setEnabled(ok_Button->isEnabled());
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::ShowVisualization()
-{
-    AddVisualization<VisToolArcWithLength>();
-}
+void DialogArcWithLength::ShowVisualization() { AddVisualization<VisToolArcWithLength>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArcWithLength::SaveData()
@@ -472,7 +478,7 @@ void DialogArcWithLength::SaveData()
     length = ui->plainTextEditLength->toPlainText();
     length.replace("\n", " ");
 
-    VisToolArcWithLength *path = qobject_cast<VisToolArcWithLength *>(vis);
+    VisToolArcWithLength* path = qobject_cast<VisToolArcWithLength*>(vis);
     SCASSERT(path != nullptr)
 
     path->setObject1Id(GetCenter());
@@ -483,7 +489,7 @@ void DialogArcWithLength::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogArcWithLength::closeEvent(QCloseEvent *event)
+void DialogArcWithLength::closeEvent(QCloseEvent* event)
 {
     ui->plainTextEditRadius->blockSignals(true);
     ui->plainTextEditF1->blockSignals(true);
@@ -496,10 +502,10 @@ void DialogArcWithLength::Radius()
 {
     labelEditFormula = ui->labelEditRadius;
     const QString postfix = UnitsToStr(qApp->patternUnit(), true);
-    const qreal radius = Eval(ui->plainTextEditRadius->toPlainText(), flagRadius, ui->labelResultRadius, postfix);
+    const qreal radius =
+        Eval(ui->plainTextEditRadius->toPlainText(), flagRadius, ui->labelResultRadius, postfix);
 
-    if (radius < 0)
-    {
+    if (radius < 0) {
         flagRadius = false;
         ChangeColor(labelEditFormula, Qt::red);
         ui->labelResultRadius->setText(tr("Error"));
@@ -514,10 +520,10 @@ void DialogArcWithLength::Length()
 {
     labelEditFormula = ui->labelEditLength;
     const QString postfix = UnitsToStr(qApp->patternUnit(), true);
-    const qreal length = Eval(ui->plainTextEditLength->toPlainText(), flagLength, ui->labelResultLength, postfix);
+    const qreal length =
+        Eval(ui->plainTextEditLength->toPlainText(), flagLength, ui->labelResultLength, postfix);
 
-    if (qFuzzyIsNull(length))
-    {
+    if (qFuzzyIsNull(length)) {
         flagLength = false;
         ChangeColor(labelEditFormula, Qt::red);
         ui->labelResultLength->setText(tr("Error"));
@@ -531,5 +537,6 @@ void DialogArcWithLength::Length()
 void DialogArcWithLength::EvalF()
 {
     labelEditFormula = ui->labelEditF1;
-    angleF1 = Eval(ui->plainTextEditF1->toPlainText(), flagF1, ui->labelResultF1, degreeSymbol, false);
+    angleF1 =
+        Eval(ui->plainTextEditF1->toPlainText(), flagF1, ui->labelResultF1, degreeSymbol, false);
 }

@@ -29,7 +29,6 @@
 #ifndef VDXFENGINE_H
 #define VDXFENGINE_H
 
-#include <qcompilerdetection.h>
 #include <QMatrix>
 #include <QPaintEngine>
 #include <QPointF>
@@ -37,6 +36,7 @@
 #include <QSize>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 #include <string>
 
 #include "../vmisc/def.h"
@@ -53,35 +53,38 @@ class dx_ifaceBlock;
 class VDxfEngine : public QPaintEngine
 {
     friend class VDxfPaintDevice;
+
 public:
     VDxfEngine();
     virtual ~VDxfEngine();
 
-    virtual bool begin(QPaintDevice *pdev) Q_DECL_OVERRIDE;
+    virtual bool begin(QPaintDevice* pdev) Q_DECL_OVERRIDE;
     virtual bool end() Q_DECL_OVERRIDE;
-    virtual void updateState(const QPaintEngineState &state) Q_DECL_OVERRIDE;
-    virtual void drawPath(const QPainterPath &path) Q_DECL_OVERRIDE;
-    virtual void drawLines(const QLineF * lines, int lineCount) Q_DECL_OVERRIDE;
-    virtual void drawLines(const QLine * lines, int lineCount) Q_DECL_OVERRIDE;
-    virtual void drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
-    virtual void drawPolygon(const QPoint *points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
-    virtual void drawEllipse(const QRectF & rect) Q_DECL_OVERRIDE;
-    virtual void drawEllipse(const QRect & rect) Q_DECL_OVERRIDE;
-    virtual void drawTextItem(const QPointF & p, const QTextItem & textItem) Q_DECL_OVERRIDE;
+    virtual void updateState(const QPaintEngineState& state) Q_DECL_OVERRIDE;
+    virtual void drawPath(const QPainterPath& path) Q_DECL_OVERRIDE;
+    virtual void drawLines(const QLineF* lines, int lineCount) Q_DECL_OVERRIDE;
+    virtual void drawLines(const QLine* lines, int lineCount) Q_DECL_OVERRIDE;
+    virtual void
+    drawPolygon(const QPointF* points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
+    virtual void
+    drawPolygon(const QPoint* points, int pointCount, PolygonDrawMode mode) Q_DECL_OVERRIDE;
+    virtual void drawEllipse(const QRectF& rect) Q_DECL_OVERRIDE;
+    virtual void drawEllipse(const QRect& rect) Q_DECL_OVERRIDE;
+    virtual void drawTextItem(const QPointF& p, const QTextItem& textItem) Q_DECL_OVERRIDE;
     virtual Type type() const Q_DECL_OVERRIDE;
-    virtual void drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr) Q_DECL_OVERRIDE;
+    virtual void drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr) Q_DECL_OVERRIDE;
 
     QSize getSize() const;
-    void setSize(const QSize &value);
+    void setSize(const QSize& value);
 
     double getResolution() const;
-    void   setResolution(double value);
+    void setResolution(double value);
 
     QString getFileName() const;
-    void setFileName(const QString &value);
+    void setFileName(const QString& value);
 
     DRW::Version GetVersion() const;
-    void         setVersion(DRW::Version version);
+    void setVersion(DRW::Version version);
 
     void SetBinaryFormat(bool binary);
     bool IsBinaryFormat() const;
@@ -89,40 +92,44 @@ public:
     std::string getPenStyle();
     int getPenColor();
 
-    void setMeasurement(const VarMeasurement &var);
-    void setInsunits(const VarInsunits &var);
+    void setMeasurement(const VarMeasurement& var);
+    void setInsunits(const VarInsunits& var);
 
 private:
     Q_DISABLE_COPY(VDxfEngine)
-    QSize            size;
-    double           resolution;
-    QString          fileName;
-    DRW::Version     m_version;
-    bool             m_binary;
-    QTransform       transform;
+    QSize size;
+    double resolution;
+    QString fileName;
+    DRW::Version m_version;
+    bool m_binary;
+    QTransform transform;
     QSharedPointer<dx_iface> input;
     VarMeasurement varMeasurement;
     VarInsunits varInsunits;
-    DRW_Text *textBuffer;
+    DRW_Text* textBuffer;
 
-    Q_REQUIRED_RESULT double FromPixel(double pix, const VarInsunits &unit) const;
-    Q_REQUIRED_RESULT double ToPixel(double val, const VarInsunits &unit) const;
+    Q_REQUIRED_RESULT double FromPixel(double pix, const VarInsunits& unit) const;
+    Q_REQUIRED_RESULT double ToPixel(double val, const VarInsunits& unit) const;
 
-    bool ExportToAAMA(const QVector<VLayoutPiece> &details);
-    void ExportAAMAOutline(dx_ifaceBlock *detailBlock, const VLayoutPiece &detail);
-    void ExportAAMADraw(dx_ifaceBlock *detailBlock, const VLayoutPiece &detail);
-    void ExportAAMAIntcut(dx_ifaceBlock *detailBlock, const VLayoutPiece &detail);
-    void ExportAAMANotch(dx_ifaceBlock *detailBlock, const VLayoutPiece &detail);
-    void ExportAAMAGrainline(dx_ifaceBlock *detailBlock, const VLayoutPiece &detail);
-    void ExportAAMAText(dx_ifaceBlock *detailBlock, const VLayoutPiece &detail);
-    void ExportAAMAGlobalText(const QSharedPointer<dx_iface> &input, const QVector<VLayoutPiece> &details);
+    bool ExportToAAMA(const QVector<VLayoutPiece>& details);
+    void ExportAAMAOutline(dx_ifaceBlock* detailBlock, const VLayoutPiece& detail);
+    void ExportAAMADraw(dx_ifaceBlock* detailBlock, const VLayoutPiece& detail);
+    void ExportAAMAIntcut(dx_ifaceBlock* detailBlock, const VLayoutPiece& detail);
+    void ExportAAMANotch(dx_ifaceBlock* detailBlock, const VLayoutPiece& detail);
+    void ExportAAMAGrainline(dx_ifaceBlock* detailBlock, const VLayoutPiece& detail);
+    void ExportAAMAText(dx_ifaceBlock* detailBlock, const VLayoutPiece& detail);
+    void ExportAAMAGlobalText(
+        const QSharedPointer<dx_iface>& input, const QVector<VLayoutPiece>& details);
 
-    Q_REQUIRED_RESULT DRW_Entity *AAMAPolygon(const QVector<QPointF> &polygon, const QString &layer, bool forceClosed);
-    Q_REQUIRED_RESULT DRW_Entity *AAMALine(const QLineF &line, const QString &layer);
-    Q_REQUIRED_RESULT DRW_Entity *AAMAText(const QPointF &pos, const QString &text, const QString &layer);
+    Q_REQUIRED_RESULT DRW_Entity*
+    AAMAPolygon(const QVector<QPointF>& polygon, const QString& layer, bool forceClosed);
+    Q_REQUIRED_RESULT DRW_Entity* AAMALine(const QLineF& line, const QString& layer);
+    Q_REQUIRED_RESULT DRW_Entity*
+    AAMAText(const QPointF& pos, const QString& text, const QString& layer);
 
-    template<class P, class V>
-    Q_REQUIRED_RESULT P *CreateAAMAPolygon(const QVector<QPointF> &polygon, const QString &layer, bool forceClosed);
+    template <class P, class V>
+    Q_REQUIRED_RESULT P*
+    CreateAAMAPolygon(const QVector<QPointF>& polygon, const QString& layer, bool forceClosed);
 };
 
-#endif // VDXFENGINE_H
+#endif   // VDXFENGINE_H

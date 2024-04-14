@@ -29,29 +29,38 @@
 
 class QGraphicsScene;
 
-enum class ShowDoublePoint: qint8 { FirstPoint, SecondPoint };
+enum class ShowDoublePoint : qint8
+{
+    FirstPoint,
+    SecondPoint
+};
 
 class ShowDoublePointName : public VUndoCommand
 {
     Q_OBJECT
 public:
-                     ShowDoublePointName(VAbstractPattern *doc, quint32 toolId, quint32 pointId, bool visible,
-                                         ShowDoublePoint type, QUndoCommand *parent = nullptr);
-    virtual         ~ShowDoublePointName()=default;
+    ShowDoublePointName(
+        VAbstractPattern* doc,
+        quint32 toolId,
+        quint32 pointId,
+        bool visible,
+        ShowDoublePoint type,
+        QUndoCommand* parent = nullptr);
+    virtual ~ShowDoublePointName() = default;
 
-    virtual void     undo() override;
-    virtual void     redo() override;
+    virtual void undo() override;
+    virtual void redo() override;
 
 private:
     Q_DISABLE_COPY(ShowDoublePointName)
-    bool             m_visible;
-    bool             m_oldVisible;
-    //Need for resizing scene rect
-    QGraphicsScene  *m_scene;
-    ShowDoublePoint  m_type;
-    quint32          m_idTool;
+    bool m_visible;
+    bool m_oldVisible;
+    // Need for resizing scene rect
+    QGraphicsScene* m_scene;
+    ShowDoublePoint m_type;
+    quint32 m_idTool;
 
-    void             setVisibility(bool visible);
+    void setVisibility(bool visible);
 };
 
-#endif // ShowDoublePointName_H
+#endif   // ShowDoublePointName_H

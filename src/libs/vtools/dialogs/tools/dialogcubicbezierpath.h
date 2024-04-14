@@ -52,21 +52,20 @@
 #ifndef DIALOGCUBICBEZIERPATH_H
 #define DIALOGCUBICBEZIERPATH_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QSet>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vgeometry/vcubicbezierpath.h"
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogCubicBezierPath;
+namespace Ui {
+class DialogCubicBezierPath;
 }
 
 class DialogCubicBezierPath : public DialogTool
@@ -74,49 +73,50 @@ class DialogCubicBezierPath : public DialogTool
     Q_OBJECT
 
 public:
-    explicit         DialogCubicBezierPath(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
-    virtual         ~DialogCubicBezierPath();
+    explicit DialogCubicBezierPath(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    virtual ~DialogCubicBezierPath();
 
     VCubicBezierPath GetPath() const;
-    void             SetPath(const VCubicBezierPath &value);
+    void SetPath(const VCubicBezierPath& value);
 
-    QString          getPenStyle() const;
-    void             setPenStyle(const QString &value);
+    QString getPenStyle() const;
+    void setPenStyle(const QString& value);
 
-    QString          getLineWeight() const;
-    void             setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString          getLineColor() const;
-    void             setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
 
 public slots:
-    virtual void     ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void     ShowDialog(bool click) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void     ShowVisualization() Q_DECL_OVERRIDE;
-    virtual void     SaveData() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
 
 private slots:
-    void             PointChanged(int row);
-    void             currentPointChanged(int index);
+    void PointChanged(int row);
+    void currentPointChanged(int index);
 
 private:
     Q_DISABLE_COPY(DialogCubicBezierPath)
-    Ui::DialogCubicBezierPath *ui;
+    Ui::DialogCubicBezierPath* ui;
 
     /** @brief path cubic bezier path */
     VCubicBezierPath path;
 
-    qint32           newDuplicate;
+    qint32 newDuplicate;
 
-    void             NewItem(const VPointF &point);
-    void             DataPoint(const VPointF &p);
-    void             SavePath();
-    QSet<quint32>    AllPathBackboneIds() const;
-    bool             IsPathValid() const;
+    void NewItem(const VPointF& point);
+    void DataPoint(const VPointF& p);
+    void SavePath();
+    QSet<quint32> AllPathBackboneIds() const;
+    bool IsPathValid() const;
     VCubicBezierPath ExtractPath() const;
 };
 
-#endif // DIALOGCUBICBEZIERPATH_H
+#endif   // DIALOGCUBICBEZIERPATH_H

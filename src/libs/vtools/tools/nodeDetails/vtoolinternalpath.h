@@ -58,50 +58,76 @@
 
 class DialogTool;
 
-class VToolInternalPath : public VAbstractNode, public QGraphicsPathItem
+class VToolInternalPath
+    : public VAbstractNode
+    , public QGraphicsPathItem
 {
     Q_OBJECT
 public:
-    static VToolInternalPath *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene, VAbstractPattern *doc,
-                                  VContainer *data);
-    static VToolInternalPath *Create(quint32 _id, const VPiecePath &path, quint32 pieceId, VMainGraphicsScene *scene,
-                                  VAbstractPattern *doc, VContainer *data, const Document &parse,
-                                  const Source &typeCreation, const QString &blockName = QString(),
-                                  const quint32 &idTool = 0);
+    static VToolInternalPath* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static VToolInternalPath* Create(
+        quint32 _id,
+        const VPiecePath& path,
+        quint32 pieceId,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::InternalPath)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::InternalPath)
+    };
     virtual QString getTagName() const Q_DECL_OVERRIDE;
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                       QWidget *widget = nullptr) Q_DECL_OVERRIDE;
+    virtual void
+    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        Q_DECL_OVERRIDE;
 
     virtual void incrementReferens() Q_DECL_OVERRIDE;
     virtual void decrementReferens() Q_DECL_OVERRIDE;
 
-    static void AddAttributes(VAbstractPattern *doc, QDomElement &domElement, quint32 id, const VPiecePath &path);
+    static void AddAttributes(
+        VAbstractPattern* doc, QDomElement& domElement, quint32 id, const VPiecePath& path);
 public slots:
-    virtual void FullUpdateFromFile () Q_DECL_OVERRIDE;
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
     virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
     virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+
 protected:
     virtual void AddToFile() Q_DECL_OVERRIDE;
     virtual void ShowNode() Q_DECL_OVERRIDE;
     virtual void HideNode() Q_DECL_OVERRIDE;
-    virtual void ToolCreation(const Source &typeCreation) Q_DECL_OVERRIDE;
+    virtual void ToolCreation(const Source& typeCreation) Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(VToolInternalPath)
 
     quint32 m_pieceId;
 
-    VToolInternalPath(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 pieceId,  const Source &typeCreation,
-                   const QString &blockName = QString(), const quint32 &idTool = 0, QObject *qoParent = nullptr,
-                   QGraphicsItem * parent = nullptr );
+    VToolInternalPath(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 pieceId,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0,
+        QObject* qoParent = nullptr,
+        QGraphicsItem* parent = nullptr);
 
     void RefreshGeometry();
 
-    void IncrementNodes(const VPiecePath &path) const;
-    void DecrementNodes(const VPiecePath &path) const;
+    void IncrementNodes(const VPiecePath& path) const;
+    void DecrementNodes(const VPiecePath& path) const;
 };
 
-#endif // VTOOLINTERNALPATH_H
+#endif   // VTOOLINTERNALPATH_H

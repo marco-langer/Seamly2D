@@ -60,21 +60,27 @@
 class VCurvePathItem : public QGraphicsPathItem
 {
 public:
-    explicit VCurvePathItem(QGraphicsItem *parent = nullptr);
+    explicit VCurvePathItem(QGraphicsItem* parent = nullptr);
     virtual ~VCurvePathItem() = default;
 
     virtual QPainterPath shape() const Q_DECL_OVERRIDE;
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                       QWidget *widget = nullptr) Q_DECL_OVERRIDE;
+    virtual void
+    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        Q_DECL_OVERRIDE;
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::CurvePathItem)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::CurvePathItem)
+    };
 
-    void SetDirectionArrows(const QVector<QPair<QLineF, QLineF>> &arrows);
-    void SetPoints(const QVector<QPointF> &points);
+    void SetDirectionArrows(const QVector<QPair<QLineF, QLineF>>& arrows);
+    void SetPoints(const QVector<QPointF>& points);
+
 protected:
     virtual void ScalePenWidth();
+
 private:
     Q_DISABLE_COPY(VCurvePathItem)
 
@@ -82,4 +88,4 @@ private:
     QVector<QPointF> m_points;
 };
 
-#endif // VCURVEPATHITEM_H
+#endif   // VCURVEPATHITEM_H

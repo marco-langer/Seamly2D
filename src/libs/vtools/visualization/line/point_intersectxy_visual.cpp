@@ -31,11 +31,11 @@
 
 #include "point_intersectxy_visual.h"
 
-#include "visline.h"
-#include "../visualization.h"
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
+#include "../visualization.h"
 #include "../vpatterndb/vcontainer.h"
+#include "visline.h"
 
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
@@ -46,7 +46,7 @@
 #include <new>
 
 //---------------------------------------------------------------------------------------------------------------------
-PointIntersectXYVisual::PointIntersectXYVisual(const VContainer *data, QGraphicsItem *parent)
+PointIntersectXYVisual::PointIntersectXYVisual(const VContainer* data, QGraphicsItem* parent)
     : VisLine(data, parent)
     , point2Id(NULL_ID)
     , point(nullptr)
@@ -55,37 +55,33 @@ PointIntersectXYVisual::PointIntersectXYVisual(const VContainer *data, QGraphics
     , axis2(nullptr)
 {
     axisP1 = InitPoint(supportColor, this);
-    axisP2 = InitPoint(supportColor, this); //-V656
-    axis2  = InitItem<VScaledLine>(supportColor, this);
-    point  = InitPoint(mainColor, this);
+    axisP2 = InitPoint(supportColor, this);   //-V656
+    axis2 = InitItem<VScaledLine>(supportColor, this);
+    point = InitPoint(mainColor, this);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void PointIntersectXYVisual::RefreshGeometry()
 {
     QLineF axisL1;
-    if (object1Id <= NULL_ID)
-    {
+    if (object1Id <= NULL_ID) {
         axisL1 = Axis(Visualization::scenePos, 90);
         DrawLine(this, axisL1, supportColor, lineWeight, Qt::DashLine);
-    }
-    else
-    {
-        const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
+    } else {
+        const QSharedPointer<VPointF> first =
+            Visualization::data->GeometricObject<VPointF>(object1Id);
         DrawPoint(axisP1, static_cast<QPointF>(*first), supportColor);
 
         axisL1 = Axis(static_cast<QPointF>(*first), 90);
         DrawLine(this, axisL1, supportColor, lineWeight, Qt::DashLine);
 
         QLineF axisL2;
-        if (point2Id <= NULL_ID)
-        {
+        if (point2Id <= NULL_ID) {
             axisL2 = Axis(Visualization::scenePos, 180);
             showIntersection(axisL1, axisL2, supportColor);
-        }
-        else
-        {
-            const QSharedPointer<VPointF> second = Visualization::data->GeometricObject<VPointF>(point2Id);
+        } else {
+            const QSharedPointer<VPointF> second =
+                Visualization::data->GeometricObject<VPointF>(point2Id);
             DrawPoint(axisP2, static_cast<QPointF>(*second), supportColor);
             axisL2 = Axis(static_cast<QPointF>(*second), 180);
             showIntersection(axisL1, axisL2, mainColor);
@@ -95,29 +91,21 @@ void PointIntersectXYVisual::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYVisual::setPoint1Id(const quint32 &value)
-{
-    object1Id = value;
-}
+void PointIntersectXYVisual::setPoint1Id(const quint32& value) { object1Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYVisual::setPoint2Id(const quint32 &value)
-{
-    point2Id = value;
-}
+void PointIntersectXYVisual::setPoint2Id(const quint32& value) { point2Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYVisual::showIntersection(const QLineF &axis1, const QLineF &axis2, const QColor &color)
+void PointIntersectXYVisual::showIntersection(
+    const QLineF& axis1, const QLineF& axis2, const QColor& color)
 {
     QPointF p;
     QLineF::IntersectType intersect = axis1.intersects(axis2, &p);
-    if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection)
-    {
+    if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection) {
         point->setVisible(true);
         DrawPoint(point, p, color);
-    }
-    else
-    {
+    } else {
         point->setVisible(false);
     }
 }

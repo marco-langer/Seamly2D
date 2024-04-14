@@ -43,57 +43,56 @@
 #include "../vpatterndb/vcontainer.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisLine::VisLine(const VContainer *data, QGraphicsItem *parent)
-    :Visualization(data), VScaledLine(parent)
+VisLine::VisLine(const VContainer* data, QGraphicsItem* parent)
+    : Visualization(data)
+    , VScaledLine(parent)
 {
-    this->setZValue(1);// Show on top real tool
+    this->setZValue(1);   // Show on top real tool
     initPen();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VisLine::CorrectAngle(const qreal &angle)
+qreal VisLine::CorrectAngle(const qreal& angle)
 {
     qreal ang = angle;
-    if (angle > 360)
-    {
-        ang = angle - 360.0 * qFloor(angle/360);
+    if (angle > 360) {
+        ang = angle - 360.0 * qFloor(angle / 360);
     }
 
-    switch (qFloor((qAbs(ang)+22.5)/45))
-    {
-        case 1: // <67.5
-            return 45;
-        case 2: // <112.5
-            return 90;
-        case 3: // <157.5
-            return 135;
-        case 4: // <202.5
-            return 180;
-        case 5: // <247.5
-            return 225;
-        case 6: // < 292.5
-            return 270;
-        case 7: // <337.5
-            return 315;
-        case 0: // <22.5
-        default: // <360
-            return 0;
+    switch (qFloor((qAbs(ang) + 22.5) / 45)) {
+    case 1:   // <67.5
+        return 45;
+    case 2:   // <112.5
+        return 90;
+    case 3:   // <157.5
+        return 135;
+    case 4:   // <202.5
+        return 180;
+    case 5:   // <247.5
+        return 225;
+    case 6:   // < 292.5
+        return 270;
+    case 7:   // <337.5
+        return 315;
+    case 0:    // <22.5
+    default:   // <360
+        return 0;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VisLine::Ray(const QPointF &firstPoint, const qreal &angle) const
+QPointF VisLine::Ray(const QPointF& firstPoint, const qreal& angle) const
 {
-    if (this->scene() == nullptr)
-    {
+    if (this->scene() == nullptr) {
         QLineF line = QLineF(firstPoint, Visualization::scenePos);
         line.setAngle(angle);
-        return line.p2();// We can't find ray because item doesn't have scene. We will return cursor position on scene.
+        return line.p2();   // We can't find ray because item doesn't have scene. We will return
+                            // cursor position on scene.
     }
 
     QRectF scRect = this->scene()->sceneRect();
 
-    //Limit size of the scene rect. Axis that has same size as scene rect cause scene size growth.
+    // Limit size of the scene rect. Axis that has same size as scene rect cause scene size growth.
     QLineF line1 = QLineF(scRect.topLeft(), scRect.bottomRight());
     line1.setLength(2);
 
@@ -102,33 +101,30 @@ QPointF VisLine::Ray(const QPointF &firstPoint, const qreal &angle) const
 
     scRect = QRectF(line1.p2(), line2.p2());
 
-    if (QGuiApplication::keyboardModifiers() == Qt::ShiftModifier)
-    {
+    if (QGuiApplication::keyboardModifiers() == Qt::ShiftModifier) {
         return VGObject::BuildRay(firstPoint, CorrectAngle(angle), scRect);
-    }
-    else
-    {
+    } else {
         return VGObject::BuildRay(firstPoint, angle, scRect);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VisLine::Ray(const QPointF &firstPoint) const
+QPointF VisLine::Ray(const QPointF& firstPoint) const
 {
     QLineF line = QLineF(firstPoint, Visualization::scenePos);
     return Ray(firstPoint, line.angle());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QLineF VisLine::Axis(const QPointF &p, const qreal &angle) const
+QLineF VisLine::Axis(const QPointF& p, const qreal& angle) const
 {
-    QPointF endP1 = Ray(p, angle+180);
+    QPointF endP1 = Ray(p, angle + 180);
     QPointF endP2 = Ray(p, angle);
     return QLineF(endP1, endP2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QLineF VisLine::Axis(const QPointF &p1, const QPointF &p2) const
+QLineF VisLine::Axis(const QPointF& p1, const QPointF& p2) const
 {
     QLineF line(p1, p2);
     return Axis(p1, line.angle());
@@ -146,16 +142,17 @@ void VisLine::initPen()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisLine::AddOnScene()
-{
-    addItem(this);
-}
+void VisLine::AddOnScene() { addItem(this); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisLine::DrawRay(VScaledLine *lineItem, const QPointF &p, const QPointF &pTangent, const QColor &color,
-                      Qt::PenStyle style)
+void VisLine::DrawRay(
+    VScaledLine* lineItem,
+    const QPointF& p,
+    const QPointF& pTangent,
+    const QColor& color,
+    Qt::PenStyle style)
 {
-    SCASSERT (lineItem != nullptr)
+    SCASSERT(lineItem != nullptr)
 
     const qreal angle = QLineF(p, pTangent).angle();
     const QPointF endRay = Ray(p, angle);

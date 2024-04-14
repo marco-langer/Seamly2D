@@ -64,32 +64,37 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VLengthLineData : public QSharedData
 {
 public:
-
     VLengthLineData()
-        :p1Id(NULL_ID), p2Id(NULL_ID), patternUnit(Unit::Cm)
+        : p1Id(NULL_ID)
+        , p2Id(NULL_ID)
+        , patternUnit(Unit::Cm)
     {}
 
-    VLengthLineData(const quint32 &p1Id, const quint32 &p2Id, Unit patternUnit)
-        :p1Id(p1Id), p2Id(p2Id), patternUnit(patternUnit)
+    VLengthLineData(const quint32& p1Id, const quint32& p2Id, Unit patternUnit)
+        : p1Id(p1Id)
+        , p2Id(p2Id)
+        , patternUnit(patternUnit)
     {}
 
-    VLengthLineData(const VLengthLineData &var)
-        :QSharedData(var), p1Id(var.p1Id), p2Id(var.p2Id), patternUnit(var.patternUnit)
+    VLengthLineData(const VLengthLineData& var)
+        : QSharedData(var)
+        , p1Id(var.p1Id)
+        , p2Id(var.p2Id)
+        , patternUnit(var.patternUnit)
     {}
 
-    virtual  ~VLengthLineData();
+    virtual ~VLengthLineData();
 
     quint32 p1Id;
     quint32 p2Id;
-    Unit    patternUnit;
+    Unit patternUnit;
 
 private:
-    VLengthLineData &operator=(const VLengthLineData &) Q_DECL_EQ_DELETE;
+    VLengthLineData& operator=(const VLengthLineData&) Q_DECL_EQ_DELETE;
 };
 
-VLengthLineData::~VLengthLineData()
-{}
+VLengthLineData::~VLengthLineData() {}
 
 QT_WARNING_POP
 
-#endif // VLINELENGTH_P_H
+#endif   // VLINELENGTH_P_H

@@ -61,26 +61,32 @@
 class VBestSquare
 {
 public:
-    VBestSquare(const QSizeF &sheetSize, bool saveLength);
+    VBestSquare(const QSizeF& sheetSize, bool saveLength);
 
-    void NewResult(const QSizeF &candidate, int i, int j, const QTransform &transform, bool mirror, BestFrom type);
-    void NewResult(const VBestSquare &best);
+    void NewResult(
+        const QSizeF& candidate,
+        int i,
+        int j,
+        const QTransform& transform,
+        bool mirror,
+        BestFrom type);
+    void NewResult(const VBestSquare& best);
 
-    QSizeF     BestSize() const;
-    int        GContourEdge() const;
-    int        pieceEdge() const;
+    QSizeF BestSize() const;
+    int GContourEdge() const;
+    int pieceEdge() const;
     QTransform Transform() const;
-    bool       ValidResult() const;
-    bool       isMirror() const;
-    BestFrom   Type() const;
+    bool ValidResult() const;
+    bool isMirror() const;
+    BestFrom Type() const;
 
     bool IsSaveLength() const;
 
 private:
     // All nedded information about best result
-    int resI; // Edge of global contour
-    int resJ; // Edge of detail
-    QTransform resTransform; // Transform for rotation and translation detail
+    int resI;                  // Edge of global contour
+    int resJ;                  // Edge of detail
+    QTransform resTransform;   // Transform for rotation and translation detail
     QSizeF bestSize;
     qreal sheetWidth;
     bool valideResult;
@@ -88,7 +94,7 @@ private:
     BestFrom type;
     bool saveLength;
 
-    static qint64 Square(const QSizeF &size);
+    static qint64 Square(const QSizeF& size);
 };
 
-#endif // VBESTSQUARE_H
+#endif   // VBESTSQUARE_H

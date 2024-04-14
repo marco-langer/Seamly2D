@@ -47,18 +47,17 @@
 #ifndef DIALOGLINE_H
 #define DIALOGLINE_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogLine;
+namespace Ui {
+class DialogLine;
 }
 
 /**
@@ -68,42 +67,42 @@ class DialogLine : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogLine(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogLine(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogLine() Q_DECL_OVERRIDE;
 
-    quint32        getFirstPoint() const;
-    void           setFirstPoint(const quint32 &value);
+    quint32 getFirstPoint() const;
+    void setFirstPoint(const quint32& value);
 
-    quint32        getSecondPoint() const;
-    void           setSecondPoint(const quint32 &value);
+    quint32 getSecondPoint() const;
+    void setSecondPoint(const quint32& value);
 
-    void           setLineName();
+    void setLineName();
 
-    QString        getLineType() const;
-    void           setLineType(const QString &value);
+    QString getLineType() const;
+    void setLineType(const QString& value);
 
-    QString        getLineWeight() const;
-    void           setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString        getLineColor() const;
-    void           setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
 public slots:
-    virtual void   ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void   PointNameChanged() Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
 
 protected:
-    virtual void   ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void   SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogLine)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogLine *ui;
+    Ui::DialogLine* ui;
 };
 
-#endif // DIALOGLINE_H
+#endif   // DIALOGLINE_H

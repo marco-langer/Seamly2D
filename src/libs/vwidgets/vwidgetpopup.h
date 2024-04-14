@@ -78,12 +78,12 @@ public:
         If \a parent not specified (default), then popup widget gets
         attribute Qt::WA_DeleteOnClose and will be deleted after close.
       */
-    explicit VWidgetPopup(QWidget *parent = nullptr);
+    explicit VWidgetPopup(QWidget* parent = nullptr);
 
     /** Sets widget to be popped up to \a widget.
         If \a own is true then the widget will be reparented to the popup widget.
       */
-    void SetWidget(QWidget *widget, bool own = true);
+    void SetWidget(QWidget* widget, bool own = true);
 
     /** Returns widget to be popped up. */
     QWidget* Widget() const;
@@ -94,7 +94,7 @@ public:
     int GetLifeTime() const;
     void SetLifeTime(int value);
 
-    static void PopupMessage(QWidget *w, const QString &msg);
+    static void PopupMessage(QWidget* w, const QString& msg);
 
 public slots:
     /** Pops up the widget at global coordinates \a coord. */
@@ -102,34 +102,22 @@ public slots:
 
 protected:
     Q_DISABLE_COPY(VWidgetPopup)
-    QWidget *mWidget;
+    QWidget* mWidget;
     bool mOwn;
-    QWidget *mOldParent;
+    QWidget* mOldParent;
     int lifeTime;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QWidget *VWidgetPopup::Widget() const
-{
-    return mWidget;
-}
+inline QWidget* VWidgetPopup::Widget() const { return mWidget; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline bool VWidgetPopup::isOwned() const
-{
-    return mOwn;
-}
+inline bool VWidgetPopup::isOwned() const { return mOwn; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline int VWidgetPopup::GetLifeTime() const
-{
-    return lifeTime;
-}
+inline int VWidgetPopup::GetLifeTime() const { return lifeTime; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline void VWidgetPopup::SetLifeTime(int value)
-{
-    lifeTime = value;
-}
+inline void VWidgetPopup::SetLifeTime(int value) { lifeTime = value; }
 
-#endif // VWIDGETPOPUP_H
+#endif   // VWIDGETPOPUP_H

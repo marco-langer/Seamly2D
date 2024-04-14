@@ -53,15 +53,15 @@
 #ifndef VLAYOUTDETAIL_P_H
 #define VLAYOUTDETAIL_P_H
 
-#include <QSharedData>
 #include <QPointF>
-#include <QVector>
+#include <QSharedData>
 #include <QTransform>
+#include <QVector>
 
-#include "../vpatterndb/floatItemData/vpiecelabeldata.h"
-#include "../vpatterndb/floatItemData/vpatternlabeldata.h"
-#include "../vpatterndb/floatItemData/vgrainlinedata.h"
 #include "../vmisc/diagnostic.h"
+#include "../vpatterndb/floatItemData/vgrainlinedata.h"
+#include "../vpatterndb/floatItemData/vpatternlabeldata.h"
+#include "../vpatterndb/floatItemData/vpiecelabeldata.h"
 #include "vlayoutpiecepath.h"
 
 #include "vtextmanager.h"
@@ -74,61 +74,62 @@ class VLayoutPieceData : public QSharedData
 {
 public:
     VLayoutPieceData()
-        : contour(),
-          seamAllowance(),
-          layoutAllowance(),
-          notches(),
-          m_internalPaths(),
-          m_cutoutPaths(),
-          transform(),
-          layoutWidth(0),
-          mirror(false),
-          pieceLabel(),
-          patternInfo(),
-          grainlinePoints(),
-          m_tmPiece(),
-          m_tmPattern()
+        : contour()
+        , seamAllowance()
+        , layoutAllowance()
+        , notches()
+        , m_internalPaths()
+        , m_cutoutPaths()
+        , transform()
+        , layoutWidth(0)
+        , mirror(false)
+        , pieceLabel()
+        , patternInfo()
+        , grainlinePoints()
+        , m_tmPiece()
+        , m_tmPattern()
     {}
 
-    VLayoutPieceData(const VLayoutPieceData &piece)
-        : QSharedData(piece),
-          contour(piece.contour),
-          seamAllowance(piece.seamAllowance),
-          layoutAllowance(piece.layoutAllowance),
-          notches(piece.notches),
-          m_internalPaths(piece.m_internalPaths),
-          m_cutoutPaths(piece.m_cutoutPaths),
-          transform(piece.transform),
-          layoutWidth(piece.layoutWidth),
-          mirror(piece.mirror),
-          pieceLabel(piece.pieceLabel),
-          patternInfo(piece.patternInfo),
-          grainlinePoints(piece.grainlinePoints),
-          m_tmPiece(piece.m_tmPiece),
-          m_tmPattern(piece.m_tmPattern)
+    VLayoutPieceData(const VLayoutPieceData& piece)
+        : QSharedData(piece)
+        , contour(piece.contour)
+        , seamAllowance(piece.seamAllowance)
+        , layoutAllowance(piece.layoutAllowance)
+        , notches(piece.notches)
+        , m_internalPaths(piece.m_internalPaths)
+        , m_cutoutPaths(piece.m_cutoutPaths)
+        , transform(piece.transform)
+        , layoutWidth(piece.layoutWidth)
+        , mirror(piece.mirror)
+        , pieceLabel(piece.pieceLabel)
+        , patternInfo(piece.patternInfo)
+        , grainlinePoints(piece.grainlinePoints)
+        , m_tmPiece(piece.m_tmPiece)
+        , m_tmPattern(piece.m_tmPattern)
     {}
 
     ~VLayoutPieceData() {}
 
-    QVector<QPointF>           contour;            //! @brief contour list of contour points.
-    QVector<QPointF>           seamAllowance;      //! @brief seamAllowance list of seam allowance points.
-    QVector<QPointF>           layoutAllowance;    //! @brief layoutAllowance list of layout allowance points.
-    QVector<QLineF>            notches;            //! @brief notches list of notches.
-    QVector<VLayoutPiecePath>  m_internalPaths;    //! @brief m_internalPaths list of internal paths.
-    QVector<VLayoutPiecePath>  m_cutoutPaths;      //! @brief m_cutoutPaths list of internal cutout paths.
-    QTransform                 transform;          //! @brief transform transformation transform
-    qreal                      layoutWidth;        //! @brief layoutWidth value layout allowance width in pixels.
-    bool                       mirror;
-    QVector<QPointF>           pieceLabel;         //! @brief pieceLabel piece label rectangle
-    QVector<QPointF>           patternInfo;        //! @brief patternInfo pattern info rectangle
-    QVector<QPointF>           grainlinePoints;    //! @brief grainlineInfo line
-    VTextManager               m_tmPiece;          //! @brief m_tmPiece text manager for laying out piece info
-    VTextManager               m_tmPattern;        //! @brief m_tmPattern text manager for laying out pattern info */
+    QVector<QPointF> contour;           //! @brief contour list of contour points.
+    QVector<QPointF> seamAllowance;     //! @brief seamAllowance list of seam allowance points.
+    QVector<QPointF> layoutAllowance;   //! @brief layoutAllowance list of layout allowance points.
+    QVector<QLineF> notches;            //! @brief notches list of notches.
+    QVector<VLayoutPiecePath> m_internalPaths;   //! @brief m_internalPaths list of internal paths.
+    QVector<VLayoutPiecePath>
+        m_cutoutPaths;      //! @brief m_cutoutPaths list of internal cutout paths.
+    QTransform transform;   //! @brief transform transformation transform
+    qreal layoutWidth;      //! @brief layoutWidth value layout allowance width in pixels.
+    bool mirror;
+    QVector<QPointF> pieceLabel;        //! @brief pieceLabel piece label rectangle
+    QVector<QPointF> patternInfo;       //! @brief patternInfo pattern info rectangle
+    QVector<QPointF> grainlinePoints;   //! @brief grainlineInfo line
+    VTextManager m_tmPiece;             //! @brief m_tmPiece text manager for laying out piece info
+    VTextManager m_tmPattern;   //! @brief m_tmPattern text manager for laying out pattern info */
 
 private:
-    VLayoutPieceData &operator=(const VLayoutPieceData &) Q_DECL_EQ_DELETE;
+    VLayoutPieceData& operator=(const VLayoutPieceData&) Q_DECL_EQ_DELETE;
 };
 
 QT_WARNING_POP
 
-#endif // VLAYOUTDETAIL_P_H
+#endif   // VLAYOUTDETAIL_P_H

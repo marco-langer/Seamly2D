@@ -52,6 +52,4 @@
 #include "vtest.h"
 
 
-VTest::VTest()
-{
-}
+VTest::VTest() {}

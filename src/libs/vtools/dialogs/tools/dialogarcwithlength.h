@@ -47,19 +47,18 @@
 #ifndef DIALOGARCWITHLENGTH_H
 #define DIALOGARCWITHLENGTH_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "dialogtool.h"
 #include "../vgeometry/varc.h"
 #include "../vmisc/def.h"
+#include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogArcWithLength;
+namespace Ui {
+class DialogArcWithLength;
 }
 
 class DialogArcWithLength : public DialogTool
@@ -67,101 +66,101 @@ class DialogArcWithLength : public DialogTool
     Q_OBJECT
 
 public:
-    DialogArcWithLength(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogArcWithLength(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogArcWithLength();
 
-    VArc          getArc() const;
-    void          setArc(const VArc &arc);
+    VArc getArc() const;
+    void setArc(const VArc& arc);
 
-    quint32       GetCenter() const;
-    void          SetCenter(const quint32 &value);
+    quint32 GetCenter() const;
+    void SetCenter(const quint32& value);
 
-    QString       GetRadius() const;
-    void          SetRadius(const QString &value);
+    QString GetRadius() const;
+    void SetRadius(const QString& value);
 
-    QString       GetF1() const;
-    void          SetF1(const QString &value);
+    QString GetF1() const;
+    void SetF1(const QString& value);
 
-    QString       GetLength() const;
-    void          SetLength(const QString &value);
+    QString GetLength() const;
+    void SetLength(const QString& value);
 
-    QString       getPenStyle() const;
-    void          setPenStyle(const QString &value);
+    QString getPenStyle() const;
+    void setPenStyle(const QString& value);
 
-    QString       getLineWeight() const;
-    void          setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString       getLineColor() const;
-    void          setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
 public slots:
-    virtual void  ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
-    void          DeployRadiusTextEdit();
-    void          DeployF1TextEdit();
-    void          DeployLengthTextEdit();
+    void DeployRadiusTextEdit();
+    void DeployF1TextEdit();
+    void DeployLengthTextEdit();
 
-    void          RadiusChanged();
-    void          F1Changed();
-    void          LengthChanged();
+    void RadiusChanged();
+    void F1Changed();
+    void LengthChanged();
 
-    void          FXRadius();
-    void          FXF1();
-    void          FXLength();
+    void FXRadius();
+    void FXF1();
+    void FXLength();
 
 protected:
-    void          pointNameChanged();
-    virtual void  CheckState() Q_DECL_FINAL;
-    virtual void  ShowVisualization() Q_DECL_OVERRIDE;
+    void pointNameChanged();
+    virtual void CheckState() Q_DECL_FINAL;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void  SaveData() Q_DECL_OVERRIDE;
-    virtual void  closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogArcWithLength)
-    Ui::DialogArcWithLength *ui;
+    Ui::DialogArcWithLength* ui;
 
     /** @brief flagRadius true if value of radius is correct */
-    bool          flagRadius;
+    bool flagRadius;
 
     /** @brief flagF1 true if value of first angle is correct */
-    bool          flagF1;
+    bool flagF1;
 
-    bool          flagLength;
+    bool flagLength;
 
     /** @brief timerRadius timer of check formula of radius */
-    QTimer        *timerRadius;
+    QTimer* timerRadius;
 
     /** @brief timerF1 timer of check formula of first angle */
-    QTimer        *timerF1;
+    QTimer* timerF1;
 
-    QTimer        *timerLength;
+    QTimer* timerLength;
 
     /** @brief radius formula of radius */
-    QString       radius;
+    QString radius;
 
     /** @brief f1 formula of first angle */
-    QString       f1;
+    QString f1;
 
-    QString       length;
+    QString length;
 
     /** @brief formulaBaseHeight base height defined by dialogui */
-    int           formulaBaseHeightRadius;
-    int           formulaBaseHeightF1;
-    int           formulaBaseHeightLength;
+    int formulaBaseHeightRadius;
+    int formulaBaseHeightF1;
+    int formulaBaseHeightLength;
 
-    qreal         angleF1;
-    VArc          m_arc;
-    qint32        m_Id;
-    qint32        newDuplicate;
+    qreal angleF1;
+    VArc m_arc;
+    qint32 m_Id;
+    qint32 newDuplicate;
 
-    void          Radius();
-    void          Length();
-    void          EvalF();
+    void Radius();
+    void Length();
+    void EvalF();
 };
 
-#endif // DIALOGARCWITHLENGTH_H
+#endif   // DIALOGARCWITHLENGTH_H

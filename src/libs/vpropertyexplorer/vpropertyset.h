@@ -21,18 +21,19 @@
 #ifndef VPROPERTYSET_H
 #define VPROPERTYSET_H
 
-#include <qcompilerdetection.h>
 #include <QMap>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vproperty.h"
 
-template <class Key, class T> class QMap;
-template <typename T> class QList;
+template <class Key, class T>
+class QMap;
+template <typename T>
+class QList;
 
-namespace VPE
-{
+namespace VPE {
 
 // Forward declaration
 class VPropertySetPrivate;
@@ -53,22 +54,22 @@ public:
     //! Destructor
     virtual ~VPropertySet();
 
-    //! Adds the property to the model and attaches it to the parentid. Note that if the property has a parent which is
-    //! not part of this set, it will be removed from that parent.
-    //! \param property The property to add
-    //! \param id The property ID. If id is empty, the property will not be accessable by it's id but still be added.
-    //! If the property was filed under another ID before, that will no longer be valid.
-    //! \param parentid The property's ID to which to add the property as child. Pass empty string to add it to the
-    //! root properties.
+    //! Adds the property to the model and attaches it to the parentid. Note that if the property
+    //! has a parent which is not part of this set, it will be removed from that parent. \param
+    //! property The property to add \param id The property ID. If id is empty, the property will
+    //! not be accessable by it's id but still be added. If the property was filed under another ID
+    //! before, that will no longer be valid. \param parentid The property's ID to which to add the
+    //! property as child. Pass empty string to add it to the root properties.
     virtual bool addProperty(VProperty* property, const QString& id, const QString& parentid);
 
     //! Adds the property to the model and attaches it to the parent property.
     //! \param property The property to add
-    //! \param id The property ID. If id is empty, the property will not be accessable by it's id but still be added.
-    //! If the property was filed under another ID before, that will no longer be valid.
-    //! \param parent_property The property to which to add the property as child. Pass NULL to add it to the root
-    //! properties.
-    virtual bool addProperty(VProperty* property, const QString& id, VProperty* parent_property = nullptr);
+    //! \param id The property ID. If id is empty, the property will not be accessable by it's id
+    //! but still be added. If the property was filed under another ID before, that will no longer
+    //! be valid. \param parent_property The property to which to add the property as child. Pass
+    //! NULL to add it to the root properties.
+    virtual bool
+    addProperty(VProperty* property, const QString& id, VProperty* parent_property = nullptr);
 
     //! Checks whether a property belongs to this set and returns the result
     //! \param property The property to check for
@@ -98,8 +99,9 @@ public:
     //! The concept of property IDs is, that the object that manages the properties
     //! and not the properties themselves handle the IDs.
     //! \param prop The property of which to get the ID.
-    //! \param look_for_parent_id If this is TRUE and the property has no ID, all the parent properties are checked.
-    //! \return Returns the ID under which the property is stored within the set
+    //! \param look_for_parent_id If this is TRUE and the property has no ID, all the parent
+    //! properties are checked. \return Returns the ID under which the property is stored within the
+    //! set
     virtual QString getPropertyID(const VProperty* prop, bool look_for_parent_id = true) const;
 
     //! Returns a const reference to the map of properties
@@ -126,17 +128,19 @@ protected:
     virtual bool hasProperty(VProperty* property, VProperty* parent) const;
 
     //! Clones a property into another property set
-    void cloneProperty(VProperty* property_to_clone, VProperty* parent_property, VPropertySet* output_set) const;
+    void cloneProperty(
+        VProperty* property_to_clone, VProperty* parent_property, VPropertySet* output_set) const;
 
     //! Recursivly removes a property's child properties from the set, but not from the parent
     virtual void removePropertyFromSet(VProperty* prop);
 
     //! The data
     VPropertySetPrivate* d_ptr;
+
 private:
     Q_DISABLE_COPY(VPropertySet)
 };
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYMODEL_H
+#endif   // VPROPERTYMODEL_H

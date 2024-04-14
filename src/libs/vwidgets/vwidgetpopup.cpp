@@ -51,31 +51,33 @@
 
 #include "vwidgetpopup.h"
 
-#include <QScreen>
-#include <QGuiApplication>
+#include <QApplication>
 #include <QFont>
+#include <QGuiApplication>
 #include <QLabel>
 #include <QLayout>
 #include <QMessageLogger>
 #include <QPoint>
 #include <QRect>
+#include <QScreen>
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <Qt>
-#include <QApplication>
-#include <QScreen>
 
 #include "../vmisc/def.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VWidgetPopup::VWidgetPopup(QWidget *parent)
-    :QFrame(parent, Qt::Popup), mWidget(nullptr), mOwn(true), mOldParent(nullptr), lifeTime(-1)
+VWidgetPopup::VWidgetPopup(QWidget* parent)
+    : QFrame(parent, Qt::Popup)
+    , mWidget(nullptr)
+    , mOwn(true)
+    , mOldParent(nullptr)
+    , lifeTime(-1)
 {
     setAttribute(Qt::WA_WindowPropagation);
 
-    if (parentWidget() == nullptr)
-    {
+    if (parentWidget() == nullptr) {
         setAttribute(Qt::WA_DeleteOnClose);
     }
 
@@ -84,19 +86,15 @@ VWidgetPopup::VWidgetPopup(QWidget *parent)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VWidgetPopup::SetWidget(QWidget *widget, bool own)
+void VWidgetPopup::SetWidget(QWidget* widget, bool own)
 {
-    if (mWidget)
-    {
+    if (mWidget) {
         layout()->removeWidget(mWidget);
 
-        if (mOwn)
-        {
+        if (mOwn) {
             mWidget->setParent(nullptr);
             delete mWidget;
-        }
-        else
-        {
+        } else {
             mWidget->setParent(mOldParent);
         }
     }
@@ -105,8 +103,7 @@ void VWidgetPopup::SetWidget(QWidget *widget, bool own)
     mOwn = own;
     mOldParent = nullptr;
 
-    if (mWidget)
-    {
+    if (mWidget) {
         mOldParent = mWidget->parentWidget();
         mWidget->setParent(this);
         layout()->addWidget(mWidget);
@@ -114,12 +111,12 @@ void VWidgetPopup::SetWidget(QWidget *widget, bool own)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VWidgetPopup::PopupMessage(QWidget *w, const QString &msg)
+void VWidgetPopup::PopupMessage(QWidget* w, const QString& msg)
 {
     SCASSERT(w != nullptr)
 
-    VWidgetPopup *popup = new VWidgetPopup(w);
-    QLabel *label = new QLabel(msg);
+    VWidgetPopup* popup = new VWidgetPopup(w);
+    QLabel* label = new QLabel(msg);
     QFont f = label->font();
     f.setBold(true);
     f.setPixelSize(16);
@@ -136,31 +133,26 @@ void VWidgetPopup::Show(QPoint coord)
     QFrame::show();
 
     const QRect screen(QGuiApplication::primaryScreen()->availableGeometry());
-    coord.setX(coord.x() - width()/2);
+    coord.setX(coord.x() - width() / 2);
 
-    if (coord.x() < screen.x())
-    {
+    if (coord.x() < screen.x()) {
         coord.setX(screen.x());
     }
 
-    if (coord.y() < screen.y())
-    {
+    if (coord.y() < screen.y()) {
         coord.setY(screen.y());
     }
 
-    if (coord.x() > (screen.right()-width()))
-    {
-        coord.setX(screen.right()-width());
+    if (coord.x() > (screen.right() - width())) {
+        coord.setX(screen.right() - width());
     }
 
-    if (coord.y() > (screen.bottom()-height()))
-    {
-        coord.setY(screen.bottom()-height());
+    if (coord.y() > (screen.bottom() - height())) {
+        coord.setY(screen.bottom() - height());
     }
     move(coord);
 
-    if (lifeTime > 0)
-    {
+    if (lifeTime > 0) {
         QTimer::singleShot(lifeTime, this, SLOT(close()));
     }
 }

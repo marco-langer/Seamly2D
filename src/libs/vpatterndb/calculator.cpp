@@ -56,8 +56,8 @@
 #include <QStringDataPtr>
 #include <QStringList>
 
-#include "../vmisc/def.h"
 #include "../qmuparser/qmuparsererror.h"
+#include "../vmisc/def.h"
 #include "variables/vinternalvariable.h"
 #include <QSharedPointer>
 //---------------------------------------------------------------------------------------------------------------------
@@ -75,10 +75,10 @@
  *
  */
 Calculator::Calculator()
-    :QmuFormulaBase()
+    : QmuFormulaBase()
 {
     InitCharSets();
-    setAllowSubexpressions(false);//Only one expression per time
+    setAllowSubexpressions(false);   // Only one expression per time
 
     SetSepForEval();
 }
@@ -87,18 +87,19 @@ Calculator::Calculator()
 /**
  * @brief eval calculate formula.
  *
- * First we try eval expression without adding variables. If it fail, we take tokens from expression and add variables
- * to parser and try again.
+ * First we try eval expression without adding variables. If it fail, we take tokens from expression
+ * and add variables to parser and try again.
  *
  * @param formula string of formula.
  * @return value of formula.
  */
-qreal Calculator::EvalFormula(const QHash<QString, QSharedPointer<VInternalVariable>> *vars, const QString &formula)
+qreal Calculator::EvalFormula(
+    const QHash<QString, QSharedPointer<VInternalVariable>>* vars, const QString& formula)
 {
-    // Parser doesn't know any variable on this stage. So, we just use variable factory that for each unknown variable
-    // set value to 0.
+    // Parser doesn't know any variable on this stage. So, we just use variable factory that for
+    // each unknown variable set value to 0.
     SetVarFactory(AddVariable, this);
-    SetSepForEval();//Reset separators options
+    SetSepForEval();   // Reset separators options
 
     SetExpr(formula);
 
@@ -110,18 +111,15 @@ qreal Calculator::EvalFormula(const QHash<QString, QSharedPointer<VInternalVaria
     // Remove "-" from tokens list if exist. If don't do that unary minus operation will broken.
     RemoveAll(tokens, QStringLiteral("-"));
 
-    for (int i = 0; i < builInFunctions.size(); ++i)
-    {
-        if (tokens.isEmpty())
-        {
+    for (int i = 0; i < builInFunctions.size(); ++i) {
+        if (tokens.isEmpty()) {
             break;
         }
         RemoveAll(tokens, builInFunctions.at(i));
     }
 
-    if (tokens.isEmpty())
-    {
-        return result; // We have found only numbers in expression.
+    if (tokens.isEmpty()) {
+        return result;   // We have found only numbers in expression.
     }
 
     // Add variables to parser because we have deal with expression with variables.
@@ -136,30 +134,30 @@ qreal Calculator::EvalFormula(const QHash<QString, QSharedPointer<VInternalVaria
  * For optimization purpose we try don't add variables that we don't need.
  *
  * @param vars list of variables.
- * @param tokens all tokens (measurements names, variables with lengths) that parser have found in expression.
+ * @param tokens all tokens (measurements names, variables with lengths) that parser have found in
+ * expression.
  * @param formula expression, need for throwing better error message.
  */
-void Calculator::InitVariables(const QHash<QString, QSharedPointer<VInternalVariable> > *vars,
-                               const QMap<int, QString> &tokens, const QString &formula)
+void Calculator::InitVariables(
+    const QHash<QString, QSharedPointer<VInternalVariable>>* vars,
+    const QMap<int, QString>& tokens,
+    const QString& formula)
 {
     QMap<int, QString>::const_iterator i = tokens.constBegin();
-    while (i != tokens.constEnd())
-    {
+    while (i != tokens.constEnd()) {
         bool found = false;
-        if (vars->contains(i.value()))
-        {
+        if (vars->contains(i.value())) {
             DefineVar(i.value(), vars->value(i.value())->GetValue());
             found = true;
         }
 
-        if (found == false && builInFunctions.contains(i.value()))
-        {// We have found built-in function
+        if (found == false
+            && builInFunctions.contains(i.value())) {   // We have found built-in function
             found = true;
         }
 
-        if (found == false)
-        {
-            throw qmu::QmuParserError (qmu::ecUNASSIGNABLE_TOKEN, i.value(), formula, i.key());
+        if (found == false) {
+            throw qmu::QmuParserError(qmu::ecUNASSIGNABLE_TOKEN, i.value(), formula, i.key());
         }
         ++i;
     }

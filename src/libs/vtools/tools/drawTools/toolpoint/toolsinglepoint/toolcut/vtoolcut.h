@@ -52,19 +52,19 @@
 #ifndef VTOOLCUT_H
 #define VTOOLCUT_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
+#include "../../../../../visualization/visualization.h"
+#include "../../../../vdatatool.h"
 #include "../../../toolcurve/vabstractspline.h"
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vtoolsinglepoint.h"
 #include "../vmisc/def.h"
-#include "../../../../vdatatool.h"
-#include "../../../../../visualization/visualization.h"
+#include "../vtoolsinglepoint.h"
 
 class VFormula;
 
@@ -72,37 +72,45 @@ class VToolCut : public VToolSinglePoint
 {
     Q_OBJECT
 public:
-                  VToolCut(VAbstractPattern *doc, VContainer *data, const quint32 &id, const QString &formula,
-                           const quint32 &curveCutId, QGraphicsItem * parent = nullptr);
-                           
-    virtual int   type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::Cut)};
+    VToolCut(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        const QString& formula,
+        const quint32& curveCutId,
+        QGraphicsItem* parent = nullptr);
 
-    VFormula      GetFormula() const;
-    void          SetFormula(const VFormula &value);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::Cut)
+    };
 
-    QString       CurveName() const;
+    VFormula GetFormula() const;
+    void SetFormula(const VFormula& value);
 
-    quint32       getCurveCutId() const;
-    void          setCurveCutId(const quint32 &value);
+    QString CurveName() const;
+
+    quint32 getCurveCutId() const;
+    void setCurveCutId(const quint32& value);
 
 public slots:
-    virtual void  Disable(bool disable, const QString &draftBlockName) Q_DECL_OVERRIDE;
-    virtual void  piecesMode(bool mode) Q_DECL_OVERRIDE;
-    virtual void  FullUpdateFromFile() Q_DECL_OVERRIDE;
+    virtual void Disable(bool disable, const QString& draftBlockName) Q_DECL_OVERRIDE;
+    virtual void piecesMode(bool mode) Q_DECL_OVERRIDE;
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
 
 protected:
     /** @brief formula keep formula of length */
-    QString       formula;
+    QString formula;
 
-    quint32       curveCutId;
-    bool          m_piecesMode;
+    quint32 curveCutId;
+    bool m_piecesMode;
 
-    void          RefreshGeometry();
-    virtual void  RemoveReferens() Q_DECL_OVERRIDE;
+    void RefreshGeometry();
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
 
     template <typename T>
-    void          ShowToolVisualization(bool show);
+    void ShowToolVisualization(bool show);
 
 private:
     Q_DISABLE_COPY(VToolCut)
@@ -112,30 +120,23 @@ private:
 template <typename T>
 inline void VToolCut::ShowToolVisualization(bool show)
 {
-    if (show)
-    {
-        if (vis.isNull())
-        {
+    if (show) {
+        if (vis.isNull()) {
             AddVisualization<T>();
             SetVisualization();
-        }
-        else
-        {
-            if (T *visual = qobject_cast<T *>(vis))
-            {
+        } else {
+            if (T* visual = qobject_cast<T*>(vis)) {
                 visual->show();
             }
         }
-    }
-    else
-    {
+    } else {
         delete vis;
     }
 
-    VDataTool *parent = VAbstractPattern::getTool(VAbstractTool::data.GetGObject(curveCutId)->getIdTool());
-    if (VAbstractSpline *parentCurve = qobject_cast<VAbstractSpline *>(parent))
-    {
+    VDataTool* parent =
+        VAbstractPattern::getTool(VAbstractTool::data.GetGObject(curveCutId)->getIdTool());
+    if (VAbstractSpline* parentCurve = qobject_cast<VAbstractSpline*>(parent)) {
         m_piecesMode ? parentCurve->ShowHandles(m_piecesMode) : parentCurve->ShowHandles(show);
     }
 }
-#endif // VTOOLCUT_H
+#endif   // VTOOLCUT_H

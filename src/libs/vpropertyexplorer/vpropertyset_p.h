@@ -26,8 +26,7 @@
 #include <QMap>
 #include <QString>
 
-namespace VPE
-{
+namespace VPE {
 
 class VProperty;
 
@@ -35,21 +34,23 @@ class VPropertySetPrivate
 {
 public:
     //! Property map (ID, Property)
-    QMap<QString, VProperty*> Properties; // All the Properties managed by this model are being stored in this map for
-    //quick access
+    QMap<QString, VProperty*>
+        Properties;   // All the Properties managed by this model are being stored in this map for
+    // quick access
 
     //! List containing the root properties
     QList<VProperty*> RootProperties;
 
     //! Constructor
     VPropertySetPrivate()
-        : Properties(QMap<QString, VProperty*>()), RootProperties(QList<VProperty*>())
+        : Properties(QMap<QString, VProperty*>())
+        , RootProperties(QList<VProperty*>())
     {}
 
 private:
     Q_DISABLE_COPY(VPropertySetPrivate)
 };
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYMODEL_P_H
+#endif   // VPROPERTYMODEL_P_H

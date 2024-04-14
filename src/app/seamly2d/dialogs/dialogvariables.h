@@ -52,107 +52,112 @@
 #ifndef DIALOG_VARIABLES_H
 #define DIALOG_VARIABLES_H
 
+#include "../vmisc/vtablesearch.h"
 #include "../vtools/dialogs/tools/dialogtool.h"
 #include "../xml/vpattern.h"
-#include "../vmisc/vtablesearch.h"
 
-#include <QPair>
 #include <QList>
+#include <QPair>
 
 class VIndividualMeasurements;
 
-namespace Ui
-{
-    class DialogVariables;
+namespace Ui {
+class DialogVariables;
 }
 
 /**
- * @brief The DialogVariables class show Variables dialog. Tables of all variables in program will be here.
+ * @brief The DialogVariables class show Variables dialog. Tables of all variables in program will
+ * be here.
  */
 class DialogVariables : public DialogTool
 {
     Q_OBJECT
 public:
-                                     DialogVariables(VContainer *data, VPattern *doc, QWidget *parent = nullptr);
-    virtual                         ~DialogVariables() Q_DECL_OVERRIDE;
+    DialogVariables(VContainer* data, VPattern* doc, QWidget* parent = nullptr);
+    virtual ~DialogVariables() Q_DECL_OVERRIDE;
 
 signals:
-    void                             updateProperties();
+    void updateProperties();
 
 protected:
-    virtual void                     closeEvent ( QCloseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void                     changeEvent ( QEvent * event) Q_DECL_OVERRIDE;
-    virtual bool                     eventFilter(QObject *object, QEvent *event) Q_DECL_OVERRIDE;
-    virtual void                     showEvent( QShowEvent *event ) Q_DECL_OVERRIDE;
-    virtual void                     resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+    virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
+    virtual bool eventFilter(QObject* object, QEvent* event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+    virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
-    void                             showCustomVariableDetails();
-    void                             filterVariables(const QString &filterString);
-    void                             addCustomVariable();
-    void                             removeCustomVariable();
-    void                             moveUp();
-    void                             moveDown();
-    void                             saveCustomVariableName(const QString &text);
-    void                             saveCustomVariableDescription();
-    void                             saveCustomVariableFormula();
-    void                             Fx();
-    void                             FullUpdateFromFile();
-    void                             refreshPattern();
+    void showCustomVariableDetails();
+    void filterVariables(const QString& filterString);
+    void addCustomVariable();
+    void removeCustomVariable();
+    void moveUp();
+    void moveDown();
+    void saveCustomVariableName(const QString& text);
+    void saveCustomVariableDescription();
+    void saveCustomVariableFormula();
+    void Fx();
+    void FullUpdateFromFile();
+    void refreshPattern();
 
 private:
     Q_DISABLE_COPY(DialogVariables)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogVariables             *ui;
+    Ui::DialogVariables* ui;
 
     /** @brief data container with data */
-    VContainer                      *data; // need because we must change data //-V703
+    VContainer* data;   // need because we must change data //-V703
 
     /** @brief doc dom document container */
-    VPattern                        *doc;
+    VPattern* doc;
 
-    int                              formulaBaseHeight;
+    int formulaBaseHeight;
 
-    bool                             hasChanges;
+    bool hasChanges;
 
     QVector<QPair<QString, QString>> renameList;
 
     QList<QSharedPointer<QTableWidget>> tableList;
-    bool                             isSorted;
-    bool                             isFiltered;
+    bool isSorted;
+    bool isFiltered;
 
 
     template <typename T>
-    void                             fillTable(const QMap<QString, T> &varTable, QTableWidget *table);
+    void fillTable(const QMap<QString, T>& varTable, QTableWidget* table);
 
-    void                             fillCustomVariables(bool freshCall = false);
-    void                             fillLineLengths();
-    void                             fillLineAngles();
-    void                             fillCurveLengths();
-    void                             fillControlPointLengths();
-    void                             fillArcsRadiuses();
-    void                             fillCurveAngles();
+    void fillCustomVariables(bool freshCall = false);
+    void fillLineLengths();
+    void fillLineAngles();
+    void fillCurveLengths();
+    void fillControlPointLengths();
+    void fillArcsRadiuses();
+    void fillCurveAngles();
 
-    void                             showUnits();
-    void                             showHeaderUnits(QTableWidget *table, int column, const QString &unit);
+    void showUnits();
+    void showHeaderUnits(QTableWidget* table, int column, const QString& unit);
 
-    void                             addCell(QTableWidget *table, const QString &text, int row, int column,
-                                             int aligment, bool ok = true);
+    void addCell(
+        QTableWidget* table,
+        const QString& text,
+        int row,
+        int column,
+        int aligment,
+        bool ok = true);
 
-    QString                          getCustomVariableName() const;
-    QString                          clearCustomVariableName(const QString &name) const;
+    QString getCustomVariableName() const;
+    QString clearCustomVariableName(const QString& name) const;
 
-    bool                             evalVariableFormula(const QString &formula, bool fromUser,
-                                                          VContainer *data, QLabel *label);
-    void                             setMoveControls();
-    void                             enablePieces(bool enabled);
+    bool
+    evalVariableFormula(const QString& formula, bool fromUser, VContainer* data, QLabel* label);
+    void setMoveControls();
+    void enablePieces(bool enabled);
 
-    void                             localUpdateTree();
+    void localUpdateTree();
 
-    bool                             variableUsed(const QString &name) const;
+    bool variableUsed(const QString& name) const;
 
-    void                             renameCache(const QString &name, const QString &newName);
+    void renameCache(const QString& name, const QString& newName);
 };
 
-#endif // DIALOG_VARIABLES_H
+#endif   // DIALOG_VARIABLES_H

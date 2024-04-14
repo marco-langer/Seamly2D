@@ -32,47 +32,50 @@
 #ifndef INTERSECT_CIRCLETANGENT_VISUAL_H
 #define INTERSECT_CIRCLETANGENT_VISUAL_H
 
-#include "visline.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
+#include "visline.h"
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 class IntersectCircleTangentVisual : public VisLine
 {
     Q_OBJECT
 public:
-    explicit              IntersectCircleTangentVisual(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual              ~IntersectCircleTangentVisual() = default;
+    explicit IntersectCircleTangentVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~IntersectCircleTangentVisual() = default;
 
-    virtual void          RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void                  setObject2Id(const quint32 &value);
-    void                  setCRadius(const QString &value);
-    void                  setCrossPoint(const CrossCirclesPoint &value);
+    void setObject2Id(const quint32& value);
+    void setCRadius(const QString& value);
+    void setCrossPoint(const CrossCirclesPoint& value);
 
-    virtual int           type() const Q_DECL_OVERRIDE {return Type;}
-    enum                  {Type = UserType + static_cast<int>(Vis::ToolPointFromCircleAndTangent)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPointFromCircleAndTangent)
+    };
 
 private:
-                          Q_DISABLE_COPY(IntersectCircleTangentVisual)
-    quint32               object2Id;
-    qreal                 cRadius;
-    CrossCirclesPoint     crossPoint;
-    VScaledEllipse       *point;
-    VScaledEllipse       *tangent;
-    VScaledEllipse       *cCenter;
-    QGraphicsEllipseItem *cPath;
-    VScaledLine          *tangent2;
-    QColor                m_secondarySupportColor;
+    Q_DISABLE_COPY(IntersectCircleTangentVisual)
+    quint32 object2Id;
+    qreal cRadius;
+    CrossCirclesPoint crossPoint;
+    VScaledEllipse* point;
+    VScaledEllipse* tangent;
+    VScaledEllipse* cCenter;
+    QGraphicsEllipseItem* cPath;
+    VScaledLine* tangent2;
+    QColor m_secondarySupportColor;
 
-    void                  FindRays(const QPointF &p, const QPointF &center, qreal radius);
+    void FindRays(const QPointF& p, const QPointF& center, qreal radius);
 };
 
-#endif // INTERSECT_CIRCLETANGENT_VISUAL_H
+#endif   // INTERSECT_CIRCLETANGENT_VISUAL_H

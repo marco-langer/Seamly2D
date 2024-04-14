@@ -32,11 +32,10 @@
 #ifndef INTERSECT_CIRCLETANGENT_TOOL_H
 #define INTERSECT_CIRCLETANGENT_TOOL_H
 
-#include "vtoolsinglepoint.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
+#include "vtoolsinglepoint.h"
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -44,70 +43,95 @@
 #include <QPointF>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 class VFormula;
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 class IntersectCircleTangentTool : public VToolSinglePoint
 {
     Q_OBJECT
 public:
-    virtual void         setDialog() Q_DECL_OVERRIDE;
+    virtual void setDialog() Q_DECL_OVERRIDE;
 
-    static IntersectCircleTangentTool *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene  *scene,
-                                                  VAbstractPattern *doc, VContainer *data);
-    static IntersectCircleTangentTool *Create(const quint32 _id, const QString &pointName,
-                                                  quint32 circleCenterId, QString &circleRadius, quint32 tangentPointId,
-                                                  CrossCirclesPoint crossPoint, qreal mx, qreal my, bool showPointName,
-                                                  VMainGraphicsScene *scene, VAbstractPattern *doc, VContainer *data,
-                                                  const Document &parse, const Source &typeCreation);
+    static IntersectCircleTangentTool* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static IntersectCircleTangentTool* Create(
+        const quint32 _id,
+        const QString& pointName,
+        quint32 circleCenterId,
+        QString& circleRadius,
+        quint32 tangentPointId,
+        CrossCirclesPoint crossPoint,
+        qreal mx,
+        qreal my,
+        bool showPointName,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
 
-    static QPointF       FindPoint(const QPointF &p, const QPointF &center, qreal radius,
-                                   const CrossCirclesPoint crossPoint);
+    static QPointF FindPoint(
+        const QPointF& p, const QPointF& center, qreal radius, const CrossCirclesPoint crossPoint);
 
     static const QString ToolType;
-    virtual int          type() const Q_DECL_OVERRIDE {return Type;}
-    enum                {Type = UserType + static_cast<int>(Tool::PointFromCircleAndTangent) };
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::PointFromCircleAndTangent)
+    };
 
-    QString              TangentPointName() const;
-    QString              CircleCenterPointName() const;
+    QString TangentPointName() const;
+    QString CircleCenterPointName() const;
 
-    quint32              GetTangentPointId() const;
-    void                 SetTangentPointId(const quint32 &value);
+    quint32 GetTangentPointId() const;
+    void SetTangentPointId(const quint32& value);
 
-    quint32              GetCircleCenterId() const;
-    void                 SetCircleCenterId(const quint32 &value);
+    quint32 GetCircleCenterId() const;
+    void SetCircleCenterId(const quint32& value);
 
-    VFormula             GetCircleRadius() const;
-    void                 SetCircleRadius(const VFormula &value);
+    VFormula GetCircleRadius() const;
+    void SetCircleRadius(const VFormula& value);
 
-    CrossCirclesPoint    GetCrossCirclesPoint() const;
-    void                 setCirclesCrossPoint(const CrossCirclesPoint &value);
+    CrossCirclesPoint GetCrossCirclesPoint() const;
+    void setCirclesCrossPoint(const CrossCirclesPoint& value);
 
-    virtual void         ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
 
 protected slots:
-    virtual void         showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void         RemoveReferens() Q_DECL_OVERRIDE;
-    virtual void         SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void         ReadToolAttributes(const QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SetVisualization() Q_DECL_OVERRIDE;
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(IntersectCircleTangentTool)
 
-    quint32              circleCenterId;
-    quint32              tangentPointId;
-    QString              circleRadius;
-    CrossCirclesPoint    crossPoint;
+    quint32 circleCenterId;
+    quint32 tangentPointId;
+    QString circleRadius;
+    CrossCirclesPoint crossPoint;
 
-                         IntersectCircleTangentTool(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                                        quint32 circleCenterId, const QString &circleRadius,
-                                                        quint32 tangentPointId, CrossCirclesPoint crossPoint,
-                                                        const Source &typeCreation, QGraphicsItem * parent = nullptr);
+    IntersectCircleTangentTool(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        quint32 circleCenterId,
+        const QString& circleRadius,
+        quint32 tangentPointId,
+        CrossCirclesPoint crossPoint,
+        const Source& typeCreation,
+        QGraphicsItem* parent = nullptr);
 };
 
-#endif // INTERSECT_CIRCLETANGENT_TOOL_H
+#endif   // INTERSECT_CIRCLETANGENT_TOOL_H

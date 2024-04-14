@@ -52,17 +52,17 @@
 #ifndef DIALOGS_H
 #define DIALOGS_H
 
-#include "history_dialog.h"
-#include "dialogvariables.h"
-#include "dialogpatternproperties.h"
-#include "dialognewpattern.h"
 #include "dialogaboutapp.h"
+#include "dialognewpattern.h"
+#include "dialogpatternproperties.h"
 #include "dialogpreferences.h"
-#include "dialogs/groups_widget.h"
-#include "dialogs/pieces_widget.h"
 #include "dialogs/calculator_dialog.h"
 #include "dialogs/decimalchart_dialog.h"
+#include "dialogs/groups_widget.h"
+#include "dialogs/pieces_widget.h"
 #include "dialogs/shortcuts_dialog.h"
 #include "dialogs/show_info_dialog.h"
+#include "dialogvariables.h"
+#include "history_dialog.h"
 
-#endif // DIALOGS_H
+#endif   // DIALOGS_H

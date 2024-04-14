@@ -55,9 +55,8 @@
 
 class VTest
 {
-
 public:
     VTest();
 };
 
-#endif // VTEST_H
+#endif   // VTEST_H

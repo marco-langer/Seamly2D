@@ -62,43 +62,55 @@
 #include "vlinelength_p.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VLengthLine &VLengthLine::operator=(VLengthLine &&var) Q_DECL_NOTHROW
-{ Swap(var); return *this; }
+VLengthLine& VLengthLine::operator=(VLengthLine&& var) Q_DECL_NOTHROW
+{
+    Swap(var);
+    return *this;
+}
 #endif
 
-void VLengthLine::Swap(VLengthLine &var) Q_DECL_NOTHROW
-{ VInternalVariable::Swap(var); std::swap(d, var.d); }
+void VLengthLine::Swap(VLengthLine& var) Q_DECL_NOTHROW
+{
+    VInternalVariable::Swap(var);
+    std::swap(d, var.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VLengthLine::VLengthLine()
-    :VInternalVariable(), d(new VLengthLineData)
+    : VInternalVariable()
+    , d(new VLengthLineData)
 {
     SetType(VarType::LineLength);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLengthLine::VLengthLine(const VPointF *p1, const quint32 &p1Id, const VPointF *p2, const quint32 &p2Id,
-                         Unit patternUnit)
-    :VInternalVariable(), d(new VLengthLineData(p1Id, p2Id, patternUnit))
+VLengthLine::VLengthLine(
+    const VPointF* p1,
+    const quint32& p1Id,
+    const VPointF* p2,
+    const quint32& p2Id,
+    Unit patternUnit)
+    : VInternalVariable()
+    , d(new VLengthLineData(p1Id, p2Id, patternUnit))
 {
     SCASSERT(p1 != nullptr)
     SCASSERT(p2 != nullptr)
 
     SetType(VarType::LineLength);
-    SetName(QString(line_+"%1_%2").arg(p1->name(), p2->name()));
+    SetName(QString(line_ + "%1_%2").arg(p1->name(), p2->name()));
     SetValue(p1, p2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLengthLine::VLengthLine(const VLengthLine &var)
-    :VInternalVariable(var), d(var.d)
+VLengthLine::VLengthLine(const VLengthLine& var)
+    : VInternalVariable(var)
+    , d(var.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VLengthLine &VLengthLine::operator=(const VLengthLine &var)
+VLengthLine& VLengthLine::operator=(const VLengthLine& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     VInternalVariable::operator=(var);
@@ -107,33 +119,23 @@ VLengthLine &VLengthLine::operator=(const VLengthLine &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLengthLine::~VLengthLine()
-{}
+VLengthLine::~VLengthLine() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VLengthLine::Filter(quint32 id)
-{
-    return id == d->p1Id || id == d->p2Id;
-}
+bool VLengthLine::Filter(quint32 id) { return id == d->p1Id || id == d->p2Id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLengthLine::SetValue(const VPointF *p1, const VPointF *p2)
+void VLengthLine::SetValue(const VPointF* p1, const VPointF* p2)
 {
     SCASSERT(p1 != nullptr)
     SCASSERT(p2 != nullptr)
 
-    VInternalVariable::SetValue(FromPixel(QLineF(static_cast<QPointF>(*p1), static_cast<QPointF>(*p2)).length(),
-                                          d->patternUnit));
+    VInternalVariable::SetValue(FromPixel(
+        QLineF(static_cast<QPointF>(*p1), static_cast<QPointF>(*p2)).length(), d->patternUnit));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VLengthLine::GetP1Id() const
-{
-    return d->p1Id;
-}
+quint32 VLengthLine::GetP1Id() const { return d->p1Id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VLengthLine::GetP2Id() const
-{
-    return d->p2Id;
-}
+quint32 VLengthLine::GetP2Id() const { return d->p2Id; }

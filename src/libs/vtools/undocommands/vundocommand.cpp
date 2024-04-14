@@ -51,23 +51,24 @@
 
 #include "vundocommand.h"
 
-#include <QDomNode>
 #include <QApplication>
+#include <QDomNode>
 
 #include "../ifc/ifcdef.h"
-#include "../vmisc/def.h"
+#include "../tools/drawTools/operation/vabstractoperation.h"
 #include "../vmisc/customevents.h"
+#include "../vmisc/def.h"
 #include "../vpatterndb/vnodedetail.h"
 #include "../vpatterndb/vpiecenode.h"
-#include "../tools/drawTools/operation/vabstractoperation.h"
 
 Q_LOGGING_CATEGORY(vUndo, "v.undo")
 
 //---------------------------------------------------------------------------------------------------------------------
-VUndoCommand::VUndoCommand(const QDomElement &xml, VAbstractPattern *doc, QUndoCommand *parent)
+VUndoCommand::VUndoCommand(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent)
     : QObject()
     , QUndoCommand(parent)
-    , xml(xml), doc(doc)
+    , xml(xml)
+    , doc(doc)
     , nodeId(NULL_ID)
     , redoFlag(false)
 {
@@ -77,56 +78,47 @@ VUndoCommand::VUndoCommand(const QDomElement &xml, VAbstractPattern *doc, QUndoC
 //---------------------------------------------------------------------------------------------------------------------
 void VUndoCommand::RedoFullParsing()
 {
-    if (redoFlag)
-    {
+    if (redoFlag) {
         emit NeedFullParsing();
-    }
-    else
-    {
+    } else {
         QApplication::postEvent(doc, new LiteParseEvent());
     }
     redoFlag = true;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VUndoCommand::UndoDeleteAfterSibling(QDomNode &parentNode, const quint32 &siblingId) const
+void VUndoCommand::UndoDeleteAfterSibling(QDomNode& parentNode, const quint32& siblingId) const
 {
-    if (siblingId == NULL_ID)
-    {
+    if (siblingId == NULL_ID) {
         parentNode.appendChild(xml);
-    }
-    else
-    {
+    } else {
         const QDomElement refElement = doc->NodeById(siblingId);
         parentNode.insertAfter(xml, refElement);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VUndoCommand::IncrementReferences(const QVector<quint32> &nodes) const
+void VUndoCommand::IncrementReferences(const QVector<quint32>& nodes) const
 {
-    for (qint32 i = 0; i < nodes.size(); ++i)
-    {
+    for (qint32 i = 0; i < nodes.size(); ++i) {
         doc->IncrementReferens(nodes.at(i));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VUndoCommand::DecrementReferences(const QVector<quint32> &nodes) const
+void VUndoCommand::DecrementReferences(const QVector<quint32>& nodes) const
 {
-    for (qint32 i = 0; i < nodes.size(); ++i)
-    {
+    for (qint32 i = 0; i < nodes.size(); ++i) {
         doc->DecrementReferens(nodes.at(i));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VUndoCommand::IncrementReferences(const QVector<CustomSARecord> &nodes) const
+void VUndoCommand::IncrementReferences(const QVector<CustomSARecord>& nodes) const
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i)
-    {
+    for (qint32 i = 0; i < nodes.size(); ++i) {
         n.append(nodes.at(i).path);
     }
 
@@ -134,12 +126,11 @@ void VUndoCommand::IncrementReferences(const QVector<CustomSARecord> &nodes) con
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VUndoCommand::DecrementReferences(const QVector<CustomSARecord> &nodes) const
+void VUndoCommand::DecrementReferences(const QVector<CustomSARecord>& nodes) const
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i)
-    {
+    for (qint32 i = 0; i < nodes.size(); ++i) {
         n.append(nodes.at(i).path);
     }
 
@@ -147,12 +138,11 @@ void VUndoCommand::DecrementReferences(const QVector<CustomSARecord> &nodes) con
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VUndoCommand::IncrementReferences(const QVector<VPieceNode> &nodes) const
+void VUndoCommand::IncrementReferences(const QVector<VPieceNode>& nodes) const
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i)
-    {
+    for (qint32 i = 0; i < nodes.size(); ++i) {
         n.append(nodes.at(i).GetId());
     }
 
@@ -160,12 +150,11 @@ void VUndoCommand::IncrementReferences(const QVector<VPieceNode> &nodes) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VUndoCommand::DecrementReferences(const QVector<VPieceNode> &nodes) const
+void VUndoCommand::DecrementReferences(const QVector<VPieceNode>& nodes) const
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i)
-    {
+    for (qint32 i = 0; i < nodes.size(); ++i) {
         n.append(nodes.at(i).GetId());
     }
 
@@ -176,31 +165,25 @@ void VUndoCommand::DecrementReferences(const QVector<VPieceNode> &nodes) const
 QDomElement VUndoCommand::getDestinationObject(quint32 idTool, quint32 idPoint) const
 {
     const QDomElement tool = doc->elementById(idTool, VAbstractPattern::TagOperation);
-    if (tool.isElement())
-    {
+    if (tool.isElement()) {
         QDomElement correctDest;
         const QDomNodeList nodeList = tool.childNodes();
-        for (qint32 i = 0; i < nodeList.size(); ++i)
-        {
+        for (qint32 i = 0; i < nodeList.size(); ++i) {
             const QDomElement dest = nodeList.at(i).toElement();
-            if (not dest.isNull() && dest.isElement() && dest.tagName() == VAbstractOperation::TagDestination)
-            {
+            if (not dest.isNull() && dest.isElement()
+                && dest.tagName() == VAbstractOperation::TagDestination) {
                 correctDest = dest;
                 break;
             }
         }
 
-        if (not correctDest.isNull())
-        {
+        if (not correctDest.isNull()) {
             const QDomNodeList destObjects = correctDest.childNodes();
-            for (qint32 i = 0; i < destObjects.size(); ++i)
-            {
+            for (qint32 i = 0; i < destObjects.size(); ++i) {
                 const QDomElement obj = destObjects.at(i).toElement();
-                if (not obj.isNull() && obj.isElement())
-                {
+                if (not obj.isNull() && obj.isElement()) {
                     const quint32 id = doc->GetParametrUInt(obj, AttrIdObject, NULL_ID_STR);
-                    if (idPoint == id)
-                    {
+                    if (idPoint == id) {
                         return obj;
                     }
                 }

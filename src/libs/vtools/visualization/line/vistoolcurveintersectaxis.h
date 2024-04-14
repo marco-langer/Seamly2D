@@ -52,12 +52,12 @@
 #ifndef VISTOOLCURVEINTERSECTAXIS_H
 #define VISTOOLCURVEINTERSECTAXIS_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -66,26 +66,30 @@ class VisToolCurveIntersectAxis : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolCurveIntersectAxis(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolCurveIntersectAxis(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCurveIntersectAxis() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    QString      Angle() const;
-    void         SetAngle(const QString &expression);
-    void         setAxisPointId(const quint32 &value);
+    QString Angle() const;
+    void SetAngle(const QString& expression);
+    void setAxisPointId(const quint32& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolLineIntersectAxis)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolLineIntersectAxis)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolCurveIntersectAxis)
-    quint32         axisPointId;
-    qreal           angle;
-    VScaledEllipse *point;
-    VScaledEllipse *basePoint;
-    VScaledLine    *baseLine;
-    VScaledLine    *axisLine;
-    VCurvePathItem *visCurve;
+    quint32 axisPointId;
+    qreal angle;
+    VScaledEllipse* point;
+    VScaledEllipse* basePoint;
+    VScaledLine* baseLine;
+    VScaledLine* axisLine;
+    VCurvePathItem* visCurve;
 };
 
-#endif // VISTOOLCURVEINTERSECTAXIS_H
+#endif   // VISTOOLCURVEINTERSECTAXIS_H

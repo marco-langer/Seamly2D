@@ -53,17 +53,17 @@
 #ifndef APPLICATION_2D_H
 #define APPLICATION_2D_H
 
+#include "../options.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vsettings.h"
-#include "../options.h"
-#include "../vwidgets/vmaingraphicsview.h"
 #include "../vpatterndb/vtranslatevars.h"
+#include "../vwidgets/vmaingraphicsview.h"
 #include "vcmdexport.h"
 
-class Application2D;// use in define
+class Application2D;   // use in define
 
 #if defined(qApp)
-#undef qApp
+#    undef qApp
 #endif
 #define qApp (static_cast<Application2D*>(VAbstractApplication::instance()))
 
@@ -74,64 +74,58 @@ class Application2D : public VAbstractApplication
 {
     Q_OBJECT
 public:
-                                       Application2D(int &argc, char ** argv);
-    virtual                           ~Application2D() Q_DECL_OVERRIDE;
-    static void                        startNewSeamly2D(const QString &fileName = QString());
-    virtual bool                       notify(QObject * receiver, QEvent * event) Q_DECL_OVERRIDE;
+    Application2D(int& argc, char** argv);
+    virtual ~Application2D() Q_DECL_OVERRIDE;
+    static void startNewSeamly2D(const QString& fileName = QString());
+    virtual bool notify(QObject* receiver, QEvent* event) Q_DECL_OVERRIDE;
 
-    void                               initOptions();
+    void initOptions();
 
-    QString                            seamlyMeFilePath() const;
+    QString seamlyMeFilePath() const;
 
-    QTimer                            *getAutoSaveTimer() const;
-    void                               setAutoSaveTimer(QTimer *value);
+    QTimer* getAutoSaveTimer() const;
+    void setAutoSaveTimer(QTimer* value);
 
-    static QStringList                 pointNameLanguages();
+    static QStringList pointNameLanguages();
 
-    void                               startLogging();
-    QTextStream                       *logFile();
+    void startLogging();
+    QTextStream* logFile();
 
-    virtual const VTranslateVars      *translateVariables() Q_DECL_OVERRIDE;
+    virtual const VTranslateVars* translateVariables() Q_DECL_OVERRIDE;
 
-    bool static                        isGUIMode();
-    virtual bool                       isAppInGUIMode() const Q_DECL_OVERRIDE;
+    bool static isGUIMode();
+    virtual bool isAppInGUIMode() const Q_DECL_OVERRIDE;
 
-    virtual void                       openSettings() Q_DECL_OVERRIDE;
-    VSettings                         *Seamly2DSettings();
+    virtual void openSettings() Q_DECL_OVERRIDE;
+    VSettings* Seamly2DSettings();
 
 protected:
-    virtual void                       initTranslateVariables() Q_DECL_OVERRIDE;
-    virtual bool	                   event(QEvent *e) Q_DECL_OVERRIDE;
+    virtual void initTranslateVariables() Q_DECL_OVERRIDE;
+    virtual bool event(QEvent* e) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(Application2D)
-    VTranslateVars                    *m_trVars;
-    QTimer                            *m_autoSaveTimer;
+    VTranslateVars* m_trVars;
+    QTimer* m_autoSaveTimer;
 
     std::shared_ptr<VLockGuard<QFile>> m_lockLog;
-    std::shared_ptr<QTextStream>       m_out;
+    std::shared_ptr<QTextStream> m_out;
 
-    QString                            logDirPath()const;
-    QString                            logPath()const;
-    bool                               createLogDir()const;
-    void                               beginLogging();
-    void                               clearOldLogs()const;
+    QString logDirPath() const;
+    QString logPath() const;
+    bool createLogDir() const;
+    void beginLogging();
+    void clearOldLogs() const;
 
 public:
-    //moved to the end of class so merge should go
-    const VCommandLinePtr              commandLine() const;
+    // moved to the end of class so merge should go
+    const VCommandLinePtr commandLine() const;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QTimer *Application2D::getAutoSaveTimer() const
-{
-    return m_autoSaveTimer;
-}
+inline QTimer* Application2D::getAutoSaveTimer() const { return m_autoSaveTimer; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline void Application2D::setAutoSaveTimer(QTimer *value)
-{
-    m_autoSaveTimer = value;
-}
+inline void Application2D::setAutoSaveTimer(QTimer* value) { m_autoSaveTimer = value; }
 //---------------------------------------------------------------------------------------------------------------------
-#endif // APPLICATION_2D_H
+#endif   // APPLICATION_2D_H

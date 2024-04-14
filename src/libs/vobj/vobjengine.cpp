@@ -76,25 +76,23 @@ class QPolygonF;
 class QRectF;
 
 #ifdef Q_CC_MSVC
-    #include <ciso646>
+#    include <ciso646>
 #endif /* Q_CC_MSVC */
 
 //---------------------------------------------------------------------------------------------------------------------
 static inline QPaintEngine::PaintEngineFeatures svgEngineFeatures()
 {
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_CLANG("-Wsign-conversion")
-QT_WARNING_DISABLE_INTEL(68)
-QT_WARNING_DISABLE_INTEL(2022)
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_CLANG("-Wsign-conversion")
+    QT_WARNING_DISABLE_INTEL(68)
+    QT_WARNING_DISABLE_INTEL(2022)
 
     return QPaintEngine::PaintEngineFeatures(
-        QPaintEngine::AllFeatures
-        & ~QPaintEngine::PatternBrush
-        & ~QPaintEngine::PerspectiveTransform
-        & ~QPaintEngine::ConicalGradientFill
+        QPaintEngine::AllFeatures & ~QPaintEngine::PatternBrush
+        & ~QPaintEngine::PerspectiveTransform & ~QPaintEngine::ConicalGradientFill
         & ~QPaintEngine::PorterDuff);
 
-QT_WARNING_POP
+    QT_WARNING_POP
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -108,56 +106,50 @@ VObjEngine::VObjEngine()
     , resolution(96)
     , transform()
 {
-    for (int i=0; i < MAX_POINTS; i++)
-    {
+    for (int i = 0; i < MAX_POINTS; i++) {
         points[i].x = 0;
         points[i].y = 0;
     }
 }
 
 #if defined(Q_CC_INTEL)
-#pragma warning( pop )
+#    pragma warning(pop)
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------
-VObjEngine::~VObjEngine()
-{
-}
+VObjEngine::~VObjEngine() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VObjEngine::begin(QPaintDevice *pdev)
+bool VObjEngine::begin(QPaintDevice* pdev)
 {
     Q_UNUSED(pdev)
-    if (outputDevice.isNull())
-    {
+    if (outputDevice.isNull()) {
         qWarning("VObjEngine::begin(), no output device");
         return false;
     }
-    if (outputDevice->isOpen() == false)
-    {
-        if (outputDevice->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate) == false)
-        {
-            qWarning("VObjEngine::begin(), could not open output device: '%s'",
-                     qPrintable(outputDevice->errorString()));
+    if (outputDevice->isOpen() == false) {
+        if (outputDevice->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)
+            == false) {
+            qWarning(
+                "VObjEngine::begin(), could not open output device: '%s'",
+                qPrintable(outputDevice->errorString()));
             return false;
         }
-    }
-    else if (outputDevice->isWritable() == false)
-    {
-        qWarning("VObjEngine::begin(), could not write to read-only output device: '%s'",
-                 qPrintable(outputDevice->errorString()));
+    } else if (outputDevice->isWritable() == false) {
+        qWarning(
+            "VObjEngine::begin(), could not write to read-only output device: '%s'",
+            qPrintable(outputDevice->errorString()));
         return false;
     }
 
-    if (size.isValid() == false)
-    {
+    if (size.isValid() == false) {
         qWarning() << "VObjEngine::begin(), size is not valid";
         return false;
     }
 
     stream = QSharedPointer<QTextStream>(new QTextStream(outputDevice.data()));
-	*stream << "# Seamly2D OBJ File\n";
-	*stream << "# www.seamly2d-project.org/\n";
+    *stream << "# Seamly2D OBJ File\n";
+    *stream << "# www.seamly2d-project.org/\n";
     return true;
 }
 
@@ -170,7 +162,7 @@ bool VObjEngine::end()
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void VObjEngine::updateState(const QPaintEngineState &state)
+void VObjEngine::updateState(const QPaintEngineState& state)
 {
     QPaintEngine::DirtyFlags flags = state.state();
 
@@ -178,33 +170,29 @@ void VObjEngine::updateState(const QPaintEngineState &state)
     flags |= QPaintEngine::AllDirty;
 
 
-    if (flags & QPaintEngine::DirtyTransform)
-    {
-        transform = state.transform(); // Save new transform for moving paths
+    if (flags & QPaintEngine::DirtyTransform) {
+        transform = state.transform();   // Save new transform for moving paths
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjEngine::drawPath(const QPainterPath &path)
+void VObjEngine::drawPath(const QPainterPath& path)
 {
     QPolygonF polygon = path.toFillPolygon(transform);
-    polygon = MakePointsUnique(polygon);// Points must be unique
-    if (polygon.size() < 3)
-    {
+    polygon = MakePointsUnique(polygon);   // Points must be unique
+    if (polygon.size() < 3) {
         return;
     }
 
     qint64 sq = Square(polygon);
 
     ++planeCount;
-	*stream << "o Plane." << QString("%1").arg(planeCount, 3, 10, QLatin1Char('0')) << '\n';
+    *stream << "o Plane." << QString("%1").arg(planeCount, 3, 10, QLatin1Char('0')) << '\n';
 
     quint32 num_points = 0;
 
-    for (int i=0; i < polygon.count(); i++)
-    {
-        if ( num_points < MAX_POINTS )
-        {
+    for (int i = 0; i < polygon.count(); i++) {
+        if (num_points < MAX_POINTS) {
             points[num_points].x = polygon.at(i).x();
             points[num_points].y = polygon.at(i).y();
             num_points++;
@@ -212,99 +200,88 @@ void VObjEngine::drawPath(const QPainterPath &path)
     }
 
     int offset = 0;
-    delaunay2d_t *res = delaunay2d_from(points, num_points);//Calculate faces
+    delaunay2d_t* res = delaunay2d_from(points, num_points);   // Calculate faces
 
     QPointF pf[MAX_POINTS];
-    bool skipFace=false;//Need skip first face
+    bool skipFace = false;   // Need skip first face
 
-    for (quint32 i = 0; i < res->num_faces; i++ )
-    {
-        if (offset == 0)
-        {
-            skipFace=true;
-        }
-        else
-        {
-            skipFace=false;
+    for (quint32 i = 0; i < res->num_faces; i++) {
+        if (offset == 0) {
+            skipFace = true;
+        } else {
+            skipFace = false;
         }
         int num_verts = static_cast<int>(res->faces[offset]);
         offset++;
-        for ( int j = 0; j < num_verts; j++ )
-        {
+        for (int j = 0; j < num_verts; j++) {
             int p0 = static_cast<int>(res->faces[offset + j]);
             pf[j] = QPointF(points[p0].x, points[p0].y);
         }
-        if (skipFace == false )
-        {
+        if (skipFace == false) {
             QPolygonF face;
-            for ( int i = 0; i < num_verts; i++ )
-            {
+            for (int i = 0; i < num_verts; i++) {
                 face << QPointF(pf[i]);
             }
             QPolygonF united = polygon.united(face);
             qint64 sqUnited = Square(united);
-            if (sqUnited <= sq)
-            {// This face incide our base polygon.
+            if (sqUnited <= sq) {   // This face incide our base polygon.
                 drawPolygon(pf, num_verts, QPaintEngine::OddEvenMode);
             }
         }
         offset += num_verts;
     }
 
-    delaunay2d_release(res);//Don't forget release data
-	*stream << "s off\n";
+    delaunay2d_release(res);   // Don't forget release data
+    *stream << "s off\n";
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjEngine::drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode)
+void VObjEngine::drawPolygon(const QPointF* points, int pointCount, PolygonDrawMode mode)
 {
     Q_UNUSED(mode)
 
     drawPoints(points, pointCount);
     *stream << "f";
 
-    for (int i = 0; i < pointCount; ++i)
-    {
+    for (int i = 0; i < pointCount; ++i) {
         *stream << QString(" %1").arg(static_cast<int>(globalPointsCount) - pointCount + i + 1);
     }
-	*stream << '\n';
+    *stream << '\n';
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjEngine::drawPolygon(const QPoint *points, int pointCount, QPaintEngine::PolygonDrawMode mode)
+void VObjEngine::drawPolygon(
+    const QPoint* points, int pointCount, QPaintEngine::PolygonDrawMode mode)
 {
     QPaintEngine::drawPolygon(points, pointCount, mode);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPaintEngine::Type VObjEngine::type() const
-{
-    return QPaintEngine::User;
-}
+QPaintEngine::Type VObjEngine::type() const { return QPaintEngine::User; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjEngine::drawPoints(const QPointF *points, int pointCount)
+void VObjEngine::drawPoints(const QPointF* points, int pointCount)
 {
-    for (int i = 0; i < pointCount; ++i)
-    {
-        qreal x = ((points[i].x() - 0)/qFloor(size.width()/2.0)) - 1.0;
-        qreal y = (((points[i].y() - 0)/qFloor(size.width()/2.0)) - 1.0)*-1;
+    for (int i = 0; i < pointCount; ++i) {
+        qreal x = ((points[i].x() - 0) / qFloor(size.width() / 2.0)) - 1.0;
+        qreal y = (((points[i].y() - 0) / qFloor(size.width() / 2.0)) - 1.0) * -1;
 
-        *stream << "v" << " " << QString::number(x, 'f', 6 ) << " " << QString::number(y, 'f', 6 ) << " "
-		     << "0.000000\n";
+        *stream << "v"
+                << " " << QString::number(x, 'f', 6) << " " << QString::number(y, 'f', 6) << " "
+                << "0.000000\n";
         ++globalPointsCount;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjEngine::drawPoints(const QPoint *points, int pointCount)
+void VObjEngine::drawPoints(const QPoint* points, int pointCount)
 {
     QPaintEngine::drawPoints(points, pointCount);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void VObjEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr)
+void VObjEngine::drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr)
 {
     Q_UNUSED(r)
     Q_UNUSED(pm)
@@ -312,36 +289,27 @@ void VObjEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QSize VObjEngine::getSize() const
-{
-    return size;
-}
+QSize VObjEngine::getSize() const { return size; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjEngine::setSize(const QSize &value)
+void VObjEngine::setSize(const QSize& value)
 {
     Q_ASSERT(not isActive());
     size = value;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QIODevice *VObjEngine::getOutputDevice() const
-{
-    return outputDevice.data();
-}
+QIODevice* VObjEngine::getOutputDevice() const { return outputDevice.data(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VObjEngine::setOutputDevice(QIODevice *value)
+void VObjEngine::setOutputDevice(QIODevice* value)
 {
     Q_ASSERT(not isActive());
     outputDevice.reset(value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VObjEngine::getResolution() const
-{
-    return resolution;
-}
+int VObjEngine::getResolution() const { return resolution; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VObjEngine::setResolution(int value)
@@ -351,14 +319,12 @@ void VObjEngine::setResolution(int value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPolygonF VObjEngine::MakePointsUnique(const QPolygonF &polygon) const
+QPolygonF VObjEngine::MakePointsUnique(const QPolygonF& polygon) const
 {
     QVector<QPointF> set;
     QPolygonF uniquePolygon;
-    for (int i=0; i < polygon.count(); i++)
-    {
-        if (set.contains(polygon.at(i)) == false)
-        {
+    for (int i = 0; i < polygon.count(); i++) {
+        if (set.contains(polygon.at(i)) == false) {
             set.append(polygon.at(i));
             uniquePolygon.append(polygon.at(i));
         }
@@ -367,7 +333,7 @@ QPolygonF VObjEngine::MakePointsUnique(const QPolygonF &polygon) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qint64 VObjEngine::Square(const QPolygonF &poly) const
+qint64 VObjEngine::Square(const QPolygonF& poly) const
 {
     QVector<qreal> x;
     QVector<qreal> y;
@@ -376,34 +342,26 @@ qint64 VObjEngine::Square(const QPolygonF &poly) const
     qreal s, res = 0;
     qint64 sq = 0;
 
-    for (int i=0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         x.append(poly.at(i).x());
         y.append(poly.at(i).y());
     }
 
     // Calculation a polygon area through the sum of the areas of trapezoids
-    for (int i = 0; i < n; i++)
-    {
-        if (i == 0)
-        {
-            s = x.at(i)*(y.at(n-1) - y.at(i+1)); //if i == 0, then y[i-1] replace on y[n-1]
+    for (int i = 0; i < n; i++) {
+        if (i == 0) {
+            s = x.at(i) * (y.at(n - 1) - y.at(i + 1));   // if i == 0, then y[i-1] replace on y[n-1]
             res += s;
-        }
-        else
-        {
-            if (i == n-1)
-            {
-                s = x.at(i)*(y.at(i-1) - y.at(0)); // if i == n-1, then y[i+1] replace on y[0]
+        } else {
+            if (i == n - 1) {
+                s = x.at(i) * (y.at(i - 1) - y.at(0));   // if i == n-1, then y[i+1] replace on y[0]
                 res += s;
-            }
-            else
-            {
-                s = x.at(i)*(y.at(i-1) - y.at(i+1));
+            } else {
+                s = x.at(i) * (y.at(i - 1) - y.at(i + 1));
                 res += s;
             }
         }
     }
-    sq = qFloor(qAbs(res/2.0));
+    sq = qFloor(qAbs(res / 2.0));
     return sq;
 }

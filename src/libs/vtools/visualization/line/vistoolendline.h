@@ -52,12 +52,12 @@
 #ifndef VISTOOLENDLINE_H
 #define VISTOOLENDLINE_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -66,24 +66,28 @@ class VisToolEndLine : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolEndLine(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolEndLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolEndLine() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    QString      Angle() const;
-    void         SetAngle(const QString &expression);
+    QString Angle() const;
+    void SetAngle(const QString& expression);
 
-    QString      Length() const;
-    void         setLength(const QString &expression);
+    QString Length() const;
+    void setLength(const QString& expression);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolEndLine)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolEndLine)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolEndLine)
-    qreal           length;
-    qreal           angle;
-    VScaledEllipse *point;
+    qreal length;
+    qreal angle;
+    VScaledEllipse* point;
 };
 
-#endif // VISTOOLENDLINE_H
+#endif   // VISTOOLENDLINE_H

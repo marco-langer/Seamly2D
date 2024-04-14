@@ -58,7 +58,7 @@ class TST_VPiece : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_VPiece(QObject *parent = nullptr);
+    explicit TST_VPiece(QObject* parent = nullptr);
 
 private slots:
     void ClearLoop();
@@ -68,4 +68,4 @@ private:
     Q_DISABLE_COPY(TST_VPiece)
 };
 
-#endif // TST_VDETAIL_H
+#endif   // TST_VDETAIL_H

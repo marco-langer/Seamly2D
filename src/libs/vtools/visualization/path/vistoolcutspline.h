@@ -52,12 +52,12 @@
 #ifndef VISTOOLCUTSPLINE_H
 #define VISTOOLCUTSPLINE_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "vispath.h"
@@ -66,19 +66,23 @@ class VisToolCutSpline : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolCutSpline(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolCutSpline(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCutSpline() Q_DECL_EQ_DEFAULT;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         setLength(const QString &expression);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolCutSpline)};
+    void setLength(const QString& expression);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolCutSpline)
+    };
+
 protected:
     Q_DISABLE_COPY(VisToolCutSpline)
-    VScaledEllipse *point;
-    VCurvePathItem *spl1;
-    VCurvePathItem *spl2;
-    qreal           length;
+    VScaledEllipse* point;
+    VCurvePathItem* spl1;
+    VCurvePathItem* spl2;
+    qreal length;
 };
 
-#endif // VISTOOLCUTSPLINE_H
+#endif   // VISTOOLCUTSPLINE_H

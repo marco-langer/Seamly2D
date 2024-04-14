@@ -65,35 +65,37 @@ class VInternalVariable
 {
 public:
     VInternalVariable();
-    VInternalVariable(const VInternalVariable &var);
+    VInternalVariable(const VInternalVariable& var);
 
     virtual ~VInternalVariable();
 
-    VInternalVariable &operator=(const VInternalVariable &var);
+    VInternalVariable& operator=(const VInternalVariable& var);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VInternalVariable &operator=(VInternalVariable &&var) Q_DECL_NOTHROW;
+    VInternalVariable& operator=(VInternalVariable&& var) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VInternalVariable &var) Q_DECL_NOTHROW;
+    void Swap(VInternalVariable& var) Q_DECL_NOTHROW;
 
-    virtual qreal  GetValue() const;
+    virtual qreal GetValue() const;
     virtual qreal* GetValue();
 
-    QString      GetName() const;
-    void         SetName(const QString &name);
+    QString GetName() const;
+    void SetName(const QString& name);
 
-    VarType      GetType() const;
-    void         SetType(const VarType &type);
+    VarType GetType() const;
+    void SetType(const VarType& type);
 
     virtual bool Filter(quint32 id);
 
     virtual bool isNotUsed() const;
+
 protected:
-    void SetValue(const qreal &value);
+    void SetValue(const qreal& value);
+
 private:
     QSharedDataPointer<VInternalVariableData> d;
 };
 
 Q_DECLARE_TYPEINFO(VInternalVariable, Q_MOVABLE_TYPE);
 
-#endif // VINTERNALVARIABLE_H
+#endif   // VINTERNALVARIABLE_H

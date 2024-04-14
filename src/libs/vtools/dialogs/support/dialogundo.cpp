@@ -61,28 +61,25 @@
 #include "ui_dialogundo.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogUndo::DialogUndo(QWidget *parent)
-    :QDialog(parent), ui(new Ui::DialogUndo), result(UndoButton::Cancel)
+DialogUndo::DialogUndo(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::DialogUndo)
+    , result(UndoButton::Cancel)
 {
     ui->setupUi(this);
 
     qApp->Settings()->getOsSeparator() ? setLocale(QLocale()) : setLocale(QLocale::c());
 
     bool opening = qApp->getOpeningPattern();
-    if (opening)
-    {
+    if (opening) {
         ui->pushButtonUndo->setDisabled(opening);
-    }
-    else
-    {
-        connect(ui->pushButtonUndo, &QPushButton::clicked, this, [this]()
-        {
+    } else {
+        connect(ui->pushButtonUndo, &QPushButton::clicked, this, [this]() {
             result = UndoButton::Undo;
             accept();
         });
     }
-    connect(ui->pushButtonFix, &QPushButton::clicked, this, [this]()
-    {
+    connect(ui->pushButtonFix, &QPushButton::clicked, this, [this]() {
         result = UndoButton::Fix;
         accept();
     });
@@ -92,10 +89,7 @@ DialogUndo::DialogUndo(QWidget *parent)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogUndo::~DialogUndo()
-{
-    delete ui;
-}
+DialogUndo::~DialogUndo() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogUndo::Cancel()
@@ -105,7 +99,7 @@ void DialogUndo::Cancel()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogUndo::closeEvent(QCloseEvent *event)
+void DialogUndo::closeEvent(QCloseEvent* event)
 {
     Cancel();
     event->accept();

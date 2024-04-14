@@ -59,12 +59,13 @@ class TST_VPointF : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VPointF(QObject *parent = nullptr);
+    explicit TST_VPointF(QObject* parent = nullptr);
 private slots:
     void TestFlip_data();
     void TestFlip();
+
 private:
     Q_DISABLE_COPY(TST_VPointF)
 };
 
-#endif // TST_VPOINTF_H
+#endif   // TST_VPOINTF_H

@@ -21,52 +21,54 @@
 #ifndef VPROPERTYDELEGATE_H
 #define VPROPERTYDELEGATE_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QSize>
 #include <QString>
 #include <QStyleOptionViewItem>
 #include <QStyledItemDelegate>
+#include <qcompilerdetection.h>
 
-namespace VPE
-{
+namespace VPE {
 
 class VPropertyDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit VPropertyDelegate(QObject *parent = nullptr);
+    explicit VPropertyDelegate(QObject* parent = nullptr);
     virtual ~VPropertyDelegate() Q_DECL_OVERRIDE;
 
     //! Creates the editor widget
-    virtual QWidget* createEditor (QWidget* parent, const QStyleOptionViewItem& option,
-                                   const QModelIndex& index) const Q_DECL_OVERRIDE;
+    virtual QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index) const Q_DECL_OVERRIDE;
 
     //! Sets the index data to the editor
-    virtual void setEditorData (QWidget * editor, const QModelIndex & index) const Q_DECL_OVERRIDE;
+    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const Q_DECL_OVERRIDE;
 
     //! Updates the index data
-    virtual void setModelData (QWidget * editor, QAbstractItemModel * model,
-                               const QModelIndex & index) const Q_DECL_OVERRIDE;
+    virtual void setModelData(
+        QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const Q_DECL_OVERRIDE;
 
     //! Returns the size hint
-    virtual QSize sizeHint (const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    virtual QSize
+    sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
 
     //! Sets the row height. Set this to 0 and the standard will be taken
     void setRowHeight(int height = 0, bool add_to_standard = false);
 
-    //! Renders the delegate using the given painter and style option for the item specified by index.
-    virtual void paint (QPainter* painter, const QStyleOptionViewItem& option,
-                        const QModelIndex& index ) const Q_DECL_OVERRIDE;
+    //! Renders the delegate using the given painter and style option for the item specified by
+    //! index.
+    virtual void
+    paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+        Q_DECL_OVERRIDE;
 
 protected:
     int RowHeight;
     bool AddRowHeight;
-
-
 };
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYDELEGATE_H
+#endif   // VPROPERTYDELEGATE_H

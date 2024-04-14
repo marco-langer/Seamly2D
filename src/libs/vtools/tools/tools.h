@@ -55,4 +55,4 @@
 #include "drawTools/drawtools.h"
 #include "nodeDetails/nodedetails.h"
 
-#endif // TOOLS_H
+#endif   // TOOLS_H

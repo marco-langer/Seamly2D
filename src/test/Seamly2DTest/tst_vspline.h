@@ -60,7 +60,7 @@ class TST_VSpline : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_VSpline(QObject *parent = nullptr);
+    explicit TST_VSpline(QObject* parent = nullptr);
 
 signals:
 
@@ -79,7 +79,7 @@ private slots:
 
 private:
     Q_DISABLE_COPY(TST_VSpline)
-    void CompareSplines(const VSpline &spl1, const VSpline &spl2) const;
+    void CompareSplines(const VSpline& spl1, const VSpline& spl2) const;
 };
 
-#endif // TST_VSPLINE_H
+#endif   // TST_VSPLINE_H

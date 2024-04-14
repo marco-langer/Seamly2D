@@ -1,29 +1,29 @@
 /******************************************************************************
-*   @file   dialogaboutapp.cpp
-**  @author Douglas S Caskey
-**  @date   3 Sep, 2023
-**
-**  @brief
-**  @copyright
-**  This source code is part of the Seamly2D project, a pattern making
-**  program to create and model patterns of clothing.
-**  Copyright (C) 2017-2023 Seamly2D project
-**  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
-**
-**  Seamly2D is free software: you can redistribute it and/or modify
-**  it under the terms of the GNU General Public License as published by
-**  the Free Software Foundation, either version 3 of the License, or
-**  (at your option) any later version.
-**
-**  Seamly2D is distributed in the hope that it will be useful,
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**  GNU General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
-**
-*************************************************************************/
+ *   @file   dialogaboutapp.cpp
+ **  @author Douglas S Caskey
+ **  @date   3 Sep, 2023
+ **
+ **  @brief
+ **  @copyright
+ **  This source code is part of the Seamly2D project, a pattern making
+ **  program to create and model patterns of clothing.
+ **  Copyright (C) 2017-2023 Seamly2D project
+ **  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ *************************************************************************/
 
 /************************************************************************
  **
@@ -54,8 +54,8 @@
  *************************************************************************/
 
 #include "dialogaboutapp.h"
-#include "ui_dialogaboutapp.h"
 #include "../version.h"
+#include "ui_dialogaboutapp.h"
 
 #include <QDate>
 #include <QDesktopServices>
@@ -64,114 +64,108 @@
 #include <QScreen>
 #include <QtDebug>
 
-#include "../options.h"
 #include "../core/application_2d.h"
 #include "../fervor/fvupdater.h"
+#include "../options.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogAboutApp::DialogAboutApp(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::DialogAboutApp),
-	isInitialized(false)
+DialogAboutApp::DialogAboutApp(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::DialogAboutApp)
+    , isInitialized(false)
 {
-	ui->setupUi(this);
+    ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    //Limit dialog height to 80% of screen size
+    // Limit dialog height to 80% of screen size
     setMaximumHeight(qRound(QGuiApplication::primaryScreen()->availableGeometry().height() * .8));
 
-	qApp->Seamly2DSettings()->getOsSeparator() ? setLocale(QLocale()) : setLocale(QLocale::c());
+    qApp->Seamly2DSettings()->getOsSeparator() ? setLocale(QLocale()) : setLocale(QLocale::c());
 
     QString revision = BUILD_REVISION;
-    if (revision == QString("unknown"))
-    {
+    if (revision == QString("unknown")) {
         revision = tr("unknown");
     }
-	ui->label_Seamly2D_Version->setText(QString("Seamly2D %1").arg(APP_VERSION_STR));
-	ui->labelBuildRevision->setText(tr("Build revision: %1").arg(revision));
-	ui->label_QT_Version->setText(buildCompatibilityString());
+    ui->label_Seamly2D_Version->setText(QString("Seamly2D %1").arg(APP_VERSION_STR));
+    ui->labelBuildRevision->setText(tr("Build revision: %1").arg(revision));
+    ui->label_QT_Version->setText(buildCompatibilityString());
 
-	QDate date = QLocale::c().toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy"));
-	ui->label_Seamly2D_Built->setText(tr("Built on %1 at %2").arg(date.toString()).arg(__TIME__));
+    QDate date = QLocale::c().toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy"));
+    ui->label_Seamly2D_Built->setText(tr("Built on %1 at %2").arg(date.toString()).arg(__TIME__));
 
-	ui->label_Legal_Stuff->setText(QApplication::translate("InternalStrings",
-									  "The program is provided AS IS with NO WARRANTY OF ANY "
-									  "KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY "
-									  "AND FITNESS FOR A PARTICULAR PURPOSE."));
+    ui->label_Legal_Stuff->setText(QApplication::translate(
+        "InternalStrings",
+        "The program is provided AS IS with NO WARRANTY OF ANY "
+        "KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY "
+        "AND FITNESS FOR A PARTICULAR PURPOSE."));
 
 
-	ui->pushButton_Web_Site->setText(tr("Web site : %1").arg(VER_COMPANYDOMAIN_STR));
-	connect(ui->pushButton_Web_Site, &QPushButton::clicked, this, [this]()
-	{
-		if ( QDesktopServices::openUrl(QUrl(VER_COMPANYDOMAIN_STR)) == false)
-		{
-			qWarning() << tr("Cannot open your default browser");
-		}
-	});
+    ui->pushButton_Web_Site->setText(tr("Web site : %1").arg(VER_COMPANYDOMAIN_STR));
+    connect(ui->pushButton_Web_Site, &QPushButton::clicked, this, [this]() {
+        if (QDesktopServices::openUrl(QUrl(VER_COMPANYDOMAIN_STR)) == false) {
+            qWarning() << tr("Cannot open your default browser");
+        }
+    });
 
-	connect(ui->pushButtonCheckUpdate, &QPushButton::clicked, []()
-	{
-		// Set feed URL before doing anything else
-		FvUpdater::sharedUpdater()->SetFeedURL(defaultFeedURL);
-		FvUpdater::sharedUpdater()->CheckForUpdatesNotSilent();
-	});
+    connect(ui->pushButtonCheckUpdate, &QPushButton::clicked, []() {
+        // Set feed URL before doing anything else
+        FvUpdater::sharedUpdater()->SetFeedURL(defaultFeedURL);
+        FvUpdater::sharedUpdater()->CheckForUpdatesNotSilent();
+    });
 
-	// By default on Windows font point size 8 points we need 11 like on Linux.
-	FontPointSize(ui->label_Legal_Stuff, 11);
-	FontPointSize(ui->label_contrib_label, 11);
-	FontPointSize(ui->label_Seamly2D_Built, 11);
-	FontPointSize(ui->label_QT_Version, 11);
-	ui->downloadProgress->hide();
-	ui->downloadProgress->setValue(0);
-	connect(FvUpdater::sharedUpdater(), SIGNAL(setProgress(int)), this, SLOT(setProgressValue(int)));
+    // By default on Windows font point size 8 points we need 11 like on Linux.
+    FontPointSize(ui->label_Legal_Stuff, 11);
+    FontPointSize(ui->label_contrib_label, 11);
+    FontPointSize(ui->label_Seamly2D_Built, 11);
+    FontPointSize(ui->label_QT_Version, 11);
+    ui->downloadProgress->hide();
+    ui->downloadProgress->setValue(0);
+    connect(
+        FvUpdater::sharedUpdater(), SIGNAL(setProgress(int)), this, SLOT(setProgressValue(int)));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogAboutApp::~DialogAboutApp()
+DialogAboutApp::~DialogAboutApp() { delete ui; }
+
+//---------------------------------------------------------------------------------------------------------------------
+void DialogAboutApp::showEvent(QShowEvent* event)
 {
-	delete ui;
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
+        return;
+    }
+
+    if (isInitialized) {
+        return;
+    }
+    // do your init stuff here
+
+    setMaximumSize(size());
+    setMinimumSize(size());
+
+    isInitialized = true;   // first show windows are held
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogAboutApp::showEvent(QShowEvent *event)
+void DialogAboutApp::FontPointSize(QWidget* w, int pointSize)
 {
-	QDialog::showEvent( event );
-	if ( event->spontaneous() )
-	{
-		return;
-	}
+    SCASSERT(w != nullptr)
 
-	if (isInitialized)
-	{
-		return;
-	}
-	// do your init stuff here
-
-	setMaximumSize(size());
-	setMinimumSize(size());
-
-	isInitialized = true;//first show windows are held
+    QFont font = w->font();
+    font.setPointSize(pointSize);
+    w->setFont(font);
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-void DialogAboutApp::FontPointSize(QWidget *w, int pointSize)
+void DialogAboutApp::setProgressValue(int val)
 {
-	SCASSERT(w != nullptr)
-
-	QFont font = w->font();
-	font.setPointSize(pointSize);
-	w->setFont(font);
-}
-
-void DialogAboutApp::setProgressValue(int val) {
-	if (!ui->downloadProgress->isVisible()){
-		ui->downloadProgress->show();
-		ui->pushButtonCheckUpdate->setDisabled(true);
-	}
-	ui->downloadProgress->setValue(val);
-	if (val == 100){
-		ui->downloadProgress->hide();
-		ui->downloadProgress->setValue(0);
-		ui->pushButtonCheckUpdate->setDisabled(false);
-	}
+    if (!ui->downloadProgress->isVisible()) {
+        ui->downloadProgress->show();
+        ui->pushButtonCheckUpdate->setDisabled(true);
+    }
+    ui->downloadProgress->setValue(val);
+    if (val == 100) {
+        ui->downloadProgress->hide();
+        ui->downloadProgress->setValue(0);
+        ui->pushButtonCheckUpdate->setDisabled(false);
+    }
 }

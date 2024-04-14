@@ -56,13 +56,12 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_QmuParserErrorMsg::TST_QmuParserErrorMsg(const QString &locale, QObject *parent)
-    : AbstractTest(parent),
-      m_locale(locale),
-      appTranslator(nullptr),
-      msg(nullptr)
-{
-}
+TST_QmuParserErrorMsg::TST_QmuParserErrorMsg(const QString& locale, QObject* parent)
+    : AbstractTest(parent)
+    , m_locale(locale)
+    , appTranslator(nullptr)
+    , msg(nullptr)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 TST_QmuParserErrorMsg::~TST_QmuParserErrorMsg()
@@ -74,15 +73,13 @@ TST_QmuParserErrorMsg::~TST_QmuParserErrorMsg()
 //---------------------------------------------------------------------------------------------------------------------
 void TST_QmuParserErrorMsg::initTestCase()
 {
-    if (m_locale.isEmpty())
-    {
+    if (m_locale.isEmpty()) {
         QFAIL("Empty locale code.");
     }
 
     const QStringList locales = SupportedLocales();
 
-    if (not locales.contains(m_locale))
-    {
+    if (not locales.contains(m_locale)) {
         QFAIL("Unsupported locale code.");
     }
 
@@ -90,8 +87,7 @@ void TST_QmuParserErrorMsg::initTestCase()
     const QStringList fileNames = dir.entryList(QStringList("seamly2d_*.qm"));
     QVERIFY2(locales.size() == fileNames.size(), "Unexpected count of files.");
 
-    if (loadTranslations(m_locale) != NoError)
-    {
+    if (loadTranslations(m_locale) != NoError) {
         const QString message = QString("Couldn't load variables. Locale = %1").arg(m_locale);
         QSKIP(qUtf8Printable(message));
     }
@@ -157,30 +153,27 @@ void TST_QmuParserErrorMsg::TestEErrorCodes()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_QmuParserErrorMsg::cleanupTestCase()
-{
-    RemoveTranslation();
-}
+void TST_QmuParserErrorMsg::cleanupTestCase() { RemoveTranslation(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_QmuParserErrorMsg::AddCase(int code, bool tok, bool pos)
 {
-    const QString tag = QString("Check translation code=%1 in file seamly2d_%2.qm").arg(code).arg(m_locale);
+    const QString tag =
+        QString("Check translation code=%1 in file seamly2d_%2.qm").arg(code).arg(m_locale);
     QTest::newRow(qUtf8Printable(tag)) << code << tok << pos;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int TST_QmuParserErrorMsg::loadTranslations(const QString &checkedLocale)
+int TST_QmuParserErrorMsg::loadTranslations(const QString& checkedLocale)
 {
     const QString path = TranslationsPath();
     const QString file = QString("seamly2d_%1.qm").arg(checkedLocale);
 
-    if (QFileInfo(path+QLatin1String("/")+file).size() <= 34)
-    {
+    if (QFileInfo(path + QLatin1String("/") + file).size() <= 34) {
         const QString message = QString("Translation for locale = %1 is empty. \nFull path: %2/%3")
-                .arg(checkedLocale)
-                .arg(path)
-                .arg(file);
+                                    .arg(checkedLocale)
+                                    .arg(path)
+                                    .arg(file);
         QWARN(qUtf8Printable(message));
 
         return ErrorSize;
@@ -188,9 +181,9 @@ int TST_QmuParserErrorMsg::loadTranslations(const QString &checkedLocale)
 
     appTranslator = new QTranslator(this);
 
-    if (not appTranslator->load(file, path))
-    {
-        const QString message = QString("Can't load translation for locale = %1. \nFull path: %2/%3")
+    if (not appTranslator->load(file, path)) {
+        const QString message =
+            QString("Can't load translation for locale = %1. \nFull path: %2/%3")
                 .arg(checkedLocale)
                 .arg(path)
                 .arg(file);
@@ -201,9 +194,9 @@ int TST_QmuParserErrorMsg::loadTranslations(const QString &checkedLocale)
         return ErrorLoad;
     }
 
-    if (not QCoreApplication::installTranslator(appTranslator))
-    {
-        const QString message = QString("Can't install translation for locale = %1. \nFull path: %2/%3")
+    if (not QCoreApplication::installTranslator(appTranslator)) {
+        const QString message =
+            QString("Can't install translation for locale = %1. \nFull path: %2/%3")
                 .arg(checkedLocale)
                 .arg(path)
                 .arg(file);
@@ -215,7 +208,7 @@ int TST_QmuParserErrorMsg::loadTranslations(const QString &checkedLocale)
     }
 
     delete msg;
-    msg = new qmu::QmuParserErrorMsg();//Very important do it after load QM file.
+    msg = new qmu::QmuParserErrorMsg();   // Very important do it after load QM file.
 
     return NoError;
 }
@@ -223,13 +216,12 @@ int TST_QmuParserErrorMsg::loadTranslations(const QString &checkedLocale)
 //---------------------------------------------------------------------------------------------------------------------
 void TST_QmuParserErrorMsg::RemoveTranslation()
 {
-    if (not appTranslator.isNull())
-    {
+    if (not appTranslator.isNull()) {
         const bool result = QCoreApplication::removeTranslator(appTranslator);
 
-        if (result == false)
-        {
-            const QString message = QString("Can't remove translation for locale = %1").arg(m_locale);
+        if (result == false) {
+            const QString message =
+                QString("Can't remove translation for locale = %1").arg(m_locale);
             QWARN(qUtf8Printable(message));
         }
         delete appTranslator;

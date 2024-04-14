@@ -63,7 +63,7 @@
  * @param what string with error
  * @param domElement som element
  */
-VExceptionWrongId::VExceptionWrongId(const QString &what, const QDomElement &domElement)
+VExceptionWrongId::VExceptionWrongId(const QString& what, const QDomElement& domElement)
     : VException(what)
     , tagText(QString())
     , tagName(QString())
@@ -81,7 +81,7 @@ VExceptionWrongId::VExceptionWrongId(const QString &what, const QDomElement &dom
  * @brief VExceptionWrongId copy constructor
  * @param e exception
  */
-VExceptionWrongId::VExceptionWrongId(const VExceptionWrongId &error)
+VExceptionWrongId::VExceptionWrongId(const VExceptionWrongId& error)
     : VException(error)
     , tagText(error.TagText())
     , tagName(error.TagName())
@@ -89,10 +89,9 @@ VExceptionWrongId::VExceptionWrongId(const VExceptionWrongId &error)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionWrongId &VExceptionWrongId::operator=(const VExceptionWrongId &error)
+VExceptionWrongId& VExceptionWrongId::operator=(const VExceptionWrongId& error)
 {
-    if (&error == this)
-    {
+    if (&error == this) {
         return *this;
     }
     VException::operator=(error);
@@ -119,5 +118,6 @@ QString VExceptionWrongId::ErrorMessage() const
  */
 QString VExceptionWrongId::DetailedInformation() const
 {
-    return MoreInfo(QString("tag: %1 in line %2\nFull tag:\n%3").arg(tagName).arg(lineNumber).arg(tagText));
+    return MoreInfo(
+        QString("tag: %1 in line %2\nFull tag:\n%3").arg(tagName).arg(lineNumber).arg(tagText));
 }

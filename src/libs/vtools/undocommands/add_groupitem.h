@@ -25,12 +25,12 @@
 #ifndef ADD_GROUPITEM_H
 #define ADD_GROUPITEM_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -38,18 +38,21 @@ class AddGroupItem : public VUndoCommand
 {
     Q_OBJECT
 public:
-                  AddGroupItem(const QDomElement &xml, VAbstractPattern *doc, quint32 nodeId,
-                                      QUndoCommand *parent = nullptr);
-    virtual      ~AddGroupItem();
-    virtual void  undo() Q_DECL_OVERRIDE;
-    virtual void  redo() Q_DECL_OVERRIDE;
+    AddGroupItem(
+        const QDomElement& xml,
+        VAbstractPattern* doc,
+        quint32 nodeId,
+        QUndoCommand* parent = nullptr);
+    virtual ~AddGroupItem();
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
 
 signals:
-    void          updateGroups();
+    void updateGroups();
 
 private:
-                  Q_DISABLE_COPY(AddGroupItem)
+    Q_DISABLE_COPY(AddGroupItem)
     const QString m_activeDraftblockName;
 };
 
-#endif // ADD_GROUPITEM_H
+#endif   // ADD_GROUPITEM_H

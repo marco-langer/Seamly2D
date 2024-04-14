@@ -27,13 +27,18 @@
 #include <QDomElement>
 
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vwidgets/vmaingraphicsview.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vtools/tools/drawTools/vdrawtool.h"
+#include "../vwidgets/vmaingraphicsview.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-ShowDoublePointName::ShowDoublePointName(VAbstractPattern *doc, quint32 toolId, quint32 pointId, bool visible,
-                                         ShowDoublePoint type, QUndoCommand *parent)
+ShowDoublePointName::ShowDoublePointName(
+    VAbstractPattern* doc,
+    quint32 toolId,
+    quint32 pointId,
+    bool visible,
+    ShowDoublePoint type,
+    QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , m_visible(visible)
     , m_oldVisible(not visible)
@@ -44,29 +49,20 @@ ShowDoublePointName::ShowDoublePointName(VAbstractPattern *doc, quint32 toolId, 
     nodeId = pointId;
     qCDebug(vUndo, "Point id %u", nodeId);
 
-    if (type == ShowDoublePoint::FirstPoint)
-    {
+    if (type == ShowDoublePoint::FirstPoint) {
         setText(tr("toggle the first dart visibility"));
-    }
-    else
-    {
+    } else {
         setText(tr("toggle the second dart visibility"));
     }
 
     const QDomElement domElement = doc->elementById(m_idTool, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
-        if (type == ShowDoublePoint::FirstPoint)
-        {
+    if (domElement.isElement()) {
+        if (type == ShowDoublePoint::FirstPoint) {
             m_oldVisible = doc->getParameterBool(domElement, AttrShowPointName1, trueStr);
-        }
-        else
-        {
+        } else {
             m_oldVisible = doc->getParameterBool(domElement, AttrShowPointName2, trueStr);
         }
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", m_idTool);
     }
 }
@@ -91,25 +87,18 @@ void ShowDoublePointName::redo()
 void ShowDoublePointName::setVisibility(bool visible)
 {
     QDomElement domElement = doc->elementById(m_idTool, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
-        if (m_type == ShowDoublePoint::FirstPoint)
-        {
+    if (domElement.isElement()) {
+        if (m_type == ShowDoublePoint::FirstPoint) {
             doc->SetAttribute<bool>(domElement, AttrShowPointName1, visible);
-        }
-        else
-        {
+        } else {
             doc->SetAttribute<bool>(domElement, AttrShowPointName2, visible);
         }
 
-        if (VDrawTool *tool = qobject_cast<VDrawTool *>(VAbstractPattern::getTool(m_idTool)))
-        {
+        if (VDrawTool* tool = qobject_cast<VDrawTool*>(VAbstractPattern::getTool(m_idTool))) {
             tool->setPointNameVisiblity(nodeId, visible);
         }
         VMainGraphicsView::NewSceneRect(m_scene, qApp->getSceneView());
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", m_idTool);
     }
 }

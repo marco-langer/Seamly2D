@@ -57,10 +57,9 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_NameRegExp::TST_NameRegExp(QObject *parent) :
-    QObject(parent)
-{
-}
+TST_NameRegExp::TST_NameRegExp(QObject* parent)
+    : QObject(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
@@ -70,65 +69,69 @@ void TST_NameRegExp::TestNameRegExp_data()
     QTest::addColumn<bool>("result");
 
     const QList<QLocale> allLocales =
-            QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
+        QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
 
-    for(int i = 0; i < allLocales.size(); ++i)
-    {
+    for (int i = 0; i < allLocales.size(); ++i) {
         INIT_LOCALE_VARIABLES(allLocales.at(i));
         Q_UNUSED(positiveSign)
         Q_UNUSED(expUpper)
         Q_UNUSED(expLower)
 
         const QString localeName = allLocales.at(i).name();
-        QString tag = localeName+QLatin1String(". First character can't be ")+sign0;
-        QTest::newRow(qUtf8Printable(tag)) << sign0+QLatin1String("a") << false;
+        QString tag = localeName + QLatin1String(". First character can't be ") + sign0;
+        QTest::newRow(qUtf8Printable(tag)) << sign0 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign1;
-        QTest::newRow(qUtf8Printable(tag)) << sign1+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign1;
+        QTest::newRow(qUtf8Printable(tag)) << sign1 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign2;
-        QTest::newRow(qUtf8Printable(tag)) << sign2+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign2;
+        QTest::newRow(qUtf8Printable(tag)) << sign2 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign3;
-        QTest::newRow(qUtf8Printable(tag)) << sign3+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign3;
+        QTest::newRow(qUtf8Printable(tag)) << sign3 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign4;
-        QTest::newRow(qUtf8Printable(tag)) << sign4+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign4;
+        QTest::newRow(qUtf8Printable(tag)) << sign4 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign5;
-        QTest::newRow(qUtf8Printable(tag)) << sign5+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign5;
+        QTest::newRow(qUtf8Printable(tag)) << sign5 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign6;
-        QTest::newRow(qUtf8Printable(tag)) << sign6+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign6;
+        QTest::newRow(qUtf8Printable(tag)) << sign6 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign7;
-        QTest::newRow(qUtf8Printable(tag)) << sign7+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign7;
+        QTest::newRow(qUtf8Printable(tag)) << sign7 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign8;
-        QTest::newRow(qUtf8Printable(tag)) << sign8+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign8;
+        QTest::newRow(qUtf8Printable(tag)) << sign8 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be ")+sign9;
-        QTest::newRow(qUtf8Printable(tag)) << sign9+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be ") + sign9;
+        QTest::newRow(qUtf8Printable(tag)) << sign9 + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be \"")+negativeSign+QLatin1String("\"");
-        QTest::newRow(qUtf8Printable(tag)) << negativeSign+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be \"") + negativeSign
+            + QLatin1String("\"");
+        QTest::newRow(qUtf8Printable(tag)) << negativeSign + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be \"")+decimalPoint+QLatin1String("\"");
-        QTest::newRow(qUtf8Printable(tag)) << decimalPoint+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be \"") + decimalPoint
+            + QLatin1String("\"");
+        QTest::newRow(qUtf8Printable(tag)) << decimalPoint + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". First character can't be \"")+groupSeparator+QLatin1String("\"");
-        QTest::newRow(qUtf8Printable(tag)) << groupSeparator+QLatin1String("a") << false;
+        tag = localeName + QLatin1String(". First character can't be \"") + groupSeparator
+            + QLatin1String("\"");
+        QTest::newRow(qUtf8Printable(tag)) << groupSeparator + QLatin1String("a") << false;
 
-        tag = localeName+QLatin1String(". Any next character can't be \"")+negativeSign+QLatin1String("\"");
-        QTest::newRow(qUtf8Printable(tag)) << QLatin1String("a")+negativeSign << false;
+        tag = localeName + QLatin1String(". Any next character can't be \"") + negativeSign
+            + QLatin1String("\"");
+        QTest::newRow(qUtf8Printable(tag)) << QLatin1String("a") + negativeSign << false;
 
-        tag = localeName+QLatin1String(". Any next character can't be \"")+decimalPoint+QLatin1String("\"");
-        QTest::newRow(qUtf8Printable(tag)) << QLatin1String("a")+decimalPoint << false;
+        tag = localeName + QLatin1String(". Any next character can't be \"") + decimalPoint
+            + QLatin1String("\"");
+        QTest::newRow(qUtf8Printable(tag)) << QLatin1String("a") + decimalPoint << false;
 
-        if (groupSeparator != '\'')
-        {
-            tag = localeName+QLatin1String(". Any next character can't be \"")+groupSeparator+QLatin1String("\"");
-            QTest::newRow(qUtf8Printable(tag)) << QLatin1String("a")+groupSeparator << false;
+        if (groupSeparator != '\'') {
+            tag = localeName + QLatin1String(". Any next character can't be \"") + groupSeparator
+                + QLatin1String("\"");
+            QTest::newRow(qUtf8Printable(tag)) << QLatin1String("a") + groupSeparator << false;
         }
     }
 
@@ -192,8 +195,7 @@ void TST_NameRegExp::TestOriginalMeasurementNamesRegExp_data()
     QTest::addColumn<QString>("str");
 
     const QStringList originalNames = AllGroupNames();
-    foreach(const QString &str, originalNames)
-    {
+    foreach (const QString& str, originalNames) {
         const QString name = QString("Measurement '%1'").arg(str);
         QTest::newRow(qUtf8Printable(name)) << str;
     }
@@ -358,12 +360,14 @@ void TST_NameRegExp::TestCorrectOrderMeasurement_data()
     QTest::newRow("I02") << shoulderTipToShoulderTipF_M << "shoulder_tip_to_shoulder_tip_f";
     QTest::newRow("I03") << acrossChestF_M << "across_chest_f";
     QTest::newRow("I04") << armfoldToArmfoldF_M << "armfold_to_armfold_f";
-    QTest::newRow("I05") << shoulderTipToShoulderTipHalfF_M << "shoulder_tip_to_shoulder_tip_half_f";
+    QTest::newRow("I05") << shoulderTipToShoulderTipHalfF_M
+                         << "shoulder_tip_to_shoulder_tip_half_f";
     QTest::newRow("I06") << acrossChestHalfF_M << "across_chest_half_f";
     QTest::newRow("I07") << shoulderTipToShoulderTipB_M << "shoulder_tip_to_shoulder_tip_b";
     QTest::newRow("I08") << acrossBackB_M << "across_back_b";
     QTest::newRow("I09") << armfoldToArmfoldB_M << "armfold_to_armfold_b";
-    QTest::newRow("I10") << shoulderTipToShoulderTipHalfB_M << "shoulder_tip_to_shoulder_tip_half_b";
+    QTest::newRow("I10") << shoulderTipToShoulderTipHalfB_M
+                         << "shoulder_tip_to_shoulder_tip_half_b";
     QTest::newRow("I11") << acrossBackHalfB_M << "across_back_half_b";
     QTest::newRow("I12") << neckFrontToShoulderTipF_M << "neck_front_to_shoulder_tip_f";
     QTest::newRow("I13") << neckBackToShoulderTipB_M << "neck_back_to_shoulder_tip_b";
@@ -377,8 +381,8 @@ void TST_NameRegExp::TestCorrectOrderMeasurement_data()
     QTest::newRow("J07") << bustpointToShoulderTip_M << "bustpoint_to_shoulder_tip";
     QTest::newRow("J08") << bustpointToWaistFront_M << "bustpoint_to_waist_front";
     QTest::newRow("J09") << bustpointToBustpointHalter_M << "bustpoint_to_bustpoint_halter";
-    QTest::newRow("J10") << bustpointToShoulderCenter_M  << "bustpoint_to_shoulder_center";
-    QTest::newRow("J10") << bustpointToNeckFront_M  << "bustpoint_to_neck_front";
+    QTest::newRow("J10") << bustpointToShoulderCenter_M << "bustpoint_to_shoulder_center";
+    QTest::newRow("J10") << bustpointToNeckFront_M << "bustpoint_to_neck_front";
     QTest::newRow("K01") << shoulderTipToWaistFront_M << "shoulder_tip_to_waist_front";
     QTest::newRow("K02") << neckFrontToWaistSide_M << "neck_front_to_waist_side";
     QTest::newRow("K03") << neckSideToWaistSideF_M << "neck_side_to_waist_side_f";
@@ -447,21 +451,30 @@ void TST_NameRegExp::TestCorrectOrderMeasurement_data()
     QTest::newRow("O09") << armNeckBackToWristBent_M << "arm_neck_back_to_wrist_bent";
     QTest::newRow("O10") << armNeckSideToElbowBent_M << "arm_neck_side_to_elbow_bent";
     QTest::newRow("O11") << armNeckSideToWristBent_M << "arm_neck_side_to_wrist_bent";
-    QTest::newRow("O12") << armAcrossBackCenterToElbowBent_M << "arm_across_back_center_to_elbow_bent";
-    QTest::newRow("O13") << armAcrossBackCenterToWristBent_M << "arm_across_back_center_to_wrist_bent";
-    QTest::newRow("O14") << armArmscyeBackCenterToWristBent_M << "arm_armscye_back_center_to_wrist_bent";
+    QTest::newRow("O12") << armAcrossBackCenterToElbowBent_M
+                         << "arm_across_back_center_to_elbow_bent";
+    QTest::newRow("O13") << armAcrossBackCenterToWristBent_M
+                         << "arm_across_back_center_to_wrist_bent";
+    QTest::newRow("O14") << armArmscyeBackCenterToWristBent_M
+                         << "arm_armscye_back_center_to_wrist_bent";
     QTest::newRow("P01") << neckBackToBustFront_M << "neck_back_to_bust_front";
     QTest::newRow("P02") << neckBackToArmfoldFront_M << "neck_back_to_armfold_front";
-    QTest::newRow("P03") << neckBackToArmfoldFrontToWaistSide_M << "neck_back_to_armfold_front_to_waist_side";
-    QTest::newRow("P04") << highbustBackOverShoulderToArmfoldFront_M << "highbust_back_over_shoulder_to_armfold_front";
-    QTest::newRow("P05") << highbustBackOverShoulderToWaistFront_M << "highbust_back_over_shoulder_to_waist_front";
-    QTest::newRow("P06") << neckBackToArmfoldFrontToNeckBack_M << "neck_back_to_armfold_front_to_neck_back";
+    QTest::newRow("P03") << neckBackToArmfoldFrontToWaistSide_M
+                         << "neck_back_to_armfold_front_to_waist_side";
+    QTest::newRow("P04") << highbustBackOverShoulderToArmfoldFront_M
+                         << "highbust_back_over_shoulder_to_armfold_front";
+    QTest::newRow("P05") << highbustBackOverShoulderToWaistFront_M
+                         << "highbust_back_over_shoulder_to_waist_front";
+    QTest::newRow("P06") << neckBackToArmfoldFrontToNeckBack_M
+                         << "neck_back_to_armfold_front_to_neck_back";
     QTest::newRow("P07") << acrossBackCenterToArmfoldFrontToAcrossBackCenter_M
                          << "across_back_center_to_armfold_front_to_across_back_center";
-    QTest::newRow("P08") << neckBackToArmfoldFrontToHighbustBack_M << "neck_back_to_armfold_front_to_highbust_back";
+    QTest::newRow("P08") << neckBackToArmfoldFrontToHighbustBack_M
+                         << "neck_back_to_armfold_front_to_highbust_back";
     QTest::newRow("P09") << armfoldToArmfoldBust_M << "armfold_to_armfold_bust";
     QTest::newRow("P10") << armfoldToBustFront_M << "armfold_to_bust_front";
-    QTest::newRow("P11") << highbustBOverShoulderToHighbustF_M << "highbust_b_over_shoulder_to_highbust_f";
+    QTest::newRow("P11") << highbustBOverShoulderToHighbustF_M
+                         << "highbust_b_over_shoulder_to_highbust_f";
     QTest::newRow("P12") << armscyeArc_M << "armscye_arc";
     QTest::newRow("Q01") << dartWidthShoulder_M << "dart_width_shoulder";
     QTest::newRow("Q02") << dartWidthBust_M << "dart_width_bust";

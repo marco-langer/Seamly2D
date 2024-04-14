@@ -52,10 +52,10 @@
 #ifndef VGOBJECT_P_H
 #define VGOBJECT_P_H
 
-#include <QSharedData>
-#include "vgeometrydef.h"
 #include "../ifc/ifcdef.h"
 #include "../vmisc/diagnostic.h"
+#include "vgeometrydef.h"
+#include <QSharedData>
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -65,15 +65,28 @@ class VGObjectData : public QSharedData
 {
 public:
     VGObjectData()
-        :_id(NULL_ID), type(GOType::Unknown), idObject(NULL_ID), _name(QString()), mode(Draw::Calculation)
+        : _id(NULL_ID)
+        , type(GOType::Unknown)
+        , idObject(NULL_ID)
+        , _name(QString())
+        , mode(Draw::Calculation)
     {}
 
-    VGObjectData(const GOType &type, const quint32 &idObject, const Draw &mode)
-        :_id(NULL_ID), type(type), idObject(idObject), _name(QString()), mode(mode)
+    VGObjectData(const GOType& type, const quint32& idObject, const Draw& mode)
+        : _id(NULL_ID)
+        , type(type)
+        , idObject(idObject)
+        , _name(QString())
+        , mode(mode)
     {}
 
-    VGObjectData(const VGObjectData &obj)
-        :QSharedData(obj), _id(obj._id), type(obj.type), idObject(obj.idObject), _name(obj._name), mode(obj.mode)
+    VGObjectData(const VGObjectData& obj)
+        : QSharedData(obj)
+        , _id(obj._id)
+        , type(obj.type)
+        , idObject(obj.idObject)
+        , _name(obj._name)
+        , mode(obj.mode)
     {}
 
     virtual ~VGObjectData();
@@ -82,7 +95,7 @@ public:
     quint32 _id;
 
     /** @brief type type of graphical object */
-    GOType  type;
+    GOType type;
 
     /** @brief idObject id of parent object. Only for modeling. All another return 0. */
     quint32 idObject;
@@ -91,15 +104,14 @@ public:
     QString _name;
 
     /** @brief mode object created in calculation or drawing mode */
-    Draw    mode;
+    Draw mode;
 
 private:
-    VGObjectData &operator=(const VGObjectData &) Q_DECL_EQ_DELETE;
+    VGObjectData& operator=(const VGObjectData&) Q_DECL_EQ_DELETE;
 };
 
-VGObjectData::~VGObjectData()
-{}
+VGObjectData::~VGObjectData() {}
 
 QT_WARNING_POP
 
-#endif // VGOBJECT_P_H
+#endif   // VGOBJECT_P_H

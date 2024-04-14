@@ -52,22 +52,22 @@
 #ifndef DIALOGCUBICBEZIER_H
 #define DIALOGCUBICBEZIER_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vgeometry/vcubicbezier.h"
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
-namespace Ui
-{
-    class DialogCubicBezier;
+namespace Ui {
+class DialogCubicBezier;
 }
 
 class DialogCubicBezier : public DialogTool
@@ -75,40 +75,41 @@ class DialogCubicBezier : public DialogTool
     Q_OBJECT
 
 public:
-    explicit      DialogCubicBezier(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
-    virtual      ~DialogCubicBezier();
+    explicit DialogCubicBezier(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    virtual ~DialogCubicBezier();
 
-    VCubicBezier  GetSpline() const;
-    void          SetSpline(const VCubicBezier &spline);
+    VCubicBezier GetSpline() const;
+    void SetSpline(const VCubicBezier& spline);
 
-    QString       getPenStyle() const;
-    void          setPenStyle(const QString &value);
+    QString getPenStyle() const;
+    void setPenStyle(const QString& value);
 
-    QString       getLineWeight() const;
-    void          setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString       getLineColor() const;
-    void          setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
 public slots:
-    virtual void  ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void  PointNameChanged() Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
 
 protected:
-    virtual void  ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void  SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogCubicBezier)
-    Ui::DialogCubicBezier *ui;
+    Ui::DialogCubicBezier* ui;
 
     /** @brief spl spline */
-    VCubicBezier  spl;
+    VCubicBezier spl;
 
-    qint32        newDuplicate;
+    qint32 newDuplicate;
 
     const QSharedPointer<VPointF> GetP1() const;
     const QSharedPointer<VPointF> GetP2() const;
@@ -116,4 +117,4 @@ private:
     const QSharedPointer<VPointF> GetP4() const;
 };
 
-#endif // DIALOGCUBICBEZIER_H
+#endif   // DIALOGCUBICBEZIER_H

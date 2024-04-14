@@ -51,8 +51,6 @@
 
 #include "vtoolmirrorbyaxis.h"
 
-#include <limits.h>
-#include <qiterator.h>
 #include <QColor>
 #include <QDomNode>
 #include <QDomNodeList>
@@ -63,29 +61,32 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QUndoStack>
+#include <limits.h>
 #include <new>
+#include <qiterator.h>
 
-#include "../../../../dialogs/tools/dialogtool.h"
 #include "../../../../dialogs/tools/dialogmirrorbyaxis.h"
+#include "../../../../dialogs/tools/dialogtool.h"
 #include "../../../../visualization/line/operation/vistoolmirrorbyaxis.h"
 #include "../../../../visualization/visualization.h"
-#include "../vgeometry/vpointf.h"
-#include "../vpatterndb/vtranslatevars.h"
-#include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vcommonsettings.h"
-#include "../vmisc/diagnostic.h"
-#include "../vmisc/logging.h"
-#include "../vpatterndb/vcontainer.h"
-#include "../vpatterndb/vformula.h"
-#include "../ifc/ifcdef.h"
-#include "../ifc/exception/vexception.h"
-#include "../vwidgets/vabstractsimple.h"
-#include "../vwidgets/vmaingraphicsscene.h"
 #include "../../../vabstracttool.h"
 #include "../../../vdatatool.h"
 #include "../../vdrawtool.h"
+#include "../ifc/exception/vexception.h"
+#include "../ifc/ifcdef.h"
+#include "../vgeometry/vpointf.h"
+#include "../vmisc/diagnostic.h"
+#include "../vmisc/logging.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/vcontainer.h"
+#include "../vpatterndb/vformula.h"
+#include "../vpatterndb/vtranslatevars.h"
+#include "../vwidgets/vabstractsimple.h"
+#include "../vwidgets/vmaingraphicsscene.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 const QString VToolMirrorByAxis::ToolType = QStringLiteral("flippingByAxis");
 
@@ -101,42 +102,58 @@ void VToolMirrorByAxis::setDialog()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolMirrorByAxis *VToolMirrorByAxis::Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene,
-                                                 VAbstractPattern *doc, VContainer *data)
+VToolMirrorByAxis* VToolMirrorByAxis::Create(
+    QSharedPointer<DialogTool> dialog,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data)
 {
     SCASSERT(not dialog.isNull())
     QSharedPointer<DialogMirrorByAxis> dialogTool = dialog.objectCast<DialogMirrorByAxis>();
     SCASSERT(not dialogTool.isNull())
-    const quint32 originPointId      = dialogTool->getOriginPointId();
-    const AxisType axisType          = dialogTool->getAxisType();
-    const QString suffix             = dialogTool->getSuffix();
+    const quint32 originPointId = dialogTool->getOriginPointId();
+    const AxisType axisType = dialogTool->getAxisType();
+    const QString suffix = dialogTool->getSuffix();
     const QVector<SourceItem> source = dialogTool->getSourceObjects();
-    VToolMirrorByAxis* operation  = Create(0, originPointId, axisType, suffix, source, QVector<DestinationItem>(),
-                                           scene, doc, data, Document::FullParse, Source::FromGui);
-    if (operation != nullptr)
-    {
+    VToolMirrorByAxis* operation = Create(
+        0,
+        originPointId,
+        axisType,
+        suffix,
+        source,
+        QVector<DestinationItem>(),
+        scene,
+        doc,
+        data,
+        Document::FullParse,
+        Source::FromGui);
+    if (operation != nullptr) {
         operation->m_dialog = dialogTool;
     }
     return operation;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolMirrorByAxis *VToolMirrorByAxis::Create(const quint32 _id, quint32 originPointId, AxisType axisType,
-                                                 const QString &suffix, const QVector<SourceItem> &source,
-                                                 const QVector<DestinationItem> &destination, VMainGraphicsScene *scene,
-                                                 VAbstractPattern *doc, VContainer *data, const Document &parse,
-                                                 const Source &typeCreation)
+VToolMirrorByAxis* VToolMirrorByAxis::Create(
+    const quint32 _id,
+    quint32 originPointId,
+    AxisType axisType,
+    const QString& suffix,
+    const QVector<SourceItem>& source,
+    const QVector<DestinationItem>& destination,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data,
+    const Document& parse,
+    const Source& typeCreation)
 {
     const auto originPoint = *data->GeometricObject<VPointF>(originPointId);
     const QPointF fPoint = static_cast<QPointF>(originPoint);
 
     QPointF sPoint;
-    if (axisType == AxisType::VerticalAxis)
-    {
+    if (axisType == AxisType::VerticalAxis) {
         sPoint = QPointF(fPoint.x(), fPoint.y() + 100);
-    }
-    else
-    {
+    } else {
         sPoint = QPointF(fPoint.x() + 100, fPoint.y());
     }
 
@@ -145,17 +162,15 @@ VToolMirrorByAxis *VToolMirrorByAxis::Create(const quint32 _id, quint32 originPo
     quint32 id = _id;
     createDestination(typeCreation, id, dest, source, fPoint, sPoint, suffix, doc, data, parse);
 
-    if (parse == Document::FullParse)
-    {
+    if (parse == Document::FullParse) {
         VDrawTool::AddRecord(id, Tool::MirrorByAxis, doc);
-        VToolMirrorByAxis *tool = new VToolMirrorByAxis(doc, data, id, originPointId, axisType, suffix, source,
-                                                            dest, typeCreation);
+        VToolMirrorByAxis* tool = new VToolMirrorByAxis(
+            doc, data, id, originPointId, axisType, suffix, source, dest, typeCreation);
         scene->addItem(tool);
         initOperationToolConnections(scene, tool);
         VAbstractPattern::AddTool(id, tool);
         doc->IncrementReferens(originPoint.getIdTool());
-        for (int i = 0; i < source.size(); ++i)
-        {
+        for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
             doc->IncrementReferens(data->GetGObject(item.id)->getIdTool());
         }
@@ -165,10 +180,7 @@ VToolMirrorByAxis *VToolMirrorByAxis::Create(const quint32 _id, quint32 originPo
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-AxisType VToolMirrorByAxis::getAxisType() const
-{
-    return m_axisType;
-}
+AxisType VToolMirrorByAxis::getAxisType() const { return m_axisType; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VToolMirrorByAxis::setAxisType(AxisType value)
@@ -186,16 +198,12 @@ QString VToolMirrorByAxis::getOriginPointName() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VToolMirrorByAxis::getOriginPointId() const
-{
-    return m_originPointId;
-}
+quint32 VToolMirrorByAxis::getOriginPointId() const { return m_originPointId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByAxis::setOriginPointId(const quint32 &value)
+void VToolMirrorByAxis::setOriginPointId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         m_originPointId = value;
 
         QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
@@ -212,9 +220,8 @@ void VToolMirrorByAxis::ShowVisualization(bool show)
 //---------------------------------------------------------------------------------------------------------------------
 void VToolMirrorByAxis::SetVisualization()
 {
-    if (not vis.isNull())
-    {
-        VisToolMirrorByAxis *visual = qobject_cast<VisToolMirrorByAxis *>(vis);
+    if (not vis.isNull()) {
+        VisToolMirrorByAxis* visual = qobject_cast<VisToolMirrorByAxis*>(vis);
         SCASSERT(visual != nullptr)
 
         visual->setObjects(sourceToObjects(source));
@@ -225,19 +232,20 @@ void VToolMirrorByAxis::SetVisualization()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByAxis::SaveDialog(QDomElement &domElement)
+void VToolMirrorByAxis::SaveDialog(QDomElement& domElement)
 {
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogMirrorByAxis> dialogTool = m_dialog.objectCast<DialogMirrorByAxis>();
     SCASSERT(not dialogTool.isNull())
 
     doc->SetAttribute(domElement, AttrCenter, QString().setNum(dialogTool->getOriginPointId()));
-    doc->SetAttribute(domElement, AttrAxisType, QString().setNum(static_cast<int>(dialogTool->getAxisType())));
+    doc->SetAttribute(
+        domElement, AttrAxisType, QString().setNum(static_cast<int>(dialogTool->getAxisType())));
     doc->SetAttribute(domElement, AttrSuffix, dialogTool->getSuffix());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByAxis::ReadToolAttributes(const QDomElement &domElement)
+void VToolMirrorByAxis::ReadToolAttributes(const QDomElement& domElement)
 {
     m_originPointId = doc->GetParametrUInt(domElement, AttrCenter, NULL_ID_STR);
     m_axisType = static_cast<AxisType>(doc->GetParametrUInt(domElement, AttrAxisType, "1"));
@@ -245,7 +253,7 @@ void VToolMirrorByAxis::ReadToolAttributes(const QDomElement &domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByAxis::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void VToolMirrorByAxis::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
@@ -258,16 +266,13 @@ void VToolMirrorByAxis::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByAxis::showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id)
+void VToolMirrorByAxis::showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id)
 {
-    try
-    {
+    try {
         ContextMenu<DialogMirrorByAxis>(event, id);
-    }
-    catch(const VExceptionToolWasDeleted &error)
-    {
+    } catch (const VExceptionToolWasDeleted& error) {
         Q_UNUSED(error)
-        return;//Leave this method immediately!!!
+        return;   // Leave this method immediately!!!
     }
 }
 
@@ -275,16 +280,23 @@ void VToolMirrorByAxis::showContextMenu(QGraphicsSceneContextMenuEvent *event, q
 QString VToolMirrorByAxis::makeToolTip() const
 {
     const QString toolTipStr = QString("<tr> <td><b>%1:</b> %2</td> </tr>")
-                                       .arg(tr("Origin point"))
-                                       .arg(getOriginPointName());
+                                   .arg(tr("Origin point"))
+                                   .arg(getOriginPointName());
     return toolTipStr;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolMirrorByAxis::VToolMirrorByAxis(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 originPointId,
-                                         AxisType axisType, const QString &suffix,
-                                         const QVector<SourceItem> &source, const QVector<DestinationItem> &destination,
-                                         const Source &typeCreation, QGraphicsItem *parent)
+VToolMirrorByAxis::VToolMirrorByAxis(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    quint32 originPointId,
+    AxisType axisType,
+    const QString& suffix,
+    const QVector<SourceItem>& source,
+    const QVector<DestinationItem>& destination,
+    const Source& typeCreation,
+    QGraphicsItem* parent)
     : VAbstractMirror(doc, data, id, suffix, source, destination, parent)
     , m_originPointId(originPointId)
     , m_axisType(axisType)

@@ -1,15 +1,15 @@
 /******************************************************************************
  *   @file   color_combobox.cpp                                               *
  *****************************************************************************/
-#include <QColor>
-#include <QPixmap>
-#include <QMap>
 #include <QAbstractItemView>
+#include <QColor>
 #include <QComboBox>
+#include <QMap>
+#include <QPixmap>
 
-#include "../vtools/tools/vabstracttool.h"
-#include "../vmisc/logging.h"
 #include "../ifc/ifcdef.h"
+#include "../vmisc/logging.h"
+#include "../vtools/tools/vabstracttool.h"
 
 #include "color_combobox.h"
 
@@ -18,21 +18,21 @@ Q_LOGGING_CATEGORY(colorComboBox, "color_combobox")
 /*
  * Default Constructor.
  */
-ColorComboBox::ColorComboBox(QWidget *parent, const char *name)
+ColorComboBox::ColorComboBox(QWidget* parent, const char* name)
     : QComboBox(parent)
     , m_currentColor("black")
     , m_iconWidth(40)
     , m_iconHeight(14)
 {
     setObjectName(name);
-    setEditable (false);
+    setEditable(false);
     init();
 }
 
 /*
  * Constructor that provides width and height for icon.
  */
-ColorComboBox::ColorComboBox(int width, int height, QWidget *parent, const char *name)
+ColorComboBox::ColorComboBox(int width, int height, QWidget* parent, const char* name)
     : QComboBox(parent)
     , m_currentColor("black")
     , m_iconWidth(width)
@@ -40,14 +40,14 @@ ColorComboBox::ColorComboBox(int width, int height, QWidget *parent, const char 
 {
     qCDebug(colorComboBox, "ColorComboBox Constructor 2 used");
     setObjectName(name);
-    setEditable (false);
+    setEditable(false);
     init();
 }
 
 /**
  * Destructor
  */
-ColorComboBox::~ColorComboBox(){}
+ColorComboBox::~ColorComboBox() {}
 
 /*
  * Initialisation called from constructor or manually but only once.
@@ -55,7 +55,11 @@ ColorComboBox::~ColorComboBox(){}
 void ColorComboBox::init()
 {
     setItems(VAbstractTool::ColorsList());
-    connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ColorComboBox::colorChanged);
+    connect(
+        this,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        &ColorComboBox::colorChanged);
 }
 
 /*
@@ -69,7 +73,7 @@ void ColorComboBox::setItems(QMap<QString, QString> map)
 
 #if defined(Q_OS_MAC)
     // Mac pixmap should be little bit smaller
-    setIconSize(QSize(m_iconWidth-= 2 ,m_iconHeight-= 2));
+    setIconSize(QSize(m_iconWidth -= 2, m_iconHeight -= 2));
 #else
     // Windows
     setIconSize(QSize(m_iconWidth, m_iconHeight));
@@ -78,8 +82,7 @@ void ColorComboBox::setItems(QMap<QString, QString> map)
     this->view()->setTextElideMode(Qt::ElideNone);
     map.remove(ColorByGroup);
     QMap<QString, QString>::const_iterator i = map.constBegin();
-    while (i != map.constEnd())
-    {
+    while (i != map.constEnd()) {
         QPixmap pixmap = VAbstractTool::createColorIcon(m_iconWidth, m_iconHeight, i.key());
         addItem(QIcon(pixmap), i.value(), QVariant(i.key()));
         ++i;
@@ -95,15 +98,14 @@ void ColorComboBox::setItems(QMap<QString, QString> map)
 /*
  * Sets the color shown in the combobox to the given color.
  */
-void ColorComboBox::setColor(const QString &color)
+void ColorComboBox::setColor(const QString& color)
 {
     qCDebug(colorComboBox, "ColorComboBox::setColor");
     m_currentColor = color;
 
     setCurrentIndex(findData(color));
 
-    if (currentIndex()!= count() -1 )
-    {
+    if (currentIndex() != count() - 1) {
         colorChanged(currentIndex());
     }
 }
@@ -117,25 +119,15 @@ void ColorComboBox::colorChanged(int index)
     qCDebug(colorComboBox, "ColorComboBox::colorChanged");
 
     QVariant color = itemData(index);
-    if(color != QVariant::Invalid )
-    {
-       m_currentColor = QVariant(color).toString();
+    if (color != QVariant::Invalid) {
+        m_currentColor = QVariant(color).toString();
     }
 
     emit colorChangedSignal(m_currentColor);
 }
 
-QString ColorComboBox::getColor() const
-{
-    return m_currentColor;
-}
+QString ColorComboBox::getColor() const { return m_currentColor; }
 
-int ColorComboBox::getIconWidth()
-{
-    return m_iconWidth;
-}
+int ColorComboBox::getIconWidth() { return m_iconWidth; }
 
-int ColorComboBox::getIconHeight()
-{
-    return m_iconHeight;
-}
+int ColorComboBox::getIconHeight() { return m_iconHeight; }

@@ -64,15 +64,14 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VAbstractCurveData : public QSharedData
 {
 public:
-
-    VAbstractCurveData ()
+    VAbstractCurveData()
         : duplicate(0)
         , color(ColorBlack)
         , penStyle(LineTypeSolidLine)
         , lineWeight("0.35")
     {}
 
-    VAbstractCurveData(const VAbstractCurveData &curve)
+    VAbstractCurveData(const VAbstractCurveData& curve)
         : QSharedData(curve)
         , duplicate(curve.duplicate)
         , color(curve.color)
@@ -83,7 +82,8 @@ public:
 
     virtual ~VAbstractCurveData();
 
-    /** @brief duplicate helps create unique name for curves that connects the same start and finish points. */
+    /** @brief duplicate helps create unique name for curves that connects the same start and finish
+     * points. */
     quint32 duplicate;
 
     QString color;
@@ -91,12 +91,11 @@ public:
     QString lineWeight;
 
 private:
-    VAbstractCurveData &operator=(const VAbstractCurveData &) Q_DECL_EQ_DELETE;
+    VAbstractCurveData& operator=(const VAbstractCurveData&) Q_DECL_EQ_DELETE;
 };
 
-VAbstractCurveData::~VAbstractCurveData()
-{}
+VAbstractCurveData::~VAbstractCurveData() {}
 
 QT_WARNING_POP
 
-#endif // VABSTRACTCURVE_P_H
+#endif   // VABSTRACTCURVE_P_H

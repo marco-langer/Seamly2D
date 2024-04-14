@@ -29,6 +29,7 @@
 #ifndef VTEXTMANAGER_H
 #define VTEXTMANAGER_H
 
+#include <QCoreApplication>
 #include <QDate>
 #include <QFont>
 #include <QList>
@@ -36,24 +37,23 @@
 #include <QStringList>
 #include <Qt>
 #include <QtGlobal>
-#include <QCoreApplication>
 
 class VPieceLabelData;
 class VAbstractPattern;
 
-#define MIN_FONT_SIZE               5
-#define MAX_FONT_SIZE               128
+#define MIN_FONT_SIZE 5
+#define MAX_FONT_SIZE 128
 
 /**
  * @brief The TextLine struct holds the information about one text line
  */
 struct TextLine
 {
-    QString             m_text;
-    int                 m_iFontSize;  // 0 means default
+    QString m_text;
+    int m_iFontSize;   // 0 means default
     bool bold;
     bool italic;
-    Qt::Alignment       m_eAlign;
+    Qt::Alignment m_eAlign;
 
     TextLine();
 };
@@ -69,28 +69,28 @@ public:
     VTextManager();
     virtual ~VTextManager() = default;
 
-    VTextManager(const VTextManager &text);
-    VTextManager &operator=(const VTextManager &text);
+    VTextManager(const VTextManager& text);
+    VTextManager& operator=(const VTextManager& text);
 
     virtual int GetSpacing() const;
 
-    void         setFont(const QFont& font);
+    void setFont(const QFont& font);
     const QFont& GetFont() const;
-    void         SetFontSize(int iFS);
-    void         FitFontSize(qreal fW, qreal fH);
+    void SetFontSize(int iFS);
+    void FitFontSize(qreal fW, qreal fH);
 
     QList<TextLine> GetAllSourceLines() const;
-    int             GetSourceLinesCount() const;
+    int GetSourceLinesCount() const;
     const TextLine& GetSourceLine(int i) const;
 
     void Update(const QString& qsName, const VPieceLabelData& data);
     void Update(VAbstractPattern* pDoc);
 
 private:
-    QFont           m_font;
+    QFont m_font;
     QList<TextLine> m_liLines;
 
     static QList<TextLine> m_patternLabelLines;
 };
 
-#endif // VTEXTMANAGER_H
+#endif   // VTEXTMANAGER_H

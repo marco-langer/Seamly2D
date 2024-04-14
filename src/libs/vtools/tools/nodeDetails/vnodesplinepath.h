@@ -52,12 +52,12 @@
 #ifndef VNODESPLINEPATH_H
 #define VNODESPLINEPATH_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsPathItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
@@ -70,9 +70,15 @@ class VNodeSplinePath : public VAbstractNode
 {
     Q_OBJECT
 public:
-    static void  Create(VAbstractPattern *doc, VContainer *data, quint32 id,
-                        quint32 idSpline, const Document &parse,
-                        const Source &typeCreation, const QString &blockName = QString(), const quint32 &idTool = 0);
+    static void Create(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idSpline,
+        const Document& parse,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0);
 
     static const QString ToolType;
     virtual QString getTagName() const Q_DECL_OVERRIDE;
@@ -80,15 +86,24 @@ public slots:
     virtual void FullUpdateFromFile() Q_DECL_OVERRIDE {}
     virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
     virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+
 protected:
     virtual void AddToFile() Q_DECL_OVERRIDE;
     virtual void ShowNode() Q_DECL_OVERRIDE {}
     virtual void HideNode() Q_DECL_OVERRIDE {}
+
 private:
     Q_DISABLE_COPY(VNodeSplinePath)
 
-    VNodeSplinePath(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idSpline, const Source &typeCreation,
-                    const QString &blockName = QString(), const quint32 &idTool = 0, QObject *qoParent = nullptr);
+    VNodeSplinePath(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idSpline,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0,
+        QObject* qoParent = nullptr);
 };
 
-#endif // VNODESPLINEPATH_H
+#endif   // VNODESPLINEPATH_H

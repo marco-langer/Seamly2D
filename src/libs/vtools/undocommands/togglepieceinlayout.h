@@ -53,11 +53,11 @@
 #ifndef TOGGLE_PIECE_INLAYOUT_H
 #define TOGGLE_PIECE_INLAYOUT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -65,26 +65,30 @@ class TogglePieceInLayout : public VUndoCommand
 {
     Q_OBJECT
 public:
-                  TogglePieceInLayout(quint32 id, bool state, VContainer *data,
-                                      VAbstractPattern *doc, QUndoCommand *parent = nullptr);
-    virtual      ~TogglePieceInLayout();
-    virtual void  undo() Q_DECL_OVERRIDE;
-    virtual void  redo() Q_DECL_OVERRIDE;
-    virtual int   id() const Q_DECL_OVERRIDE;
-    quint32       getPieceId() const;
-    bool          getNewState() const;
+    TogglePieceInLayout(
+        quint32 id,
+        bool state,
+        VContainer* data,
+        VAbstractPattern* doc,
+        QUndoCommand* parent = nullptr);
+    virtual ~TogglePieceInLayout();
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
+    quint32 getPieceId() const;
+    bool getNewState() const;
 
 signals:
-    void          updateList(quint32 m_id);
+    void updateList(quint32 m_id);
 
 private:
-                  Q_DISABLE_COPY(TogglePieceInLayout)
-    quint32       m_id;
-    VContainer   *m_data;
-    bool          m_oldState;
-    bool          m_newState;
+    Q_DISABLE_COPY(TogglePieceInLayout)
+    quint32 m_id;
+    VContainer* m_data;
+    bool m_oldState;
+    bool m_newState;
 
-    void          doCmd(bool state);
+    void doCmd(bool state);
 };
 
-#endif // TOGGLE_PIECE_INLAYOUT_H
+#endif   // TOGGLE_PIECE_INLAYOUT_H

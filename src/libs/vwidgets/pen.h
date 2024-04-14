@@ -36,74 +36,55 @@
 class Pen
 {
 public:
-/**
-* Creates a default pen (black, solid, weight 0).
-*/
+    /**
+     * Creates a default pen (black, solid, weight 0).
+     */
 
-Pen ()
-{
-    setColor(QString("black"));
-    setLineWeight(0.00);
-    setLineType(QString("solidLine"));
-}
+    Pen()
+    {
+        setColor(QString("black"));
+        setLineWeight(0.00);
+        setLineType(QString("solidLine"));
+    }
 
-/**
-* Creates a pen with the given attributes.
-*/
-Pen (const QString& color, const qreal &weight, const QString &type)
-{
-    setColor(color);
-    setLineWeight(weight);
-    setLineType(type);
-}
+    /**
+     * Creates a pen with the given attributes.
+     */
+    Pen(const QString& color, const qreal& weight, const QString& type)
+    {
+        setColor(color);
+        setLineWeight(weight);
+        setLineType(type);
+    }
 
-virtual ~Pen () {}
+    virtual ~Pen() {}
 
-QString getLineType() const
-{
-    return m_lineType;
-}
+    QString getLineType() const { return m_lineType; }
 
-void setLineType(const QString &type)
-{
-    m_lineType = type;
-}
+    void setLineType(const QString& type) { m_lineType = type; }
 
-qreal getLineWeight() const
-{
-    return m_lineWeight;
-}
+    qreal getLineWeight() const { return m_lineWeight; }
 
-void setLineWeight(const qreal &weight)
-{
-    m_lineWeight = weight;
-}
+    void setLineWeight(const qreal& weight) { m_lineWeight = weight; }
 
-QString getColor() const
-{
-    return m_color;
-}
+    QString getColor() const { return m_color; }
 
-void setColor(const QString &color)
-{
-    m_color = color;
-}
+    void setColor(const QString& color) { m_color = color; }
 
-bool operator == (const Pen &pen) const
-{
-    return (m_lineType==pen.m_lineType && m_lineWeight==pen.m_lineWeight && m_color==pen.m_color);
-}
+    bool operator==(const Pen& pen) const
+    {
+        return (
+            m_lineType == pen.m_lineType && m_lineWeight == pen.m_lineWeight
+            && m_color == pen.m_color);
+    }
 
-bool operator != (const Pen &pen) const
-{
-    return !(*this==pen);
-}
+    bool operator!=(const Pen& pen) const { return !(*this == pen); }
 
-friend std::ostream &operator << (std::ostream &stream, const Pen &pen);
+    friend std::ostream& operator<<(std::ostream& stream, const Pen& pen);
 
 protected:
     QString m_color;
-    qreal   m_lineWeight;
+    qreal m_lineWeight;
     QString m_lineType;
 };
 

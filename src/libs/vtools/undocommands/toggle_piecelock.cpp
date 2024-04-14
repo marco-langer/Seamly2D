@@ -29,18 +29,19 @@
 #include <QMessageLogger>
 #include <QtDebug>
 
-#include "vundocommand.h"
 #include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/def.h"
 #include "../vmisc/logging.h"
+#include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vpiece.h"
 #include "../vwidgets/vabstractmainwindow.h"
+#include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-TogglePieceLock::TogglePieceLock(quint32 id, bool lock, VContainer *data, VAbstractPattern *doc, QUndoCommand *parent)
+TogglePieceLock::TogglePieceLock(
+    quint32 id, bool lock, VContainer* data, VAbstractPattern* doc, QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , m_id(id)
     , m_data(data)
@@ -51,15 +52,12 @@ TogglePieceLock::TogglePieceLock(quint32 id, bool lock, VContainer *data, VAbstr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-TogglePieceLock::~TogglePieceLock()
-{
-}
+TogglePieceLock::~TogglePieceLock() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceLock::undo()
 {
-    if (m_newLock != m_oldLock)
-    {
+    if (m_newLock != m_oldLock) {
         doCmd(m_oldLock);
     }
 }
@@ -67,36 +65,25 @@ void TogglePieceLock::undo()
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceLock::redo()
 {
-    if (m_newLock != m_oldLock)
-    {
+    if (m_newLock != m_oldLock) {
         doCmd(m_newLock);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int TogglePieceLock::id() const
-{
-    return static_cast<int>(UndoCommand::TogglePieceLock);
-}
+int TogglePieceLock::id() const { return static_cast<int>(UndoCommand::TogglePieceLock); }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 TogglePieceLock::getpieceId() const
-{
-    return m_id;
-}
+quint32 TogglePieceLock::getpieceId() const { return m_id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool TogglePieceLock::getNewLock() const
-{
-    return m_newLock;
-}
+bool TogglePieceLock::getNewLock() const { return m_newLock; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceLock::doCmd(bool lock)
 {
     QDomElement element = doc->elementById(m_id, VAbstractPattern::TagPiece);
-    if (element.isElement())
-    {
+    if (element.isElement()) {
         doc->SetAttribute(element, AttrPieceLocked, lock);
 
         VPiece piece = m_data->DataPieces()->value(m_id);
@@ -105,12 +92,10 @@ void TogglePieceLock::doCmd(bool lock)
 
         emit updateList(m_id);
 
-        VAbstractMainWindow *window = qobject_cast<VAbstractMainWindow *>(qApp->getMainWindow());
+        VAbstractMainWindow* window = qobject_cast<VAbstractMainWindow*>(qApp->getMainWindow());
         SCASSERT(window != nullptr)
         window->ShowToolTip(tr("Piece lock changed: ") + (lock ? tr("Locked") : tr("Unlocked")));
-    }
-    else
-    {
+    } else {
         return;
     }
 }

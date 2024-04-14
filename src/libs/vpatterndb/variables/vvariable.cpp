@@ -58,35 +58,43 @@
 #include "vvariable_p.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VVariable &VVariable::operator=(VVariable &&var) Q_DECL_NOTHROW
-{ Swap(var); return *this; }
+VVariable& VVariable::operator=(VVariable&& var) Q_DECL_NOTHROW
+{
+    Swap(var);
+    return *this;
+}
 #endif
 
-void VVariable::Swap(VVariable &var) Q_DECL_NOTHROW
-{ VInternalVariable::Swap(var); std::swap(d, var.d); }
+void VVariable::Swap(VVariable& var) Q_DECL_NOTHROW
+{
+    VInternalVariable::Swap(var);
+    std::swap(d, var.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VVariable::VVariable()
-    :VInternalVariable(), d(new VVariableData)
+    : VInternalVariable()
+    , d(new VVariableData)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VVariable::VVariable(const QString &name, const QString &description)
-    :VInternalVariable(), d(new VVariableData(description))
+VVariable::VVariable(const QString& name, const QString& description)
+    : VInternalVariable()
+    , d(new VVariableData(description))
 {
     SetName(name);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VVariable::VVariable(const VVariable &var)
-    :VInternalVariable(var), d(var.d)
+VVariable::VVariable(const VVariable& var)
+    : VInternalVariable(var)
+    , d(var.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VVariable &VVariable::operator=(const VVariable &var)
+VVariable& VVariable::operator=(const VVariable& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     VInternalVariable::operator=(var);
@@ -95,18 +103,11 @@ VVariable &VVariable::operator=(const VVariable &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VVariable::~VVariable()
-{}
+VVariable::~VVariable() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VVariable::GetDescription() const
-{
-    return d->description;
-}
+QString VVariable::GetDescription() const { return d->description; }
 
 
 //---------------------------------------------------------------------------------------------------------------------
-void VVariable::SetDescription(const QString &desc)
-{
-    d->description = desc;
-}
+void VVariable::SetDescription(const QString& desc) { d->description = desc; }

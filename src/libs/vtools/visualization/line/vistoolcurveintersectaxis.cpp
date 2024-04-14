@@ -65,53 +65,61 @@
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vpointf.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../visualization.h"
+#include "../vpatterndb/vcontainer.h"
 #include "visline.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolCurveIntersectAxis::VisToolCurveIntersectAxis(const VContainer *data, QGraphicsItem *parent)
-    : VisLine(data, parent), axisPointId(NULL_ID), angle(-1), point(nullptr), basePoint(nullptr), baseLine(nullptr),
-      axisLine(nullptr), visCurve(nullptr)
+VisToolCurveIntersectAxis::VisToolCurveIntersectAxis(const VContainer* data, QGraphicsItem* parent)
+    : VisLine(data, parent)
+    , axisPointId(NULL_ID)
+    , angle(-1)
+    , point(nullptr)
+    , basePoint(nullptr)
+    , baseLine(nullptr)
+    , axisLine(nullptr)
+    , visCurve(nullptr)
 {
     this->mainColor = Qt::red;
 
     visCurve = InitItem<VCurvePathItem>(Qt::darkGreen, this);
     basePoint = InitPoint(supportColor, this);
     baseLine = InitItem<VScaledLine>(supportColor, this);
-    axisLine = InitItem<VScaledLine>(supportColor, this); //-V656
+    axisLine = InitItem<VScaledLine>(supportColor, this);   //-V656
     point = InitPoint(mainColor, this);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolCurveIntersectAxis::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
-        const QSharedPointer<VAbstractCurve> curve = Visualization::data->GeometricObject<VAbstractCurve>(object1Id);
-        DrawPath(visCurve, curve->GetPath(), curve->DirectionArrows(), supportColor, Qt::SolidLine,
-                 lineWeight,  Qt::RoundCap);
+    if (object1Id > NULL_ID) {
+        const QSharedPointer<VAbstractCurve> curve =
+            Visualization::data->GeometricObject<VAbstractCurve>(object1Id);
+        DrawPath(
+            visCurve,
+            curve->GetPath(),
+            curve->DirectionArrows(),
+            supportColor,
+            Qt::SolidLine,
+            lineWeight,
+            Qt::RoundCap);
 
-        if (axisPointId > NULL_ID)
-        {
+        if (axisPointId > NULL_ID) {
             QLineF axis;
-            const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(axisPointId);
-            if (VFuzzyComparePossibleNulls(angle, -1))
-            {
+            const QSharedPointer<VPointF> first =
+                Visualization::data->GeometricObject<VPointF>(axisPointId);
+            if (VFuzzyComparePossibleNulls(angle, -1)) {
                 axis = Axis(static_cast<QPointF>(*first), Visualization::scenePos);
-            }
-            else
-            {
+            } else {
                 axis = Axis(static_cast<QPointF>(*first), angle);
             }
             DrawPoint(basePoint, static_cast<QPointF>(*first), mainColor);
             DrawLine(axisLine, axis, supportColor, lineWeight, Qt::DashLine);
 
             QPointF intersectPoint;
-            const bool isIntersect = VToolCurveIntersectAxis::FindPoint(static_cast<QPointF>(*first), axis.angle(),
-                                                                        curve, &intersectPoint);
-            if (isIntersect)
-            {
+            const bool isIntersect = VToolCurveIntersectAxis::FindPoint(
+                static_cast<QPointF>(*first), axis.angle(), curve, &intersectPoint);
+            if (isIntersect) {
                 QLineF axis_line(static_cast<QPointF>(*first), intersectPoint);
                 DrawLine(this, axis_line, mainColor, lineWeight, lineStyle);
                 DrawPoint(point, intersectPoint, mainColor);
@@ -120,25 +128,19 @@ void VisToolCurveIntersectAxis::RefreshGeometry()
             Visualization::toolTip = tr("<b>Intersection curve and axis</b>: angle = %1°, "
                                         "Hold <b>SHIFT</b> to constrain angle, "
                                         "Press <b>ENTER</b> to finish tool creation ")
-                    .arg(this->line().angle());
+                                         .arg(this->line().angle());
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VisToolCurveIntersectAxis::Angle() const
-{
-    return QString("%1").arg(this->line().angle());
-}
+QString VisToolCurveIntersectAxis::Angle() const { return QString("%1").arg(this->line().angle()); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolCurveIntersectAxis::SetAngle(const QString &expression)
+void VisToolCurveIntersectAxis::SetAngle(const QString& expression)
 {
     angle = FindVal(expression, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolCurveIntersectAxis::setAxisPointId(const quint32 &value)
-{
-    axisPointId = value;
-}
+void VisToolCurveIntersectAxis::setAxisPointId(const quint32& value) { axisPointId = value; }

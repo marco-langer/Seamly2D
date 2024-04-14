@@ -26,28 +26,27 @@
  **
  *************************************************************************/
 
-#include <QDate>
-#include <QDesktopServices>
-#include <QMessageBox>
-#include <QtDebug>
-#include <QWidget>
-#include <QDialog>
-#include "../options.h"
+#include "calculator_dialog.h"
 #include "../core/application_2d.h"
 #include "../fervor/fvupdater.h"
-#include "../vwidgets/calculator/calculator.h"
-#include "calculator_dialog.h"
-#include "ui_calculator_dialog.h"
+#include "../options.h"
 #include "../version.h"
+#include "../vwidgets/calculator/calculator.h"
+#include "ui_calculator_dialog.h"
+#include <QDate>
+#include <QDesktopServices>
+#include <QDialog>
+#include <QMessageBox>
+#include <QWidget>
+#include <QtDebug>
 
 //---------------------------------------------------------------------------------------------------------------------
-CalculatorDialog::CalculatorDialog(QWidget *parent)
+CalculatorDialog::CalculatorDialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::CalculatorDialog)
     , isInitialized(false)
     , calc(new CalculatorUtil(this))
 {
-
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowIcon(QIcon("://icon/32x32/calculator.png"));
@@ -56,24 +55,19 @@ CalculatorDialog::CalculatorDialog(QWidget *parent)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-CalculatorDialog::~CalculatorDialog()
-{
-    delete ui;
-}
+CalculatorDialog::~CalculatorDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void CalculatorDialog::showEvent(QShowEvent *event)
+void CalculatorDialog::showEvent(QShowEvent* event)
 {
-    QDialog::showEvent( event );
-    if ( event->spontaneous() )
-    {
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
         return;
     }
 
-    if (isInitialized)
-    {
+    if (isInitialized) {
         return;
     }
 
-    isInitialized = true;//first show windows are held
+    isInitialized = true;   // first show windows are held
 }

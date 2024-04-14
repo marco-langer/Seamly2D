@@ -59,14 +59,17 @@
 const QString settingDataBaseGeometry = QStringLiteral("database/geometry");
 
 const QString settingDefHeight = QStringLiteral("gradation/defHeight");
-const QString settingDefSize   = QStringLiteral("gradation/defSize");
+const QString settingDefSize = QStringLiteral("gradation/defSize");
 
 //---------------------------------------------------------------------------------------------------------------------
-VSeamlyMeSettings::VSeamlyMeSettings(Format format, Scope scope, const QString &organization, const QString &application,
-                             QObject *parent)
-    :VCommonSettings(format, scope, organization, application, parent)
-{
-}
+VSeamlyMeSettings::VSeamlyMeSettings(
+    Format format,
+    Scope scope,
+    const QString& organization,
+    const QString& application,
+    QObject* parent)
+    : VCommonSettings(format, scope, organization, application, parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 QByteArray VSeamlyMeSettings::getDataBaseGeometry() const
@@ -75,31 +78,19 @@ QByteArray VSeamlyMeSettings::getDataBaseGeometry() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSeamlyMeSettings::setDataBaseGeometry(const QByteArray &value)
+void VSeamlyMeSettings::setDataBaseGeometry(const QByteArray& value)
 {
     setValue(settingDataBaseGeometry, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSeamlyMeSettings::SetDefHeight(int value)
-{
-    setValue(settingDefHeight, value);
-}
+void VSeamlyMeSettings::SetDefHeight(int value) { setValue(settingDefHeight, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VSeamlyMeSettings::GetDefHeight() const
-{
-    return value(settingDefHeight, 176).toInt();
-}
+int VSeamlyMeSettings::GetDefHeight() const { return value(settingDefHeight, 176).toInt(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VSeamlyMeSettings::SetDefSize(int value)
-{
-    setValue(settingDefSize, value);
-}
+void VSeamlyMeSettings::SetDefSize(int value) { setValue(settingDefSize, value); }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VSeamlyMeSettings::GetDefSize() const
-{
-    return value(settingDefSize, 50).toInt();
-}
+int VSeamlyMeSettings::GetDefSize() const { return value(settingDefSize, 50).toInt(); }

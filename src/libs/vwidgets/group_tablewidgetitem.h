@@ -34,13 +34,12 @@ class VAbstractPattern;
 
 class GroupTableWidgetItem : public QTableWidgetItem
 {
-
 public:
-    explicit     GroupTableWidgetItem(VAbstractPattern *doc);
-    virtual bool operator<(const QTableWidgetItem &other) const Q_DECL_OVERRIDE;
+    explicit GroupTableWidgetItem(VAbstractPattern* doc);
+    virtual bool operator<(const QTableWidgetItem& other) const Q_DECL_OVERRIDE;
 
 private:
-    VAbstractPattern *m_doc;
+    VAbstractPattern* m_doc;
 };
 
-#endif // GROUP_TABLEWIDGETITEM_H
+#endif   // GROUP_TABLEWIDGETITEM_H

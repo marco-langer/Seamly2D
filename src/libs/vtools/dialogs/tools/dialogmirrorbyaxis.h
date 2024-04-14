@@ -54,20 +54,19 @@
 
 #include "dialogtool.h"
 
-#include <qcompilerdetection.h>
 #include <QList>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "../vmisc/def.h"
 #include "../../tools/drawTools/operation/vabstractoperation.h"
+#include "../vmisc/def.h"
 
-namespace Ui
-{
-    class DialogMirrorByAxis;
+namespace Ui {
+class DialogMirrorByAxis;
 }
 
 class DialogMirrorByAxis : public DialogTool
@@ -75,49 +74,50 @@ class DialogMirrorByAxis : public DialogTool
     Q_OBJECT
 
 public:
-    explicit               DialogMirrorByAxis(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
-    virtual               ~DialogMirrorByAxis();
+    explicit DialogMirrorByAxis(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    virtual ~DialogMirrorByAxis();
 
-    quint32                getOriginPointId() const;
-    void                   setOriginPointId(quint32 value);
+    quint32 getOriginPointId() const;
+    void setOriginPointId(quint32 value);
 
-    AxisType               getAxisType() const;
-    void                   setAxisType(AxisType type);
+    AxisType getAxisType() const;
+    void setAxisType(AxisType type);
 
-    QString                getSuffix() const;
-    void                   setSuffix(const QString &value);
+    QString getSuffix() const;
+    void setSuffix(const QString& value);
 
-    QVector<SourceItem>    getSourceObjects() const;
-    void                   setSourceObjects(const QVector<SourceItem> &value);
+    QVector<SourceItem> getSourceObjects() const;
+    void setSourceObjects(const QVector<SourceItem>& value);
 
-    virtual void           ShowDialog(bool click) Q_DECL_OVERRIDE;
+    virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void           ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void           SelectedObject(bool selected, quint32 id, quint32 tool) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void SelectedObject(bool selected, quint32 id, quint32 tool) Q_DECL_OVERRIDE;
 
 private slots:
-    void                   suffixChanged();
+    void suffixChanged();
 
 protected:
-    virtual void           CheckState() Q_DECL_FINAL;
-    virtual void           ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void CheckState() Q_DECL_FINAL;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
 
     /** @brief SaveData Put dialog data in local variables */
-    virtual void           SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
 
 private slots:
-    void                   pointChanged();
+    void pointChanged();
 
 private:
     Q_DISABLE_COPY(DialogMirrorByAxis)
 
-    Ui::DialogMirrorByAxis *ui;
-    QVector<SourceItem>     m_objects;
-    bool                    stage1;
-    QString                 m_suffix;
+    Ui::DialogMirrorByAxis* ui;
+    QVector<SourceItem> m_objects;
+    bool stage1;
+    QString m_suffix;
 
-    static void             fillComboBoxAxisType(QComboBox *box);
+    static void fillComboBoxAxisType(QComboBox* box);
 };
 
-#endif // DIALOGMIRRORBYAXIS_H
+#endif   // DIALOGMIRRORBYAXIS_H

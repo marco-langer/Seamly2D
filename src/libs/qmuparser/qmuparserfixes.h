@@ -11,7 +11,8 @@
  **  The above copyright notice and this permission notice shall be included in all copies or
  **  substantial portions of the Software.
  **
- **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *BUT
  **  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  **  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  **  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -41,16 +42,16 @@
 // remark #981: operands are evaluated in unspecified order
 // disabled -> completely pointless if the functions do not have side effects
 //
-#pragma warning(disable:981)
+#    pragma warning(disable : 981)
 
 // remark #383: value copied to temporary, reference to temporary used
-#pragma warning(disable:383)
+#    pragma warning(disable : 383)
 
 // remark #1572: floating-point equality and inequality comparisons are unreliable
 // disabled -> everyone knows it, the parser passes this problem
 //             deliberately to the user
-#pragma warning(disable:1572)
+#    pragma warning(disable : 1572)
 
 #endif
 
-#endif // include guard
+#endif   // include guard

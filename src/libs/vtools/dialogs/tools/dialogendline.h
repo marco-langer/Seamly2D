@@ -52,18 +52,17 @@
 #ifndef DIALOGENDLINE_H
 #define DIALOGENDLINE_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogEndLine;
+namespace Ui {
+class DialogEndLine;
 }
 
 /**
@@ -73,72 +72,74 @@ class DialogEndLine : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogEndLine(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogEndLine(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogEndLine() Q_DECL_OVERRIDE;
 
-    void              SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    QString           getLineColor() const;
-    void              setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
-    QString           getLineType() const;
-    void              setLineType(const QString &value);
+    QString getLineType() const;
+    void setLineType(const QString& value);
 
-    QString           getLineWeight() const;
-    void              setLineWeight(const QString &value);
+    QString getLineWeight() const;
+    void setLineWeight(const QString& value);
 
-    QString           GetFormula() const;
-    void              SetFormula(const QString &value);
+    QString GetFormula() const;
+    void SetFormula(const QString& value);
 
-    QString           GetAngle() const;
-    void              SetAngle(const QString &value);
+    QString GetAngle() const;
+    void SetAngle(const QString& value);
 
-    quint32           GetBasePointId() const;
-    void              SetBasePointId(const quint32 &value);
+    quint32 GetBasePointId() const;
+    void SetBasePointId(const quint32& value);
 
-    virtual void      ShowDialog(bool click) Q_DECL_OVERRIDE;
+    virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void      ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
-    void              DeployFormulaTextEdit();
+    void DeployFormulaTextEdit();
     /**
      * @brief FormulaTextChanged when formula text changes for validation and calc
      */
-    void             FormulaTextChanged();
+    void FormulaTextChanged();
 
-    void             EvalAngle();
-    void             AngleTextChanged();
-    void             DeployAngleTextEdit();
+    void EvalAngle();
+    void AngleTextChanged();
+    void DeployAngleTextEdit();
 
-    void             FXAngle();
-    void             FXLength();
+    void FXAngle();
+    void FXLength();
+
 protected:
-    virtual void     ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void     SaveData() Q_DECL_OVERRIDE;
-    virtual void     closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(DialogEndLine)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogEndLine *ui;
+    Ui::DialogEndLine* ui;
 
     /** @brief formula formula */
-    QString           formulaLength;
+    QString formulaLength;
 
     /** @brief angle angle of line */
-    QString           formulaAngle;
+    QString formulaAngle;
 
     /** @brief formulaBaseHeight base height defined by dialogui */
-    int               formulaBaseHeight;
-    int               formulaBaseHeightAngle;
+    int formulaBaseHeight;
+    int formulaBaseHeightAngle;
 
     bool m_firstRelease;
 };
 
-#endif // DIALOGENDLINE_H
+#endif   // DIALOGENDLINE_H

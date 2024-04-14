@@ -1,29 +1,29 @@
 /******************************************************************************
-*   @file   vtoolpointfromarcandtangent.cpp
-**  @author Douglas S Caskey
-**  @date   17 Sep, 2023
-**
-**  @brief
-**  @copyright
-**  This source code is part of the Seamly2D project, a pattern making
-**  program to create and model patterns of clothing.
-**  Copyright (C) 2017-2023 Seamly2D project
-**  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
-**
-**  Seamly2D is free software: you can redistribute it and/or modify
-**  it under the terms of the GNU General Public License as published by
-**  the Free Software Foundation, either version 3 of the License, or
-**  (at your option) any later version.
-**
-**  Seamly2D is distributed in the hope that it will be useful,
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**  GNU General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
-**
-*************************************************************************/
+ *   @file   vtoolpointfromarcandtangent.cpp
+ **  @author Douglas S Caskey
+ **  @date   17 Sep, 2023
+ **
+ **  @brief
+ **  @copyright
+ **  This source code is part of the Seamly2D project, a pattern making
+ **  program to create and model patterns of clothing.
+ **  Copyright (C) 2017-2023 Seamly2D project
+ **  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ *************************************************************************/
 
 /************************************************************************
  **
@@ -55,21 +55,21 @@
 
 #include "vtoolpointfromarcandtangent.h"
 
-#include "vtoolsinglepoint.h"
-#include "../ifc/ifcdef.h"
+#include "../../../../dialogs/tools/dialogpointfromarcandtangent.h"
+#include "../../../../dialogs/tools/dialogtool.h"
+#include "../../../../visualization/line/vistoolpointfromarcandtangent.h"
+#include "../../../../visualization/visualization.h"
+#include "../../../vabstracttool.h"
+#include "../../vdrawtool.h"
 #include "../ifc/exception/vexception.h"
+#include "../ifc/ifcdef.h"
 #include "../vgeometry/varc.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "../../vdrawtool.h"
-#include "../../../vabstracttool.h"
-#include "../../../../dialogs/tools/dialogtool.h"
-#include "../../../../dialogs/tools/dialogpointfromarcandtangent.h"
-#include "../../../../visualization/visualization.h"
-#include "../../../../visualization/line/vistoolpointfromarcandtangent.h"
+#include "vtoolsinglepoint.h"
 
 #include <QLineF>
 #include <QMessageBox>
@@ -79,15 +79,21 @@
 #include <QStringDataPtr>
 #include <new>
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 const QString VToolPointFromArcAndTangent::ToolType = QStringLiteral("pointFromArcAndTangent");
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolPointFromArcAndTangent::VToolPointFromArcAndTangent(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                                         quint32 arcId, quint32 tangentPointId,
-                                                         CrossCirclesPoint crossPoint, const Source &typeCreation,
-                                                         QGraphicsItem *parent)
+VToolPointFromArcAndTangent::VToolPointFromArcAndTangent(
+    VAbstractPattern* doc,
+    VContainer* data,
+    const quint32& id,
+    quint32 arcId,
+    quint32 tangentPointId,
+    CrossCirclesPoint crossPoint,
+    const Source& typeCreation,
+    QGraphicsItem* parent)
     : VToolSinglePoint(doc, data, id, QColor(qApp->Settings()->getPointNameColor()), parent)
     , arcId(arcId)
     , tangentPointId(tangentPointId)
@@ -100,7 +106,8 @@ VToolPointFromArcAndTangent::VToolPointFromArcAndTangent(VAbstractPattern *doc, 
 void VToolPointFromArcAndTangent::setDialog()
 {
     SCASSERT(not m_dialog.isNull())
-    QSharedPointer<DialogPointFromArcAndTangent> dialogTool = m_dialog.objectCast<DialogPointFromArcAndTangent>();
+    QSharedPointer<DialogPointFromArcAndTangent> dialogTool =
+        m_dialog.objectCast<DialogPointFromArcAndTangent>();
     SCASSERT(not dialogTool.isNull())
     const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
     dialogTool->SetArcId(arcId);
@@ -110,52 +117,68 @@ void VToolPointFromArcAndTangent::setDialog()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolPointFromArcAndTangent *VToolPointFromArcAndTangent::Create(QSharedPointer<DialogTool> dialog,
-                                                                 VMainGraphicsScene *scene,
-                                                                 VAbstractPattern *doc, VContainer *data)
+VToolPointFromArcAndTangent* VToolPointFromArcAndTangent::Create(
+    QSharedPointer<DialogTool> dialog,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data)
 {
     SCASSERT(not dialog.isNull())
-    QSharedPointer<DialogPointFromArcAndTangent> dialogTool = dialog.objectCast<DialogPointFromArcAndTangent>();
+    QSharedPointer<DialogPointFromArcAndTangent> dialogTool =
+        dialog.objectCast<DialogPointFromArcAndTangent>();
     SCASSERT(not dialogTool.isNull())
     const quint32 arcId = dialogTool->GetArcId();
     const quint32 tangentPointId = dialogTool->GetTangentPointId();
     const CrossCirclesPoint pType = dialogTool->GetCrossCirclesPoint();
     const QString pointName = dialogTool->getPointName();
-    VToolPointFromArcAndTangent *point = Create(0, pointName, arcId, tangentPointId, pType, 5, 10, true, scene, doc,
-                                                data, Document::FullParse, Source::FromGui);
-    if (point != nullptr)
-    {
+    VToolPointFromArcAndTangent* point = Create(
+        0,
+        pointName,
+        arcId,
+        tangentPointId,
+        pType,
+        5,
+        10,
+        true,
+        scene,
+        doc,
+        data,
+        Document::FullParse,
+        Source::FromGui);
+    if (point != nullptr) {
         point->m_dialog = dialogTool;
     }
     return point;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolPointFromArcAndTangent *VToolPointFromArcAndTangent::Create(const quint32 _id,
-                                                                 const QString &pointName,
-                                                                 quint32 arcId,
-                                                                 quint32 tangentPointId,
-                                                                 CrossCirclesPoint crossPoint,
-                                                                 qreal mx, qreal my,
-                                                                 bool showPointName,
-                                                                 VMainGraphicsScene *scene,
-                                                                 VAbstractPattern *doc,
-                                                                 VContainer *data,
-                                                                 const Document &parse,
-                                                                 const Source &typeCreation)
+VToolPointFromArcAndTangent* VToolPointFromArcAndTangent::Create(
+    const quint32 _id,
+    const QString& pointName,
+    quint32 arcId,
+    quint32 tangentPointId,
+    CrossCirclesPoint crossPoint,
+    qreal mx,
+    qreal my,
+    bool showPointName,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data,
+    const Document& parse,
+    const Source& typeCreation)
 {
     const VArc arc = *data->GeometricObject<VArc>(arcId);
     const VPointF tPoint = *data->GeometricObject<VPointF>(tangentPointId);
 
-    const QPointF point = VToolPointFromArcAndTangent::FindPoint(static_cast<QPointF>(tPoint), &arc, crossPoint);
+    const QPointF point =
+        VToolPointFromArcAndTangent::FindPoint(static_cast<QPointF>(tPoint), &arc, crossPoint);
 
-    if (point == QPointF())
-    {
+    if (point == QPointF()) {
         const QString msg = tr("<b><big>Can't find intersection point %1 of</big></b><br>"
                                "<b><big>%2 and Tangent</big></b><br><br>"
                                "Using origin point as a place holder until pattern is corrected.")
-                               .arg(pointName)
-                               .arg(arc.name());
+                                .arg(pointName)
+                                .arg(arc.name());
 
         QMessageBox msgBox(qApp->getMainWindow());
         msgBox.setWindowTitle(tr("Intersect Arc and Tangent"));
@@ -169,27 +192,22 @@ VToolPointFromArcAndTangent *VToolPointFromArcAndTangent::Create(const quint32 _
 
     quint32 id = _id;
 
-    VPointF *p = new VPointF(point, pointName, mx, my);
+    VPointF* p = new VPointF(point, pointName, mx, my);
     p->setShowPointName(showPointName);
 
-    if (typeCreation == Source::FromGui)
-    {
+    if (typeCreation == Source::FromGui) {
         id = data->AddGObject(p);
-    }
-    else
-    {
+    } else {
         data->UpdateGObject(id, p);
-        if (parse != Document::FullParse)
-        {
+        if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }
     }
 
-    if (parse == Document::FullParse)
-    {
+    if (parse == Document::FullParse) {
         VDrawTool::AddRecord(id, Tool::PointFromArcAndTangent, doc);
-        VToolPointFromArcAndTangent *point = new VToolPointFromArcAndTangent(doc, data, id, arcId, tangentPointId,
-                                                                             crossPoint, typeCreation);
+        VToolPointFromArcAndTangent* point = new VToolPointFromArcAndTangent(
+            doc, data, id, arcId, tangentPointId, crossPoint, typeCreation);
 
         scene->addItem(point);
         InitToolConnections(scene, point);
@@ -202,77 +220,62 @@ VToolPointFromArcAndTangent *VToolPointFromArcAndTangent::Create(const quint32 _
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VToolPointFromArcAndTangent::FindPoint(const QPointF &p, const VArc *arc, const CrossCirclesPoint pType)
+QPointF VToolPointFromArcAndTangent::FindPoint(
+    const QPointF& p, const VArc* arc, const CrossCirclesPoint pType)
 {
     QPointF p1, p2;
     const QPointF center = static_cast<QPointF>(arc->GetCenter());
     const qreal radius = arc->GetRadius();
-    const int res = VGObject::ContactPoints (p, center, radius, p1, p2);
+    const int res = VGObject::ContactPoints(p, center, radius, p1, p2);
 
     QLineF r1Arc(center, p1);
-    r1Arc.setLength(radius+10);
+    r1Arc.setLength(radius + 10);
 
     QLineF r2Arc(center, p2);
-    r2Arc.setLength(radius+10);
+    r2Arc.setLength(radius + 10);
 
-    switch(res)
-    {
-        case 2:
-        {
-            int localRes = 0;
-            bool flagP1 = false;
+    switch (res) {
+    case 2: {
+        int localRes = 0;
+        bool flagP1 = false;
 
-            if (arc->IsIntersectLine(r1Arc))
-            {
-                ++localRes;
-                flagP1 = true;
-            }
-
-            if (arc->IsIntersectLine(r2Arc))
-            {
-                ++localRes;
-            }
-
-            switch(localRes)
-            {
-                case 2:
-                    if (pType == CrossCirclesPoint::FirstPoint)
-                    {
-                        return p1;
-                    }
-                    else
-                    {
-                        return p2;
-                    }
-                case 1:
-                    if (flagP1)
-                    {
-                        return p1;
-                    }
-                    else
-                    {
-                        return p2;
-                    }
-                case 0:
-                default:
-                    return QPointF();
-            }
-
-            break;
+        if (arc->IsIntersectLine(r1Arc)) {
+            ++localRes;
+            flagP1 = true;
         }
-        case 1:
-            if (arc->IsIntersectLine(r1Arc))
-            {
+
+        if (arc->IsIntersectLine(r2Arc)) {
+            ++localRes;
+        }
+
+        switch (localRes) {
+        case 2:
+            if (pType == CrossCirclesPoint::FirstPoint) {
                 return p1;
+            } else {
+                return p2;
             }
-            else
-            {
-                return QPointF();
+        case 1:
+            if (flagP1) {
+                return p1;
+            } else {
+                return p2;
             }
-        case 3:
         case 0:
-        default:
-            break;
+        default: return QPointF();
+        }
+
+        break;
+    }
+    case 1:
+        if (arc->IsIntersectLine(r1Arc)) {
+            return p1;
+        } else {
+            return QPointF();
+        }
+    case 3:
+    case 0:
+    default: break;
     }
     return QPointF();
 }
@@ -290,16 +293,12 @@ QString VToolPointFromArcAndTangent::ArcName() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VToolPointFromArcAndTangent::GetTangentPointId() const
-{
-    return tangentPointId;
-}
+quint32 VToolPointFromArcAndTangent::GetTangentPointId() const { return tangentPointId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::SetTangentPointId(const quint32 &value)
+void VToolPointFromArcAndTangent::SetTangentPointId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         tangentPointId = value;
 
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
@@ -308,16 +307,12 @@ void VToolPointFromArcAndTangent::SetTangentPointId(const quint32 &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VToolPointFromArcAndTangent::GetArcId() const
-{
-    return arcId;
-}
+quint32 VToolPointFromArcAndTangent::GetArcId() const { return arcId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::SetArcId(const quint32 &value)
+void VToolPointFromArcAndTangent::SetArcId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         arcId = value;
 
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
@@ -326,13 +321,10 @@ void VToolPointFromArcAndTangent::SetArcId(const quint32 &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-CrossCirclesPoint VToolPointFromArcAndTangent::GetCrossCirclesPoint() const
-{
-    return crossPoint;
-}
+CrossCirclesPoint VToolPointFromArcAndTangent::GetCrossCirclesPoint() const { return crossPoint; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::setCirclesCrossPoint(const CrossCirclesPoint &value)
+void VToolPointFromArcAndTangent::setCirclesCrossPoint(const CrossCirclesPoint& value)
 {
     crossPoint = value;
 
@@ -357,34 +349,34 @@ void VToolPointFromArcAndTangent::RemoveReferens()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id)
+void VToolPointFromArcAndTangent::showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id)
 {
-    try
-    {
+    try {
         ContextMenu<DialogPointFromArcAndTangent>(event, id);
-    }
-    catch(const VExceptionToolWasDeleted &error)
-    {
+    } catch (const VExceptionToolWasDeleted& error) {
         Q_UNUSED(error)
-        return;//Leave this method immediately!!!
+        return;   // Leave this method immediately!!!
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::SaveDialog(QDomElement &domElement)
+void VToolPointFromArcAndTangent::SaveDialog(QDomElement& domElement)
 {
     SCASSERT(not m_dialog.isNull())
-    QSharedPointer<DialogPointFromArcAndTangent> dialogTool = m_dialog.objectCast<DialogPointFromArcAndTangent>();
+    QSharedPointer<DialogPointFromArcAndTangent> dialogTool =
+        m_dialog.objectCast<DialogPointFromArcAndTangent>();
     SCASSERT(not dialogTool.isNull())
     doc->SetAttribute(domElement, AttrName, dialogTool->getPointName());
     doc->SetAttribute(domElement, AttrArc, QString().setNum(dialogTool->GetArcId()));
     doc->SetAttribute(domElement, AttrTangent, QString().setNum(dialogTool->GetTangentPointId()));
-    doc->SetAttribute(domElement, AttrCrossPoint,
-                      QString().setNum(static_cast<int>(dialogTool->GetCrossCirclesPoint())));
+    doc->SetAttribute(
+        domElement,
+        AttrCrossPoint,
+        QString().setNum(static_cast<int>(dialogTool->GetCrossCirclesPoint())));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void VToolPointFromArcAndTangent::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 
@@ -395,19 +387,19 @@ void VToolPointFromArcAndTangent::SaveOptions(QDomElement &tag, QSharedPointer<V
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::ReadToolAttributes(const QDomElement &domElement)
+void VToolPointFromArcAndTangent::ReadToolAttributes(const QDomElement& domElement)
 {
     arcId = doc->GetParametrUInt(domElement, AttrArc, NULL_ID_STR);
     tangentPointId = doc->GetParametrUInt(domElement, AttrTangent, NULL_ID_STR);
-    crossPoint = static_cast<CrossCirclesPoint>(doc->GetParametrUInt(domElement, AttrCrossPoint, "1"));
+    crossPoint =
+        static_cast<CrossCirclesPoint>(doc->GetParametrUInt(domElement, AttrCrossPoint, "1"));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VToolPointFromArcAndTangent::SetVisualization()
 {
-    if (not vis.isNull())
-    {
-        VisToolPointFromArcAndTangent *visual = qobject_cast<VisToolPointFromArcAndTangent *>(vis);
+    if (not vis.isNull()) {
+        VisToolPointFromArcAndTangent* visual = qobject_cast<VisToolPointFromArcAndTangent*>(vis);
         SCASSERT(visual != nullptr)
 
         visual->setObject1Id(tangentPointId);

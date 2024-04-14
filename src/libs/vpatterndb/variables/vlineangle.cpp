@@ -56,51 +56,60 @@
 #include <QPointF>
 #include <QString>
 
-#include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
+#include "../vmisc/def.h"
+#include "../vmisc/vmath.h"
 #include "vinternalvariable.h"
 #include "vlineangle_p.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VLineAngle &VLineAngle::operator=(VLineAngle &&var) Q_DECL_NOTHROW
-{ Swap(var); return *this; }
+VLineAngle& VLineAngle::operator=(VLineAngle&& var) Q_DECL_NOTHROW
+{
+    Swap(var);
+    return *this;
+}
 #endif
 
-void VLineAngle::Swap(VLineAngle &var) Q_DECL_NOTHROW
-{ VInternalVariable::Swap(var); std::swap(d, var.d); }
+void VLineAngle::Swap(VLineAngle& var) Q_DECL_NOTHROW
+{
+    VInternalVariable::Swap(var);
+    std::swap(d, var.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VLineAngle::VLineAngle()
-    :VInternalVariable(), d(new VLineAngleData)
+    : VInternalVariable()
+    , d(new VLineAngleData)
 {
     SetType(VarType::LineAngle);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLineAngle::VLineAngle(const VPointF *p1, const quint32 &p1Id, const VPointF *p2, const quint32 &p2Id)
-    :VInternalVariable(), d(new VLineAngleData(p1Id, p2Id))
+VLineAngle::VLineAngle(
+    const VPointF* p1, const quint32& p1Id, const VPointF* p2, const quint32& p2Id)
+    : VInternalVariable()
+    , d(new VLineAngleData(p1Id, p2Id))
 {
     SetType(VarType::LineAngle);
 
     SCASSERT(p1 != nullptr)
     SCASSERT(p2 != nullptr)
 
-    SetName(QString(angleLine_+"%1_%2").arg(p1->name(), p2->name()));
+    SetName(QString(angleLine_ + "%1_%2").arg(p1->name(), p2->name()));
     SetValue(p1, p2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLineAngle::VLineAngle(const VLineAngle &var)
-    :VInternalVariable(var), d(var.d)
+VLineAngle::VLineAngle(const VLineAngle& var)
+    : VInternalVariable(var)
+    , d(var.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VLineAngle &VLineAngle::operator=(const VLineAngle &var)
+VLineAngle& VLineAngle::operator=(const VLineAngle& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     VInternalVariable::operator=(var);
@@ -109,36 +118,27 @@ VLineAngle &VLineAngle::operator=(const VLineAngle &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLineAngle::~VLineAngle()
-{}
+VLineAngle::~VLineAngle() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VLineAngle::Filter(quint32 id)
-{
-    return id == d->p1Id || id == d->p2Id;
-}
+bool VLineAngle::Filter(quint32 id) { return id == d->p1Id || id == d->p2Id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLineAngle::SetValue(const VPointF *p1, const VPointF *p2)
+void VLineAngle::SetValue(const VPointF* p1, const VPointF* p2)
 {
     SCASSERT(p1 != nullptr)
     SCASSERT(p2 != nullptr)
-    //Correct angle. Try avoid results like 6,7563e-15.
-    const qreal angle = qFloor(QLineF(static_cast<QPointF>(*p1),
-                                      static_cast<QPointF>(*p2)).angle() * 100000.) / 100000.;
+    // Correct angle. Try avoid results like 6,7563e-15.
+    const qreal angle =
+        qFloor(QLineF(static_cast<QPointF>(*p1), static_cast<QPointF>(*p2)).angle() * 100000.)
+        / 100000.;
     VInternalVariable::SetValue(angle);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-quint32 VLineAngle::GetP1Id() const
-{
-    return d->p1Id;
-}
+quint32 VLineAngle::GetP1Id() const { return d->p1Id; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-quint32 VLineAngle::GetP2Id() const
-{
-    return d->p2Id;
-}
+quint32 VLineAngle::GetP2Id() const { return d->p2Id; }

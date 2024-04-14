@@ -60,7 +60,7 @@ class TST_VAbstractPiece : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_VAbstractPiece(QObject *parent = nullptr);
+    explicit TST_VAbstractPiece(QObject* parent = nullptr);
 
 private slots:
     void EquidistantRemoveLoop_data();
@@ -76,20 +76,20 @@ private slots:
     void CorrectEquidistantPoints() const;
     void TestCorrectEquidistantPoints_data();
     void TestCorrectEquidistantPoints() const;
-#ifndef Q_OS_WIN // Disabled due to "undefined behavior" problem
+#ifndef Q_OS_WIN   // Disabled due to "undefined behavior" problem
     void PossibleInfiniteClearLoops_data() const;
     void PossibleInfiniteClearLoops() const;
 #endif
 
 private:
     QVector<VSAPoint> InputPointsCase1() const;
-    QVector<QPointF>  OutputPointsCase1() const;
+    QVector<QPointF> OutputPointsCase1() const;
 
     QVector<VSAPoint> InputPointsCase2() const;
-    QVector<QPointF>  OutputPointsCase2() const;
+    QVector<QPointF> OutputPointsCase2() const;
 
     QVector<VSAPoint> InputPointsCase3() const;
-    QVector<QPointF>  OutputPointsCase3() const;
+    QVector<QPointF> OutputPointsCase3() const;
 
     void Case3() const;
     void Case4() const;
@@ -115,7 +115,7 @@ private:
     QVector<QPointF> InputPointsCase5a() const;
 
     QVector<VSAPoint> InputPointsIssue646() const;
-    QVector<QPointF>  OutputPointsIssue646() const;
+    QVector<QPointF> OutputPointsIssue646() const;
 };
 
-#endif // TST_VABSTRACTPIECE_H
+#endif   // TST_VABSTRACTPIECE_H

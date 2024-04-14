@@ -52,7 +52,6 @@
 #ifndef VABSTRACTPOINT_H
 #define VABSTRACTPOINT_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QMetaObject>
 #include <QObject>
@@ -61,40 +60,41 @@
 #include <QString>
 #include <Qt>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "../vdrawtool.h"
-#include "../ifc/ifcdef.h"
-#include "../vgeometry/vpointf.h"
-#include "../vmisc/vabstractapplication.h"
-#include "../vpatterndb/vcontainer.h"
-#include "../vmisc/def.h"
-#include "../vwidgets/vmaingraphicsscene.h"
 #include "../../../visualization/visualization.h"
 #include "../../vabstracttool.h"
+#include "../ifc/ifcdef.h"
+#include "../vdrawtool.h"
+#include "../vgeometry/vpointf.h"
+#include "../vmisc/def.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vpatterndb/vcontainer.h"
+#include "../vwidgets/vmaingraphicsscene.h"
 
-class VAbstractPoint: public VDrawTool
+class VAbstractPoint : public VDrawTool
 {
     Q_OBJECT
 public:
-                     VAbstractPoint(VAbstractPattern *doc, VContainer *data, quint32 id);
-    virtual         ~VAbstractPoint() Q_DECL_EQ_DEFAULT;
+    VAbstractPoint(VAbstractPattern* doc, VContainer* data, quint32 id);
+    virtual ~VAbstractPoint() Q_DECL_EQ_DEFAULT;
 
-    virtual QString  getTagName() const Q_DECL_OVERRIDE;
+    virtual QString getTagName() const Q_DECL_OVERRIDE;
 
     template <typename T>
-    void             ShowToolVisualization(bool show);
+    void ShowToolVisualization(bool show);
 
 public slots:
-    virtual void     ShowTool(quint32 id, bool enable) Q_DECL_OVERRIDE;
-    void             deletePoint();
+    virtual void ShowTool(quint32 id, bool enable) Q_DECL_OVERRIDE;
+    void deletePoint();
 
 protected:
-    void             SetPointName(quint32 id, const QString &name);
-    virtual void     updatePointNamePosition(quint32 id, const QPointF &pos)=0;
+    void SetPointName(quint32 id, const QString& name);
+    virtual void updatePointNamePosition(quint32 id, const QPointF& pos) = 0;
 
 
     template <typename T>
-    static void      InitToolConnections(VMainGraphicsScene *scene, T *tool);
+    static void InitToolConnections(VMainGraphicsScene* scene, T* tool);
 
 private:
     Q_DISABLE_COPY(VAbstractPoint)
@@ -104,39 +104,34 @@ private:
 template <typename T>
 void VAbstractPoint::ShowToolVisualization(bool show)
 {
-    if (show)
-    {
-        if (vis.isNull())
-        {
+    if (show) {
+        if (vis.isNull()) {
             AddVisualization<T>();
             SetVisualization();
-        }
-        else
-        {
-            if (T *visual = qobject_cast<T *>(vis))
-            {
+        } else {
+            if (T* visual = qobject_cast<T*>(vis)) {
                 visual->show();
             }
         }
-    }
-    else
-    {
+    } else {
         delete vis;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void VAbstractPoint::InitToolConnections(VMainGraphicsScene *scene, T *tool)
+void VAbstractPoint::InitToolConnections(VMainGraphicsScene* scene, T* tool)
 {
     SCASSERT(scene != nullptr)
     SCASSERT(tool != nullptr)
 
     InitDrawToolConnections(scene, tool);
     QObject::connect(scene, &VMainGraphicsScene::EnablePointItemHover, tool, &T::AllowHover);
-    QObject::connect(scene, &VMainGraphicsScene::EnablePointItemSelection, tool, &T::AllowSelecting);
+    QObject::connect(
+        scene, &VMainGraphicsScene::EnablePointItemSelection, tool, &T::AllowSelecting);
     QObject::connect(scene, &VMainGraphicsScene::enableTextItemHover, tool, &T::allowTextHover);
-    QObject::connect(scene, &VMainGraphicsScene::enableTextItemSelection, tool, &T::allowTextSelectable);
+    QObject::connect(
+        scene, &VMainGraphicsScene::enableTextItemSelection, tool, &T::allowTextSelectable);
 }
 
-#endif // VABSTRACTPOINT_H
+#endif   // VABSTRACTPOINT_H

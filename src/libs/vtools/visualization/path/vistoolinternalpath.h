@@ -55,8 +55,8 @@
 #include <QtCore/QObject>
 #include <QtGlobal>
 
-#include "vispath.h"
 #include "../vpatterndb/vpiecepath.h"
+#include "vispath.h"
 
 class VSimplePoint;
 
@@ -64,27 +64,31 @@ class VisToolInternalPath : public VisPath
 {
     Q_OBJECT
 public:
-    VisToolInternalPath(const VContainer *data, QGraphicsItem *parent = nullptr);
+    VisToolInternalPath(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolInternalPath() Q_DECL_EQ_DEFAULT;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         SetPath(const VPiecePath &path);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolInternalPath)};
+    void SetPath(const VPiecePath& path);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolInternalPath)
+    };
+
 protected:
-    virtual void mousePressEvent( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VisToolInternalPath)
-    QVector<VSimplePoint *> m_points;
+    QVector<VSimplePoint*> m_points;
 
-    VScaledLine *m_line;
+    VScaledLine* m_line;
 
     VPiecePath m_path;
 
-    VSimplePoint *GetPoint(quint32 i, const QColor &color);
+    VSimplePoint* GetPoint(quint32 i, const QColor& color);
 
     void HideAllItems();
 };
 
-#endif // VISTOOLINTERNALPATH_H
+#endif   // VISTOOLINTERNALPATH_H

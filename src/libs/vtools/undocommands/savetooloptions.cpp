@@ -53,23 +53,28 @@
 
 #include <QDomNode>
 
+#include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "../vmisc/logging.h"
-#include "../ifc/xml/vabstractpattern.h"
 #include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-SaveToolOptions::SaveToolOptions(const QDomElement &oldXml, const QDomElement &newXml, VAbstractPattern *doc,
-                                 const quint32 &id, QUndoCommand *parent)
-    : VUndoCommand(QDomElement(), doc, parent), oldXml(oldXml), newXml(newXml)
+SaveToolOptions::SaveToolOptions(
+    const QDomElement& oldXml,
+    const QDomElement& newXml,
+    VAbstractPattern* doc,
+    const quint32& id,
+    QUndoCommand* parent)
+    : VUndoCommand(QDomElement(), doc, parent)
+    , oldXml(oldXml)
+    , newXml(newXml)
 {
     setText(tr("save tool option"));
     nodeId = id;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SaveToolOptions::~SaveToolOptions()
-{}
+SaveToolOptions::~SaveToolOptions() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void SaveToolOptions::undo()
@@ -77,14 +82,11 @@ void SaveToolOptions::undo()
     qCDebug(vUndo, "Undo.");
 
     QDomElement domElement = doc->elementById(nodeId);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         domElement.parentNode().replaceChild(oldXml, domElement);
 
         emit NeedLiteParsing(Document::LiteParse);
-    }
-    else
-    {
+    } else {
         qCWarning(vUndo, "Can't find tool with id = %u.", nodeId);
         return;
     }
@@ -96,28 +98,24 @@ void SaveToolOptions::redo()
     qCDebug(vUndo, "Redo.");
 
     QDomElement domElement = doc->elementById(nodeId);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         domElement.parentNode().replaceChild(newXml, domElement);
 
         emit NeedLiteParsing(Document::LiteParse);
-    }
-    else
-    {
+    } else {
         qCWarning(vUndo, "Can't find tool with id = %u.", nodeId);
         return;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool SaveToolOptions::mergeWith(const QUndoCommand *command)
+bool SaveToolOptions::mergeWith(const QUndoCommand* command)
 {
-    const SaveToolOptions *saveCommand = static_cast<const SaveToolOptions *>(command);
+    const SaveToolOptions* saveCommand = static_cast<const SaveToolOptions*>(command);
     SCASSERT(saveCommand != nullptr)
     const quint32 id = saveCommand->getToolId();
 
-    if (id != nodeId)
-    {
+    if (id != nodeId) {
         return false;
     }
 
@@ -126,7 +124,4 @@ bool SaveToolOptions::mergeWith(const QUndoCommand *command)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int SaveToolOptions::id() const
-{
-    return static_cast<int>(UndoCommand::SaveToolOptions);
-}
+int SaveToolOptions::id() const { return static_cast<int>(UndoCommand::SaveToolOptions); }

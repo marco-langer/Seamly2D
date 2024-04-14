@@ -63,16 +63,15 @@
 #include "abstract_converter.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-AbstractMConverter::AbstractMConverter(const QString &fileName)
+AbstractMConverter::AbstractMConverter(const QString& fileName)
     : VAbstractConverter(fileName)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void AbstractMConverter::AddRootComment()
 {
     const QString rootComment =
-            QStringLiteral("Measurements created with SeamlyMe (https://seamly.io).");
+        QStringLiteral("Measurements created with SeamlyMe (https://seamly.io).");
 
     QDomElement rootElement = this->documentElement();
     rootElement.insertBefore(createComment(rootComment), rootElement.firstChild());
@@ -109,7 +108,8 @@ QMultiMap<QString, QString> AbstractMConverter::OldNamesToNewNames_InV0_3_0()
     names.insert(name, QStringLiteral("neck_to_knee_point"));
     names.insert(name, QStringLiteral("cervicale_to_knee_height"));
 
-    names.insert(QStringLiteral("height_waist_side_to_knee"), QStringLiteral("waist_to_knee_height"));
+    names.insert(
+        QStringLiteral("height_waist_side_to_knee"), QStringLiteral("waist_to_knee_height"));
     names.insert(QStringLiteral("height_waist_side_to_hip"), QStringLiteral("waist_to_hip_height"));
     names.insert(QStringLiteral("indent_neck_back"), QStringLiteral("body_position"));
 
@@ -152,12 +152,14 @@ QMultiMap<QString, QString> AbstractMConverter::OldNamesToNewNames_InV0_3_0()
     names.insert(QStringLiteral("waist_arc_b"), QStringLiteral("back_waist_arc"));
     names.insert(QStringLiteral("highhip_arc_b"), QStringLiteral("back_upper_hip_arc"));
     names.insert(QStringLiteral("hip_arc_b"), QStringLiteral("back_hip_arc"));
-    names.insert(QStringLiteral("hip_with_abdomen_arc_f"),
-                 QStringLiteral("half_girth_hips_considering_protruding_abdomen"));
+    names.insert(
+        QStringLiteral("hip_with_abdomen_arc_f"),
+        QStringLiteral("half_girth_hips_considering_protruding_abdomen"));
     names.insert(QStringLiteral("body_armfold_circ"), QStringLiteral("shoulder_girth"));
     names.insert(QStringLiteral("body_torso_circ"), QStringLiteral("trunk_length"));
     names.insert(QStringLiteral("neck_front_to_waist_f"), QStringLiteral("front_waist_length"));
-    names.insert(QStringLiteral("neck_front_to_waist_flat_f"), QStringLiteral("center_front_waist_length"));
+    names.insert(
+        QStringLiteral("neck_front_to_waist_flat_f"), QStringLiteral("center_front_waist_length"));
     names.insert(QStringLiteral("armpit_to_waist_side"), QStringLiteral("side_waist_length"));
     names.insert(QStringLiteral("neck_side_to_waist_b"), QStringLiteral("waist_to_neck_side"));
 
@@ -165,23 +167,34 @@ QMultiMap<QString, QString> AbstractMConverter::OldNamesToNewNames_InV0_3_0()
     names.insert(name, QStringLiteral("neck_to_front_waist_line"));
     names.insert(name, QStringLiteral("front_shoulder_to_waist_length"));
 
-    names.insert(QStringLiteral("neck_side_to_waist_b"), QStringLiteral("back_shoulder_to_waist_length"));
-    names.insert(QStringLiteral("neck_back_to_waist_b"), QStringLiteral("center_back_waist_length"));
+    names.insert(
+        QStringLiteral("neck_side_to_waist_b"), QStringLiteral("back_shoulder_to_waist_length"));
+    names.insert(
+        QStringLiteral("neck_back_to_waist_b"), QStringLiteral("center_back_waist_length"));
 
     name = QStringLiteral("neck_front_to_highbust_f");
     names.insert(name, QStringLiteral("neck_to_first_line_chest_circumference"));
     names.insert(name, QStringLiteral("front_neck_to_upper_chest_height"));
 
-    names.insert(QStringLiteral("neck_front_to_bust_f"), QStringLiteral("front_neck_to_bust_height"));
-    names.insert(QStringLiteral("highbust_to_waist_f"), QStringLiteral("front_waist_to_upper_chest"));
-    names.insert(QStringLiteral("lowbust_to_waist_f"), QStringLiteral("front_waist_to_lower_breast"));
-    names.insert(QStringLiteral("neck_back_to_highbust_b"), QStringLiteral("neck_to_back_line_chest_circumference"));
+    names.insert(
+        QStringLiteral("neck_front_to_bust_f"), QStringLiteral("front_neck_to_bust_height"));
+    names.insert(
+        QStringLiteral("highbust_to_waist_f"), QStringLiteral("front_waist_to_upper_chest"));
+    names.insert(
+        QStringLiteral("lowbust_to_waist_f"), QStringLiteral("front_waist_to_lower_breast"));
+    names.insert(
+        QStringLiteral("neck_back_to_highbust_b"),
+        QStringLiteral("neck_to_back_line_chest_circumference"));
     names.insert(QStringLiteral("waist_to_highhip_f"), QStringLiteral("depth_waist_first"));
     names.insert(QStringLiteral("waist_to_hip_f"), QStringLiteral("depth_waist_second"));
-    names.insert(QStringLiteral("shoulder_slope_neck_side_angle"), QStringLiteral("shoulder_slope_degrees"));
-    names.insert(QStringLiteral("shoulder_slope_neck_side_length"), QStringLiteral("shoulder_drop"));
+    names.insert(
+        QStringLiteral("shoulder_slope_neck_side_angle"), QStringLiteral("shoulder_slope_degrees"));
+    names.insert(
+        QStringLiteral("shoulder_slope_neck_side_length"), QStringLiteral("shoulder_drop"));
     names.insert(QStringLiteral("shoulder_length"), QStringLiteral("shoulder_length"));
-    names.insert(QStringLiteral("shoulder_tip_to_shoulder_tip_f"), QStringLiteral("across_front_shoulder_width"));
+    names.insert(
+        QStringLiteral("shoulder_tip_to_shoulder_tip_f"),
+        QStringLiteral("across_front_shoulder_width"));
     names.insert(QStringLiteral("across_chest_f"), QStringLiteral("upper_front_chest_width"));
     names.insert(QStringLiteral("across_chest_f"), QStringLiteral("chest_width"));
     names.insert(QStringLiteral("armfold_to_armfold_f"), QStringLiteral("front_chest_width"));
@@ -193,9 +206,12 @@ QMultiMap<QString, QString> AbstractMConverter::OldNamesToNewNames_InV0_3_0()
     names.insert(QStringLiteral("across_back_b"), QStringLiteral("upper_back_width"));
     names.insert(QStringLiteral("armfold_to_armfold_b"), QStringLiteral("back_width"));
     names.insert(QStringLiteral("neck_width"), QStringLiteral("neck_transverse_diameter"));
-    names.insert(QStringLiteral("bustpoint_to_bustpoint"), QStringLiteral("bustpoint_to_bustpoint"));
+    names.insert(
+        QStringLiteral("bustpoint_to_bustpoint"), QStringLiteral("bustpoint_to_bustpoint"));
     names.insert(QStringLiteral("bustpoint_to_neck_side"), QStringLiteral("neck_to_bustpoint"));
-    names.insert(QStringLiteral("bustpoint_to_bustpoint_halter"), QStringLiteral("halter_bustpoint_to_bustpoint"));
+    names.insert(
+        QStringLiteral("bustpoint_to_bustpoint_halter"),
+        QStringLiteral("halter_bustpoint_to_bustpoint"));
 
     name = QStringLiteral("shoulder_tip_to_waist_front");
     names.insert(name, QStringLiteral("front_slash_shoulder_height"));
@@ -214,15 +230,19 @@ QMultiMap<QString, QString> AbstractMConverter::OldNamesToNewNames_InV0_3_0()
     names.insert(QStringLiteral("neck_back_to_waist_side"), QStringLiteral("back_waist_slope"));
     names.insert(QStringLiteral("neck_side_to_armfold_b"), QStringLiteral("back_slope"));
     names.insert(QStringLiteral("arm_shoulder_tip_to_wrist"), QStringLiteral("arm_length"));
-    names.insert(QStringLiteral("arm_shoulder_tip_to_elbow"), QStringLiteral("shoulder_to_elbow_length"));
+    names.insert(
+        QStringLiteral("arm_shoulder_tip_to_elbow"), QStringLiteral("shoulder_to_elbow_length"));
     names.insert(QStringLiteral("arm_armpit_to_wrist"), QStringLiteral("underarm_length"));
     names.insert(QStringLiteral("arm_upper_circ"), QStringLiteral("upper_arm_girth"));
     names.insert(QStringLiteral("arm_wrist_circ"), QStringLiteral("wrist_girth"));
     names.insert(QStringLiteral("armscye_circ"), QStringLiteral("armscye_girth"));
     names.insert(QStringLiteral("armscye_width"), QStringLiteral("anteroposterior_diameter_hands"));
-    names.insert(QStringLiteral("arm_neck_side_to_finger_tip"), QStringLiteral("neck_to_third_finger"));
-    names.insert(QStringLiteral("arm_neck_side_to_outer_elbow"), QStringLiteral("neck_to_radial_point"));
-    names.insert(QStringLiteral("arm_neck_side_to_wrist"), QStringLiteral("shoulder_and_arm_length"));
+    names.insert(
+        QStringLiteral("arm_neck_side_to_finger_tip"), QStringLiteral("neck_to_third_finger"));
+    names.insert(
+        QStringLiteral("arm_neck_side_to_outer_elbow"), QStringLiteral("neck_to_radial_point"));
+    names.insert(
+        QStringLiteral("arm_neck_side_to_wrist"), QStringLiteral("shoulder_and_arm_length"));
     names.insert(QStringLiteral("leg_crotch_to_floor"), QStringLiteral("crotch_height"));
     names.insert(QStringLiteral("leg_waist_side_to_floor"), QStringLiteral("side_waist_to_floor"));
     names.insert(QStringLiteral("leg_waist_side_to_knee"), QStringLiteral("waist_to_knee"));
@@ -253,14 +273,18 @@ QMultiMap<QString, QString> AbstractMConverter::OldNamesToNewNames_InV0_3_0()
     names.insert(QStringLiteral("head_crown_to_neck_back"), QStringLiteral("head_and_neck_length"));
     names.insert(QStringLiteral("head_chin_to_neck_back"), QStringLiteral("neck_to_neck_base"));
     names.insert(QStringLiteral("waist_to_waist_halter"), QStringLiteral("arc_length_upper_body"));
-    names.insert(QStringLiteral("arm_neck_back_to_wrist_bent"), QStringLiteral("cervicale_to_wrist_length"));
-    names.insert(QStringLiteral("highbust_b_over_shoulder_to_highbust_f"), QStringLiteral("strap_length"));
+    names.insert(
+        QStringLiteral("arm_neck_back_to_wrist_bent"), QStringLiteral("cervicale_to_wrist_length"));
+    names.insert(
+        QStringLiteral("highbust_b_over_shoulder_to_highbust_f"), QStringLiteral("strap_length"));
     names.insert(QStringLiteral("armscye_arc"), QStringLiteral("arc_through_shoulder_joint"));
     names.insert(QStringLiteral("head_circ"), QStringLiteral("head_girth"));
     names.insert(QStringLiteral("arm_elbow_circ"), QStringLiteral("elbow_girth"));
-    names.insert(QStringLiteral("height_gluteal_fold"), QStringLiteral("height_under_buttock_folds"));
+    names.insert(
+        QStringLiteral("height_gluteal_fold"), QStringLiteral("height_under_buttock_folds"));
     names.insert(QStringLiteral("neck_back_to_highbust_b"), QStringLiteral("scye_depth"));
-    names.insert(QStringLiteral("across_back_to_waist_b"), QStringLiteral("back_waist_to_upper_chest"));
+    names.insert(
+        QStringLiteral("across_back_to_waist_b"), QStringLiteral("back_waist_to_upper_chest"));
 
     return names;
 }

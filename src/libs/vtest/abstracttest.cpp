@@ -51,7 +51,6 @@
 
 #include "abstracttest.h"
 
-#include <qtestcase.h>
 #include <QApplication>
 #include <QByteArray>
 #include <QDir>
@@ -59,6 +58,7 @@
 #include <QFileInfo>
 #include <QFlags>
 #include <QIODevice>
+#include <QLineF>
 #include <QPointF>
 #include <QProcess>
 #include <QScopedPointer>
@@ -68,10 +68,8 @@
 #include <QStringList>
 #include <QVector>
 #include <QtGlobal>
-#include <QLineF>
+#include <qtestcase.h>
 
-#include "logging.h"
-#include "vsysexits.h"
 #include "../vgeometry/vgeometrydef.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
@@ -81,31 +79,36 @@
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vpiece.h"
 #include "../vpatterndb/vpiecenode.h"
+#include "logging.h"
+#include "vsysexits.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-AbstractTest::AbstractTest(QObject *parent) :
-    QObject(parent)
-{
-}
+AbstractTest::AbstractTest(QObject* parent)
+    : QObject(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-void AbstractTest::Comparison(const QVector<QPointF> &ekv, const QVector<QPointF> &ekvOrig) const
+void AbstractTest::Comparison(const QVector<QPointF>& ekv, const QVector<QPointF>& ekvOrig) const
 {
     // Begin comparison
-    QCOMPARE(ekv.size(), ekvOrig.size());// First check if sizes equal
-    const qreal testAccuracy = (1.0/*mm*/ / 25.4) * PrintDPI;
+    QCOMPARE(ekv.size(), ekvOrig.size());   // First check if sizes equal
+    const qreal testAccuracy = (1.0 /*mm*/ / 25.4) * PrintDPI;
 
-    for (int i=0; i < ekv.size(); i++)
-    {
+    for (int i = 0; i < ekv.size(); i++) {
         Comparison(ekv.at(i), ekvOrig.at(i), testAccuracy);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void AbstractTest::Comparison(const QPointF &result, const QPointF &expected, qreal testAccuracy) const
+void AbstractTest::Comparison(
+    const QPointF& result, const QPointF& expected, qreal testAccuracy) const
 {
-    const QString msg = QStringLiteral("Actual '%2;%3', Expected '%4;%5'. Distance between points %6 mm.")
-            .arg(result.x()).arg(result.y()).arg(expected.x()).arg(expected.y())
+    const QString msg =
+        QStringLiteral("Actual '%2;%3', Expected '%4;%5'. Distance between points %6 mm.")
+            .arg(result.x())
+            .arg(result.y())
+            .arg(expected.x())
+            .arg(expected.y())
             .arg(UnitConvertor(QLineF(result, expected).length(), Unit::Px, Unit::Mm));
     // Check each point. Don't use comparison float values
     QVERIFY2(VFuzzyComparePoints(result, expected, testAccuracy), qUtf8Printable(msg));
@@ -118,7 +121,8 @@ QString AbstractTest::Seamly2DPath() const
 #if defined(Q_OS_WIN)
     return QCoreApplication::applicationDirPath() + path + QLatin1String("seamly2d.exe");
 #elif defined(Q_OS_MACOS)
-    return QCoreApplication::applicationDirPath() + path + QLatin1String("Seamly2D.app/Contents/MacOS/seamly2d");
+    return QCoreApplication::applicationDirPath() + path
+         + QLatin1String("Seamly2D.app/Contents/MacOS/seamly2d");
 #else
     return QCoreApplication::applicationDirPath() + path + QLatin1String("seamly2d");
 #endif
@@ -131,7 +135,8 @@ QString AbstractTest::SeamlyMePath() const
 #if defined(Q_OS_WIN)
     return QCoreApplication::applicationDirPath() + path + QLatin1String("seamlyme.exe");
 #elif defined(Q_OS_MACOS)
-    return QCoreApplication::applicationDirPath() + path + QLatin1String("seamlyme.app/Contents/MacOS/seamlyme");
+    return QCoreApplication::applicationDirPath() + path
+         + QLatin1String("seamlyme.app/Contents/MacOS/seamlyme");
 #else
     return QCoreApplication::applicationDirPath() + path + QLatin1String("seamlyme");
 #endif
@@ -144,13 +149,14 @@ QString AbstractTest::TranslationsPath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int AbstractTest::Run(int exit, const QString &program, const QStringList &arguments, QString &error, int msecs)
+int AbstractTest::Run(
+    int exit, const QString& program, const QStringList& arguments, QString& error, int msecs)
 {
-    const QString parameters = QString("Program: %1 \nArguments: %2.").arg(program).arg(arguments.join(", "));
+    const QString parameters =
+        QString("Program: %1 \nArguments: %2.").arg(program).arg(arguments.join(", "));
 
     QFileInfo info(program);
-    if (not info.exists())
-    {
+    if (not info.exists()) {
         error = QString("Can't find binary.\n%1").arg(parameters);
         return TST_EX_BIN;
     }
@@ -159,28 +165,26 @@ int AbstractTest::Run(int exit, const QString &program, const QStringList &argum
     process->setWorkingDirectory(info.absoluteDir().absolutePath());
     process->start(program, arguments);
 
-    if (not process->waitForStarted(msecs))
-    {
+    if (not process->waitForStarted(msecs)) {
         error = QString("The start operation timed out or an error occurred.\n%1").arg(parameters);
         process->kill();
         return TST_EX_START_TIME_OUT;
     }
 
-    if (not process->waitForFinished(msecs))
-    {
+    if (not process->waitForFinished(msecs)) {
         error = QString("The finish operation timed out or an error occurred.\n%1").arg(parameters);
         process->kill();
         return TST_EX_FINISH_TIME_OUT;
     }
 
-    if (process->exitStatus() == QProcess::CrashExit)
-    {
-        error = QString("Program crashed.\n%1\n%2").arg(parameters).arg(QString(process->readAllStandardError()));
+    if (process->exitStatus() == QProcess::CrashExit) {
+        error = QString("Program crashed.\n%1\n%2")
+                    .arg(parameters)
+                    .arg(QString(process->readAllStandardError()));
         return TST_EX_CRASH;
     }
 
-    if (process->exitCode() != exit)
-    {
+    if (process->exitCode() != exit) {
         error = QString("Unexpected finish.\n%1").arg(QString(process->readAllStandardError()));
         return process->exitCode();
     }
@@ -189,46 +193,36 @@ int AbstractTest::Run(int exit, const QString &program, const QStringList &argum
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool AbstractTest::CopyRecursively(const QString &srcFilePath, const QString &tgtFilePath) const
+bool AbstractTest::CopyRecursively(const QString& srcFilePath, const QString& tgtFilePath) const
 {
     QFileInfo srcFileInfo(srcFilePath);
-    if (srcFileInfo.isDir())
-    {
+    if (srcFileInfo.isDir()) {
         QDir targetDir(tgtFilePath);
         targetDir.cdUp();
         const QString dirName = QFileInfo(tgtFilePath).fileName();
-        if (not targetDir.mkdir(dirName))
-        {
+        if (not targetDir.mkdir(dirName)) {
             const QString msg = QString("Can't create dir '%1'.").arg(dirName);
             QWARN(qUtf8Printable(msg));
             return false;
         }
         QDir sourceDir(srcFilePath);
-        QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden |
-                                                    QDir::System);
-        foreach (const QString &fileName, fileNames)
-        {
+        QStringList fileNames = sourceDir.entryList(
+            QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
+        foreach (const QString& fileName, fileNames) {
             const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
             const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
-            if (not CopyRecursively(newSrcFilePath, newTgtFilePath))
-            {
+            if (not CopyRecursively(newSrcFilePath, newTgtFilePath)) {
                 return false;
             }
         }
-    }
-    else
-    {
-        if (QFileInfo(tgtFilePath).exists())
-        {
+    } else {
+        if (QFileInfo(tgtFilePath).exists()) {
             const QString msg = QString("File '%1' exists.").arg(srcFilePath);
             QWARN(qUtf8Printable(msg));
 
-            if (QFile::remove(tgtFilePath))
-            {
+            if (QFile::remove(tgtFilePath)) {
                 QWARN("File successfully removed.");
-            }
-            else
-            {
+            } else {
                 QWARN("Can't remove file.");
                 return false;
             }
@@ -236,18 +230,20 @@ bool AbstractTest::CopyRecursively(const QString &srcFilePath, const QString &tg
 
         // Check error: Cannot open %file for input
         QFile srcFile(srcFilePath);
-        if (not srcFile.open(QFile::ReadOnly))
-        {
-            const QString msg = QString("Can't copy file '%1'. Error: %2").arg(srcFilePath).arg(srcFile.errorString());
+        if (not srcFile.open(QFile::ReadOnly)) {
+            const QString msg = QString("Can't copy file '%1'. Error: %2")
+                                    .arg(srcFilePath)
+                                    .arg(srcFile.errorString());
             QWARN(qUtf8Printable(msg));
             return false;
         }
         srcFile.close();
 
-        if (not srcFile.copy(tgtFilePath))
-        {
-            const QString msg = QString("Can't copy file '%1' to '%2'. Error: %3").arg(srcFilePath).arg(tgtFilePath)
-                    .arg(srcFile.errorString());
+        if (not srcFile.copy(tgtFilePath)) {
+            const QString msg = QString("Can't copy file '%1' to '%2'. Error: %3")
+                                    .arg(srcFilePath)
+                                    .arg(tgtFilePath)
+                                    .arg(srcFile.errorString());
             QWARN(qUtf8Printable(msg));
             return false;
         }

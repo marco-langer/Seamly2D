@@ -50,13 +50,13 @@
  *************************************************************************/
 
 #include "anchorpoint_dialog.h"
+#include "../../tools/pattern_piece_tool.h"
+#include "../../tools/vabstracttool.h"
 #include "ui_anchorpoint_dialog.h"
 #include "visualization/line/anchorpoint_visual.h"
-#include "../../tools/vabstracttool.h"
-#include "../../tools/pattern_piece_tool.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-AnchorPointDialog::AnchorPointDialog(const VContainer *data, quint32 toolId, QWidget *parent)
+AnchorPointDialog::AnchorPointDialog(const VContainer* data, quint32 toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::AnchorPointDialog)
     , m_showMode(false)
@@ -73,16 +73,13 @@ AnchorPointDialog::AnchorPointDialog(const VContainer *data, quint32 toolId, QWi
     flagError = false;
     CheckState();
 
-    connect(ui->comboBoxPiece, &QComboBox::currentTextChanged, this, [this](){ CheckPieces(); });
+    connect(ui->comboBoxPiece, &QComboBox::currentTextChanged, this, [this]() { CheckPieces(); });
 
     vis = new AnchorPointVisual(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-AnchorPointDialog::~AnchorPointDialog()
-{
-    delete ui;
-}
+AnchorPointDialog::~AnchorPointDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void AnchorPointDialog::EnbleShowMode(bool disable)
@@ -92,44 +89,32 @@ void AnchorPointDialog::EnbleShowMode(bool disable)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 AnchorPointDialog::GetPieceId() const
-{
-    return getCurrentObjectId(ui->comboBoxPiece);
-}
+quint32 AnchorPointDialog::GetPieceId() const { return getCurrentObjectId(ui->comboBoxPiece); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void AnchorPointDialog::SetPieceId(quint32 id)
 {
-    if (ui->comboBoxPiece->count() <= 0)
-    {
+    if (ui->comboBoxPiece->count() <= 0) {
         ui->comboBoxPiece->addItem(data->GetPiece(id).GetName(), id);
-    }
-    else
-    {
+    } else {
         const qint32 index = ui->comboBoxPiece->findData(id);
-        if (index != -1)
-        {
+        if (index != -1) {
             ui->comboBoxPiece->setCurrentIndex(index);
-        }
-        else
-        {
+        } else {
             ui->comboBoxPiece->setCurrentIndex(0);
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 AnchorPointDialog::GetPointId() const
-{
-    return getCurrentObjectId(ui->comboBoxPoint);
-}
+quint32 AnchorPointDialog::GetPointId() const { return getCurrentObjectId(ui->comboBoxPoint); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void AnchorPointDialog::SetPointId(quint32 id)
 {
     setCurrentPointId(ui->comboBoxPoint, id);
 
-    AnchorPointVisual *point = qobject_cast<AnchorPointVisual *>(vis);
+    AnchorPointVisual* point = qobject_cast<AnchorPointVisual*>(vis);
     SCASSERT(point != nullptr)
     point->setObject1Id(id);
 
@@ -137,20 +122,17 @@ void AnchorPointDialog::SetPointId(quint32 id)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void AnchorPointDialog::SetPiecesList(const QVector<quint32> &list)
+void AnchorPointDialog::SetPiecesList(const QVector<quint32>& list)
 {
     FillComboBoxPiecesList(ui->comboBoxPiece, list);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void AnchorPointDialog::ChosenObject(quint32 id, const SceneObject &type)
+void AnchorPointDialog::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (not prepare)
-    {
-        if (type == SceneObject::Point)
-        {
-            if (SetObject(id, ui->comboBoxPoint, ""))
-            {
+    if (not prepare) {
+        if (type == SceneObject::Point) {
+            if (SetObject(id, ui->comboBoxPoint, "")) {
                 vis->VisualMode(id);
                 CheckPoint();
                 prepare = true;
@@ -173,11 +155,11 @@ void AnchorPointDialog::ShowVisualization()
 {
     AddVisualization<AnchorPointVisual>();
 
-    if (m_showMode)
-    {
-        PatternPieceTool *tool = qobject_cast<PatternPieceTool*>(VAbstractPattern::getTool(GetPieceId()));
+    if (m_showMode) {
+        PatternPieceTool* tool =
+            qobject_cast<PatternPieceTool*>(VAbstractPattern::getTool(GetPieceId()));
         SCASSERT(tool != nullptr);
-        auto visPoint = qobject_cast<AnchorPointVisual *>(vis);
+        auto visPoint = qobject_cast<AnchorPointVisual*>(vis);
         SCASSERT(visPoint != nullptr);
         visPoint->setParentItem(tool);
     }
@@ -186,16 +168,12 @@ void AnchorPointDialog::ShowVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 void AnchorPointDialog::CheckPieces()
 {
-    if (not m_showMode)
-    {
+    if (not m_showMode) {
         QColor color = okColor;
-        if (ui->comboBoxPiece->count() <= 0 || ui->comboBoxPiece->currentIndex() == -1)
-        {
+        if (ui->comboBoxPiece->count() <= 0 || ui->comboBoxPiece->currentIndex() == -1) {
             flagError = false;
             color = errorColor;
-        }
-        else
-        {
+        } else {
             flagError = true;
             color = okColor;
         }
@@ -208,13 +186,10 @@ void AnchorPointDialog::CheckPieces()
 void AnchorPointDialog::CheckPoint()
 {
     QColor color = okColor;
-    if (ui->comboBoxPoint->currentIndex() != -1)
-    {
+    if (ui->comboBoxPoint->currentIndex() != -1) {
         m_flagPoint = true;
         color = okColor;
-    }
-    else
-    {
+    } else {
         m_flagPoint = false;
         color = errorColor;
     }

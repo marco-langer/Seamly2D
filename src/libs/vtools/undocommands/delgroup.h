@@ -52,11 +52,11 @@
 #ifndef DELGROUP_H
 #define DELGROUP_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -64,15 +64,16 @@ class DelGroup : public VUndoCommand
 {
     Q_OBJECT
 public:
-    DelGroup(VAbstractPattern *doc, quint32 id, QUndoCommand *parent = nullptr);
+    DelGroup(VAbstractPattern* doc, quint32 id, QUndoCommand* parent = nullptr);
     virtual ~DelGroup();
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
 signals:
     void updateGroups();
+
 private:
     Q_DISABLE_COPY(DelGroup)
     const QString activeBlockName;
 };
 
-#endif // DELGROUP_H
+#endif   // DELGROUP_H

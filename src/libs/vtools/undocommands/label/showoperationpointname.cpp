@@ -22,71 +22,64 @@
  **
  **************************************************************************/
 
- #include "showoperationpointname.h"
+#include "showoperationpointname.h"
 
- #include <QDomElement>
+#include <QDomElement>
 
- #include "../ifc/xml/vabstractpattern.h"
- #include "../vmisc/logging.h"
- #include "../vwidgets/vmaingraphicsview.h"
- #include "../vmisc/vabstractapplication.h"
- #include "../vtools/tools/drawTools/vdrawtool.h"
+#include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/logging.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vtools/tools/drawTools/vdrawtool.h"
+#include "../vwidgets/vmaingraphicsview.h"
 
- //---------------------------------------------------------------------------------------------------------------------
- ShowOperationPointName::ShowOperationPointName(VAbstractPattern *doc, quint32 idTool, quint32 idPoint, bool visible,
-                                                QUndoCommand *parent)
-     : VUndoCommand(QDomElement(), doc, parent)
-     , m_visible(visible)
-     , m_oldVisible(not visible)
-     , m_scene(qApp->getCurrentScene())
-     , m_idTool(idTool)
- {
-     nodeId = idPoint;
-     setText(tr("toggle point visibility"));
+//---------------------------------------------------------------------------------------------------------------------
+ShowOperationPointName::ShowOperationPointName(
+    VAbstractPattern* doc, quint32 idTool, quint32 idPoint, bool visible, QUndoCommand* parent)
+    : VUndoCommand(QDomElement(), doc, parent)
+    , m_visible(visible)
+    , m_oldVisible(not visible)
+    , m_scene(qApp->getCurrentScene())
+    , m_idTool(idTool)
+{
+    nodeId = idPoint;
+    setText(tr("toggle point visibility"));
 
-     const QDomElement element = getDestinationObject(m_idTool, nodeId);
-     if (element.isElement())
-     {
-         m_oldVisible = doc->getParameterBool(element, AttrShowPointName, trueStr);
-     }
-     else
-     {
-         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
-     }
- }
+    const QDomElement element = getDestinationObject(m_idTool, nodeId);
+    if (element.isElement()) {
+        m_oldVisible = doc->getParameterBool(element, AttrShowPointName, trueStr);
+    } else {
+        qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
+    }
+}
 
- //---------------------------------------------------------------------------------------------------------------------
- void ShowOperationPointName::undo()
- {
-     qCDebug(vUndo, "Undo.");
+//---------------------------------------------------------------------------------------------------------------------
+void ShowOperationPointName::undo()
+{
+    qCDebug(vUndo, "Undo.");
 
-     Do(m_oldVisible);
- }
+    Do(m_oldVisible);
+}
 
- //---------------------------------------------------------------------------------------------------------------------
- void ShowOperationPointName::redo()
- {
-     qCDebug(vUndo, "Redo.");
+//---------------------------------------------------------------------------------------------------------------------
+void ShowOperationPointName::redo()
+{
+    qCDebug(vUndo, "Redo.");
 
-     Do(m_visible);
- }
+    Do(m_visible);
+}
 
- //---------------------------------------------------------------------------------------------------------------------
- void ShowOperationPointName::Do(bool visible)
- {
-     QDomElement domElement = getDestinationObject(m_idTool, nodeId);
-     if (not domElement.isNull() && domElement.isElement())
-     {
-         doc->SetAttribute<bool>(domElement, AttrShowPointName, visible);
+//---------------------------------------------------------------------------------------------------------------------
+void ShowOperationPointName::Do(bool visible)
+{
+    QDomElement domElement = getDestinationObject(m_idTool, nodeId);
+    if (not domElement.isNull() && domElement.isElement()) {
+        doc->SetAttribute<bool>(domElement, AttrShowPointName, visible);
 
-         if (VDrawTool *tool = qobject_cast<VDrawTool *>(VAbstractPattern::getTool(m_idTool)))
-         {
-             tool->setPointNameVisiblity(nodeId, visible);
-         }
-         VMainGraphicsView::NewSceneRect(m_scene, qApp->getSceneView());
-     }
-     else
-     {
-         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
-     }
- }
+        if (VDrawTool* tool = qobject_cast<VDrawTool*>(VAbstractPattern::getTool(m_idTool))) {
+            tool->setPointNameVisiblity(nodeId, visible);
+        }
+        VMainGraphicsView::NewSceneRect(m_scene, qApp->getSceneView());
+    } else {
+        qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
+    }
+}

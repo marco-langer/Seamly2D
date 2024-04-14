@@ -52,13 +52,13 @@
 #ifndef VISTOOLPOINTFROMARCANDTANGENT_H
 #define VISTOOLPOINTFROMARCANDTANGENT_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
@@ -70,26 +70,30 @@ class VisToolPointFromArcAndTangent : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolPointFromArcAndTangent(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolPointFromArcAndTangent(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolPointFromArcAndTangent() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void         setArcId(const quint32 &value);
-    void         setCrossPoint(const CrossCirclesPoint &value);
+    void setArcId(const quint32& value);
+    void setCrossPoint(const CrossCirclesPoint& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolPointFromArcAndTangent)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPointFromArcAndTangent)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolPointFromArcAndTangent)
-    quint32           arcId;
+    quint32 arcId;
     CrossCirclesPoint crossPoint;
-    VScaledEllipse   *point;
-    VScaledEllipse   *tangent;
-    VCurvePathItem   *arcPath;
-    VScaledLine      *tangentLine2;
+    VScaledEllipse* point;
+    VScaledEllipse* tangent;
+    VCurvePathItem* arcPath;
+    VScaledLine* tangentLine2;
 
-    void FindRays(const QPointF &p, const VArc *arc);
+    void FindRays(const QPointF& p, const VArc* arc);
 };
 
-#endif // VISTOOLPOINTFROMARCANDTANGENT_H
+#endif   // VISTOOLPOINTFROMARCANDTANGENT_H

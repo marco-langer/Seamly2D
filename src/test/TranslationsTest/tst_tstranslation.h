@@ -61,7 +61,7 @@ class TST_TSTranslation : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_TSTranslation(QObject *parent = nullptr);
+    explicit TST_TSTranslation(QObject* parent = nullptr);
 
 private slots:
     void CheckEnglishLocalization_data();
@@ -90,7 +90,7 @@ private:
     static const QString AttrValUnfinished;
     static const QString AttrValObsolete;
 
-    QDomNodeList LoadTSFile(const QString &filename);
+    QDomNodeList LoadTSFile(const QString& filename);
 };
 
-#endif // TST_TSTRANSLATION_H
+#endif   // TST_TSTRANSLATION_H

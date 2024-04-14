@@ -50,25 +50,21 @@
  *************************************************************************/
 
 #include "tst_vtranslatevars.h"
+#include "../qmuparser/qmuparsererror.h"
 #include "../vmisc/logging.h"
 #include "../vpatterndb/vtranslatevars.h"
-#include "../qmuparser/qmuparsererror.h"
 
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VTranslateVars::TST_VTranslateVars(QObject *parent)
-    : QObject(parent),
-      m_trMs(nullptr),
-      m_systemLocale(QLocale::system())
-{
-}
+TST_VTranslateVars::TST_VTranslateVars(QObject* parent)
+    : QObject(parent)
+    , m_trMs(nullptr)
+    , m_systemLocale(QLocale::system())
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_VTranslateVars::initTestCase()
-{
-    m_trMs = new VTranslateVars();
-}
+void TST_VTranslateVars::initTestCase() { m_trMs = new VTranslateVars(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VTranslateVars::TestFormulaFromUser_data()
@@ -78,9 +74,8 @@ void TST_VTranslateVars::TestFormulaFromUser_data()
     QTest::addColumn<QLocale>("locale");
 
     const QList<QLocale> allLocales =
-            QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
-    for(int i = 0; i < allLocales.size(); ++i)
-    {
+        QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
+    for (int i = 0; i < allLocales.size(); ++i) {
         PrepareValFromUser(1000.5, allLocales.at(i));
         PrepareValFromUser(-1000.5, allLocales.at(i));
     }
@@ -96,11 +91,9 @@ void TST_VTranslateVars::TestFormulaFromUser()
     QLocale::setDefault(locale);
 
     QString result;
-    try
-    {
+    try {
         result = m_trMs->FormulaFromUser(input, true);
-    }
-    catch (qmu::QmuParserError &error)// In case something bad will happen
+    } catch (qmu::QmuParserError& error)   // In case something bad will happen
     {
         Q_UNUSED(error)
         result = input;
@@ -117,9 +110,8 @@ void TST_VTranslateVars::TestFormulaToUser_data()
     QTest::addColumn<QLocale>("locale");
 
     const QList<QLocale> allLocales =
-            QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
-    for(int i = 0; i < allLocales.size(); ++i)
-    {
+        QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
+    for (int i = 0; i < allLocales.size(); ++i) {
         PrepareValToUser(1000.5, allLocales.at(i));
         PrepareValToUser(-1000.5, allLocales.at(i));
     }
@@ -135,11 +127,9 @@ void TST_VTranslateVars::TestFormulaToUser()
     QLocale::setDefault(locale);
 
     QString result;
-    try
-    {
+    try {
         result = m_trMs->FormulaToUser(input, true);
-    }
-    catch (qmu::QmuParserError &error)// In case something bad will happen
+    } catch (qmu::QmuParserError& error)   // In case something bad will happen
     {
         Q_UNUSED(error)
         result = input;
@@ -156,7 +146,7 @@ void TST_VTranslateVars::cleanupTestCase()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_VTranslateVars::PrepareValFromUser(double d, const QLocale &locale)
+void TST_VTranslateVars::PrepareValFromUser(double d, const QLocale& locale)
 {
     const QString formulaToSystem = QLocale::c().toString(d);
     const QString formulaFromUser = locale.toString(d);
@@ -165,7 +155,7 @@ void TST_VTranslateVars::PrepareValFromUser(double d, const QLocale &locale)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_VTranslateVars::PrepareValToUser(double d, const QLocale &locale)
+void TST_VTranslateVars::PrepareValToUser(double d, const QLocale& locale)
 {
     const QString formulaFromSystem = QLocale::c().toString(d);
     const QString formulaToUser = locale.toString(d);
@@ -174,24 +164,24 @@ void TST_VTranslateVars::PrepareValToUser(double d, const QLocale &locale)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_VTranslateVars::PrepareVal(const QString &inputFormula, const QString &outputFormula, const QLocale &locale)
+void TST_VTranslateVars::PrepareVal(
+    const QString& inputFormula, const QString& outputFormula, const QLocale& locale)
 {
     QString inputString = inputFormula;
     QString outputString = outputFormula;
 
-    auto PREPARE_CASE = [locale](const QString &inputString, const QString &outputString)
-    {
+    auto PREPARE_CASE = [locale](const QString& inputString, const QString& outputString) {
         QString tag = QString("%1. String '%2'").arg(locale.name()).arg(inputString);
         QTest::newRow(qUtf8Printable(tag)) << inputString << outputString << locale;
     };
 
     PREPARE_CASE(inputString, outputString);
 
-    inputString = inputFormula+QLatin1String("+")+inputFormula;
-    outputString = outputFormula+QLatin1String("+")+outputFormula;
+    inputString = inputFormula + QLatin1String("+") + inputFormula;
+    outputString = outputFormula + QLatin1String("+") + outputFormula;
     PREPARE_CASE(inputString, outputString);
 
-    inputString = inputFormula+QString("+a");
-    outputString = outputFormula+QString("+a");
+    inputString = inputFormula + QString("+a");
+    outputString = outputFormula + QString("+a");
     PREPARE_CASE(inputString, outputString);
 }

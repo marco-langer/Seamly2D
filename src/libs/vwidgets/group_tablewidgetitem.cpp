@@ -29,34 +29,27 @@
 
 #include "../ifc/xml/vabstractpattern.h"
 
-GroupTableWidgetItem::GroupTableWidgetItem(VAbstractPattern *doc)
+GroupTableWidgetItem::GroupTableWidgetItem(VAbstractPattern* doc)
     : QTableWidgetItem()
     , m_doc(doc)
-    {}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-bool GroupTableWidgetItem::operator<(const QTableWidgetItem &other) const
+bool GroupTableWidgetItem::operator<(const QTableWidgetItem& other) const
 {
-    if (other.column() == 0)
-    {
-        bool thisVisible  = m_doc->getGroupVisibility(this->data(Qt::UserRole).toUInt());
+    if (other.column() == 0) {
+        bool thisVisible = m_doc->getGroupVisibility(this->data(Qt::UserRole).toUInt());
         bool otherVisible = m_doc->getGroupVisibility(other.data(Qt::UserRole).toUInt());
         return int(thisVisible) < int(otherVisible);
-    }
-    else if (other.column() == 1)
-    {
-        bool thisLocked  = m_doc->getGroupLock(this->data(Qt::UserRole).toUInt());
+    } else if (other.column() == 1) {
+        bool thisLocked = m_doc->getGroupLock(this->data(Qt::UserRole).toUInt());
         bool otherLocked = m_doc->getGroupLock(other.data(Qt::UserRole).toUInt());
         return int(thisLocked) < int(otherLocked);
-    }
-    else if (other.column() == 2)
-    {
-        bool thisEmpty  = m_doc->isGroupEmpty(this->data(Qt::UserRole).toUInt());
+    } else if (other.column() == 2) {
+        bool thisEmpty = m_doc->isGroupEmpty(this->data(Qt::UserRole).toUInt());
         bool otherEmpty = m_doc->isGroupEmpty(other.data(Qt::UserRole).toUInt());
         return int(!thisEmpty) < int(!otherEmpty);
-    }
-    else if (other.column() == 3)
-    {
+    } else if (other.column() == 3) {
         return this->data(Qt::UserRole).toString() < other.data(Qt::UserRole).toString();
     }
 

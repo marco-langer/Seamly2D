@@ -63,13 +63,13 @@ class TST_MeasurementRegExp : public TST_AbstractRegExp
 {
     Q_OBJECT
 public:
-    TST_MeasurementRegExp(quint32 systemCode, const QString &locale, QObject *parent = nullptr);
+    TST_MeasurementRegExp(quint32 systemCode, const QString& locale, QObject* parent = nullptr);
     virtual ~TST_MeasurementRegExp();
 
     static const quint32 systemCounts;
 
 protected:
-    virtual void        PrepareData() Q_DECL_OVERRIDE;
+    virtual void PrepareData() Q_DECL_OVERRIDE;
     virtual QStringList AllNames() Q_DECL_OVERRIDE;
 
 private slots:
@@ -87,11 +87,11 @@ private slots:
 private:
     Q_DISABLE_COPY(TST_MeasurementRegExp)
 
-    quint32               m_systemCode;
+    quint32 m_systemCode;
     QPointer<QTranslator> m_pmsTranslator;
 
-    int     loadMeasurements(const QString &checkedLocale);
-    void    RemoveTrMeasurements(const QString &checkedLocale);
+    int loadMeasurements(const QString& checkedLocale);
+    void RemoveTrMeasurements(const QString& checkedLocale);
 };
 
-#endif // TST_MEASUREMENTREGEXP_H
+#endif   // TST_MEASUREMENTREGEXP_H

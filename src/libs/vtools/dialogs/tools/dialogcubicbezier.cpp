@@ -67,7 +67,7 @@
 #include "ui_dialogcubicbezier.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogCubicBezier::DialogCubicBezier(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogCubicBezier::DialogCubicBezier(const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogCubicBezier)
     , spl()
@@ -85,53 +85,47 @@ DialogCubicBezier::DialogCubicBezier(const VContainer *data, const quint32 &tool
     FillComboBoxPoints(ui->comboBoxP4);
 
     int index = ui->lineType_ComboBox->findData(LineTypeNone);
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->removeItem(index);
     }
 
     index = ui->lineColor_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineColor());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineColor_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineWeight_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineWeight_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineType_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineType());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->setCurrentIndex(index);
     }
 
     DialogTool::CheckState();
 
-    connect(ui->comboBoxP1, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
-    connect(ui->comboBoxP2, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
-    connect(ui->comboBoxP3, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
-    connect(ui->comboBoxP4, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
+    connect(
+        ui->comboBoxP1, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
+    connect(
+        ui->comboBoxP2, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
+    connect(
+        ui->comboBoxP3, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
+    connect(
+        ui->comboBoxP4, &QComboBox::currentTextChanged, this, &DialogCubicBezier::PointNameChanged);
 
     vis = new VisToolCubicBezier(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogCubicBezier::~DialogCubicBezier()
-{
-    delete ui;
-}
+DialogCubicBezier::~DialogCubicBezier() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier DialogCubicBezier::GetSpline() const
-{
-    return spl;
-}
+VCubicBezier DialogCubicBezier::GetSpline() const { return spl; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCubicBezier::SetSpline(const VCubicBezier &spline)
+void DialogCubicBezier::SetSpline(const VCubicBezier& spline)
 {
     spl = spline;
 
@@ -142,7 +136,7 @@ void DialogCubicBezier::SetSpline(const VCubicBezier &spline)
 
     ui->lineEditSplineName->setText(qApp->translateVariables()->VarToUser(spl.name()));
 
-    auto path = qobject_cast<VisToolCubicBezier *>(vis);
+    auto path = qobject_cast<VisToolCubicBezier*>(vis);
     SCASSERT(path != nullptr)
 
     path->setObject1Id(spl.GetP1().id());
@@ -158,7 +152,7 @@ QString DialogCubicBezier::getPenStyle() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCubicBezier::setPenStyle(const QString &value)
+void DialogCubicBezier::setPenStyle(const QString& value)
 {
     ChangeCurrentData(ui->lineType_ComboBox, value);
 }
@@ -170,7 +164,7 @@ void DialogCubicBezier::setPenStyle(const QString &value)
  */
 QString DialogCubicBezier::getLineWeight() const
 {
-        return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
+    return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -178,7 +172,7 @@ QString DialogCubicBezier::getLineWeight() const
  * @brief setLineWeight set weight of the lines
  * @param value type
  */
-void DialogCubicBezier::setLineWeight(const QString &value)
+void DialogCubicBezier::setLineWeight(const QString& value)
 {
     ChangeCurrentData(ui->lineWeight_ComboBox, value);
 }
@@ -190,64 +184,56 @@ QString DialogCubicBezier::getLineColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCubicBezier::setLineColor(const QString &value)
+void DialogCubicBezier::setLineColor(const QString& value)
 {
     ChangeCurrentData(ui->lineColor_ComboBox, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCubicBezier::ChosenObject(quint32 id, const SceneObject &type)
+void DialogCubicBezier::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            auto *path = qobject_cast<VisToolCubicBezier *>(vis);
+        if (type == SceneObject::Point) {
+            auto* path = qobject_cast<VisToolCubicBezier*>(vis);
             SCASSERT(path != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxP1, tr("Select the second point of curve")))
-                    {
-                        ++number;
-                        path->VisualMode(id);
-                    }
-                    break;
-                case 1:
-                    if (SetObject(id, ui->comboBoxP2, tr("Select the third point of curve")))
-                    {
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxP1, tr("Select the second point of curve"))) {
+                    ++number;
+                    path->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (SetObject(id, ui->comboBoxP2, tr("Select the third point of curve"))) {
+                    ++number;
+
+                    path->setObject2Id(id);
+                    path->RefreshGeometry();
+                }
+                break;
+            case 2:
+                if (SetObject(id, ui->comboBoxP3, tr("Select the fourth point of curve"))) {
+                    ++number;
+
+                    path->setObject3Id(id);
+                    path->RefreshGeometry();
+                }
+                break;
+            case 3:
+                if (getCurrentObjectId(ui->comboBoxP1) != id) {
+                    if (SetObject(id, ui->comboBoxP4, "")) {
                         ++number;
 
-                        path->setObject2Id(id);
+                        path->setObject4Id(id);
                         path->RefreshGeometry();
+                        prepare = true;
+                        DialogAccepted();
                     }
-                    break;
-                case 2:
-                    if (SetObject(id, ui->comboBoxP3, tr("Select the fourth point of curve")))
-                    {
-                        ++number;
-
-                        path->setObject3Id(id);
-                        path->RefreshGeometry();
-                    }
-                    break;
-                case 3:
-                    if (getCurrentObjectId(ui->comboBoxP1) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxP4, ""))
-                        {
-                            ++number;
-
-                            path->setObject4Id(id);
-                            path->RefreshGeometry();
-                            prepare = true;
-                            DialogAccepted();
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                }
+                break;
+            default: break;
             }
         }
     }
@@ -257,30 +243,23 @@ void DialogCubicBezier::ChosenObject(quint32 id, const SceneObject &type)
 void DialogCubicBezier::PointNameChanged()
 {
     QColor color = okColor;
-    if (getCurrentObjectId(ui->comboBoxP1) == getCurrentObjectId(ui->comboBoxP4))
-    {
+    if (getCurrentObjectId(ui->comboBoxP1) == getCurrentObjectId(ui->comboBoxP4)) {
         flagError = false;
         color = errorColor;
 
         ui->lineEditSplineName->setText(tr("Invalid spline"));
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
 
-        if (getCurrentObjectId(ui->comboBoxP1) == spl.GetP1().id() &&
-            getCurrentObjectId(ui->comboBoxP4) == spl.GetP4().id())
-        {
+        if (getCurrentObjectId(ui->comboBoxP1) == spl.GetP1().id()
+            && getCurrentObjectId(ui->comboBoxP4) == spl.GetP4().id()) {
             newDuplicate = -1;
             ui->lineEditSplineName->setText(qApp->translateVariables()->VarToUser(spl.name()));
-        }
-        else
-        {
+        } else {
             VCubicBezier spline(*GetP1(), *GetP2(), *GetP3(), *GetP4());
 
-            if (not data->IsUnique(spline.name()))
-            {
+            if (not data->IsUnique(spline.name())) {
                 newDuplicate = static_cast<qint32>(DNumber(spline.name()));
                 spline.SetDuplicate(static_cast<quint32>(newDuplicate));
             }
@@ -296,10 +275,7 @@ void DialogCubicBezier::PointNameChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCubicBezier::ShowVisualization()
-{
-    AddVisualization<VisToolCubicBezier>();
-}
+void DialogCubicBezier::ShowVisualization() { AddVisualization<VisToolCubicBezier>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCubicBezier::SaveData()
@@ -311,10 +287,10 @@ void DialogCubicBezier::SaveData()
 
     spl = VCubicBezier(*p1, *p2, *p3, *p4);
 
-    const quint32 d = spl.GetDuplicate();//Save previous value
+    const quint32 d = spl.GetDuplicate();   // Save previous value
     newDuplicate <= -1 ? spl.SetDuplicate(d) : spl.SetDuplicate(static_cast<quint32>(newDuplicate));
 
-    auto path = qobject_cast<VisToolCubicBezier *>(vis);
+    auto path = qobject_cast<VisToolCubicBezier*>(vis);
     SCASSERT(path != nullptr)
 
     path->setObject1Id(p1->id());

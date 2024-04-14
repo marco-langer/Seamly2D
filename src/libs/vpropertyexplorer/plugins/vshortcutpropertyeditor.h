@@ -21,7 +21,6 @@
 #ifndef VSHORTCUTPROPERTYEDITOR_H
 #define VSHORTCUTPROPERTYEDITOR_H
 
-#include <qcompilerdetection.h>
 #include <QKeySequence>
 #include <QLineEdit>
 #include <QMetaObject>
@@ -31,9 +30,9 @@
 #include <QToolButton>
 #include <QWidget>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-namespace VPE
-{
+namespace VPE {
 
 
 class VShortcutEditWidget : public QWidget
@@ -65,15 +64,16 @@ public slots:
     //! Sets the shortcut
     //! \param shortcut The new shortcut
     //! \emit_signal If true, this will emit the dataChangedByUser()-signal
-    void setShortcut(const QString &shortcut, bool emit_signal);
+    void setShortcut(const QString& shortcut, bool emit_signal);
 
     //! Sets the shortcut
     //! \param shortcut The new shortcut
     //! \emit_signal If true, this will emit the dataChangedByUser()-signal
-    void setShortcut(const QKeySequence &shortcut, bool emit_signal);
+    void setShortcut(const QKeySequence& shortcut, bool emit_signal);
 
 private slots:
-    //! This slot is called when the user edits the line edit (e.g. by removing or pasting text using the mouse)
+    //! This slot is called when the user edits the line edit (e.g. by removing or pasting text
+    //! using the mouse)
     void onTextEdited(const QString& text);
 
 protected:
@@ -87,6 +87,6 @@ private:
     Q_DISABLE_COPY(VShortcutEditWidget)
 };
 
-}
+}   // namespace VPE
 
-#endif // VFILEPROPERTYEDITOR_H
+#endif   // VFILEPROPERTYEDITOR_H

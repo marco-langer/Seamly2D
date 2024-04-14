@@ -52,7 +52,6 @@
 #ifndef VSIMPLECURVE_H
 #define VSIMPLECURVE_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -61,25 +60,33 @@
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "vabstractsimple.h"
 #include "vcurvepathitem.h"
 
 class VAbstractCurve;
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
-class VSimpleCurve : public VAbstractSimple, public VCurvePathItem
+class VSimpleCurve
+    : public VAbstractSimple
+    , public VCurvePathItem
 {
     Q_OBJECT
 public:
-    VSimpleCurve(quint32 id, const QSharedPointer<VAbstractCurve> &curve, QObject *parent = nullptr);
+    VSimpleCurve(
+        quint32 id, const QSharedPointer<VAbstractCurve>& curve, QObject* parent = nullptr);
     virtual ~VSimpleCurve() Q_DECL_EQ_DEFAULT;
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::SimpleCurve)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::SimpleCurve)
+    };
 
-    void RefreshGeometry(const QSharedPointer<VAbstractCurve> &curve);
+    void RefreshGeometry(const QSharedPointer<VAbstractCurve>& curve);
 signals:
     /**
      * @brief Choosed send id when clicked.
@@ -93,14 +100,14 @@ public slots:
     void CurveSelected(bool selected);
 
 protected:
-    virtual void     mousePressEvent( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     mouseReleaseEvent ( QGraphicsSceneMouseEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ) Q_DECL_OVERRIDE;
-    virtual QVariant itemChange ( GraphicsItemChange change, const QVariant &value ) Q_DECL_OVERRIDE;
-    virtual void     contextMenuEvent (QGraphicsSceneContextMenuEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     keyReleaseEvent ( QKeyEvent * event ) Q_DECL_OVERRIDE;
-    virtual void     ScalePenWidth() Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) Q_DECL_OVERRIDE;
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) Q_DECL_OVERRIDE;
+    virtual void keyReleaseEvent(QKeyEvent* event) Q_DECL_OVERRIDE;
+    virtual void ScalePenWidth() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VSimpleCurve)
@@ -109,4 +116,4 @@ private:
     bool m_isHovered;
 };
 
-#endif // VSIMPLECURVE_H
+#endif   // VSIMPLECURVE_H

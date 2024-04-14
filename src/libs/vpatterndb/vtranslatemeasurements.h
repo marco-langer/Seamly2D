@@ -1,29 +1,29 @@
 /******************************************************************************
-*   @file   vtranslatemeasurements.h
-**  @author DSCaskey <dscaskey@gmail.com>
-**  @date  5 Jun, 2023
-**
-**  @brief
-**  @copyright
-**  This source code is part of the Seamly2D project, a pattern making
-**  program to create and model patterns of clothing.
-**  Copyright (C) 2017-2023 Seamly2D project
-**  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
-**
-**  Seamly2D is free software: you can redistribute it and/or modify
-**  it under the terms of the GNU General Public License as published by
-**  the Free Software Foundation, either version 3 of the License, or
-**  (at your option) any later version.
-**
-**  Seamly2D is distributed in the hope that it will be useful,
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**  GNU General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
-**
-*************************************************************************/
+ *   @file   vtranslatemeasurements.h
+ **  @author DSCaskey <dscaskey@gmail.com>
+ **  @date  5 Jun, 2023
+ **
+ **  @brief
+ **  @copyright
+ **  This source code is part of the Seamly2D project, a pattern making
+ **  program to create and model patterns of clothing.
+ **  Copyright (C) 2017-2023 Seamly2D project
+ **  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ *************************************************************************/
 
 /************************************************************************
  **
@@ -67,13 +67,14 @@ public:
     VTranslateMeasurements();
     virtual ~VTranslateMeasurements();
 
-    bool MeasurementsFromUser(QString &newFormula, int position, const QString &token, int &bias) const;
+    bool
+    MeasurementsFromUser(QString& newFormula, int position, const QString& token, int& bias) const;
 
-    QString MToUser(const QString &measurement) const;
-    QString MNumber(const QString &measurement) const;
-    QString MFormula(const QString &measurement) const;
-    QString guiText(const QString &measurement) const;
-    QString Description(const QString &measurement) const;
+    QString MToUser(const QString& measurement) const;
+    QString MNumber(const QString& measurement) const;
+    QString MFormula(const QString& measurement) const;
+    QString guiText(const QString& measurement) const;
+    QString Description(const QString& measurement) const;
 
     virtual void Retranslate();
 
@@ -84,31 +85,36 @@ private:
     Q_DISABLE_COPY(VTranslateMeasurements)
     QMap<QString, qmu::QmuTranslation> m_guiTexts;
     QMap<QString, qmu::QmuTranslation> m_descriptions;
-    QMap<QString, QString>             m_numbers;
-    QMap<QString, QString>             m_formulas;
+    QMap<QString, QString> m_numbers;
+    QMap<QString, QString> m_formulas;
 
-    void InitGroupA(); // Direct Height
-    void InitGroupB(); // Direct Width
-    void InitGroupC(); // Indentation
-    void InitGroupD(); // Circumference and Arc
-    void InitGroupE(); // Vertical
-    void InitGroupF(); // Horizontal
-    void InitGroupG(); // Bust
-    void InitGroupH(); // Balance
-    void InitGroupI(); // Arm
-    void InitGroupJ(); // Leg
-    void InitGroupK(); // Crotch and Rise
-    void InitGroupL(); // Hand
-    void InitGroupM(); // Foot
-    void InitGroupN(); // Head
-    void InitGroupO(); // Men & Tailoring
-    void InitGroupP(); // Historical & Specialty
-    void InitGroupQ(); // Patternmaking measurements
+    void InitGroupA();   // Direct Height
+    void InitGroupB();   // Direct Width
+    void InitGroupC();   // Indentation
+    void InitGroupD();   // Circumference and Arc
+    void InitGroupE();   // Vertical
+    void InitGroupF();   // Horizontal
+    void InitGroupG();   // Bust
+    void InitGroupH();   // Balance
+    void InitGroupI();   // Arm
+    void InitGroupJ();   // Leg
+    void InitGroupK();   // Crotch and Rise
+    void InitGroupL();   // Hand
+    void InitGroupM();   // Foot
+    void InitGroupN();   // Head
+    void InitGroupO();   // Men & Tailoring
+    void InitGroupP();   // Historical & Specialty
+    void InitGroupQ();   // Patternmaking measurements
 
     void InitMeasurements();
 
-    void InitMeasurement(const QString &name, const qmu::QmuTranslation &m, const qmu::QmuTranslation &g,
-                         const qmu::QmuTranslation &d, const QString &number, const QString &formula = QString());
+    void InitMeasurement(
+        const QString& name,
+        const qmu::QmuTranslation& m,
+        const qmu::QmuTranslation& g,
+        const qmu::QmuTranslation& d,
+        const QString& number,
+        const QString& formula = QString());
 };
 
-#endif // VTRANSLATEMEASUREMENTS_H
+#endif   // VTRANSLATEMEASUREMENTS_H

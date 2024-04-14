@@ -55,18 +55,18 @@
  * @return non-zero value is code of the error
  */
 
-#include "mainwindow.h"
+#include "../vpatterndb/vpiecenode.h"
 #include "core/application_2d.h"
 #include "dialogs/welcome_dialog.h"
-#include "../vpatterndb/vpiecenode.h"
+#include "mainwindow.h"
 
 #include <QApplication>
-#include <QMessageBox> // For QT_REQUIRE_VERSION
+#include <QMessageBox>   // For QT_REQUIRE_VERSION
 #include <QTimer>
 
 //---------------------------------------------------------------------------------------------------------------------
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     Q_INIT_RESOURCE(cursor);
     Q_INIT_RESOURCE(icon);
@@ -89,9 +89,9 @@ int main(int argc, char *argv[])
     qputenv("QT_MAC_WANTS_LAYER", "1");
     //------------------------------------------------------------------------
 
-#ifndef Q_OS_MAC // supports natively
+#ifndef Q_OS_MAC   // supports natively
     initHighDpiScaling(argc, argv);
-#endif //Q_OS_MAC
+#endif   // Q_OS_MAC
 
     Application2D app(argc, argv);
     app.initOptions();
@@ -100,9 +100,8 @@ int main(int argc, char *argv[])
     // its named showWelcome, but true means "do not show welcome again" and thus we invert it here
     bool showWelcome = !settings->getShowWelcome();
 
-    if (showWelcome)
-    {
-        SeamlyWelcomeDialog *dialog = new SeamlyWelcomeDialog();
+    if (showWelcome) {
+        SeamlyWelcomeDialog* dialog = new SeamlyWelcomeDialog();
         dialog->setAttribute(Qt::WA_DeleteOnClose, true);
         dialog->exec();
         app.loadTranslations(settings->getLocale());
@@ -111,15 +110,14 @@ int main(int argc, char *argv[])
     MainWindow window;
 #if !defined(Q_OS_MAC)
     app.setWindowIcon(QIcon(":/icon/64x64/icon64x64.png"));
-#endif // !defined(Q_OS_MAC)
+#endif   // !defined(Q_OS_MAC)
     app.setMainWindow(&window);
 
     int msec = 0;
-    //Before we load pattern show window.
-    if (Application2D::isGUIMode())
-    {
+    // Before we load pattern show window.
+    if (Application2D::isGUIMode()) {
         window.show();
-        msec = 15; // set delay for correct the first fitbest zoom
+        msec = 15;   // set delay for correct the first fitbest zoom
     }
 
     QTimer::singleShot(msec, &window, &MainWindow::processCommandLine);

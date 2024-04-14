@@ -52,18 +52,17 @@
 #ifndef DIALOGGROUP_H
 #define DIALOGGROUP_H
 
-#include <qcompilerdetection.h>
 #include <QMap>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class EditGroupDialog;
+namespace Ui {
+class EditGroupDialog;
 }
 
 class EditGroupDialog : public DialogTool
@@ -71,10 +70,11 @@ class EditGroupDialog : public DialogTool
     Q_OBJECT
 
 public:
-    explicit EditGroupDialog(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    explicit EditGroupDialog(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~EditGroupDialog();
 
-    void    SetName(const QString &name);
+    void SetName(const QString& name);
     QString GetName() const;
 
     QMap<quint32, quint32> GetGroup() const;
@@ -89,8 +89,8 @@ private slots:
 
 private:
     Q_DISABLE_COPY(EditGroupDialog)
-    Ui::EditGroupDialog *ui;
+    Ui::EditGroupDialog* ui;
     QMap<quint32, quint32> group;
 };
 
-#endif // DIALOGGROUP_H
+#endif   // DIALOGGROUP_H

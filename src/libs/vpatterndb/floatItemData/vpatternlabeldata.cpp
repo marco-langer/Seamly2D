@@ -27,16 +27,22 @@
  *************************************************************************/
 
 #include "vpatternlabeldata.h"
-#include "vpatternlabeldata_p.h"
 #include "../ifc/ifcdef.h"
+#include "vpatternlabeldata_p.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VPatternLabelData &VPatternLabelData::operator=(VPatternLabelData &&data) Q_DECL_NOTHROW
-{ Swap(data); return *this; }
+VPatternLabelData& VPatternLabelData::operator=(VPatternLabelData&& data) Q_DECL_NOTHROW
+{
+    Swap(data);
+    return *this;
+}
 #endif
 
-void VPatternLabelData::Swap(VPatternLabelData &data) Q_DECL_NOTHROW
-{ VAbstractFloatItemData::Swap(data); std::swap(d, data.d); }
+void VPatternLabelData::Swap(VPatternLabelData& data) Q_DECL_NOTHROW
+{
+    VAbstractFloatItemData::Swap(data);
+    std::swap(d, data.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPatternLabelData::VPatternLabelData()
@@ -45,16 +51,15 @@ VPatternLabelData::VPatternLabelData()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VPatternLabelData::VPatternLabelData(const VPatternLabelData &data)
+VPatternLabelData::VPatternLabelData(const VPatternLabelData& data)
     : VAbstractFloatItemData(data)
-    , d (data.d)
+    , d(data.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VPatternLabelData &VPatternLabelData::operator=(const VPatternLabelData &data)
+VPatternLabelData& VPatternLabelData::operator=(const VPatternLabelData& data)
 {
-    if ( &data == this )
-    {
+    if (&data == this) {
         return *this;
     }
     VAbstractFloatItemData::operator=(data);
@@ -63,89 +68,55 @@ VPatternLabelData &VPatternLabelData::operator=(const VPatternLabelData &data)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPatternLabelData::~VPatternLabelData()
-{}
+VPatternLabelData::~VPatternLabelData() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPatternLabelData::GetLabelWidth() const
-{
-    return d->m_pieceLabelWidth;
-}
+QString VPatternLabelData::GetLabelWidth() const { return d->m_pieceLabelWidth; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPatternLabelData::SetLabelWidth(const QString &dLabelW)
-{
-    d->m_pieceLabelWidth = dLabelW;
-}
+void VPatternLabelData::SetLabelWidth(const QString& dLabelW) { d->m_pieceLabelWidth = dLabelW; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPatternLabelData::GetLabelHeight() const
-{
-    return d->m_pieceLabelHeight;
-}
+QString VPatternLabelData::GetLabelHeight() const { return d->m_pieceLabelHeight; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPatternLabelData::SetLabelHeight(const QString &dLabelH)
-{
-    d->m_pieceLabelHeight = dLabelH;
-}
+void VPatternLabelData::SetLabelHeight(const QString& dLabelH) { d->m_pieceLabelHeight = dLabelH; }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VPatternLabelData::getFontSize() const
-{
-    return d->m_iFontSize;
-}
+int VPatternLabelData::getFontSize() const { return d->m_iFontSize; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPatternLabelData::SetFontSize(int iSize)
-{
-    d->m_iFontSize = iSize;
-}
+void VPatternLabelData::SetFontSize(int iSize) { d->m_iFontSize = iSize; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPatternLabelData::GetRotation() const
-{
-    return d->m_pieceLabelAngle;
-}
+QString VPatternLabelData::GetRotation() const { return d->m_pieceLabelAngle; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPatternLabelData::SetRotation(const QString &dRot)
-{
-    d->m_pieceLabelAngle = dRot;
-}
+void VPatternLabelData::SetRotation(const QString& dRot) { d->m_pieceLabelAngle = dRot; }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VPatternLabelData::centerAnchorPoint() const
-{
-    return d->m_centerAnchorPoint;
-}
+quint32 VPatternLabelData::centerAnchorPoint() const { return d->m_centerAnchorPoint; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPatternLabelData::setCenterAnchorPoint(const quint32 &centerAnchorPoint)
+void VPatternLabelData::setCenterAnchorPoint(const quint32& centerAnchorPoint)
 {
     d->m_centerAnchorPoint = centerAnchorPoint;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VPatternLabelData::topLeftAnchorPoint() const
-{
-    return d->m_topLeftAnchorPoint;
-}
+quint32 VPatternLabelData::topLeftAnchorPoint() const { return d->m_topLeftAnchorPoint; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPatternLabelData::setTopLeftAnchorPoint(const quint32 &topLeftAnchorPoint)
+void VPatternLabelData::setTopLeftAnchorPoint(const quint32& topLeftAnchorPoint)
 {
     d->m_topLeftAnchorPoint = topLeftAnchorPoint;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VPatternLabelData::bottomRightAnchorPoint() const
-{
-    return d->m_bottomRightAnchorPoint;
-}
+quint32 VPatternLabelData::bottomRightAnchorPoint() const { return d->m_bottomRightAnchorPoint; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPatternLabelData::setBottomRightAnchorPoint(const quint32 &bottomRightAnchorPoint)
+void VPatternLabelData::setBottomRightAnchorPoint(const quint32& bottomRightAnchorPoint)
 {
     d->m_bottomRightAnchorPoint = bottomRightAnchorPoint;
 }

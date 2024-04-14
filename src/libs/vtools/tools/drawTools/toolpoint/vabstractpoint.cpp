@@ -56,19 +56,16 @@
 
 #include "../ifc/exception/vexception.h"
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vgeometry/vgobject.h"
 #include "../vdrawtool.h"
+#include "../vgeometry/vgobject.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractPoint::VAbstractPoint(VAbstractPattern *doc, VContainer *data, quint32 id)
+VAbstractPoint::VAbstractPoint(VAbstractPattern* doc, VContainer* data, quint32 id)
     : VDrawTool(doc, data, id)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VAbstractPoint::getTagName() const
-{
-    return VAbstractPattern::TagPoint;
-}
+QString VAbstractPoint::getTagName() const { return VAbstractPattern::TagPoint; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -76,27 +73,21 @@ QString VAbstractPoint::getTagName() const
  * @param id object id in container.
  * @param enable enable or disable highlight.
  */
-void VAbstractPoint::ShowTool(quint32 id, bool enable)
-{
-    ShowItem(this, id, enable);
-}
+void VAbstractPoint::ShowTool(quint32 id, bool enable) { ShowItem(this, id, enable); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractPoint::deletePoint()
 {
-    try
-    {
+    try {
         deleteTool();
-    }
-    catch(const VExceptionToolWasDeleted &error)
-    {
+    } catch (const VExceptionToolWasDeleted& error) {
         Q_UNUSED(error)
-        return;//Leave this method immediately!!!
+        return;   // Leave this method immediately!!!
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractPoint::SetPointName(quint32 id, const QString &name)
+void VAbstractPoint::SetPointName(quint32 id, const QString& name)
 {
     // Don't know if need check name here.
     QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(id);

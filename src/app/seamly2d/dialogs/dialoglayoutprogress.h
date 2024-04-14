@@ -56,9 +56,8 @@
 
 #include "../vlayout/vlayoutdef.h"
 
-namespace Ui
-{
-    class DialogLayoutProgress;
+namespace Ui {
+class DialogLayoutProgress;
 }
 
 class DialogLayoutProgress : public QDialog
@@ -66,7 +65,7 @@ class DialogLayoutProgress : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogLayoutProgress(int count, QWidget *parent = nullptr);
+    explicit DialogLayoutProgress(int count, QWidget* parent = nullptr);
     ~DialogLayoutProgress();
 
 signals:
@@ -75,18 +74,18 @@ signals:
 public slots:
     void Start();
     void Arranged(int count);
-    void Error(const LayoutErrors &state);
+    void Error(const LayoutErrors& state);
     void Finished();
 
 protected:
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DialogLayoutProgress)
-    Ui::DialogLayoutProgress *ui;
+    Ui::DialogLayoutProgress* ui;
     const int maxCount;
-    QMovie *movie;
+    QMovie* movie;
     bool isInitialized;
 };
 
-#endif // DIALOGLAYOUTPROGRESS_H
+#endif   // DIALOGLAYOUTPROGRESS_H

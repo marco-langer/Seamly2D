@@ -52,13 +52,13 @@
 #ifndef VISTOOLLINEINTERSECTAXIS_H
 #define VISTOOLLINEINTERSECTAXIS_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QLineF>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -67,31 +67,35 @@ class VisToolLineIntersectAxis : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolLineIntersectAxis(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolLineIntersectAxis(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolLineIntersectAxis() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    QString      Angle() const;
-    void         SetAngle(const QString &expression);
-    void         setPoint2Id(const quint32 &value);
-    void         setAxisPointId(const quint32 &value);
+    QString Angle() const;
+    void SetAngle(const QString& expression);
+    void setPoint2Id(const quint32& value);
+    void setAxisPointId(const quint32& value);
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolLineIntersectAxis)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolLineIntersectAxis)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolLineIntersectAxis)
-    quint32              point2Id;
-    quint32              axisPointId;
-    qreal                angle;
-    VScaledEllipse *point;
-    VScaledEllipse *lineP1;
-    VScaledEllipse *lineP2;
-    VScaledEllipse *basePoint;
-    VScaledLine    *baseLine;
-    VScaledLine    *axisLine;
-    VScaledLine    *line_intersection;
-    void          ShowIntersection(const QLineF &axis_line, const QLineF &base_line);
+    quint32 point2Id;
+    quint32 axisPointId;
+    qreal angle;
+    VScaledEllipse* point;
+    VScaledEllipse* lineP1;
+    VScaledEllipse* lineP2;
+    VScaledEllipse* basePoint;
+    VScaledLine* baseLine;
+    VScaledLine* axisLine;
+    VScaledLine* line_intersection;
+    void ShowIntersection(const QLineF& axis_line, const QLineF& base_line);
 };
 
-#endif // VISTOOLLINEINTERSECTAXIS_H
+#endif   // VISTOOLLINEINTERSECTAXIS_H

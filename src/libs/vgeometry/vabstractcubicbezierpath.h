@@ -47,12 +47,12 @@
 #ifndef VABSTRACTCUBICBEZIERPATH_H
 #define VABSTRACTCUBICBEZIERPATH_H
 
-#include <qcompilerdetection.h>
 #include <QCoreApplication>
 #include <QPointF>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vabstractbezier.h"
 #include "vgeometrydef.h"
@@ -66,37 +66,45 @@ class VAbstractCubicBezierPath : public VAbstractBezier
     Q_DECLARE_TR_FUNCTIONS(VAbstractCubicBezierPath)
 
 public:
-                                    VAbstractCubicBezierPath(const GOType &type, const quint32 &idObject = NULL_ID,
-                                                             const Draw &mode = Draw::Calculation);
-                                    VAbstractCubicBezierPath(const VAbstractCubicBezierPath &curve);
-                                    VAbstractCubicBezierPath& operator= (const VAbstractCubicBezierPath &curve);
+    VAbstractCubicBezierPath(
+        const GOType& type,
+        const quint32& idObject = NULL_ID,
+        const Draw& mode = Draw::Calculation);
+    VAbstractCubicBezierPath(const VAbstractCubicBezierPath& curve);
+    VAbstractCubicBezierPath& operator=(const VAbstractCubicBezierPath& curve);
 
-    virtual                        ~VAbstractCubicBezierPath();
+    virtual ~VAbstractCubicBezierPath();
 
-    virtual qint32                  CountSubSpl() const =0;
-    virtual qint32                  CountPoints() const =0;
-    virtual void                    Clear() =0;
-    virtual VSpline                 GetSpline(qint32 index) const =0;
-    virtual QVector<VSplinePoint>   GetSplinePath() const =0;
+    virtual qint32 CountSubSpl() const = 0;
+    virtual qint32 CountPoints() const = 0;
+    virtual void Clear() = 0;
+    virtual VSpline GetSpline(qint32 index) const = 0;
+    virtual QVector<VSplinePoint> GetSplinePath() const = 0;
 
-    virtual QPainterPath            GetPath() const Q_DECL_OVERRIDE;
-    virtual QVector<QPointF>        getPoints() const Q_DECL_OVERRIDE;
-    virtual qreal                   GetLength() const Q_DECL_OVERRIDE;
+    virtual QPainterPath GetPath() const Q_DECL_OVERRIDE;
+    virtual QVector<QPointF> getPoints() const Q_DECL_OVERRIDE;
+    virtual qreal GetLength() const Q_DECL_OVERRIDE;
 
     virtual QVector<DirectionArrow> DirectionArrows() const Q_DECL_OVERRIDE;
 
-    int                             Segment(const QPointF &p) const;
+    int Segment(const QPointF& p) const;
 
-    QPointF                         CutSplinePath(qreal length, qint32 &p1, qint32 &p2, QPointF &spl1p2,
-                                                  QPointF &spl1p3, QPointF &spl2p2, QPointF &spl2p3) const;
+    QPointF CutSplinePath(
+        qreal length,
+        qint32& p1,
+        qint32& p2,
+        QPointF& spl1p2,
+        QPointF& spl1p3,
+        QPointF& spl2p2,
+        QPointF& spl2p3) const;
 
-    virtual QString                 NameForHistory(const QString &toolName) const Q_DECL_OVERRIDE;
+    virtual QString NameForHistory(const QString& toolName) const Q_DECL_OVERRIDE;
 
-    virtual VPointF                 FirstPoint() const =0;
-    virtual VPointF                 LastPoint() const =0;
+    virtual VPointF FirstPoint() const = 0;
+    virtual VPointF LastPoint() const = 0;
 
 protected:
     virtual void CreateName() Q_DECL_OVERRIDE;
 };
 
-#endif // VABSTRACTCUBICBEZIERPATH_H
+#endif   // VABSTRACTCUBICBEZIERPATH_H

@@ -54,29 +54,33 @@
 
 #include <QtGlobal>
 
-#include "visoperation.h"
 #include "../ifc/xml/vabstractpattern.h"
+#include "visoperation.h"
 
 class VisToolMirrorByAxis : public VisOperation
 {
     Q_OBJECT
 public:
-    explicit        VisToolMirrorByAxis(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual        ~VisToolMirrorByAxis() = default;
+    explicit VisToolMirrorByAxis(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~VisToolMirrorByAxis() = default;
 
-    virtual void    RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void            setOriginPointId(quint32 value);
-    void            setAxisType(AxisType value);
+    void setOriginPointId(quint32 value);
+    void setAxisType(AxisType value);
 
-    virtual int     type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolMirrorByAxis)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolMirrorByAxis)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolMirrorByAxis)
 
-    AxisType        m_axisType;
+    AxisType m_axisType;
 
-    VScaledEllipse *point1;
+    VScaledEllipse* point1;
 };
 
-#endif // VISTOOLMIRRORBYAXIS_H
+#endif   // VISTOOLMIRRORBYAXIS_H

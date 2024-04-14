@@ -53,7 +53,7 @@
 #include "../ifc/xml/vlabeltemplateconverter.h"
 
 const QString VLabelTemplate::TagTemplate = QStringLiteral("template");
-const QString VLabelTemplate::TagLines    = QStringLiteral("lines");
+const QString VLabelTemplate::TagLines = QStringLiteral("lines");
 
 //---------------------------------------------------------------------------------------------------------------------
 VLabelTemplate::VLabelTemplate()
@@ -74,15 +74,16 @@ void VLabelTemplate::CreateEmptyTemplate()
     templateElement.appendChild(createElement(TagLines));
 
     this->appendChild(templateElement);
-    insertBefore(createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\""), this->firstChild());
+    insertBefore(
+        createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\""),
+        this->firstChild());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLabelTemplate::AddLines(const QVector<VLabelTemplateLine> &lines)
+void VLabelTemplate::AddLines(const QVector<VLabelTemplateLine>& lines)
 {
     const QDomNodeList listLines = elementsByTagName(TagLines);
-    if (listLines.size() == 0)
-    {
+    if (listLines.size() == 0) {
         return;
     }
 
@@ -94,8 +95,7 @@ void VLabelTemplate::AddLines(const QVector<VLabelTemplateLine> &lines)
 QVector<VLabelTemplateLine> VLabelTemplate::ReadLines() const
 {
     const QDomNodeList listLines = elementsByTagName(TagLines);
-    if (listLines.size() == 0)
-    {
+    if (listLines.size() == 0) {
         return QVector<VLabelTemplateLine>();
     }
 

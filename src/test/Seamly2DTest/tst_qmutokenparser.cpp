@@ -56,11 +56,10 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_QmuTokenParser::TST_QmuTokenParser(QObject *parent)
-    : QObject(parent),
-      m_systemLocale(QLocale::system())
-{
-}
+TST_QmuTokenParser::TST_QmuTokenParser(QObject* parent)
+    : QObject(parent)
+    , m_systemLocale(QLocale::system())
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_QmuTokenParser::IsSingle_data()
@@ -103,9 +102,8 @@ void TST_QmuTokenParser::TokenFromUser_data()
     QTest::addColumn<QLocale>("locale");
 
     const QList<QLocale> allLocales =
-            QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
-    for(int i = 0; i < allLocales.size(); ++i)
-    {
+        QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
+    for (int i = 0; i < allLocales.size(); ++i) {
         const QLocale locale = allLocales.at(i);
         PrepareVal(1000.5, locale);
         PrepareVal(-1000.5, locale);
@@ -125,64 +123,54 @@ void TST_QmuTokenParser::TokenFromUser()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_QmuTokenParser::cleanupTestCase()
-{
-    QLocale::setDefault(m_systemLocale);
-}
+void TST_QmuTokenParser::cleanupTestCase() { QLocale::setDefault(m_systemLocale); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_QmuTokenParser::PrepareVal(qreal val, const QLocale &locale)
+void TST_QmuTokenParser::PrepareVal(qreal val, const QLocale& locale)
 {
     const QString formula = locale.toString(val);
     QString string = formula;
     QString tag = QString("%1. String '%2'").arg(locale.name()).arg(string);
     QTest::newRow(qUtf8Printable(tag)) << string << true << locale;
 
-    string = formula+QLatin1String("+");
+    string = formula + QLatin1String("+");
     tag = QString("%1. String '%2'").arg(locale.name()).arg(string);
     QTest::newRow(qUtf8Printable(tag)) << string << false << locale;
 
-    string = formula+QLatin1String("+")+formula;
+    string = formula + QLatin1String("+") + formula;
     tag = QString("%1. String '%2'").arg(locale.name()).arg(string);
     QTest::newRow(qUtf8Printable(tag)) << string << false << locale;
 
-    string = formula+QString("+б");
+    string = formula + QString("+б");
     tag = QString("%1. String '%2'").arg(locale.name()).arg(string);
     QTest::newRow(qUtf8Printable(tag)) << string << false << locale;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool TST_QmuTokenParser::IsSingleFromUser(const QString &formula)
+bool TST_QmuTokenParser::IsSingleFromUser(const QString& formula)
 {
-    if (formula.isEmpty())
-    {
-        return false;// if don't know say no
+    if (formula.isEmpty()) {
+        return false;   // if don't know say no
     }
 
     QMap<int, QString> tokens;
     QMap<int, QString> numbers;
 
-    try
-    {
+    try {
         QScopedPointer<qmu::QmuTokenParser> cal(new qmu::QmuTokenParser(formula, true, true));
-        tokens = cal->GetTokens();// Tokens (variables, measurements)
-        numbers = cal->GetNumbers();// All numbers in expression
-    }
-    catch (const qmu::QmuParserError &error)
-    {
+        tokens = cal->GetTokens();     // Tokens (variables, measurements)
+        numbers = cal->GetNumbers();   // All numbers in expression
+    } catch (const qmu::QmuParserError& error) {
         Q_UNUSED(error)
-        return false;// something wrong with formula, say no
+        return false;   // something wrong with formula, say no
     }
 
     // Remove "-" from tokens list if exist. If don't do that unary minus operation will broken.
     qmu::QmuFormulaBase::RemoveAll(tokens, QLocale().negativeSign());
 
-    if (tokens.isEmpty() && numbers.size() == 1)
-    {
+    if (tokens.isEmpty() && numbers.size() == 1) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }

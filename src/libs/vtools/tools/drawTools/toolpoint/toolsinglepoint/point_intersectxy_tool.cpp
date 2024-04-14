@@ -51,7 +51,12 @@
 
 #include "point_intersectxy_tool.h"
 
-#include "toollinepoint/doubleline_point_tool.h"
+#include "../../../../dialogs/tools/dialogtool.h"
+#include "../../../../dialogs/tools/point_intersectxy_dialog.h"
+#include "../../../../visualization/line/point_intersectxy_visual.h"
+#include "../../../../visualization/visualization.h"
+#include "../../../vabstracttool.h"
+#include "../../vdrawtool.h"
 #include "../ifc/exception/vexception.h"
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vgobject.h"
@@ -59,12 +64,7 @@
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "../../vdrawtool.h"
-#include "../../../vabstracttool.h"
-#include "../../../../dialogs/tools/dialogtool.h"
-#include "../../../../dialogs/tools/point_intersectxy_dialog.h"
-#include "../../../../visualization/visualization.h"
-#include "../../../../visualization/line/point_intersectxy_visual.h"
+#include "toollinepoint/doubleline_point_tool.h"
 
 #include <QPointF>
 #include <QSharedPointer>
@@ -73,7 +73,8 @@
 #include <QStringDataPtr>
 #include <new>
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 const QString PointIntersectXYTool::ToolType = QStringLiteral("intersectXY");
 
@@ -91,12 +92,19 @@ const QString PointIntersectXYTool::ToolType = QStringLiteral("intersectXY");
  * @param typeCreation way we create this tool.
  * @param parent parent object.
  */
-PointIntersectXYTool::PointIntersectXYTool(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                                   const QString &lineType, const QString &lineWeight,
-                                                   const QString &lineColor,
-                                                   const quint32 &firstPointId, const quint32 &secondPointId,
-                                                   const Source &typeCreation, QGraphicsItem *parent)
-    : DoubleLinePointTool(doc, data, id, lineType, lineWeight, lineColor, firstPointId, secondPointId, parent)
+PointIntersectXYTool::PointIntersectXYTool(
+    VAbstractPattern* doc,
+    VContainer* data,
+    const quint32& id,
+    const QString& lineType,
+    const QString& lineWeight,
+    const QString& lineColor,
+    const quint32& firstPointId,
+    const quint32& secondPointId,
+    const Source& typeCreation,
+    QGraphicsItem* parent)
+    : DoubleLinePointTool(
+        doc, data, id, lineType, lineWeight, lineColor, firstPointId, secondPointId, parent)
 {
     ToolCreation(typeCreation);
 }
@@ -108,7 +116,8 @@ PointIntersectXYTool::PointIntersectXYTool(VAbstractPattern *doc, VContainer *da
 void PointIntersectXYTool::setDialog()
 {
     SCASSERT(not m_dialog.isNull())
-    QSharedPointer<PointIntersectXYDialog> dialogTool = m_dialog.objectCast<PointIntersectXYDialog>();
+    QSharedPointer<PointIntersectXYDialog> dialogTool =
+        m_dialog.objectCast<PointIntersectXYDialog>();
     SCASSERT(not dialogTool.isNull())
     const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(m_id);
     dialogTool->setPointName(point->name());
@@ -128,22 +137,38 @@ void PointIntersectXYTool::setDialog()
  * @param data container with variables.
  * @return the created tool
  */
-PointIntersectXYTool *PointIntersectXYTool::Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene,
-                                                           VAbstractPattern *doc, VContainer *data)
+PointIntersectXYTool* PointIntersectXYTool::Create(
+    QSharedPointer<DialogTool> dialog,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data)
 {
     SCASSERT(not dialog.isNull())
     QSharedPointer<PointIntersectXYDialog> dialogTool = dialog.objectCast<PointIntersectXYDialog>();
     SCASSERT(not dialogTool.isNull())
-    const QString pointName     = dialogTool->getPointName();
-    const quint32 firstPointId  = dialogTool->getFirstPointId();
+    const QString pointName = dialogTool->getPointName();
+    const quint32 firstPointId = dialogTool->getFirstPointId();
     const quint32 secondPointId = dialogTool->getSecondPointId();
-    const QString lineType      = dialogTool->getLineType();
-    const QString lineWeight    = dialogTool->getLineWeight();
-    const QString lineColor     = dialogTool->getLineColor();
-    PointIntersectXYTool *point = Create(0, pointName, lineType, lineWeight, lineColor, firstPointId, secondPointId,
-                                         5, 10, true, scene, doc, data, Document::FullParse, Source::FromGui);
-    if (point != nullptr)
-    {
+    const QString lineType = dialogTool->getLineType();
+    const QString lineWeight = dialogTool->getLineWeight();
+    const QString lineColor = dialogTool->getLineColor();
+    PointIntersectXYTool* point = Create(
+        0,
+        pointName,
+        lineType,
+        lineWeight,
+        lineColor,
+        firstPointId,
+        secondPointId,
+        5,
+        10,
+        true,
+        scene,
+        doc,
+        data,
+        Document::FullParse,
+        Source::FromGui);
+    if (point != nullptr) {
         point->m_dialog = dialogTool;
     }
     return point;
@@ -168,45 +193,56 @@ PointIntersectXYTool *PointIntersectXYTool::Create(QSharedPointer<DialogTool> di
  * @param typeCreation way we create this tool.
  * @return the created tool
  */
-PointIntersectXYTool *PointIntersectXYTool::Create(const quint32 _id, const QString &pointName,
-                                                           const QString &lineType, const QString &lineWeight,
-                                                           const QString &lineColor,
-                                                           const quint32 &firstPointId, const quint32 &secondPointId,
-                                                           qreal mx, qreal my, bool showPointName,
-                                                           VMainGraphicsScene *scene, VAbstractPattern *doc,
-                                                           VContainer *data, const Document &parse,
-                                                           const Source &typeCreation)
+PointIntersectXYTool* PointIntersectXYTool::Create(
+    const quint32 _id,
+    const QString& pointName,
+    const QString& lineType,
+    const QString& lineWeight,
+    const QString& lineColor,
+    const quint32& firstPointId,
+    const quint32& secondPointId,
+    qreal mx,
+    qreal my,
+    bool showPointName,
+    VMainGraphicsScene* scene,
+    VAbstractPattern* doc,
+    VContainer* data,
+    const Document& parse,
+    const Source& typeCreation)
 {
     const QSharedPointer<VPointF> firstPoint = data->GeometricObject<VPointF>(firstPointId);
     const QSharedPointer<VPointF> secondPoint = data->GeometricObject<VPointF>(secondPointId);
 
     QPointF point(firstPoint->x(), secondPoint->y());
     quint32 id = _id;
-    VPointF *p = new VPointF(point, pointName, mx, my);
+    VPointF* p = new VPointF(point, pointName, mx, my);
     p->setShowPointName(showPointName);
 
-    if (typeCreation == Source::FromGui)
-    {
+    if (typeCreation == Source::FromGui) {
         id = data->AddGObject(p);
         data->AddLine(firstPointId, id);
         data->AddLine(secondPointId, id);
-    }
-    else
-    {
+    } else {
         data->UpdateGObject(id, p);
         data->AddLine(firstPointId, id);
         data->AddLine(secondPointId, id);
-        if (parse != Document::FullParse)
-        {
+        if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }
     }
 
-    if (parse == Document::FullParse)
-    {
+    if (parse == Document::FullParse) {
         VDrawTool::AddRecord(id, Tool::PointOfIntersection, doc);
-        PointIntersectXYTool *point = new PointIntersectXYTool(doc, data, id, lineType, lineWeight, lineColor,
-                                                               firstPointId, secondPointId, typeCreation);
+        PointIntersectXYTool* point = new PointIntersectXYTool(
+            doc,
+            data,
+            id,
+            lineType,
+            lineWeight,
+            lineColor,
+            firstPointId,
+            secondPointId,
+            typeCreation);
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
@@ -248,16 +284,13 @@ void PointIntersectXYTool::RemoveReferens()
  * @brief contextMenuEvent handle context menu events.
  * @param event context menu event.
  */
-void PointIntersectXYTool::showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id)
+void PointIntersectXYTool::showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id)
 {
-    try
-    {
+    try {
         ContextMenu<PointIntersectXYDialog>(event, id);
-    }
-    catch(const VExceptionToolWasDeleted &error)
-    {
+    } catch (const VExceptionToolWasDeleted& error) {
         Q_UNUSED(error)
-        return;//Leave this method immediately!!!
+        return;   // Leave this method immediately!!!
     }
 }
 
@@ -265,45 +298,45 @@ void PointIntersectXYTool::showContextMenu(QGraphicsSceneContextMenuEvent *event
 /**
  * @brief SaveDialog save options into file after change in dialog.
  */
-void PointIntersectXYTool::SaveDialog(QDomElement &domElement)
+void PointIntersectXYTool::SaveDialog(QDomElement& domElement)
 {
     SCASSERT(not m_dialog.isNull())
-    QSharedPointer<PointIntersectXYDialog> dialogTool = m_dialog.objectCast<PointIntersectXYDialog>();
+    QSharedPointer<PointIntersectXYDialog> dialogTool =
+        m_dialog.objectCast<PointIntersectXYDialog>();
     SCASSERT(not dialogTool.isNull())
-    doc->SetAttribute(domElement, AttrName,        dialogTool->getPointName());
-    doc->SetAttribute(domElement, AttrLineType,    dialogTool->getLineType());
-    doc->SetAttribute(domElement, AttrLineWeight,  dialogTool->getLineWeight());
-    doc->SetAttribute(domElement, AttrLineColor,   dialogTool->getLineColor());
-    doc->SetAttribute(domElement, AttrFirstPoint,  dialogTool->getFirstPointId());
+    doc->SetAttribute(domElement, AttrName, dialogTool->getPointName());
+    doc->SetAttribute(domElement, AttrLineType, dialogTool->getLineType());
+    doc->SetAttribute(domElement, AttrLineWeight, dialogTool->getLineWeight());
+    doc->SetAttribute(domElement, AttrLineColor, dialogTool->getLineColor());
+    doc->SetAttribute(domElement, AttrFirstPoint, dialogTool->getFirstPointId());
     doc->SetAttribute(domElement, AttrSecondPoint, dialogTool->getSecondPointId());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYTool::SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj)
+void PointIntersectXYTool::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
 {
     DoubleLinePointTool::SaveOptions(tag, obj);
 
-    doc->SetAttribute(tag, AttrType,        ToolType);
-    doc->SetAttribute(tag, AttrFirstPoint,  firstPointId);
+    doc->SetAttribute(tag, AttrType, ToolType);
+    doc->SetAttribute(tag, AttrFirstPoint, firstPointId);
     doc->SetAttribute(tag, AttrSecondPoint, secondPointId);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYTool::ReadToolAttributes(const QDomElement &domElement)
+void PointIntersectXYTool::ReadToolAttributes(const QDomElement& domElement)
 {
-    m_lineType    = doc->GetParametrString(domElement, AttrLineType,    LineTypeDashLine);
-    m_lineWeight  = doc->GetParametrString(domElement, AttrLineWeight,  "0.35");
-    lineColor     = doc->GetParametrString(domElement, AttrLineColor,   ColorBlack);
-    firstPointId  = doc->GetParametrUInt(domElement,   AttrFirstPoint,  NULL_ID_STR);
-    secondPointId = doc->GetParametrUInt(domElement,   AttrSecondPoint, NULL_ID_STR);
+    m_lineType = doc->GetParametrString(domElement, AttrLineType, LineTypeDashLine);
+    m_lineWeight = doc->GetParametrString(domElement, AttrLineWeight, "0.35");
+    lineColor = doc->GetParametrString(domElement, AttrLineColor, ColorBlack);
+    firstPointId = doc->GetParametrUInt(domElement, AttrFirstPoint, NULL_ID_STR);
+    secondPointId = doc->GetParametrUInt(domElement, AttrSecondPoint, NULL_ID_STR);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void PointIntersectXYTool::SetVisualization()
 {
-    if (not vis.isNull())
-    {
-        PointIntersectXYVisual *visual = qobject_cast<PointIntersectXYVisual *>(vis);
+    if (not vis.isNull()) {
+        PointIntersectXYVisual* visual = qobject_cast<PointIntersectXYVisual*>(vis);
         SCASSERT(visual != nullptr)
 
         visual->setObject1Id(firstPointId);

@@ -52,7 +52,6 @@
 #ifndef VGRAPHICSLINEITEM_H
 #define VGRAPHICSLINEITEM_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QLineF>
@@ -61,6 +60,7 @@
 #include <QString>
 #include <Qt>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -69,20 +69,28 @@ class VisToolLine : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolLine(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolLine() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         setPoint2Id(const quint32 &value);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolLine)};
+    void setPoint2Id(const quint32& value);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolLine)
+    };
+
 protected:
-    virtual void DrawLine(VScaledLine *lineItem, const QLineF &line, const QColor &color,
-                          const qreal &lineWeight,
-                          Qt::PenStyle style = Qt::SolidLine) Q_DECL_OVERRIDE;
+    virtual void DrawLine(
+        VScaledLine* lineItem,
+        const QLineF& line,
+        const QColor& color,
+        const qreal& lineWeight,
+        Qt::PenStyle style = Qt::SolidLine) Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(VisToolLine)
-    quint32      point2Id;
+    quint32 point2Id;
 };
 
-#endif // VGRAPHICSLINEITEM_H
+#endif   // VGRAPHICSLINEITEM_H

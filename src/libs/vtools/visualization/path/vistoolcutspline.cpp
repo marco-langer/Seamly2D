@@ -64,14 +64,18 @@
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vpointf.h"
 #include "../vgeometry/vspline.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../visualization.h"
-#include "vispath.h"
+#include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/scalesceneitems.h"
+#include "vispath.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolCutSpline::VisToolCutSpline(const VContainer *data, QGraphicsItem *parent)
-    :VisPath(data, parent), point(nullptr), spl1(nullptr), spl2(nullptr), length(0)
+VisToolCutSpline::VisToolCutSpline(const VContainer* data, QGraphicsItem* parent)
+    : VisPath(data, parent)
+    , point(nullptr)
+    , spl1(nullptr)
+    , spl2(nullptr)
+    , length(0)
 {
     spl1 = InitItem<VCurvePathItem>(Qt::darkGreen, this);
     spl1->setFlag(QGraphicsItem::ItemStacksBehindParent, false);
@@ -86,32 +90,51 @@ VisToolCutSpline::VisToolCutSpline(const VContainer *data, QGraphicsItem *parent
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolCutSpline::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
+    if (object1Id > NULL_ID) {
         const auto spl = Visualization::data->GeometricObject<VAbstractCubicBezier>(object1Id);
-        DrawPath(this, spl->GetPath(), spl->DirectionArrows(), supportColor, lineStyle, lineWeight, Qt::RoundCap);
+        DrawPath(
+            this,
+            spl->GetPath(),
+            spl->DirectionArrows(),
+            supportColor,
+            lineStyle,
+            lineWeight,
+            Qt::RoundCap);
 
-        if (not qFuzzyIsNull(length))
-        {
+        if (not qFuzzyIsNull(length)) {
             QPointF spl1p2;
             QPointF spl1p3;
             QPointF spl2p2;
             QPointF spl2p3;
-            const QPointF p = spl->CutSpline (length, spl1p2, spl1p3, spl2p2, spl2p3 );
+            const QPointF p = spl->CutSpline(length, spl1p2, spl1p3, spl2p2, spl2p3);
 
             const VSpline sp1 = VSpline(spl->GetP1(), spl1p2, spl1p3, VPointF(p));
             const VSpline sp2 = VSpline(VPointF(p), spl2p2, spl2p3, spl->GetP4());
 
             DrawPoint(point, p, mainColor);
 
-            DrawPath(spl1, sp1.GetPath(), sp1.DirectionArrows(), Qt::darkGreen, lineStyle, lineWeight, Qt::RoundCap);
-            DrawPath(spl2, sp2.GetPath(), sp2.DirectionArrows(), Qt::darkRed, lineStyle, lineWeight, Qt::RoundCap);
+            DrawPath(
+                spl1,
+                sp1.GetPath(),
+                sp1.DirectionArrows(),
+                Qt::darkGreen,
+                lineStyle,
+                lineWeight,
+                Qt::RoundCap);
+            DrawPath(
+                spl2,
+                sp2.GetPath(),
+                sp2.DirectionArrows(),
+                Qt::darkRed,
+                lineStyle,
+                lineWeight,
+                Qt::RoundCap);
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolCutSpline::setLength(const QString &expression)
+void VisToolCutSpline::setLength(const QString& expression)
 {
     length = FindLength(expression, Visualization::data->DataVariables());
 }

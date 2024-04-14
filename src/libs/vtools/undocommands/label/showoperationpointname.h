@@ -23,31 +23,35 @@
  **************************************************************************/
 
 
- #ifndef SHOW_OPERATION_POINTNAME_H
- #define SHOW_OPERATION_POINTNAME_H
+#ifndef SHOW_OPERATION_POINTNAME_H
+#define SHOW_OPERATION_POINTNAME_H
 
- #include "../vundocommand.h"
+#include "../vundocommand.h"
 
- class QGraphicsScene;
+class QGraphicsScene;
 
- class ShowOperationPointName : public VUndoCommand
- {
- public:
-                     ShowOperationPointName(VAbstractPattern *doc, quint32 idTool, quint32 idPoint,
-                                            bool visible, QUndoCommand *parent = nullptr);
-     virtual        ~ShowOperationPointName()=default;
+class ShowOperationPointName : public VUndoCommand
+{
+public:
+    ShowOperationPointName(
+        VAbstractPattern* doc,
+        quint32 idTool,
+        quint32 idPoint,
+        bool visible,
+        QUndoCommand* parent = nullptr);
+    virtual ~ShowOperationPointName() = default;
 
-     virtual void    undo() Q_DECL_OVERRIDE;
-     virtual void    redo() Q_DECL_OVERRIDE;
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
 
- private:
-     Q_DISABLE_COPY(ShowOperationPointName)
-     bool            m_visible;
-     bool            m_oldVisible;
-     QGraphicsScene *m_scene; //Need for resizing scene rect
-     quint32         m_idTool;
+private:
+    Q_DISABLE_COPY(ShowOperationPointName)
+    bool m_visible;
+    bool m_oldVisible;
+    QGraphicsScene* m_scene;   // Need for resizing scene rect
+    quint32 m_idTool;
 
-     void            Do(bool visible);
- };
+    void Do(bool visible);
+};
 
- #endif // SHOW_OPERATION_POINTNAME_H
+#endif   // SHOW_OPERATION_POINTNAME_H

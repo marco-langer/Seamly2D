@@ -23,14 +23,13 @@
 
 // ONLY INCLUDE THIS IN .CPP FILES
 
-#include "vproperty_p.h"
 #include "../vmisc/diagnostic.h"
+#include "vproperty_p.h"
 
 #include <QPointer>
 #include <QWidget>
 
-namespace VPE
-{
+namespace VPE {
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wweak-vtables")
@@ -43,17 +42,20 @@ public:
 
     //! Constructor passing name and type
     VWidgetPropertyPrivate(const QString& name, QVariant::Type type, QWidget* widget = nullptr)
-        : VPropertyPrivate(name, type), Widget(widget) {}
+        : VPropertyPrivate(name, type)
+        , Widget(widget)
+    {}
 
     //! Constructor
     VWidgetPropertyPrivate()
-        : VPropertyPrivate(), Widget(nullptr) {}
+        : VPropertyPrivate()
+        , Widget(nullptr)
+    {}
 
     //! Destructor
     virtual ~VWidgetPropertyPrivate() Q_DECL_OVERRIDE
     {
-        if (Widget)
-        {
+        if (Widget) {
             Widget->deleteLater();
         }
     }
@@ -61,6 +63,6 @@ public:
 
 QT_WARNING_POP
 
-}
+}   // namespace VPE
 
-#endif // VWIDGETPROPERTY_P_H
+#endif   // VWIDGETPROPERTY_P_H

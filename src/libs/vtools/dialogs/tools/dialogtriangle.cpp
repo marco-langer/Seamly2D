@@ -58,8 +58,8 @@
 #include <QPointer>
 #include <QSet>
 
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/vistooltriangle.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/vabstractapplication.h"
 #include "dialogtool.h"
@@ -71,7 +71,7 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogTriangle::DialogTriangle(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogTriangle::DialogTriangle(const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogTriangle)
 {
@@ -92,20 +92,34 @@ DialogTriangle::DialogTriangle(const VContainer *data, const quint32 &toolId, QW
     FillComboBoxPoints(ui->comboBoxFirstPoint);
     FillComboBoxPoints(ui->comboBoxSecondPoint);
 
-    connect(ui->lineEditNamePoint,   &QLineEdit::textChanged,        this, &DialogTriangle::NamePointChanged);
-    connect(ui->comboBoxFirstPoint,  &QComboBox::currentTextChanged, this, &DialogTriangle::PointNameChanged);
-    connect(ui->comboBoxSecondPoint, &QComboBox::currentTextChanged, this, &DialogTriangle::PointNameChanged);
-    connect(ui->comboBoxAxisP1,      &QComboBox::currentTextChanged, this, &DialogTriangle::PointNameChanged);
-    connect(ui->comboBoxAxisP2,      &QComboBox::currentTextChanged, this, &DialogTriangle::PointNameChanged);
+    connect(
+        ui->lineEditNamePoint, &QLineEdit::textChanged, this, &DialogTriangle::NamePointChanged);
+    connect(
+        ui->comboBoxFirstPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTriangle::PointNameChanged);
+    connect(
+        ui->comboBoxSecondPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTriangle::PointNameChanged);
+    connect(
+        ui->comboBoxAxisP1,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTriangle::PointNameChanged);
+    connect(
+        ui->comboBoxAxisP2,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogTriangle::PointNameChanged);
 
     vis = new VisToolTriangle(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogTriangle::~DialogTriangle()
-{
-    delete ui;
-}
+DialogTriangle::~DialogTriangle() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -113,75 +127,61 @@ DialogTriangle::~DialogTriangle()
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogTriangle::ChosenObject(quint32 id, const SceneObject &type)
+void DialogTriangle::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            VisToolTriangle *line = qobject_cast<VisToolTriangle *>(vis);
+        if (type == SceneObject::Point) {
+            VisToolTriangle* line = qobject_cast<VisToolTriangle*>(vis);
             SCASSERT(line != nullptr)
 
-            switch (number)
-            {
-                case (0):
-                    if (SetObject(id, ui->comboBoxAxisP1, tr("Select second point of axis")))
-                    {
+            switch (number) {
+            case (0):
+                if (SetObject(id, ui->comboBoxAxisP1, tr("Select second point of axis"))) {
+                    number++;
+                    line->VisualMode(id);
+                }
+                break;
+            case (1):
+                if (getCurrentObjectId(ui->comboBoxAxisP1) != id) {
+                    if (SetObject(id, ui->comboBoxAxisP2, tr("Select first point"))) {
                         number++;
-                        line->VisualMode(id);
-                    }
-                    break;
-                case (1):
-                    if (getCurrentObjectId(ui->comboBoxAxisP1) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxAxisP2, tr("Select first point")))
-                        {
-                            number++;
-                            line->setObject2Id(id);
-                            line->RefreshGeometry();
-                        }
-                    }
-                    break;
-                case (2):
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxAxisP1));
-                    set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
-                    set.insert(id);
-
-                    if (set.size() == 3)
-                    {
-                        if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point")))
-                        {
-                            number++;
-                            line->setHypotenuseP1Id(id);
-                            line->RefreshGeometry();
-                        }
+                        line->setObject2Id(id);
+                        line->RefreshGeometry();
                     }
                 }
-                    break;
-                case (3):
-                {
-                    QSet<quint32> set;
-                    set.insert(getCurrentObjectId(ui->comboBoxAxisP1));
-                    set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
-                    set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
-                    set.insert(id);
+                break;
+            case (2): {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxAxisP1));
+                set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
+                set.insert(id);
 
-                    if (set.size() == 4)
-                    {
-                        if (SetObject(id, ui->comboBoxSecondPoint, ""))
-                        {
-                            line->setHypotenuseP2Id(id);
-                            line->RefreshGeometry();
-                            prepare = true;
-                            DialogAccepted();
-                        }
+                if (set.size() == 3) {
+                    if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point"))) {
+                        number++;
+                        line->setHypotenuseP1Id(id);
+                        line->RefreshGeometry();
                     }
                 }
-                    break;
-                default:
-                    break;
+            } break;
+            case (3): {
+                QSet<quint32> set;
+                set.insert(getCurrentObjectId(ui->comboBoxAxisP1));
+                set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
+                set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
+                set.insert(id);
+
+                if (set.size() == 4) {
+                    if (SetObject(id, ui->comboBoxSecondPoint, "")) {
+                        line->setHypotenuseP2Id(id);
+                        line->RefreshGeometry();
+                        prepare = true;
+                        DialogAccepted();
+                    }
+                }
+            } break;
+            default: break;
             }
         }
     }
@@ -192,7 +192,7 @@ void DialogTriangle::SaveData()
 {
     pointName = ui->lineEditNamePoint->text();
 
-    VisToolTriangle *line = qobject_cast<VisToolTriangle *>(vis);
+    VisToolTriangle* line = qobject_cast<VisToolTriangle*>(vis);
     SCASSERT(line != nullptr)
 
     line->setObject1Id(GetAxisP1Id());
@@ -212,13 +212,11 @@ void DialogTriangle::PointNameChanged()
     set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
 
     QColor color = okColor;
-    if (set.size() < 3)//Need tree or more unique points for creation triangle
+    if (set.size() < 3)   // Need tree or more unique points for creation triangle
     {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -230,17 +228,14 @@ void DialogTriangle::PointNameChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogTriangle::ShowVisualization()
-{
-    AddVisualization<VisToolTriangle>();
-}
+void DialogTriangle::ShowVisualization() { AddVisualization<VisToolTriangle>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief SetPointName set name of point
  * @param value name
  */
-void DialogTriangle::SetPointName(const QString &value)
+void DialogTriangle::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -251,11 +246,11 @@ void DialogTriangle::SetPointName(const QString &value)
  * @brief SetSecondPointId set id of second point
  * @param value id
  */
-void DialogTriangle::SetSecondPointId(const quint32 &value)
+void DialogTriangle::SetSecondPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxSecondPoint, value);
 
-    VisToolTriangle *line = qobject_cast<VisToolTriangle *>(vis);
+    VisToolTriangle* line = qobject_cast<VisToolTriangle*>(vis);
     SCASSERT(line != nullptr)
     line->setHypotenuseP2Id(value);
 }
@@ -265,11 +260,11 @@ void DialogTriangle::SetSecondPointId(const quint32 &value)
  * @brief SetFirstPointId set id of first point
  * @param value id
  */
-void DialogTriangle::SetFirstPointId(const quint32 &value)
+void DialogTriangle::SetFirstPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxFirstPoint, value);
 
-    VisToolTriangle *line = qobject_cast<VisToolTriangle *>(vis);
+    VisToolTriangle* line = qobject_cast<VisToolTriangle*>(vis);
     SCASSERT(line != nullptr)
     line->setHypotenuseP1Id(value);
 }
@@ -279,11 +274,11 @@ void DialogTriangle::SetFirstPointId(const quint32 &value)
  * @brief SetAxisP2Id set id second point of axis
  * @param value id
  */
-void DialogTriangle::SetAxisP2Id(const quint32 &value)
+void DialogTriangle::SetAxisP2Id(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxAxisP2, value);
 
-    VisToolTriangle *line = qobject_cast<VisToolTriangle *>(vis);
+    VisToolTriangle* line = qobject_cast<VisToolTriangle*>(vis);
     SCASSERT(line != nullptr)
     line->setObject2Id(value);
 }
@@ -293,11 +288,11 @@ void DialogTriangle::SetAxisP2Id(const quint32 &value)
  * @brief SetAxisP1Id set id first point of axis
  * @param value id
  */
-void DialogTriangle::SetAxisP1Id(const quint32 &value)
+void DialogTriangle::SetAxisP1Id(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxAxisP1, value);
 
-    VisToolTriangle *line = qobject_cast<VisToolTriangle *>(vis);
+    VisToolTriangle* line = qobject_cast<VisToolTriangle*>(vis);
     SCASSERT(line != nullptr)
     line->setObject1Id(value);
 }
@@ -307,20 +302,14 @@ void DialogTriangle::SetAxisP1Id(const quint32 &value)
  * @brief GetAxisP1Id return id first point of axis
  * @return id
  */
-quint32 DialogTriangle::GetAxisP1Id() const
-{
-    return getCurrentObjectId(ui->comboBoxAxisP1);
-}
+quint32 DialogTriangle::GetAxisP1Id() const { return getCurrentObjectId(ui->comboBoxAxisP1); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetAxisP2Id return id second point of axis
  * @return id
  */
-quint32 DialogTriangle::GetAxisP2Id() const
-{
-    return getCurrentObjectId(ui->comboBoxAxisP2);
-}
+quint32 DialogTriangle::GetAxisP2Id() const { return getCurrentObjectId(ui->comboBoxAxisP2); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

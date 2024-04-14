@@ -52,18 +52,17 @@
 #ifndef DIALOGTRIANGLE_H
 #define DIALOGTRIANGLE_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogTriangle;
+namespace Ui {
+class DialogTriangle;
 }
 
 /**
@@ -73,36 +72,38 @@ class DialogTriangle : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogTriangle(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogTriangle(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogTriangle() Q_DECL_OVERRIDE;
 
-    quint32        GetAxisP1Id() const;
-    void           SetAxisP1Id(const quint32 &value);
+    quint32 GetAxisP1Id() const;
+    void SetAxisP1Id(const quint32& value);
 
-    quint32        GetAxisP2Id() const;
-    void           SetAxisP2Id(const quint32 &value);
+    quint32 GetAxisP2Id() const;
+    void SetAxisP2Id(const quint32& value);
 
-    quint32        GetFirstPointId() const;
-    void           SetFirstPointId(const quint32 &value);
+    quint32 GetFirstPointId() const;
+    void SetFirstPointId(const quint32& value);
 
-    quint32        GetSecondPointId() const;
-    void           SetSecondPointId(const quint32 &value);
+    quint32 GetSecondPointId() const;
+    void SetSecondPointId(const quint32& value);
 
-    void           SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 public slots:
-    virtual void   ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void   PointNameChanged() Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
+
 protected:
-    virtual void   ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void   SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(DialogTriangle)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogTriangle *ui;
+    Ui::DialogTriangle* ui;
 };
 
-#endif // DIALOGTRIANGLE_H
+#endif   // DIALOGTRIANGLE_H

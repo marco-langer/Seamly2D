@@ -11,7 +11,8 @@
  **  The above copyright notice and this permission notice shall be included in all copies or
  **  substantial portions of the Software.
  **
- **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *BUT
  **  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  **  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  **  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -22,21 +23,20 @@
 #ifndef QMUPARSERTOKEN_H
 #define QMUPARSERTOKEN_H
 
-#include <cassert>
-#include <string>
-#include <stack>
-#include <memory>
 #include <QtGlobal>
+#include <cassert>
+#include <memory>
+#include <stack>
+#include <string>
 
-#include "qmuparsererror.h"
 #include "qmuparsercallback.h"
+#include "qmuparsererror.h"
 
 /** @file
     @brief This file contains the parser token definition.
 */
 
-namespace qmu
-{
+namespace qmu {
 /**
  * @brief Encapsulation of the data for a single formula token.
  *
@@ -54,21 +54,27 @@ namespace qmu
  *
  * @author (C) 2004-2013 Ingo Berg
  */
-template<typename TBase, typename TString>
+template <typename TBase, typename TString>
 class QmuParserToken
 {
 public:
     //---------------------------------------------------------------------------
     /**
-    * @brief Constructor (default).
-    *
-    * Sets token to an neutral state of type cmUNKNOWN.
-    * @throw nothrow
-    * @sa ECmdCode
-    */
+     * @brief Constructor (default).
+     *
+     * Sets token to an neutral state of type cmUNKNOWN.
+     * @throw nothrow
+     * @sa ECmdCode
+     */
     QmuParserToken()
-        : m_iCode ( cmUNKNOWN ), m_iType ( tpVOID ), m_pTok ( nullptr ), m_iIdx ( -1 ), m_strTok(), m_strVal(),
-          m_fVal(), m_pCallback()
+        : m_iCode(cmUNKNOWN)
+        , m_iType(tpVOID)
+        , m_pTok(nullptr)
+        , m_iIdx(-1)
+        , m_strTok()
+        , m_strVal()
+        , m_fVal()
+        , m_pCallback()
     {}
 
     //------------------------------------------------------------------------------
@@ -80,11 +86,17 @@ public:
      * @post m_iType==cmUNKNOWN
      * @sa #Assign
      */
-    QmuParserToken ( const QmuParserToken &a_Tok )
-        : m_iCode ( a_Tok.m_iCode ), m_iType ( a_Tok.m_iType ), m_pTok ( a_Tok.m_pTok ), m_iIdx ( a_Tok.m_iIdx ),
-          m_strTok( a_Tok.m_strTok ), m_strVal(a_Tok.m_strVal), m_fVal(a_Tok.m_fVal), m_pCallback()
+    QmuParserToken(const QmuParserToken& a_Tok)
+        : m_iCode(a_Tok.m_iCode)
+        , m_iType(a_Tok.m_iType)
+        , m_pTok(a_Tok.m_pTok)
+        , m_iIdx(a_Tok.m_iIdx)
+        , m_strTok(a_Tok.m_strTok)
+        , m_strVal(a_Tok.m_strVal)
+        , m_fVal(a_Tok.m_fVal)
+        , m_pCallback()
     {
-        Assign ( a_Tok );
+        Assign(a_Tok);
     }
 
     //------------------------------------------------------------------------------
@@ -95,13 +107,12 @@ public:
      * Implemented by calling Assign(...).
      * @throw nothrow
      */
-    QmuParserToken& operator= ( const QmuParserToken &a_Tok )
+    QmuParserToken& operator=(const QmuParserToken& a_Tok)
     {
-        if ( &a_Tok == this )
-        {
+        if (&a_Tok == this) {
             return *this;
         }
-        Assign ( a_Tok );
+        Assign(a_Tok);
         return *this;
     }
 
@@ -111,7 +122,7 @@ public:
      *
      * @throw nothrow
      */
-    void Assign ( const QmuParserToken &a_Tok )
+    void Assign(const QmuParserToken& a_Tok)
     {
         m_iCode = a_Tok.m_iCode;
         m_pTok = a_Tok.m_pTok;
@@ -121,7 +132,7 @@ public:
         m_iType = a_Tok.m_iType;
         m_fVal = a_Tok.m_fVal;
         // create new callback object if a_Tok has one
-        m_pCallback.reset ( a_Tok.m_pCallback.get() ? a_Tok.m_pCallback->Clone() : nullptr );
+        m_pCallback.reset(a_Tok.m_pCallback.get() ? a_Tok.m_pCallback->Clone() : nullptr);
     }
 
     //------------------------------------------------------------------------------
@@ -136,12 +147,12 @@ public:
      * @post m_fVal = 0
      * @post m_pTok = 0
      */
-    QmuParserToken& Set ( ECmdCode a_iType, const TString &a_strTok = TString() )
+    QmuParserToken& Set(ECmdCode a_iType, const TString& a_strTok = TString())
     {
         // The following types cant be set this way, they have special Set functions
-        assert ( a_iType != cmVAR );
-        assert ( a_iType != cmVAL );
-        assert ( a_iType != cmFUNC );
+        assert(a_iType != cmVAR);
+        assert(a_iType != cmVAL);
+        assert(a_iType != cmFUNC);
 
         m_iCode = a_iType;
         m_iType = tpVOID;
@@ -156,14 +167,14 @@ public:
     /**
      * @brief Set Callback type.
      */
-    QmuParserToken& Set ( const QmuParserCallback &a_pCallback, const TString &a_sTok )
+    QmuParserToken& Set(const QmuParserCallback& a_pCallback, const TString& a_sTok)
     {
-        assert ( a_pCallback.GetAddr() );
+        assert(a_pCallback.GetAddr());
 
         m_iCode = a_pCallback.GetCode();
         m_iType = tpVOID;
         m_strTok = a_sTok;
-        m_pCallback.reset ( new QmuParserCallback ( a_pCallback ) );
+        m_pCallback.reset(new QmuParserCallback(a_pCallback));
 
         m_pTok = nullptr;
         m_iIdx = -1;
@@ -178,7 +189,7 @@ public:
      * Member variables not necessary for value tokens will be invalidated.
      * @throw nothrow
      */
-    QmuParserToken& SetVal ( TBase a_fVal, const TString &a_strTok = TString() )
+    QmuParserToken& SetVal(TBase a_fVal, const TString& a_strTok = TString())
     {
         m_iCode = cmVAL;
         m_iType = tpDBL;
@@ -187,7 +198,7 @@ public:
         m_iIdx = -1;
 
         m_pTok = nullptr;
-        m_pCallback.reset ( nullptr );
+        m_pCallback.reset(nullptr);
 
         return *this;
     }
@@ -199,14 +210,14 @@ public:
      * Member variables not necessary for variable tokens will be invalidated.
      * @throw nothrow
      */
-    QmuParserToken& SetVar ( TBase *a_pVar, const TString &a_strTok )
+    QmuParserToken& SetVar(TBase* a_pVar, const TString& a_strTok)
     {
         m_iCode = cmVAR;
         m_iType = tpDBL;
         m_strTok = a_strTok;
         m_iIdx = -1;
-        m_pTok = reinterpret_cast<void*> ( a_pVar );
-        m_pCallback.reset ( nullptr );
+        m_pTok = reinterpret_cast<void*>(a_pVar);
+        m_pCallback.reset(nullptr);
         return *this;
     }
 
@@ -217,7 +228,7 @@ public:
      * Member variables not necessary for variable tokens will be invalidated.
      * @throw nothrow
      */
-    QmuParserToken& SetString ( const TString &a_strTok, int a_iSize )
+    QmuParserToken& SetString(const TString& a_strTok, int a_iSize)
     {
         m_iCode = cmSTRING;
         m_iType = tpSTR;
@@ -225,7 +236,7 @@ public:
         m_iIdx = a_iSize;
 
         m_pTok = nullptr;
-        m_pCallback.reset ( nullptr );
+        m_pCallback.reset(nullptr);
         return *this;
     }
 
@@ -237,11 +248,10 @@ public:
      * @param a_iIdx The index the string function result will take in the bytecode parser.
      * @throw QmuParserError if #a_iIdx<0 or #m_iType!=cmSTRING
      */
-    void SetIdx ( int a_iIdx )
+    void SetIdx(int a_iIdx)
     {
-        if ( m_iCode != cmSTRING || a_iIdx < 0 )
-        {
-            throw QmuParserError ( ecINTERNAL_ERROR );
+        if (m_iCode != cmSTRING || a_iIdx < 0) {
+            throw QmuParserError(ecINTERNAL_ERROR);
         }
 
         m_iIdx = a_iIdx;
@@ -258,9 +268,8 @@ public:
      */
     int GetIdx() const
     {
-        if ( m_iIdx < 0 || m_iCode != cmSTRING )
-        {
-            throw QmuParserError ( ecINTERNAL_ERROR );
+        if (m_iIdx < 0 || m_iCode != cmSTRING) {
+            throw QmuParserError(ecINTERNAL_ERROR);
         }
 
         return m_iIdx;
@@ -275,12 +284,9 @@ public:
      */
     ECmdCode GetCode() const
     {
-        if ( m_pCallback.get() )
-        {
+        if (m_pCallback.get()) {
             return m_pCallback->GetCode();
-        }
-        else
-        {
+        } else {
             return m_iCode;
         }
     }
@@ -288,12 +294,9 @@ public:
     //------------------------------------------------------------------------------
     ETypeCode GetType() const
     {
-        if ( m_pCallback.get() )
-        {
+        if (m_pCallback.get()) {
             return m_pCallback->GetType();
-        }
-        else
-        {
+        } else {
             return m_iType;
         }
     }
@@ -301,14 +304,12 @@ public:
     //------------------------------------------------------------------------------
     int GetPri() const
     {
-        if ( m_pCallback.get() == nullptr)
-        {
-            throw QmuParserError ( ecINTERNAL_ERROR );
+        if (m_pCallback.get() == nullptr) {
+            throw QmuParserError(ecINTERNAL_ERROR);
         }
 
-        if ( m_pCallback->GetCode() != cmOPRT_BIN && m_pCallback->GetCode() != cmOPRT_INFIX )
-        {
-            throw QmuParserError ( ecINTERNAL_ERROR );
+        if (m_pCallback->GetCode() != cmOPRT_BIN && m_pCallback->GetCode() != cmOPRT_INFIX) {
+            throw QmuParserError(ecINTERNAL_ERROR);
         }
 
         return m_pCallback->GetPri();
@@ -317,17 +318,16 @@ public:
     //------------------------------------------------------------------------------
     EOprtAssociativity GetAssociativity() const
     {
-        if ( m_pCallback.get() == nullptr || m_pCallback->GetCode() != cmOPRT_BIN )
-        {
-            throw QmuParserError ( ecINTERNAL_ERROR );
+        if (m_pCallback.get() == nullptr || m_pCallback->GetCode() != cmOPRT_BIN) {
+            throw QmuParserError(ecINTERNAL_ERROR);
         }
 
         return m_pCallback->GetAssociativity();
     }
 
     //------------------------------------------------------------------------------
-    template < class FunctionPtr >
-    static FunctionPtr union_cast( void* objectPtr )
+    template <class FunctionPtr>
+    static FunctionPtr union_cast(void* objectPtr)
     {
         union
         {
@@ -336,8 +336,9 @@ public:
         } var;
 
         // cppcheck-suppress duplicateExpression
-        Q_STATIC_ASSERT_X(sizeof(void *) == sizeof(void (*)(void)),
-                          "object pointer and function pointer sizes must equal");
+        Q_STATIC_ASSERT_X(
+            sizeof(void*) == sizeof(void (*)(void)),
+            "object pointer and function pointer sizes must equal");
 
         var.obj = objectPtr;
         return var.func;
@@ -345,7 +346,8 @@ public:
 
     //------------------------------------------------------------------------------
     /**
-     * @brief Return the address of the callback function assoziated with function and operator tokens.
+     * @brief Return the address of the callback function assoziated with function and operator
+     * tokens.
      *
      * @return The pointer stored in #m_pTok.
      * @throw QmuParserError if token type is non of:
@@ -360,8 +362,9 @@ public:
      */
     generic_fun_type GetFuncAddr() const
     {
-        return ( union_cast<generic_fun_type>( m_pCallback.get() ) ) ?
-                    union_cast<generic_fun_type>( m_pCallback->GetAddr() ) : union_cast<generic_fun_type>(nullptr);
+        return (union_cast<generic_fun_type>(m_pCallback.get()))
+                 ? union_cast<generic_fun_type>(m_pCallback->GetAddr())
+                 : union_cast<generic_fun_type>(nullptr);
     }
 
     //------------------------------------------------------------------------------
@@ -373,48 +376,44 @@ public:
      */
     TBase GetVal() const
     {
-        switch ( m_iCode )
-        {
-            case cmVAL:
-                return m_fVal;
-            case cmVAR:
-                return * ( reinterpret_cast<TBase*>(m_pTok) );
-            case cmLE:
-            case cmGE:
-            case cmNEQ:
-            case cmEQ:
-            case cmLT:
-            case cmGT:
-            case cmADD:
-            case cmSUB:
-            case cmMUL:
-            case cmDIV:
-            case cmPOW:
-            case cmLAND:
-            case cmLOR:
-            case cmASSIGN:
-            case cmBO:
-            case cmBC:
-            case cmIF:
-            case cmELSE:
-            case cmENDIF:
-            case cmARG_SEP:
-            case cmVARPOW2:
-            case cmVARPOW3:
-            case cmVARPOW4:
-            case cmVARMUL:
-            case cmPOW2:
-            case cmFUNC:
-            case cmFUNC_STR:
-            case cmFUNC_BULK:
-            case cmOPRT_BIN:
-            case cmOPRT_POSTFIX:
-            case cmOPRT_INFIX:
-            case cmEND:
-            case cmUNKNOWN:
-            case cmSTRING:
-            default:
-                throw QmuParserError ( ecVAL_EXPECTED );
+        switch (m_iCode) {
+        case cmVAL: return m_fVal;
+        case cmVAR: return *(reinterpret_cast<TBase*>(m_pTok));
+        case cmLE:
+        case cmGE:
+        case cmNEQ:
+        case cmEQ:
+        case cmLT:
+        case cmGT:
+        case cmADD:
+        case cmSUB:
+        case cmMUL:
+        case cmDIV:
+        case cmPOW:
+        case cmLAND:
+        case cmLOR:
+        case cmASSIGN:
+        case cmBO:
+        case cmBC:
+        case cmIF:
+        case cmELSE:
+        case cmENDIF:
+        case cmARG_SEP:
+        case cmVARPOW2:
+        case cmVARPOW3:
+        case cmVARPOW4:
+        case cmVARMUL:
+        case cmPOW2:
+        case cmFUNC:
+        case cmFUNC_STR:
+        case cmFUNC_BULK:
+        case cmOPRT_BIN:
+        case cmOPRT_POSTFIX:
+        case cmOPRT_INFIX:
+        case cmEND:
+        case cmUNKNOWN:
+        case cmSTRING:
+        default: throw QmuParserError(ecVAL_EXPECTED);
         }
     }
 
@@ -427,12 +426,11 @@ public:
      */
     TBase* GetVar() const
     {
-        if ( m_iCode != cmVAR )
-        {
-            throw QmuParserError ( ecINTERNAL_ERROR );
+        if (m_iCode != cmVAR) {
+            throw QmuParserError(ecINTERNAL_ERROR);
         }
 
-        return reinterpret_cast<TBase*>( m_pTok );
+        return reinterpret_cast<TBase*>(m_pTok);
     }
 
     //------------------------------------------------------------------------------
@@ -443,11 +441,10 @@ public:
      */
     int GetArgCount() const
     {
-        assert ( m_pCallback.get() );
+        assert(m_pCallback.get());
 
-        if ( m_pCallback->GetAddr() == nullptr)
-        {
-            throw QmuParserError ( ecINTERNAL_ERROR );
+        if (m_pCallback->GetAddr() == nullptr) {
+            throw QmuParserError(ecINTERNAL_ERROR);
         }
 
         return m_pCallback->GetArgc();
@@ -463,20 +460,18 @@ public:
      * @throw nothrow
      * @sa m_strTok
      */
-    const TString& GetAsString() const
-    {
-        return m_strTok;
-    }
+    const TString& GetAsString() const { return m_strTok; }
+
 private:
-    ECmdCode  m_iCode;  ///< Type of the token; The token type is a constant of type #ECmdCode.
+    ECmdCode m_iCode;   ///< Type of the token; The token type is a constant of type #ECmdCode.
     ETypeCode m_iType;
-    void  *m_pTok;      ///< Stores Token pointer; not applicable for all tokens
-    int  m_iIdx;        ///< An otional index to an external buffer storing the token data
+    void* m_pTok;       ///< Stores Token pointer; not applicable for all tokens
+    int m_iIdx;         ///< An otional index to an external buffer storing the token data
     TString m_strTok;   ///< Token string
     TString m_strVal;   ///< Value for string variables
-    qreal m_fVal;  ///< the value
+    qreal m_fVal;       ///< the value
     std::unique_ptr<QmuParserCallback> m_pCallback;
 };
-} // namespace qmu
+}   // namespace qmu
 
 #endif

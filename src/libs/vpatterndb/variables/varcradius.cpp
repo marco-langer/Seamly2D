@@ -60,14 +60,15 @@
 
 //---------------------------------------------------------------------------------------------------------------------
 VArcRadius::VArcRadius()
-    :VCurveVariable()
+    : VCurveVariable()
 {
     SetType(VarType::ArcRadius);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArcRadius::VArcRadius(const quint32 &id, const quint32 &parentId, const VArc *arc, Unit patternUnit)
-    :VCurveVariable(id, parentId)
+VArcRadius::VArcRadius(
+    const quint32& id, const quint32& parentId, const VArc* arc, Unit patternUnit)
+    : VCurveVariable(id, parentId)
 {
     SCASSERT(arc != nullptr)
 
@@ -77,34 +78,34 @@ VArcRadius::VArcRadius(const quint32 &id, const quint32 &parentId, const VArc *a
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArcRadius::VArcRadius(const quint32 &id, const quint32 &parentId, const VEllipticalArc *elArc, const int numberRadius,
-                       Unit patternUnit)
+VArcRadius::VArcRadius(
+    const quint32& id,
+    const quint32& parentId,
+    const VEllipticalArc* elArc,
+    const int numberRadius,
+    Unit patternUnit)
     : VCurveVariable(id, parentId)
 {
     SCASSERT(elArc != nullptr)
 
     SetType(VarType::ArcRadius);
     SetName(radius_V + QString("%1%2").arg(numberRadius).arg(elArc->name()));
-    if (numberRadius == 1)
-    {
+    if (numberRadius == 1) {
         SetValue(FromPixel(elArc->GetRadius1(), patternUnit));
-    }
-    else
-    {
+    } else {
         SetValue(FromPixel(elArc->GetRadius2(), patternUnit));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArcRadius::VArcRadius(const VArcRadius &var)
-    :VCurveVariable(var)
+VArcRadius::VArcRadius(const VArcRadius& var)
+    : VCurveVariable(var)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VArcRadius &VArcRadius::operator=(const VArcRadius &var)
+VArcRadius& VArcRadius::operator=(const VArcRadius& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     VCurveVariable::operator=(var);
@@ -112,5 +113,4 @@ VArcRadius &VArcRadius::operator=(const VArcRadius &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArcRadius::~VArcRadius()
-{}
+VArcRadius::~VArcRadius() {}

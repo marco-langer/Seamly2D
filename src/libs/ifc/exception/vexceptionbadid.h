@@ -52,9 +52,9 @@
 #ifndef VEXCEPTIONBADID_H
 #define VEXCEPTIONBADID_H
 
-#include <qcompilerdetection.h>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifcdef.h"
 #include "vexception.h"
@@ -65,20 +65,21 @@
 class VExceptionBadId : public VException
 {
 public:
-    VExceptionBadId(const QString &error, const quint32 &id);
-    VExceptionBadId(const QString &error, const QString &key);
-    VExceptionBadId(const VExceptionBadId &error);
-    VExceptionBadId &operator=(const VExceptionBadId &error);
-    virtual         ~VExceptionBadId() V_NOEXCEPT_EXPR (true) Q_DECL_EQ_DEFAULT;
+    VExceptionBadId(const QString& error, const quint32& id);
+    VExceptionBadId(const QString& error, const QString& key);
+    VExceptionBadId(const VExceptionBadId& error);
+    VExceptionBadId& operator=(const VExceptionBadId& error);
+    virtual ~VExceptionBadId() V_NOEXCEPT_EXPR(true) Q_DECL_EQ_DEFAULT;
     virtual QString ErrorMessage() const Q_DECL_OVERRIDE;
-    quint32         BadId() const;
-    QString         BadKey() const;
+    quint32 BadId() const;
+    QString BadKey() const;
+
 protected:
     /** @brief id id */
-    quint32          id;
+    quint32 id;
 
     /** @brief key key */
-    QString         key;
+    QString key;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -86,19 +87,13 @@ protected:
  * @brief BadId return bad id
  * @return id
  */
-inline quint32 VExceptionBadId::BadId() const
-{
-    return id;
-}
+inline quint32 VExceptionBadId::BadId() const { return id; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief BadKey return bad key
  * @return key
  */
-inline QString VExceptionBadId::BadKey() const
-{
-    return key;
-}
+inline QString VExceptionBadId::BadKey() const { return key; }
 
-#endif // VEXCEPTIONBADID_H
+#endif   // VEXCEPTIONBADID_H

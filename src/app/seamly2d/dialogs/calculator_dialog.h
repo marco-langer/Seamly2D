@@ -34,9 +34,8 @@
 
 #include "../vwidgets/calculator/calculator.h"
 
-namespace Ui
-{
-    class CalculatorDialog;
+namespace Ui {
+class CalculatorDialog;
 }
 
 class QWidget;
@@ -47,18 +46,18 @@ class CalculatorDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit CalculatorDialog(QWidget *parent = nullptr);
+    explicit CalculatorDialog(QWidget* parent = nullptr);
     virtual ~CalculatorDialog();
 
 protected:
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 
 private:
-    Ui::CalculatorDialog *ui;
+    Ui::CalculatorDialog* ui;
     bool isInitialized;
     Q_DISABLE_COPY(CalculatorDialog)
 
-    CalculatorUtil *calc;
+    CalculatorUtil* calc;
 };
 
-#endif // DIALOGCALCULATOR_H
+#endif   // DIALOGCALCULATOR_H

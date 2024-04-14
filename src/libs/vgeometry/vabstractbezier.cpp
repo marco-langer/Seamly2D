@@ -52,22 +52,19 @@
 #include "vabstractbezier.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractBezier::VAbstractBezier(const GOType &type, const quint32 &idObject, const Draw &mode)
+VAbstractBezier::VAbstractBezier(const GOType& type, const quint32& idObject, const Draw& mode)
     : VAbstractCurve(type, idObject, mode)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractBezier::VAbstractBezier(const VAbstractBezier &curve)
+VAbstractBezier::VAbstractBezier(const VAbstractBezier& curve)
     : VAbstractCurve(curve)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractBezier &VAbstractBezier::operator=(const VAbstractBezier &curve)
+VAbstractBezier& VAbstractBezier::operator=(const VAbstractBezier& curve)
 {
-    if ( &curve == this )
-    {
+    if (&curve == this) {
         return *this;
     }
     VAbstractCurve::operator=(curve);
@@ -75,6 +72,4 @@ VAbstractBezier &VAbstractBezier::operator=(const VAbstractBezier &curve)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractBezier::~VAbstractBezier()
-{
-}
+VAbstractBezier::~VAbstractBezier() {}

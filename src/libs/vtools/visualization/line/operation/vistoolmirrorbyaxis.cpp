@@ -53,7 +53,7 @@
 #include "../vgeometry/vpointf.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolMirrorByAxis::VisToolMirrorByAxis(const VContainer *data, QGraphicsItem *parent)
+VisToolMirrorByAxis::VisToolMirrorByAxis(const VContainer* data, QGraphicsItem* parent)
     : VisOperation(data, parent)
     , m_axisType(AxisType::VerticalAxis)
     , point1(nullptr)
@@ -64,25 +64,21 @@ VisToolMirrorByAxis::VisToolMirrorByAxis(const VContainer *data, QGraphicsItem *
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolMirrorByAxis::RefreshGeometry()
 {
-    if (objects.isEmpty())
-    {
+    if (objects.isEmpty()) {
         return;
     }
 
     QPointF firstPoint;
     QPointF secondPoint;
 
-    if (object1Id != NULL_ID)
-    {
-        firstPoint = static_cast<QPointF>(*Visualization::data->GeometricObject<VPointF>(object1Id));
+    if (object1Id != NULL_ID) {
+        firstPoint =
+            static_cast<QPointF>(*Visualization::data->GeometricObject<VPointF>(object1Id));
         DrawPoint(point1, firstPoint, supportColor2);
 
-        if (m_axisType == AxisType::VerticalAxis)
-        {
+        if (m_axisType == AxisType::VerticalAxis) {
             secondPoint = QPointF(firstPoint.x(), firstPoint.y() + 100);
-        }
-        else
-        {
+        } else {
             secondPoint = QPointF(firstPoint.x() + 100, firstPoint.y());
         }
 
@@ -93,13 +89,7 @@ void VisToolMirrorByAxis::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolMirrorByAxis::setOriginPointId(quint32 value)
-{
-    object1Id = value;
-}
+void VisToolMirrorByAxis::setOriginPointId(quint32 value) { object1Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolMirrorByAxis::setAxisType(AxisType value)
-{
-    m_axisType = value;
-}
+void VisToolMirrorByAxis::setAxisType(AxisType value) { m_axisType = value; }

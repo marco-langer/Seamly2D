@@ -21,7 +21,6 @@
 #ifndef VFILEPROPERTYEDITOR_H
 #define VFILEPROPERTYEDITOR_H
 
-#include <qcompilerdetection.h>
 #include <QLineEdit>
 #include <QMetaObject>
 #include <QMimeData>
@@ -31,9 +30,9 @@
 #include <QToolButton>
 #include <QWidget>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-namespace VPE
-{
+namespace VPE {
 
 
 class VFileEditWidget : public QWidget
@@ -59,7 +58,7 @@ signals:
     //! This signal is emitted when the user changed the curret file.
     //! Actions triggering this signal are either using the file dialog
     //! to select a new file or changing the file path in the line edit.
-    void dataChangedByUser(const QString &getFile, VFileEditWidget* editor);
+    void dataChangedByUser(const QString& getFile, VFileEditWidget* editor);
 
     //! This signal is emitted whenever dataChangedByUser() gets emmitted
     //! and is connected to the delegate's commitData() signal
@@ -69,14 +68,16 @@ signals:
 public slots:
     //! Sets the current file, does not check if it is valid
     //! \param value The new filepath the widget should show
-    //! \param emit_signal If true, this will emit the dataChangedByUser()-signal (if file differs from the current
-    //! file)
-    void setFile(const QString &value, bool emit_signal = false);
+    //! \param emit_signal If true, this will emit the dataChangedByUser()-signal (if file differs
+    //! from the current file)
+    void setFile(const QString& value, bool emit_signal = false);
 
     //! Sets a filter for the file field
     //! \param dialog_filter The filter used for the File Dialog
-    //! \param filter_list The list of file endings. The filters are being checked using regular expressions
-    void setFilter(const QString& dialog_filter = QString(), const QStringList& filter_list = QStringList());
+    //! \param filter_list The list of file endings. The filters are being checked using regular
+    //! expressions
+    void setFilter(
+        const QString& dialog_filter = QString(), const QStringList& filter_list = QStringList());
 
     //! Sets whether the property stores a directory or a file
     void setDirectory(bool dir);
@@ -111,6 +112,6 @@ private:
     Q_DISABLE_COPY(VFileEditWidget)
 };
 
-}
+}   // namespace VPE
 
-#endif // VFILEPROPERTYEDITOR_H
+#endif   // VFILEPROPERTYEDITOR_H

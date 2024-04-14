@@ -52,9 +52,9 @@
 #ifndef TST_VTRANSLATEVARS_H
 #define TST_VTRANSLATEVARS_H
 
-#include <QtCore/qglobal.h>
 #include <QLocale>
 #include <QObject>
+#include <QtCore/qglobal.h>
 
 class VTranslateVars;
 
@@ -62,7 +62,7 @@ class TST_VTranslateVars : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VTranslateVars(QObject *parent = nullptr);
+    explicit TST_VTranslateVars(QObject* parent = nullptr);
 private slots:
     void initTestCase();
     void TestFormulaFromUser_data();
@@ -70,14 +70,16 @@ private slots:
     void TestFormulaToUser_data();
     void TestFormulaToUser();
     void cleanupTestCase();
+
 private:
     Q_DISABLE_COPY(TST_VTranslateVars)
-    VTranslateVars *m_trMs;
+    VTranslateVars* m_trMs;
     QLocale m_systemLocale;
 
-    void PrepareValFromUser(double d, const QLocale &locale);
-    void PrepareValToUser(double d, const QLocale &locale);
-    void PrepareVal(const QString &inputFormula, const QString &outputFormula, const QLocale &locale);
+    void PrepareValFromUser(double d, const QLocale& locale);
+    void PrepareValToUser(double d, const QLocale& locale);
+    void
+    PrepareVal(const QString& inputFormula, const QString& outputFormula, const QLocale& locale);
 };
 
-#endif // TST_VTRANSLATEVARS_H
+#endif   // TST_VTRANSLATEVARS_H

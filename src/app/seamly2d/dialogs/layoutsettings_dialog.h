@@ -49,16 +49,15 @@
 
 #include "abstractlayout_dialog.h"
 
+#include "../ifc/ifcdef.h"
 #include "../vlayout/vbank.h"
 #include "../vmisc/def.h"
-#include "../ifc/ifcdef.h"
 
 #include <QCloseEvent>
 #include <QMargins>
 
-namespace Ui
-{
-    class LayoutSettingsDialog;
+namespace Ui {
+class LayoutSettingsDialog;
 }
 
 class VLayoutGenerator;
@@ -67,116 +66,117 @@ class LayoutSettingsDialog : public AbstractLayoutDialog
 {
     Q_OBJECT
 public:
-    explicit          LayoutSettingsDialog(VLayoutGenerator *generator, QWidget *parent = nullptr,
-                                           bool disableSettings = false);
-    virtual          ~LayoutSettingsDialog();
+    explicit LayoutSettingsDialog(
+        VLayoutGenerator* generator, QWidget* parent = nullptr, bool disableSettings = false);
+    virtual ~LayoutSettingsDialog();
 
-    qreal             GetPaperHeight() const;
-    void              SetPaperHeight(qreal value);
+    qreal GetPaperHeight() const;
+    void SetPaperHeight(qreal value);
 
-    qreal             GetPaperWidth() const;
-    void              SetPaperWidth(qreal value);
+    qreal GetPaperWidth() const;
+    void SetPaperWidth(qreal value);
 
-    qreal             GetShift() const;
-    void              SetShift(qreal value);
+    qreal GetShift() const;
+    void SetShift(qreal value);
 
-    qreal             GetLayoutWidth() const;
-    void              SetLayoutWidth(qreal value);
+    qreal GetLayoutWidth() const;
+    void SetLayoutWidth(qreal value);
 
-    QMarginsF         GetFields() const;
-    void              SetFields(const QMarginsF &value);
+    QMarginsF GetFields() const;
+    void SetFields(const QMarginsF& value);
 
-    Cases             GetGroup() const;
-    void              SetGroup(const Cases &value);
+    Cases GetGroup() const;
+    void SetGroup(const Cases& value);
 
-    bool              GetRotate() const;
-    void              SetRotate(bool state);
+    bool GetRotate() const;
+    void SetRotate(bool state);
 
-    int               GetIncrease() const;
-    bool              SetIncrease(int increase);
+    int GetIncrease() const;
+    bool SetIncrease(int increase);
 
-    bool              GetAutoCrop() const;
-    void              SetAutoCrop(bool autoCrop);
+    bool GetAutoCrop() const;
+    void SetAutoCrop(bool autoCrop);
 
-    bool              IsSaveLength() const;
-    void              SetSaveLength(bool save);
+    bool IsSaveLength() const;
+    void SetSaveLength(bool save);
 
-    bool              IsUnitePages() const;
-    void              SetUnitePages(bool save);
+    bool IsUnitePages() const;
+    void SetUnitePages(bool save);
 
-    bool              IsStripOptimization() const;
-    void              SetStripOptimization(bool save);
+    bool IsStripOptimization() const;
+    void SetStripOptimization(bool save);
 
-    quint8            GetMultiplier() const;
-    void              SetMultiplier(const quint8 &value);
+    quint8 GetMultiplier() const;
+    void SetMultiplier(const quint8& value);
 
-    bool              IsIgnoreAllFields() const;
-    void              SetIgnoreAllFields(bool value);
+    bool IsIgnoreAllFields() const;
+    void SetIgnoreAllFields(bool value);
 
-    bool              isTextAsPaths() const;
-    void              setTextAsPaths(bool value);
+    bool isTextAsPaths() const;
+    void setTextAsPaths(bool value);
 
-    QString           SelectedPrinter() const;
+    QString SelectedPrinter() const;
 
-    //support functions for the command line parser which uses invisible dialog to properly build layout generator
-    bool              SelectTemplate(const PaperSizeFormat& id);
-    bool              SelectPaperUnit(const QString& units);
-    bool              SelectLayoutUnit(const QString& units);
-    qreal             LayoutToPixels(qreal value) const;
-    qreal             PageToPixels(qreal value) const;
-    static QString    MakeGroupsHelp();
+    // support functions for the command line parser which uses invisible dialog to properly build
+    // layout generator
+    bool SelectTemplate(const PaperSizeFormat& id);
+    bool SelectPaperUnit(const QString& units);
+    bool SelectLayoutUnit(const QString& units);
+    qreal LayoutToPixels(qreal value) const;
+    qreal PageToPixels(qreal value) const;
+    static QString MakeGroupsHelp();
 
 protected:
-    virtual void      showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    QSizeF            getTemplateSize(const PaperSizeFormat &tmpl, const Unit &unit) const;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+    QSizeF getTemplateSize(const PaperSizeFormat& tmpl, const Unit& unit) const;
 
 public slots:
-    void              DialogAccepted();
+    void DialogAccepted();
 
 private slots:
-    void              ConvertPaperSize();
-    void              ConvertLayoutSize();
-    void              TemplateSelected();
-    void              FindTemplate();
-    void              PaperSizeChanged();
-    void              Swap(bool checked);
-    void              RestoreDefaults();
-    void              PrinterMargins();
+    void ConvertPaperSize();
+    void ConvertLayoutSize();
+    void TemplateSelected();
+    void FindTemplate();
+    void PaperSizeChanged();
+    void Swap(bool checked);
+    void RestoreDefaults();
+    void PrinterMargins();
 
-    void              CorrectMaxFileds();
-    void              IgnoreAllFields(int state);
+    void CorrectMaxFileds();
+    void IgnoreAllFields(int state);
 
 private:
     Q_DISABLE_COPY(LayoutSettingsDialog)
 
-    Ui::LayoutSettingsDialog *ui;
-    bool              disableSettings;
-    Unit              oldPaperUnit;
-    Unit              oldLayoutUnit;
-    VLayoutGenerator *generator;
-    bool              isInitialized;
-    void              InitPaperUnits();
-    void              InitLayoutUnits();
-    void              InitPrinter();
-    QSizeF            Template();
+    Ui::LayoutSettingsDialog* ui;
+    bool disableSettings;
+    Unit oldPaperUnit;
+    Unit oldLayoutUnit;
+    VLayoutGenerator* generator;
+    bool isInitialized;
+    void InitPaperUnits();
+    void InitLayoutUnits();
+    void InitPrinter();
+    QSizeF Template();
 
-    QMarginsF         MinPrinterFields() const;
-    QMarginsF         GetDefPrinterFields() const;
+    QMarginsF MinPrinterFields() const;
+    QMarginsF GetDefPrinterFields() const;
 
-    Unit              PaperUnit() const;
-    Unit              LayoutUnit() const;
+    Unit PaperUnit() const;
+    Unit LayoutUnit() const;
 
-    void              CorrectPaperDecimals();
-    void              CorrectLayoutDecimals();
+    void CorrectPaperDecimals();
+    void CorrectLayoutDecimals();
 
-    void              MinimumPaperSize();
-    void              MinimumLayoutSize();
+    void MinimumPaperSize();
+    void MinimumLayoutSize();
 
-    void              ReadSettings();
-    void              WriteSettings() const;
+    void ReadSettings();
+    void WriteSettings() const;
 
-    void              SheetSize(const QSizeF &size);
-    void              SetAdditionalOptions(bool value);
+    void SheetSize(const QSizeF& size);
+    void SetAdditionalOptions(bool value);
 };
 
-#endif // LAYOUT_SETTINGS_DIALOG_H
+#endif   // LAYOUT_SETTINGS_DIALOG_H

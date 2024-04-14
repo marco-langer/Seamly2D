@@ -28,29 +28,28 @@
 
 #include "../vmisc/def.h"
 
-namespace Ui
-{
-    class MouseCoordinates;
+namespace Ui {
+class MouseCoordinates;
 }
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
 QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 
-class MouseCoordinates: public QWidget
+class MouseCoordinates : public QWidget
 {
     Q_OBJECT
 
 public:
-                         MouseCoordinates(const Unit &units, QWidget *parent = nullptr);
-    virtual             ~MouseCoordinates();
+    MouseCoordinates(const Unit& units, QWidget* parent = nullptr);
+    virtual ~MouseCoordinates();
 
 public slots:
-    void                 updateCoordinates(const QPointF &scenePos);
+    void updateCoordinates(const QPointF& scenePos);
 
 private:
-    Ui::MouseCoordinates *ui;
-    Unit                  m_units;
+    Ui::MouseCoordinates* ui;
+    Unit m_units;
 };
 
 QT_WARNING_POP

@@ -58,7 +58,7 @@ class TST_VLayoutDetail : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_VLayoutDetail(QObject *parent = nullptr);
+    explicit TST_VLayoutDetail(QObject* parent = nullptr);
 
 private slots:
     void RemoveDublicates() const;
@@ -77,4 +77,4 @@ private:
     QVector<QPointF> OutputPointsCase3() const;
 };
 
-#endif // TST_VLAYOUTDETAIL_H
+#endif   // TST_VLAYOUTDETAIL_H

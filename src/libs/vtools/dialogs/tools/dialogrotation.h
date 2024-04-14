@@ -52,77 +52,77 @@
 #ifndef DIALOGROTATION_H
 #define DIALOGROTATION_H
 
-#include <qcompilerdetection.h>
 #include <QList>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "../vmisc/def.h"
 #include "../../tools/drawTools/operation/vabstractoperation.h"
+#include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogRotation;
+namespace Ui {
+class DialogRotation;
 }
 
 class DialogRotation : public DialogTool
 {
     Q_OBJECT
 public:
-    explicit            DialogRotation(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
-    virtual            ~DialogRotation();
+    explicit DialogRotation(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
+    virtual ~DialogRotation();
 
-    quint32             getOriginPointId() const;
-    void                setOriginPointId(const quint32 &value);
+    quint32 getOriginPointId() const;
+    void setOriginPointId(const quint32& value);
 
-    QString             GetAngle() const;
-    void                SetAngle(const QString &value);
+    QString GetAngle() const;
+    void SetAngle(const QString& value);
 
-    QString             getSuffix() const;
-    void                setSuffix(const QString &value);
+    QString getSuffix() const;
+    void setSuffix(const QString& value);
 
     QVector<SourceItem> getSourceObjects() const;
-    void                setSourceObjects(const QVector<SourceItem> &value);
+    void setSourceObjects(const QVector<SourceItem>& value);
 
 
-    virtual void        ShowDialog(bool click) Q_DECL_OVERRIDE;
+    virtual void ShowDialog(bool click) Q_DECL_OVERRIDE;
 
 public slots:
-    virtual void        ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    virtual void        SelectedObject(bool selected, quint32 id, quint32 tool) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    virtual void SelectedObject(bool selected, quint32 id, quint32 tool) Q_DECL_OVERRIDE;
 
 private slots:
-    void                angleChanged();
-    void                editAngleFormula();
-    void                suffixChanged();
+    void angleChanged();
+    void editAngleFormula();
+    void suffixChanged();
 
 protected:
-    virtual void        CheckState() Q_DECL_FINAL;
-    virtual void        ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void CheckState() Q_DECL_FINAL;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
 
     /** @brief SaveData Put dialog data in local variables */
-    virtual void        SaveData() Q_DECL_OVERRIDE;
-    virtual void        closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
-    void                pointChanged();
+    void pointChanged();
 
 private:
     Q_DISABLE_COPY(DialogRotation)
-    Ui::DialogRotation *ui;
-    bool                angleFlag;        //! @brief angleFlag true if value of angle is correct */
-    QTimer             *angleTimer;       //! @brief angleTimer timer of check formula of angle */
-    QString             angleFormula;     //! @brief angle formula of angle
+    Ui::DialogRotation* ui;
+    bool angleFlag;         //! @brief angleFlag true if value of angle is correct */
+    QTimer* angleTimer;     //! @brief angleTimer timer of check formula of angle */
+    QString angleFormula;   //! @brief angle formula of angle
     QVector<SourceItem> m_objects;
-    bool                stage1;
-    QString             m_suffix;
-    bool                m_firstRelease;
+    bool stage1;
+    QString m_suffix;
+    bool m_firstRelease;
 
-    void                evaluateAngle();
+    void evaluateAngle();
 };
 
-#endif // DIALOGROTATION_H
+#endif   // DIALOGROTATION_H

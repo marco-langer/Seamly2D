@@ -52,12 +52,12 @@
 #ifndef VOBJPAINTDEVICE_H
 #define VOBJPAINTDEVICE_H
 
-#include <qcompilerdetection.h>
 #include <QPaintDevice>
 #include <QSharedPointer>
 #include <QSize>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 class QIODevice;
 class VObjEngine;
@@ -67,27 +67,28 @@ class VObjPaintDevice : public QPaintDevice
 public:
     VObjPaintDevice();
     virtual ~VObjPaintDevice() Q_DECL_OVERRIDE;
-    virtual QPaintEngine *paintEngine() const Q_DECL_OVERRIDE;
+    virtual QPaintEngine* paintEngine() const Q_DECL_OVERRIDE;
 
     QString getFileName() const;
-    void setFileName(const QString &value);
+    void setFileName(const QString& value);
 
     QSize getSize();
-    void setSize(const QSize &size);
+    void setSize(const QSize& size);
 
-    QIODevice *getOutputDevice();
-    void setOutputDevice(QIODevice *outputDevice);
+    QIODevice* getOutputDevice();
+    void setOutputDevice(QIODevice* outputDevice);
 
     int getResolution() const;
     void setResolution(int dpi);
 
 protected:
     virtual int metric(PaintDeviceMetric metric) const Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(VObjPaintDevice)
     QSharedPointer<VObjEngine> engine;
-    QString     fileName;
-    uint        owns_iodevice;
+    QString fileName;
+    uint owns_iodevice;
 };
 
-#endif // VOBJPAINTDEVICE_H
+#endif   // VOBJPAINTDEVICE_H

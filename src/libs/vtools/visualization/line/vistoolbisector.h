@@ -52,40 +52,44 @@
 #ifndef VISTOOLBISECTOR_H
 #define VISTOOLBISECTOR_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
 
-class VisToolBisector :public VisLine
+class VisToolBisector : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolBisector(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolBisector(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolBisector() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         setObject2Id(const quint32 &value);
-    void         setObject3Id(const quint32 &value);
-    void         setLength(const QString &expression);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolBisector)};
+    void setObject2Id(const quint32& value);
+    void setObject3Id(const quint32& value);
+    void setLength(const QString& expression);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolBisector)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolBisector)
-    quint32         object2Id;
-    quint32         object3Id;
-    VScaledEllipse *point;
-    VScaledEllipse *line1P1;
-    VScaledEllipse *line1P2;
-    VScaledLine    *line1;
-    VScaledEllipse *line2P2;
-    VScaledLine    *line2;
-    qreal           length;
+    quint32 object2Id;
+    quint32 object3Id;
+    VScaledEllipse* point;
+    VScaledEllipse* line1P1;
+    VScaledEllipse* line1P2;
+    VScaledLine* line1;
+    VScaledEllipse* line2P2;
+    VScaledLine* line2;
+    qreal length;
 };
 
-#endif // VISTOOLBISECTOR_H
+#endif   // VISTOOLBISECTOR_H

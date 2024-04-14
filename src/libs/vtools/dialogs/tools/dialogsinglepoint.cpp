@@ -65,9 +65,10 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogSinglePoint::DialogSinglePoint(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogSinglePoint::DialogSinglePoint(const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
-    , ui(new Ui::DialogSinglePoint), point(QPointF())
+    , ui(new Ui::DialogSinglePoint)
+    , point(QPointF())
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -91,16 +92,13 @@ DialogSinglePoint::DialogSinglePoint(const VContainer *data, const quint32 &tool
  * @brief mousePress get mouse position
  * @param scenePos position of cursor
  */
-void DialogSinglePoint::mousePress(const QPointF &scenePos)
+void DialogSinglePoint::mousePress(const QPointF& scenePos)
 {
-    if (isInitialized == false)
-    {
+    if (isInitialized == false) {
         ui->doubleSpinBoxX->setValue(qApp->fromPixel(scenePos.x()));
         ui->doubleSpinBoxY->setValue(qApp->fromPixel(scenePos.y()));
         this->show();
-    }
-    else
-    {
+    } else {
         ui->doubleSpinBoxX->setValue(qApp->fromPixel(scenePos.x()));
         ui->doubleSpinBoxY->setValue(qApp->fromPixel(scenePos.y()));
     }
@@ -109,7 +107,8 @@ void DialogSinglePoint::mousePress(const QPointF &scenePos)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogSinglePoint::SaveData()
 {
-    point = QPointF(qApp->toPixel(ui->doubleSpinBoxX->value()), qApp->toPixel(ui->doubleSpinBoxY->value()));
+    point = QPointF(
+        qApp->toPixel(ui->doubleSpinBoxX->value()), qApp->toPixel(ui->doubleSpinBoxY->value()));
     pointName = ui->lineEditName->text();
 }
 
@@ -119,7 +118,7 @@ void DialogSinglePoint::SaveData()
  * @param name name of point
  * @param point data for point
  */
-void DialogSinglePoint::SetData(const QString &name, const QPointF &point)
+void DialogSinglePoint::SetData(const QString& name, const QPointF& point)
 {
     pointName = name;
     this->point = point;
@@ -130,17 +129,11 @@ void DialogSinglePoint::SetData(const QString &name, const QPointF &point)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogSinglePoint::~DialogSinglePoint()
-{
-    delete ui;
-}
+DialogSinglePoint::~DialogSinglePoint() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief getPoint return point
  * @return point
  */
-QPointF DialogSinglePoint::GetPoint() const
-{
-    return point;
-}
+QPointF DialogSinglePoint::GetPoint() const { return point; }

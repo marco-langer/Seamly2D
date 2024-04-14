@@ -52,7 +52,6 @@
 #ifndef VTOOLTRUEDARTS_H
 #define VTOOLTRUEDARTS_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -60,94 +59,119 @@
 #include <QPointF>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "vtooldoublepoint.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 class VToolTrueDarts : public VToolDoublePoint
 {
     Q_OBJECT
 public:
-    static void            FindPoint(const QPointF &baseLineP1, const QPointF &baseLineP2, const QPointF &dartP1,
-                                     const QPointF &dartP2, const QPointF &dartP3, QPointF &p1, QPointF &p2);
-    virtual void           setDialog() Q_DECL_OVERRIDE;
+    static void FindPoint(
+        const QPointF& baseLineP1,
+        const QPointF& baseLineP2,
+        const QPointF& dartP1,
+        const QPointF& dartP2,
+        const QPointF& dartP3,
+        QPointF& p1,
+        QPointF& p2);
+    virtual void setDialog() Q_DECL_OVERRIDE;
 
-    static VToolTrueDarts *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene, VAbstractPattern *doc,
-                                  VContainer *data);
-    static VToolTrueDarts *Create(quint32 _id,
-                                  const quint32 &_p1id, const quint32 &_p2id,
-                                  const quint32 &baseLineP1Id,
-                                  const quint32 &baseLineP2Id,
-                                  const quint32 &dartP1Id,
-                                  const quint32 &dartP2Id,
-                                  const quint32 &dartP3Id,
-                                  const QString &point1Name,
-                                  qreal mx1, qreal my1, bool showPointName1,
-                                  const QString &point2Name,
-                                  qreal mx2, qreal my2, bool showPointName2,
-                                  VMainGraphicsScene  *scene, VAbstractPattern *doc, VContainer *data,
-                                  const Document &parse, const Source &typeCreation);
+    static VToolTrueDarts* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static VToolTrueDarts* Create(
+        quint32 _id,
+        const quint32& _p1id,
+        const quint32& _p2id,
+        const quint32& baseLineP1Id,
+        const quint32& baseLineP2Id,
+        const quint32& dartP1Id,
+        const quint32& dartP2Id,
+        const quint32& dartP3Id,
+        const QString& point1Name,
+        qreal mx1,
+        qreal my1,
+        bool showPointName1,
+        const QString& point2Name,
+        qreal mx2,
+        qreal my2,
+        bool showPointName2,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
 
     static const QString ToolType;
-    virtual int          type() const  Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::TrueDarts)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::TrueDarts)
+    };
 
-    virtual void         ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
 
-    QString              BaseLineP1Name() const;
-    QString              BaseLineP2Name() const;
-    QString              DartP1Name() const;
-    QString              DartP2Name() const;
-    QString              DartP3Name() const;
+    QString BaseLineP1Name() const;
+    QString BaseLineP2Name() const;
+    QString DartP1Name() const;
+    QString DartP2Name() const;
+    QString DartP3Name() const;
 
-    quint32              GetBaseLineP1Id() const;
-    void                 SetBaseLineP1Id(const quint32 &value);
+    quint32 GetBaseLineP1Id() const;
+    void SetBaseLineP1Id(const quint32& value);
 
-    quint32              GetBaseLineP2Id() const;
-    void                 SetBaseLineP2Id(const quint32 &value);
+    quint32 GetBaseLineP2Id() const;
+    void SetBaseLineP2Id(const quint32& value);
 
-    quint32              GetDartP1Id() const;
-    void                 SetDartP1Id(const quint32 &value);
+    quint32 GetDartP1Id() const;
+    void SetDartP1Id(const quint32& value);
 
-    quint32              GetDartP2Id() const;
-    void                 SetDartP2Id(const quint32 &value);
+    quint32 GetDartP2Id() const;
+    void SetDartP2Id(const quint32& value);
 
-    quint32              GetDartP3Id() const;
-    void                 SetDartP3Id(const quint32 &value);
+    quint32 GetDartP3Id() const;
+    void SetDartP3Id(const quint32& value);
 
 protected slots:
-    virtual void         showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void         RemoveReferens() Q_DECL_OVERRIDE;
-    virtual void         SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void         ReadToolAttributes(const QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SetVisualization() Q_DECL_OVERRIDE;
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VToolTrueDarts)
-    quint32              baseLineP1Id;
-    quint32              baseLineP2Id;
-    quint32              dartP1Id;
-    quint32              dartP2Id;
-    quint32              dartP3Id;
+    quint32 baseLineP1Id;
+    quint32 baseLineP2Id;
+    quint32 dartP1Id;
+    quint32 dartP2Id;
+    quint32 dartP3Id;
 
-    VToolTrueDarts(VAbstractPattern *doc,
-                   VContainer *data,
-                   const quint32 &id,
-                   const quint32 &p1id,
-                   const quint32 &p2id,
-                   const quint32 &baseLineP1Id,
-                   const quint32 &baseLineP2Id,
-                   const quint32 &dartP1Id,
-                   const quint32 &dartP2Id,
-                   const quint32 &dartP3Id,
-                   const Source &typeCreation,
-                   QGraphicsItem * parent = nullptr);
+    VToolTrueDarts(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        const quint32& p1id,
+        const quint32& p2id,
+        const quint32& baseLineP1Id,
+        const quint32& baseLineP2Id,
+        const quint32& dartP1Id,
+        const quint32& dartP2Id,
+        const quint32& dartP3Id,
+        const Source& typeCreation,
+        QGraphicsItem* parent = nullptr);
 };
 
-#endif // VTOOLTRUEDARTS_H
+#endif   // VTOOLTRUEDARTS_H

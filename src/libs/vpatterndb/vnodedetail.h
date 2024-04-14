@@ -81,12 +81,18 @@ public:
      * @param mx object bias x axis
      * @param my object bias y axis
      */
-    VNodeDetail(quint32 id, Tool typeTool, NodeDetail typeNode, qreal mx = 0, qreal my = 0, bool reverse = false);
+    VNodeDetail(
+        quint32 id,
+        Tool typeTool,
+        NodeDetail typeNode,
+        qreal mx = 0,
+        qreal my = 0,
+        bool reverse = false);
     /**
      * @brief VNodeDetail copy constructor
      * @param node node
      */
-    VNodeDetail(const VNodeDetail &node);
+    VNodeDetail(const VNodeDetail& node);
 
     ~VNodeDetail();
 
@@ -95,23 +101,23 @@ public:
      * @param node node
      * @return node
      */
-    VNodeDetail &operator=(const VNodeDetail &node);
+    VNodeDetail& operator=(const VNodeDetail& node);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VNodeDetail &operator=(VNodeDetail &&node) Q_DECL_NOTHROW;
+    VNodeDetail& operator=(VNodeDetail&& node) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VNodeDetail &node) Q_DECL_NOTHROW;
+    void Swap(VNodeDetail& node) Q_DECL_NOTHROW;
 
     /**
      * @brief getId return object id.
      * @return id.
      */
-    quint32     getId() const;
+    quint32 getId() const;
     /**
      * @brief setId set object id.
      * @param value object id.
      */
-    void        setId(const quint32 &value);
+    void setId(const quint32& value);
     /**
      * @brief getTypeTool return tool type.
      * @return tool type.
@@ -121,7 +127,7 @@ public:
      * @brief setTypeTool set tool type.
      * @param value tool type.
      */
-    void        setTypeTool(const Tool &value);
+    void setTypeTool(const Tool& value);
     /**
      * @brief getTypeNode return node type.
      * @return node type.
@@ -131,33 +137,34 @@ public:
      * @brief setTypeNode set node type.
      * @param value node type.
      */
-    void        setTypeNode(const NodeDetail &value);
+    void setTypeNode(const NodeDetail& value);
     /**
      * @brief getMx return object bias x axis.
      * @return bias x axis.
      */
-    qreal       getMx() const;
+    qreal getMx() const;
     /**
      * @brief setMx set object bias x axis.
      * @param value bias x axis.
      */
-    void        setMx(const qreal &value);
+    void setMx(const qreal& value);
     /**
      * @brief getMy return object bias y axis.
      * @return bias y axis.
      */
-    qreal       getMy() const;
+    qreal getMy() const;
     /**
      * @brief setMy set object bias y axis.
      * @param value bias y axis.
      */
-    void        setMy(const qreal &value);
+    void setMy(const qreal& value);
 
-    bool        getReverse() const;
-    void        setReverse(bool reverse);
+    bool getReverse() const;
+    void setReverse(bool reverse);
 
-    static QVector<VPieceNode> Convert(const VContainer *data, const QVector<VNodeDetail> &nodes, qreal width,
-                                       bool closed);
+    static QVector<VPieceNode>
+    Convert(const VContainer* data, const QVector<VNodeDetail>& nodes, qreal width, bool closed);
+
 private:
     QSharedDataPointer<VNodeDetailData> d;
 };
@@ -165,4 +172,4 @@ private:
 Q_DECLARE_METATYPE(VNodeDetail)
 Q_DECLARE_TYPEINFO(VNodeDetail, Q_MOVABLE_TYPE);
 
-#endif // VNODEDETAIL_H
+#endif   // VNODEDETAIL_H

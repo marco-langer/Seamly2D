@@ -52,12 +52,12 @@
 #ifndef VNODEARC_H
 #define VNODEARC_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsPathItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
@@ -66,12 +66,19 @@
 /**
  * @brief The VNodeArc class arc detail node.
  */
-class VNodeArc :public VAbstractNode
+class VNodeArc : public VAbstractNode
 {
     Q_OBJECT
 public:
-    static void  Create(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idArc, const Document &parse,
-                        const Source &typeCreation, const QString &blockName = QString(), const quint32 &idTool = 0);
+    static void Create(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idArc,
+        const Document& parse,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0);
 
     static const QString ToolType;
     virtual QString getTagName() const Q_DECL_OVERRIDE;
@@ -79,15 +86,24 @@ public slots:
     virtual void FullUpdateFromFile() Q_DECL_OVERRIDE {}
     virtual void AllowHover(bool enabled) Q_DECL_OVERRIDE;
     virtual void AllowSelecting(bool enabled) Q_DECL_OVERRIDE;
+
 protected:
     virtual void AddToFile() Q_DECL_OVERRIDE;
     virtual void ShowNode() Q_DECL_OVERRIDE {}
     virtual void HideNode() Q_DECL_OVERRIDE {}
+
 private:
     Q_DISABLE_COPY(VNodeArc)
 
-    VNodeArc(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idArc, const Source &typeCreation,
-             const QString &blockName = QString(), const quint32 &idTool = 0, QObject *qoParent = nullptr);
+    VNodeArc(
+        VAbstractPattern* doc,
+        VContainer* data,
+        quint32 id,
+        quint32 idArc,
+        const Source& typeCreation,
+        const QString& blockName = QString(),
+        const quint32& idTool = 0,
+        QObject* qoParent = nullptr);
 };
 
-#endif // VNODEARC_H4
+#endif   // VNODEARC_H4

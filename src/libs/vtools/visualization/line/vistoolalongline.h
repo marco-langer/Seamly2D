@@ -52,36 +52,40 @@
 #ifndef VISTOOLALONGLINE_H
 #define VISTOOLALONGLINE_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
 
-class VisToolAlongLine :public VisLine
+class VisToolAlongLine : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolAlongLine(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolAlongLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolAlongLine() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         setObject2Id(const quint32 &value);
-    void         setLength(const QString &expression);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolAlongLine)};
+    void setObject2Id(const quint32& value);
+    void setLength(const QString& expression);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolAlongLine)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolAlongLine)
-    quint32         object2Id;
-    VScaledEllipse *point;
-    VScaledEllipse *lineP1;
-    VScaledEllipse *lineP2;
-    VScaledLine    *line;
-    qreal           length;
+    quint32 object2Id;
+    VScaledEllipse* point;
+    VScaledEllipse* lineP1;
+    VScaledEllipse* lineP2;
+    VScaledLine* line;
+    qreal length;
 };
 
-#endif // VISTOOLALONGLINE_H
+#endif   // VISTOOLALONGLINE_H

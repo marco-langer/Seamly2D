@@ -42,41 +42,41 @@ class VPatternLabelData : public VAbstractFloatItemData
 {
 public:
     VPatternLabelData();
-    VPatternLabelData(const VPatternLabelData &data);
+    VPatternLabelData(const VPatternLabelData& data);
 
     virtual ~VPatternLabelData();
 
-    VPatternLabelData &operator=(const VPatternLabelData &data);
+    VPatternLabelData& operator=(const VPatternLabelData& data);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VPatternLabelData &operator=(VPatternLabelData &&data) Q_DECL_NOTHROW;
+    VPatternLabelData& operator=(VPatternLabelData&& data) Q_DECL_NOTHROW;
 #endif
 
-	void    Swap(VPatternLabelData &data) Q_DECL_NOTHROW;
+    void Swap(VPatternLabelData& data) Q_DECL_NOTHROW;
 
     // methods, which set up label parameters
     QString GetLabelWidth() const;
-    void    SetLabelWidth(const QString &dLabelW);
+    void SetLabelWidth(const QString& dLabelW);
 
     QString GetLabelHeight() const;
-    void    SetLabelHeight(const QString &dLabelH);
+    void SetLabelHeight(const QString& dLabelH);
 
-    int     getFontSize() const;
-    void    SetFontSize(int iSize);
+    int getFontSize() const;
+    void SetFontSize(int iSize);
 
     QString GetRotation() const;
-    void    SetRotation(const QString &dRot);
+    void SetRotation(const QString& dRot);
 
     quint32 centerAnchorPoint() const;
-    void    setCenterAnchorPoint(const quint32 &centerAnchorPoint);
+    void setCenterAnchorPoint(const quint32& centerAnchorPoint);
 
     quint32 topLeftAnchorPoint() const;
-    void    setTopLeftAnchorPoint(const quint32 &topLeftAnchorPoint);
+    void setTopLeftAnchorPoint(const quint32& topLeftAnchorPoint);
 
     quint32 bottomRightAnchorPoint() const;
-    void    setBottomRightAnchorPoint(const quint32 &bottomRightAnchorPoint);
+    void setBottomRightAnchorPoint(const quint32& bottomRightAnchorPoint);
 
 private:
     QSharedDataPointer<VPatternLabelDataPrivate> d;
 };
 
-#endif // VPATTERNINFOGEOMETRY_H
+#endif   // VPATTERNINFOGEOMETRY_H

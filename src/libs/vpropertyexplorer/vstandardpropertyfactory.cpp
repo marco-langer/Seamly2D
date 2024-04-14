@@ -20,7 +20,6 @@
 
 #include "vstandardpropertyfactory.h"
 
-#include "vproperty.h"
 #include "plugins/Vector3d/vvector3dproperty.h"
 #include "plugins/vboolproperty.h"
 #include "plugins/vcolorproperty.h"
@@ -29,18 +28,17 @@
 #include "plugins/vfileproperty.h"
 #include "plugins/vnumberproperty.h"
 #include "plugins/vshortcutproperty.h"
+#include "vproperty.h"
 #include "vpropertyfactorymanager.h"
 
 VPE::VStandardPropertyFactory::VStandardPropertyFactory()
     : VAbstractPropertyFactory()
-{
-}
+{}
 
-VPE::VStandardPropertyFactory::VStandardPropertyFactory(VPropertyFactoryManager *manager)
+VPE::VStandardPropertyFactory::VStandardPropertyFactory(VPropertyFactoryManager* manager)
     : VAbstractPropertyFactory()
 {
-    if (manager)
-    {
+    if (manager) {
         manager->registerFactory("string", this);
         manager->registerFactory("bool", this);
         manager->registerFactory("color", this);
@@ -54,48 +52,29 @@ VPE::VStandardPropertyFactory::VStandardPropertyFactory(VPropertyFactoryManager 
     }
 }
 
-VPE::VProperty *VPE::VStandardPropertyFactory::createProperty(const QString &type, const QString &name)
+VPE::VProperty*
+VPE::VStandardPropertyFactory::createProperty(const QString& type, const QString& name)
 {
-    if (type == QString("string"))
-    {
+    if (type == QString("string")) {
         return new VProperty(name);
-    }
-    else if (type == QString("bool"))
-    {
+    } else if (type == QString("bool")) {
         return new VBoolProperty(name);
-    }
-    else if (type == QString("color"))
-    {
+    } else if (type == QString("color")) {
         return new VColorProperty(name);
-    }
-    else if (type == QString("empty"))
-    {
+    } else if (type == QString("empty")) {
         return new VEmptyProperty(name);
-    }
-    else if (type == QString("enum"))
-    {
+    } else if (type == QString("enum")) {
         return new VEnumProperty(name);
-    }
-    else if (type == QString("file"))
-    {
+    } else if (type == QString("file")) {
         return new VFileProperty(name);
-    }
-    else if (type == QString("integer"))
-    {
+    } else if (type == QString("integer")) {
         return new SpinboxProperty(name);
-    }
-    else if (type == QString("double"))
-    {
+    } else if (type == QString("double")) {
         return new DoubleSpinboxProperty(name);
-    }
-    else if (type == QString("shortcut"))
-    {
+    } else if (type == QString("shortcut")) {
         return new VShortcutProperty(name);
-    }
-    else if (type == QString("vector3d"))
-    {
+    } else if (type == QString("vector3d")) {
         return new QVector3DProperty(name);
-    }
-    else
+    } else
         return nullptr;
 }

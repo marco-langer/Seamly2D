@@ -37,9 +37,9 @@
 #include <QImage>
 #include <QPageLayout>
 #include <QPixmap>
-#include <QPrinter>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
+#include <QPrinter>
 #include <QScreen>
 #include <QShowEvent>
 #include <QString>
@@ -58,7 +58,7 @@
  *
  * @param parent Parent object of the dialog.
  */
- ShowInfoDialog::ShowInfoDialog(VPattern *doc, QWidget *parent)
+ShowInfoDialog::ShowInfoDialog(VPattern* doc, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::ShowInfoDialog)
     , doc(doc)
@@ -67,7 +67,7 @@
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    //Limit dialog height to 80% of screen size
+    // Limit dialog height to 80% of screen size
     setMaximumHeight(qRound(QGuiApplication::primaryScreen()->availableGeometry().height() * .8));
 
     qApp->Seamly2DSettings()->getOsSeparator() ? setLocale(QLocale()) : setLocale(QLocale::c());
@@ -88,57 +88,53 @@
                             "<tr><td align = right><b>Notes:       </b></td><td>%9<br></td><tr>"
                             "<tr><td align = right><b>Image:       </b></td><td>%10</td><tr>"
                             "</table>")
-                            .arg(doc->GetCompanyName())    //1
-                            .arg(doc->GetCustomerName())   //2
-                            .arg(doc->GetPatternName())    //3
-                            .arg(doc->GetPatternNumber())  //4
-                            .arg(doc->GetVersion())        //5
-                            .arg(UnitsToStr(doc->measurementUnits())) //6
-                            .arg(doc->MPath())             //7
-                            .arg(doc->GetDescription())    //8
-                            .arg(doc->GetNotes())          //9
-                            .arg(url);                     //10
+                             .arg(doc->GetCompanyName())                 // 1
+                             .arg(doc->GetCustomerName())                // 2
+                             .arg(doc->GetPatternName())                 // 3
+                             .arg(doc->GetPatternNumber())               // 4
+                             .arg(doc->GetVersion())                     // 5
+                             .arg(UnitsToStr(doc->measurementUnits()))   // 6
+                             .arg(doc->MPath())                          // 7
+                             .arg(doc->GetDescription())                 // 8
+                             .arg(doc->GetNotes())                       // 9
+                             .arg(url);                                  // 10
 
     ui->info_TextBrowser->setHtml(info);
 
-    connect(ui->clipboard_ToolButton, &QToolButton::clicked, this, &ShowInfoDialog::copyToClipboard);
-    connect(ui->printer_ToolButton,   &QToolButton::clicked, this, &ShowInfoDialog::sendToPrinter);
-    connect(ui->pdf_ToolButton,       &QToolButton::clicked, this, &ShowInfoDialog::exportPdf);
+    connect(
+        ui->clipboard_ToolButton, &QToolButton::clicked, this, &ShowInfoDialog::copyToClipboard);
+    connect(ui->printer_ToolButton, &QToolButton::clicked, this, &ShowInfoDialog::sendToPrinter);
+    connect(ui->pdf_ToolButton, &QToolButton::clicked, this, &ShowInfoDialog::exportPdf);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 /*
  * Destructor
  *
-*/
-ShowInfoDialog::~ShowInfoDialog()
-{
-    delete ui;
-}
+ */
+ShowInfoDialog::~ShowInfoDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /*
  * @brief Reimplement QWidget showEvent.
  *
-*/
+ */
 //---------------------------------------------------------------------------------------------------------------------
-void ShowInfoDialog::showEvent(QShowEvent *event)
+void ShowInfoDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
-    if (event->spontaneous())
-    {
+    if (event->spontaneous()) {
         return;
     }
 
-    if (m_isInitialized)
-    {
+    if (m_isInitialized) {
         return;
     }
 
     setMaximumSize(size());
     setMinimumSize(size());
 
-    m_isInitialized = true;//first show windows are held
+    m_isInitialized = true;   // first show windows are held
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -147,7 +143,7 @@ void ShowInfoDialog::showEvent(QShowEvent *event)
  */
 void ShowInfoDialog::copyToClipboard()
 {
-    QClipboard *clipboard = QApplication::clipboard();
+    QClipboard* clipboard = QApplication::clipboard();
     clipboard->setText(ui->info_TextBrowser->toPlainText());
 
     ui->info_TextBrowser->selectAll();
@@ -160,10 +156,9 @@ void ShowInfoDialog::copyToClipboard()
  */
 void ShowInfoDialog::sendToPrinter()
 {
-    QPrinter  printer;
+    QPrinter printer;
     QPrintDialog printDialog(&printer);
-    if(printDialog.exec())
-    {
+    if (printDialog.exec()) {
         QTextDocument textDocument;
         textDocument.setHtml(ui->info_TextBrowser->toHtml());
         textDocument.print(&printer);
@@ -177,12 +172,15 @@ void ShowInfoDialog::sendToPrinter()
 void ShowInfoDialog::exportPdf()
 {
     QString filters(tr("Info files") + QLatin1String("(*.pdf)"));
-    QString filename = QFileDialog::getSaveFileName(this, tr("Export PDF"),
-                                                    doc->GetPatternName() + tr("_info") + QLatin1String(".pdf"),
-                                                    filters, nullptr, QFileDialog::DontUseNativeDialog);
+    QString filename = QFileDialog::getSaveFileName(
+        this,
+        tr("Export PDF"),
+        doc->GetPatternName() + tr("_info") + QLatin1String(".pdf"),
+        filters,
+        nullptr,
+        QFileDialog::DontUseNativeDialog);
 
-    if (QFileInfo(filename).suffix().isEmpty())
-    {
+    if (QFileInfo(filename).suffix().isEmpty()) {
         filename.append(".pdf");
     }
     QPrinter printer(QPrinter::PrinterResolution);

@@ -55,12 +55,13 @@
 #include <QDomNode>
 #include <QDomNodeList>
 
-#include "vundocommand.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/logging.h"
+#include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DeleteDraftBlock::DeleteDraftBlock(VAbstractPattern *doc, const QString &draftBlockName, QUndoCommand *parent)
+DeleteDraftBlock::DeleteDraftBlock(
+    VAbstractPattern* doc, const QString& draftBlockName, QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , draftBlockName(draftBlockName)
     , draftBlock(QDomElement())
@@ -70,16 +71,17 @@ DeleteDraftBlock::DeleteDraftBlock(VAbstractPattern *doc, const QString &draftBl
 
     const QDomElement block = doc->getDraftBlockElement(draftBlockName);
     draftBlock = block.cloneNode().toElement();
-    const QDomElement previousDraftBlock = block.previousSibling().toElement();//find previous pattern piece
-    if (not previousDraftBlock.isNull() && previousDraftBlock.tagName() == VAbstractPattern::TagDraftBlock)
-    {
-        previousDraftBlockName = doc->GetParametrString(previousDraftBlock, VAbstractPattern::AttrName, "");
+    const QDomElement previousDraftBlock =
+        block.previousSibling().toElement();   // find previous pattern piece
+    if (not previousDraftBlock.isNull()
+        && previousDraftBlock.tagName() == VAbstractPattern::TagDraftBlock) {
+        previousDraftBlockName =
+            doc->GetParametrString(previousDraftBlock, VAbstractPattern::AttrName, "");
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DeleteDraftBlock::~DeleteDraftBlock()
-{}
+DeleteDraftBlock::~DeleteDraftBlock() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void DeleteDraftBlock::undo()
@@ -88,18 +90,15 @@ void DeleteDraftBlock::undo()
 
     QDomElement rootElement = doc->documentElement();
 
-    if (not previousDraftBlockName.isEmpty())
-    { // not first in the list, add after tag draft block
+    if (not previousDraftBlockName
+                .isEmpty()) {   // not first in the list, add after tag draft block
         const QDomNode previousDraftBlock = doc->getDraftBlockElement(previousDraftBlockName);
         rootElement.insertAfter(draftBlock, previousDraftBlock);
-    }
-    else
-    { // first in the list, add before tag draftBlock
+    } else {   // first in the list, add before tag draftBlock
         const QDomNodeList list = rootElement.elementsByTagName(VAbstractPattern::TagDraftBlock);
         QDomElement block;
 
-        if (not list.isEmpty())
-        {
+        if (not list.isEmpty()) {
             block = list.at(0).toElement();
         }
 

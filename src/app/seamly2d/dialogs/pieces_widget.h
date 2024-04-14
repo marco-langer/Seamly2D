@@ -53,16 +53,15 @@
 #ifndef PIECES_WIDGET_H
 #define PIECES_WIDGET_H
 
-#include <QWidget>
 #include <QTableWidgetItem>
+#include <QWidget>
 
 class VAbstractPattern;
 class VContainer;
 class VPiece;
 
-namespace Ui
-{
-    class PiecesWidget;
+namespace Ui {
+class PiecesWidget;
 }
 
 class PiecesWidget : public QWidget
@@ -70,45 +69,45 @@ class PiecesWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit           PiecesWidget(VContainer *data, VAbstractPattern *doc,  QWidget *parent = nullptr);
-    virtual           ~PiecesWidget();
+    explicit PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* parent = nullptr);
+    virtual ~PiecesWidget();
 
 signals:
-    void               Highlight(quint32 id);
+    void Highlight(quint32 id);
 
 public slots:
-    void               togglePiece(quint32 id);
-    void               updateList();
-    void               selectPiece(quint32 id);
+    void togglePiece(quint32 id);
+    void updateList();
+    void selectPiece(quint32 id);
 
 private slots:
-    void               cellClicked(int row, int column);
-    void               cellDoubleClicked(int row, int column);
-    void               showContextMenu(const QPoint &pos);
+    void cellClicked(int row, int column);
+    void cellDoubleClicked(int row, int column);
+    void showContextMenu(const QPoint& pos);
 
 protected:
-    virtual void       changeEvent(QEvent* event) Q_DECL_OVERRIDE;
+    virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(PiecesWidget)
-    Ui::PiecesWidget             *ui;
-    VAbstractPattern             *m_doc;
-    VContainer                   *m_data;
-    const QHash<quint32, VPiece> *m_allPieces;
+    Ui::PiecesWidget* ui;
+    VAbstractPattern* m_doc;
+    VContainer* m_data;
+    const QHash<quint32, VPiece>* m_allPieces;
 
-    void               fillTable(const QHash<quint32, VPiece> *details);
-    void               toggleInLayoutPieces(bool inLayout);
-    void               toggleLockedPieces(bool lock);
-    void               headerClicked(int index);
-    QString            formatLetterString(const VPiece piece);
-    void               includeAllPieces();
-    void               invertIncludedPieces();
-    void               excludeAllPieces();
-    void               lockAllPieces();
-    void               invertLockedPieces();
-    void               unlockAllPieces();
-    void               editPieceColor(quint32 id);
-    void               editPieceProperties(quint32 id);
+    void fillTable(const QHash<quint32, VPiece>* details);
+    void toggleInLayoutPieces(bool inLayout);
+    void toggleLockedPieces(bool lock);
+    void headerClicked(int index);
+    QString formatLetterString(const VPiece piece);
+    void includeAllPieces();
+    void invertIncludedPieces();
+    void excludeAllPieces();
+    void lockAllPieces();
+    void invertLockedPieces();
+    void unlockAllPieces();
+    void editPieceColor(quint32 id);
+    void editPieceProperties(quint32 id);
 };
 
-#endif // PIECES_WIDGET_H
+#endif   // PIECES_WIDGET_H

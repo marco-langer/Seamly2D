@@ -31,9 +31,8 @@
 
 #include <QDialog>
 
-namespace Ui
-{
-    class DecimalChartDialog;
+namespace Ui {
+class DecimalChartDialog;
 }
 
 class DecimalChartDialog : public QDialog
@@ -41,16 +40,16 @@ class DecimalChartDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit DecimalChartDialog(QWidget *parent = nullptr);
+    explicit DecimalChartDialog(QWidget* parent = nullptr);
     virtual ~DecimalChartDialog();
 
 protected:
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 
 private:
-    Ui::DecimalChartDialog *ui;
+    Ui::DecimalChartDialog* ui;
     bool isInitialized;
     Q_DISABLE_COPY(DecimalChartDialog)
 };
 
-#endif // DIALOGDECIMALCHART_H
+#endif   // DIALOGDECIMALCHART_H

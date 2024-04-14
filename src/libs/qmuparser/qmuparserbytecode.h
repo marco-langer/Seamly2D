@@ -11,7 +11,8 @@
  **  The above copyright notice and this permission notice shall be included in all copies or
  **  substantial portions of the Software.
  **
- **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *BUT
  **  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  **  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  **  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -36,36 +37,35 @@
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wnested-anon-types")
-namespace qmu
-{
+namespace qmu {
 struct SToken
 {
     ECmdCode Cmd;
     int StackPos;
 
-    union //
+    union   //
     {
-        struct //SValData
+        struct   // SValData
         {
-            qreal *ptr;
-            qreal  data;
-            qreal  data2;
+            qreal* ptr;
+            qreal data;
+            qreal data2;
         } Val;
 
-        struct //SFunData
+        struct   // SFunData
         {
             // Note: generic_fun_type is merely a placeholder. The real type could be
             //       anything between gun_type1 and fun_type9. I can't use a void
             //       pointer due to constraints in the ANSI standard which allows
             //       data pointers and function pointers to differ in size.
             generic_fun_type ptr;
-            int   argc;
-            int   idx;
+            int argc;
+            int idx;
         } Fun;
 
-        struct //SOprtData
+        struct   // SOprtData
         {
-            qreal *ptr;
+            qreal* ptr;
             int offset;
         } Oprt;
     };
@@ -87,24 +87,25 @@ class QmuParserByteCode
 {
 public:
     QmuParserByteCode();
-    QmuParserByteCode(const QmuParserByteCode &a_ByteCode);
-    QmuParserByteCode& operator=(const QmuParserByteCode &a_ByteCode);
-    void          Assign(const QmuParserByteCode &a_ByteCode);
-    void          AddVar(qreal *a_pVar);
-    void          AddVal(qreal a_fVal);
-    void          AddOp(ECmdCode a_Oprt);
-    void          AddIfElse(ECmdCode a_Oprt);
-    void          AddAssignOp(qreal *a_pVar);
-    void          AddFun(generic_fun_type a_pFun, int a_iArgc);
-    void          AddBulkFun(generic_fun_type a_pFun, int a_iArgc);
-    void          AddStrFun(generic_fun_type a_pFun, int a_iArgc, int a_iIdx);
-    void          EnableOptimizer(bool bStat);
-    void          Finalize();
-    void          clear();
-    int           GetMaxStackSize() const;
-    int           GetSize() const;
+    QmuParserByteCode(const QmuParserByteCode& a_ByteCode);
+    QmuParserByteCode& operator=(const QmuParserByteCode& a_ByteCode);
+    void Assign(const QmuParserByteCode& a_ByteCode);
+    void AddVar(qreal* a_pVar);
+    void AddVal(qreal a_fVal);
+    void AddOp(ECmdCode a_Oprt);
+    void AddIfElse(ECmdCode a_Oprt);
+    void AddAssignOp(qreal* a_pVar);
+    void AddFun(generic_fun_type a_pFun, int a_iArgc);
+    void AddBulkFun(generic_fun_type a_pFun, int a_iArgc);
+    void AddStrFun(generic_fun_type a_pFun, int a_iArgc, int a_iIdx);
+    void EnableOptimizer(bool bStat);
+    void Finalize();
+    void clear();
+    int GetMaxStackSize() const;
+    int GetSize() const;
     const SToken* GetBase() const;
-    void          AsciiDump();
+    void AsciiDump();
+
 private:
     /** @brief Token type for internal use only. */
     typedef QmuParserToken<qreal, string_type> token_type;
@@ -121,21 +122,18 @@ private:
     /** @brief The actual rpn storage. */
     rpn_type m_vRPN;
 
-    bool     m_bEnableOptimizer;
+    bool m_bEnableOptimizer;
 
     void ConstantFolding(ECmdCode a_Oprt);
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline void QmuParserByteCode::EnableOptimizer(bool bStat)
-{
-    m_bEnableOptimizer = bStat;
-}
+inline void QmuParserByteCode::EnableOptimizer(bool bStat) { m_bEnableOptimizer = bStat; }
 
 //---------------------------------------------------------------------------------------------------------------------
 inline int QmuParserByteCode::GetMaxStackSize() const
 {
-    return static_cast<int>(m_iMaxStackSize+1);
+    return static_cast<int>(m_iMaxStackSize + 1);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -143,10 +141,7 @@ inline int QmuParserByteCode::GetMaxStackSize() const
  * @brief Returns the number of entries in the bytecode.
  */
 // cppcheck-suppress unusedFunction
-inline int QmuParserByteCode::GetSize() const
-{
-    return m_vRPN.size();
-}
+inline int QmuParserByteCode::GetSize() const { return m_vRPN.size(); }
 
-} // namespace qmu
+}   // namespace qmu
 #endif

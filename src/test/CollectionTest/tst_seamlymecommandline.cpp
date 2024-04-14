@@ -54,31 +54,30 @@
  *************************************************************************/
 
 #include "tst_seamlymecommandline.h"
-#include "../vmisc/vsysexits.h"
 #include "../vmisc/logging.h"
+#include "../vmisc/vsysexits.h"
 
 #include <QtTest>
 
 const QString tmpTestFolder = QStringLiteral("tst_seamlyme_tmp");
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_SeamlyMeCommandLine::TST_SeamlyMeCommandLine(QObject *parent)
-    :AbstractTest(parent)
-{
-}
+TST_SeamlyMeCommandLine::TST_SeamlyMeCommandLine(QObject* parent)
+    : AbstractTest(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_SeamlyMeCommandLine::initTestCase()
 {
     QDir tmpDir(tmpTestFolder);
-    if (not tmpDir.removeRecursively())
-    {
+    if (not tmpDir.removeRecursively()) {
         QFAIL("Fail to remove temp directory.");
     }
 
-    if (not CopyRecursively(QCoreApplication::applicationDirPath() + QDir::separator() + QStringLiteral("tst_seamlyme"),
-                            QCoreApplication::applicationDirPath() + QDir::separator() + tmpTestFolder))
-    {
+    if (not CopyRecursively(
+            QCoreApplication::applicationDirPath() + QDir::separator()
+                + QStringLiteral("tst_seamlyme"),
+            QCoreApplication::applicationDirPath() + QDir::separator() + tmpTestFolder)) {
         QFAIL("Fail to prepare files for testing.");
     }
 }
@@ -90,50 +89,43 @@ void TST_SeamlyMeCommandLine::OpenMeasurements_data() const
     QTest::addColumn<int>("exitCode");
 
     // The file doesn't exist!
-    QTest::newRow("Send wrong path to a file")                                     << "wrongPath.smis"
-                                                                                   << V_EX_NOINPUT;
+    QTest::newRow("Send wrong path to a file") << "wrongPath.smis" << V_EX_NOINPUT;
 
-    QTest::newRow("Old individual format to new version")                          << "keiko.smis"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Old individual format to new version") << "keiko.smis" << V_EX_OK;
 
-    QTest::newRow("Open empty file")                                               << "empty.smis"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Open empty file") << "empty.smis" << V_EX_OK;
 
-    QTest::newRow("Open the SMIS file with all know measurements (v0.3.0)")        << "all_measurements_v0.3.0.smis"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Open the SMIS file with all know measurements (v0.3.0)")
+        << "all_measurements_v0.3.0.smis" << V_EX_OK;
 
-    QTest::newRow("Open the SMMS file with all know measurements (v0.4.0)")        << "all_measurements_v0.4.0.smms"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Open the SMMS file with all know measurements (v0.4.0)")
+        << "all_measurements_v0.4.0.smms" << V_EX_OK;
 
-    QTest::newRow("Open the SMMS file for man ru GOST (v0.3.0).")                  << "GOST_man_ru_v0.3.0.smms"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Open the SMMS file for man ru GOST (v0.3.0).")
+        << "GOST_man_ru_v0.3.0.smms" << V_EX_OK;
 
-    QTest::newRow("Open the SMIS file with all know measurements (v0.3.3)")        << "all_measurements_v0.3.3.smis"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Open the SMIS file with all know measurements (v0.3.3)")
+        << "all_measurements_v0.3.3.smis" << V_EX_OK;
 
-    QTest::newRow("Open the SMMS file with all know measurements (v0.4.2)")        << "all_measurements_v0.4.2.smms"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Open the SMMS file with all know measurements (v0.4.2)")
+        << "all_measurements_v0.4.2.smms" << V_EX_OK;
 
-    QTest::newRow("Open the SMMS file for man ru GOST (v0.4.2).")                  << "GOST_man_ru_v0.4.2.smms"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Open the SMMS file for man ru GOST (v0.4.2).")
+        << "GOST_man_ru_v0.4.2.smms" << V_EX_OK;
 
-    QTest::newRow("Broken file. Not unique name.")                                 << "broken1.smis"
-                                                                                   << V_EX_NOINPUT;
+    QTest::newRow("Broken file. Not unique name.") << "broken1.smis" << V_EX_NOINPUT;
 
-    QTest::newRow("Broken file. Measurement name can't be empty.")                 << "broken1.smis"
-                                                                                   << V_EX_NOINPUT;
+    QTest::newRow("Broken file. Measurement name can't be empty.")
+        << "broken1.smis" << V_EX_NOINPUT;
 
-    QTest::newRow("Broken file. An empty value shouldn't break a file.")           << "broken3.smis"
-                                                                                   << V_EX_OK;
+    QTest::newRow("Broken file. An empty value shouldn't break a file.")
+        << "broken3.smis" << V_EX_OK;
 
-    QTest::newRow("Broken file. Invalid measurement name.")                        << "broken4.smis"
-                                                                                   << V_EX_NOINPUT;
+    QTest::newRow("Broken file. Invalid measurement name.") << "broken4.smis" << V_EX_NOINPUT;
 
-    QTest::newRow("Empty text SMIS file.")                                         << "text.smis"
-                                                                                   << V_EX_NOINPUT;
+    QTest::newRow("Empty text SMIS file.") << "text.smis" << V_EX_NOINPUT;
 
-    QTest::newRow("Empty text SMMS file.")                                         << "text.smms"
-                                                                                   << V_EX_NOINPUT;
+    QTest::newRow("Empty text SMMS file.") << "text.smms" << V_EX_NOINPUT;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -143,9 +135,13 @@ void TST_SeamlyMeCommandLine::OpenMeasurements()
     QFETCH(int, exitCode);
 
     QString error;
-    const int exit = Run(exitCode, SeamlyMePath(), QStringList() << "--test"
-                         << QCoreApplication::applicationDirPath() + QDir::separator() + tmpTestFolder + QDir::separator() +
-                         file, error);
+    const int exit =
+        Run(exitCode,
+            SeamlyMePath(),
+            QStringList() << "--test"
+                          << QCoreApplication::applicationDirPath() + QDir::separator()
+                                 + tmpTestFolder + QDir::separator() + file,
+            error);
 
     QVERIFY2(exit == exitCode, qUtf8Printable(error));
 }
@@ -154,8 +150,7 @@ void TST_SeamlyMeCommandLine::OpenMeasurements()
 void TST_SeamlyMeCommandLine::cleanupTestCase()
 {
     QDir tmpDir(tmpTestFolder);
-    if (not tmpDir.removeRecursively())
-    {
+    if (not tmpDir.removeRecursively()) {
         QWARN("Fail to remove temp directory.");
     }
 }

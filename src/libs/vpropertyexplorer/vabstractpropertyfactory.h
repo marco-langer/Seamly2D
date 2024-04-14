@@ -24,8 +24,7 @@
 #include "../vmisc/diagnostic.h"
 #include <QObject>
 
-namespace VPE
-{
+namespace VPE {
 
 class VProperty;
 
@@ -42,11 +41,11 @@ public:
     //! \param type The type of the property as string
     //! \param name The property's name
     //! \return Returns the created property or NULL if it couldn't be be created
-    virtual VProperty* createProperty(const QString& type, const QString &name) = 0;
+    virtual VProperty* createProperty(const QString& type, const QString& name) = 0;
 };
 
 QT_WARNING_POP
 
-}
+}   // namespace VPE
 
-#endif // VABSTRACTPROPERTYFACTORY_H
+#endif   // VABSTRACTPROPERTYFACTORY_H

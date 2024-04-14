@@ -27,11 +27,11 @@
 class AbstractLayoutDialog : public QDialog
 {
 public:
-    explicit                 AbstractLayoutDialog(QWidget *parent = nullptr);
+    explicit AbstractLayoutDialog(QWidget* parent = nullptr);
 
 protected:
-    QSizeF                   getTemplateSize(const PaperSizeFormat &tmpl, const Unit &unit) const;
-    QSizeF                   RoundTemplateSize(qreal width, qreal height, Unit unit) const;
+    QSizeF getTemplateSize(const PaperSizeFormat& tmpl, const Unit& unit) const;
+    QSizeF RoundTemplateSize(qreal width, qreal height, Unit unit) const;
 };
 
-#endif // ABSTRACT_LAYOUT_DIALOG_H
+#endif   // ABSTRACT_LAYOUT_DIALOG_H

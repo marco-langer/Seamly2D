@@ -56,17 +56,16 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "mainwindowsnogui.h"
-#include "core/vcmdexport.h"
 #include "../vmisc/vlockguard.h"
+#include "core/vcmdexport.h"
+#include "mainwindowsnogui.h"
 
 #include <QMap>
 #include <QPointer>
 #include <QSharedPointer>
 
-namespace Ui
-{
-    class MainWindow;
+namespace Ui {
+class MainWindow;
 }
 
 class VToolOptionsPropertyBrowser;
@@ -102,27 +101,27 @@ class MainWindow : public MainWindowsNoGUI
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget* parent = nullptr);
     virtual ~MainWindow() Q_DECL_OVERRIDE;
 
-    bool LoadPattern(const QString &fileName, const QString &customMeasureFile = QString());
+    bool LoadPattern(const QString& fileName, const QString& customMeasureFile = QString());
 
 public slots:
     void processCommandLine();
     void penChanged(Pen pen);
     void basePointChanged();
 
-    virtual void ShowToolTip(const QString &toolTip) Q_DECL_OVERRIDE;
+    virtual void ShowToolTip(const QString& toolTip) Q_DECL_OVERRIDE;
     virtual void updateGroups() Q_DECL_OVERRIDE;
     virtual void zoomToSelected() Q_DECL_OVERRIDE;
-    void         showAllGroups();
-    void         hideAllGroups();
-    void         lockAllGroups();
-    void         unlockAllGroups();
-    void         addGroupToList();
-    void         deleteGroupFromList();
-    void         editGroup();
-    void         addSelectedItemsToGroup();
+    void showAllGroups();
+    void hideAllGroups();
+    void lockAllGroups();
+    void unlockAllGroups();
+    void addGroupToList();
+    void deleteGroupFromList();
+    void editGroup();
+    void addSelectedItemsToGroup();
 
 signals:
     void RefreshHistory();
@@ -156,26 +155,27 @@ signals:
     void signalZoomPanActive(bool enable) const;
 
 protected:
-    virtual void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    virtual void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void keyPressEvent(QKeyEvent* event) Q_DECL_OVERRIDE;
+    virtual void keyReleaseEvent(QKeyEvent* event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
     virtual void changeEvent(QEvent* event) Q_DECL_OVERRIDE;
-    virtual void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
-    virtual void customEvent(QEvent * event) Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+    virtual void customEvent(QEvent* event) Q_DECL_OVERRIDE;
     virtual void CleanLayout() Q_DECL_OVERRIDE;
     virtual void PrepareSceneList() Q_DECL_OVERRIDE;
-    virtual void exportToCSVData(const QString &fileName, const DialogExportToCSV &dialog) Q_DECL_FINAL;
-    void         handleExportToCSV();
+    virtual void
+    exportToCSVData(const QString& fileName, const DialogExportToCSV& dialog) Q_DECL_FINAL;
+    void handleExportToCSV();
 
 private slots:
     void zoomScaleChanged(qreal scale);
-    void MouseMove(const QPointF &scenePos);
+    void MouseMove(const QPointF& scenePos);
     void Clear();
     void patternChangesWereSaved(bool saved);
     void LastUsedTool();
     void fullParseFile();
     void setGuiEnabled(bool enabled);
-    void changeDraftBlockGlobally(const QString &patternPiece);
+    void changeDraftBlockGlobally(const QString& patternPiece);
     void ToolBarStyles();
     void resetOrigins();
     void showLayoutPages(int index);
@@ -234,8 +234,8 @@ private slots:
     void handleAnchorPointTool(bool checked);
     void handleInsertNodesTool(bool checked);
 
-    void       handleImportImage();
-    void       addImage(DraftImage image);
+    void handleImportImage();
+    void addImage(DraftImage image);
 
     void handleDeleteImage(quint32 id);
     void handleImageSelected(quint32 id);
@@ -244,7 +244,7 @@ private slots:
     void updateImage(DraftImage image);
     void handleLockImageAspect(bool state);
     void setStatusMessage(QString message);
-    QString  getImageFilename();
+    QString getImageFilename();
 
 
     void handlePatternPieceTool(bool checked);
@@ -278,11 +278,11 @@ private slots:
     void LoadMultisize();
     void UnloadMeasurements();
     void ShowMeasurements();
-    void MeasurementsChanged(const QString &path);
+    void MeasurementsChanged(const QString& path);
     void SyncMeasurements();
 #if defined(Q_OS_MAC)
-    void OpenAt(QAction *where);
-#endif //defined(Q_OS_MAC)
+    void OpenAt(QAction* where);
+#endif   // defined(Q_OS_MAC)
 
     void ChangedSize(int index);
     void ChangedHeight(int index);
@@ -290,131 +290,139 @@ private slots:
 private:
     Q_DISABLE_COPY(MainWindow)
     /** @brief ui keeps information about user interface */
-    Ui::MainWindow                   *ui;
+    Ui::MainWindow* ui;
 
-    QFileSystemWatcher               *watcher;
+    QFileSystemWatcher* watcher;
 
     /** @brief tool current tool */
-    Tool                              currentTool;
+    Tool currentTool;
 
     /** @brief tool last used tool */
-    Tool                              lastUsedTool;
+    Tool lastUsedTool;
 
     /** @brief draftScene draft block scene. */
-    VMainGraphicsScene               *draftScene;
+    VMainGraphicsScene* draftScene;
 
     /** @brief pieceScene pattern piece scene. */
-    VMainGraphicsScene               *pieceScene;
+    VMainGraphicsScene* pieceScene;
 
     /** @brief mouseCoordinates pointer to label who show mouse coordinate. */
-    QPointer<MouseCoordinates>        mouseCoordinates;
+    QPointer<MouseCoordinates> mouseCoordinates;
 
-    QPointer<QToolButton>             infoToolButton;
+    QPointer<QToolButton> infoToolButton;
 
     /** @brief helpLabel help show tooltip. */
-    QLabel                           *helpLabel;
+    QLabel* helpLabel;
 
     /** @brief isInitialized true after first show window. */
-    bool                              isInitialized;
+    bool isInitialized;
 
     /** @brief mChanges true if measurement file was changed. */
-    bool                              mChanges;
-    bool                              mChangesAsked;
+    bool mChanges;
+    bool mChangesAsked;
 
-    bool                              patternReadOnly;
+    bool patternReadOnly;
 
-    QPointer<DialogVariables>         dialogTable;
-    QSharedPointer<DialogTool>        dialogTool;
-    QPointer<HistoryDialog>           historyDialog;
+    QPointer<DialogVariables> dialogTable;
+    QSharedPointer<DialogTool> dialogTool;
+    QPointer<HistoryDialog> historyDialog;
 
-    QFontComboBox                    *fontComboBox;
-    QComboBox                        *fontSizeComboBox;
-    QComboBox                        *basePointComboBox;
-    QComboBox                        *draftBlockComboBox;  /** @brief draftBlockComboBox stores names of draft blocks.*/
-    QLabel                           *draftBlockLabel;
-    Draw                              mode;                /** @brief mode stores current draw mode. */
-    qint32                            currentBlockIndex;   /** @brief currentBlockIndex  current selected draft block.*/
-    qint32                            currentToolBoxIndex; /** @brief currentToolBoxIndex  current set of tools. */
-    bool                              isToolOptionsDockVisible;
-    bool                              isGroupsDockVisible;
-    bool                              isLayoutsDockVisible;
-    bool                              isToolboxDockVisible;
-    bool                              drawMode;            /** @brief drawMode true if draft scene active. */
+    QFontComboBox* fontComboBox;
+    QComboBox* fontSizeComboBox;
+    QComboBox* basePointComboBox;
+    QComboBox* draftBlockComboBox; /** @brief draftBlockComboBox stores names of draft blocks.*/
+    QLabel* draftBlockLabel;
+    Draw mode;                  /** @brief mode stores current draw mode. */
+    qint32 currentBlockIndex;   /** @brief currentBlockIndex  current selected draft block.*/
+    qint32 currentToolBoxIndex; /** @brief currentToolBoxIndex  current set of tools. */
+    bool isToolOptionsDockVisible;
+    bool isGroupsDockVisible;
+    bool isLayoutsDockVisible;
+    bool isToolboxDockVisible;
+    bool drawMode; /** @brief drawMode true if draft scene active. */
 
-    enum { MaxRecentFiles = 5 };
-    QAction                          *recentFileActs[MaxRecentFiles];
-    QAction                          *separatorAct;
+    enum
+    {
+        MaxRecentFiles = 5
+    };
+    QAction* recentFileActs[MaxRecentFiles];
+    QAction* separatorAct;
 
-    QLabel                           *leftGoToStage;
-    QLabel                           *rightGoToStage;
-    QTimer                           *autoSaveTimer;
-    bool                              guiEnabled;
-    QPointer<QComboBox>               gradationHeights;
-    QPointer<QComboBox>               gradationSizes;
-    QPointer<QLabel>                  gradationHeightsLabel;
-    QPointer<QLabel>                  gradationSizesLabel;
-    VToolOptionsPropertyBrowser      *toolProperties;
-    GroupsWidget                     *groupsWidget;
-    PiecesWidget                     *patternPiecesWidget;
+    QLabel* leftGoToStage;
+    QLabel* rightGoToStage;
+    QTimer* autoSaveTimer;
+    bool guiEnabled;
+    QPointer<QComboBox> gradationHeights;
+    QPointer<QComboBox> gradationSizes;
+    QPointer<QLabel> gradationHeightsLabel;
+    QPointer<QLabel> gradationSizesLabel;
+    VToolOptionsPropertyBrowser* toolProperties;
+    GroupsWidget* groupsWidget;
+    PiecesWidget* patternPiecesWidget;
     std::shared_ptr<VLockGuard<char>> lock;
 
-    QDoubleSpinBox                   *zoomScaleSpinBox;
+    QDoubleSpinBox* zoomScaleSpinBox;
 
-    PenToolBar                       *m_penToolBar; //!< for selecting the current pen
-    PenToolBar                       *m_penReset;
-    QComboBox                        *m_zoomToPointComboBox;
+    PenToolBar* m_penToolBar;   //!< for selecting the current pen
+    PenToolBar* m_penReset;
+    QComboBox* m_zoomToPointComboBox;
 
-    void                              SetDefaultHeight();
-    void                              SetDefaultSize();
+    void SetDefaultHeight();
+    void SetDefaultSize();
 
-    void                              initializeStatusToolBar();
-    void                              initializeModesToolBar();
-    void                              initializeDraftToolBar();
-    void                              initializePointNameToolBar();
-    void                              initializeToolsToolBar();
-    void                              initializeToolBarVisibility();
-    void                              initPenToolBar();
-    void                              initPropertyEditor();
-    void                              initBasePointComboBox();
+    void initializeStatusToolBar();
+    void initializeModesToolBar();
+    void initializeDraftToolBar();
+    void initializePointNameToolBar();
+    void initializeToolsToolBar();
+    void initializeToolBarVisibility();
+    void initPenToolBar();
+    void initPropertyEditor();
+    void initBasePointComboBox();
 
-    void                              updateToolBarVisibility();
-    void                              setToolBarVisibility(QToolBar *toolbar, bool visible);
-    void                              initializeToolButtons();
+    void updateToolBarVisibility();
+    void setToolBarVisibility(QToolBar* toolbar, bool visible);
+    void initializeToolButtons();
 
-    void                              handlePointsMenu();
-    void                              handleLinesMenu();
-    void                              handleArcsMenu();
-    void                              handleCurvesMenu();
-    void                              handleCirclesMenu();
-    void                              handleOperationsMenu();
-    void                              handlePatternPiecesMenu();
-    void                              handlePieceMenu();
-    void                              handleLayoutMenu();
-    void                              handleImagesMenu();
+    void handlePointsMenu();
+    void handleLinesMenu();
+    void handleArcsMenu();
+    void handleCurvesMenu();
+    void handleCirclesMenu();
+    void handleOperationsMenu();
+    void handlePatternPiecesMenu();
+    void handlePieceMenu();
+    void handleLayoutMenu();
+    void handleImagesMenu();
 
-    void                              CancelTool();
+    void CancelTool();
 
-    void               setWidgetsEnabled(bool enable);
-    void               setToolsEnabled(bool enable);
-    void               SetLayoutModeActions();
+    void setWidgetsEnabled(bool enable);
+    void setToolsEnabled(bool enable);
+    void SetLayoutModeActions();
 
-    void               SaveCurrentScene();
-    void               RestoreCurrentScene();
-    void               MinimumScrollBar();
+    void SaveCurrentScene();
+    void RestoreCurrentScene();
+    void MinimumScrollBar();
 
     template <typename Dialog, typename Func>
-    void               SetToolButton(bool checked, Tool t, const QString &cursor, const QString &toolTip,
-                                     Func closeDialogSlot);
+    void SetToolButton(
+        bool checked, Tool t, const QString& cursor, const QString& toolTip, Func closeDialogSlot);
     template <typename Dialog, typename Func, typename Func2>
-    void               SetToolButtonWithApply(bool checked, Tool t, const QString &cursor, const QString &toolTip,
-                                              Func closeDialogSlot, Func2 applyDialogSlot);
+    void SetToolButtonWithApply(
+        bool checked,
+        Tool t,
+        const QString& cursor,
+        const QString& toolTip,
+        Func closeDialogSlot,
+        Func2 applyDialogSlot);
     template <typename DrawTool>
-    void               ClosedDialog(int result);
+    void ClosedDialog(int result);
 
     template <typename DrawTool>
-    void ClosedDialogWithApply(int result, VMainGraphicsScene *scene);
+    void ClosedDialogWithApply(int result, VMainGraphicsScene* scene);
     template <typename DrawTool>
-    void ApplyDialog(VMainGraphicsScene *scene);
+    void ApplyDialog(VMainGraphicsScene* scene);
     template <typename DrawTool>
     void ClosedDrawDialogWithApply(int result);
     template <typename DrawTool>
@@ -424,69 +432,69 @@ private:
     template <typename DrawTool>
     void applyPiecesDialog();
 
-    bool               SavePattern(const QString &fileName, QString &error);
-    void               AutoSavePattern();
-    void               setCurrentFile(const QString &fileName);
+    bool SavePattern(const QString& fileName, QString& error);
+    void AutoSavePattern();
+    void setCurrentFile(const QString& fileName);
 
-    void               ReadSettings();
-    void               WriteSettings();
+    void ReadSettings();
+    void WriteSettings();
 
-    bool               MaybeSave();
-    void               InfoUnsavedImages(bool * firstImportImage);
-    void               UpdateRecentFileActions();
+    bool MaybeSave();
+    void InfoUnsavedImages(bool* firstImportImage);
+    void UpdateRecentFileActions();
 
-    void               createMenus();
-    void               createActions();
-    void               initializeAutoSave();
-    QString            PatternPieceName(const QString &text);
-    QString            CheckPathToMeasurements(const QString &patternPath, const QString &path);
-    QComboBox         *SetGradationList(QLabel *label, const QStringList &list);
-    QString            createDraftBlockName(const QString &text);
-    QString            checkPathToMeasurements(const QString &patternPath, const QString &path);
-    void               changeDraftBlock(int index, bool zoomBestFit = true);
+    void createMenus();
+    void createActions();
+    void initializeAutoSave();
+    QString PatternPieceName(const QString& text);
+    QString CheckPathToMeasurements(const QString& patternPath, const QString& path);
+    QComboBox* SetGradationList(QLabel* label, const QStringList& list);
+    QString createDraftBlockName(const QString& text);
+    QString checkPathToMeasurements(const QString& patternPath, const QString& path);
+    void changeDraftBlock(int index, bool zoomBestFit = true);
     /**
      * @brief EndVisualization try show dialog after and working with tool visualization.
      */
-    void               EndVisualization(bool click = false);
-    void               zoomFirstShow();
-    void               UpdateHeightsList(const QStringList &list);
-    void               UpdateSizesList(const QStringList &list);
+    void EndVisualization(bool click = false);
+    void zoomFirstShow();
+    void UpdateHeightsList(const QStringList& list);
+    void UpdateSizesList(const QStringList& list);
 
-    void               AddDocks();
-    void               initializeDocksContain();
-    bool               startNewSeamly2D(const QString &fileName = QString())const;
-    void               FileClosedCorrect();
-    QStringList        GetUnlokedRestoreFileList()const;
+    void AddDocks();
+    void initializeDocksContain();
+    bool startNewSeamly2D(const QString& fileName = QString()) const;
+    void FileClosedCorrect();
+    QStringList GetUnlokedRestoreFileList() const;
 
-    void               addDraftBlock(const QString &blockName);
-    QPointF            draftBlockStartPosition() const;
+    void addDraftBlock(const QString& blockName);
+    QPointF draftBlockStartPosition() const;
 
-    void               initializeScenes();
+    void initializeScenes();
 
-    QSharedPointer<MeasurementDoc> openMeasurementFile(const QString &fileName);
-    bool               loadMeasurements(const QString &fileName);
-    bool               updateMeasurements(const QString &fileName, int size, int height);
-    void               checkRequiredMeasurements(const MeasurementDoc *m);
+    QSharedPointer<MeasurementDoc> openMeasurementFile(const QString& fileName);
+    bool loadMeasurements(const QString& fileName);
+    bool updateMeasurements(const QString& fileName, int size, int height);
+    void checkRequiredMeasurements(const MeasurementDoc* m);
 
-    void               ReopenFilesAfterCrash(QStringList &args);
-    void               DoExport(const VCommandLinePtr& expParams);
+    void ReopenFilesAfterCrash(QStringList& args);
+    void DoExport(const VCommandLinePtr& expParams);
 
-    bool               setSize(const QString &text);
-    bool               setHeight(const QString & text);
+    bool setSize(const QString& text);
+    bool setHeight(const QString& text);
 
-    QString            GetPatternFileName();
-    QString            GetMeasurementFileName();
+    QString GetPatternFileName();
+    QString GetMeasurementFileName();
 
-    void               UpdateWindowTitle();
-    void               upDateScenes();
-    void               updateViewToolbar();
-    void               resetPanShortcuts();
+    void UpdateWindowTitle();
+    void upDateScenes();
+    void updateViewToolbar();
+    void resetPanShortcuts();
 
-    QStringList        draftPointNamesList();
+    QStringList draftPointNamesList();
 
-    void               updateZoomToPointComboBox(QStringList namesList);
+    void updateZoomToPointComboBox(QStringList namesList);
 
-    bool               IgnoreLocking(int error, const QString &path);
+    bool IgnoreLocking(int error, const QString& path);
 
     void ToolSelectPoint() const;
     void ToolSelectPointByPress() const;
@@ -502,4 +510,4 @@ private:
     void selectPieceTool() const;
 };
 
-#endif // MAINWINDOW_H
+#endif   // MAINWINDOW_H

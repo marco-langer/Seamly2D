@@ -52,9 +52,9 @@
 #ifndef VABSTRACTPIECE_P_H
 #define VABSTRACTPIECE_P_H
 
+#include <QCoreApplication>
 #include <QSharedData>
 #include <QString>
-#include <QCoreApplication>
 
 #include "../vmisc/diagnostic.h"
 
@@ -80,7 +80,7 @@ public:
         , m_my(0)
     {}
 
-    VAbstractPieceData(const VAbstractPieceData &piece)
+    VAbstractPieceData(const VAbstractPieceData& piece)
         : QSharedData(piece)
         , m_name(piece.m_name)
         , m_color(piece.m_color)
@@ -100,20 +100,20 @@ public:
     QString m_name;
     QString m_color;
     QString m_fill;
-    bool    m_pieceLock;
+    bool m_pieceLock;
     /** @brief forbidFlipping forbid piece be mirrored in a layout. */
-    bool    m_forbidFlipping;
-    bool    m_seamAllowance;
-    bool    m_seamAllowanceBuiltIn;
-    bool    m_hideMainPath;
-    qreal   m_width;
-    qreal   m_mx;
-    qreal   m_my;
+    bool m_forbidFlipping;
+    bool m_seamAllowance;
+    bool m_seamAllowanceBuiltIn;
+    bool m_hideMainPath;
+    qreal m_width;
+    qreal m_mx;
+    qreal m_my;
 
 private:
-    VAbstractPieceData &operator=(const VAbstractPieceData &) Q_DECL_EQ_DELETE;
+    VAbstractPieceData& operator=(const VAbstractPieceData&) Q_DECL_EQ_DELETE;
 };
 
 QT_WARNING_POP
 
-#endif // VABSTRACTPIECE_P_H
+#endif   // VABSTRACTPIECE_P_H

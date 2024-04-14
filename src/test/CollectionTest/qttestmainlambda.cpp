@@ -51,16 +51,15 @@
 
 #include <QtTest>
 
-#include "tst_seamlymecommandline.h"
 #include "tst_seamly2dcommandline.h"
+#include "tst_seamlymecommandline.h"
 
 int main(int argc, char** argv)
 {
-    QApplication app( argc, argv );
+    QApplication app(argc, argv);
 
     int status = 0;
-    auto ASSERT_TEST = [&status, argc, argv](QObject* obj)
-    {
+    auto ASSERT_TEST = [&status, argc, argv](QObject* obj) {
         status |= QTest::qExec(obj, argc, argv);
         delete obj;
     };

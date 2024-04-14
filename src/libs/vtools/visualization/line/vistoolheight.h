@@ -52,13 +52,13 @@
 #ifndef VISTOOLHEIGHT_H
 #define VISTOOLHEIGHT_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QLineF>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "visline.h"
@@ -67,27 +67,31 @@ class VisToolHeight : public VisLine
 {
     Q_OBJECT
 public:
-    explicit VisToolHeight(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolHeight(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolHeight() = default;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void         setLineP1Id(const quint32 &value);
-    void         setLineP2Id(const quint32 &value);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolHeight)};
+    void setLineP1Id(const quint32& value);
+    void setLineP2Id(const quint32& value);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolHeight)
+    };
+
 private:
     Q_DISABLE_COPY(VisToolHeight)
-    //base point in parent class
-    quint32              lineP1Id;//first point of line
-    quint32              lineP2Id;//second point of line
-    VScaledEllipse *point;
-    VScaledEllipse *base_point;
-    VScaledEllipse *lineP1;
-    VScaledEllipse *lineP2;
-    VScaledLine    *line;
-    VScaledLine    *line_intersection;
-    void         ShowIntersection(const QLineF &height_line, const QLineF &base_line);
+    // base point in parent class
+    quint32 lineP1Id;   // first point of line
+    quint32 lineP2Id;   // second point of line
+    VScaledEllipse* point;
+    VScaledEllipse* base_point;
+    VScaledEllipse* lineP1;
+    VScaledEllipse* lineP2;
+    VScaledLine* line;
+    VScaledLine* line_intersection;
+    void ShowIntersection(const QLineF& height_line, const QLineF& base_line);
 };
 
-#endif // VISTOOLHEIGHT_H
+#endif   // VISTOOLHEIGHT_H

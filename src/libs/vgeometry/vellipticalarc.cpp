@@ -29,30 +29,38 @@
 #include "vellipticalarc.h"
 
 #include <QLineF>
-#include <QPoint>
 #include <QPainterPath>
+#include <QPoint>
 
-#include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 #include "../ifc/ifcdef.h"
+#include "../vmisc/def.h"
 #include "../vmisc/vabstractapplication.h"
+#include "../vmisc/vmath.h"
 #include "vabstractcurve.h"
 #include "vellipticalarc_p.h"
 #include "vspline.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VEllipticalArc &VEllipticalArc::operator=(VEllipticalArc &&arc) Q_DECL_NOTHROW { Swap(arc); return *this; }
+VEllipticalArc& VEllipticalArc::operator=(VEllipticalArc&& arc) Q_DECL_NOTHROW
+{
+    Swap(arc);
+    return *this;
+}
 #endif
 
-void VEllipticalArc::Swap(VEllipticalArc &arc) Q_DECL_NOTHROW
-{ VAbstractArc::Swap(arc); std::swap(d, arc.d); }
+void VEllipticalArc::Swap(VEllipticalArc& arc) Q_DECL_NOTHROW
+{
+    VAbstractArc::Swap(arc);
+    std::swap(d, arc.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VEllipticalArc default constructor.
  */
 VEllipticalArc::VEllipticalArc()
-    : VAbstractArc(GOType::EllipticalArc), d (new VEllipticalArcData)
+    : VAbstractArc(GOType::EllipticalArc)
+    , d(new VEllipticalArcData)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -64,42 +72,69 @@ VEllipticalArc::VEllipticalArc()
  * @param f1 start angle (degree).
  * @param f2 end angle (degree).
  */
-VEllipticalArc::VEllipticalArc (const VPointF &center, qreal radius1, qreal radius2, const QString &formulaRadius1,
-                                const QString &formulaRadius2, qreal f1, const QString &formulaF1, qreal f2,
-                                const QString &formulaF2, qreal rotationAngle, const QString &formulaRotationAngle,
-                                quint32 idObject, Draw mode)
-    : VAbstractArc(GOType::EllipticalArc, center, f1, formulaF1, f2, formulaF2, idObject, mode),
-      d (new VEllipticalArcData(radius1, radius2, formulaRadius1, formulaRadius2, rotationAngle, formulaRotationAngle))
+VEllipticalArc::VEllipticalArc(
+    const VPointF& center,
+    qreal radius1,
+    qreal radius2,
+    const QString& formulaRadius1,
+    const QString& formulaRadius2,
+    qreal f1,
+    const QString& formulaF1,
+    qreal f2,
+    const QString& formulaF2,
+    qreal rotationAngle,
+    const QString& formulaRotationAngle,
+    quint32 idObject,
+    Draw mode)
+    : VAbstractArc(GOType::EllipticalArc, center, f1, formulaF1, f2, formulaF2, idObject, mode)
+    , d(new VEllipticalArcData(
+          radius1, radius2, formulaRadius1, formulaRadius2, rotationAngle, formulaRotationAngle))
 {
     CreateName();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc::VEllipticalArc(const VPointF &center, qreal radius1, qreal radius2, qreal f1, qreal f2,
-                               qreal rotationAngle)
-    : VAbstractArc(GOType::EllipticalArc, center, f1, f2, NULL_ID, Draw::Calculation),
-      d (new VEllipticalArcData(radius1, radius2, rotationAngle))
+VEllipticalArc::VEllipticalArc(
+    const VPointF& center, qreal radius1, qreal radius2, qreal f1, qreal f2, qreal rotationAngle)
+    : VAbstractArc(GOType::EllipticalArc, center, f1, f2, NULL_ID, Draw::Calculation)
+    , d(new VEllipticalArcData(radius1, radius2, rotationAngle))
 {
     CreateName();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc::VEllipticalArc(qreal length, const QString &formulaLength, const VPointF &center, qreal radius1,
-                               qreal radius2, const QString &formulaRadius1, const QString &formulaRadius2, qreal f1,
-                               const QString &formulaF1, qreal rotationAngle, const QString &formulaRotationAngle,
-                               quint32 idObject, Draw mode)
-    : VAbstractArc(GOType::EllipticalArc, formulaLength, center, f1, formulaF1, idObject, mode),
-      d (new VEllipticalArcData(radius1, radius2, formulaRadius1, formulaRadius2, rotationAngle, formulaRotationAngle))
+VEllipticalArc::VEllipticalArc(
+    qreal length,
+    const QString& formulaLength,
+    const VPointF& center,
+    qreal radius1,
+    qreal radius2,
+    const QString& formulaRadius1,
+    const QString& formulaRadius2,
+    qreal f1,
+    const QString& formulaF1,
+    qreal rotationAngle,
+    const QString& formulaRotationAngle,
+    quint32 idObject,
+    Draw mode)
+    : VAbstractArc(GOType::EllipticalArc, formulaLength, center, f1, formulaF1, idObject, mode)
+    , d(new VEllipticalArcData(
+          radius1, radius2, formulaRadius1, formulaRadius2, rotationAngle, formulaRotationAngle))
 {
     CreateName();
     FindF2(length);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc::VEllipticalArc(qreal length, const VPointF &center, qreal radius1, qreal radius2, qreal f1,
-                               qreal rotationAngle)
-    : VAbstractArc(GOType::EllipticalArc, center, f1, NULL_ID, Draw::Calculation),
-      d (new VEllipticalArcData(radius1, radius2, rotationAngle))
+VEllipticalArc::VEllipticalArc(
+    qreal length,
+    const VPointF& center,
+    qreal radius1,
+    qreal radius2,
+    qreal f1,
+    qreal rotationAngle)
+    : VAbstractArc(GOType::EllipticalArc, center, f1, NULL_ID, Draw::Calculation)
+    , d(new VEllipticalArcData(radius1, radius2, rotationAngle))
 {
     CreateName();
     FindF2(length);
@@ -110,8 +145,9 @@ VEllipticalArc::VEllipticalArc(qreal length, const VPointF &center, qreal radius
  * @brief VEllipticalArc copy constructor
  * @param arc arc
  */
-VEllipticalArc::VEllipticalArc(const VEllipticalArc &arc)
-    : VAbstractArc(arc), d (arc.d)
+VEllipticalArc::VEllipticalArc(const VEllipticalArc& arc)
+    : VAbstractArc(arc)
+    , d(arc.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -120,10 +156,9 @@ VEllipticalArc::VEllipticalArc(const VEllipticalArc &arc)
  * @param arc arc
  * @return arc
  */
-VEllipticalArc &VEllipticalArc::operator =(const VEllipticalArc &arc)
+VEllipticalArc& VEllipticalArc::operator=(const VEllipticalArc& arc)
 {
-    if ( &arc == this )
-    {
+    if (&arc == this) {
         return *this;
     }
     VAbstractArc::operator=(arc);
@@ -132,7 +167,8 @@ VEllipticalArc &VEllipticalArc::operator =(const VEllipticalArc &arc)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc VEllipticalArc::Rotate(QPointF originPoint, qreal degrees, const QString &prefix) const
+VEllipticalArc
+VEllipticalArc::Rotate(QPointF originPoint, qreal degrees, const QString& prefix) const
 {
     originPoint = d->m_transform.inverted().map(originPoint);
 
@@ -141,8 +177,13 @@ VEllipticalArc VEllipticalArc::Rotate(QPointF originPoint, qreal degrees, const 
     t.rotate(IsFlipped() ? degrees : -degrees);
     t.translate(-originPoint.x(), -originPoint.y());
 
-    VEllipticalArc elArc(VAbstractArc::GetCenter(), GetRadius1(), GetRadius2(), VAbstractArc::GetStartAngle(),
-                         VAbstractArc::GetEndAngle(), GetRotationAngle());
+    VEllipticalArc elArc(
+        VAbstractArc::GetCenter(),
+        GetRadius1(),
+        GetRadius2(),
+        VAbstractArc::GetStartAngle(),
+        VAbstractArc::GetEndAngle(),
+        GetRotationAngle());
     elArc.setName(name() + prefix);
     elArc.setLineColor(getLineColor());
     elArc.SetPenStyle(GetPenStyle());
@@ -153,33 +194,44 @@ VEllipticalArc VEllipticalArc::Rotate(QPointF originPoint, qreal degrees, const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc VEllipticalArc::Flip(const QLineF &axis, const QString &prefix) const
+VEllipticalArc VEllipticalArc::Flip(const QLineF& axis, const QString& prefix) const
 {
-    VEllipticalArc elArc(VAbstractArc::GetCenter(), GetRadius1(), GetRadius2(), VAbstractArc::GetStartAngle(),
-                         VAbstractArc::GetEndAngle(), GetRotationAngle());
+    VEllipticalArc elArc(
+        VAbstractArc::GetCenter(),
+        GetRadius1(),
+        GetRadius2(),
+        VAbstractArc::GetStartAngle(),
+        VAbstractArc::GetEndAngle(),
+        GetRotationAngle());
     elArc.setName(name() + prefix);
     elArc.setLineColor(getLineColor());
     elArc.SetPenStyle(GetPenStyle());
     elArc.setLineWeight(getLineWeight());
     elArc.SetFlipped(not IsFlipped());
-    elArc.setTransform(d->m_transform * VGObject::flipTransform(d->m_transform.inverted().map(axis)));
+    elArc.setTransform(
+        d->m_transform * VGObject::flipTransform(d->m_transform.inverted().map(axis)));
     return elArc;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc VEllipticalArc::Move(qreal length, qreal angle, const QString &prefix) const
+VEllipticalArc VEllipticalArc::Move(qreal length, qreal angle, const QString& prefix) const
 {
     const VPointF oldCenter = VAbstractArc::GetCenter();
     const VPointF center = oldCenter.Move(length, angle);
 
-    const QPointF position = d->m_transform.inverted().map(center.toQPointF()) -
-            d->m_transform.inverted().map(oldCenter.toQPointF());
+    const QPointF position = d->m_transform.inverted().map(center.toQPointF())
+                           - d->m_transform.inverted().map(oldCenter.toQPointF());
 
     QTransform t = d->m_transform;
     t.translate(position.x(), position.y());
 
-    VEllipticalArc elArc(oldCenter, GetRadius1(), GetRadius2(), VAbstractArc::GetStartAngle(),
-                         VAbstractArc::GetEndAngle(), GetRotationAngle());
+    VEllipticalArc elArc(
+        oldCenter,
+        GetRadius1(),
+        GetRadius2(),
+        VAbstractArc::GetStartAngle(),
+        VAbstractArc::GetEndAngle(),
+        GetRotationAngle());
     elArc.setName(name() + prefix);
     elArc.setLineColor(getLineColor());
     elArc.SetPenStyle(GetPenStyle());
@@ -190,8 +242,7 @@ VEllipticalArc VEllipticalArc::Move(qreal length, qreal angle, const QString &pr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc::~VEllipticalArc()
-{}
+VEllipticalArc::~VEllipticalArc() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -202,8 +253,7 @@ qreal VEllipticalArc::GetLength() const
 {
     qreal length = PathLength(getPoints());
 
-    if (IsFlipped())
-    {
+    if (IsFlipped()) {
         length = length * -1;
     }
 
@@ -225,19 +275,16 @@ QPointF VEllipticalArc::GetP1() const
  * @brief GetP2 return point associated with end angle.
  * @return point.
  */
-QPointF VEllipticalArc::GetP2 () const
+QPointF VEllipticalArc::GetP2() const
 {
     return getTransform().map(getPoint(VAbstractArc::GetEndAngle()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QTransform VEllipticalArc::getTransform() const
-{
-    return d->m_transform;
-}
+QTransform VEllipticalArc::getTransform() const { return d->m_transform; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VEllipticalArc::setTransform(const QTransform &matrix, bool combine)
+void VEllipticalArc::setTransform(const QTransform& matrix, bool combine)
 {
     d->m_transform = combine ? d->m_transform * matrix : matrix;
 }
@@ -258,11 +305,10 @@ VPointF VEllipticalArc::GetCenter() const
  * @brief GetPoint return point associated with angle.
  * @return point.
  */
- //---------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
 QPointF VEllipticalArc::getPoint(qreal angle) const
 {
-    if (qFuzzyIsNull(GetRadius1()) && qFuzzyIsNull(GetRadius2()))
-    {
+    if (qFuzzyIsNull(GetRadius1()) && qFuzzyIsNull(GetRadius2())) {
         return GetCenter().toQPointF();
     }
     QLineF line(0, 0, 100, 0);
@@ -270,10 +316,9 @@ QPointF VEllipticalArc::getPoint(qreal angle) const
 
     const qreal a = not qFuzzyIsNull(GetRadius1()) ? line.p2().x() / GetRadius1() : 0;
     const qreal b = not qFuzzyIsNull(GetRadius2()) ? line.p2().y() / GetRadius2() : 0;
-    const qreal k = qSqrt(a*a + b*b);
+    const qreal k = qSqrt(a * a + b * b);
 
-    if (qFuzzyIsNull(k))
-    {
+    if (qFuzzyIsNull(k)) {
         return GetCenter().toQPointF();
     }
 
@@ -293,7 +338,7 @@ QPointF VEllipticalArc::getPoint(qreal angle) const
 QVector<QPointF> VEllipticalArc::getPoints() const
 {
     const QPointF center = VAbstractArc::GetCenter().toQPointF();
-    QRectF box(center.x() - d->radius1, center.y() - d->radius2, d->radius1*2, d->radius2*2);
+    QRectF box(center.x() - d->radius1, center.y() - d->radius2, d->radius1 * 2, d->radius2 * 2);
 
     QLineF startLine(center.x(), center.y(), center.x() + d->radius1, center.y());
     QLineF endLine = startLine;
@@ -302,8 +347,7 @@ QVector<QPointF> VEllipticalArc::getPoints() const
     endLine.setAngle(getRealEndAngle());
     qreal sweepAngle = startLine.angleTo(endLine);
 
-    if (qFuzzyIsNull(sweepAngle))
-    {
+    if (qFuzzyIsNull(sweepAngle)) {
         sweepAngle = 360;
     }
 
@@ -321,12 +365,10 @@ QVector<QPointF> VEllipticalArc::getPoints() const
 
     QPolygonF polygon;
     const QList<QPolygonF> subpath = path.toSubpathPolygons();
-    if (not subpath.isEmpty())
-    {
+    if (not subpath.isEmpty()) {
         polygon = path.toSubpathPolygons().first();
-        if (not polygon.isEmpty() && not VFuzzyComparePoints(GetP1(), polygon.first()))
-        {
-            polygon.removeFirst(); // remove point (0;0)
+        if (not polygon.isEmpty() && not VFuzzyComparePoints(GetP1(), polygon.first())) {
+            polygon.removeFirst();   // remove point (0;0)
         }
     }
 
@@ -353,15 +395,15 @@ qreal VEllipticalArc::GetEndAngle() const
  * @param arc2 second arc.
  * @return point cutting
  */
-QPointF VEllipticalArc::CutArc(const qreal &length, VEllipticalArc &arc1, VEllipticalArc &arc2) const
+QPointF
+VEllipticalArc::CutArc(const qreal& length, VEllipticalArc& arc1, VEllipticalArc& arc2) const
 {
-    //Always need return two arcs, so we must correct wrong length.
+    // Always need return two arcs, so we must correct wrong length.
     qreal len = 0;
     const qreal minLength = ToPixel(1, Unit::Mm);
     const qreal fullLength = GetLength();
 
-    if (fullLength <= minLength)
-    {
+    if (fullLength <= minLength) {
         arc1 = VEllipticalArc();
         arc2 = VEllipticalArc();
         return QPointF();
@@ -369,34 +411,51 @@ QPointF VEllipticalArc::CutArc(const qreal &length, VEllipticalArc &arc1, VEllip
 
     const qreal maxLength = fullLength - minLength;
 
-    if (length < minLength)
-    {
+    if (length < minLength) {
         len = minLength;
-    }
-    else if (length > maxLength)
-    {
+    } else if (length > maxLength) {
         len = maxLength;
-    }
-    else
-    {
+    } else {
         len = length;
     }
 
     // the first arc has given length and startAngle just like in the origin arc
-    arc1 = VEllipticalArc (len, QString().setNum(length), GetCenter(), d->radius1, d->radius2,
-                           d->formulaRadius1, d->formulaRadius2, GetStartAngle(), GetFormulaF1(), d->rotationAngle,
-                           GetFormulaRotationAngle(), getIdObject(), getMode());
+    arc1 = VEllipticalArc(
+        len,
+        QString().setNum(length),
+        GetCenter(),
+        d->radius1,
+        d->radius2,
+        d->formulaRadius1,
+        d->formulaRadius2,
+        GetStartAngle(),
+        GetFormulaF1(),
+        d->rotationAngle,
+        GetFormulaRotationAngle(),
+        getIdObject(),
+        getMode());
     // the second arc has startAngle just like endAngle of the first arc
     // and it has endAngle just like endAngle of the origin arc
-    arc2 = VEllipticalArc (GetCenter(), d->radius1, d->radius2, d->formulaRadius1, d->formulaRadius2,
-                           arc1.GetEndAngle(), arc1.GetFormulaF2(), GetEndAngle(), GetFormulaF2(), d->rotationAngle,
-                           GetFormulaRotationAngle(), getIdObject(), getMode());
+    arc2 = VEllipticalArc(
+        GetCenter(),
+        d->radius1,
+        d->radius2,
+        d->formulaRadius1,
+        d->formulaRadius2,
+        arc1.GetEndAngle(),
+        arc1.GetFormulaF2(),
+        GetEndAngle(),
+        GetFormulaF2(),
+        d->rotationAngle,
+        GetFormulaRotationAngle(),
+        getIdObject(),
+        getMode());
     return arc1.GetP1();
 }
 
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VEllipticalArc::CutArc(const qreal &length) const
+QPointF VEllipticalArc::CutArc(const qreal& length) const
 {
     VEllipticalArc arc1;
     VEllipticalArc arc2;
@@ -408,13 +467,11 @@ void VEllipticalArc::CreateName()
 {
     QString name = ELARC_ + QString("%1").arg(this->GetCenter().name());
 
-    if (VAbstractCurve::id() != NULL_ID)
-    {
+    if (VAbstractCurve::id() != NULL_ID) {
         name += QString("_%1").arg(VAbstractCurve::id());
     }
 
-    if (GetDuplicate() > 0)
-    {
+    if (GetDuplicate() > 0) {
         name += QString("_%1").arg(GetDuplicate());
     }
 
@@ -425,13 +482,11 @@ void VEllipticalArc::CreateName()
 void VEllipticalArc::FindF2(qreal length)
 {
     qreal gap = 180;
-    if (length < 0)
-    {
+    if (length < 0) {
         SetFlipped(true);
         gap = -gap;
     }
-    while (length > MaxLength())
-    {
+    while (length > MaxLength()) {
         length = MaxLength();
     }
 
@@ -446,23 +501,18 @@ void VEllipticalArc::FindF2(qreal length)
     // we need to set the end angle, because we want to use GetLength()
     SetFormulaF2(QString::number(endAngle), endAngle);
 
-    qreal bezLength = GetLength(); // first approximation of length
+    qreal bezLength = GetLength();   // first approximation of length
 
     const qreal eps = ToPixel(0.001, Unit::Mm);
 
-    while (qAbs(bezLength - length) > eps)
-    {
-        gap = gap/2;
-        if (gap < 0.0001)
-        {
+    while (qAbs(bezLength - length) > eps) {
+        gap = gap / 2;
+        if (gap < 0.0001) {
             break;
         }
-        if (bezLength > length)
-        { // we selected too big end angle
+        if (bezLength > length) {   // we selected too big end angle
             radius1.setAngle(endAngle - qAbs(gap));
-        }
-        else
-        { // we selected too little end angle
+        } else {   // we selected too little end angle
             radius1.setAngle(endAngle + qAbs(gap));
         }
         endAngle = radius1.angle();
@@ -477,7 +527,8 @@ void VEllipticalArc::FindF2(qreal length)
 qreal VEllipticalArc::MaxLength() const
 {
     const qreal h = qPow(d->radius1 - d->radius2, 2) / qPow(d->radius1 + d->radius2, 2);
-    const qreal ellipseLength = M_PI * (d->radius1 + d->radius2) * (1+3*h/(10+qSqrt(4-3*h)));
+    const qreal ellipseLength =
+        M_PI * (d->radius1 + d->radius2) * (1 + 3 * h / (10 + qSqrt(4 - 3 * h)));
     return ellipseLength;
 }
 
@@ -486,47 +537,38 @@ qreal VEllipticalArc::MaxLength() const
  * @brief GetFormulaRadius1 return formula for major radius.
  * @return radius.
  */
-QString VEllipticalArc::GetFormulaRadius1() const
-{
-    return d->formulaRadius1;
-}
+QString VEllipticalArc::GetFormulaRadius1() const { return d->formulaRadius1; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetFormulaRadius2 return formula for minor radius.
  * @return radius.
  */
-QString VEllipticalArc::GetFormulaRadius2() const
-{
-    return d->formulaRadius2;
-}
+QString VEllipticalArc::GetFormulaRadius2() const { return d->formulaRadius2; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetFormulaRotationAngle return formula for rotation angle.
  * @return rotationAngle.
  */
-QString VEllipticalArc::GetFormulaRotationAngle() const
-{
-    return d->formulaRotationAngle;
-}
+QString VEllipticalArc::GetFormulaRotationAngle() const { return d->formulaRotationAngle; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VEllipticalArc::SetFormulaRadius1(const QString &formula, qreal value)
+void VEllipticalArc::SetFormulaRadius1(const QString& formula, qreal value)
 {
     d->formulaRadius1 = formula;
     d->radius1 = value;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VEllipticalArc::SetFormulaRadius2(const QString &formula, qreal value)
+void VEllipticalArc::SetFormulaRadius2(const QString& formula, qreal value)
 {
     d->formulaRadius2 = formula;
     d->radius2 = value;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VEllipticalArc::SetFormulaRotationAngle(const QString &formula, qreal value)
+void VEllipticalArc::SetFormulaRotationAngle(const QString& formula, qreal value)
 {
     d->formulaRotationAngle = formula;
     d->rotationAngle = value;
@@ -537,47 +579,36 @@ void VEllipticalArc::SetFormulaRotationAngle(const QString &formula, qreal value
  * @brief GetRadius1 return elliptical arc major radius.
  * @return string with formula.
  */
-qreal VEllipticalArc::GetRadius1() const
-{
-    return d->radius1;
-}
+qreal VEllipticalArc::GetRadius1() const { return d->radius1; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetRadius2 return elliptical arc minor radius.
  * @return string with formula.
  */
-qreal VEllipticalArc::GetRadius2() const
-{
-    return d->radius2;
-}
+qreal VEllipticalArc::GetRadius2() const { return d->radius2; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetRotationAngle return rotation angle.
  * @return rotationAngle.
  */
-qreal VEllipticalArc::GetRotationAngle() const
-{
-    return d->rotationAngle;
-}
+qreal VEllipticalArc::GetRotationAngle() const { return d->rotationAngle; }
 
 //---------------------------------------------------------------------------------------------------------------------
 qreal VEllipticalArc::getRealEndAngle() const
 {
     qreal endAngle = VEllipticalArc::normalizeAngle(VAbstractArc::GetEndAngle());
 
-    if (qFuzzyIsNull(endAngle) ||
-            VFuzzyComparePossibleNulls(endAngle, 90) ||
-            VFuzzyComparePossibleNulls(endAngle, 180) ||
-            VFuzzyComparePossibleNulls(endAngle, 270) ||
-            VFuzzyComparePossibleNulls(endAngle, 360))
-    {
+    if (qFuzzyIsNull(endAngle) || VFuzzyComparePossibleNulls(endAngle, 90)
+        || VFuzzyComparePossibleNulls(endAngle, 180) || VFuzzyComparePossibleNulls(endAngle, 270)
+        || VFuzzyComparePossibleNulls(endAngle, 360)) {
         return endAngle;
     }
 
-    endAngle = qRadiansToDegrees(qAtan2(d->radius1 * qSin(qDegreesToRadians(endAngle)),
-                                        d->radius2 * qCos(qDegreesToRadians(endAngle))));
+    endAngle = qRadiansToDegrees(qAtan2(
+        d->radius1 * qSin(qDegreesToRadians(endAngle)),
+        d->radius2 * qCos(qDegreesToRadians(endAngle))));
 
     return endAngle;
 }

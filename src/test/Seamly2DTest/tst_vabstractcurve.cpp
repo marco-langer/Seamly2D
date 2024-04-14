@@ -55,10 +55,9 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VAbstractCurve::TST_VAbstractCurve(QObject *parent)
+TST_VAbstractCurve::TST_VAbstractCurve(QObject* parent)
     : AbstractTest(parent)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VAbstractCurve::isPointOnCurve_data() const

@@ -52,74 +52,76 @@
 #ifndef DIALOGPOINTOFCONTACT_H
 #define DIALOGPOINTOFCONTACT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 #include "ui_dialogpointofcontact.h"
 
-namespace Ui
-{
-    class DialogPointOfContact;
+namespace Ui {
+class DialogPointOfContact;
 }
 
 /**
- * @brief The DialogPointOfContact class dialog for ToolPointOfContact. Help create point and edit option.
+ * @brief The DialogPointOfContact class dialog for ToolPointOfContact. Help create point and edit
+ * option.
  */
 class DialogPointOfContact : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogPointOfContact(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogPointOfContact(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogPointOfContact() Q_DECL_OVERRIDE;
 
-    void           SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
-    QString        getRadius() const;
-    void           setRadius(const QString &value);
+    QString getRadius() const;
+    void setRadius(const QString& value);
 
-    quint32        getCenter() const;
-    void           setCenter(const quint32 &value);
+    quint32 getCenter() const;
+    void setCenter(const quint32& value);
 
-    quint32        GetFirstPoint() const;
-    void           SetFirstPoint(const quint32 &value);
+    quint32 GetFirstPoint() const;
+    void SetFirstPoint(const quint32& value);
 
-    quint32        GetSecondPoint() const;
-    void           SetSecondPoint(const quint32 &value);
+    quint32 GetSecondPoint() const;
+    void SetSecondPoint(const quint32& value);
 public slots:
-    virtual void   ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
-    void           DeployFormulaTextEdit();
+    void DeployFormulaTextEdit();
     /**
      * @brief FormulaTextChanged when formula text changes for validation and calc
      */
-    void           FormulaTextChanged();
-    virtual void   PointNameChanged() Q_DECL_OVERRIDE;
-    void           FXRadius();
+    void FormulaTextChanged();
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
+    void FXRadius();
+
 protected:
-    virtual void   ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void   SaveData() Q_DECL_OVERRIDE;
-    virtual void   closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+    virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(DialogPointOfContact)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogPointOfContact *ui;
+    Ui::DialogPointOfContact* ui;
 
     /** @brief radius radius of arc */
-    QString        radius;
+    QString radius;
 
     /** @brief formulaBaseHeight base height defined by dialogui */
-    int             formulaBaseHeight;
+    int formulaBaseHeight;
 };
 
-#endif // DIALOGPOINTOFCONTACT_H
+#endif   // DIALOGPOINTOFCONTACT_H

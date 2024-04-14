@@ -23,12 +23,11 @@
 
 // ONLY INCLUDE THIS IN .CPP FILES
 
-#include <QList>
-#include "vproperty.h"
 #include "../vmisc/diagnostic.h"
+#include "vproperty.h"
+#include <QList>
 
-namespace VPE
-{
+namespace VPE {
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wweak-vtables")
@@ -36,15 +35,25 @@ QT_WARNING_DISABLE_CLANG("-Wweak-vtables")
 class VPropertyFormWidgetPrivate
 {
 public:
-    //! Stores either another VPropertyFormWidget (then Editor is null) or an editor widget (then FormWidget is null)
+    //! Stores either another VPropertyFormWidget (then Editor is null) or an editor widget (then
+    //! FormWidget is null)
     struct SEditorWidget
     {
-        SEditorWidget() : FormWidget(nullptr), Editor(nullptr) {}
-        explicit SEditorWidget(VPropertyFormWidget *form_widget) : FormWidget(form_widget), Editor(nullptr) {}
-        explicit SEditorWidget(QWidget *editor_widget) : FormWidget(nullptr), Editor(editor_widget) {}
+        SEditorWidget()
+            : FormWidget(nullptr)
+            , Editor(nullptr)
+        {}
+        explicit SEditorWidget(VPropertyFormWidget* form_widget)
+            : FormWidget(form_widget)
+            , Editor(nullptr)
+        {}
+        explicit SEditorWidget(QWidget* editor_widget)
+            : FormWidget(nullptr)
+            , Editor(editor_widget)
+        {}
 
-        VPropertyFormWidget *FormWidget;
-        QWidget *Editor;
+        VPropertyFormWidget* FormWidget;
+        QWidget* Editor;
     };
 
     //! The root property to use
@@ -53,18 +62,23 @@ public:
     //! Binds the properties to their editors
     QList<SEditorWidget> EditorWidgets;
 
-    //! Determines the behaviour of the editors. If this is true, when a focus out event etc. happens, the data will be
-    //! submitted to the VProperty. If false, you will have to call commitData() yourself.
+    //! Determines the behaviour of the editors. If this is true, when a focus out event etc.
+    //! happens, the data will be submitted to the VProperty. If false, you will have to call
+    //! commitData() yourself.
     bool UpdateEditors;
 
     //! Default constructor
     VPropertyFormWidgetPrivate()
-        : Properties(QList<VProperty*>()), EditorWidgets(QList<SEditorWidget>()), UpdateEditors(true)
+        : Properties(QList<VProperty*>())
+        , EditorWidgets(QList<SEditorWidget>())
+        , UpdateEditors(true)
     {}
 
     //! Constructor
-    explicit VPropertyFormWidgetPrivate(const QList<VProperty*> &properties)
-        : Properties(properties), EditorWidgets(QList<SEditorWidget>()), UpdateEditors(true)
+    explicit VPropertyFormWidgetPrivate(const QList<VProperty*>& properties)
+        : Properties(properties)
+        , EditorWidgets(QList<SEditorWidget>())
+        , UpdateEditors(true)
     {}
 
     virtual ~VPropertyFormWidgetPrivate() {}
@@ -72,6 +86,6 @@ public:
 
 QT_WARNING_POP
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYFORMWIDGET_P_H
+#endif   // VPROPERTYFORMWIDGET_P_H

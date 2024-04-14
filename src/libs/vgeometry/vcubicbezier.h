@@ -52,13 +52,13 @@
 #ifndef VCUBICBEZIER_H
 #define VCUBICBEZIER_H
 
-#include <qcompilerdetection.h>
 #include <QPointF>
 #include <QSharedDataPointer>
 #include <QString>
 #include <QTypeInfo>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vabstractcubicbezier.h"
 #include "vgeometrydef.h"
@@ -70,36 +70,42 @@ class VCubicBezier : public VAbstractCubicBezier
 {
 public:
     VCubicBezier();
-    VCubicBezier(const VCubicBezier &curve);
-    VCubicBezier(const VPointF &p1, const VPointF &p2, const VPointF &p3, const VPointF &p4, quint32 idObject = 0,
-                 Draw mode = Draw::Calculation);
-    VCubicBezier Rotate(const QPointF &originPoint, qreal degrees, const QString &prefix = QString()) const;
-    VCubicBezier Flip(const QLineF &axis, const QString &prefix = QString()) const;
-    VCubicBezier Move(qreal length, qreal angle, const QString &prefix = QString()) const;
+    VCubicBezier(const VCubicBezier& curve);
+    VCubicBezier(
+        const VPointF& p1,
+        const VPointF& p2,
+        const VPointF& p3,
+        const VPointF& p4,
+        quint32 idObject = 0,
+        Draw mode = Draw::Calculation);
+    VCubicBezier
+    Rotate(const QPointF& originPoint, qreal degrees, const QString& prefix = QString()) const;
+    VCubicBezier Flip(const QLineF& axis, const QString& prefix = QString()) const;
+    VCubicBezier Move(qreal length, qreal angle, const QString& prefix = QString()) const;
     virtual ~VCubicBezier();
 
-    VCubicBezier &operator=(const VCubicBezier &curve);
+    VCubicBezier& operator=(const VCubicBezier& curve);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VCubicBezier &operator=(VCubicBezier &&curve) Q_DECL_NOTHROW;
+    VCubicBezier& operator=(VCubicBezier&& curve) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VCubicBezier &curve) Q_DECL_NOTHROW;
+    void Swap(VCubicBezier& curve) Q_DECL_NOTHROW;
 
     virtual VPointF GetP1() const Q_DECL_OVERRIDE;
-    void            SetP1(const VPointF &p);
+    void SetP1(const VPointF& p);
 
     virtual VPointF GetP2() const Q_DECL_OVERRIDE;
-    void    SetP2(const VPointF &p);
+    void SetP2(const VPointF& p);
 
     virtual VPointF GetP3() const Q_DECL_OVERRIDE;
-    void    SetP3(const VPointF &p);
+    void SetP3(const VPointF& p);
 
     virtual VPointF GetP4() const Q_DECL_OVERRIDE;
-    void            SetP4(const VPointF &p);
+    void SetP4(const VPointF& p);
 
-    virtual qreal            GetStartAngle() const Q_DECL_OVERRIDE;
-    virtual qreal            GetEndAngle() const Q_DECL_OVERRIDE;
-    virtual qreal            GetLength() const Q_DECL_OVERRIDE;
+    virtual qreal GetStartAngle() const Q_DECL_OVERRIDE;
+    virtual qreal GetEndAngle() const Q_DECL_OVERRIDE;
+    virtual qreal GetLength() const Q_DECL_OVERRIDE;
     virtual QVector<QPointF> getPoints() const Q_DECL_OVERRIDE;
 
     virtual qreal GetC1Length() const Q_DECL_OVERRIDE;
@@ -115,4 +121,4 @@ private:
 
 Q_DECLARE_TYPEINFO(VCubicBezier, Q_MOVABLE_TYPE);
 
-#endif // VCUBICBEZIER_H
+#endif   // VCUBICBEZIER_H

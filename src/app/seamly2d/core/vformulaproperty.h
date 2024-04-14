@@ -60,10 +60,10 @@ class VFormulaProperty : public VPE::VProperty
 {
     Q_OBJECT
 public:
-    explicit VFormulaProperty(const QString &name);
+    explicit VFormulaProperty(const QString& name);
 
     //! Get the data how it should be displayed
-    virtual QVariant data (int column = DPC_Name, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    virtual QVariant data(int column = DPC_Name, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     //! Returns item flags
     virtual Qt::ItemFlags flags(int column = DPC_Name) const Q_DECL_OVERRIDE;
@@ -71,12 +71,15 @@ public:
     //! Returns an editor widget, or NULL if it doesn't supply one
     //! \param parent The widget to which the editor will be added as a child
     //! \options Render options
-    //! \delegate A pointer to the QAbstractItemDelegate requesting the editor. This can be used to connect signals and
-    //! slots.
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& options,
-                                  const QAbstractItemDelegate* delegate) Q_DECL_OVERRIDE;
+    //! \delegate A pointer to the QAbstractItemDelegate requesting the editor. This can be used to
+    //! connect signals and slots.
+    virtual QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem& options,
+        const QAbstractItemDelegate* delegate) Q_DECL_OVERRIDE;
 
-    //! Sets the property's data to the editor (returns false, if the standard delegate should do that)
+    //! Sets the property's data to the editor (returns false, if the standard delegate should do
+    //! that)
     virtual bool setEditorData(QWidget* editor) Q_DECL_OVERRIDE;
 
     //! Gets the data from the widget
@@ -87,11 +90,12 @@ public:
 
     //! Clones this property
     //! \param include_children Indicates whether to also clone the children
-    //! \param container If a property is being passed here, no new VProperty is being created but instead it is tried
-    //! to fill all the data into container. This can also be used when subclassing this function.
-    //! \return Returns the newly created property (or container, if it was not NULL)
-    Q_REQUIRED_RESULT virtual VProperty* clone(bool include_children = true,
-                                               VProperty* container = nullptr) const Q_DECL_OVERRIDE;
+    //! \param container If a property is being passed here, no new VProperty is being created but
+    //! instead it is tried to fill all the data into container. This can also be used when
+    //! subclassing this function. \return Returns the newly created property (or container, if it
+    //! was not NULL)
+    Q_REQUIRED_RESULT virtual VProperty*
+    clone(bool include_children = true, VProperty* container = nullptr) const Q_DECL_OVERRIDE;
 
     //! Sets the value of the property
     virtual void setValue(const QVariant& value) Q_DECL_OVERRIDE;
@@ -103,11 +107,10 @@ public:
     VFormula GetFormula() const;
 
     //! Sets the formula
-    void SetFormula(const VFormula &formula);
+    void SetFormula(const VFormula& formula);
 
 public slots:
-    virtual void childValueChanged(const QVariant &value, int typeForParent) Q_DECL_OVERRIDE;
-
+    virtual void childValueChanged(const QVariant& value, int typeForParent) Q_DECL_OVERRIDE;
 };
 
-#endif // VFORMULAPROPERTY_H
+#endif   // VFORMULAPROPERTY_H

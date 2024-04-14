@@ -56,10 +56,9 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VPointF::TST_VPointF(QObject *parent)
+TST_VPointF::TST_VPointF(QObject* parent)
     : QObject(parent)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VPointF::TestFlip_data()
@@ -83,10 +82,10 @@ void TST_VPointF::TestFlip_data()
     QLineF l = QLineF(QPointF(), QPointF(10, 0));
     l.setAngle(315);
     flipped = l.p2();
-    l.setLength(l.length()/2.0);
+    l.setLength(l.length() / 2.0);
 
     axis = QLineF(l.p2(), l.p1());
-    axis.setAngle(axis.angle()+90);
+    axis.setAngle(axis.angle() + 90);
 
     QTest::newRow("Diagonal axis") << originPoint << axis << flipped << "a2";
 }
@@ -106,4 +105,3 @@ void TST_VPointF::TestFlip()
 
     QCOMPARE(flipped.toPoint(), res.toQPointF().toPoint());
 }
-

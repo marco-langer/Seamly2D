@@ -51,30 +51,33 @@
 
 #include "savepiecepathoptions.h"
 
+#include <QDebug>
 #include <QDomElement>
 #include <QUndoCommand>
-#include <QDebug>
 
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vmisc/logging.h"
 #include "../tools/nodeDetails/vtoolinternalpath.h"
+#include "../vmisc/logging.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-SavePiecePathOptions::SavePiecePathOptions(const VPiecePath &oldPath, const VPiecePath &newPath,
-                                           VAbstractPattern *doc, VContainer *data, quint32 id,
-                                           QUndoCommand *parent)
-    : VUndoCommand(QDomElement(), doc, parent),
-      m_oldPath(oldPath),
-      m_newPath(newPath),
-      m_data(data)
+SavePiecePathOptions::SavePiecePathOptions(
+    const VPiecePath& oldPath,
+    const VPiecePath& newPath,
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    QUndoCommand* parent)
+    : VUndoCommand(QDomElement(), doc, parent)
+    , m_oldPath(oldPath)
+    , m_newPath(newPath)
+    , m_data(data)
 {
     setText(tr("save path options"));
     nodeId = id;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SavePiecePathOptions::~SavePiecePathOptions()
-{}
+SavePiecePathOptions::~SavePiecePathOptions() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void SavePiecePathOptions::undo()
@@ -82,19 +85,16 @@ void SavePiecePathOptions::undo()
     qCDebug(vUndo, "Undo.");
 
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPath);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         VToolInternalPath::AddAttributes(doc, domElement, nodeId, m_oldPath);
-        doc->RemoveAllChildren(domElement);//Very important to clear before rewrite
+        doc->RemoveAllChildren(domElement);   // Very important to clear before rewrite
         VToolInternalPath::AddNodes(doc, domElement, m_oldPath);
 
         IncrementReferences(m_oldPath.MissingNodes(m_newPath));
 
         SCASSERT(m_data);
         m_data->UpdatePiecePath(nodeId, m_oldPath);
-    }
-    else
-    {
+    } else {
         qCWarning(vUndo, "Can't find path with id = %u.", nodeId);
         return;
     }
@@ -106,33 +106,29 @@ void SavePiecePathOptions::redo()
     qCDebug(vUndo, "Redo.");
 
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPath);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         VToolInternalPath::AddAttributes(doc, domElement, nodeId, m_newPath);
-        doc->RemoveAllChildren(domElement);//Very important to clear before rewrite
+        doc->RemoveAllChildren(domElement);   // Very important to clear before rewrite
         VToolInternalPath::AddNodes(doc, domElement, m_newPath);
 
         DecrementReferences(m_oldPath.MissingNodes(m_newPath));
 
         SCASSERT(m_data);
         m_data->UpdatePiecePath(nodeId, m_newPath);
-    }
-    else
-    {
+    } else {
         qCWarning(vUndo, "Can't find path with id = %u.", nodeId);
         return;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool SavePiecePathOptions::mergeWith(const QUndoCommand *command)
+bool SavePiecePathOptions::mergeWith(const QUndoCommand* command)
 {
-    const SavePiecePathOptions *saveCommand = static_cast<const SavePiecePathOptions *>(command);
+    const SavePiecePathOptions* saveCommand = static_cast<const SavePiecePathOptions*>(command);
     SCASSERT(saveCommand != nullptr);
     const quint32 id = saveCommand->PathId();
 
-    if (id != nodeId)
-    {
+    if (id != nodeId) {
         return false;
     }
 
@@ -141,19 +137,10 @@ bool SavePiecePathOptions::mergeWith(const QUndoCommand *command)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int SavePiecePathOptions::id() const
-{
-    return static_cast<int>(UndoCommand::SavePiecePathOptions);
-}
+int SavePiecePathOptions::id() const { return static_cast<int>(UndoCommand::SavePiecePathOptions); }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 SavePiecePathOptions::PathId() const
-{
-    return nodeId;
-}
+quint32 SavePiecePathOptions::PathId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPiecePath SavePiecePathOptions::NewPath() const
-{
-    return m_newPath;
-}
+VPiecePath SavePiecePathOptions::NewPath() const { return m_newPath; }

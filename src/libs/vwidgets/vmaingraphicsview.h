@@ -52,19 +52,18 @@
 #ifndef VMAINGRAPHICSVIEW_H
 #define VMAINGRAPHICSVIEW_H
 
-#include <qcompilerdetection.h>
+#include <QColor>
 #include <QGraphicsView>
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
 #include <QRectF>
+#include <QRubberBand>
+#include <QSharedPointer>
 #include <QString>
 #include <Qt>
 #include <QtGlobal>
-#include <QRubberBand>
-#include <QColor>
-#include <Qt>
-#include <QSharedPointer>
+#include <qcompilerdetection.h>
 
 /*!
  * This class adds ability to zoom QGraphicsView using mouse wheel. The point under cursor
@@ -103,53 +102,53 @@ class GraphicsViewZoom : public QObject
 {
     Q_OBJECT
 public:
-    explicit              GraphicsViewZoom(QGraphicsView* view);
-    void                  gentleZoom(qreal factor);
-    void                  setModifiers(Qt::KeyboardModifiers modifiers);
-    void                  setZoomSpeedFactor(qreal value);
-    void                  initScrollAnimations();
+    explicit GraphicsViewZoom(QGraphicsView* view);
+    void gentleZoom(qreal factor);
+    void setModifiers(Qt::KeyboardModifiers modifiers);
+    void setZoomSpeedFactor(qreal value);
+    void initScrollAnimations();
 
 signals:
-    void                  zoomed();
+    void zoomed();
 
 public slots:
-    void                  verticalScrollingTime(qreal x);
-    void                  horizontalScrollingTime(qreal x);
-    void                  animFinished();
+    void verticalScrollingTime(qreal x);
+    void horizontalScrollingTime(qreal x);
+    void animFinished();
 
 protected:
-    virtual bool          eventFilter(QObject* object, QEvent* event) Q_DECL_OVERRIDE;
+    virtual bool eventFilter(QObject* object, QEvent* event) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(GraphicsViewZoom)
-    QGraphicsView        *m_view;
+    QGraphicsView* m_view;
     Qt::KeyboardModifiers m_modifiers;
-    qreal                 m_zoomSpeedFactor;
-    QPointF               targetScenePos;
-    QPointF               targetViewPos;
-    int                   m_duration;
-    int                   m_updateInterval;
-    QTimeLine            *verticalScrollAnim;
+    qreal m_zoomSpeedFactor;
+    QPointF targetScenePos;
+    QPointF targetViewPos;
+    int m_duration;
+    int m_updateInterval;
+    QTimeLine* verticalScrollAnim;
     /** @brief _numScheduledVerticalScrollings keep number scheduled vertical scrollings. */
-    qint32                m_numScheduledVerticalScrollings;
-    QTimeLine            *horizontalScrollAnim;
+    qint32 m_numScheduledVerticalScrollings;
+    QTimeLine* horizontalScrollAnim;
     /** @brief _numScheduledHorizontalScrollings keep number scheduled horizontal scrollings. */
-    qint32                m_numScheduledHorizontalScrollings;
+    qint32 m_numScheduledHorizontalScrollings;
 
-    void                  fictiveSceneRect(QGraphicsScene *sc, QGraphicsView *view);
+    void fictiveSceneRect(QGraphicsScene* sc, QGraphicsView* view);
 
-    bool                  startVerticalScrollings(QWheelEvent* wheel_event);
-    bool                  startHorizontalScrollings(QWheelEvent* wheel_event);
-    bool                  gestureEvent(QGestureEvent* event);
-    void                  panTriggered(QPanGesture* gesture);
-    void                  pinchTriggered(QPinchGesture* gesture);
+    bool startVerticalScrollings(QWheelEvent* wheel_event);
+    bool startHorizontalScrollings(QWheelEvent* wheel_event);
+    bool gestureEvent(QGestureEvent* event);
+    void panTriggered(QPanGesture* gesture);
+    void pinchTriggered(QPinchGesture* gesture);
 
-    QGesture             *pan;
-    QGesture             *pinch;
-    qreal                 horizontalOffset;
-    qreal                 verticalOffset;
-    qreal                 scaleFactor;
-    qreal                 currentScaleFactor;
+    QGesture* pan;
+    QGesture* pinch;
+    qreal horizontalOffset;
+    qreal verticalOffset;
+    qreal scaleFactor;
+    qreal currentScaleFactor;
 };
 
 /**
@@ -159,22 +158,22 @@ class VMainGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 public:
+    explicit VMainGraphicsView(QWidget* parent = nullptr);
+    void setShowToolOptions(bool value);
+    void allowRubberBand(bool value);
+    void zoomPanEnabled(bool value);
+    void zoomToAreaEnabled(bool value);
 
-    explicit              VMainGraphicsView(QWidget *parent = nullptr);
-    void                  setShowToolOptions(bool value);
-    void                  allowRubberBand(bool value);
-    void                  zoomPanEnabled(bool value);
-    void                  zoomToAreaEnabled(bool value);
+    static void
+    NewSceneRect(QGraphicsScene* sc, QGraphicsView* view, QGraphicsItem* item = nullptr);
+    static QRectF SceneVisibleArea(QGraphicsView* view);
 
-    static void           NewSceneRect(QGraphicsScene *sc, QGraphicsView *view, QGraphicsItem *item = nullptr);
-    static QRectF         SceneVisibleArea(QGraphicsView *view);
+    static qreal MinScale();
+    static qreal MaxScale();
 
-    static qreal          MinScale();
-    static qreal          MaxScale();
+    void setRubberBandColor(QRubberBand* band, const QColor& color);
 
-    void                  setRubberBandColor(QRubberBand *band, const QColor &color);
-
-    void                  initScrollBars();
+    void initScrollBars();
 
 signals:
     /**
@@ -182,47 +181,47 @@ signals:
      *
      * Usefull when you need show dialog after working with tool visualization.
      */
-    void                  mouseRelease();
-    void                  itemClicked(QGraphicsItem *item);
-    void                  signalZoomScaleChanged(qreal scale);
+    void mouseRelease();
+    void itemClicked(QGraphicsItem* item);
+    void signalZoomScaleChanged(qreal scale);
 
 
 public slots:
-    void                  zoomByScale(qreal scale);
-    void                  zoomIn();
-    void                  zoomOut();
-    void                  zoom100Percent();
-    void                  zoomToFit();
-    void                  zoomToRect(const QRectF &rect);
-    void                  updateView(const QTransform &transform);
-    void                  resetScrollBars();
-    void                  resetScrollAnimations();
+    void zoomByScale(qreal scale);
+    void zoomIn();
+    void zoomOut();
+    void zoom100Percent();
+    void zoomToFit();
+    void zoomToRect(const QRectF& rect);
+    void updateView(const QTransform& transform);
+    void resetScrollBars();
+    void resetScrollAnimations();
 
 protected:
-    virtual void          mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual void          mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual void          mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    virtual void          mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+    virtual void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
     QSharedPointer<QCursor> curMagnifier;
 
 private:
     Q_DISABLE_COPY(VMainGraphicsView)
-    GraphicsViewZoom     *zoom;
-    bool                  showToolProperties;
-    bool                  showScrollBars;
-    bool                  isallowRubberBand;
-    bool                  isZoomToAreaActive;
-    bool                  isRubberBandActive;
-    bool                  isRubberBandColorSet;
-    bool                  isZoomPanActive;
-    bool                  isPanDragActive;
-    QRubberBand          *rubberBand;
-    QRect                *rubberBandRect;
-    QPoint                startPoint;
-    QPoint                endPoint;
-    QPoint                m_ptStartPos;
-    QPoint                cursorPos;
+    GraphicsViewZoom* zoom;
+    bool showToolProperties;
+    bool showScrollBars;
+    bool isallowRubberBand;
+    bool isZoomToAreaActive;
+    bool isRubberBandActive;
+    bool isRubberBandColorSet;
+    bool isZoomPanActive;
+    bool isPanDragActive;
+    QRubberBand* rubberBand;
+    QRect* rubberBandRect;
+    QPoint startPoint;
+    QPoint endPoint;
+    QPoint m_ptStartPos;
+    QPoint cursorPos;
 };
 
-#endif // VMAINGRAPHICSVIEW_H
+#endif   // VMAINGRAPHICSVIEW_H

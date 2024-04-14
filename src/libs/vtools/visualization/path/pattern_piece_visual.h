@@ -56,31 +56,34 @@
 #include <QtCore/QObject>
 #include <QtGlobal>
 
-#include "vispath.h"
 #include "../vpatterndb/vpiece.h"
+#include "vispath.h"
 
 class PatternPieceVisual : public VisPath
 {
     Q_OBJECT
 public:
-                              PatternPieceVisual(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual                  ~PatternPieceVisual() Q_DECL_EQ_DEFAULT;
+    PatternPieceVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~PatternPieceVisual() Q_DECL_EQ_DEFAULT;
 
-    virtual void              RefreshGeometry() Q_DECL_OVERRIDE;
-    void                      SetPiece(const VPiece &piece);
-    virtual int               type() const Q_DECL_OVERRIDE {return Type;}
-    enum                      {Type = UserType + static_cast<int>(Vis::ToolPiece)};
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
+    void SetPiece(const VPiece& piece);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolPiece)
+    };
 
 private:
     Q_DISABLE_COPY(PatternPieceVisual)
-    QVector<VScaledEllipse *>  m_points;
+    QVector<VScaledEllipse*> m_points;
 
-    VScaledLine               *m_line1;
-    VScaledLine               *m_line2;
-    VPiece                     m_piece;
+    VScaledLine* m_line1;
+    VScaledLine* m_line2;
+    VPiece m_piece;
 
-    VScaledEllipse            *GetPoint(quint32 i, const QColor &color);
-    void                       HideAllItems();
+    VScaledEllipse* GetPoint(quint32 i, const QColor& color);
+    void HideAllItems();
 };
 
-#endif // PATTERN_PIECE_VISUAL_H
+#endif   // PATTERN_PIECE_VISUAL_H

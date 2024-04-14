@@ -59,10 +59,11 @@
  * @param error string with error
  * @param id id
  */
-VExceptionBadId::VExceptionBadId(const QString &error, const quint32 &id)
+VExceptionBadId::VExceptionBadId(const QString& error, const quint32& id)
     : VException(error)
     , id(id)
-    , key(QString()){}
+    , key(QString())
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -70,24 +71,27 @@ VExceptionBadId::VExceptionBadId(const QString &error, const quint32 &id)
  * @param error string with error
  * @param key string key
  */
-VExceptionBadId::VExceptionBadId(const QString &error, const QString &key)
-    : VException(error), id(NULL_ID), key(key){}
+VExceptionBadId::VExceptionBadId(const QString& error, const QString& key)
+    : VException(error)
+    , id(NULL_ID)
+    , key(key)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VExceptionBadId copy constructor
  * @param e exception
  */
-VExceptionBadId::VExceptionBadId(const VExceptionBadId &error)
+VExceptionBadId::VExceptionBadId(const VExceptionBadId& error)
     : VException(error)
     , id(error.BadId())
-    , key(error.BadKey()){}
+    , key(error.BadKey())
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VExceptionBadId &VExceptionBadId::operator=(const VExceptionBadId &error)
+VExceptionBadId& VExceptionBadId::operator=(const VExceptionBadId& error)
 {
-    if ( &error == this )
-    {
+    if (&error == this) {
         return *this;
     }
     VException::operator=(error);
@@ -104,12 +108,9 @@ VExceptionBadId &VExceptionBadId::operator=(const VExceptionBadId &error)
 QString VExceptionBadId::ErrorMessage() const
 {
     QString error;
-    if (key.isEmpty())
-    {
+    if (key.isEmpty()) {
         error = QString("ExceptionBadId: %1, id = %2").arg(this->error).arg(id);
-    }
-    else
-    {
+    } else {
         error = QString("ExceptionBadId: %1, id = %2").arg(this->error).arg(key);
     }
     return error;

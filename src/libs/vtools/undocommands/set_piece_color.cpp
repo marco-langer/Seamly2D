@@ -29,18 +29,19 @@
 #include <QMessageLogger>
 #include <QtDebug>
 
-#include "vundocommand.h"
 #include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
-#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/def.h"
 #include "../vmisc/logging.h"
+#include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vpiece.h"
 #include "../vwidgets/vabstractmainwindow.h"
+#include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-SetPieceColor::SetPieceColor(quint32 id, QString color, VContainer *data, VAbstractPattern *doc, QUndoCommand *parent)
+SetPieceColor::SetPieceColor(
+    quint32 id, QString color, VContainer* data, VAbstractPattern* doc, QUndoCommand* parent)
     : VUndoCommand(QDomElement(), doc, parent)
     , m_id(id)
     , m_data(data)
@@ -51,15 +52,12 @@ SetPieceColor::SetPieceColor(quint32 id, QString color, VContainer *data, VAbstr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SetPieceColor::~SetPieceColor()
-{
-}
+SetPieceColor::~SetPieceColor() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void SetPieceColor::undo()
 {
-    if (m_newColor != m_oldColor)
-    {
+    if (m_newColor != m_oldColor) {
         doCmd(m_oldColor);
     }
 }
@@ -67,36 +65,25 @@ void SetPieceColor::undo()
 //---------------------------------------------------------------------------------------------------------------------
 void SetPieceColor::redo()
 {
-    if (m_newColor != m_oldColor)
-    {
+    if (m_newColor != m_oldColor) {
         doCmd(m_newColor);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int SetPieceColor::id() const
-{
-    return static_cast<int>(UndoCommand::SetPieceColor);
-}
+int SetPieceColor::id() const { return static_cast<int>(UndoCommand::SetPieceColor); }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 SetPieceColor::getpieceId() const
-{
-    return m_id;
-}
+quint32 SetPieceColor::getpieceId() const { return m_id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString SetPieceColor::getColor() const
-{
-    return m_newColor;
-}
+QString SetPieceColor::getColor() const { return m_newColor; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void SetPieceColor::doCmd(QString color)
 {
     QDomElement element = doc->elementById(m_id, VAbstractPattern::TagPiece);
-    if (element.isElement())
-    {
+    if (element.isElement()) {
         doc->SetAttribute(element, QStringLiteral("color"), color);
 
         VPiece piece = m_data->DataPieces()->value(m_id);
@@ -105,12 +92,10 @@ void SetPieceColor::doCmd(QString color)
 
         emit updateList(m_id);
 
-        VAbstractMainWindow *window = qobject_cast<VAbstractMainWindow *>(qApp->getMainWindow());
+        VAbstractMainWindow* window = qobject_cast<VAbstractMainWindow*>(qApp->getMainWindow());
         SCASSERT(window != nullptr)
         window->ShowToolTip(tr("Piece color changed: ") + color);
-    }
-    else
-    {
+    } else {
         return;
     }
 }

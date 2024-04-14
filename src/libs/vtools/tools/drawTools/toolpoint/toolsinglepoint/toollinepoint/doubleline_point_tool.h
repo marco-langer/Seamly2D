@@ -33,14 +33,15 @@
 #include "../vpatterndb/vformula.h"
 #include "../vtoolsinglepoint.h"
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 /**
  * @brief The DoubleLinePointTool class parent for all tools what creates a point with 2 lines.
@@ -49,51 +50,60 @@ class DoubleLinePointTool : public VToolSinglePoint
 {
     Q_OBJECT
 public:
-                      DoubleLinePointTool(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                          const QString &typeLine, const QString &lineWeight,
-                                          const QString &lineColor,
-                                          const quint32 &firstPointId, const quint32 &secondPointId,
-                                          QGraphicsItem * parent = nullptr);
-    virtual          ~DoubleLinePointTool() Q_DECL_OVERRIDE;
+    DoubleLinePointTool(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        const QString& typeLine,
+        const QString& lineWeight,
+        const QString& lineColor,
+        const quint32& firstPointId,
+        const quint32& secondPointId,
+        QGraphicsItem* parent = nullptr);
+    virtual ~DoubleLinePointTool() Q_DECL_OVERRIDE;
 
-    virtual int       type() const Q_DECL_OVERRIDE {return Type;}
-    enum             {Type = UserType + static_cast<int>(Tool::LinePoint)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::LinePoint)
+    };
 
-    virtual void      paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                            QWidget *widget = nullptr) Q_DECL_OVERRIDE;
+    virtual void
+    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        Q_DECL_OVERRIDE;
 
-    QString           point1Name() const;
-    QString           point2Name() const;
+    QString point1Name() const;
+    QString point2Name() const;
 
-    quint32           getFirstPointId() const;
-    void              setFirstPointId(const quint32 &value);
+    quint32 getFirstPointId() const;
+    void setFirstPointId(const quint32& value);
 
-    quint32           getSecondPointId() const;
-    void              setSecondPointId(const quint32 &value);
+    quint32 getSecondPointId() const;
+    void setSecondPointId(const quint32& value);
 
-    QString           getLineColor() const;
-    void              setLineColor(const QString &value);
+    QString getLineColor() const;
+    void setLineColor(const QString& value);
 
 public slots:
-    virtual void      Disable(bool disable, const QString &draftBlockName) Q_DECL_OVERRIDE;
-    virtual void      FullUpdateFromFile() Q_DECL_OVERRIDE;
+    virtual void Disable(bool disable, const QString& draftBlockName) Q_DECL_OVERRIDE;
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE;
 
 protected:
-    quint32           firstPointId;     /** @brief firstPointId id first line point. */
-    quint32           secondPointId;    /** @brief secondPointId id second line point. */
-    VScaledLine      *firstLine;        /** @brief firstLine first line item. */
-    VScaledLine      *secondLine;       /** @brief secondLine second line item. */
-    QString           lineColor;        /** @brief lineColor color of a line. */
+    quint32 firstPointId;    /** @brief firstPointId id first line point. */
+    quint32 secondPointId;   /** @brief secondPointId id second line point. */
+    VScaledLine* firstLine;  /** @brief firstLine first line item. */
+    VScaledLine* secondLine; /** @brief secondLine second line item. */
+    QString lineColor;       /** @brief lineColor color of a line. */
 
-    virtual void      RefreshGeometry();
-    virtual void      RemoveReferens() Q_DECL_OVERRIDE;
-    virtual void      SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void      hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    virtual void      hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-    virtual QString   makeToolTip() const Q_DECL_OVERRIDE;
+    virtual void RefreshGeometry();
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
+    virtual QString makeToolTip() const Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(DoubleLinePointTool)
 };
 
-#endif // DOUBLELINE_POINT_TOOL_H
+#endif   // DOUBLELINE_POINT_TOOL_H

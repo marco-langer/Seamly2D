@@ -60,17 +60,18 @@
 #include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_VSpline::TST_VSpline(QObject *parent)
-    :AbstractTest(parent)
-{
-}
+TST_VSpline::TST_VSpline(QObject* parent)
+    : AbstractTest(parent)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VSpline::GetSegmentPoints()
 {
     // Input data taken from real case
-    VPointF p1(1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
-    VPointF p4(681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
+    VPointF p1(
+        1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
+    VPointF p4(
+        681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl(p1, p4, 229.381, 41.6325, 0.96294100000000005, 1.00054, 1);
 
@@ -121,8 +122,10 @@ void TST_VSpline::GetSegmentPoints()
 void TST_VSpline::GetSegmentPoints_issue412()
 {
     // Input data taken from real case
-    VPointF p1(869.11748031496063, -61.117228346456692, "p1", 5.0000125984251973, 9.9999874015748045);
-    VPointF p4(491.16472440944887, 316.83552755905515, "p4", 5.0000125984251973, 9.9999874015748045);
+    VPointF p1(
+        869.11748031496063, -61.117228346456692, "p1", 5.0000125984251973, 9.9999874015748045);
+    VPointF p4(
+        491.16472440944887, 316.83552755905515, "p4", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl(p1, p4, 270, 0, 1, 1, 1);
 
@@ -162,8 +165,10 @@ void TST_VSpline::GetSegmentPoints_TestPuzzle()
     // Input data taken from real case
     // See the file <root>/src/app/share/collection/test_puzzle.sm2d
     // Test issue with method IsPointOnLineSegment.
-    VPointF p1(1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
-    VPointF p4(681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
+    VPointF p1(
+        1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
+    VPointF p4(
+        681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl(p1, p4, 229.381, 41.6325, 0.96294100000000005, 1.00054, 1);
 
@@ -212,15 +217,17 @@ void TST_VSpline::GetSegmentPoints_NullSegment()
 {
     // Test check case where a detail contains one spline and one point on a spline.
 
-    const VPointF p1(146.3718263928647, 6.4192815800656247, "A1", 5.0000125984251973, 9.9999874015748045);
+    const VPointF p1(
+        146.3718263928647, 6.4192815800656247, "A1", 5.0000125984251973, 9.9999874015748045);
     const QPointF p2(-231.44352755905513, -3.7711067716535434);
     const QPointF p3(-194.55587416421278, 355.17175586626462);
-    const VPointF p4(182.31062201967654, 383.80617135964712, "A2", 5.0000125984251973, 9.9999874015748045);
+    const VPointF p4(
+        182.31062201967654, 383.80617135964712, "A2", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl(p1, p2, p3, p4, 1);
 
-    const QPointF begin	(146.3718263928647, 6.419281580065625);
-    const QPointF end	(146.3718263928647, 6.419281580065625);
+    const QPointF begin(146.3718263928647, 6.419281580065625);
+    const QPointF end(146.3718263928647, 6.419281580065625);
 
     QVector<QPointF> points;
     points << spl.GetSegmentPoints(begin, end, true);
@@ -304,14 +311,25 @@ void TST_VSpline::GetSegmentPoints_RotateTool()
     // See the file <root>/src/app/share/collection/bugs/IsPointOnLineSegment_RotateTool_issue.val
     // Test issue with method IsPointOnLineSegment.
 
-    const VPointF p1(155.93961723681397, -42.472964170961042, "A", 5.0000125984251973, 9.9999874015748045);
-    const VPointF p4(237.32422843061005, 485.80074940371367, "A2", 5.0000125984251973, 9.9999874015748045);
+    const VPointF p1(
+        155.93961723681397, -42.472964170961042, "A", 5.0000125984251973, 9.9999874015748045);
+    const VPointF p4(
+        237.32422843061005, 485.80074940371367, "A2", 5.0000125984251973, 9.9999874015748045);
 
-    VSpline spl(p1, p4, 231.11199999999994, "231.112", 145.33899999999997, "145.339", 207.44768503937021, "5.48872",
-                337.50916535433066, "8.92993");
+    VSpline spl(
+        p1,
+        p4,
+        231.11199999999994,
+        "231.112",
+        145.33899999999997,
+        "145.339",
+        207.44768503937021,
+        "5.48872",
+        337.50916535433066,
+        "8.92993");
 
     const QPointF begin(237.32422843061005, 485.80074940371367);
-    const QPointF end  (46.623829088412336, 167.78988631718659);
+    const QPointF end(46.623829088412336, 167.78988631718659);
 
     QVector<QPointF> points;
     points << spl.GetSegmentPoints(begin, end, true);
@@ -348,13 +366,30 @@ void TST_VSpline::CompareThreeWays()
 {
     // Input data taken from real case
     // See the file <root>/src/app/share/collection/test_puzzle.sm2d
-    VPointF p1(1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
-    VPointF p4(681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
+    VPointF p1(
+        1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
+    VPointF p4(
+        681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl1(p1, p4, 229.381, 41.6325, 0.96294100000000005, 1.00054, 1);
-    VSpline spl2(spl1.GetP1(), static_cast<QPointF>(spl1.GetP2()), static_cast<QPointF>(spl1.GetP3()), spl1.GetP4(), 1);
-    VSpline spl3(spl1.GetP1(), spl1.GetP4(), spl1.GetStartAngle(), "", spl2.GetEndAngle(), "", spl2.GetC1Length(), "",
-                 spl2.GetC2Length(), "", 1);
+    VSpline spl2(
+        spl1.GetP1(),
+        static_cast<QPointF>(spl1.GetP2()),
+        static_cast<QPointF>(spl1.GetP3()),
+        spl1.GetP4(),
+        1);
+    VSpline spl3(
+        spl1.GetP1(),
+        spl1.GetP4(),
+        spl1.GetStartAngle(),
+        "",
+        spl2.GetEndAngle(),
+        "",
+        spl2.GetC1Length(),
+        "",
+        spl2.GetC2Length(),
+        "",
+        1);
 
     QWARN("Comparing first and second splines.");
     CompareSplines(spl1, spl2);
@@ -369,12 +404,14 @@ void TST_VSpline::CompareThreeWays()
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VSpline::TestParametrT()
 {
-    VPointF p1(1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
-    VPointF p4(681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
+    VPointF p1(
+        1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
+    VPointF p4(
+        681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl(p1, p4, 229.381, 41.6325, 0.96294100000000005, 1.00054, 1);
 
-    const qreal halfLength = spl.GetLength()/2.0;
+    const qreal halfLength = spl.GetLength() / 2.0;
     const qreal resLength = spl.LengthT(spl.GetParmT(halfLength));
 
     QVERIFY(qAbs(halfLength - resLength) < UnitConvertor(0.5, Unit::Mm, Unit::Px));
@@ -383,8 +420,10 @@ void TST_VSpline::TestParametrT()
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VSpline::TestLengthByPoint_data()
 {
-    VPointF p1(1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
-    VPointF p4(681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
+    VPointF p1(
+        1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
+    VPointF p4(
+        681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl(p1, p4, 229.381, 41.6325, 0.96294100000000005, 1.00054, 1);
 
@@ -393,7 +432,7 @@ void TST_VSpline::TestLengthByPoint_data()
     QTest::addColumn<qreal>("length");
 
     const qreal length = spl.GetLength();
-    const qreal testLength = length*(2.0/3.0);
+    const qreal testLength = length * (2.0 / 3.0);
     VSpline spl1, spl2;
     const QPointF p = spl.CutSpline(testLength, spl1, spl2);
 
@@ -422,8 +461,10 @@ void TST_VSpline::TestFlip_data()
     QTest::addColumn<QLineF>("axis");
     QTest::addColumn<QString>("prefix");
 
-    VPointF p1(1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
-    VPointF p4(681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
+    VPointF p1(
+        1168.8582803149607, 39.999874015748034, "p1", 5.0000125984251973, 9.9999874015748045);
+    VPointF p4(
+        681.33729132409951, 1815.7969526662778, "p4", 5.0000125984251973, 9.9999874015748045);
 
     VSpline spl(p1, p4, 229.381, 41.6325, 0.96294100000000005, 1.00054, 1);
 
@@ -459,7 +500,7 @@ void TST_VSpline::TestFlip()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_VSpline::CompareSplines(const VSpline &spl1, const VSpline &spl2) const
+void TST_VSpline::CompareSplines(const VSpline& spl1, const VSpline& spl2) const
 {
     QCOMPARE(spl1.GetP1().toQPointF().toPoint(), spl2.GetP1().toQPointF().toPoint());
     QCOMPARE(spl1.GetP2().toQPointF().toPoint(), spl2.GetP2().toQPointF().toPoint());

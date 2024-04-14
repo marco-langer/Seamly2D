@@ -56,8 +56,8 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
-#include "../ifc/xml/vdomdocument.h"
 #include "../ifc/ifcdef.h"
+#include "../ifc/xml/vdomdocument.h"
 #include "../vabstracttool.h"
 #include "../vdatatool.h"
 #include "vabstractnode.h"
@@ -75,9 +75,16 @@ const QString VNodeSpline::ToolType = QStringLiteral("modelingSpline");
  * @param idTool id node.
  * @param qoParent QObject parent.
  */
-VNodeSpline::VNodeSpline(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idSpline,
-                         const Source &typeCreation, const QString &blockName, const quint32 &idTool, QObject *qoParent)
-    :VAbstractNode(doc, data, id, idSpline, blockName, idTool, qoParent)
+VNodeSpline::VNodeSpline(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    quint32 idSpline,
+    const Source& typeCreation,
+    const QString& blockName,
+    const quint32& idTool,
+    QObject* qoParent)
+    : VAbstractNode(doc, data, id, idSpline, blockName, idTool, qoParent)
 {
     ToolCreation(typeCreation);
 }
@@ -94,42 +101,39 @@ VNodeSpline::VNodeSpline(VAbstractPattern *doc, VContainer *data, quint32 id, qu
  * @param idTool id node.
  * @return pointer to node.
  */
-VNodeSpline *VNodeSpline::Create(VAbstractPattern *doc, VContainer *data, quint32 id,
-                                 quint32 idSpline, const Document &parse,
-                                 const Source &typeCreation, const QString &blockName, const quint32 &idTool)
+VNodeSpline* VNodeSpline::Create(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    quint32 idSpline,
+    const Document& parse,
+    const Source& typeCreation,
+    const QString& blockName,
+    const quint32& idTool)
 {
-    VNodeSpline *spl = nullptr;
-    if (parse == Document::FullParse)
-    {
+    VNodeSpline* spl = nullptr;
+    if (parse == Document::FullParse) {
         VAbstractTool::AddRecord(id, Tool::NodeSpline, doc);
         spl = new VNodeSpline(doc, data, id, idSpline, typeCreation, blockName, idTool, doc);
 
         VAbstractPattern::AddTool(id, spl);
-        if (idTool != NULL_ID)
-        {
-            //Some nodes we don't show on scene. Tool that create this nodes must free memory.
-            VDataTool *tool = VAbstractPattern::getTool(idTool);
+        if (idTool != NULL_ID) {
+            // Some nodes we don't show on scene. Tool that create this nodes must free memory.
+            VDataTool* tool = VAbstractPattern::getTool(idTool);
             SCASSERT(tool != nullptr)
-            spl->setParent(tool);// Adopted by a tool
-        }
-        else
-        {
+            spl->setParent(tool);   // Adopted by a tool
+        } else {
             // Help to delete the node before each FullParse
             doc->AddToolOnRemove(spl);
         }
-    }
-    else
-    {
+    } else {
         doc->UpdateToolData(id, data);
     }
     return spl;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VNodeSpline::getTagName() const
-{
-    return VAbstractPattern::TagSpline;
-}
+QString VNodeSpline::getTagName() const { return VAbstractPattern::TagSpline; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VNodeSpline::AllowHover(bool enabled)
@@ -156,8 +160,7 @@ void VNodeSpline::AddToFile()
     doc->SetAttribute(domElement, VDomDocument::AttrId, m_id);
     doc->SetAttribute(domElement, AttrType, ToolType);
     doc->SetAttribute(domElement, AttrIdObject, idNode);
-    if (idTool != NULL_ID)
-    {
+    if (idTool != NULL_ID) {
         doc->SetAttribute(domElement, AttrIdTool, idTool);
     }
 

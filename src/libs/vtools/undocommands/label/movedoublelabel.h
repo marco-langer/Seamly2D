@@ -52,51 +52,54 @@
 #ifndef MOVEDOUBLELABEL_H
 #define MOVEDOUBLELABEL_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "moveabstractlabel.h"
 
-enum class MoveDoublePoint: char { FirstPoint, SecondPoint };
+enum class MoveDoublePoint : char
+{
+    FirstPoint,
+    SecondPoint
+};
 
 class MoveDoubleLabel : public MoveAbstractLabel
 {
     Q_OBJECT
 public:
-                    MoveDoubleLabel(VAbstractPattern *doc, const QPointF &pos, MoveDoublePoint type,
-                                    quint32 toolId, quint32 pointId, QUndoCommand *parent = nullptr);
-    virtual        ~MoveDoubleLabel()=default;
+    MoveDoubleLabel(
+        VAbstractPattern* doc,
+        const QPointF& pos,
+        MoveDoublePoint type,
+        quint32 toolId,
+        quint32 pointId,
+        QUndoCommand* parent = nullptr);
+    virtual ~MoveDoubleLabel() = default;
 
-    virtual bool    mergeWith(const QUndoCommand *command) Q_DECL_OVERRIDE;
-    virtual int     id() const Q_DECL_OVERRIDE;
+    virtual bool mergeWith(const QUndoCommand* command) Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
 
-    quint32         GetToolId() const;
+    quint32 GetToolId() const;
     MoveDoublePoint GetPointType() const;
 
 protected:
-    virtual void    Do(const QPointF &pos) Q_DECL_OVERRIDE;
+    virtual void Do(const QPointF& pos) Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(MoveDoubleLabel)
     MoveDoublePoint m_type;
-    quint32         m_idTool;
-    //Need for resizing scene rect
-    QGraphicsScene *m_scene;
+    quint32 m_idTool;
+    // Need for resizing scene rect
+    QGraphicsScene* m_scene;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline MoveDoublePoint MoveDoubleLabel::GetPointType() const
-{
-    return m_type;
-}
+inline MoveDoublePoint MoveDoubleLabel::GetPointType() const { return m_type; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline quint32 MoveDoubleLabel::GetToolId() const
-{
-    return m_idTool;
-}
+inline quint32 MoveDoubleLabel::GetToolId() const { return m_idTool; }
 
-#endif // MOVEDOUBLELABEL_H
+#endif   // MOVEDOUBLELABEL_H

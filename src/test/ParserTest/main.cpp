@@ -49,36 +49,42 @@
  **
  *************************************************************************/
 
+#include "../qmuparser/qmuparsertest.h"
 #include <QCoreApplication>
 #include <QTimer>
 #include <QtGlobal>
-#include "../qmuparser/qmuparsertest.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-void testMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void testMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     QByteArray localMsg = msg.toLocal8Bit();
-    switch (type)
-    {
-        case QtDebugMsg:
-        case QtWarningMsg:
-            fprintf(stderr, "%s\n", localMsg.constData());
-            break;
-        case QtCriticalMsg:
-            fprintf(stderr, "Critical: %s (%s:%i, %s)\n", localMsg.constData(), context.file, context.line,
-                    context.function);
-            break;
-        case QtFatalMsg:
-            fprintf(stderr, "Fatal: %s (%s:%i, %s)\n", localMsg.constData(), context.file, context.line,
-                    context.function);
-            abort();
-        default:
-            break;
+    switch (type) {
+    case QtDebugMsg:
+    case QtWarningMsg: fprintf(stderr, "%s\n", localMsg.constData()); break;
+    case QtCriticalMsg:
+        fprintf(
+            stderr,
+            "Critical: %s (%s:%i, %s)\n",
+            localMsg.constData(),
+            context.file,
+            context.line,
+            context.function);
+        break;
+    case QtFatalMsg:
+        fprintf(
+            stderr,
+            "Fatal: %s (%s:%i, %s)\n",
+            localMsg.constData(),
+            context.file,
+            context.line,
+            context.function);
+        abort();
+    default: break;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QCoreApplication a(argc, argv);
     qInstallMessageHandler(testMessageOutput);

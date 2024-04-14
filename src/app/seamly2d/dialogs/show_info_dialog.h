@@ -34,9 +34,8 @@
 
 #include "../xml/vpattern.h"
 
-namespace Ui
-{
-    class ShowInfoDialog;
+namespace Ui {
+class ShowInfoDialog;
 }
 
 class ShowInfoDialog : public QDialog
@@ -44,21 +43,21 @@ class ShowInfoDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit            ShowInfoDialog(VPattern *doc, QWidget *parent = nullptr);
-    virtual            ~ShowInfoDialog();
+    explicit ShowInfoDialog(VPattern* doc, QWidget* parent = nullptr);
+    virtual ~ShowInfoDialog();
 
 protected:
-    virtual void        showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 
 private:
-    Ui::ShowInfoDialog *ui;
-    VPattern           *doc;
-    bool                m_isInitialized;
+    Ui::ShowInfoDialog* ui;
+    VPattern* doc;
+    bool m_isInitialized;
     Q_DISABLE_COPY(ShowInfoDialog)
 
-    void                copyToClipboard();
-    void                sendToPrinter();
-    void                exportPdf();
+    void copyToClipboard();
+    void sendToPrinter();
+    void exportPdf();
 };
 
-#endif // SHOW_INFO_DIALOG_INFO
+#endif   // SHOW_INFO_DIALOG_INFO

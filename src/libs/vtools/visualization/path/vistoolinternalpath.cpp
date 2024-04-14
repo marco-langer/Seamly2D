@@ -50,18 +50,18 @@
  *************************************************************************/
 
 #include "vistoolinternalpath.h"
-#include "../vwidgets/vsimplepoint.h"
 #include "../vgeometry/vpointf.h"
 #include "../vwidgets/scalesceneitems.h"
+#include "../vwidgets/vsimplepoint.h"
 
 #include <QGraphicsSceneMouseEvent>
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolInternalPath::VisToolInternalPath(const VContainer *data, QGraphicsItem *parent)
-    : VisPath(data, parent),
-      m_points(),
-      m_line(nullptr),
-      m_path()
+VisToolInternalPath::VisToolInternalPath(const VContainer* data, QGraphicsItem* parent)
+    : VisPath(data, parent)
+    , m_points()
+    , m_line(nullptr)
+    , m_path()
 {
     m_line = InitItem<VScaledLine>(supportColor, this);
 }
@@ -71,47 +71,46 @@ void VisToolInternalPath::RefreshGeometry()
 {
     HideAllItems();
 
-    if (m_path.CountNodes() > 0)
-    {
-        DrawPath(this, m_path.PainterPath(Visualization::data), mainColor, m_path.GetPenType(),
-                 lineWeight, Qt::RoundCap);
+    if (m_path.CountNodes() > 0) {
+        DrawPath(
+            this,
+            m_path.PainterPath(Visualization::data),
+            mainColor,
+            m_path.GetPenType(),
+            lineWeight,
+            Qt::RoundCap);
 
         const QVector<VPointF> nodes = m_path.PathNodePoints(Visualization::data);
 
-        for (int i = 0; i < nodes.size(); ++i)
-        {
-            VSimplePoint *point = GetPoint(static_cast<quint32>(i), supportColor);
+        for (int i = 0; i < nodes.size(); ++i) {
+            VSimplePoint* point = GetPoint(static_cast<quint32>(i), supportColor);
             point->setOnlyPoint(mode == Mode::Creation);
             point->refreshPointGeometry(nodes.at(i));
             point->setVisible(true);
         }
 
-        if (mode == Mode::Creation)
-        {
+        if (mode == Mode::Creation) {
             const QVector<QPointF> points = m_path.PathPoints(Visualization::data);
-            if (points.size() > 0)
-            {
-                DrawLine(m_line, QLineF(points.last(), Visualization::scenePos), supportColor,
-                                        lineWeight, Qt::DashLine);
+            if (points.size() > 0) {
+                DrawLine(
+                    m_line,
+                    QLineF(points.last(), Visualization::scenePos),
+                    supportColor,
+                    lineWeight,
+                    Qt::DashLine);
             }
         }
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolInternalPath::SetPath(const VPiecePath &path)
-{
-    m_path = path;
-}
+void VisToolInternalPath::SetPath(const VPiecePath& path) { m_path = path; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolInternalPath::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    event->ignore();
-}
+void VisToolInternalPath::mousePressEvent(QGraphicsSceneMouseEvent* event) { event->ignore(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-VSimplePoint *VisToolInternalPath::GetPoint(quint32 i, const QColor &color)
+VSimplePoint* VisToolInternalPath::GetPoint(quint32 i, const QColor& color)
 {
     return VisPath::GetPoint(m_points, i, color);
 }
@@ -119,15 +118,12 @@ VSimplePoint *VisToolInternalPath::GetPoint(quint32 i, const QColor &color)
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolInternalPath::HideAllItems()
 {
-    if (m_line)
-    {
+    if (m_line) {
         m_line->setVisible(false);
     }
 
-    for (int i=0; i < m_points.size(); ++i)
-    {
-        if (QGraphicsEllipseItem *item = m_points.at(i))
-        {
+    for (int i = 0; i < m_points.size(); ++i) {
+        if (QGraphicsEllipseItem* item = m_points.at(i)) {
             item->setVisible(false);
         }
     }

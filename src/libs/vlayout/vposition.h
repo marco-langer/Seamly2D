@@ -53,11 +53,11 @@
 #ifndef VPOSITION_H
 #define VPOSITION_H
 
-#include <qcompilerdetection.h>
 #include <QRunnable>
 #include <QVector>
 #include <QtGlobal>
 #include <atomic>
+#include <qcompilerdetection.h>
 
 #include "vbestsquare.h"
 #include "vcontour.h"
@@ -67,25 +67,37 @@
 class VPosition : public QRunnable
 {
 public:
-    VPosition(const VContour &gContour, int j, const VLayoutPiece &piece, int i, std::atomic_bool *stop, bool rotate,
-              int rotationIncrease, bool saveLength);
-    virtual ~VPosition() Q_DECL_OVERRIDE{}
+    VPosition(
+        const VContour& gContour,
+        int j,
+        const VLayoutPiece& piece,
+        int i,
+        std::atomic_bool* stop,
+        bool rotate,
+        int rotationIncrease,
+        bool saveLength);
+    virtual ~VPosition() Q_DECL_OVERRIDE {}
 
     quint32 getPaperIndex() const;
-    void setPaperIndex(const quint32 &value);
+    void setPaperIndex(const quint32& value);
 
     quint32 getFrame() const;
-    void setFrame(const quint32 &value);
+    void setFrame(const quint32& value);
 
     quint32 getPieceCount() const;
-    void setPieceCount(const quint32 &value);
+    void setPieceCount(const quint32& value);
 
-    void setPieces(const QVector<VLayoutPiece> &pieces);
+    void setPieces(const QVector<VLayoutPiece>& pieces);
 
     VBestSquare getBestResult() const;
 
-    static void DrawDebug(const VContour &contour, const VLayoutPiece &piece, int frame, quint32 paperIndex,
-                          int piecesCount, const QVector<VLayoutPiece> &pieces = QVector<VLayoutPiece>());
+    static void DrawDebug(
+        const VContour& contour,
+        const VLayoutPiece& piece,
+        int frame,
+        quint32 paperIndex,
+        int piecesCount,
+        const QVector<VLayoutPiece>& pieces = QVector<VLayoutPiece>());
 
     static int Bias(int length, int maxLength);
 
@@ -100,11 +112,12 @@ private:
     quint32 frame;
     quint32 piecesCount;
     QVector<VLayoutPiece> pieces;
-    std::atomic_bool *stop;
+    std::atomic_bool* stop;
     bool rotate;
     int rotationIncrease;
     /**
-     * @brief angle_between keep angle between global edge and piece edge. Need for optimization rotation.
+     * @brief angle_between keep angle between global edge and piece edge. Need for optimization
+     * rotation.
      */
     qreal angle_between;
 
@@ -124,22 +137,23 @@ private:
 
     virtual void run() Q_DECL_OVERRIDE;
 
-    void SaveCandidate(VBestSquare &bestResult, const VLayoutPiece &piece, int globalI, int detJ, BestFrom type);
+    void SaveCandidate(
+        VBestSquare& bestResult, const VLayoutPiece& piece, int globalI, int detJ, BestFrom type);
 
-    bool CheckCombineEdges(VLayoutPiece &piece, int j, int &dEdge);
-    bool CheckRotationEdges(VLayoutPiece &piece, int j, int dEdge, int angle) const;
+    bool CheckCombineEdges(VLayoutPiece& piece, int j, int& dEdge);
+    bool CheckRotationEdges(VLayoutPiece& piece, int j, int dEdge, int angle) const;
 
-    CrossingType Crossing(const VLayoutPiece &piece) const;
-    bool         SheetContains(const QRectF &rect) const;
+    CrossingType Crossing(const VLayoutPiece& piece) const;
+    bool SheetContains(const QRectF& rect) const;
 
-    void CombineEdges(VLayoutPiece &piece, const QLineF &globalEdge, const int &dEdge);
-    void RotateEdges(VLayoutPiece &piece, const QLineF &globalEdge, int dEdge, int angle) const;
+    void CombineEdges(VLayoutPiece& piece, const QLineF& globalEdge, const int& dEdge);
+    void RotateEdges(VLayoutPiece& piece, const QLineF& globalEdge, int dEdge, int angle) const;
 
-    static QPainterPath ShowDirection(const QLineF &edge);
-    static QPainterPath DrawContour(const QVector<QPointF> &points);
-    static QPainterPath drawPieces(const QVector<VLayoutPiece> &pieces);
+    static QPainterPath ShowDirection(const QLineF& edge);
+    static QPainterPath DrawContour(const QVector<QPointF>& points);
+    static QPainterPath drawPieces(const QVector<VLayoutPiece>& pieces);
 
     void Rotate(int increase);
 };
 
-#endif // VPOSITION_H
+#endif   // VPOSITION_H

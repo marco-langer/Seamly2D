@@ -59,13 +59,13 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
+#include "../visualization.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
-#include "../visualization.h"
 #include "visualization/line/visline.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolLine::VisToolLine(const VContainer *data, QGraphicsItem *parent)
+VisToolLine::VisToolLine(const VContainer* data, QGraphicsItem* parent)
     : VisLine(data, parent)
     , point2Id(NULL_ID)
 {
@@ -77,29 +77,28 @@ void VisToolLine::RefreshGeometry()
 {
     QLineF line;
     const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
-    if (point2Id == NULL_ID)
-    {
+    if (point2Id == NULL_ID) {
         line = QLineF(static_cast<QPointF>(*first), Visualization::scenePos);
-    }
-    else
-    {
-        const QSharedPointer<VPointF> second = Visualization::data->GeometricObject<VPointF>(point2Id);
+    } else {
+        const QSharedPointer<VPointF> second =
+            Visualization::data->GeometricObject<VPointF>(point2Id);
         line = QLineF(static_cast<QPointF>(*first), static_cast<QPointF>(*second));
     }
     DrawLine(this, line, mainColor, lineWeight, lineStyle);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolLine::setPoint2Id(const quint32 &value)
-{
-    point2Id = value;
-}
+void VisToolLine::setPoint2Id(const quint32& value) { point2Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolLine::DrawLine(VScaledLine *lineItem, const QLineF &line, const QColor &color,
-                           const qreal &lineWeight, Qt::PenStyle style)
+void VisToolLine::DrawLine(
+    VScaledLine* lineItem,
+    const QLineF& line,
+    const QColor& color,
+    const qreal& lineWeight,
+    Qt::PenStyle style)
 {
-    SCASSERT (lineItem != nullptr)
+    SCASSERT(lineItem != nullptr)
 
     QPen visPen = lineItem->pen();
     visPen.setColor(color);

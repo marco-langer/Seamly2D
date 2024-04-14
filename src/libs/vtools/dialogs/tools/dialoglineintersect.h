@@ -52,64 +52,66 @@
 #ifndef DIALOGLINEINTERSECT_H
 #define DIALOGLINEINTERSECT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-namespace Ui
-{
-    class DialogLineIntersect;
+namespace Ui {
+class DialogLineIntersect;
 }
 
 /**
- * @brief The DialogLineIntersect class dialog for ToolLineIntersect. Help create point and edit option.
+ * @brief The DialogLineIntersect class dialog for ToolLineIntersect. Help create point and edit
+ * option.
  */
 class DialogLineIntersect : public DialogTool
 {
     Q_OBJECT
 public:
-    DialogLineIntersect(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    DialogLineIntersect(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogLineIntersect() Q_DECL_OVERRIDE;
 
-    quint32                 GetP1Line1() const;
-    void                    SetP1Line1(const quint32 &value);
+    quint32 GetP1Line1() const;
+    void SetP1Line1(const quint32& value);
 
-    quint32                 GetP2Line1() const;
-    void                    SetP2Line1(const quint32 &value);
+    quint32 GetP2Line1() const;
+    void SetP2Line1(const quint32& value);
 
-    quint32                 GetP1Line2() const;
-    void                    SetP1Line2(const quint32 &value);
+    quint32 GetP1Line2() const;
+    void SetP1Line2(const quint32& value);
 
-    quint32                 GetP2Line2() const;
-    void                    SetP2Line2(const quint32 &value);
+    quint32 GetP2Line2() const;
+    void SetP2Line2(const quint32& value);
 
-    void                    SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 public slots:
-    virtual void            ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
-    void                    PointChanged();
-    virtual void            PointNameChanged() Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
+    void PointChanged();
+    virtual void PointNameChanged() Q_DECL_OVERRIDE;
+
 protected:
-    virtual void            ShowVisualization() Q_DECL_OVERRIDE;
+    virtual void ShowVisualization() Q_DECL_OVERRIDE;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void            SaveData() Q_DECL_OVERRIDE;
+    virtual void SaveData() Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(DialogLineIntersect)
 
     /** @brief ui keeps information about user interface */
-    Ui::DialogLineIntersect *ui;
+    Ui::DialogLineIntersect* ui;
 
     /** @brief flagPoint keep state of point */
-    bool                    flagPoint;
+    bool flagPoint;
 
-    virtual void            CheckState() Q_DECL_FINAL;
-    bool                    CheckIntersecion();
+    virtual void CheckState() Q_DECL_FINAL;
+    bool CheckIntersecion();
 };
 
-#endif // DIALOGLINEINTERSECT_H
+#endif   // DIALOGLINEINTERSECT_H

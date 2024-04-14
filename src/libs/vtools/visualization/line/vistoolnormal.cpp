@@ -62,19 +62,25 @@
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolnormal.h"
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../visualization.h"
+#include "../vpatterndb/vcontainer.h"
 #include "visline.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolNormal::VisToolNormal(const VContainer *data, QGraphicsItem *parent)
-    : VisLine(data, parent), object2Id(NULL_ID), point(nullptr), lineP1(nullptr), lineP2(nullptr), line(nullptr),
-      length(0), angle(0)
+VisToolNormal::VisToolNormal(const VContainer* data, QGraphicsItem* parent)
+    : VisLine(data, parent)
+    , object2Id(NULL_ID)
+    , point(nullptr)
+    , lineP1(nullptr)
+    , lineP2(nullptr)
+    , line(nullptr)
+    , length(0)
+    , angle(0)
 {
     this->mainColor = Qt::red;
 
     lineP1 = InitPoint(supportColor, this);
-    lineP2 = InitPoint(supportColor, this); //-V656
+    lineP2 = InitPoint(supportColor, this);   //-V656
     line = InitItem<VScaledLine>(supportColor, this);
 
     point = InitPoint(mainColor, this);
@@ -83,38 +89,33 @@ VisToolNormal::VisToolNormal(const VContainer *data, QGraphicsItem *parent)
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolNormal::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
-        const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
+    if (object1Id > NULL_ID) {
+        const QSharedPointer<VPointF> first =
+            Visualization::data->GeometricObject<VPointF>(object1Id);
         DrawPoint(lineP1, static_cast<QPointF>(*first), supportColor);
 
-        if (object2Id <= NULL_ID)
-        {
+        if (object2Id <= NULL_ID) {
             QLineF line_mouse(static_cast<QPointF>(*first), Visualization::scenePos);
             DrawLine(line, line_mouse, supportColor, lineWeight);
 
             QLineF normal = line_mouse.normalVector();
             QPointF endRay = Ray(normal.p1(), normal.angle());
             DrawLine(this, QLineF(normal.p1(), endRay), mainColor, lineWeight);
-        }
-        else
-        {
-            const QSharedPointer<VPointF> second = Visualization::data->GeometricObject<VPointF>(object2Id);
+        } else {
+            const QSharedPointer<VPointF> second =
+                Visualization::data->GeometricObject<VPointF>(object2Id);
             DrawPoint(lineP2, static_cast<QPointF>(*second), supportColor);
 
             QLineF line_mouse(static_cast<QPointF>(*first), static_cast<QPointF>(*second));
             DrawLine(line, line_mouse, supportColor, lineWeight);
 
-            if (qFuzzyIsNull(length))
-            {
+            if (qFuzzyIsNull(length)) {
                 QLineF normal = line_mouse.normalVector();
                 QPointF endRay = Ray(normal.p1(), normal.angle());
                 DrawLine(this, QLineF(normal.p1(), endRay), mainColor, lineWeight);
-            }
-            else
-            {
-                QPointF fPoint = VToolNormal::FindPoint(static_cast<QPointF>(*first), static_cast<QPointF>(*second),
-                                                        length, angle);
+            } else {
+                QPointF fPoint = VToolNormal::FindPoint(
+                    static_cast<QPointF>(*first), static_cast<QPointF>(*second), length, angle);
                 QLineF mainLine = QLineF(static_cast<QPointF>(*first), fPoint);
                 DrawLine(this, mainLine, mainColor, lineWeight, lineStyle);
 
@@ -125,25 +126,16 @@ void VisToolNormal::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolNormal::setObject2Id(const quint32 &value)
-{
-    object2Id = value;
-}
+void VisToolNormal::setObject2Id(const quint32& value) { object2Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolNormal::setLength(const QString &expression)
+void VisToolNormal::setLength(const QString& expression)
 {
     length = FindLength(expression, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VisToolNormal::GetAngle() const
-{
-    return angle;
-}
+qreal VisToolNormal::GetAngle() const { return angle; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolNormal::SetAngle(const qreal &value)
-{
-    angle = value;
-}
+void VisToolNormal::SetAngle(const qreal& value) { angle = value; }

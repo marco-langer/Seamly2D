@@ -61,66 +61,47 @@
 
 const QString VLabelTemplateConverter::LabelTemplateMinVerStr = QStringLiteral("1.0.0");
 const QString VLabelTemplateConverter::LabelTemplateMaxVerStr = QStringLiteral("1.0.0");
-const QString VLabelTemplateConverter::CurrentSchema          = QStringLiteral("://schema/label_template/v1.0.0.xsd");
+const QString VLabelTemplateConverter::CurrentSchema =
+    QStringLiteral("://schema/label_template/v1.0.0.xsd");
 
-//VLabelTemplateConverter::LabelTemplateMinVer; // <== DON'T FORGET TO UPDATE TOO!!!!
-//VLabelTemplateConverter::LabelTemplateMaxVer; // <== DON'T FORGET TO UPDATE TOO!!!!
+// VLabelTemplateConverter::LabelTemplateMinVer; // <== DON'T FORGET TO UPDATE TOO!!!!
+// VLabelTemplateConverter::LabelTemplateMaxVer; // <== DON'T FORGET TO UPDATE TOO!!!!
 
 //---------------------------------------------------------------------------------------------------------------------
-VLabelTemplateConverter::VLabelTemplateConverter(const QString &fileName)
+VLabelTemplateConverter::VLabelTemplateConverter(const QString& fileName)
     : VAbstractConverter(fileName)
 {
     ValidateInputFile(CurrentSchema);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VLabelTemplateConverter::minVer() const
-{
-    return LabelTemplateMinVer;
-}
+int VLabelTemplateConverter::minVer() const { return LabelTemplateMinVer; }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VLabelTemplateConverter::maxVer() const
-{
-    return LabelTemplateMaxVer;
-}
+int VLabelTemplateConverter::maxVer() const { return LabelTemplateMaxVer; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VLabelTemplateConverter::minVerStr() const
-{
-    return LabelTemplateMinVerStr;
-}
+QString VLabelTemplateConverter::minVerStr() const { return LabelTemplateMinVerStr; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VLabelTemplateConverter::maxVerStr() const
-{
-    return LabelTemplateMaxVerStr;
-}
+QString VLabelTemplateConverter::maxVerStr() const { return LabelTemplateMaxVerStr; }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VLabelTemplateConverter::getSchema(int ver) const
 {
-    switch (ver)
-    {
-        case (0x010000):
-            return CurrentSchema;
-        default:
-            InvalidVersion(ver);
-            break;
+    switch (ver) {
+    case (0x010000): return CurrentSchema;
+    default: InvalidVersion(ver); break;
     }
-    return QString();//unreachable code
+    return QString();   // unreachable code
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLabelTemplateConverter::applyPatches()
 {
-    switch (m_ver)
-    {
-        case (0x010000):
-            break;
-        default:
-            InvalidVersion(m_ver);
-            break;
+    switch (m_ver) {
+    case (0x010000): break;
+    default: InvalidVersion(m_ver); break;
     }
 }
 

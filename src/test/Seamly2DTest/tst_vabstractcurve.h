@@ -58,11 +58,11 @@ class TST_VAbstractCurve : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_VAbstractCurve(QObject *parent = nullptr);
+    explicit TST_VAbstractCurve(QObject* parent = nullptr);
 
 private slots:
     void isPointOnCurve_data() const;
     void isPointOnCurve() const;
 };
 
-#endif // TST_VABSTRACTCURVE_H
+#endif   // TST_VABSTRACTCURVE_H

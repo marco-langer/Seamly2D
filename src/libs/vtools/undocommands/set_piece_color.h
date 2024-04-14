@@ -25,11 +25,11 @@
 #ifndef SET_PIECE_COLOR_H
 #define SET_PIECE_COLOR_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -37,26 +37,30 @@ class SetPieceColor : public VUndoCommand
 {
     Q_OBJECT
 public:
-                 SetPieceColor(quint32 id, QString color, VContainer *data,
-                               VAbstractPattern *doc, QUndoCommand *parent = nullptr);
-    virtual     ~SetPieceColor();
+    SetPieceColor(
+        quint32 id,
+        QString color,
+        VContainer* data,
+        VAbstractPattern* doc,
+        QUndoCommand* parent = nullptr);
+    virtual ~SetPieceColor();
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
-    virtual int  id() const Q_DECL_OVERRIDE;
-    quint32      getpieceId() const;
-    QString      getColor() const;
+    virtual int id() const Q_DECL_OVERRIDE;
+    quint32 getpieceId() const;
+    QString getColor() const;
 
 signals:
-    void         updateList(quint32 m_id);
+    void updateList(quint32 m_id);
 
 private:
-                 Q_DISABLE_COPY(SetPieceColor)
-    quint32      m_id;
-    VContainer  *m_data;
-    QString      m_oldColor;
-    QString      m_newColor;
+    Q_DISABLE_COPY(SetPieceColor)
+    quint32 m_id;
+    VContainer* m_data;
+    QString m_oldColor;
+    QString m_newColor;
 
-    void         doCmd(QString color);
+    void doCmd(QString color);
 };
 
-#endif // SET_PIECE_COLOR_H
+#endif   // SET_PIECE_COLOR_H

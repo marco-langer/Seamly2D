@@ -53,12 +53,12 @@
 #ifndef VLAYOUTPAPER_P_H
 #define VLAYOUTPAPER_P_H
 
+#include <QPointF>
 #include <QSharedData>
 #include <QVector>
-#include <QPointF>
 
-#include "vlayoutpiece.h"
 #include "vcontour.h"
+#include "vlayoutpiece.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -68,43 +68,43 @@ class VLayoutPaperData : public QSharedData
 {
 public:
     VLayoutPaperData()
-        : pieces(QVector<VLayoutPiece>()),
-          globalContour(VContour()),
-          paperIndex(0),
-          frame(0),
-          layoutWidth(0),
-          globalRotate(true),
-          localRotate(true),
-          globalRotationIncrease(180),
-          localRotationIncrease(180),
-          saveLength(false)
+        : pieces(QVector<VLayoutPiece>())
+        , globalContour(VContour())
+        , paperIndex(0)
+        , frame(0)
+        , layoutWidth(0)
+        , globalRotate(true)
+        , localRotate(true)
+        , globalRotationIncrease(180)
+        , localRotationIncrease(180)
+        , saveLength(false)
     {}
 
     VLayoutPaperData(int height, int width)
-        : pieces(QVector<VLayoutPiece>()),
-          globalContour(VContour(height, width)),
-          paperIndex(0),
-          frame(0),
-          layoutWidth(0),
-          globalRotate(true),
-          localRotate(true),
-          globalRotationIncrease(180),
-          localRotationIncrease(180),
-          saveLength(false)
+        : pieces(QVector<VLayoutPiece>())
+        , globalContour(VContour(height, width))
+        , paperIndex(0)
+        , frame(0)
+        , layoutWidth(0)
+        , globalRotate(true)
+        , localRotate(true)
+        , globalRotationIncrease(180)
+        , localRotationIncrease(180)
+        , saveLength(false)
     {}
 
-    VLayoutPaperData(const VLayoutPaperData &paper)
-        : QSharedData(paper),
-          pieces(paper.pieces),
-          globalContour(paper.globalContour),
-          paperIndex(paper.paperIndex),
-          frame(paper.frame),
-          layoutWidth(paper.layoutWidth),
-          globalRotate(paper.globalRotate),
-          localRotate(paper.localRotate),
-          globalRotationIncrease(paper.globalRotationIncrease),
-          localRotationIncrease(paper.localRotationIncrease),
-          saveLength(paper.saveLength)
+    VLayoutPaperData(const VLayoutPaperData& paper)
+        : QSharedData(paper)
+        , pieces(paper.pieces)
+        , globalContour(paper.globalContour)
+        , paperIndex(paper.paperIndex)
+        , frame(paper.frame)
+        , layoutWidth(paper.layoutWidth)
+        , globalRotate(paper.globalRotate)
+        , localRotate(paper.localRotate)
+        , globalRotationIncrease(paper.globalRotationIncrease)
+        , localRotationIncrease(paper.localRotationIncrease)
+        , saveLength(paper.saveLength)
     {}
 
     ~VLayoutPaperData() {}
@@ -115,14 +115,14 @@ public:
     /** @brief globalContour list of global points contour. */
     VContour globalContour;
 
-    quint32  paperIndex;
-    quint32  frame;
-    qreal    layoutWidth;
-    bool     globalRotate;
-    bool     localRotate;
-    int      globalRotationIncrease;
-    int      localRotationIncrease;
-    bool     saveLength;
+    quint32 paperIndex;
+    quint32 frame;
+    qreal layoutWidth;
+    bool globalRotate;
+    bool localRotate;
+    int globalRotationIncrease;
+    int localRotationIncrease;
+    bool saveLength;
 
 private:
     VLayoutPaperData& operator=(const VLayoutPaperData&) Q_DECL_EQ_DELETE;
@@ -130,4 +130,4 @@ private:
 
 QT_WARNING_POP
 
-#endif // VLAYOUTPAPER_P_H
+#endif   // VLAYOUTPAPER_P_H

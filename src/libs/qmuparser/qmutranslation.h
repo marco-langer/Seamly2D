@@ -11,7 +11,8 @@
  **  The above copyright notice and this permission notice shall be included in all copies or
  **  substantial portions of the Software.
  **
- **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *BUT
  **  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  **  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  **  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -24,27 +25,23 @@
 
 #include <QString>
 
-namespace qmu
-{
+namespace qmu {
 
 /**
  * @file
  * @brief The VTranslation class help store string for translation.
  *
  * I took idea from this article http://ololoepepe.blogspot.com/2013/08/qt.html.
- * As you know, if wrap string to a function translate, it will be marked for translation. No matter what namespace
- * contains this function. In class Translation used this circumstance.
- * This mean never change name of method translate!!!!!.
- * Instead of using QT_TRANSLATE_NOOP3 macros we can store strings in QMap.
- * Example:
- * create map and fill up its
- * QMap<QString, VTranslation> map;
- * map.insert("head_girth", VTranslation::translate("Measurements", "head_girth", "Around fullest part of Head."));
- * get translated string
- * map.value(measurement).translate();
+ * As you know, if wrap string to a function translate, it will be marked for translation. No matter
+ * what namespace contains this function. In class Translation used this circumstance. This mean
+ * never change name of method translate!!!!!. Instead of using QT_TRANSLATE_NOOP3 macros we can
+ * store strings in QMap. Example: create map and fill up its QMap<QString, VTranslation> map;
+ * map.insert("head_girth", VTranslation::translate("Measurements", "head_girth", "Around fullest
+ * part of Head.")); get translated string map.value(measurement).translate();
  *
  * Hint. Define macros translate() for reducing code complexity.
- * #define translate(context, source, disambiguation) QmuTranslation::translate((context), (source), (disambiguation))
+ * #define translate(context, source, disambiguation) QmuTranslation::translate((context), (source),
+ * (disambiguation))
  *
  * Don't forget to undef macros later!
  */
@@ -52,49 +49,44 @@ class QmuTranslation
 {
 public:
     QmuTranslation();
-    ~QmuTranslation(){}
-    QmuTranslation(const QString &context, const QString &sourceText, const QString &disambiguation = nullptr,
-                   int n = -1);
-    QmuTranslation &operator=(const QmuTranslation &tr);
-    QmuTranslation(const QmuTranslation &tr);
+    ~QmuTranslation() {}
+    QmuTranslation(
+        const QString& context,
+        const QString& sourceText,
+        const QString& disambiguation = nullptr,
+        int n = -1);
+    QmuTranslation& operator=(const QmuTranslation& tr);
+    QmuTranslation(const QmuTranslation& tr);
     QString translate() const;
-    static QmuTranslation translate(const QString &context, const QString &sourceText,
-                                    const QString &disambiguation = nullptr, int n = -1);
+    static QmuTranslation translate(
+        const QString& context,
+        const QString& sourceText,
+        const QString& disambiguation = nullptr,
+        int n = -1);
     QString getMcontext() const;
     QString getMsourceText() const;
     QString getMdisambiguation() const;
-    int     getN() const;
+    int getN() const;
+
 private:
     QString mcontext;
     QString msourceText;
     QString mdisambiguation;
-    int     mn;
+    int mn;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString QmuTranslation::getMcontext() const
-{
-    return mcontext;
-}
+inline QString QmuTranslation::getMcontext() const { return mcontext; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString QmuTranslation::getMsourceText() const
-{
-    return msourceText;
-}
+inline QString QmuTranslation::getMsourceText() const { return msourceText; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString QmuTranslation::getMdisambiguation() const
-{
-    return mdisambiguation;
-}
+inline QString QmuTranslation::getMdisambiguation() const { return mdisambiguation; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline int QmuTranslation::getN() const
-{
-    return mn;
-}
+inline int QmuTranslation::getN() const { return mn; }
 
-} // namespace qmu
+}   // namespace qmu
 
-#endif // QMUTRANSLATION_H
+#endif   // QMUTRANSLATION_H

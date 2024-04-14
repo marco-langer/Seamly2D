@@ -55,80 +55,71 @@
 
 #include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/def.h"
 #include "../vtools/tools/drawTools/vdrawtool.h"
 #include "../vundocommand.h"
 #include "moveabstractlabel.h"
 
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveDoubleLabel::MoveDoubleLabel(VAbstractPattern *doc, const QPointF &pos, MoveDoublePoint type,
-                                 quint32 toolId, quint32 pointId, QUndoCommand *parent)
+MoveDoubleLabel::MoveDoubleLabel(
+    VAbstractPattern* doc,
+    const QPointF& pos,
+    MoveDoublePoint type,
+    quint32 toolId,
+    quint32 pointId,
+    QUndoCommand* parent)
     : MoveAbstractLabel(doc, pointId, pos, parent)
     , m_type(type)
     , m_idTool(toolId)
     , m_scene(qApp->getCurrentScene())
 {
-    if (type == MoveDoublePoint::FirstPoint)
-    {
+    if (type == MoveDoublePoint::FirstPoint) {
         setText(tr("move the first dart label"));
-    }
-    else
-    {
+    } else {
         setText(tr("move the second dart label"));
     }
 
     const QDomElement domElement = doc->elementById(m_idTool, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
-        if (type == MoveDoublePoint::FirstPoint)
-        {
+    if (domElement.isElement()) {
+        if (type == MoveDoublePoint::FirstPoint) {
             m_oldPos.rx() = qApp->toPixel(doc->GetParametrDouble(domElement, AttrMx1, "0.0"));
             m_oldPos.ry() = qApp->toPixel(doc->GetParametrDouble(domElement, AttrMy1, "0.0"));
 
             qCDebug(vUndo, "Label old Mx1 %f", m_oldPos.x());
             qCDebug(vUndo, "Label old My1 %f", m_oldPos.y());
-        }
-        else
-        {
+        } else {
             m_oldPos.rx() = qApp->toPixel(doc->GetParametrDouble(domElement, AttrMx2, "0.0"));
             m_oldPos.ry() = qApp->toPixel(doc->GetParametrDouble(domElement, AttrMy2, "0.0"));
 
             qCDebug(vUndo, "Label old Mx2 %f", m_oldPos.x());
             qCDebug(vUndo, "Label old My2 %f", m_oldPos.y());
         }
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
         return;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MoveDoubleLabel::mergeWith(const QUndoCommand *command)
+bool MoveDoubleLabel::mergeWith(const QUndoCommand* command)
 {
-    const MoveDoubleLabel *moveCommand = static_cast<const MoveDoubleLabel *>(command);
+    const MoveDoubleLabel* moveCommand = static_cast<const MoveDoubleLabel*>(command);
     SCASSERT(moveCommand != nullptr)
 
-    if (moveCommand->GetPointId() != nodeId ||
-        moveCommand->GetPointType() != m_type ||
-        moveCommand->GetToolId() != m_idTool)
-    {
+    if (moveCommand->GetPointId() != nodeId || moveCommand->GetPointType() != m_type
+        || moveCommand->GetToolId() != m_idTool) {
         return false;
     }
 
     m_newPos = moveCommand->GetNewPos();
 
-    if (m_type == MoveDoublePoint::FirstPoint)
-    {
+    if (m_type == MoveDoublePoint::FirstPoint) {
         qCDebug(vUndo, "Label new Mx1 %f", m_newPos.x());
         qCDebug(vUndo, "Label new My1 %f", m_newPos.y());
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Label new Mx2 %f", m_newPos.x());
         qCDebug(vUndo, "Label new My2 %f", m_newPos.y());
     }
@@ -136,46 +127,33 @@ bool MoveDoubleLabel::mergeWith(const QUndoCommand *command)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int MoveDoubleLabel::id() const
-{
-    return static_cast<int>(UndoCommand::MoveDoubleLabel);
-}
+int MoveDoubleLabel::id() const { return static_cast<int>(UndoCommand::MoveDoubleLabel); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MoveDoubleLabel::Do(const QPointF &pos)
+void MoveDoubleLabel::Do(const QPointF& pos)
 {
-    if (m_type == MoveDoublePoint::FirstPoint)
-    {
+    if (m_type == MoveDoublePoint::FirstPoint) {
         qCDebug(vUndo, "New mx1 %f", pos.x());
         qCDebug(vUndo, "New my1 %f", pos.y());
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "New mx2 %f", pos.x());
         qCDebug(vUndo, "New my2 %f", pos.y());
     }
 
     QDomElement domElement = doc->elementById(m_idTool, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
-        if (m_type == MoveDoublePoint::FirstPoint)
-        {
+    if (domElement.isElement()) {
+        if (m_type == MoveDoublePoint::FirstPoint) {
             doc->SetAttribute(domElement, AttrMx1, QString().setNum(qApp->fromPixel(pos.x())));
             doc->SetAttribute(domElement, AttrMy1, QString().setNum(qApp->fromPixel(pos.y())));
-        }
-        else
-        {
+        } else {
             doc->SetAttribute(domElement, AttrMx2, QString().setNum(qApp->fromPixel(pos.x())));
             doc->SetAttribute(domElement, AttrMy2, QString().setNum(qApp->fromPixel(pos.y())));
         }
 
-        if (VDrawTool *tool = qobject_cast<VDrawTool *>(VAbstractPattern::getTool(m_idTool)))
-        {
+        if (VDrawTool* tool = qobject_cast<VDrawTool*>(VAbstractPattern::getTool(m_idTool))) {
             tool->setPointNamePosition(nodeId, pos);
         }
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
     }
 }

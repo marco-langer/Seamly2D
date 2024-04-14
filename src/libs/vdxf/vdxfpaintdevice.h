@@ -29,11 +29,11 @@
 #ifndef VDXFPAINTDEVICE_H
 #define VDXFPAINTDEVICE_H
 
-#include <qcompilerdetection.h>
 #include <QPaintDevice>
 #include <QSize>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "dxfdef.h"
 #include "libdxfrw/drw_base.h"
@@ -46,34 +46,35 @@ class VDxfPaintDevice : public QPaintDevice
 public:
     VDxfPaintDevice();
     virtual ~VDxfPaintDevice() Q_DECL_OVERRIDE;
-    virtual QPaintEngine *paintEngine() const Q_DECL_OVERRIDE;
+    virtual QPaintEngine* paintEngine() const Q_DECL_OVERRIDE;
 
     QString getFileName() const;
-    void setFileName(const QString &value);
+    void setFileName(const QString& value);
 
     QSize getSize();
-    void setSize(const QSize &size);
+    void setSize(const QSize& size);
 
     double getResolution() const;
-    void   setResolution(double dpi);
+    void setResolution(double dpi);
 
     DRW::Version GetVersion() const;
-    void         setVersion(DRW::Version version);
+    void setVersion(DRW::Version version);
 
     void SetBinaryFormat(bool binary);
     bool IsBinaryFormat() const;
 
-    void setMeasurement(const VarMeasurement &var);
-    void setInsunits(const VarInsunits &var);
+    void setMeasurement(const VarMeasurement& var);
+    void setInsunits(const VarInsunits& var);
 
-    bool ExportToAAMA(const QVector<VLayoutPiece> &details) const;
+    bool ExportToAAMA(const QVector<VLayoutPiece>& details) const;
 
 protected:
     virtual int metric(PaintDeviceMetric metric) const Q_DECL_OVERRIDE;
+
 private:
     Q_DISABLE_COPY(VDxfPaintDevice)
-    VDxfEngine *engine;
-    QString     fileName;
+    VDxfEngine* engine;
+    QString fileName;
 };
 
-#endif // VDXFPAINTDEVICE_H
+#endif   // VDXFPAINTDEVICE_H

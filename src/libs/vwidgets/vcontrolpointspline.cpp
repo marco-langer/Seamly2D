@@ -66,16 +66,17 @@
 #include <QRectF>
 #include <Qt>
 
-#include "../vwidgets/global.h"
-#include "../vmisc/vabstractapplication.h"
 #include "../vgeometry/vgobject.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vwidgets/global.h"
+#include "scalesceneitems.h"
+#include "vgraphicssimpletextitem.h"
 #include "vmaingraphicsscene.h"
 #include "vmaingraphicsview.h"
-#include "vgraphicssimpletextitem.h"
-#include "scalesceneitems.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VControlPointSpline::VControlPointSpline(const qint32 &indexSpline, SplinePointPosition position, QGraphicsItem *parent)
+VControlPointSpline::VControlPointSpline(
+    const qint32& indexSpline, SplinePointPosition position, QGraphicsItem* parent)
     : SceneRect(QColor(Qt::red), parent)
     , controlLine(nullptr)
     , indexSpline(indexSpline)
@@ -95,9 +96,14 @@ VControlPointSpline::VControlPointSpline(const qint32 &indexSpline, SplinePointP
  * @param splinePoint spline point.
  * @param parent parent object.
  */
-VControlPointSpline::VControlPointSpline(const qint32 &indexSpline, SplinePointPosition position,
-                                         const QPointF &controlPoint, const QPointF &splinePoint, bool freeAngle,
-                                         bool freeLength, QGraphicsItem *parent)
+VControlPointSpline::VControlPointSpline(
+    const qint32& indexSpline,
+    SplinePointPosition position,
+    const QPointF& controlPoint,
+    const QPointF& splinePoint,
+    bool freeAngle,
+    bool freeLength,
+    QGraphicsItem* parent)
     : SceneRect(QColor(Qt::red), parent)
     , controlLine(nullptr)
     , indexSpline(indexSpline)
@@ -116,7 +122,8 @@ VControlPointSpline::VControlPointSpline(const qint32 &indexSpline, SplinePointP
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VControlPointSpline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VControlPointSpline::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     QPen lPen = controlLine->pen();
     lPen.setColor(correctColor(controlLine, Qt::black));
@@ -130,20 +137,18 @@ void VControlPointSpline::paint(QPainter *painter, const QStyleOptionGraphicsIte
  * @brief hoverEnterEvent handle hover enter events.
  * @param event hover move event.
  */
-void VControlPointSpline::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void VControlPointSpline::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
-    if (freeAngle || freeLength)
-    {
+    if (freeAngle || freeLength) {
         SetItemOverrideCursor(this, cursorArrowOpenHand, 1, 1);
     }
     SceneRect::hoverEnterEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VControlPointSpline::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void VControlPointSpline::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
-    if (freeAngle || freeLength)
-    {
+    if (freeAngle || freeLength) {
         setCursor(QCursor());
     }
     SceneRect::hoverLeaveEvent(event);
@@ -156,92 +161,81 @@ void VControlPointSpline::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
  * @param value value.
  * @return value.
  */
-QVariant VControlPointSpline::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+QVariant
+VControlPointSpline::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
 {
-    switch (change)
-    {
-        case ItemPositionChange:
-        {
-            if (not freeAngle || not freeLength)
-            {
-                const QPointF splPoint = controlLine->line().p1() + pos();
+    switch (change) {
+    case ItemPositionChange: {
+        if (not freeAngle || not freeLength) {
+            const QPointF splPoint = controlLine->line().p1() + pos();
 
-                QLineF newLine(splPoint, value.toPointF());// value - new position.
-                QLineF oldLine(splPoint, pos());// pos() - old position.
+            QLineF newLine(splPoint, value.toPointF());   // value - new position.
+            QLineF oldLine(splPoint, pos());              // pos() - old position.
 
-                if (not freeAngle)
-                {
-                    newLine.setAngle(oldLine.angle());
-                }
-
-                if (not freeLength)
-                {
-                    newLine.setLength(oldLine.length());
-                }
-
-                return newLine.p2();
+            if (not freeAngle) {
+                newLine.setAngle(oldLine.angle());
             }
 
-            break;
+            if (not freeLength) {
+                newLine.setLength(oldLine.length());
+            }
+
+            return newLine.p2();
         }
-        case ItemPositionHasChanged:
-        {
-            // Each time we move something we call recalculation scene rect. In some cases this can cause moving
-            // objects positions. And this cause infinite redrawing. That's why we wait the finish of saving the last
-            // move.
-            static bool changeFinished = true;
-            if (changeFinished)
-            {
-                changeFinished = false;
-                // value - new position.
-                emit ControlPointChangePosition(indexSpline, position, value.toPointF());
-                if (scene())
-                {
-                    const QList<QGraphicsView *> viewList = scene()->views();
-                    if (not viewList.isEmpty())
-                    {
-                        if (QGraphicsView *view = viewList.at(0))
-                        {
-                            const int xmargin = 50;
-                            const int ymargin = 50;
 
-                            const QRectF viewRect = VMainGraphicsView::SceneVisibleArea(view);
-                            const QRectF itemRect = mapToScene(boundingRect()).boundingRect();
+        break;
+    }
+    case ItemPositionHasChanged: {
+        // Each time we move something we call recalculation scene rect. In some cases this can
+        // cause moving objects positions. And this cause infinite redrawing. That's why we wait the
+        // finish of saving the last move.
+        static bool changeFinished = true;
+        if (changeFinished) {
+            changeFinished = false;
+            // value - new position.
+            emit ControlPointChangePosition(indexSpline, position, value.toPointF());
+            if (scene()) {
+                const QList<QGraphicsView*> viewList = scene()->views();
+                if (not viewList.isEmpty()) {
+                    if (QGraphicsView* view = viewList.at(0)) {
+                        const int xmargin = 50;
+                        const int ymargin = 50;
 
-                            // If item's rect is bigger than view's rect ensureVisible works very unstable.
-                            if (itemRect.height() + 2*ymargin < viewRect.height() &&
-                                itemRect.width() + 2*xmargin < viewRect.width())
-                            {
-                                 view->ensureVisible(itemRect, xmargin, ymargin);
-                            }
-                            else
-                            {
-                                // Ensure visible only small rect around a cursor
-                                VMainGraphicsScene *currentScene = qobject_cast<VMainGraphicsScene *>(scene());
-                                SCASSERT(currentScene)
-                                const QPointF cursorPosition = currentScene->getScenePos();
-                                view->ensureVisible(QRectF(cursorPosition.x()-5, cursorPosition.y()-5, 10, 10));
-                            }
+                        const QRectF viewRect = VMainGraphicsView::SceneVisibleArea(view);
+                        const QRectF itemRect = mapToScene(boundingRect()).boundingRect();
+
+                        // If item's rect is bigger than view's rect ensureVisible works very
+                        // unstable.
+                        if (itemRect.height() + 2 * ymargin < viewRect.height()
+                            && itemRect.width() + 2 * xmargin < viewRect.width()) {
+                            view->ensureVisible(itemRect, xmargin, ymargin);
+                        } else {
+                            // Ensure visible only small rect around a cursor
+                            VMainGraphicsScene* currentScene =
+                                qobject_cast<VMainGraphicsScene*>(scene());
+                            SCASSERT(currentScene)
+                            const QPointF cursorPosition = currentScene->getScenePos();
+                            view->ensureVisible(
+                                QRectF(cursorPosition.x() - 5, cursorPosition.y() - 5, 10, 10));
                         }
                     }
                 }
-                changeFinished = true;
             }
-            break;
+            changeFinished = true;
         }
-        default:
-            break;
+        break;
+    }
+    default: break;
     }
     return SceneRect::itemChange(change, value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VControlPointSpline::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void VControlPointSpline::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton && event->type() != QEvent::GraphicsSceneMouseDoubleClick)
-    {
-        if (freeAngle || freeLength)
-        {
+    if (event->button() == Qt::LeftButton
+        && event->type() != QEvent::GraphicsSceneMouseDoubleClick) {
+        if (freeAngle || freeLength) {
             SetItemOverrideCursor(this, cursorArrowCloseHand, 1, 1);
         }
     }
@@ -249,12 +243,11 @@ void VControlPointSpline::mousePressEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VControlPointSpline::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void VControlPointSpline::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton && event->type() != QEvent::GraphicsSceneMouseDoubleClick)
-    {
-        if (freeAngle || freeLength)
-        {
+    if (event->button() == Qt::LeftButton
+        && event->type() != QEvent::GraphicsSceneMouseDoubleClick) {
+        if (freeAngle || freeLength) {
             SetItemOverrideCursor(this, cursorArrowOpenHand, 1, 1);
         }
     }
@@ -262,7 +255,7 @@ void VControlPointSpline::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VControlPointSpline::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+void VControlPointSpline::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
     emit showContextMenu(event);
 }
@@ -280,12 +273,16 @@ void VControlPointSpline::init()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VControlPointSpline::setCtrlLine(const QPointF &controlPoint, const QPointF &splinePoint)
+void VControlPointSpline::setCtrlLine(const QPointF& controlPoint, const QPointF& splinePoint)
 {
     QPointF p1, p2;
-    VGObject::LineIntersectCircle(QPointF(), scaledRadius(sceneScale(scene())),
-                                  QLineF( QPointF(), splinePoint-controlPoint), p1, p2);
-    controlLine->setLine(QLineF(splinePoint-controlPoint, p1));
+    VGObject::LineIntersectCircle(
+        QPointF(),
+        scaledRadius(sceneScale(scene())),
+        QLineF(QPointF(), splinePoint - controlPoint),
+        p1,
+        p2);
+    controlLine->setLine(QLineF(splinePoint - controlPoint, p1));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -296,12 +293,15 @@ void VControlPointSpline::setCtrlLine(const QPointF &controlPoint, const QPointF
  * @param controlPoint control point.
  * @param splinePoint spline point.
  */
-void VControlPointSpline::refreshCtrlPoint(const qint32 &indexSpline, SplinePointPosition pos,
-                                           const QPointF &controlPoint, const QPointF &splinePoint, bool freeAngle,
-                                           bool freeLength)
+void VControlPointSpline::refreshCtrlPoint(
+    const qint32& indexSpline,
+    SplinePointPosition pos,
+    const QPointF& controlPoint,
+    const QPointF& splinePoint,
+    bool freeAngle,
+    bool freeLength)
 {
-    if (this->indexSpline == indexSpline && this->position == pos)
-    {
+    if (this->indexSpline == indexSpline && this->position == pos) {
         this->freeAngle = freeAngle;
         this->freeLength = freeLength;
         this->setPos(controlPoint);

@@ -67,8 +67,8 @@
 #include <Qt>
 #include <new>
 
-#include "../../visualization/visualization.h"
 #include "../../visualization/line/operation/vistoolmirrorbyaxis.h"
+#include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../qmuparser/qmudef.h"
@@ -81,7 +81,8 @@
 #include "ui_dialogmirrorbyaxis.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogMirrorByAxis::DialogMirrorByAxis(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogMirrorByAxis::DialogMirrorByAxis(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogMirrorByAxis)
     , m_objects()
@@ -92,7 +93,8 @@ DialogMirrorByAxis::DialogMirrorByAxis(const VContainer *data, const quint32 &to
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowIcon(QIcon(":/toolicon/32x32/mirror_by_axis.png"));
 
-    ui->suffix_LineEdit->setText(qApp->getCurrentDocument()->GenerateSuffix(qApp->Settings()->getMirrorByAxisSuffix()));
+    ui->suffix_LineEdit->setText(
+        qApp->getCurrentDocument()->GenerateSuffix(qApp->Settings()->getMirrorByAxisSuffix()));
 
     initializeOkCancelApply(ui);
 
@@ -102,17 +104,18 @@ DialogMirrorByAxis::DialogMirrorByAxis(const VContainer *data, const quint32 &to
     flagName = true;
     CheckState();
 
-    connect(ui->suffix_LineEdit,      &QLineEdit::textChanged,        this, &DialogMirrorByAxis::suffixChanged);
-    connect(ui->originPoint_ComboBox, &QComboBox::currentTextChanged, this, &DialogMirrorByAxis::pointChanged);
+    connect(ui->suffix_LineEdit, &QLineEdit::textChanged, this, &DialogMirrorByAxis::suffixChanged);
+    connect(
+        ui->originPoint_ComboBox,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogMirrorByAxis::pointChanged);
 
     vis = new VisToolMirrorByAxis(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogMirrorByAxis::~DialogMirrorByAxis()
-{
-    delete ui;
-}
+DialogMirrorByAxis::~DialogMirrorByAxis() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 quint32 DialogMirrorByAxis::getOriginPointId() const
@@ -124,7 +127,7 @@ quint32 DialogMirrorByAxis::getOriginPointId() const
 void DialogMirrorByAxis::setOriginPointId(quint32 value)
 {
     ChangeCurrentData(ui->originPoint_ComboBox, value);
-    VisToolMirrorByAxis *operation = qobject_cast<VisToolMirrorByAxis *>(vis);
+    VisToolMirrorByAxis* operation = qobject_cast<VisToolMirrorByAxis*>(vis);
     SCASSERT(operation != nullptr)
     operation->setOriginPointId(value);
 }
@@ -139,41 +142,34 @@ AxisType DialogMirrorByAxis::getAxisType() const
 void DialogMirrorByAxis::setAxisType(AxisType type)
 {
     auto index = ui->axisType_ComboBox->findData(static_cast<int>(type));
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->axisType_ComboBox->setCurrentIndex(index);
 
-        auto operation = qobject_cast<VisToolMirrorByAxis *>(vis);
+        auto operation = qobject_cast<VisToolMirrorByAxis*>(vis);
         SCASSERT(operation != nullptr)
         operation->setAxisType(type);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogMirrorByAxis::getSuffix() const
-{
-    return m_suffix;
-}
+QString DialogMirrorByAxis::getSuffix() const { return m_suffix; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByAxis::setSuffix(const QString &value)
+void DialogMirrorByAxis::setSuffix(const QString& value)
 {
     m_suffix = value;
     ui->suffix_LineEdit->setText(value);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<SourceItem> DialogMirrorByAxis::getSourceObjects() const
-{
-    return m_objects;
-}
+QVector<SourceItem> DialogMirrorByAxis::getSourceObjects() const { return m_objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByAxis::setSourceObjects(const QVector<SourceItem> &value)
+void DialogMirrorByAxis::setSourceObjects(const QVector<SourceItem>& value)
 {
     m_objects = value;
 
-    VisToolMirrorByAxis *operation = qobject_cast<VisToolMirrorByAxis *>(vis);
+    VisToolMirrorByAxis* operation = qobject_cast<VisToolMirrorByAxis*>(vis);
     SCASSERT(operation != nullptr)
     operation->setObjects(sourceToObjects(m_objects));
 }
@@ -181,20 +177,18 @@ void DialogMirrorByAxis::setSourceObjects(const QVector<SourceItem> &value)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByAxis::ShowDialog(bool click)
 {
-    if (stage1 && not click)
-    {
-        if (m_objects.isEmpty())
-        {
+    if (stage1 && not click) {
+        if (m_objects.isEmpty()) {
             return;
         }
 
         stage1 = false;
 
-        VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+        VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
         SCASSERT(scene != nullptr)
         scene->clearSelection();
 
-        VisToolMirrorByAxis *operation = qobject_cast<VisToolMirrorByAxis *>(vis);
+        VisToolMirrorByAxis* operation = qobject_cast<VisToolMirrorByAxis*>(vis);
         SCASSERT(operation != nullptr)
         operation->setObjects(sourceToObjects(m_objects));
         operation->VisualMode();
@@ -212,9 +206,7 @@ void DialogMirrorByAxis::ShowDialog(bool click)
         qApp->getSceneView()->allowRubberBand(false);
 
         emit ToolTip(tr("Select axis rotation point"));
-    }
-    else if (not stage1 && prepare && click)
-    {
+    } else if (not stage1 && prepare && click) {
         CheckState();
         setModal(true);
         emit ToolTip("");
@@ -223,24 +215,24 @@ void DialogMirrorByAxis::ShowDialog(bool click)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByAxis::ChosenObject(quint32 id, const SceneObject &type)
+void DialogMirrorByAxis::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (not stage1 && not prepare)// After first choose we ignore all objects
+    if (not stage1 && not prepare)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            auto object = std::find_if(m_objects.begin(), m_objects.end(),
-                                    [id](const SourceItem &item) { return item.id == id; });
+        if (type == SceneObject::Point) {
+            auto object =
+                std::find_if(m_objects.begin(), m_objects.end(), [id](const SourceItem& item) {
+                    return item.id == id;
+                });
 
-            if (object != m_objects.end())
-            {
-                emit ToolTip(tr("Select axis rotation point that is not part of the list of objects"));
+            if (object != m_objects.end()) {
+                emit ToolTip(
+                    tr("Select axis rotation point that is not part of the list of objects"));
                 return;
             }
 
-            if (SetObject(id, ui->originPoint_ComboBox, ""))
-            {
-                VisToolMirrorByAxis *operation = qobject_cast<VisToolMirrorByAxis *>(vis);
+            if (SetObject(id, ui->originPoint_ComboBox, "")) {
+                VisToolMirrorByAxis* operation = qobject_cast<VisToolMirrorByAxis*>(vis);
                 SCASSERT(operation != nullptr)
                 operation->setOriginPointId(id);
                 operation->RefreshGeometry();
@@ -255,24 +247,20 @@ void DialogMirrorByAxis::ChosenObject(quint32 id, const SceneObject &type)
 void DialogMirrorByAxis::SelectedObject(bool selected, quint32 id, quint32 tool)
 {
     Q_UNUSED(tool)
-    if (stage1)
-    {
-        auto object = std::find_if(m_objects.begin(), m_objects.end(),
-                                     [id](const SourceItem &item) { return item.id == id; });
+    if (stage1) {
+        auto object =
+            std::find_if(m_objects.begin(), m_objects.end(), [id](const SourceItem& item) {
+                return item.id == id;
+            });
 
-        if (selected)
-        {
-            if (object == m_objects.cend())
-            {
+        if (selected) {
+            if (object == m_objects.cend()) {
                 SourceItem item;
                 item.id = id;
                 m_objects.append(item);
             }
-        }
-        else
-        {
-            if (object != m_objects.end())
-            {
+        } else {
+            if (object != m_objects.end()) {
                 m_objects.erase(object);
             }
         }
@@ -283,27 +271,20 @@ void DialogMirrorByAxis::SelectedObject(bool selected, quint32 id, quint32 tool)
 void DialogMirrorByAxis::suffixChanged()
 {
     QLineEdit* edit = qobject_cast<QLineEdit*>(sender());
-    if (edit)
-    {
+    if (edit) {
         const QString suffix = edit->text();
-        if (suffix.isEmpty())
-        {
+        if (suffix.isEmpty()) {
             flagName = false;
             ChangeColor(ui->suffix_Label, Qt::red);
             CheckState();
             return;
-        }
-        else
-        {
-            if (m_suffix != suffix)
-            {
+        } else {
+            if (m_suffix != suffix) {
                 QRegularExpression rx(NameRegExp());
                 const QStringList uniqueNames = VContainer::AllUniqueNames();
-                for (int i=0; i < uniqueNames.size(); ++i)
-                {
+                for (int i = 0; i < uniqueNames.size(); ++i) {
                     const QString name = uniqueNames.at(i) + suffix;
-                    if (not rx.match(name).hasMatch() || not data->IsUnique(name))
-                    {
+                    if (not rx.match(name).hasMatch() || not data->IsUnique(name)) {
                         flagName = false;
                         ChangeColor(ui->suffix_Label, Qt::red);
                         CheckState();
@@ -329,17 +310,14 @@ void DialogMirrorByAxis::CheckState()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByAxis::ShowVisualization()
-{
-    AddVisualization<VisToolMirrorByAxis>();
-}
+void DialogMirrorByAxis::ShowVisualization() { AddVisualization<VisToolMirrorByAxis>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByAxis::SaveData()
 {
     m_suffix = ui->suffix_LineEdit->text();
 
-    VisToolMirrorByAxis *operation = qobject_cast<VisToolMirrorByAxis *>(vis);
+    VisToolMirrorByAxis* operation = qobject_cast<VisToolMirrorByAxis*>(vis);
     SCASSERT(operation != nullptr)
 
     operation->setObjects(sourceToObjects(m_objects));
@@ -353,16 +331,13 @@ void DialogMirrorByAxis::pointChanged()
 {
     QColor color = okColor;
     quint32 id = getCurrentObjectId(ui->originPoint_ComboBox);
-    auto objectId = std::find_if(m_objects.begin(), m_objects.end(),
-                                 [id](const SourceItem &item) { return item.id == id;});
+    auto objectId = std::find_if(
+        m_objects.begin(), m_objects.end(), [id](const SourceItem& item) { return item.id == id; });
 
-    if (objectId != m_objects.end())
-    {
+    if (objectId != m_objects.end()) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -371,7 +346,7 @@ void DialogMirrorByAxis::pointChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogMirrorByAxis::fillComboBoxAxisType(QComboBox *box)
+void DialogMirrorByAxis::fillComboBoxAxisType(QComboBox* box)
 {
     SCASSERT(box != nullptr)
 

@@ -33,7 +33,7 @@
 
 
 //---------------------------------------------------------------------------------------------------------------------
-SeamlyWelcomeDialog::SeamlyWelcomeDialog(QWidget *parent)
+SeamlyWelcomeDialog::SeamlyWelcomeDialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::SeamlyWelcomeDialog)
     , m_langChanged(false)
@@ -47,42 +47,46 @@ SeamlyWelcomeDialog::SeamlyWelcomeDialog(QWidget *parent)
     initUnits(MeasurementsType::Individual);
 
     //-------------------- Decimal separator setup
-    ui->separator_CheckBox->setText(tr("User locale") + QString(" (%1)").arg(QLocale().decimalPoint()));
+    ui->separator_CheckBox->setText(
+        tr("User locale") + QString(" (%1)").arg(QLocale().decimalPoint()));
     ui->separator_CheckBox->setChecked(settings->getOsSeparator());
-    connect(ui->separator_CheckBox, &QCheckBox::stateChanged, this, &SeamlyWelcomeDialog::seperatorChanged);
+    connect(
+        ui->separator_CheckBox,
+        &QCheckBox::stateChanged,
+        this,
+        &SeamlyWelcomeDialog::seperatorChanged);
 
     //-------------------- Languages setup
     InitLanguages(ui->language_ComboBox);
-    connect(ui->language_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, [this]()
-    {
-        m_langChanged = true;
-    });
+    connect(
+        ui->language_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() { m_langChanged = true; });
 
     //-------------------- Selection sound
     int index = ui->selectionSound_ComboBox->findText(settings->getSound());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->selectionSound_ComboBox->setCurrentIndex(index);
     }
-    connect(ui->selectionSound_ComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [this]()
-    {
-        m_selectionSoundChanged = true;
-        QSound::play("qrc:/sounds/" + ui->selectionSound_ComboBox->currentText() + ".wav");
-    });
+    connect(
+        ui->selectionSound_ComboBox,
+        static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        this,
+        [this]() {
+            m_selectionSoundChanged = true;
+            QSound::play("qrc:/sounds/" + ui->selectionSound_ComboBox->currentText() + ".wav");
+        });
 
     ui->doNotShow_CheckBox->setChecked(settings->getShowWelcome());
 
-    QPushButton *ok_Button = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* ok_Button = ui->buttonBox->button(QDialogButtonBox::Ok);
     SCASSERT(ok_Button != nullptr)
     connect(ok_Button, &QPushButton::clicked, this, &SeamlyWelcomeDialog::apply);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SeamlyWelcomeDialog::~SeamlyWelcomeDialog()
-{
-    delete ui;
-}
+SeamlyWelcomeDialog::~SeamlyWelcomeDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // @brief apply apply dialog changes
@@ -93,15 +97,13 @@ void SeamlyWelcomeDialog::apply()
     settings->getOsSeparator() ? setLocale(QLocale()) : setLocale(QLocale::c());
     settings->setShowWelcome(ui->doNotShow_CheckBox->isChecked());
 
-    if (m_langChanged)
-    {
+    if (m_langChanged) {
         const QString locale = qvariant_cast<QString>(ui->language_ComboBox->currentData());
         settings->setLocale(locale);
         m_langChanged = false;
     }
 
-    if (m_selectionSoundChanged)
-    {
+    if (m_selectionSoundChanged) {
         const QString sound = qvariant_cast<QString>(ui->selectionSound_ComboBox->currentText());
         settings->setSelectionSound(sound);
         m_selectionSoundChanged = false;
@@ -113,13 +115,13 @@ void SeamlyWelcomeDialog::apply()
 //---------------------------------------------------------------------------------------------------------------------
 // @brief changeEvent handle event changes
 // @param type event type
-void SeamlyWelcomeDialog::changeEvent(QEvent *event)
+void SeamlyWelcomeDialog::changeEvent(QEvent* event)
 {
-    if (event->type() == QEvent::LanguageChange)
-    {
+    if (event->type() == QEvent::LanguageChange) {
         // retranslate designer form (single inheritance approach)
         ui->retranslateUi(this);
-        ui->separator_CheckBox->setText(tr("User locale") + QString(" (%1)").arg(QLocale().decimalPoint()));
+        ui->separator_CheckBox->setText(
+            tr("User locale") + QString(" (%1)").arg(QLocale().decimalPoint()));
     }
 
     // remember to call base class implementation
@@ -139,16 +141,15 @@ void SeamlyWelcomeDialog::seperatorChanged()
 //---------------------------------------------------------------------------------------------------------------------
 // @brief initUnits initinailize the units combobox
 // @param type measurment type
-void SeamlyWelcomeDialog::initUnits(const MeasurementsType &type)
+void SeamlyWelcomeDialog::initUnits(const MeasurementsType& type)
 {
     ui->units_ComboBox->addItem(tr("Centimeters"), unitCM);
     ui->units_ComboBox->addItem(tr("Millimeters"), unitMM);
-    ui->units_ComboBox->addItem(tr("Inches")     , unitINCH);
+    ui->units_ComboBox->addItem(tr("Inches"), unitINCH);
 
     // set default unit
     const qint32 index = ui->units_ComboBox->findData(settings->GetUnit());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->units_ComboBox->setCurrentIndex(index);
     }
 }

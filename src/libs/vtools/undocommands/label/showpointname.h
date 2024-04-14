@@ -32,19 +32,19 @@ class QGraphicsScene;
 class ShowPointName : public VUndoCommand
 {
 public:
-                    ShowPointName(VAbstractPattern *doc, quint32 id, bool visible, QUndoCommand *parent = nullptr);
-    virtual        ~ShowPointName()=default;
-    virtual void    undo() override;
-    virtual void    redo() override;
+    ShowPointName(VAbstractPattern* doc, quint32 id, bool visible, QUndoCommand* parent = nullptr);
+    virtual ~ShowPointName() = default;
+    virtual void undo() override;
+    virtual void redo() override;
 
 private:
-                    Q_DISABLE_COPY(ShowPointName)
-    bool            m_visible;
-    bool            m_oldVisible;
+    Q_DISABLE_COPY(ShowPointName)
+    bool m_visible;
+    bool m_oldVisible;
 
-    QGraphicsScene *m_scene; //Need for resizing scene rect
+    QGraphicsScene* m_scene;   // Need for resizing scene rect
 
-    void            setVisibility(bool visible);
+    void setVisibility(bool visible);
 };
 
-#endif // SHOWPOINTNAME_H
+#endif   // SHOWPOINTNAME_H

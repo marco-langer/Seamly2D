@@ -58,10 +58,10 @@ class TST_VLockGuard : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VLockGuard(QObject *parent = nullptr);
+    explicit TST_VLockGuard(QObject* parent = nullptr);
 
 private slots:
     void TryLock() const;
 };
 
-#endif // TST_VLOCKGUARD_H
+#endif   // TST_VLOCKGUARD_H

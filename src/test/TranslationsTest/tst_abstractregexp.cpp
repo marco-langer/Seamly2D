@@ -52,21 +52,20 @@
 #include "tst_abstractregexp.h"
 #include "../qmuparser/qmudef.h"
 
+#include "../ifc/ifcdef.h"
 #include "../vmisc/logging.h"
 #include "../vpatterndb/vtranslatevars.h"
-#include "../ifc/ifcdef.h"
 
-#include <QtTest>
 #include <QTranslator>
+#include <QtTest>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_AbstractRegExp::TST_AbstractRegExp(const QString &locale, QObject *parent)
-    : AbstractTest(parent),
-    m_locale(locale),
-    m_vTranslator(nullptr),
-    m_trMs(nullptr)
-{
-}
+TST_AbstractRegExp::TST_AbstractRegExp(const QString& locale, QObject* parent)
+    : AbstractTest(parent)
+    , m_locale(locale)
+    , m_vTranslator(nullptr)
+    , m_trMs(nullptr)
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 TST_AbstractRegExp::~TST_AbstractRegExp()
@@ -76,14 +75,14 @@ TST_AbstractRegExp::~TST_AbstractRegExp()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int TST_AbstractRegExp::LoadVariables(const QString &checkedLocale)
+int TST_AbstractRegExp::LoadVariables(const QString& checkedLocale)
 {
     const QString path = TranslationsPath();
     const QString file = QString("seamly2d_%1.qm").arg(checkedLocale);
 
-    if (QFileInfo(path+QLatin1String("/")+file).size() <= 34)
-    {
-        const QString message = QString("Translation variables for locale = %1 is empty. \nFull path: %2/%3")
+    if (QFileInfo(path + QLatin1String("/") + file).size() <= 34) {
+        const QString message =
+            QString("Translation variables for locale = %1 is empty. \nFull path: %2/%3")
                 .arg(checkedLocale)
                 .arg(path)
                 .arg(file);
@@ -94,9 +93,9 @@ int TST_AbstractRegExp::LoadVariables(const QString &checkedLocale)
 
     m_vTranslator = new QTranslator(this);
 
-    if (not m_vTranslator->load(file, path))
-    {
-        const QString message = QString("Can't load translation variables for locale = %1. \nFull path: %2/%3")
+    if (not m_vTranslator->load(file, path)) {
+        const QString message =
+            QString("Can't load translation variables for locale = %1. \nFull path: %2/%3")
                 .arg(checkedLocale)
                 .arg(path)
                 .arg(file);
@@ -107,9 +106,9 @@ int TST_AbstractRegExp::LoadVariables(const QString &checkedLocale)
         return ErrorLoad;
     }
 
-    if (not QCoreApplication::installTranslator(m_vTranslator))
-    {
-        const QString message = QString("Can't install translation variables for locale = %1. \nFull path: %2/%3")
+    if (not QCoreApplication::installTranslator(m_vTranslator)) {
+        const QString message =
+            QString("Can't install translation variables for locale = %1. \nFull path: %2/%3")
                 .arg(checkedLocale)
                 .arg(path)
                 .arg(file);
@@ -124,16 +123,14 @@ int TST_AbstractRegExp::LoadVariables(const QString &checkedLocale)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_AbstractRegExp::RemoveTrVariables(const QString &checkedLocale)
+void TST_AbstractRegExp::RemoveTrVariables(const QString& checkedLocale)
 {
-    if (not m_vTranslator.isNull())
-    {
+    if (not m_vTranslator.isNull()) {
         const bool result = QCoreApplication::removeTranslator(m_vTranslator);
 
-        if (result == false)
-        {
-            const QString message = QString("Can't remove translation variables for locale = %1")
-                    .arg(checkedLocale);
+        if (result == false) {
+            const QString message =
+                QString("Can't remove translation variables for locale = %1").arg(checkedLocale);
             QWARN(qUtf8Printable(message));
         }
         delete m_vTranslator;
@@ -143,12 +140,9 @@ void TST_AbstractRegExp::RemoveTrVariables(const QString &checkedLocale)
 //---------------------------------------------------------------------------------------------------------------------
 void TST_AbstractRegExp::InitTrMs()
 {
-    if (m_trMs != nullptr)
-    {
+    if (m_trMs != nullptr) {
         m_trMs->Retranslate();
-    }
-    else
-    {
+    } else {
         m_trMs = new VTranslateVars();
     }
 }
@@ -159,10 +153,9 @@ void TST_AbstractRegExp::CallTestCheckNoEndLine()
     QFETCH(QString, originalName);
 
     const QString translated = m_trMs->VarToUser(originalName);
-    if (translated.endsWith(QLatin1String("\n")))
-    {
-        const QString message = QString("Translated string '%1' shouldn't contain new line character.")
-                .arg(translated);
+    if (translated.endsWith(QLatin1String("\n"))) {
+        const QString message =
+            QString("Translated string '%1' shouldn't contain new line character.").arg(translated);
         QFAIL(qUtf8Printable(message));
     }
 }
@@ -174,9 +167,9 @@ void TST_AbstractRegExp::CallTestCheckRegExpNames()
 
     static const QRegularExpression re(NameRegExp());
     const QString translated = m_trMs->VarToUser(originalName);
-    if (not re.match(translated).hasMatch())
-    {
-        const QString message = QString("Original name:'%1', translated name:'%2'").arg(originalName).arg(translated);
+    if (not re.match(translated).hasMatch()) {
+        const QString message =
+            QString("Original name:'%1', translated name:'%2'").arg(originalName).arg(translated);
         QFAIL(qUtf8Printable(message));
     }
 }
@@ -189,10 +182,11 @@ void TST_AbstractRegExp::CallTestCheckIsNamesUnique()
     QSet<QString> names;
 
     const QString translated = m_trMs->VarToUser(originalName);
-    if (names.contains(translated))
-    {
-        const QString message = QString("Name is not unique. Original name:'%1', translated name:'%2'")
-                .arg(originalName).arg(translated);
+    if (names.contains(translated)) {
+        const QString message =
+            QString("Name is not unique. Original name:'%1', translated name:'%2'")
+                .arg(originalName)
+                .arg(translated);
         QFAIL(qUtf8Printable(message));
     }
     names.insert(translated);
@@ -204,16 +198,16 @@ void TST_AbstractRegExp::CallTestCheckNoOriginalNamesInTranslation()
     QFETCH(QString, originalName);
 
     static const QStringList originalNames = AllNames();
-	static const QSet<QString> names = convertToSet<QString>(originalNames);
+    static const QSet<QString> names = convertToSet<QString>(originalNames);
 
     const QString translated = m_trMs->VarToUser(originalName);
-    if (names.contains(translated))
-    {
-        if (originalName != translated)
-        {
-            const QString message = QString("Translation repeat original name from other place. "
-                                            "Original name:'%1', translated name:'%2'")
-                    .arg(originalName).arg(translated);
+    if (names.contains(translated)) {
+        if (originalName != translated) {
+            const QString message = QString(
+                                        "Translation repeat original name from other place. "
+                                        "Original name:'%1', translated name:'%2'")
+                                        .arg(originalName)
+                                        .arg(translated);
             QFAIL(qUtf8Printable(message));
         }
     }

@@ -53,11 +53,11 @@
 #include "../vgeometry/vpointf.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolMirrorByLine::VisToolMirrorByLine(const VContainer *data, QGraphicsItem *parent)
-    : VisOperation(data, parent),
-      object2Id(NULL_ID),
-      point1(nullptr),
-      point2(nullptr)
+VisToolMirrorByLine::VisToolMirrorByLine(const VContainer* data, QGraphicsItem* parent)
+    : VisOperation(data, parent)
+    , object2Id(NULL_ID)
+    , point1(nullptr)
+    , point2(nullptr)
 {
     point1 = InitPoint(supportColor2, this);
     point2 = InitPoint(supportColor2, this);
@@ -66,26 +66,23 @@ VisToolMirrorByLine::VisToolMirrorByLine(const VContainer *data, QGraphicsItem *
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolMirrorByLine::RefreshGeometry()
 {
-    if (objects.isEmpty())
-    {
+    if (objects.isEmpty()) {
         return;
     }
 
     QPointF firstPoint;
     QPointF secondPoint;
 
-    if (object1Id != NULL_ID)
-    {
-        firstPoint = static_cast<QPointF>(*Visualization::data->GeometricObject<VPointF>(object1Id));
+    if (object1Id != NULL_ID) {
+        firstPoint =
+            static_cast<QPointF>(*Visualization::data->GeometricObject<VPointF>(object1Id));
         DrawPoint(point1, firstPoint, supportColor2);
 
-        if (object2Id == NULL_ID)
-        {
+        if (object2Id == NULL_ID) {
             secondPoint = Visualization::scenePos;
-        }
-        else
-        {
-            secondPoint = static_cast<QPointF>(*Visualization::data->GeometricObject<VPointF>(object2Id));
+        } else {
+            secondPoint =
+                static_cast<QPointF>(*Visualization::data->GeometricObject<VPointF>(object2Id));
             DrawPoint(point2, secondPoint, supportColor2);
         }
 
@@ -96,13 +93,7 @@ void VisToolMirrorByLine::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolMirrorByLine::setFirstLinePointId(quint32 value)
-{
-    object1Id = value;
-}
+void VisToolMirrorByLine::setFirstLinePointId(quint32 value) { object1Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolMirrorByLine::setSecondLinePointId(quint32 value)
-{
-    object2Id = value;
-}
+void VisToolMirrorByLine::setSecondLinePointId(quint32 value) { object2Id = value; }

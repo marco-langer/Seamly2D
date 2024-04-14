@@ -52,8 +52,8 @@
 #ifndef VCONTOUR_P_H
 #define VCONTOUR_P_H
 
-#include <QSharedData>
 #include <QPointF>
+#include <QSharedData>
 
 #include "../vmisc/diagnostic.h"
 
@@ -65,16 +65,25 @@ class VContourData : public QSharedData
 {
 public:
     VContourData()
-        :globalContour(QVector<QPointF>()), paperHeight(0), paperWidth(0), shift(0)
+        : globalContour(QVector<QPointF>())
+        , paperHeight(0)
+        , paperWidth(0)
+        , shift(0)
     {}
 
     VContourData(int height, int width)
-        :globalContour(QVector<QPointF>()), paperHeight(height), paperWidth(width), shift(0)
+        : globalContour(QVector<QPointF>())
+        , paperHeight(height)
+        , paperWidth(width)
+        , shift(0)
     {}
 
-    VContourData(const VContourData &contour)
-        :QSharedData(contour), globalContour(contour.globalContour), paperHeight(contour.paperHeight),
-          paperWidth(contour.paperWidth), shift(contour.shift)
+    VContourData(const VContourData& contour)
+        : QSharedData(contour)
+        , globalContour(contour.globalContour)
+        , paperHeight(contour.paperHeight)
+        , paperWidth(contour.paperWidth)
+        , shift(contour.shift)
     {}
 
     ~VContourData() {}
@@ -91,9 +100,9 @@ public:
     quint32 shift;
 
 private:
-    VContourData &operator=(const VContourData &) Q_DECL_EQ_DELETE;
+    VContourData& operator=(const VContourData&) Q_DECL_EQ_DELETE;
 };
 
 QT_WARNING_POP
 
-#endif // VCONTOUR_P_H
+#endif   // VCONTOUR_P_H

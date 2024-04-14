@@ -61,14 +61,21 @@
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/vtoolpointofcontact.h"
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../visualization.h"
+#include "../vpatterndb/vcontainer.h"
 #include "visline.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolPointOfContact::VisToolPointOfContact(const VContainer *data, QGraphicsItem *parent)
-    :VisLine(data, parent), lineP2Id(NULL_ID), radiusId(NULL_ID), point(nullptr), lineP1(nullptr), lineP2(nullptr),
-      arc_point(nullptr), circle(nullptr), radius(0)
+VisToolPointOfContact::VisToolPointOfContact(const VContainer* data, QGraphicsItem* parent)
+    : VisLine(data, parent)
+    , lineP2Id(NULL_ID)
+    , radiusId(NULL_ID)
+    , point(nullptr)
+    , lineP1(nullptr)
+    , lineP2(nullptr)
+    , arc_point(nullptr)
+    , circle(nullptr)
+    , radius(0)
 {
     arc_point = InitPoint(supportColor, this);
     lineP1 = InitPoint(supportColor, this);
@@ -81,36 +88,40 @@ VisToolPointOfContact::VisToolPointOfContact(const VContainer *data, QGraphicsIt
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolPointOfContact::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
-        const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
+    if (object1Id > NULL_ID) {
+        const QSharedPointer<VPointF> first =
+            Visualization::data->GeometricObject<VPointF>(object1Id);
         DrawPoint(lineP1, static_cast<QPointF>(*first), supportColor);
 
-        if (lineP2Id <= NULL_ID)
-        {
-            DrawLine(this, QLineF(static_cast<QPointF>(*first), Visualization::scenePos), supportColor, lineWeight);
-        }
-        else
-        {
-            const QSharedPointer<VPointF> second = Visualization::data->GeometricObject<VPointF>(lineP2Id);
+        if (lineP2Id <= NULL_ID) {
+            DrawLine(
+                this,
+                QLineF(static_cast<QPointF>(*first), Visualization::scenePos),
+                supportColor,
+                lineWeight);
+        } else {
+            const QSharedPointer<VPointF> second =
+                Visualization::data->GeometricObject<VPointF>(lineP2Id);
             DrawPoint(lineP2, static_cast<QPointF>(*second), supportColor);
-            DrawLine(this, QLineF(static_cast<QPointF>(*first), static_cast<QPointF>(*second)),
-                     supportColor, lineWeight);
+            DrawLine(
+                this,
+                QLineF(static_cast<QPointF>(*first), static_cast<QPointF>(*second)),
+                supportColor,
+                lineWeight);
 
-            if (radiusId <= NULL_ID)
-            {
+            if (radiusId <= NULL_ID) {
                 return;
-            }
-            else
-            {
-                const QSharedPointer<VPointF> third = Visualization::data->GeometricObject<VPointF>(radiusId);
+            } else {
+                const QSharedPointer<VPointF> third =
+                    Visualization::data->GeometricObject<VPointF>(radiusId);
                 DrawPoint(arc_point, static_cast<QPointF>(*third), supportColor);
 
-                if (not qFuzzyIsNull(radius))
-                {
-                    QPointF fPoint = VToolPointOfContact::FindPoint(radius, static_cast<QPointF>(*third),
-                                                                    static_cast<QPointF>(*first),
-                                                                    static_cast<QPointF>(*second));
+                if (not qFuzzyIsNull(radius)) {
+                    QPointF fPoint = VToolPointOfContact::FindPoint(
+                        radius,
+                        static_cast<QPointF>(*third),
+                        static_cast<QPointF>(*first),
+                        static_cast<QPointF>(*second));
                     DrawPoint(point, fPoint, mainColor);
 
                     circle->setRect(PointRect(radius));
@@ -122,19 +133,13 @@ void VisToolPointOfContact::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolPointOfContact::setLineP2Id(const quint32 &value)
-{
-    lineP2Id = value;
-}
+void VisToolPointOfContact::setLineP2Id(const quint32& value) { lineP2Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolPointOfContact::setRadiusId(const quint32 &value)
-{
-    radiusId = value;
-}
+void VisToolPointOfContact::setRadiusId(const quint32& value) { radiusId = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolPointOfContact::setRadius(const QString &expression)
+void VisToolPointOfContact::setRadius(const QString& expression)
 {
     radius = FindLength(expression, Visualization::data->DataVariables());
 }

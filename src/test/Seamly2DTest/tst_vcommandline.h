@@ -58,7 +58,7 @@ class TST_VCommandLine : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VCommandLine(QObject *parent = nullptr);
+    explicit TST_VCommandLine(QObject* parent = nullptr);
 
 private slots:
     void UniqueKeys();
@@ -67,4 +67,4 @@ private:
     Q_DISABLE_COPY(TST_VCommandLine)
 };
 
-#endif // TST_VCOMMANDLINE_H
+#endif   // TST_VCOMMANDLINE_H

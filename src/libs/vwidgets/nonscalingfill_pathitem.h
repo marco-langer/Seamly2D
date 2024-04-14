@@ -50,29 +50,33 @@
  **
  *************************************************************************/
 
-#ifndef  NONSCALINGFILL_PATHITEM_H
-#define  NONSCALINGFILL_PATHITEM_H
+#ifndef NONSCALINGFILL_PATHITEM_H
+#define NONSCALINGFILL_PATHITEM_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsPathItem>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 
 class NonScalingFillPathItem : public QGraphicsPathItem
 {
 public:
-    explicit     NonScalingFillPathItem(QGraphicsItem *parent = nullptr);
+    explicit NonScalingFillPathItem(QGraphicsItem* parent = nullptr);
 
 protected:
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
-                       QWidget * widget = nullptr) Q_DECL_OVERRIDE;
+    virtual void
+    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        Q_DECL_OVERRIDE;
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum         {Type = UserType + static_cast<int>(Vis::NoBrush)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::NoBrush)
+    };
 
 private:
     Q_DISABLE_COPY(NonScalingFillPathItem)
 };
 
-#endif // NONSCALINGFILL_PATHITEM_H
+#endif   // NONSCALINGFILL_PATHITEM_H

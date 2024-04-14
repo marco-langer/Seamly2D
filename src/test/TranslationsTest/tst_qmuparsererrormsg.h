@@ -52,17 +52,17 @@
 #ifndef TST_QMUPARSERERRORMSG_H
 #define TST_QMUPARSERERRORMSG_H
 
-#include "../vtest/abstracttest.h"
 #include "../qmuparser/qmuparsererror.h"
+#include "../vtest/abstracttest.h"
 
-#include <QTranslator>
 #include <QPointer>
+#include <QTranslator>
 
 class TST_QmuParserErrorMsg : public AbstractTest
 {
     Q_OBJECT
 public:
-    explicit TST_QmuParserErrorMsg(const QString &locale, QObject *parent = nullptr);
+    explicit TST_QmuParserErrorMsg(const QString& locale, QObject* parent = nullptr);
     virtual ~TST_QmuParserErrorMsg() Q_DECL_OVERRIDE;
 
 private slots:
@@ -76,11 +76,11 @@ private:
 
     QString m_locale;
     QPointer<QTranslator> appTranslator;
-    qmu::QmuParserErrorMsg *msg;
+    qmu::QmuParserErrorMsg* msg;
 
     void AddCase(int code, bool tok, bool pos);
-    int  loadTranslations(const QString &checkedLocale);
+    int loadTranslations(const QString& checkedLocale);
     void RemoveTranslation();
 };
 
-#endif // TST_QMUPARSERERRORMSG_H
+#endif   // TST_QMUPARSERERRORMSG_H

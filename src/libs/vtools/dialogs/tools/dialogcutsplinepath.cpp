@@ -58,7 +58,6 @@
 #include <QPushButton>
 #include <QToolButton>
 
-#include "../vpatterndb/vtranslatevars.h"
 #include "../../visualization/path/vistoolcutsplinepath.h"
 #include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
@@ -66,6 +65,7 @@
 #include "../support/edit_formula_dialog.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/vtranslatevars.h"
 #include "ui_dialogcutsplinepath.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -74,7 +74,8 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogCutSplinePath::DialogCutSplinePath(const VContainer *data, const quint32 &toolId, QWidget *parent)
+DialogCutSplinePath::DialogCutSplinePath(
+    const VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::DialogCutSplinePath)
     , formula(QString())
@@ -99,25 +100,34 @@ DialogCutSplinePath::DialogCutSplinePath(const VContainer *data, const quint32 &
     FillComboBoxSplinesPath(ui->comboBoxSplinePath);
 
     connect(ui->toolButtonExprLength, &QPushButton::clicked, this, &DialogCutSplinePath::FXLength);
-    connect(ui->lineEditNamePoint, &QLineEdit::textChanged, this, &DialogCutSplinePath::NamePointChanged);
-    connect(ui->plainTextEditFormula, &QPlainTextEdit::textChanged, this, &DialogCutSplinePath::FormulaChanged);
-    connect(ui->pushButtonGrowLength, &QPushButton::clicked, this, &DialogCutSplinePath::DeployFormulaTextEdit);
+    connect(
+        ui->lineEditNamePoint,
+        &QLineEdit::textChanged,
+        this,
+        &DialogCutSplinePath::NamePointChanged);
+    connect(
+        ui->plainTextEditFormula,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogCutSplinePath::FormulaChanged);
+    connect(
+        ui->pushButtonGrowLength,
+        &QPushButton::clicked,
+        this,
+        &DialogCutSplinePath::DeployFormulaTextEdit);
 
     vis = new VisToolCutSplinePath(data);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogCutSplinePath::~DialogCutSplinePath()
-{
-    delete ui;
-}
+DialogCutSplinePath::~DialogCutSplinePath() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief SetPointName set name of point
  * @param value name
  */
-void DialogCutSplinePath::SetPointName(const QString &value)
+void DialogCutSplinePath::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -128,18 +138,17 @@ void DialogCutSplinePath::SetPointName(const QString &value)
  * @brief SetFormula set string of formula
  * @param value formula
  */
-void DialogCutSplinePath::SetFormula(const QString &value)
+void DialogCutSplinePath::SetFormula(const QString& value)
 {
     formula = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed. TODO : see if I can get the max number of caracters in one line
     // of this PlainTextEdit to change 80 to this value
-    if (formula.length() > 80)
-    {
+    if (formula.length() > 80) {
         this->DeployFormulaTextEdit();
     }
     ui->plainTextEditFormula->setPlainText(formula);
 
-    VisToolCutSplinePath *path = qobject_cast<VisToolCutSplinePath *>(vis);
+    VisToolCutSplinePath* path = qobject_cast<VisToolCutSplinePath*>(vis);
     SCASSERT(path != nullptr)
     path->setLength(formula);
 
@@ -151,11 +160,11 @@ void DialogCutSplinePath::SetFormula(const QString &value)
  * @brief setSplineId set id spline
  * @param value id
  */
-void DialogCutSplinePath::setSplinePathId(const quint32 &value)
+void DialogCutSplinePath::setSplinePathId(const quint32& value)
 {
     setCurrentSplinePathId(ui->comboBoxSplinePath, value);
 
-    VisToolCutSplinePath *path = qobject_cast<VisToolCutSplinePath *>(vis);
+    VisToolCutSplinePath* path = qobject_cast<VisToolCutSplinePath*>(vis);
     SCASSERT(path != nullptr)
     path->setObject1Id(value);
 }
@@ -166,14 +175,12 @@ void DialogCutSplinePath::setSplinePathId(const quint32 &value)
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogCutSplinePath::ChosenObject(quint32 id, const SceneObject &type)
+void DialogCutSplinePath::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::SplinePath)
-        {
-            if (SetObject(id, ui->comboBoxSplinePath, ""))
-            {
+        if (type == SceneObject::SplinePath) {
+            if (SetObject(id, ui->comboBoxSplinePath, "")) {
                 vis->VisualMode(id);
                 prepare = true;
                 this->setModal(true);
@@ -190,7 +197,7 @@ void DialogCutSplinePath::SaveData()
     formula = ui->plainTextEditFormula->toPlainText();
     formula.replace("\n", " ");
 
-    VisToolCutSplinePath *path = qobject_cast<VisToolCutSplinePath *>(vis);
+    VisToolCutSplinePath* path = qobject_cast<VisToolCutSplinePath*>(vis);
     SCASSERT(path != nullptr)
 
     path->setObject1Id(getSplinePathId());
@@ -199,7 +206,7 @@ void DialogCutSplinePath::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCutSplinePath::closeEvent(QCloseEvent *event)
+void DialogCutSplinePath::closeEvent(QCloseEvent* event)
 {
     ui->plainTextEditFormula->blockSignals(true);
     DialogTool::closeEvent(event);
@@ -214,22 +221,18 @@ void DialogCutSplinePath::DeployFormulaTextEdit()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCutSplinePath::FXLength()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit length"));
     dialog->SetFormula(GetFormula());
     dialog->setPostfix(UnitsToStr(qApp->patternUnit(), true));
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetFormula(dialog->GetFormula());
     }
     delete dialog;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogCutSplinePath::ShowVisualization()
-{
-    AddVisualization<VisToolCutSplinePath>();
-}
+void DialogCutSplinePath::ShowVisualization() { AddVisualization<VisToolCutSplinePath>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -238,7 +241,8 @@ void DialogCutSplinePath::ShowVisualization()
  */
 QString DialogCutSplinePath::GetFormula() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(formula, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        formula, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------

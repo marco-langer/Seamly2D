@@ -59,13 +59,16 @@
 class VAbstractBezier : public VAbstractCurve
 {
 public:
-    VAbstractBezier(const GOType &type, const quint32 &idObject = NULL_ID, const Draw &mode = Draw::Calculation);
-    VAbstractBezier(const VAbstractBezier &curve);
-    VAbstractBezier& operator= (const VAbstractBezier &curve);
+    VAbstractBezier(
+        const GOType& type,
+        const quint32& idObject = NULL_ID,
+        const Draw& mode = Draw::Calculation);
+    VAbstractBezier(const VAbstractBezier& curve);
+    VAbstractBezier& operator=(const VAbstractBezier& curve);
     virtual ~VAbstractBezier();
 
-    virtual qreal GetC1Length() const =0;
-    virtual qreal GetC2Length() const =0;
+    virtual qreal GetC1Length() const = 0;
+    virtual qreal GetC2Length() const = 0;
 };
 
-#endif // VABSTRACTBEZIER_H
+#endif   // VABSTRACTBEZIER_H

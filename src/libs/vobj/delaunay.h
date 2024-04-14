@@ -23,66 +23,74 @@
 #define DEL_CIRCLE
 
 
-
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/* define the floating point type, comment to use float - Be careful "float" type will assert more often */
+/* define the floating point type, comment to use float - Be careful "float" type will assert more
+ * often */
 #define USE_DOUBLE
 
-#define FAST_PREDICATE	1	/* fast but floating point errors are more likely to occur */
-#define LOOSE_PREDICATE	2	/* loose with epsilon defined in the delaunay file - errors will happen but less frequently */
-#define EXACT_PREDICATE	3	/* use exact arithmetic - slower, but shouldn't produce any floating point error */
+#define FAST_PREDICATE 1 /* fast but floating point errors are more likely to occur */
+#define LOOSE_PREDICATE                                                                           \
+    2 /* loose with epsilon defined in the delaunay file - errors will happen but less frequently \
+       */
+#define EXACT_PREDICATE \
+    3 /* use exact arithmetic - slower, but shouldn't produce any floating point error */
 
-#define PREDICATE	EXACT_PREDICATE
+#define PREDICATE EXACT_PREDICATE
 
 #if PREDICATE == EXACT_PREDICATE && !defined(USE_DOUBLE)
-#	define USE_DOUBLE
+#    define USE_DOUBLE
 #endif
 
 #ifdef USE_DOUBLE
-typedef double real;
+    typedef double real;
 #else
-typedef float	real;
+typedef float real;
 #endif
 
-typedef struct {
-    real	x, y;
-} del_point2d_t;
+    typedef struct
+    {
+        real x, y;
+    } del_point2d_t;
 
-typedef struct {
-    /** input points count */
-    quint32	num_points;
+    typedef struct
+    {
+        /** input points count */
+        quint32 num_points;
 
-    /** the input points */
-    del_point2d_t*	points;
+        /** the input points */
+        del_point2d_t* points;
 
-    /** number of returned faces */
-    quint32	num_faces;
+        /** number of returned faces */
+        quint32 num_faces;
 
-    /** the triangles given as a sequence: num verts, verts indices, num verts, verts indices first face is the external face */
-    quint32*	faces;
-} delaunay2d_t;
+        /** the triangles given as a sequence: num verts, verts indices, num verts, verts indices
+         * first face is the external face */
+        quint32* faces;
+    } delaunay2d_t;
 
-typedef int		(*incircle_predicate_t)(del_point2d_t* p0, del_point2d_t* p1, del_point2d_t* p2, del_point2d_t* p3);
+    typedef int (*incircle_predicate_t)(
+        del_point2d_t* p0, del_point2d_t* p1, del_point2d_t* p2, del_point2d_t* p3);
 
-/*
- * build the 2D Delaunay triangulation given a set of points of at least 3 points
- *
- * @param points point set given as a sequence of tuple x0, y0, x1, y1, ....
- * @param num_points number of given point
- * @return: the number of created faces
- */
-delaunay2d_t*			delaunay2d_from(del_point2d_t *points, quint32 num_points);
+    /*
+     * build the 2D Delaunay triangulation given a set of points of at least 3 points
+     *
+     * @param points point set given as a sequence of tuple x0, y0, x1, y1, ....
+     * @param num_points number of given point
+     * @return: the number of created faces
+     */
+    delaunay2d_t* delaunay2d_from(del_point2d_t* points, quint32 num_points);
 
-/*
- * release a delaunay2d object
- */
-void				delaunay2d_release(delaunay2d_t* del);
+    /*
+     * release a delaunay2d object
+     */
+    void delaunay2d_release(delaunay2d_t* del);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // DELAUNAY_H
+#endif   // DELAUNAY_H

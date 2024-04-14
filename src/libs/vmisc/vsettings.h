@@ -52,69 +52,74 @@
 #ifndef VSETTINGS_H
 #define VSETTINGS_H
 
+#include <QMargins>
 #include <QMetaObject>
 #include <QObject>
 #include <QSettings>
 #include <QString>
 #include <QtGlobal>
-#include <QMargins>
 
-#include "../vmisc/def.h"
 #include "../vlayout/vbank.h"
+#include "../vmisc/def.h"
 #include "vcommonsettings.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 class VSettings : public VCommonSettings
 {
     Q_OBJECT
 public:
-    VSettings(Format format, Scope scope, const QString &organization, const QString &application = QString(),
-              QObject *parent = nullptr);
+    VSettings(
+        Format format,
+        Scope scope,
+        const QString& organization,
+        const QString& application = QString(),
+        QObject* parent = nullptr);
 
-    QString  getPointNameLanguage() const;
-    void     setPointNameLanguage(const QString &value);
+    QString getPointNameLanguage() const;
+    void setPointNameLanguage(const QString& value);
 
     static QString getDefaultPatternPath();
     QString getPatternPath() const;
-    void SetPathPattern(const QString &value);
+    void SetPathPattern(const QString& value);
 
     static QString getDefaultLayoutPath();
     QString getLayoutPath() const;
-    void SetPathLayout(const QString &value);
+    void SetPathLayout(const QString& value);
 
     bool GetGraphicalOutput() const;
-    void SetGraphicalOutput(const bool &value);
+    void SetGraphicalOutput(const bool& value);
 
     QString GetServer() const;
-    void SetServer(const QString &value);
+    void SetServer(const QString& value);
 
     bool GetServerSecure() const;
-    void SetServerSecure(const bool &value);
+    void SetServerSecure(const bool& value);
 
     bool GetProxy() const;
-    void SetProxy(const bool &value);
+    void SetProxy(const bool& value);
 
     QString GetProxyAddress() const;
-    void SetProxyAddress(const QString &value);
+    void SetProxyAddress(const QString& value);
 
     QString GetProxyPort() const;
-    void SetProxyPort(const QString &value);
+    void SetProxyPort(const QString& value);
 
     QString GetProxyUser() const;
-    void SetProxyUser(const QString &value);
+    void SetProxyUser(const QString& value);
 
     QString GetProxyPass() const;
-    void SetProxyPass(const QString &value);
+    void SetProxyPass(const QString& value);
 
     QString GetUsername() const;
-    void SetUsername(const QString &value);
+    void SetUsername(const QString& value);
 
     bool GetSavePassword() const;
-    void SetSavePassword(const bool &value);
+    void SetSavePassword(const bool& value);
 
     QString GetUserPassword() const;
-    void SetUserPassword(const QString &value);
+    void SetUserPassword(const QString& value);
 
     // Layout settings
     qreal GetLayoutPaperHeight() const;
@@ -131,12 +136,12 @@ public:
     static qreal GetDefLayoutWidth();
     void SetLayoutWidth(qreal value);
 
-    QMarginsF GetFields(const QMarginsF &def = QMarginsF()) const;
-    void SetFields(const QMarginsF &value);
+    QMarginsF GetFields(const QMarginsF& def = QMarginsF()) const;
+    void SetFields(const QMarginsF& value);
 
     Cases GetLayoutGroup() const;
     static Cases GetDefLayoutGroup();
-    void SetLayoutGroup(const Cases &value);
+    void SetLayoutGroup(const Cases& value);
 
     bool GetLayoutRotate() const;
     static bool GetDefLayoutRotate();
@@ -175,14 +180,14 @@ public:
     void setTextAsPaths(bool value);
 
     // settings for the tiled PDFs
-    QMarginsF GetTiledPDFMargins(const Unit &unit) const;
-    void setTiledPDFMargins(const QMarginsF &value, const Unit &unit);
+    QMarginsF GetTiledPDFMargins(const Unit& unit) const;
+    void setTiledPDFMargins(const QMarginsF& value, const Unit& unit);
 
-    qreal getTiledPDFPaperHeight(const Unit &unit) const;
-    void setTiledPDFPaperHeight(qreal value, const Unit &unit);
+    qreal getTiledPDFPaperHeight(const Unit& unit) const;
+    void setTiledPDFPaperHeight(qreal value, const Unit& unit);
 
-    qreal getTiledPDFPaperWidth(const Unit &unit) const;
-    void setTiledPDFPaperWidth(qreal value, const Unit &unit);
+    qreal getTiledPDFPaperWidth(const Unit& unit) const;
+    void setTiledPDFPaperWidth(qreal value, const Unit& unit);
 
     PageOrientation getTiledPDFOrientation() const;
     void setTiledPDFOrientation(PageOrientation value);
@@ -191,4 +196,4 @@ private:
     Q_DISABLE_COPY(VSettings)
 };
 
-#endif // VSETTINGS_H
+#endif   // VSETTINGS_H

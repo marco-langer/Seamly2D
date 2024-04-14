@@ -52,11 +52,11 @@
 #ifndef DIALOGPOINTOFINTERSECTIONCURVES_H
 #define DIALOGPOINTOFINTERSECTIONCURVES_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
@@ -71,25 +71,26 @@ class DialogPointOfIntersectionCurves : public DialogTool
     Q_OBJECT
 
 public:
-    explicit DialogPointOfIntersectionCurves(const VContainer *data, const quint32 &toolId, QWidget *parent = nullptr);
+    explicit DialogPointOfIntersectionCurves(
+        const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     virtual ~DialogPointOfIntersectionCurves() Q_DECL_OVERRIDE;
 
-    void    SetPointName(const QString &value);
+    void SetPointName(const QString& value);
 
     quint32 GetFirstCurveId() const;
-    void    SetFirstCurveId(const quint32 &value);
+    void SetFirstCurveId(const quint32& value);
 
     quint32 GetSecondCurveId() const;
-    void    SetSecondCurveId(const quint32 &value);
+    void SetSecondCurveId(const quint32& value);
 
     VCrossCurvesPoint GetVCrossPoint() const;
-    void              SetVCrossPoint(const VCrossCurvesPoint &vP);
+    void SetVCrossPoint(const VCrossCurvesPoint& vP);
 
     HCrossCurvesPoint GetHCrossPoint() const;
-    void              SetHCrossPoint(const HCrossCurvesPoint &hP);
+    void SetHCrossPoint(const HCrossCurvesPoint& hP);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject &type) Q_DECL_OVERRIDE;
+    virtual void ChosenObject(quint32 id, const SceneObject& type) Q_DECL_OVERRIDE;
 
 protected:
     virtual void ShowVisualization() Q_DECL_OVERRIDE;
@@ -106,7 +107,7 @@ private slots:
 private:
     Q_DISABLE_COPY(DialogPointOfIntersectionCurves)
 
-    Ui::DialogPointOfIntersectionCurves *ui;
+    Ui::DialogPointOfIntersectionCurves* ui;
 };
 
-#endif // DIALOGPOINTOFINTERSECTIONCURVES_H
+#endif   // DIALOGPOINTOFINTERSECTIONCURVES_H

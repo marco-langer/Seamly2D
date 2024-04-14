@@ -54,11 +54,18 @@
 #include <QtDebug>
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VAbstractFloatItemData &VAbstractFloatItemData::operator=(VAbstractFloatItemData &&data) Q_DECL_NOTHROW { Swap(data); return *this; }
+VAbstractFloatItemData&
+VAbstractFloatItemData::operator=(VAbstractFloatItemData&& data) Q_DECL_NOTHROW
+{
+    Swap(data);
+    return *this;
+}
 #endif
 
-void VAbstractFloatItemData::Swap(VAbstractFloatItemData &data) Q_DECL_NOTHROW
-{ std::swap(d, data.d); }
+void VAbstractFloatItemData::Swap(VAbstractFloatItemData& data) Q_DECL_NOTHROW
+{
+    std::swap(d, data.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractFloatItemData::VAbstractFloatItemData()
@@ -66,15 +73,14 @@ VAbstractFloatItemData::VAbstractFloatItemData()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractFloatItemData::VAbstractFloatItemData(const VAbstractFloatItemData &data)
-    : d (data.d)
+VAbstractFloatItemData::VAbstractFloatItemData(const VAbstractFloatItemData& data)
+    : d(data.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractFloatItemData &VAbstractFloatItemData::operator=(const VAbstractFloatItemData &data)
+VAbstractFloatItemData& VAbstractFloatItemData::operator=(const VAbstractFloatItemData& data)
 {
-    if ( &data == this )
-    {
+    if (&data == this) {
         return *this;
     }
     d = data.d;
@@ -82,30 +88,20 @@ VAbstractFloatItemData &VAbstractFloatItemData::operator=(const VAbstractFloatIt
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractFloatItemData::~VAbstractFloatItemData()
-{}
+VAbstractFloatItemData::~VAbstractFloatItemData() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VAbstractFloatItemData::GetPos() const
-{
-    return d->m_ptPos;
-}
+QPointF VAbstractFloatItemData::GetPos() const { return d->m_ptPos; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractFloatItemData::SetPos(const QPointF &ptPos)
-{
-    d->m_ptPos = ptPos;
-}
+void VAbstractFloatItemData::SetPos(const QPointF& ptPos) { d->m_ptPos = ptPos; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VAbstractFloatItemData::IsVisible() const
-{
-    return d->m_bVisible;
-}
+bool VAbstractFloatItemData::IsVisible() const { return d->m_bVisible; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractFloatItemData::SetVisible(bool bVisible)
 {
-    qDebug() << "SetVisible Selected = "<< bVisible;
+    qDebug() << "SetVisible Selected = " << bVisible;
     d->m_bVisible = bVisible;
 }

@@ -55,33 +55,28 @@
 #include <QGraphicsScene>
 
 //---------------------------------------------------------------------------------------------------------------------
-VPieceItem::VPieceItem(QGraphicsItem *pParent)
-    : QGraphicsObject(pParent),
-      m_rectBoundingBox(),
-      m_eMode(VPieceItem::mNormal),
-      m_bReleased(false),
-      m_ptRotCenter(),
-      m_moveType(AllModifications),
-      m_inactiveZ(1)
+VPieceItem::VPieceItem(QGraphicsItem* pParent)
+    : QGraphicsObject(pParent)
+    , m_rectBoundingBox()
+    , m_eMode(VPieceItem::mNormal)
+    , m_bReleased(false)
+    , m_ptRotCenter()
+    , m_moveType(AllModifications)
+    , m_inactiveZ(1)
 {
     m_rectBoundingBox.setTopLeft(QPointF(0, 0));
     setAcceptHoverEvents(true);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPieceItem::~VPieceItem()
-{
-}
+VPieceItem::~VPieceItem() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief boundingRect returns the item bounding box
  * @return item bounding box
  */
-QRectF VPieceItem::boundingRect() const
-{
-    return m_rectBoundingBox;
-}
+QRectF VPieceItem::boundingRect() const { return m_rectBoundingBox; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -89,8 +84,7 @@ QRectF VPieceItem::boundingRect() const
  */
 void VPieceItem::Reset()
 {
-    if (QGraphicsScene *toolScene = scene())
-    {
+    if (QGraphicsScene* toolScene = scene()) {
         toolScene->clearSelection();
     }
     m_eMode = mNormal;
@@ -104,40 +98,32 @@ void VPieceItem::Reset()
  * @brief IsIdle returns the idle flag.
  * @return true, if item mode is normal and false otherwise.
  */
-bool VPieceItem::IsIdle() const
-{
-    return m_eMode == mNormal;
-}
+bool VPieceItem::IsIdle() const { return m_eMode == mNormal; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
- * @brief GetAngle calculates the angle between the line, which goes from rotation center to pt and x axis
+ * @brief GetAngle calculates the angle between the line, which goes from rotation center to pt and
+ * x axis
  * @param pt point of interest
  * @return the angle between line from rotation center and point of interest and x axis
  */
-double VPieceItem::GetAngle(const QPointF &pt) const
+double VPieceItem::GetAngle(const QPointF& pt) const
 {
     const double dX = pt.x() - m_ptRotCenter.x();
     const double dY = pt.y() - m_ptRotCenter.y();
 
-    if (fabs(dX) < 1 && fabs(dY) < 1)
-    {
+    if (fabs(dX) < 1 && fabs(dY) < 1) {
         return 0;
-    }
-    else
-    {
+    } else {
         return qAtan2(dY, dX);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPieceItem::MoveTypes VPieceItem::GetMoveType() const
-{
-    return m_moveType;
-}
+VPieceItem::MoveTypes VPieceItem::GetMoveType() const { return m_moveType; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceItem::SetMoveType(const VPieceItem::MoveTypes &moveType)
+void VPieceItem::SetMoveType(const VPieceItem::MoveTypes& moveType)
 {
     m_moveType = moveType;
     setAcceptHoverEvents(m_moveType != NotMovable);

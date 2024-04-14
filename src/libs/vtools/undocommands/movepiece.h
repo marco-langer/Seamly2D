@@ -52,11 +52,11 @@
 #ifndef MOVEDETAIL_H
 #define MOVEDETAIL_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -66,46 +66,43 @@ class MovePiece : public VUndoCommand
 {
     Q_OBJECT
 public:
-    MovePiece(VAbstractPattern *doc, const double &x, const double &y, const quint32 &id, QGraphicsScene *scene,
-               QUndoCommand *parent = nullptr);
+    MovePiece(
+        VAbstractPattern* doc,
+        const double& x,
+        const double& y,
+        const quint32& id,
+        QGraphicsScene* scene,
+        QUndoCommand* parent = nullptr);
     virtual ~MovePiece();
 
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
     // cppcheck-suppress unusedFunction
-    virtual bool mergeWith(const QUndoCommand *command) Q_DECL_OVERRIDE;
-    virtual int  id() const Q_DECL_OVERRIDE;
-    quint32      getPieceId() const;
-    double       getNewX() const;
-    double       getNewY() const;
+    virtual bool mergeWith(const QUndoCommand* command) Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
+    quint32 getPieceId() const;
+    double getNewX() const;
+    double getNewY() const;
+
 private:
     Q_DISABLE_COPY(MovePiece)
 
-    double          m_oldX;
-    double          m_oldY;
-    double          m_newX;
-    double          m_newY;
-    QGraphicsScene *m_scene;
+    double m_oldX;
+    double m_oldY;
+    double m_newX;
+    double m_newY;
+    QGraphicsScene* m_scene;
 
-    void SaveCoordinates(QDomElement &domElement, double x, double y);
+    void SaveCoordinates(QDomElement& domElement, double x, double y);
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline quint32 MovePiece::getPieceId() const
-{
-    return nodeId;
-}
+inline quint32 MovePiece::getPieceId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline double MovePiece::getNewX() const
-{
-    return m_newX;
-}
+inline double MovePiece::getNewX() const { return m_newX; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline double MovePiece::getNewY() const
-{
-    return m_newY;
-}
+inline double MovePiece::getNewY() const { return m_newY; }
 
-#endif // MOVEDETAIL_H
+#endif   // MOVEDETAIL_H

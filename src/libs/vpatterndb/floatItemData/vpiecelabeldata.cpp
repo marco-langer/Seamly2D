@@ -32,30 +32,35 @@
 #include <QList>
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VPieceLabelData &VPieceLabelData::operator=(VPieceLabelData &&data) Q_DECL_NOTHROW
-{ Swap(data); return *this; }
+VPieceLabelData& VPieceLabelData::operator=(VPieceLabelData&& data) Q_DECL_NOTHROW
+{
+    Swap(data);
+    return *this;
+}
 #endif
 
-void VPieceLabelData::Swap(VPieceLabelData &data) Q_DECL_NOTHROW
-{ VPatternLabelData::Swap(data); std::swap(d, data.d); }
+void VPieceLabelData::Swap(VPieceLabelData& data) Q_DECL_NOTHROW
+{
+    VPatternLabelData::Swap(data);
+    std::swap(d, data.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPieceLabelData::VPieceLabelData()
-    : VPatternLabelData(),
-      d(new VPieceLabelDataPrivate())
+    : VPatternLabelData()
+    , d(new VPieceLabelDataPrivate())
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VPieceLabelData::VPieceLabelData(const VPieceLabelData &data)
-    : VPatternLabelData(data),
-      d (data.d)
+VPieceLabelData::VPieceLabelData(const VPieceLabelData& data)
+    : VPatternLabelData(data)
+    , d(data.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VPieceLabelData &VPieceLabelData::operator=(const VPieceLabelData &data)
+VPieceLabelData& VPieceLabelData::operator=(const VPieceLabelData& data)
 {
-    if ( &data == this )
-    {
+    if (&data == this) {
         return *this;
     }
     VPatternLabelData::operator=(data);
@@ -64,122 +69,69 @@ VPieceLabelData &VPieceLabelData::operator=(const VPieceLabelData &data)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPieceLabelData::~VPieceLabelData()
-{}
+VPieceLabelData::~VPieceLabelData() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::Clear()
-{
-    d->m_qsLetter.clear();
-}
+void VPieceLabelData::Clear() { d->m_qsLetter.clear(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceLabelData::GetLetter() const
-{
-    return d->m_qsLetter;
-}
+QString VPieceLabelData::GetLetter() const { return d->m_qsLetter; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetLetter(const QString &qsLetter)
-{
-    d->m_qsLetter = qsLetter.left(3);
-}
+void VPieceLabelData::SetLetter(const QString& qsLetter) { d->m_qsLetter = qsLetter.left(3); }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceLabelData::GetAnnotation() const
-{
-    return d->m_annotation;
-}
+QString VPieceLabelData::GetAnnotation() const { return d->m_annotation; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetAnnotation(const QString &val)
-{
-    d->m_annotation = val;
-}
+void VPieceLabelData::SetAnnotation(const QString& val) { d->m_annotation = val; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceLabelData::GetOrientation() const
-{
-    return d->m_orientation;
-}
+QString VPieceLabelData::GetOrientation() const { return d->m_orientation; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetOrientation(const QString &val)
-{
-    d->m_orientation = val;
-}
+void VPieceLabelData::SetOrientation(const QString& val) { d->m_orientation = val; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceLabelData::GetRotationWay() const
-{
-    return d->m_rotation;
-}
+QString VPieceLabelData::GetRotationWay() const { return d->m_rotation; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetRotationWay(const QString &val)
-{
-    d->m_rotation = val;
-}
+void VPieceLabelData::SetRotationWay(const QString& val) { d->m_rotation = val; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceLabelData::GetTilt() const
-{
-    return d->m_tilt;
-}
+QString VPieceLabelData::GetTilt() const { return d->m_tilt; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetTilt(const QString &val)
-{
-    d->m_tilt = val;
-}
+void VPieceLabelData::SetTilt(const QString& val) { d->m_tilt = val; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceLabelData::GetFoldPosition() const
-{
-    return d->m_foldPosition;
-}
+QString VPieceLabelData::GetFoldPosition() const { return d->m_foldPosition; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetFoldPosition(const QString &val)
-{
-    d->m_foldPosition = val;
-}
+void VPieceLabelData::SetFoldPosition(const QString& val) { d->m_foldPosition = val; }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VPieceLabelData::GetQuantity() const
-{
-    return d->m_quantity;
-}
+int VPieceLabelData::GetQuantity() const { return d->m_quantity; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPieceLabelData::SetQuantity(int val)
 {
-    if (val >= 1)
-    {
+    if (val >= 1) {
         d->m_quantity = val;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VPieceLabelData::IsOnFold() const
-{
-    return d->m_onFold;
-}
+bool VPieceLabelData::IsOnFold() const { return d->m_onFold; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetOnFold(bool onFold)
-{
-    d->m_onFold = onFold;
-}
+void VPieceLabelData::SetOnFold(bool onFold) { d->m_onFold = onFold; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<VLabelTemplateLine> VPieceLabelData::GetLabelTemplate() const
-{
-    return d->m_lines;
-}
+QVector<VLabelTemplateLine> VPieceLabelData::GetLabelTemplate() const { return d->m_lines; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VPieceLabelData::SetLabelTemplate(const QVector<VLabelTemplateLine> &lines)
+void VPieceLabelData::SetLabelTemplate(const QVector<VLabelTemplateLine>& lines)
 {
     d->m_lines = lines;
 }

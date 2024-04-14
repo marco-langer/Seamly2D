@@ -26,8 +26,7 @@
 #include <QMap>
 #include <QString>
 
-namespace VPE
-{
+namespace VPE {
 
 class VPropertyTreeViewPrivate
 {
@@ -37,13 +36,15 @@ public:
 
     //! Constructor
     explicit VPropertyTreeViewPrivate(VPropertyDelegate* delegate)
-        : PropertyDelegate(delegate) {}
+        : PropertyDelegate(delegate)
+    {}
 
     //! Constructor
     VPropertyTreeViewPrivate()
-        : PropertyDelegate(nullptr) {}
+        : PropertyDelegate(nullptr)
+    {}
 };
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYTREEVIEW_P_H
+#endif   // VPROPERTYTREEVIEW_P_H

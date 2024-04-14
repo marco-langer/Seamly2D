@@ -58,7 +58,7 @@ class TST_Measurements : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_Measurements(QObject *parent = nullptr);
+    explicit TST_Measurements(QObject* parent = nullptr);
 
 private slots:
     void CreateEmptyMultisizeFile();
@@ -68,4 +68,4 @@ private slots:
     void ValidPMCodesIndividualFile();
 };
 
-#endif // TST_VMEASUREMENTS_H
+#endif   // TST_VMEASUREMENTS_H

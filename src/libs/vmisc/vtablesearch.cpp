@@ -59,31 +59,24 @@
 #include "../vmisc/def.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VTableSearch::VTableSearch(QTableWidget *table, QObject *parent)
-    : QObject(parent),
-      table(table),
-      searchIndex(-1),
-      searchList()
-{
-}
+VTableSearch::VTableSearch(QTableWidget* table, QObject* parent)
+    : QObject(parent)
+    , table(table)
+    , searchIndex(-1)
+    , searchList()
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void VTableSearch::Clear()
 {
     SCASSERT(table != nullptr)
 
-    for(int i = 0; i < table->rowCount(); ++i)
-    {
-        for(int j = 0; j < table->columnCount(); ++j)
-        {
-            if (QTableWidgetItem *item = table->item(i, j))
-            {
-                if (item->row() % 2 != 0 && table->alternatingRowColors())
-                {
+    for (int i = 0; i < table->rowCount(); ++i) {
+        for (int j = 0; j < table->columnCount(); ++j) {
+            if (QTableWidgetItem* item = table->item(i, j)) {
+                if (item->row() % 2 != 0 && table->alternatingRowColors()) {
                     item->setBackground(QPalette().alternateBase());
-                }
-                else
-                {
+                } else {
                     item->setBackground(QPalette().base());
                 }
             }
@@ -99,42 +92,36 @@ void VTableSearch::Clear()
 //---------------------------------------------------------------------------------------------------------------------
 void VTableSearch::ShowNext(int newIndex)
 {
-    if (not searchList.isEmpty())
-    {
-        QTableWidgetItem *item = searchList.at(searchIndex);
+    if (not searchList.isEmpty()) {
+        QTableWidgetItem* item = searchList.at(searchIndex);
         item->setBackground(Qt::yellow);
 
         item = searchList.at(newIndex);
         item->setBackground(Qt::red);
         table->scrollToItem(item);
         searchIndex = newIndex;
-    }
-    else
-    {
+    } else {
         Clear();
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VTableSearch::Find(const QString &term)
+void VTableSearch::Find(const QString& term)
 {
     SCASSERT(table != nullptr)
 
     Clear();
 
-    if (not term.isEmpty())
-    {
+    if (not term.isEmpty()) {
         searchList = table->findItems(term, Qt::MatchContains);
 
-        if (not searchList.isEmpty())
-        {
-            foreach(QTableWidgetItem *item, searchList)
-            {
+        if (not searchList.isEmpty()) {
+            foreach (QTableWidgetItem* item, searchList) {
                 item->setBackground(Qt::yellow);
             }
 
             searchIndex = 0;
-            QTableWidgetItem *item = searchList.at(searchIndex);
+            QTableWidgetItem* item = searchList.at(searchIndex);
             item->setBackground(Qt::red);
             table->scrollToItem(item);
 
@@ -148,8 +135,7 @@ void VTableSearch::FindPrevious()
 {
     int newIndex = searchIndex - 1;
 
-    if (newIndex < 0)
-    {
+    if (newIndex < 0) {
         newIndex = searchList.size() - 1;
     }
 
@@ -161,8 +147,7 @@ void VTableSearch::FindNext()
 {
     int newIndex = searchIndex + 1;
 
-    if (newIndex >= searchList.size())
-    {
+    if (newIndex >= searchList.size()) {
         newIndex = 0;
     }
 
@@ -172,19 +157,15 @@ void VTableSearch::FindNext()
 //---------------------------------------------------------------------------------------------------------------------
 void VTableSearch::RemoveRow(int row)
 {
-    if (searchIndex < 0 || searchIndex >= searchList.size())
-    {
+    if (searchIndex < 0 || searchIndex >= searchList.size()) {
         return;
     }
 
     const int indexRow = searchList.at(searchIndex)->row();
 
-    if (row <= indexRow)
-    {
-        foreach(QTableWidgetItem *item, searchList)
-        {
-            if (item->row() == row)
-            {
+    if (row <= indexRow) {
+        foreach (QTableWidgetItem* item, searchList) {
+            if (item->row() == row) {
                 --searchIndex;
             }
         }
@@ -194,19 +175,15 @@ void VTableSearch::RemoveRow(int row)
 //---------------------------------------------------------------------------------------------------------------------
 void VTableSearch::AddRow(int row)
 {
-    if (searchIndex < 0 || searchIndex >= searchList.size())
-    {
+    if (searchIndex < 0 || searchIndex >= searchList.size()) {
         return;
     }
 
     const int indexRow = searchList.at(searchIndex)->row();
 
-    if (row <= indexRow)
-    {
-        foreach(QTableWidgetItem *item, searchList)
-        {
-            if (item->row() == row)
-            {
+    if (row <= indexRow) {
+        foreach (QTableWidgetItem* item, searchList) {
+            if (item->row() == row) {
                 ++searchIndex;
             }
         }
@@ -214,41 +191,33 @@ void VTableSearch::AddRow(int row)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VTableSearch::RefreshList(const QString &term)
+void VTableSearch::RefreshList(const QString& term)
 {
     SCASSERT(table != nullptr)
 
-    if (term.isEmpty())
-    {
+    if (term.isEmpty()) {
         return;
     }
 
     searchList = table->findItems(term, Qt::MatchContains);
 
-    foreach(QTableWidgetItem *item, searchList)
-    {
+    foreach (QTableWidgetItem* item, searchList) {
         item->setBackground(Qt::yellow);
     }
 
-    if (not searchList.isEmpty())
-    {
-        if (searchIndex < 0)
-        {
-           searchIndex = searchList.size() - 1;
-        }
-        else if (searchIndex >= searchList.size())
-        {
-           searchIndex = 0;
+    if (not searchList.isEmpty()) {
+        if (searchIndex < 0) {
+            searchIndex = searchList.size() - 1;
+        } else if (searchIndex >= searchList.size()) {
+            searchIndex = 0;
         }
 
-        QTableWidgetItem *item = searchList.at(searchIndex);
+        QTableWidgetItem* item = searchList.at(searchIndex);
         item->setBackground(Qt::red);
         table->scrollToItem(item);
 
         emit HasResult(true);
-    }
-    else
-    {
+    } else {
         emit HasResult(false);
     }
 }

@@ -52,11 +52,11 @@
 #ifndef MOVEABSTRACTLABEL_H
 #define MOVEABSTRACTLABEL_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vundocommand.h"
 
@@ -65,37 +65,31 @@ class QGraphicsScene;
 class MoveAbstractLabel : public VUndoCommand
 {
 public:
-                    MoveAbstractLabel(VAbstractPattern *doc, quint32 pointId, const QPointF &pos,
-                                      QUndoCommand *parent = nullptr);
-    virtual        ~MoveAbstractLabel()=default;
+    MoveAbstractLabel(
+        VAbstractPattern* doc, quint32 pointId, const QPointF& pos, QUndoCommand* parent = nullptr);
+    virtual ~MoveAbstractLabel() = default;
 
 
-    virtual void    undo() Q_DECL_OVERRIDE;
-    virtual void    redo() Q_DECL_OVERRIDE;
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
 
-    quint32         GetPointId() const;
-    QPointF         GetNewPos() const;
+    quint32 GetPointId() const;
+    QPointF GetNewPos() const;
 
 protected:
-    QPointF         m_oldPos;
-    QPointF         m_newPos;
+    QPointF m_oldPos;
+    QPointF m_newPos;
 
-    virtual void    Do(const QPointF &pos)=0;
-    
+    virtual void Do(const QPointF& pos) = 0;
+
 private:
     Q_DISABLE_COPY(MoveAbstractLabel)
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline quint32 MoveAbstractLabel::GetPointId() const
-{
-    return nodeId;
-}
+inline quint32 MoveAbstractLabel::GetPointId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QPointF MoveAbstractLabel::GetNewPos() const
-{
-    return m_newPos;
-}
+inline QPointF MoveAbstractLabel::GetNewPos() const { return m_newPos; }
 
-#endif // MOVEABSTRACTLABEL_H
+#endif   // MOVEABSTRACTLABEL_H

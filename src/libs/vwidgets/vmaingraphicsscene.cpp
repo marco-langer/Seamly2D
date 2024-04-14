@@ -64,15 +64,15 @@
 #include <QStringDataPtr>
 #include <Qt>
 
-#include "global.h"
-#include "../vmisc/vcommonsettings.h"
 #include "../vmisc/vabstractapplication.h"
+#include "../vmisc/vcommonsettings.h"
+#include "global.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VMainGraphicsScene default constructor.
  */
-VMainGraphicsScene::VMainGraphicsScene(QObject *parent)
+VMainGraphicsScene::VMainGraphicsScene(QObject* parent)
     : QGraphicsScene(parent)
     , horScrollBar(0)
     , verScrollBar(0)
@@ -88,8 +88,8 @@ VMainGraphicsScene::VMainGraphicsScene(QObject *parent)
  * @param sceneRect scene rect.
  * @param parent parent object.
  */
-VMainGraphicsScene::VMainGraphicsScene(const QRectF & sceneRect, QObject * parent)
-    :QGraphicsScene ( sceneRect, parent )
+VMainGraphicsScene::VMainGraphicsScene(const QRectF& sceneRect, QObject* parent)
+    : QGraphicsScene(sceneRect, parent)
     , horScrollBar(0)
     , verScrollBar(0)
     , m_previousTransform(QTransform())
@@ -115,10 +115,10 @@ void VMainGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
  * @brief mousePressEvent mouse press events.
  * @param event mouse press event
  */
-void VMainGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void VMainGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton && event->type() != QEvent::GraphicsSceneMouseDoubleClick)
-    {
+    if (event->button() == Qt::LeftButton
+        && event->type() != QEvent::GraphicsSceneMouseDoubleClick) {
         emit MouseLeftPressed();
     }
 
@@ -130,10 +130,10 @@ void VMainGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void VMainGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton && event->type() != QEvent::GraphicsSceneMouseDoubleClick)
-    {
+    if (event->button() == Qt::LeftButton
+        && event->type() != QEvent::GraphicsSceneMouseDoubleClick) {
         emit MouseLeftReleased();
     }
     QGraphicsScene::mouseReleaseEvent(event);
@@ -153,7 +153,7 @@ void VMainGraphicsScene::initializeOrigins()
     {
         // X axis
         const QLineF lineX(QPointF(25, 0), QPointF(-5, 0));
-        QGraphicsLineItem *xLine1 = new QGraphicsLineItem(lineX);
+        QGraphicsLineItem* xLine1 = new QGraphicsLineItem(lineX);
         xLine1->setPen(originsPen);
         xLine1->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         xLine1->setZValue(-1.0);
@@ -162,9 +162,9 @@ void VMainGraphicsScene::initializeOrigins()
 
         // Arrow left side
         QLineF arrowLeftLine = lineX;
-        arrowLeftLine.setAngle(arrowLeftLine.angle()-arrowAngle);
+        arrowLeftLine.setAngle(arrowLeftLine.angle() - arrowAngle);
         arrowLeftLine.setLength(arrowLength);
-        QGraphicsLineItem *xLine2 = new QGraphicsLineItem(arrowLeftLine);
+        QGraphicsLineItem* xLine2 = new QGraphicsLineItem(arrowLeftLine);
         xLine2->setPen(originsPen);
         xLine2->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         xLine2->setZValue(-1.0);
@@ -173,9 +173,9 @@ void VMainGraphicsScene::initializeOrigins()
 
         // Arrow right side
         QLineF arrowRightLine = lineX;
-        arrowRightLine.setAngle(arrowRightLine.angle()+arrowAngle);
+        arrowRightLine.setAngle(arrowRightLine.angle() + arrowAngle);
         arrowRightLine.setLength(arrowLength);
-        QGraphicsLineItem *xLine3 = new QGraphicsLineItem(arrowRightLine);
+        QGraphicsLineItem* xLine3 = new QGraphicsLineItem(arrowRightLine);
         xLine3->setPen(originsPen);
         xLine3->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         xLine3->setZValue(-1.0);
@@ -183,18 +183,18 @@ void VMainGraphicsScene::initializeOrigins()
         origins.append(xLine3);
 
         // X axis text
-        QGraphicsSimpleTextItem *xOrigin = new QGraphicsSimpleTextItem(QStringLiteral("X"), xLine1);
+        QGraphicsSimpleTextItem* xOrigin = new QGraphicsSimpleTextItem(QStringLiteral("X"), xLine1);
         xOrigin->setBrush(axisTextBrush);
         xOrigin->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         xOrigin->setZValue(-1.0);
-        xOrigin->setPos(25, -(xOrigin->boundingRect().height()/2));
+        xOrigin->setPos(25, -(xOrigin->boundingRect().height() / 2));
         origins.append(xOrigin);
     }
 
     {
         // Y axis
         const QLineF lineY(QPointF(0, 25), QPointF(0, -5));
-        QGraphicsLineItem *yLine1 = new QGraphicsLineItem(lineY);
+        QGraphicsLineItem* yLine1 = new QGraphicsLineItem(lineY);
         yLine1->setPen(originsPen);
         yLine1->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         yLine1->setZValue(-1.0);
@@ -203,9 +203,9 @@ void VMainGraphicsScene::initializeOrigins()
 
         // Arrow left side
         QLineF arrowLeftLine = lineY;
-        arrowLeftLine.setAngle(arrowLeftLine.angle()-arrowAngle);
+        arrowLeftLine.setAngle(arrowLeftLine.angle() - arrowAngle);
         arrowLeftLine.setLength(arrowLength);
-        QGraphicsLineItem *yLine2 = new QGraphicsLineItem(arrowLeftLine);
+        QGraphicsLineItem* yLine2 = new QGraphicsLineItem(arrowLeftLine);
         yLine2->setPen(originsPen);
         yLine2->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         yLine2->setZValue(-1.0);
@@ -214,9 +214,9 @@ void VMainGraphicsScene::initializeOrigins()
 
         // Arrow right side
         QLineF arrowRightLine = lineY;
-        arrowRightLine.setAngle(arrowRightLine.angle()+arrowAngle);
+        arrowRightLine.setAngle(arrowRightLine.angle() + arrowAngle);
         arrowRightLine.setLength(arrowLength);
-        QGraphicsLineItem *yLine3 = new QGraphicsLineItem(arrowRightLine);
+        QGraphicsLineItem* yLine3 = new QGraphicsLineItem(arrowRightLine);
         yLine3->setPen(originsPen);
         yLine3->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         yLine3->setZValue(-1.0);
@@ -224,11 +224,11 @@ void VMainGraphicsScene::initializeOrigins()
         origins.append(yLine3);
 
         // Y axis text
-        QGraphicsSimpleTextItem *yOrigin = new QGraphicsSimpleTextItem(QStringLiteral("Y"), yLine1);
+        QGraphicsSimpleTextItem* yOrigin = new QGraphicsSimpleTextItem(QStringLiteral("Y"), yLine1);
         yOrigin->setBrush(axisTextBrush);
         yOrigin->setFlag(QGraphicsItem::ItemIgnoresTransformations);
         yOrigin->setZValue(-1.0);
-        yOrigin->setPos(-(yOrigin->boundingRect().width()/2), 25);
+        yOrigin->setPos(-(yOrigin->boundingRect().width() / 2), 25);
         origins.append(yOrigin);
     }
 }
@@ -236,26 +236,20 @@ void VMainGraphicsScene::initializeOrigins()
 //---------------------------------------------------------------------------------------------------------------------
 void VMainGraphicsScene::setOriginsVisible(bool visible)
 {
-    foreach (QGraphicsItem *item, origins)
-    {
+    foreach (QGraphicsItem* item, origins) {
         item->setVisible(visible);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VMainGraphicsScene::getScenePos() const
-{
-    return scenePos;
-}
+QPointF VMainGraphicsScene::getScenePos() const { return scenePos; }
 
 //---------------------------------------------------------------------------------------------------------------------
 QRectF VMainGraphicsScene::visibleItemsBoundingRect() const
 {
     QRectF rect;
-    foreach(QGraphicsItem *item, items())
-    {
-        if(not item->isVisible())
-        {
+    foreach (QGraphicsItem* item, items()) {
+        if (not item->isVisible()) {
             continue;
         }
         rect = rect.united(item->sceneBoundingRect());
@@ -268,17 +262,14 @@ QRectF VMainGraphicsScene::visibleItemsBoundingRect() const
  * @brief transform return view transformation.
  * @return view transformation.
  */
-QTransform VMainGraphicsScene::transform() const
-{
-    return m_currentTransform;
-}
+QTransform VMainGraphicsScene::transform() const { return m_currentTransform; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief setCurrentTransform set view transformation.
  * @param transform view transformation.
  */
-void VMainGraphicsScene::setCurrentTransform(const QTransform &transform)
+void VMainGraphicsScene::setCurrentTransform(const QTransform& transform)
 {
     m_previousTransform = m_currentTransform;
     m_currentTransform = transform;
@@ -296,7 +287,7 @@ void VMainGraphicsScene::swapTransforms()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::setToolsDisabled(bool disable, const QString &draftBlockName)
+void VMainGraphicsScene::setToolsDisabled(bool disable, const QString& draftBlockName)
 {
     emit DisableItem(disable, draftBlockName);
 }
@@ -307,7 +298,7 @@ void VMainGraphicsScene::setToolsDisabled(bool disable, const QString &draftBloc
  * @param id object id.
  * @param type object scene type.
  */
-void VMainGraphicsScene::chosenItem(quint32 id, const SceneObject &type)
+void VMainGraphicsScene::chosenItem(quint32 id, const SceneObject& type)
 {
     emit ChosenObject(id, type);
 }
@@ -319,28 +310,16 @@ void VMainGraphicsScene::SelectedItem(bool selected, quint32 object, quint32 too
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::EnableItemMove(bool move)
-{
-    emit EnableToolMove(move);
-}
+void VMainGraphicsScene::EnableItemMove(bool move) { emit EnableToolMove(move); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::enablePiecesMode(bool mode)
-{
-    emit curvePiecesMode(mode);
-}
+void VMainGraphicsScene::enablePiecesMode(bool mode) { emit curvePiecesMode(mode); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::ItemsSelection(const SelectionType &type)
-{
-    emit ItemSelection(type);
-}
+void VMainGraphicsScene::ItemsSelection(const SelectionType& type) { emit ItemSelection(type); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::HighlightItem(quint32 id)
-{
-    emit highlightPiece(id);
-}
+void VMainGraphicsScene::HighlightItem(quint32 id) { emit highlightPiece(id); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VMainGraphicsScene::ToggleLabelSelection(bool enabled)
@@ -361,10 +340,7 @@ void VMainGraphicsScene::ToggleLineSelection(bool enabled)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::ToggleArcSelection(bool enabled)
-{
-    emit EnableArcItemSelection(enabled);
-}
+void VMainGraphicsScene::ToggleArcSelection(bool enabled) { emit EnableArcItemSelection(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VMainGraphicsScene::ToggleElArcSelection(bool enabled)
@@ -403,40 +379,22 @@ void VMainGraphicsScene::togglePieceSelection(bool enabled)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::ToggleLabelHover(bool enabled)
-{
-    emit enableTextItemHover(enabled);
-}
+void VMainGraphicsScene::ToggleLabelHover(bool enabled) { emit enableTextItemHover(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::TogglePointHover(bool enabled)
-{
-    emit EnablePointItemHover(enabled);
-}
+void VMainGraphicsScene::TogglePointHover(bool enabled) { emit EnablePointItemHover(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::ToggleLineHover(bool enabled)
-{
-    emit EnableLineItemHover(enabled);
-}
+void VMainGraphicsScene::ToggleLineHover(bool enabled) { emit EnableLineItemHover(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::ToggleArcHover(bool enabled)
-{
-    emit EnableArcItemHover(enabled);
-}
+void VMainGraphicsScene::ToggleArcHover(bool enabled) { emit EnableArcItemHover(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::ToggleElArcHover(bool enabled)
-{
-    emit EnableElArcItemHover(enabled);
-}
+void VMainGraphicsScene::ToggleElArcHover(bool enabled) { emit EnableElArcItemHover(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::ToggleSplineHover(bool enabled)
-{
-    emit EnableSplineItemHover(enabled);
-}
+void VMainGraphicsScene::ToggleSplineHover(bool enabled) { emit EnableSplineItemHover(enabled); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VMainGraphicsScene::ToggleSplinePathHover(bool enabled)
@@ -457,7 +415,4 @@ void VMainGraphicsScene::ToggleNodePointHover(bool enabled)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VMainGraphicsScene::togglePieceHover(bool enabled)
-{
-    emit EnableDetailItemHover(enabled);
-}
+void VMainGraphicsScene::togglePieceHover(bool enabled) { emit EnableDetailItemHover(enabled); }

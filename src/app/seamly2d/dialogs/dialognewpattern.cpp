@@ -51,20 +51,21 @@
  *************************************************************************/
 
 #include "dialognewpattern.h"
-#include "ui_dialognewpattern.h"
 #include "../core/application_2d.h"
 #include "../vmisc/vsettings.h"
 #include "../vpatterndb/vcontainer.h"
+#include "ui_dialognewpattern.h"
 
 #include <QFileDialog>
+#include <QGuiApplication>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QSettings>
-#include <QGuiApplication>
 #include <QScreen>
+#include <QSettings>
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogNewPattern::DialogNewPattern(VContainer *data, const QString &patternPieceName, QWidget *parent)
+DialogNewPattern::DialogNewPattern(
+    VContainer* data, const QString& patternPieceName, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::DialogNewPattern)
     , data(data)
@@ -89,10 +90,7 @@ DialogNewPattern::DialogNewPattern(VContainer *data, const QString &patternPiece
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogNewPattern::~DialogNewPattern()
-{
-    delete ui;
-}
+DialogNewPattern::~DialogNewPattern() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 Unit DialogNewPattern::PatternUnit() const
@@ -105,27 +103,24 @@ Unit DialogNewPattern::PatternUnit() const
 void DialogNewPattern::CheckState()
 {
     bool flagName = false;
-    if (ui->lineEditName->text().isEmpty() == false)
-    {
+    if (ui->lineEditName->text().isEmpty() == false) {
         flagName = true;
     }
 
-    QPushButton *ok_Button = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* ok_Button = ui->buttonBox->button(QDialogButtonBox::Ok);
     SCASSERT(ok_Button != nullptr)
     ok_Button->setEnabled(flagName);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogNewPattern::showEvent(QShowEvent *event)
+void DialogNewPattern::showEvent(QShowEvent* event)
 {
-    QDialog::showEvent( event );
-    if ( event->spontaneous() )
-    {
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
         return;
     }
 
-    if (isInitialized)
-    {
+    if (isInitialized) {
         return;
     }
     // do your init stuff here
@@ -133,7 +128,7 @@ void DialogNewPattern::showEvent(QShowEvent *event)
     setMaximumSize(size());
     setMinimumSize(size());
 
-    isInitialized = true;//first show windows are held
+    isInitialized = true;   // first show windows are held
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -145,14 +140,10 @@ void DialogNewPattern::InitUnits()
 
     // set default unit
     const qint32 indexUnit = ui->comboBoxUnits->findData(qApp->Seamly2DSettings()->GetUnit());
-    if (indexUnit != -1)
-    {
+    if (indexUnit != -1) {
         ui->comboBoxUnits->setCurrentIndex(indexUnit);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogNewPattern::name() const
-{
-    return ui->lineEditName->text();
-}
+QString DialogNewPattern::name() const { return ui->lineEditName->text(); }

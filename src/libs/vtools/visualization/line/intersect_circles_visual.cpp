@@ -31,15 +31,15 @@
 
 #include "intersect_circles_visual.h"
 
-#include "visline.h"
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/intersect_circles_tool.h"
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
+#include "../visualization.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "../visualization.h"
+#include "visline.h"
 
 #include <QGraphicsEllipseItem>
 #include <QPen>
@@ -49,7 +49,7 @@
 #include <new>
 
 //---------------------------------------------------------------------------------------------------------------------
-IntersectCirclesVisual::IntersectCirclesVisual(const VContainer *data, QGraphicsItem *parent)
+IntersectCirclesVisual::IntersectCirclesVisual(const VContainer* data, QGraphicsItem* parent)
     : VisLine(data, parent)
     , object2Id(NULL_ID)
     , c1Radius(0)
@@ -63,39 +63,43 @@ IntersectCirclesVisual::IntersectCirclesVisual(const VContainer *data, QGraphics
     , m_secondrySupportColor(QColor(qApp->Settings()->getSecondarySupportColor()))
     , m_tertiarySupportColor(QColor(qApp->Settings()->getTertiarySupportColor()))
 {
-    this->setPen(QPen(Qt::NoPen)); // don't use parent this time
+    this->setPen(QPen(Qt::NoPen));   // don't use parent this time
 
-    c1Path   = InitItem<QGraphicsEllipseItem>(m_secondrySupportColor, this);
-    c2Path   = InitItem<QGraphicsEllipseItem>(m_tertiarySupportColor, this);
-    point    = InitPoint(mainColor, this);
+    c1Path = InitItem<QGraphicsEllipseItem>(m_secondrySupportColor, this);
+    c2Path = InitItem<QGraphicsEllipseItem>(m_tertiarySupportColor, this);
+    point = InitPoint(mainColor, this);
     c1Center = InitPoint(supportColor, this);
-    c2Center = InitPoint(supportColor, this);  //-V656
+    c2Center = InitPoint(supportColor, this);   //-V656
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void IntersectCirclesVisual::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
-        const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
+    if (object1Id > NULL_ID) {
+        const QSharedPointer<VPointF> first =
+            Visualization::data->GeometricObject<VPointF>(object1Id);
         DrawPoint(c1Center, static_cast<QPointF>(*first), supportColor);
 
-        if (object2Id > NULL_ID)
-        {
-            const QSharedPointer<VPointF> second = Visualization::data->GeometricObject<VPointF>(object2Id);
+        if (object2Id > NULL_ID) {
+            const QSharedPointer<VPointF> second =
+                Visualization::data->GeometricObject<VPointF>(object2Id);
             DrawPoint(c2Center, static_cast<QPointF>(*second), supportColor);
 
-            if (c1Radius > 0 && c2Radius > 0)
-            {
+            if (c1Radius > 0 && c2Radius > 0) {
                 c1Path->setRect(PointRect(c1Radius));
-                DrawPoint(c1Path, static_cast<QPointF>(*first), m_secondrySupportColor, Qt::DashLine);
+                DrawPoint(
+                    c1Path, static_cast<QPointF>(*first), m_secondrySupportColor, Qt::DashLine);
 
                 c2Path->setRect(PointRect(c2Radius));
-                DrawPoint(c2Path, static_cast<QPointF>(*second), m_tertiarySupportColor, Qt::DashLine);
+                DrawPoint(
+                    c2Path, static_cast<QPointF>(*second), m_tertiarySupportColor, Qt::DashLine);
 
-                const QPointF fPoint = IntersectCirclesTool::FindPoint(static_cast<QPointF>(*first),
-                                                                                  static_cast<QPointF>(*second),
-                                                                                  c1Radius, c2Radius, crossPoint);
+                const QPointF fPoint = IntersectCirclesTool::FindPoint(
+                    static_cast<QPointF>(*first),
+                    static_cast<QPointF>(*second),
+                    c1Radius,
+                    c2Radius,
+                    crossPoint);
                 DrawPoint(point, fPoint, mainColor);
             }
         }
@@ -103,9 +107,9 @@ void IntersectCirclesVisual::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCirclesVisual::VisualMode(const quint32 &id)
+void IntersectCirclesVisual::VisualMode(const quint32& id)
 {
-    VMainGraphicsScene *scene = qobject_cast<VMainGraphicsScene *>(qApp->getCurrentScene());
+    VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
     SCASSERT(scene != nullptr)
 
     this->object1Id = id;
@@ -116,25 +120,19 @@ void IntersectCirclesVisual::VisualMode(const quint32 &id)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCirclesVisual::setObject2Id(const quint32 &value)
-{
-    object2Id = value;
-}
+void IntersectCirclesVisual::setObject2Id(const quint32& value) { object2Id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCirclesVisual::setC1Radius(const QString &value)
+void IntersectCirclesVisual::setC1Radius(const QString& value)
 {
     c1Radius = FindLength(value, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCirclesVisual::setC2Radius(const QString &value)
+void IntersectCirclesVisual::setC2Radius(const QString& value)
 {
     c2Radius = FindLength(value, Visualization::data->DataVariables());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCirclesVisual::setCrossPoint(const CrossCirclesPoint &value)
-{
-    crossPoint = value;
-}
+void IntersectCirclesVisual::setCrossPoint(const CrossCirclesPoint& value) { crossPoint = value; }

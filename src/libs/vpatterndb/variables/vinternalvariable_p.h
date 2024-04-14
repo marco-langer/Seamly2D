@@ -52,9 +52,9 @@
 #ifndef VINTERNALVARIABLE_P_H
 #define VINTERNALVARIABLE_P_H
 
-#include <QSharedData>
 #include "../vmisc/def.h"
 #include "../vmisc/diagnostic.h"
+#include <QSharedData>
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -63,13 +63,17 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VInternalVariableData : public QSharedData
 {
 public:
-
     VInternalVariableData()
-        :type(VarType::Unknown), value(0), name(QString())
+        : type(VarType::Unknown)
+        , value(0)
+        , name(QString())
     {}
 
-    VInternalVariableData(const VInternalVariableData &var)
-        :QSharedData(var), type(var.type), value(var.value), name(var.name)
+    VInternalVariableData(const VInternalVariableData& var)
+        : QSharedData(var)
+        , type(var.type)
+        , value(var.value)
+        , name(var.name)
     {}
 
     virtual ~VInternalVariableData();
@@ -77,17 +81,16 @@ public:
     VarType type;
 
     /** @brief value variable's value */
-    qreal   value;
+    qreal value;
 
     QString name;
 
 private:
-    VInternalVariableData &operator=(const VInternalVariableData &) Q_DECL_EQ_DELETE;
+    VInternalVariableData& operator=(const VInternalVariableData&) Q_DECL_EQ_DELETE;
 };
 
-VInternalVariableData::~VInternalVariableData()
-{}
+VInternalVariableData::~VInternalVariableData() {}
 
 QT_WARNING_POP
 
-#endif // VINTERNALVARIABLE_P_H
+#endif   // VINTERNALVARIABLE_P_H

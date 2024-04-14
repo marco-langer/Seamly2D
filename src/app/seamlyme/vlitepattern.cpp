@@ -52,36 +52,24 @@
 #include "vlitepattern.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VLitePattern::VLitePattern(QObject *parent)
+VLitePattern::VLitePattern(QObject* parent)
     : VAbstractPattern(parent)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLitePattern::CreateEmptyFile()
-{
-}
+void VLitePattern::CreateEmptyFile() {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLitePattern::IncrementReferens(quint32 id) const
-{
-    Q_UNUSED(id)
-}
+void VLitePattern::IncrementReferens(quint32 id) const { Q_UNUSED(id) }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLitePattern::DecrementReferens(quint32 id) const
-{
-    Q_UNUSED(id)
-}
+void VLitePattern::DecrementReferens(quint32 id) const { Q_UNUSED(id) }
 
 //---------------------------------------------------------------------------------------------------------------------
-QStringList VLitePattern::GetCurrentAlphabet() const
-{
-    return QStringList();
-}
+QStringList VLitePattern::GetCurrentAlphabet() const { return QStringList(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VLitePattern::GenerateLabel(const LabelType &type, const QString &reservedName) const
+QString VLitePattern::GenerateLabel(const LabelType& type, const QString& reservedName) const
 {
     Q_UNUSED(type)
     Q_UNUSED(reservedName)
@@ -89,21 +77,18 @@ QString VLitePattern::GenerateLabel(const LabelType &type, const QString &reserv
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VLitePattern::GenerateSuffix(const QString &type) const
+QString VLitePattern::GenerateSuffix(const QString& type) const
 {
     Q_UNUSED(type);
     return QString();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLitePattern::UpdateToolData(const quint32 &id, VContainer *data)
+void VLitePattern::UpdateToolData(const quint32& id, VContainer* data)
 {
     Q_UNUSED(id)
     Q_UNUSED(data)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLitePattern::LiteParseTree(const Document &parse)
-{
-    Q_UNUSED(parse)
-}
+void VLitePattern::LiteParseTree(const Document& parse) { Q_UNUSED(parse) }

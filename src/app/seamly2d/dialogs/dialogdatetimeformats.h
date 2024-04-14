@@ -52,13 +52,12 @@
 #ifndef DIALOGDATETIMEFORMATS_H
 #define DIALOGDATETIMEFORMATS_H
 
-#include <QDialog>
 #include <QDate>
+#include <QDialog>
 #include <QTime>
 
-namespace Ui
-{
-    class DialogDateTimeFormats;
+namespace Ui {
+class DialogDateTimeFormats;
 }
 
 class QListWidgetItem;
@@ -68,10 +67,16 @@ class DialogDateTimeFormats : public QDialog
     Q_OBJECT
 
 public:
-    DialogDateTimeFormats(const QDate &date, const QStringList &predefinedFormats,
-                          const QStringList &userDefinedFormats, QWidget *parent = nullptr);
-    DialogDateTimeFormats(const QTime &time, const QStringList &predefinedFormats,
-                          const QStringList &userDefinedFormats, QWidget *parent = nullptr);
+    DialogDateTimeFormats(
+        const QDate& date,
+        const QStringList& predefinedFormats,
+        const QStringList& userDefinedFormats,
+        QWidget* parent = nullptr);
+    DialogDateTimeFormats(
+        const QTime& time,
+        const QStringList& predefinedFormats,
+        const QStringList& userDefinedFormats,
+        QWidget* parent = nullptr);
     virtual ~DialogDateTimeFormats();
 
     QStringList GetFormats() const;
@@ -79,24 +84,24 @@ public:
 private slots:
     void AddLine();
     void RemoveLine();
-    void SaveFormat(const QString &text);
+    void SaveFormat(const QString& text);
     void ShowFormatDetails();
 
 private:
     Q_DISABLE_COPY(DialogDateTimeFormats)
-    Ui::DialogDateTimeFormats *ui;
-    bool  m_dateMode;
+    Ui::DialogDateTimeFormats* ui;
+    bool m_dateMode;
     QDate m_date;
     QTime m_time;
     QStringList m_predefined;
 
-    void Init(const QStringList &predefined, const QStringList &userDefined);
-    void SetFormatLines(const QStringList &predefined, const QStringList &userDefined);
+    void Init(const QStringList& predefined, const QStringList& userDefined);
+    void SetFormatLines(const QStringList& predefined, const QStringList& userDefined);
     void SetupControls();
 
     bool IsPredefined() const;
 
-    QListWidgetItem *AddListLine(const QString &format);
+    QListWidgetItem* AddListLine(const QString& format);
 };
 
-#endif // DIALOGDATETIMEFORMATS_H
+#endif   // DIALOGDATETIMEFORMATS_H

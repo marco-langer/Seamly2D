@@ -55,20 +55,24 @@
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../tools/drawTools/toolcurve/vtoolsplinepath.h"
+#include "../vgeometry/vsplinepath.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/def.h"
 #include "../vwidgets/vmaingraphicsview.h"
-#include "../vgeometry/vsplinepath.h"
 #include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveSplinePath::MoveSplinePath(VAbstractPattern *doc, const VSplinePath &oldSplPath, const VSplinePath &newSplPath,
-                               const quint32 &id, QUndoCommand *parent)
-    : VUndoCommand(QDomElement(), doc, parent),
-      oldSplinePath(oldSplPath),
-      newSplinePath(newSplPath),
-      scene(qApp->getCurrentScene())
+MoveSplinePath::MoveSplinePath(
+    VAbstractPattern* doc,
+    const VSplinePath& oldSplPath,
+    const VSplinePath& newSplPath,
+    const quint32& id,
+    QUndoCommand* parent)
+    : VUndoCommand(QDomElement(), doc, parent)
+    , oldSplinePath(oldSplPath)
+    , newSplinePath(newSplPath)
+    , scene(qApp->getCurrentScene())
 {
     setText(tr("move spline path"));
     nodeId = id;
@@ -77,8 +81,7 @@ MoveSplinePath::MoveSplinePath(VAbstractPattern *doc, const VSplinePath &oldSplP
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveSplinePath::~MoveSplinePath()
-{}
+MoveSplinePath::~MoveSplinePath() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void MoveSplinePath::undo()
@@ -99,14 +102,13 @@ void MoveSplinePath::redo()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MoveSplinePath::mergeWith(const QUndoCommand *command)
+bool MoveSplinePath::mergeWith(const QUndoCommand* command)
 {
-    const MoveSplinePath *moveCommand = static_cast<const MoveSplinePath *>(command);
+    const MoveSplinePath* moveCommand = static_cast<const MoveSplinePath*>(command);
     SCASSERT(moveCommand != nullptr)
     const quint32 id = moveCommand->getSplinePathId();
 
-    if (id != nodeId)
-    {
+    if (id != nodeId) {
         return false;
     }
 
@@ -115,23 +117,17 @@ bool MoveSplinePath::mergeWith(const QUndoCommand *command)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int MoveSplinePath::id() const
-{
-    return static_cast<int>(UndoCommand::MoveSplinePath);
-}
+int MoveSplinePath::id() const { return static_cast<int>(UndoCommand::MoveSplinePath); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MoveSplinePath::Do(const VSplinePath &splPath)
+void MoveSplinePath::Do(const VSplinePath& splPath)
 {
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagSpline);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         VToolSplinePath::UpdatePathPoints(doc, domElement, splPath);
 
         emit NeedLiteParsing(Document::LiteParse);
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find spline path with id = %u.", nodeId);
         return;
     }

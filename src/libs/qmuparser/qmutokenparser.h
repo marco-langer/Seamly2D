@@ -11,7 +11,8 @@
  **  The above copyright notice and this permission notice shall be included in all copies or
  **  substantial portions of the Software.
  **
- **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *BUT
  **  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  **  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  **  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -22,28 +23,27 @@
 #ifndef QMUTOKENPARSER_H
 #define QMUTOKENPARSER_H
 
-#include <qcompilerdetection.h>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "qmuformulabase.h"
 
-namespace qmu
-{
+namespace qmu {
 
 class QmuTokenParser : public QmuFormulaBase
 {
 public:
-    QmuTokenParser(const QString &formula, bool osSeparator, bool fromUser = true);
+    QmuTokenParser(const QString& formula, bool osSeparator, bool fromUser = true);
     virtual ~QmuTokenParser() Q_DECL_OVERRIDE;
 
-    static bool IsSingle(const QString &formula);
+    static bool IsSingle(const QString& formula);
 
 private:
     Q_DISABLE_COPY(QmuTokenParser)
     QmuTokenParser();
 };
 
-} // namespace qmu
+}   // namespace qmu
 
-#endif // QMUTOKENPARSER_H
+#endif   // QMUTOKENPARSER_H

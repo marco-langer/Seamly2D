@@ -31,8 +31,8 @@
 
 #include <QString>
 
-#include "vpatternlabeldata.h"
 #include "floatitemdef.h"
+#include "vpatternlabeldata.h"
 
 class VPieceLabelDataPrivate;
 struct VLabelTemplateLine;
@@ -45,49 +45,49 @@ class VPieceLabelData : public VPatternLabelData
 {
 public:
     VPieceLabelData();
-    VPieceLabelData(const VPieceLabelData &data);
+    VPieceLabelData(const VPieceLabelData& data);
 
     virtual ~VPieceLabelData();
 
-    VPieceLabelData &operator=(const VPieceLabelData &data);
+    VPieceLabelData& operator=(const VPieceLabelData& data);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VPieceLabelData &operator=(VPieceLabelData &&data) Q_DECL_NOTHROW;
+    VPieceLabelData& operator=(VPieceLabelData&& data) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VPieceLabelData &data) Q_DECL_NOTHROW;
+    void Swap(VPieceLabelData& data) Q_DECL_NOTHROW;
 
     void Clear();
 
     // methods, which operate on other members
     QString GetLetter() const;
-    void    SetLetter(const QString &qsLetter);
+    void SetLetter(const QString& qsLetter);
 
     QString GetAnnotation() const;
-    void    SetAnnotation(const QString &val);
+    void SetAnnotation(const QString& val);
 
     QString GetOrientation() const;
-    void    SetOrientation(const QString &val);
+    void SetOrientation(const QString& val);
 
     QString GetRotationWay() const;
-    void    SetRotationWay(const QString &val);
+    void SetRotationWay(const QString& val);
 
     QString GetTilt() const;
-    void    SetTilt(const QString &val);
+    void SetTilt(const QString& val);
 
     QString GetFoldPosition() const;
-    void    SetFoldPosition(const QString &val);
+    void SetFoldPosition(const QString& val);
 
-    int  GetQuantity() const;
+    int GetQuantity() const;
     void SetQuantity(int val);
 
     bool IsOnFold() const;
     void SetOnFold(bool onFold);
 
     QVector<VLabelTemplateLine> GetLabelTemplate() const;
-    void                        SetLabelTemplate(const QVector<VLabelTemplateLine> &lines);
+    void SetLabelTemplate(const QVector<VLabelTemplateLine>& lines);
 
 private:
     QSharedDataPointer<VPieceLabelDataPrivate> d;
 };
 
-#endif // VPATTERNPIECEDATA_H
+#endif   // VPATTERNPIECEDATA_H

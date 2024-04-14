@@ -52,24 +52,24 @@
  *************************************************************************/
 
 #include "editlabeltemplate_dialog.h"
-#include "ui_editlabeltemplate_dialog.h"
-#include "../vmisc/vabstractapplication.h"
-#include "../vformat/vlabeltemplate.h"
-#include "../ifc/xml/vlabeltemplateconverter.h"
-#include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/exception/vexception.h"
+#include "../ifc/xml/vabstractpattern.h"
+#include "../ifc/xml/vlabeltemplateconverter.h"
+#include "../vformat/vlabeltemplate.h"
+#include "../vmisc/vabstractapplication.h"
+#include "../vpatterndb/floatItemData/vpiecelabeldata.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vpiece.h"
-#include "../vpatterndb/floatItemData/vpiecelabeldata.h"
+#include "ui_editlabeltemplate_dialog.h"
 
+#include <QDate>
 #include <QDir>
-#include <QMessageBox>
 #include <QFileDialog>
 #include <QMenu>
-#include <QDate>
+#include <QMessageBox>
 
 //---------------------------------------------------------------------------------------------------------------------
-EditLabelTemplateDialog::EditLabelTemplateDialog(VAbstractPattern *doc, QWidget *parent)
+EditLabelTemplateDialog::EditLabelTemplateDialog(VAbstractPattern* doc, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::EditLabelTemplateDialog)
     , m_placeholdersMenu(new QMenu(this))
@@ -82,20 +82,51 @@ EditLabelTemplateDialog::EditLabelTemplateDialog(VAbstractPattern *doc, QWidget 
     ui->lineEditLine->setClearButtonEnabled(true);
 
     connect(ui->toolButtonAdd, &QToolButton::clicked, this, &EditLabelTemplateDialog::AddLine);
-    connect(ui->toolButtonRemove, &QToolButton::clicked, this, &EditLabelTemplateDialog::RemoveLine);
+    connect(
+        ui->toolButtonRemove, &QToolButton::clicked, this, &EditLabelTemplateDialog::RemoveLine);
     connect(ui->lineEditLine, &QLineEdit::textEdited, this, &EditLabelTemplateDialog::SaveLineText);
-    connect(ui->toolButtonBold, &QToolButton::toggled, this, &EditLabelTemplateDialog::SaveFontStyle);
-    connect(ui->toolButtonItalic, &QToolButton::toggled, this, &EditLabelTemplateDialog::SaveFontStyle);
-    connect(ui->toolButtonTextLeft, &QToolButton::toggled, this, &EditLabelTemplateDialog::SaveTextFormating);
-    connect(ui->toolButtonTextCenter, &QToolButton::toggled, this, &EditLabelTemplateDialog::SaveTextFormating);
-    connect(ui->toolButtonTextRight, &QToolButton::toggled, this, &EditLabelTemplateDialog::SaveTextFormating);
-    connect(ui->listWidgetEdit, &QListWidget::itemSelectionChanged, this, &EditLabelTemplateDialog::ShowLineDetails);
+    connect(
+        ui->toolButtonBold, &QToolButton::toggled, this, &EditLabelTemplateDialog::SaveFontStyle);
+    connect(
+        ui->toolButtonItalic, &QToolButton::toggled, this, &EditLabelTemplateDialog::SaveFontStyle);
+    connect(
+        ui->toolButtonTextLeft,
+        &QToolButton::toggled,
+        this,
+        &EditLabelTemplateDialog::SaveTextFormating);
+    connect(
+        ui->toolButtonTextCenter,
+        &QToolButton::toggled,
+        this,
+        &EditLabelTemplateDialog::SaveTextFormating);
+    connect(
+        ui->toolButtonTextRight,
+        &QToolButton::toggled,
+        this,
+        &EditLabelTemplateDialog::SaveTextFormating);
+    connect(
+        ui->listWidgetEdit,
+        &QListWidget::itemSelectionChanged,
+        this,
+        &EditLabelTemplateDialog::ShowLineDetails);
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &EditLabelTemplateDialog::TabChanged);
-    connect(ui->toolButtonNewLabel, &QToolButton::clicked, this, &EditLabelTemplateDialog::NewTemplate);
-    connect(ui->toolButtonExportLabel, &QToolButton::clicked, this, &EditLabelTemplateDialog::ExportTemplate);
-    connect(ui->toolButtonImportLabel, &QToolButton::clicked, this, &EditLabelTemplateDialog::ImportTemplate);
-    connect(ui->spinBoxFontSize, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this,
-            &EditLabelTemplateDialog::SaveAdditionalFontSize);
+    connect(
+        ui->toolButtonNewLabel, &QToolButton::clicked, this, &EditLabelTemplateDialog::NewTemplate);
+    connect(
+        ui->toolButtonExportLabel,
+        &QToolButton::clicked,
+        this,
+        &EditLabelTemplateDialog::ExportTemplate);
+    connect(
+        ui->toolButtonImportLabel,
+        &QToolButton::clicked,
+        this,
+        &EditLabelTemplateDialog::ImportTemplate);
+    connect(
+        ui->spinBoxFontSize,
+        static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+        this,
+        &EditLabelTemplateDialog::SaveAdditionalFontSize);
 
     InitPlaceholders();
     InitPlaceholdersMenu();
@@ -104,19 +135,14 @@ EditLabelTemplateDialog::EditLabelTemplateDialog(VAbstractPattern *doc, QWidget 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-EditLabelTemplateDialog::~EditLabelTemplateDialog()
-{
-    delete ui;
-}
+EditLabelTemplateDialog::~EditLabelTemplateDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::ShowLineDetails()
 {
-    if (ui->listWidgetEdit->count() > 0)
-    {
-        const QListWidgetItem *line = ui->listWidgetEdit->currentItem();
-        if (line)
-        {
+    if (ui->listWidgetEdit->count() > 0) {
+        const QListWidgetItem* line = ui->listWidgetEdit->currentItem();
+        if (line) {
             ui->lineEditLine->blockSignals(true);
             ui->lineEditLine->setText(line->text());
             ui->lineEditLine->blockSignals(false);
@@ -137,20 +163,15 @@ void EditLabelTemplateDialog::ShowLineDetails()
 
             const int lineAlignment = line->textAlignment();
 
-            if (lineAlignment == 0 || lineAlignment & Qt::AlignLeft)
-            {
+            if (lineAlignment == 0 || lineAlignment & Qt::AlignLeft) {
                 ui->toolButtonTextLeft->setChecked(true);
                 ui->toolButtonTextCenter->setChecked(false);
                 ui->toolButtonTextRight->setChecked(false);
-            }
-            else if (lineAlignment & Qt::AlignHCenter)
-            {
+            } else if (lineAlignment & Qt::AlignHCenter) {
                 ui->toolButtonTextLeft->setChecked(false);
                 ui->toolButtonTextCenter->setChecked(true);
                 ui->toolButtonTextRight->setChecked(false);
-            }
-            else if (lineAlignment & Qt::AlignRight)
-            {
+            } else if (lineAlignment & Qt::AlignRight) {
                 ui->toolButtonTextLeft->setChecked(false);
                 ui->toolButtonTextCenter->setChecked(false);
                 ui->toolButtonTextRight->setChecked(true);
@@ -181,9 +202,8 @@ void EditLabelTemplateDialog::AddLine()
 void EditLabelTemplateDialog::RemoveLine()
 {
     ui->listWidgetEdit->blockSignals(true);
-    QListWidgetItem *curLine = ui->listWidgetEdit->takeItem(ui->listWidgetEdit->currentRow());
-    if (curLine)
-    {
+    QListWidgetItem* curLine = ui->listWidgetEdit->takeItem(ui->listWidgetEdit->currentRow());
+    if (curLine) {
         delete curLine;
     }
     ui->listWidgetEdit->blockSignals(false);
@@ -191,11 +211,10 @@ void EditLabelTemplateDialog::RemoveLine()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void EditLabelTemplateDialog::SaveLineText(const QString &text)
+void EditLabelTemplateDialog::SaveLineText(const QString& text)
 {
-    QListWidgetItem *curLine = ui->listWidgetEdit->currentItem();
-    if (curLine)
-    {
+    QListWidgetItem* curLine = ui->listWidgetEdit->currentItem();
+    if (curLine) {
         curLine->setText(text);
     }
 }
@@ -203,20 +222,15 @@ void EditLabelTemplateDialog::SaveLineText(const QString &text)
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::SaveFontStyle(bool checked)
 {
-    QListWidgetItem *curLine = ui->listWidgetEdit->currentItem();
-    if (curLine)
-    {
+    QListWidgetItem* curLine = ui->listWidgetEdit->currentItem();
+    if (curLine) {
         QFont lineFont = curLine->font();
 
-        QToolButton *button = qobject_cast<QToolButton *>(sender());
-        if (button)
-        {
-            if (button == ui->toolButtonBold)
-            {
+        QToolButton* button = qobject_cast<QToolButton*>(sender());
+        if (button) {
+            if (button == ui->toolButtonBold) {
                 lineFont.setBold(checked);
-            }
-            else if (button == ui->toolButtonItalic)
-            {
+            } else if (button == ui->toolButtonItalic) {
                 lineFont.setItalic(checked);
             }
         }
@@ -228,55 +242,39 @@ void EditLabelTemplateDialog::SaveFontStyle(bool checked)
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::SaveTextFormating(bool checked)
 {
-    QListWidgetItem *curLine = ui->listWidgetEdit->currentItem();
-    if (curLine)
-    {
-        QToolButton *button = qobject_cast<QToolButton *>(sender());
-        if (button)
-        {
+    QListWidgetItem* curLine = ui->listWidgetEdit->currentItem();
+    if (curLine) {
+        QToolButton* button = qobject_cast<QToolButton*>(sender());
+        if (button) {
             ui->toolButtonTextLeft->blockSignals(true);
             ui->toolButtonTextCenter->blockSignals(true);
             ui->toolButtonTextRight->blockSignals(true);
 
-            if (button == ui->toolButtonTextLeft)
-            {
-                if (checked)
-                {
+            if (button == ui->toolButtonTextLeft) {
+                if (checked) {
                     curLine->setTextAlignment(Qt::AlignLeft);
 
                     ui->toolButtonTextCenter->setChecked(false);
                     ui->toolButtonTextRight->setChecked(false);
-                }
-                else
-                {
+                } else {
                     button->setChecked(true);
                 }
-            }
-            else if (button == ui->toolButtonTextCenter)
-            {
-                if (checked)
-                {
+            } else if (button == ui->toolButtonTextCenter) {
+                if (checked) {
                     curLine->setTextAlignment(Qt::AlignHCenter);
 
                     ui->toolButtonTextLeft->setChecked(false);
                     ui->toolButtonTextRight->setChecked(false);
-                }
-                else
-                {
+                } else {
                     button->setChecked(true);
                 }
-            }
-            else if (button == ui->toolButtonTextRight)
-            {
-                if (checked)
-                {
+            } else if (button == ui->toolButtonTextRight) {
+                if (checked) {
                     curLine->setTextAlignment(Qt::AlignRight);
 
                     ui->toolButtonTextCenter->setChecked(false);
                     ui->toolButtonTextRight->setChecked(false);
-                }
-                else
-                {
+                } else {
                     button->setChecked(true);
                 }
             }
@@ -291,14 +289,15 @@ void EditLabelTemplateDialog::SaveTextFormating(bool checked)
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::NewTemplate()
 {
-    if (ui->listWidgetEdit->count() > 0)
-    {
-        const QMessageBox::StandardButton answer = QMessageBox::question(this, tr("Create new template"),
-                                                            tr("Creating new template will overwrite the current, do "
-                                                               "you want to continue?"),
-                                                            QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-        if (answer == QMessageBox::No)
-        {
+    if (ui->listWidgetEdit->count() > 0) {
+        const QMessageBox::StandardButton answer = QMessageBox::question(
+            this,
+            tr("Create new template"),
+            tr("Creating new template will overwrite the current, do "
+               "you want to continue?"),
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::Yes);
+        if (answer == QMessageBox::No) {
             return;
         }
     }
@@ -317,33 +316,32 @@ void EditLabelTemplateDialog::ExportTemplate()
 
     bool usedNotExistedDir = false;
     QDir directory(dir);
-    if (not directory.exists())
-    {
+    if (not directory.exists()) {
         usedNotExistedDir = directory.mkpath(".");
     }
 
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export label template"),
-                                                    dir + QLatin1String("/") + tr("template") + QLatin1String(".xml"),
-                                                    filters, nullptr, QFileDialog::DontUseNativeDialog);
+    QString fileName = QFileDialog::getSaveFileName(
+        this,
+        tr("Export label template"),
+        dir + QLatin1String("/") + tr("template") + QLatin1String(".xml"),
+        filters,
+        nullptr,
+        QFileDialog::DontUseNativeDialog);
 
-    auto RemoveTempDir = [usedNotExistedDir, dir]()
-    {
-        if (usedNotExistedDir)
-        {
+    auto RemoveTempDir = [usedNotExistedDir, dir]() {
+        if (usedNotExistedDir) {
             QDir directory(dir);
             directory.rmpath(".");
         }
     };
 
-    if (fileName.isEmpty())
-    {
+    if (fileName.isEmpty()) {
         RemoveTempDir();
         return;
     }
 
-    QFileInfo f( fileName );
-    if (f.suffix().isEmpty() && f.suffix() != QLatin1String("xml"))
-    {
+    QFileInfo f(fileName);
+    if (f.suffix().isEmpty() && f.suffix() != QLatin1String("xml")) {
         fileName += QLatin1String(".xml");
     }
 
@@ -353,8 +351,7 @@ void EditLabelTemplateDialog::ExportTemplate()
 
     QString error;
     const bool result = ltemplate.SaveDocument(fileName, error);
-    if (result == false)
-    {
+    if (result == false) {
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
         messageBox.setInformativeText(tr("Could not save file"));
@@ -370,46 +367,49 @@ void EditLabelTemplateDialog::ExportTemplate()
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::ImportTemplate()
 {
-    if (ui->listWidgetEdit->count() > 0)
-    {
-        const QMessageBox::StandardButton answer = QMessageBox::question(this, tr("Import template"),
-                                                            tr("Import template will overwrite the current, do "
-                                                               "you want to continue?"),
-                                                            QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-        if (answer == QMessageBox::No)
-        {
+    if (ui->listWidgetEdit->count() > 0) {
+        const QMessageBox::StandardButton answer = QMessageBox::question(
+            this,
+            tr("Import template"),
+            tr("Import template will overwrite the current, do "
+               "you want to continue?"),
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::Yes);
+        if (answer == QMessageBox::No) {
             return;
         }
     }
 
     QString filter(tr("Label template") + QLatin1String("(*.xml)"));
-    const QString fileName = QFileDialog::getOpenFileName(this, tr("Import template"),
-                                                          qApp->Settings()->getLabelTemplatePath(), filter, nullptr,
-                                                          QFileDialog::DontUseNativeDialog);
-    if (fileName.isEmpty())
-    {
+    const QString fileName = QFileDialog::getOpenFileName(
+        this,
+        tr("Import template"),
+        qApp->Settings()->getLabelTemplatePath(),
+        filter,
+        nullptr,
+        QFileDialog::DontUseNativeDialog);
+    if (fileName.isEmpty()) {
         return;
     }
 
-    try
-    {
+    try {
         VLabelTemplate ltemplate;
         ltemplate.setXMLContent(VLabelTemplateConverter(fileName).Convert());
         SetTemplate(ltemplate.ReadLines());
-    }
-    catch (VException &error)
-    {
-        qCritical("%s\n\n%s\n\n%s", qUtf8Printable(tr("File error.")), qUtf8Printable(error.ErrorMessage()),
-                  qUtf8Printable(error.DetailedInformation()));
+    } catch (VException& error) {
+        qCritical(
+            "%s\n\n%s\n\n%s",
+            qUtf8Printable(tr("File error.")),
+            qUtf8Printable(error.ErrorMessage()),
+            qUtf8Printable(error.DetailedInformation()));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::InsertPlaceholder()
 {
-    QAction *action = qobject_cast<QAction *>(sender());
-    if (action)
-    {
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action) {
         ui->lineEditLine->insert(action->data().toString());
         ui->lineEditLine->setFocus();
     }
@@ -418,14 +418,11 @@ void EditLabelTemplateDialog::InsertPlaceholder()
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::TabChanged(int index)
 {
-    if (index == ui->tabWidget->indexOf(ui->tabPreview))
-    {
+    if (index == ui->tabWidget->indexOf(ui->tabPreview)) {
         ui->toolButtonNewLabel->setDisabled(true);
         ui->toolButtonImportLabel->setDisabled(true);
         InitPreviewLines(GetTemplate());
-    }
-    else
-    {
+    } else {
         ui->toolButtonNewLabel->setEnabled(ui->listWidgetEdit->count() > 0);
         ui->toolButtonImportLabel->setEnabled(true);
     }
@@ -434,9 +431,8 @@ void EditLabelTemplateDialog::TabChanged(int index)
 //---------------------------------------------------------------------------------------------------------------------
 void EditLabelTemplateDialog::SaveAdditionalFontSize(int i)
 {
-    QListWidgetItem *curLine = ui->listWidgetEdit->currentItem();
-    if (curLine)
-    {
+    QListWidgetItem* curLine = ui->listWidgetEdit->currentItem();
+    if (curLine) {
         QFont lineFont = curLine->font();
         lineFont.setPointSize(lineFont.pointSize() - curLine->data(Qt::UserRole).toInt() + i);
         curLine->setFont(lineFont);
@@ -449,8 +445,7 @@ void EditLabelTemplateDialog::SetupControls()
 {
     const bool enabled = ui->listWidgetEdit->count() > 0;
 
-    if (not enabled)
-    {
+    if (not enabled) {
         ui->lineEditLine->blockSignals(true);
         ui->lineEditLine->clear();
         ui->lineEditLine->blockSignals(false);
@@ -477,10 +472,9 @@ void EditLabelTemplateDialog::InitPlaceholdersMenu()
 {
     QChar per('%');
     auto i = m_placeholders.constBegin();
-    while (i != m_placeholders.constEnd())
-    {
+    while (i != m_placeholders.constEnd()) {
         auto value = i.value();
-        QAction *action = m_placeholdersMenu->addAction(value.first);
+        QAction* action = m_placeholdersMenu->addAction(value.first);
         action->setData(per + qApp->translateVariables()->PlaceholderToUser(i.key()) + per);
         connect(action, &QAction::triggered, this, &EditLabelTemplateDialog::InsertPlaceholder);
         ++i;
@@ -500,9 +494,10 @@ void EditLabelTemplateDialog::InitPlaceholders()
     m_placeholders.insert(pl_time, qMakePair(tr("Time"), time));
 
     m_placeholders.insert(pl_patternName, qMakePair(tr("Pattern name"), m_doc->GetPatternName()));
-    m_placeholders.insert(pl_patternNumber, qMakePair(tr("Pattern number"), m_doc->GetPatternNumber()));
-    m_placeholders.insert(pl_author, qMakePair(tr("Company name or designer name"),
-                                                           m_doc->GetCompanyName()));
+    m_placeholders.insert(
+        pl_patternNumber, qMakePair(tr("Pattern number"), m_doc->GetPatternNumber()));
+    m_placeholders.insert(
+        pl_author, qMakePair(tr("Company name or designer name"), m_doc->GetCompanyName()));
     m_placeholders.insert(pl_customer, qMakePair(tr("Customer name"), m_doc->GetCustomerName()));
     m_placeholders.insert(pl_pExt, qMakePair(tr("Pattern extension"), QString("val")));
 
@@ -510,19 +505,17 @@ void EditLabelTemplateDialog::InitPlaceholders()
     m_placeholders.insert(pl_pFileName, qMakePair(tr("Pattern file name"), patternFilePath));
 
     const QString measurementsFilePath = QFileInfo(m_doc->MPath()).baseName();
-    m_placeholders.insert(pl_mFileName, qMakePair(tr("Measurments file name"), measurementsFilePath));
+    m_placeholders.insert(
+        pl_mFileName, qMakePair(tr("Measurments file name"), measurementsFilePath));
 
     QString curSize;
     QString curHeight;
     QString mExt;
-    if (qApp->patternType() == MeasurementsType::Multisize)
-    {
+    if (qApp->patternType() == MeasurementsType::Multisize) {
         curSize = QString::number(VContainer::size());
         curHeight = QString::number(VContainer::height());
         mExt = "vst";
-    }
-    else if (qApp->patternType() == MeasurementsType::Individual)
-    {
+    } else if (qApp->patternType() == MeasurementsType::Individual) {
         curSize = QString::number(VContainer::size());
         curHeight = QString::number(VContainer::height());
         mExt = "vit";
@@ -543,19 +536,21 @@ void EditLabelTemplateDialog::InitPlaceholders()
     m_placeholders.insert(pl_pQuantity, qMakePair(tr("Quantity"), QString("")));
     m_placeholders.insert(pl_mFabric, qMakePair(tr("Material: Fabric"), tr("Fabric")));
     m_placeholders.insert(pl_mLining, qMakePair(tr("Material: Lining"), tr("Lining")));
-    m_placeholders.insert(pl_mInterfacing, qMakePair(tr("Material: Interfacing"), tr("Interfacing")));
-    m_placeholders.insert(pl_mInterlining, qMakePair(tr("Material: Interlining"), tr("Interlining")));
+    m_placeholders.insert(
+        pl_mInterfacing, qMakePair(tr("Material: Interfacing"), tr("Interfacing")));
+    m_placeholders.insert(
+        pl_mInterlining, qMakePair(tr("Material: Interlining"), tr("Interlining")));
     m_placeholders.insert(pl_wCut, qMakePair(tr("Word: Cut"), tr("Cut")));
-    m_placeholders.insert(pl_wOnFold, qMakePair(tr("Word: on fold"), QString("")));// By default should be empty
+    m_placeholders.insert(
+        pl_wOnFold, qMakePair(tr("Word: on fold"), QString("")));   // By default should be empty
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString EditLabelTemplateDialog::ReplacePlaceholders(QString line) const
 {
     auto i = m_placeholders.constBegin();
-    while (i != m_placeholders.constEnd())
-    {
-        line.replace(QChar('%')+i.key()+QChar('%'), i.value().second);
+    while (i != m_placeholders.constEnd()) {
+        line.replace(QChar('%') + i.key() + QChar('%'), i.value().second);
         ++i;
     }
     return line;
@@ -566,11 +561,9 @@ QVector<VLabelTemplateLine> EditLabelTemplateDialog::GetTemplate() const
 {
     QVector<VLabelTemplateLine> lines;
 
-    for (int i=0; i<ui->listWidgetEdit->count(); ++i)
-    {
-        const QListWidgetItem *lineItem = ui->listWidgetEdit->item(i);
-        if (lineItem)
-        {
+    for (int i = 0; i < ui->listWidgetEdit->count(); ++i) {
+        const QListWidgetItem* lineItem = ui->listWidgetEdit->item(i);
+        if (lineItem) {
             VLabelTemplateLine line;
             line.line = qApp->translateVariables()->PlaceholderFromUserText(lineItem->text());
             line.alignment = lineItem->textAlignment();
@@ -588,16 +581,16 @@ QVector<VLabelTemplateLine> EditLabelTemplateDialog::GetTemplate() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void EditLabelTemplateDialog::SetTemplate(const QVector<VLabelTemplateLine> &lines)
+void EditLabelTemplateDialog::SetTemplate(const QVector<VLabelTemplateLine>& lines)
 {
     ui->listWidgetEdit->blockSignals(true);
     ui->listWidgetEdit->clear();
 
     int row = -1;
 
-    for (int i=0; i<lines.size(); ++i)
-    {
-        QListWidgetItem *item = new QListWidgetItem(qApp->translateVariables()->PlaceholderToUserText(lines.at(i).line));
+    for (int i = 0; i < lines.size(); ++i) {
+        QListWidgetItem* item = new QListWidgetItem(
+            qApp->translateVariables()->PlaceholderToUserText(lines.at(i).line));
         item->setTextAlignment(lines.at(i).alignment);
         item->setData(Qt::UserRole, lines.at(i).fontSizeIncrement);
 
@@ -612,14 +605,13 @@ void EditLabelTemplateDialog::SetTemplate(const QVector<VLabelTemplateLine> &lin
 
     ui->listWidgetEdit->blockSignals(false);
 
-    if (ui->listWidgetEdit->count() > 0)
-    {
+    if (ui->listWidgetEdit->count() > 0) {
         ui->listWidgetEdit->setCurrentRow(0);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void EditLabelTemplateDialog::SetPiece(const VPiece &piece)
+void EditLabelTemplateDialog::SetPiece(const VPiece& piece)
 {
     const VPieceLabelData& pieceData = piece.GetPatternPieceData();
     m_placeholders[pl_pLetter].second = pieceData.GetLetter();
@@ -630,22 +622,20 @@ void EditLabelTemplateDialog::SetPiece(const VPiece &piece)
     m_placeholders[pl_pFoldPosition].second = pieceData.GetFoldPosition();
     m_placeholders[pl_pName].second = piece.GetName();
     m_placeholders[pl_pQuantity].second = QString::number(pieceData.GetQuantity());
-    if (pieceData.IsOnFold())
-    {
+    if (pieceData.IsOnFold()) {
         m_placeholders[pl_wOnFold].second = tr("on fold");
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void EditLabelTemplateDialog::InitPreviewLines(const QVector<VLabelTemplateLine> &lines)
+void EditLabelTemplateDialog::InitPreviewLines(const QVector<VLabelTemplateLine>& lines)
 {
     ui->listWidgetPreview->clear();
 
     int row = -1;
 
-    for (int i=0; i<lines.size(); ++i)
-    {
-        QListWidgetItem *item = new QListWidgetItem(ReplacePlaceholders(lines.at(i).line));
+    for (int i = 0; i < lines.size(); ++i) {
+        QListWidgetItem* item = new QListWidgetItem(ReplacePlaceholders(lines.at(i).line));
         item->setTextAlignment(lines.at(i).alignment);
         item->setData(Qt::UserRole, lines.at(i).fontSizeIncrement);
 
@@ -658,8 +648,7 @@ void EditLabelTemplateDialog::InitPreviewLines(const QVector<VLabelTemplateLine>
         ui->listWidgetPreview->insertItem(++row, item);
     }
 
-    if (ui->listWidgetPreview->count() > 0)
-    {
+    if (ui->listWidgetPreview->count() > 0) {
         ui->listWidgetPreview->setCurrentRow(0);
     }
 }

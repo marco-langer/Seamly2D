@@ -55,39 +55,41 @@
 #include <QSharedPointer>
 #include <new>
 
-#include "../ifc/xml/vdomdocument.h"
+#include "../../../../vabstracttool.h"
+#include "../../../vdrawtool.h"
 #include "../ifc/ifcdef.h"
+#include "../ifc/xml/vdomdocument.h"
 #include "../vgeometry/vgobject.h"
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vformula.h"
-#include "../../../../vabstracttool.h"
-#include "../../../vdrawtool.h"
 #include "../vtoolsinglepoint.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VToolCut::VToolCut(VAbstractPattern *doc, VContainer *data, const quint32 &id, const QString &formula,
-                   const quint32 &curveCutId, QGraphicsItem *parent)
+VToolCut::VToolCut(
+    VAbstractPattern* doc,
+    VContainer* data,
+    const quint32& id,
+    const QString& formula,
+    const quint32& curveCutId,
+    QGraphicsItem* parent)
     : VToolSinglePoint(doc, data, id, QColor(qApp->Settings()->getPointNameColor()), parent)
     , formula(formula)
     , curveCutId(curveCutId)
     , m_piecesMode(false)
 {
-    Q_ASSERT_X(curveCutId != 0, Q_FUNC_INFO, "curveCutId == 0"); //-V654 //-V712
+    Q_ASSERT_X(curveCutId != 0, Q_FUNC_INFO, "curveCutId == 0");   //-V654 //-V712
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCut::Disable(bool disable, const QString &draftBlockName)
+void VToolCut::Disable(bool disable, const QString& draftBlockName)
 {
     VToolSinglePoint::Disable(disable, draftBlockName);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCut::piecesMode(bool mode)
-{
-    m_piecesMode = mode;
-}
+void VToolCut::piecesMode(bool mode) { m_piecesMode = mode; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -102,17 +104,13 @@ void VToolCut::FullUpdateFromFile()
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-quint32 VToolCut::getCurveCutId() const
-{
-    return curveCutId;
-}
+quint32 VToolCut::getCurveCutId() const { return curveCutId; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void VToolCut::setCurveCutId(const quint32 &value)
+void VToolCut::setCurveCutId(const quint32& value)
 {
-    if (value != NULL_ID)
-    {
+    if (value != NULL_ID) {
         curveCutId = value;
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
         SaveOption(obj);
@@ -130,10 +128,9 @@ VFormula VToolCut::GetFormula() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCut::SetFormula(const VFormula &value)
+void VToolCut::SetFormula(const VFormula& value)
 {
-    if (value.error() == false)
-    {
+    if (value.error() == false) {
         formula = value.GetFormula(FormulaType::FromUser);
 
         QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
@@ -142,10 +139,7 @@ void VToolCut::SetFormula(const VFormula &value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VToolCut::CurveName() const
-{
-    return VAbstractTool::data.GetGObject(curveCutId)->name();
-}
+QString VToolCut::CurveName() const { return VAbstractTool::data.GetGObject(curveCutId)->name(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

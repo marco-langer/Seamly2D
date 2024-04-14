@@ -50,26 +50,26 @@
  *************************************************************************/
 
 #include "scalesceneitems.h"
-#include "vcurvepathitem.h"
 #include "global.h"
+#include "vcurvepathitem.h"
 
-#include <QtCore/qmath.h>
 #include <QPen>
+#include <QtCore/qmath.h>
 
 //---------------------------------------------------------------------------------------------------------------------
-VScaledLine::VScaledLine(QGraphicsItem *parent)
-    : QGraphicsLineItem(parent),
-      basicWidth(widthMainLine)
+VScaledLine::VScaledLine(QGraphicsItem* parent)
+    : QGraphicsLineItem(parent)
+    , basicWidth(widthMainLine)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VScaledLine::VScaledLine(const QLineF &line, QGraphicsItem *parent)
-    : QGraphicsLineItem(line, parent),
-      basicWidth(widthMainLine)
+VScaledLine::VScaledLine(const QLineF& line, QGraphicsItem* parent)
+    : QGraphicsLineItem(line, parent)
+    , basicWidth(widthMainLine)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VScaledLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VScaledLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     QPen lPen = pen();
     lPen.setWidthF(scaleWidth(basicWidth, sceneScale(scene())));
@@ -79,31 +79,26 @@ void VScaledLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VScaledLine::GetBasicWidth() const
-{
-    return basicWidth;
-}
+qreal VScaledLine::GetBasicWidth() const { return basicWidth; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VScaledLine::setBasicWidth(const qreal &value)
-{
-    basicWidth = value;
-}
+void VScaledLine::setBasicWidth(const qreal& value) { basicWidth = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-ArrowedLineItem::ArrowedLineItem(QGraphicsItem *parent)
+ArrowedLineItem::ArrowedLineItem(QGraphicsItem* parent)
     : QGraphicsLineItem(parent)
     , m_arrows(new VCurvePathItem(this))
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-ArrowedLineItem::ArrowedLineItem(const QLineF &line, QGraphicsItem *parent)
+ArrowedLineItem::ArrowedLineItem(const QLineF& line, QGraphicsItem* parent)
     : QGraphicsLineItem(line, parent)
     , m_arrows(new VCurvePathItem(this))
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void ArrowedLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ArrowedLineItem::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     QPen lPen = pen();
     lPen.setWidthF(scaleWidth(widthMainLine, sceneScale(scene())));
@@ -117,8 +112,7 @@ void ArrowedLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     qreal arrow_step = 60;
     qreal arrow_size = 10;
 
-    if (line().length() < arrow_step)
-    {
+    if (line().length() < arrow_step) {
         drawArrow(line(), path, arrow_size);
     }
 
@@ -127,11 +121,10 @@ void ArrowedLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     axis.setAngle(line().angle());
     axis.setLength(arrow_step);
 
-    int steps = qFloor(line().length()/arrow_step);
-    for (int i=0; i<steps; ++i)
-    {
+    int steps = qFloor(line().length() / arrow_step);
+    for (int i = 0; i < steps; ++i) {
         drawArrow(axis, path, arrow_size);
-        axis.setLength(axis.length()+arrow_step);
+        axis.setLength(axis.length() + arrow_step);
     }
     m_arrows->setPath(path);
 
@@ -139,12 +132,12 @@ void ArrowedLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void ArrowedLineItem::drawArrow(const QLineF &axis, QPainterPath &path, const qreal &arrow_size)
+void ArrowedLineItem::drawArrow(const QLineF& axis, QPainterPath& path, const qreal& arrow_size)
 {
     QLineF arrowPart1;
     arrowPart1.setP1(axis.p2());
     arrowPart1.setLength(arrow_size);
-    arrowPart1.setAngle(axis.angle()+180+35);
+    arrowPart1.setAngle(axis.angle() + 180 + 35);
 
     path.moveTo(arrowPart1.p1());
     path.lineTo(arrowPart1.p2());
@@ -152,19 +145,20 @@ void ArrowedLineItem::drawArrow(const QLineF &axis, QPainterPath &path, const qr
     QLineF arrowPart2;
     arrowPart2.setP1(axis.p2());
     arrowPart2.setLength(arrow_size);
-    arrowPart2.setAngle(axis.angle()+180-35);
+    arrowPart2.setAngle(axis.angle() + 180 - 35);
 
     path.moveTo(arrowPart2.p1());
     path.lineTo(arrowPart2.p2());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VScaledEllipse::VScaledEllipse(QGraphicsItem *parent)
+VScaledEllipse::VScaledEllipse(QGraphicsItem* parent)
     : QGraphicsEllipseItem(parent)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void VScaledEllipse::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VScaledEllipse::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     const qreal scale = sceneScale(scene());
     const qreal width = scaleWidth(widthMainLine, scale);

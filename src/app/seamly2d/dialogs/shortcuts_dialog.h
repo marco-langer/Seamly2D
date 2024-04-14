@@ -31,9 +31,8 @@
 
 #include <QDialog>
 
-namespace Ui
-{
-    class ShortcutsDialog;
+namespace Ui {
+class ShortcutsDialog;
 }
 
 class ShortcutsDialog : public QDialog
@@ -41,14 +40,14 @@ class ShortcutsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShortcutsDialog(QWidget *parent = nullptr);
+    explicit ShortcutsDialog(QWidget* parent = nullptr);
     virtual ~ShortcutsDialog();
 
 protected:
-    virtual void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
 
 private:
-    Ui::ShortcutsDialog *ui;
+    Ui::ShortcutsDialog* ui;
     bool isInitialized;
     Q_DISABLE_COPY(ShortcutsDialog)
 
@@ -57,4 +56,4 @@ private:
     void exportPdf();
 };
 
-#endif // SHORTCUTS_DIALOG_H
+#endif   // SHORTCUTS_DIALOG_H

@@ -52,13 +52,13 @@
 #ifndef VPIECENODE_P_H
 #define VPIECENODE_P_H
 
-#include <QSharedData>
-#include <QDataStream>
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
 #include "../vmisc/diagnostic.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
+#include <QDataStream>
+#include <QSharedData>
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -106,13 +106,12 @@ public:
         , m_notchAngle(.000)
         , m_notchCount(1)
     {
-        if (m_typeTool == Tool::NodePoint)
-        {
+        if (m_typeTool == Tool::NodePoint) {
             m_reverse = false;
         }
     }
 
-    VPieceNodeData (const VPieceNodeData& node)
+    VPieceNodeData(const VPieceNodeData& node)
         : QSharedData(node)
         , m_id(node.m_id)
         , m_typeTool(node.m_typeTool)
@@ -138,85 +137,63 @@ public:
     friend QDataStream& operator<<(QDataStream& out, const VPieceNodeData& p);
     friend QDataStream& operator>>(QDataStream& in, VPieceNodeData& p);
 
-    quint32        m_id;              //! @brief id object id.
-    Tool           m_typeTool;        //! @brief typeTool type of tool
-    bool           m_reverse;         //! @brief reverse true if need reverse points list for node.
-    bool           m_excluded;        //! @brief m_excluded true if item excluded from main path. Excluded item is
-                                      //! not visible and also will not has affect on main path. Also include to exist
-                                      //! path items automatically setted excluded. */
-    bool           m_isNotch;         //! @brief m_isNotch has sense only for points. If true to seam allowance should
-                                      //! a notch should be added.
-    bool           m_isMainPathNode;  //! @brief m_isMainPathNode need fin know if allowed for this notch to be double.
+    quint32 m_id;      //! @brief id object id.
+    Tool m_typeTool;   //! @brief typeTool type of tool
+    bool m_reverse;    //! @brief reverse true if need reverse points list for node.
+    bool m_excluded;   //! @brief m_excluded true if item excluded from main path. Excluded item is
+                       //! not visible and also will not has affect on main path. Also include to
+                       //! exist path items automatically setted excluded. */
+    bool m_isNotch;    //! @brief m_isNotch has sense only for points. If true to seam allowance
+                       //! should a notch should be added.
+    bool m_isMainPathNode;   //! @brief m_isMainPathNode need fin know if allowed for this notch to
+                             //! be double.
 
-    QString        m_beforeWidthFormula;
-    QString        m_afterWidthFormula;
+    QString m_beforeWidthFormula;
+    QString m_afterWidthFormula;
 
     PieceNodeAngle m_angleType;
 
-    NotchType      m_notchType;
-    NotchSubType   m_notchSubType;
-    bool           m_showNotch;
-    bool           m_showSeamlineNotch;
-    qreal          m_notchLength;
-    qreal          m_notchWidth;
-    qreal          m_notchAngle;
-    int            m_notchCount;
+    NotchType m_notchType;
+    NotchSubType m_notchSubType;
+    bool m_showNotch;
+    bool m_showSeamlineNotch;
+    qreal m_notchLength;
+    qreal m_notchWidth;
+    qreal m_notchAngle;
+    int m_notchCount;
 
 private:
-    VPieceNodeData &operator=(const VPieceNodeData &) Q_DECL_EQ_DELETE;
+    VPieceNodeData& operator=(const VPieceNodeData&) Q_DECL_EQ_DELETE;
 };
 
 // Friend functions
 //---------------------------------------------------------------------------------------------------------------------
-QDataStream &operator<<(QDataStream &out, const VPieceNodeData &p)
+QDataStream& operator<<(QDataStream& out, const VPieceNodeData& p)
 {
-    out << p.m_id
-        << static_cast<int>(p.m_typeTool)
-        << p.m_reverse
-        << p.m_excluded
-        << p.m_isNotch
-        << p.m_beforeWidthFormula
-        << p.m_afterWidthFormula
-        << static_cast<int>(p.m_angleType)
-        << static_cast<int>(p.m_notchType)
-        << static_cast<int>(p.m_notchSubType)
-        << p.m_showNotch
-        << p.m_showSeamlineNotch
-        << p.m_notchLength
-        << p.m_notchWidth
-        << p.m_notchAngle
+    out << p.m_id << static_cast<int>(p.m_typeTool) << p.m_reverse << p.m_excluded << p.m_isNotch
+        << p.m_beforeWidthFormula << p.m_afterWidthFormula << static_cast<int>(p.m_angleType)
+        << static_cast<int>(p.m_notchType) << static_cast<int>(p.m_notchSubType) << p.m_showNotch
+        << p.m_showSeamlineNotch << p.m_notchLength << p.m_notchWidth << p.m_notchAngle
         << p.m_notchCount;
     return out;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QDataStream &operator>>(QDataStream &in, VPieceNodeData &p)
+QDataStream& operator>>(QDataStream& in, VPieceNodeData& p)
 {
-    int typeTool     = 0;
-    int angleType    = 0;
-    int notchType    = 0;
+    int typeTool = 0;
+    int angleType = 0;
+    int notchType = 0;
     int notchSubType = 0;
 
-    in >> p.m_id
-       >> typeTool
-       >> p.m_reverse
-       >> p.m_excluded
-       >> p.m_isNotch
-       >> p.m_beforeWidthFormula
-       >> p.m_afterWidthFormula
-       >> angleType
-       >> notchType
-       >> notchSubType
-       >> p.m_showNotch
-       >> p.m_showSeamlineNotch
-       >> p.m_notchLength
-       >> p.m_notchWidth
-       >> p.m_notchAngle
-       >> p.m_notchCount;
+    in >> p.m_id >> typeTool >> p.m_reverse >> p.m_excluded >> p.m_isNotch >> p.m_beforeWidthFormula
+        >> p.m_afterWidthFormula >> angleType >> notchType >> notchSubType >> p.m_showNotch
+        >> p.m_showSeamlineNotch >> p.m_notchLength >> p.m_notchWidth >> p.m_notchAngle
+        >> p.m_notchCount;
 
-    p.m_typeTool     = static_cast<Tool>(typeTool);
-    p.m_angleType    = static_cast<PieceNodeAngle>(angleType);
-    p.m_notchType    = static_cast<NotchType>(notchType);
+    p.m_typeTool = static_cast<Tool>(typeTool);
+    p.m_angleType = static_cast<PieceNodeAngle>(angleType);
+    p.m_notchType = static_cast<NotchType>(notchType);
     p.m_notchSubType = static_cast<NotchSubType>(notchSubType);
 
     return in;
@@ -224,4 +201,4 @@ QDataStream &operator>>(QDataStream &in, VPieceNodeData &p)
 
 QT_WARNING_POP
 
-#endif // VPIECENODE_P_H
+#endif   // VPIECENODE_P_H

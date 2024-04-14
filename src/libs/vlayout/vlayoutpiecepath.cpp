@@ -50,41 +50,40 @@
  *************************************************************************/
 
 #include "vlayoutpiecepath.h"
-#include "vlayoutpiecepath_p.h"
 #include "vlayoutdef.h"
+#include "vlayoutpiecepath_p.h"
 
 #include <QPainterPath>
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VLayoutPiecePath &VLayoutPiecePath::operator=(VLayoutPiecePath &&path) Q_DECL_NOTHROW { Swap(path); return *this; }
+VLayoutPiecePath& VLayoutPiecePath::operator=(VLayoutPiecePath&& path) Q_DECL_NOTHROW
+{
+    Swap(path);
+    return *this;
+}
 #endif
 
-void VLayoutPiecePath::Swap(VLayoutPiecePath &path) Q_DECL_NOTHROW
-{ std::swap(d, path.d); }
+void VLayoutPiecePath::Swap(VLayoutPiecePath& path) Q_DECL_NOTHROW { std::swap(d, path.d); }
 
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutPiecePath::VLayoutPiecePath()
     : d(new VLayoutPiecePathData)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath::VLayoutPiecePath(const QVector<QPointF> &points, bool cut, Qt::PenStyle penStyle)
+VLayoutPiecePath::VLayoutPiecePath(const QVector<QPointF>& points, bool cut, Qt::PenStyle penStyle)
     : d(new VLayoutPiecePathData(points, cut, penStyle))
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath::VLayoutPiecePath(const VLayoutPiecePath &path)
+VLayoutPiecePath::VLayoutPiecePath(const VLayoutPiecePath& path)
     : d(path.d)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath &VLayoutPiecePath::operator=(const VLayoutPiecePath &path)
+VLayoutPiecePath& VLayoutPiecePath::operator=(const VLayoutPiecePath& path)
 {
-    if ( &path == this )
-    {
+    if (&path == this) {
         return *this;
     }
     d = path.d;
@@ -92,16 +91,13 @@ VLayoutPiecePath &VLayoutPiecePath::operator=(const VLayoutPiecePath &path)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath::~VLayoutPiecePath()
-{
-}
+VLayoutPiecePath::~VLayoutPiecePath() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 QPainterPath VLayoutPiecePath::GetPainterPath() const
 {
     QPainterPath path;
-    if (not d->m_points.isEmpty())
-    {
+    if (not d->m_points.isEmpty()) {
         path.addPolygon(QPolygonF(d->m_points));
         path.setFillRule(Qt::WindingFill);
     }
@@ -109,37 +105,19 @@ QPainterPath VLayoutPiecePath::GetPainterPath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> VLayoutPiecePath::Points() const
-{
-    return d->m_points;
-}
+QVector<QPointF> VLayoutPiecePath::Points() const { return d->m_points; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPiecePath::SetPoints(const QVector<QPointF> &points)
-{
-    d->m_points = points;
-}
+void VLayoutPiecePath::SetPoints(const QVector<QPointF>& points) { d->m_points = points; }
 
 //---------------------------------------------------------------------------------------------------------------------
-Qt::PenStyle VLayoutPiecePath::PenStyle() const
-{
-    return d->m_penStyle;
-}
+Qt::PenStyle VLayoutPiecePath::PenStyle() const { return d->m_penStyle; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPiecePath::SetPenStyle(const Qt::PenStyle &penStyle)
-{
-    d->m_penStyle = penStyle;
-}
+void VLayoutPiecePath::SetPenStyle(const Qt::PenStyle& penStyle) { d->m_penStyle = penStyle; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VLayoutPiecePath::IsCutPath() const
-{
-    return d->m_cut;
-}
+bool VLayoutPiecePath::IsCutPath() const { return d->m_cut; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPiecePath::SetCutPath(bool cut)
-{
-    d->m_cut = cut;
-}
+void VLayoutPiecePath::SetCutPath(bool cut) { d->m_cut = cut; }

@@ -28,24 +28,24 @@
 #include "expandingtextedit.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-ExpandingTextEdit::ExpandingTextEdit(QWidget *parent)
+ExpandingTextEdit::ExpandingTextEdit(QWidget* parent)
     : QPlainTextEdit(parent)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-ExpandingTextEdit::ExpandingTextEdit(const QString &text, QWidget *parent)
+ExpandingTextEdit::ExpandingTextEdit(const QString& text, QWidget* parent)
     : QPlainTextEdit(text, parent)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-void ExpandingTextEdit::focusInEvent(QFocusEvent *e)
+void ExpandingTextEdit::focusInEvent(QFocusEvent* e)
 {
     QPlainTextEdit::focusInEvent(e);
     setFixedHeight(64);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void ExpandingTextEdit::focusOutEvent(QFocusEvent *e)
+void ExpandingTextEdit::focusOutEvent(QFocusEvent* e)
 {
     QPlainTextEdit::focusOutEvent(e);
     setFixedHeight(28);

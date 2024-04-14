@@ -64,13 +64,17 @@
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vpointf.h"
 #include "../vgeometry/vsplinepath.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../visualization.h"
+#include "../vpatterndb/vcontainer.h"
 #include "vispath.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolCutSplinePath::VisToolCutSplinePath(const VContainer *data, QGraphicsItem *parent)
-    :VisPath(data, parent), point(nullptr), splPath1(nullptr), splPath2(nullptr), length(0)
+VisToolCutSplinePath::VisToolCutSplinePath(const VContainer* data, QGraphicsItem* parent)
+    : VisPath(data, parent)
+    , point(nullptr)
+    , splPath1(nullptr)
+    , splPath2(nullptr)
+    , length(0)
 {
     splPath1 = InitItem<VCurvePathItem>(Qt::darkGreen, this);
     splPath1->setFlag(QGraphicsItem::ItemStacksBehindParent, false);
@@ -85,17 +89,23 @@ VisToolCutSplinePath::VisToolCutSplinePath(const VContainer *data, QGraphicsItem
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolCutSplinePath::RefreshGeometry()
 {
-    if (object1Id > NULL_ID)
-    {
-        const auto splPath = Visualization::data->GeometricObject<VAbstractCubicBezierPath>(object1Id);
-        DrawPath(this, splPath->GetPath(), splPath->DirectionArrows(), supportColor, lineStyle,
-                 lineWeight, Qt::RoundCap);
+    if (object1Id > NULL_ID) {
+        const auto splPath =
+            Visualization::data->GeometricObject<VAbstractCubicBezierPath>(object1Id);
+        DrawPath(
+            this,
+            splPath->GetPath(),
+            splPath->DirectionArrows(),
+            supportColor,
+            lineStyle,
+            lineWeight,
+            Qt::RoundCap);
 
-        if (not qFuzzyIsNull(length))
-        {
-            VSplinePath *spPath1 = nullptr;
-            VSplinePath *spPath2 = nullptr;
-            VPointF *p = VToolCutSplinePath::CutSplinePath(length, splPath, "X", &spPath1, &spPath2);
+        if (not qFuzzyIsNull(length)) {
+            VSplinePath* spPath1 = nullptr;
+            VSplinePath* spPath2 = nullptr;
+            VPointF* p =
+                VToolCutSplinePath::CutSplinePath(length, splPath, "X", &spPath1, &spPath2);
             SCASSERT(p != nullptr)
             SCASSERT(spPath1 != nullptr)
             SCASSERT(spPath2 != nullptr)
@@ -103,10 +113,22 @@ void VisToolCutSplinePath::RefreshGeometry()
             DrawPoint(point, static_cast<QPointF>(*p), mainColor);
             delete p;
 
-            DrawPath(splPath1, spPath1->GetPath(), spPath1->DirectionArrows(), Qt::darkGreen, lineStyle,
-                     lineWeight, Qt::RoundCap);
-            DrawPath(splPath2, spPath2->GetPath(), spPath2->DirectionArrows(), Qt::darkRed, lineStyle,
-                     lineWeight, Qt::RoundCap);
+            DrawPath(
+                splPath1,
+                spPath1->GetPath(),
+                spPath1->DirectionArrows(),
+                Qt::darkGreen,
+                lineStyle,
+                lineWeight,
+                Qt::RoundCap);
+            DrawPath(
+                splPath2,
+                spPath2->GetPath(),
+                spPath2->DirectionArrows(),
+                Qt::darkRed,
+                lineStyle,
+                lineWeight,
+                Qt::RoundCap);
 
             delete spPath1;
             delete spPath2;
@@ -115,7 +137,7 @@ void VisToolCutSplinePath::RefreshGeometry()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisToolCutSplinePath::setLength(const QString &expression)
+void VisToolCutSplinePath::setLength(const QString& expression)
 {
     length = FindLength(expression, Visualization::data->DataVariables());
 }

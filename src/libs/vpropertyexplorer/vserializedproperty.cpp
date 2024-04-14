@@ -26,43 +26,51 @@
 #include "vpropertyset.h"
 
 VPE::VSerializedProperty::VSerializedProperty()
-    : ID(), Type(), Value(), Children()
+    : ID()
+    , Type()
+    , Value()
+    , Children()
 {}
 
 /*! Creates a new VSerializedProperty from an existing property
 
 */
 VPE::VSerializedProperty::VSerializedProperty(const VProperty* property, const VPropertySet* set)
-    : ID(), Type(property ? property->type() : QString()), Value(property ? property->getValue() : QVariant()),
-      Children()
+    : ID()
+    , Type(property ? property->type() : QString())
+    , Value(property ? property->getValue() : QVariant())
+    , Children()
 {
-    if (set)
-    {
+    if (set) {
         ID = set->getPropertyID(property);
 
         initChildren(property, set);
     }
 }
 
-VPE::VSerializedProperty::VSerializedProperty(const VProperty *property, const QString &id, const VPropertySet *set)
-    : ID(id), Type(property ? property->type() : QString()), Value(property ? property->getValue() : QVariant()),
-      Children()
+VPE::VSerializedProperty::VSerializedProperty(
+    const VProperty* property, const QString& id, const VPropertySet* set)
+    : ID(id)
+    , Type(property ? property->type() : QString())
+    , Value(property ? property->getValue() : QVariant())
+    , Children()
 {
     initChildren(property, set);
 }
 
-VPE::VSerializedProperty::VSerializedProperty(const QString &id, const QString &type, const QVariant &value)
-    : ID(id), Type(type), Value(value), Children()
-{
-}
+VPE::VSerializedProperty::VSerializedProperty(
+    const QString& id, const QString& type, const QVariant& value)
+    : ID(id)
+    , Type(type)
+    , Value(value)
+    , Children()
+{}
 
-void VPE::VSerializedProperty::initChildren(const VProperty *property, const VPropertySet *set)
+void VPE::VSerializedProperty::initChildren(const VProperty* property, const VPropertySet* set)
 {
-    if (property && set)
-    {
+    if (property && set) {
         const QList<VProperty*>& tmpChildren = property->getChildren();
-        foreach(const VProperty* tmpChild, tmpChildren)
-        {
+        foreach (const VProperty* tmpChild, tmpChildren) {
             QString tmpChildID = set->getPropertyID(property);
             Children.append(VSerializedProperty(tmpChild, tmpChildID, set));
         }

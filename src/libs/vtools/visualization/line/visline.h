@@ -52,7 +52,6 @@
 #ifndef VISLINE_H
 #define VISLINE_H
 
-#include <qcompilerdetection.h>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QGraphicsLineItem>
@@ -63,33 +62,45 @@
 #include <QString>
 #include <Qt>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "../vtools/visualization/visualization.h"
 #include "../vmisc/def.h"
+#include "../vtools/visualization/visualization.h"
 #include "../vwidgets/scalesceneitems.h"
 
-class VisLine: public Visualization, public VScaledLine
+class VisLine
+    : public Visualization
+    , public VScaledLine
 {
     Q_OBJECT
 public:
-    explicit VisLine(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisLine() = default;
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::Line)};
-    static qreal CorrectAngle(const qreal &angle);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::Line)
+    };
+    static qreal CorrectAngle(const qreal& angle);
+
 protected:
-    QPointF      Ray(const QPointF &firstPoint, const qreal &angle) const;
-    QPointF      Ray(const QPointF &firstPoint) const;
-    QLineF       Axis(const QPointF &p, const qreal &angle) const;
-    QLineF       Axis(const QPointF &p1, const QPointF &p2) const;
+    QPointF Ray(const QPointF& firstPoint, const qreal& angle) const;
+    QPointF Ray(const QPointF& firstPoint) const;
+    QLineF Axis(const QPointF& p, const qreal& angle) const;
+    QLineF Axis(const QPointF& p1, const QPointF& p2) const;
     virtual void initPen() Q_DECL_OVERRIDE;
     virtual void AddOnScene() Q_DECL_OVERRIDE;
 
-    void         DrawRay(VScaledLine *lineItem, const QPointF &p, const QPointF &pTangent,
-                         const QColor &color, Qt::PenStyle style);
+    void DrawRay(
+        VScaledLine* lineItem,
+        const QPointF& p,
+        const QPointF& pTangent,
+        const QColor& color,
+        Qt::PenStyle style);
+
 private:
     Q_DISABLE_COPY(VisLine)
 };
 
-#endif // VISLINE_H
+#endif   // VISLINE_H

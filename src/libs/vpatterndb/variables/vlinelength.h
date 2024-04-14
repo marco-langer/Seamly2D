@@ -52,42 +52,48 @@
 #ifndef VLINELENGTH_H
 #define VLINELENGTH_H
 
-#include <qcompilerdetection.h>
 #include <QSharedDataPointer>
 #include <QTypeInfo>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "../vmisc/def.h"
 #include "../ifc/ifcdef.h"
+#include "../vmisc/def.h"
 #include "vinternalvariable.h"
 
 class VLengthLineData;
 class VPointF;
 
-class VLengthLine :public VInternalVariable
+class VLengthLine : public VInternalVariable
 {
 public:
     VLengthLine();
-    VLengthLine(const VPointF *p1, const quint32 &p1Id, const VPointF *p2, const quint32 &p2Id, Unit patternUnit);
-    VLengthLine(const VLengthLine &var);
+    VLengthLine(
+        const VPointF* p1,
+        const quint32& p1Id,
+        const VPointF* p2,
+        const quint32& p2Id,
+        Unit patternUnit);
+    VLengthLine(const VLengthLine& var);
 
     virtual ~VLengthLine() Q_DECL_OVERRIDE;
 
-    VLengthLine &operator=(const VLengthLine &var);
+    VLengthLine& operator=(const VLengthLine& var);
 #ifdef Q_COMPILER_RVALUE_REFS
-	VLengthLine &operator=(VLengthLine &&var) Q_DECL_NOTHROW;
+    VLengthLine& operator=(VLengthLine&& var) Q_DECL_NOTHROW;
 #endif
 
-	void Swap(VLengthLine &var) Q_DECL_NOTHROW;
+    void Swap(VLengthLine& var) Q_DECL_NOTHROW;
 
     virtual bool Filter(quint32 id) Q_DECL_OVERRIDE;
-    void         SetValue(const VPointF *p1, const VPointF *p2);
-    quint32      GetP1Id() const;
-    quint32      GetP2Id() const;
+    void SetValue(const VPointF* p1, const VPointF* p2);
+    quint32 GetP1Id() const;
+    quint32 GetP2Id() const;
+
 private:
     QSharedDataPointer<VLengthLineData> d;
 };
 
 Q_DECLARE_TYPEINFO(VLengthLine, Q_MOVABLE_TYPE);
 
-#endif // VLINELENGTH_H
+#endif   // VLINELENGTH_H

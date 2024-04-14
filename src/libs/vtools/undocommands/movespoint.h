@@ -52,11 +52,11 @@
 #ifndef MOVESPOINT_H
 #define MOVESPOINT_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -66,42 +66,39 @@ class MoveSPoint : public VUndoCommand
 {
     Q_OBJECT
 public:
-    MoveSPoint(VAbstractPattern *doc, const double &x, const double &y, const quint32 &id, QGraphicsScene *scene,
-               QUndoCommand *parent = nullptr);
+    MoveSPoint(
+        VAbstractPattern* doc,
+        const double& x,
+        const double& y,
+        const quint32& id,
+        QGraphicsScene* scene,
+        QUndoCommand* parent = nullptr);
     virtual ~MoveSPoint() Q_DECL_OVERRIDE;
     virtual void undo() Q_DECL_OVERRIDE;
     virtual void redo() Q_DECL_OVERRIDE;
-    virtual bool mergeWith(const QUndoCommand *command) Q_DECL_OVERRIDE;
-    virtual int  id() const Q_DECL_OVERRIDE;
-    quint32      getSPointId() const;
-    double       getNewX() const;
-    double       getNewY() const;
-    void         Do(double x, double y);
+    virtual bool mergeWith(const QUndoCommand* command) Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
+    quint32 getSPointId() const;
+    double getNewX() const;
+    double getNewY() const;
+    void Do(double x, double y);
+
 private:
     Q_DISABLE_COPY(MoveSPoint)
-    double   oldX;
-    double   oldY;
-    double   newX;
-    double   newY;
-    QGraphicsScene *scene;
+    double oldX;
+    double oldY;
+    double newX;
+    double newY;
+    QGraphicsScene* scene;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline quint32 MoveSPoint::getSPointId() const
-{
-    return nodeId;
-}
+inline quint32 MoveSPoint::getSPointId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline double MoveSPoint::getNewX() const
-{
-    return newX;
-}
+inline double MoveSPoint::getNewX() const { return newX; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline double MoveSPoint::getNewY() const
-{
-    return newY;
-}
+inline double MoveSPoint::getNewY() const { return newY; }
 
-#endif // MOVESPOINT_H
+#endif   // MOVESPOINT_H

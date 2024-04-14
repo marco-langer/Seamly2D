@@ -32,8 +32,8 @@
 #include <QPointF>
 #include <QSharedData>
 
-#include "../vmisc/diagnostic.h"
 #include "../ifc/ifcdef.h"
+#include "../vmisc/diagnostic.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
@@ -52,7 +52,7 @@ public:
         , m_bottomRightAnchorPoint(NULL_ID)
     {}
 
-    VPatternLabelDataPrivate(const VPatternLabelDataPrivate &data)
+    VPatternLabelDataPrivate(const VPatternLabelDataPrivate& data)
         : QSharedData(data)
         , m_pieceLabelWidth(data.m_pieceLabelWidth)
         , m_pieceLabelHeight(data.m_pieceLabelHeight)
@@ -65,18 +65,22 @@ public:
 
     ~VPatternLabelDataPrivate() Q_DECL_EQ_DEFAULT;
 
-    QString m_pieceLabelWidth;            /** @brief m_pieceLabelWidth formula to calculate the width of label */
-    QString m_pieceLabelHeight;           /** @brief m_pieceLabelHeight formula to calculate the height of label */
-    QString m_pieceLabelAngle;            /** @brief m_pieceLabelAngle formula to calculate the rotation angle of label */
-    int     m_iFontSize;              /** @brief m_iFontSize label text base font size */
-    quint32 m_centerAnchorPoint;      /** @brief m_centerAnchorPoint center pin id */
-    quint32 m_topLeftAnchorPoint;     /** @brief m_topLeftAnchorPoint top left corner pin id */
-    quint32 m_bottomRightAnchorPoint; /** @brief m_bottomRightAnchorPoint bottom right corner pin id */
+    QString
+        m_pieceLabelWidth; /** @brief m_pieceLabelWidth formula to calculate the width of label */
+    QString m_pieceLabelHeight; /** @brief m_pieceLabelHeight formula to calculate the height of
+                                   label */
+    QString m_pieceLabelAngle;  /** @brief m_pieceLabelAngle formula to calculate the rotation angle
+                                   of label */
+    int m_iFontSize;            /** @brief m_iFontSize label text base font size */
+    quint32 m_centerAnchorPoint;  /** @brief m_centerAnchorPoint center pin id */
+    quint32 m_topLeftAnchorPoint; /** @brief m_topLeftAnchorPoint top left corner pin id */
+    quint32
+        m_bottomRightAnchorPoint; /** @brief m_bottomRightAnchorPoint bottom right corner pin id */
 
 private:
-    VPatternLabelDataPrivate &operator=(const VPatternLabelDataPrivate &) Q_DECL_EQ_DELETE;
+    VPatternLabelDataPrivate& operator=(const VPatternLabelDataPrivate&) Q_DECL_EQ_DELETE;
 };
 
 QT_WARNING_POP
 
-#endif // VPATTERNLABELDATA_P_H
+#endif   // VPATTERNLABELDATA_P_H

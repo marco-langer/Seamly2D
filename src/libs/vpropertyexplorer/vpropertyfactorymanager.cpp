@@ -20,10 +20,10 @@
 
 #include "vpropertyfactorymanager.h"
 
-#include <stddef.h>
 #include <QList>
 #include <QMap>
 #include <QStringList>
+#include <stddef.h>
 
 #include "vabstractpropertyfactory.h"
 #include "vproperty.h"
@@ -32,18 +32,16 @@
 
 VPE::VPropertyFactoryManager* VPE::VPropertyFactoryManager::DefaultManager = NULL;
 
-VPE::VPropertyFactoryManager::VPropertyFactoryManager(QObject *parent)
-    : QObject(parent), d_ptr(new VPropertyFactoryManagerPrivate())
-{
-
-}
+VPE::VPropertyFactoryManager::VPropertyFactoryManager(QObject* parent)
+    : QObject(parent)
+    , d_ptr(new VPropertyFactoryManagerPrivate())
+{}
 
 VPE::VPropertyFactoryManager::~VPropertyFactoryManager()
 {
     // Delete all factories
     QList<VAbstractPropertyFactory*> tmpFactories = d_ptr->Factories.values();
-    while (!tmpFactories.isEmpty())
-    {
+    while (!tmpFactories.isEmpty()) {
         VAbstractPropertyFactory* tmpFactory = tmpFactories.takeLast();
         tmpFactories.removeAll(tmpFactory);
         delete tmpFactory;
@@ -51,16 +49,15 @@ VPE::VPropertyFactoryManager::~VPropertyFactoryManager()
 
 
     delete d_ptr;
-    if (this == DefaultManager)
-    {
+    if (this == DefaultManager) {
         DefaultManager = nullptr;
     }
 }
 
-void VPE::VPropertyFactoryManager::registerFactory(const QString& type, VAbstractPropertyFactory* factory)
+void VPE::VPropertyFactoryManager::registerFactory(
+    const QString& type, VAbstractPropertyFactory* factory)
 {
-    if (type.isEmpty())
-    {
+    if (type.isEmpty()) {
         return;
     }
 
@@ -70,38 +67,30 @@ void VPE::VPropertyFactoryManager::registerFactory(const QString& type, VAbstrac
     d_ptr->Factories[type] = factory;
 }
 
-void VPE::VPropertyFactoryManager::unregisterFactory(VAbstractPropertyFactory* factory, const QString& type,
-                                                bool delete_if_unused)
+void VPE::VPropertyFactoryManager::unregisterFactory(
+    VAbstractPropertyFactory* factory, const QString& type, bool delete_if_unused)
 {
-    if (!factory)
-    {
+    if (!factory) {
         return;
     }
 
-    if (!type.isEmpty())
-    {
+    if (!type.isEmpty()) {
         // Remove all occurances
         QString tmpKey;
-        do
-        {
+        do {
             tmpKey = d_ptr->Factories.key(factory, QString());
-            if (!tmpKey.isEmpty())
-            {
+            if (!tmpKey.isEmpty()) {
                 d_ptr->Factories.remove(tmpKey);
             }
-        } while(!tmpKey.isEmpty());
-    }
-    else
-    {
+        } while (!tmpKey.isEmpty());
+    } else {
         // Only remove one type
-        if (d_ptr->Factories.value(type, nullptr) == factory)
-        {
+        if (d_ptr->Factories.value(type, nullptr) == factory) {
             d_ptr->Factories.remove(type);
         }
     }
 
-    if (delete_if_unused && !isRegistered(factory))
-    {
+    if (delete_if_unused && !isRegistered(factory)) {
         delete factory;
     }
 }
@@ -117,21 +106,21 @@ VPE::VAbstractPropertyFactory* VPE::VPropertyFactoryManager::getFactory(const QS
 }
 
 
-VPE::VProperty* VPE::VPropertyFactoryManager::createProperty(const QString& type, const QString& name,
-                                                             const QString& description, const QString &default_value)
+VPE::VProperty* VPE::VPropertyFactoryManager::createProperty(
+    const QString& type,
+    const QString& name,
+    const QString& description,
+    const QString& default_value)
 {
     VAbstractPropertyFactory* tmpFactory = getFactory(type);
     VProperty* tmpResult = NULL;
-    if (tmpFactory)
-    {
+    if (tmpFactory) {
         tmpResult = tmpFactory->createProperty(type, name);
 
-        if (tmpResult)
-        {
+        if (tmpResult) {
             tmpResult->setDescription(description);
 
-            if (!default_value.isEmpty())
-            {
+            if (!default_value.isEmpty()) {
                 tmpResult->deserialize(default_value);
             }
         }
@@ -141,19 +130,17 @@ VPE::VProperty* VPE::VPropertyFactoryManager::createProperty(const QString& type
 }
 
 // cppcheck-suppress unusedFunction
-//VPE::VPropertyFactoryManager *VPE::VPropertyFactoryManager::getDefaultManager()
+// VPE::VPropertyFactoryManager *VPE::VPropertyFactoryManager::getDefaultManager()
 //{
 //    if (!DefaultManager)
 //    {
 //        DefaultManager = new VPropertyFactoryManager();
-//        /*VStandardPropertyFactory* tmpStandardProp = */new VStandardPropertyFactory(DefaultManager);
+//        /*VStandardPropertyFactory* tmpStandardProp = */new
+//        VStandardPropertyFactory(DefaultManager);
 //    }
 
 //    return DefaultManager;
 //}
 
 // cppcheck-suppress unusedFunction
-QStringList VPE::VPropertyFactoryManager::getSupportedTypes()
-{
-    return d_ptr->Factories.keys();
-}
+QStringList VPE::VPropertyFactoryManager::getSupportedTypes() { return d_ptr->Factories.keys(); }

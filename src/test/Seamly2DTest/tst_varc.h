@@ -58,7 +58,7 @@ class TST_VArc : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_VArc(QObject *parent = nullptr);
+    explicit TST_VArc(QObject* parent = nullptr);
 
 private slots:
     void CompareTwoWays();
@@ -71,4 +71,4 @@ private slots:
     void TestFlip();
 };
 
-#endif // TST_VARC_H
+#endif   // TST_VARC_H

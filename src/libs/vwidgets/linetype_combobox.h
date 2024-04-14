@@ -25,9 +25,9 @@
 #define LINETYPE_COMBOBOX_H
 
 #include <QComboBox>
-#include <QWidget>
-#include <QPen>
 #include <QIcon>
+#include <QPen>
+#include <QWidget>
 #include <memory>
 
 class QIcon;
@@ -35,32 +35,32 @@ class QIcon;
 /**
  * A comboBox for choosing a line type.
  */
-class LineTypeComboBox: public QComboBox
+class LineTypeComboBox : public QComboBox
 {
     Q_OBJECT
 
 public:
-                   LineTypeComboBox(QWidget *parent = nullptr);
-                   LineTypeComboBox(int  width, int height, QWidget *parent = nullptr , const char *name = nullptr );
+    LineTypeComboBox(QWidget* parent = nullptr);
+    LineTypeComboBox(int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
 
-    virtual       ~LineTypeComboBox();
+    virtual ~LineTypeComboBox();
 
-    QString        getLineType() { return m_currentLineType; }
-    void           setLineType(const QString &type);
+    QString getLineType() { return m_currentLineType; }
+    void setLineType(const QString& type);
 
-    void           init();
+    void init();
 
 private slots:
-    void           updateLineType(int index);
+    void updateLineType(int index);
 
 signals:
-    void           lineTypeChanged(const QString &type);
+    void lineTypeChanged(const QString& type);
 
 private:
-    QIcon          createIcon(const QString &type);
-    QString        m_currentLineType;
-    int            m_iconWidth;
-    int            m_iconHeight;
+    QIcon createIcon(const QString& type);
+    QString m_currentLineType;
+    int m_iconWidth;
+    int m_iconHeight;
 };
 
 #endif

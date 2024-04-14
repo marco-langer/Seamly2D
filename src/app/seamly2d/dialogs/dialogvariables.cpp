@@ -49,24 +49,24 @@
  **
  *************************************************************************/
 #include "dialogvariables.h"
-#include "ui_dialogvariables.h"
-#include "../vwidgets/vwidgetpopup.h"
-#include "../vmisc/vsettings.h"
 #include "../qmuparser/qmudef.h"
 #include "../qmuparser/qmutokenparser.h"
-#include "../vpatterndb/vtranslatevars.h"
+#include "../vmisc/vsettings.h"
 #include "../vpatterndb/calculator.h"
+#include "../vpatterndb/vtranslatevars.h"
 #include "../vtools/dialogs/support/edit_formula_dialog.h"
+#include "../vwidgets/vwidgetpopup.h"
+#include "ui_dialogvariables.h"
 
-#include <QFileDialog>
+#include <QCloseEvent>
 #include <QDir>
+#include <QFileDialog>
 #include <QGuiApplication>
 #include <QMessageBox>
-#include <QCloseEvent>
-#include <QTabBar>
-#include <QTableWidget>
 #include <QScreen>
 #include <QSettings>
+#include <QTabBar>
+#include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QtNumeric>
 
@@ -79,7 +79,7 @@
  * @param doc dom document container
  * @param parent parent widget
  */
-DialogVariables::DialogVariables(VContainer *data, VPattern *doc, QWidget *parent)
+DialogVariables::DialogVariables(VContainer* data, VPattern* doc, QWidget* parent)
     : DialogTool(data, NULL_ID, parent)
     , ui(new Ui::DialogVariables)
     , data(data)
@@ -96,7 +96,7 @@ DialogVariables::DialogVariables(VContainer *data, VPattern *doc, QWidget *paren
     setWindowFlags(Qt::Window);
     setWindowFlags((windowFlags() | Qt::WindowStaysOnTopHint) & ~Qt::WindowContextHelpButtonHint);
 
-    //Limit dialog height to 80% of screen size
+    // Limit dialog height to 80% of screen size
     setMaximumHeight(qRound(QGuiApplication::primaryScreen()->availableGeometry().height() * .8));
 
     ui->name_LineEdit->setClearButtonEnabled(true);
@@ -131,44 +131,60 @@ DialogVariables::DialogVariables(VContainer *data, VPattern *doc, QWidget *paren
     connect(this->doc, &VPattern::FullUpdateFromFile, this, &DialogVariables::FullUpdateFromFile);
 
     ui->tabWidget->setCurrentIndex(0);
-    ui->name_LineEdit->setValidator( new QRegularExpressionValidator(QRegularExpression(
-                                                                        QLatin1String("^$|")+NameRegExp()), this));
+    ui->name_LineEdit->setValidator(new QRegularExpressionValidator(
+        QRegularExpression(QLatin1String("^$|") + NameRegExp()), this));
 
-    connect(ui->variables_TableWidget, &QTableWidget::itemSelectionChanged, this,
-            &DialogVariables::showCustomVariableDetails);
+    connect(
+        ui->variables_TableWidget,
+        &QTableWidget::itemSelectionChanged,
+        this,
+        &DialogVariables::showCustomVariableDetails);
 
-    connect(ui->addCustomVariable_ToolButton, &QPushButton::clicked, this, &DialogVariables::addCustomVariable);
-    connect(ui->removeCustomVariable_ToolButton, &QToolButton::clicked, this, &DialogVariables::removeCustomVariable);
+    connect(
+        ui->addCustomVariable_ToolButton,
+        &QPushButton::clicked,
+        this,
+        &DialogVariables::addCustomVariable);
+    connect(
+        ui->removeCustomVariable_ToolButton,
+        &QToolButton::clicked,
+        this,
+        &DialogVariables::removeCustomVariable);
     connect(ui->toolButtonUp, &QToolButton::clicked, this, &DialogVariables::moveUp);
     connect(ui->toolButtonDown, &QToolButton::clicked, this, &DialogVariables::moveDown);
     connect(ui->formula_ToolButton, &QToolButton::clicked, this, &DialogVariables::Fx);
-    connect(ui->name_LineEdit, &QLineEdit::textEdited, this, &DialogVariables::saveCustomVariableName);
-    connect(ui->description_PlainTextEdit, &QPlainTextEdit::textChanged, this, &DialogVariables::saveCustomVariableDescription);
-    connect(ui->formula_PlainTextEdit, &QPlainTextEdit::textChanged, this, &DialogVariables::saveCustomVariableFormula);
+    connect(
+        ui->name_LineEdit, &QLineEdit::textEdited, this, &DialogVariables::saveCustomVariableName);
+    connect(
+        ui->description_PlainTextEdit,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogVariables::saveCustomVariableDescription);
+    connect(
+        ui->formula_PlainTextEdit,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogVariables::saveCustomVariableFormula);
 
     connect(ui->filter_LineEdit, &QLineEdit::textChanged, this, &DialogVariables::filterVariables);
 
     connect(ui->refresh_PushButton, &QPushButton::clicked, this, &DialogVariables::refreshPattern);
 
-    connect(ui->variables_TableWidget->horizontalHeader(), &QHeaderView::sectionClicked, [this]()
-    {
+    connect(ui->variables_TableWidget->horizontalHeader(), &QHeaderView::sectionClicked, [this]() {
         isSorted = true;
         setMoveControls();
     });
 
-    if (ui->variables_TableWidget->rowCount() > 0)
-    {
+    if (ui->variables_TableWidget->rowCount() > 0) {
         ui->variables_TableWidget->selectRow(0);
     }
 
     // clear text filter string every time a new tab is selected
-    auto clearFilterString = [this] ()
-    {
+    auto clearFilterString = [this]() {
         ui->filter_LineEdit->clear();
         isFiltered = false;
 
-        if (ui->tabWidget->currentIndex() == 0)
-        {
+        if (ui->tabWidget->currentIndex() == 0) {
             filterVariables("");
             ui->variables_TableWidget->horizontalHeader()->setSortIndicator(-1, Qt::AscendingOrder);
             isSorted = false;
@@ -179,10 +195,7 @@ DialogVariables::DialogVariables(VContainer *data, VPattern *doc, QWidget *paren
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogVariables::~DialogVariables()
-{
-    delete ui;
-}
+DialogVariables::~DialogVariables() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -193,45 +206,50 @@ void DialogVariables::fillCustomVariables(bool freshCall)
     ui->variables_TableWidget->blockSignals(true);
     ui->variables_TableWidget->clearContents();
 
-    const QMap<QString, QSharedPointer<CustomVariable> > variables = data->variablesData();
-    QMap<QString, QSharedPointer<CustomVariable> >::const_iterator i;
+    const QMap<QString, QSharedPointer<CustomVariable>> variables = data->variablesData();
+    QMap<QString, QSharedPointer<CustomVariable>>::const_iterator i;
     QMap<quint32, QString> map;
-    //Sorting QHash by id
-    for (i = variables.constBegin(); i != variables.constEnd(); ++i)
-    {
+    // Sorting QHash by id
+    for (i = variables.constBegin(); i != variables.constEnd(); ++i) {
         QSharedPointer<CustomVariable> variable = i.value();
         map.insert(variable->getIndex(), i.key());
     }
 
     qint32 currentRow = -1;
     QMapIterator<quint32, QString> iMap(map);
-    ui->variables_TableWidget->setRowCount ( variables.size() );
-    while (iMap.hasNext())
-    {
+    ui->variables_TableWidget->setRowCount(variables.size());
+    while (iMap.hasNext()) {
         iMap.next();
         QSharedPointer<CustomVariable> variable = variables.value(iMap.value());
         currentRow++;
 
-        addCell(ui->variables_TableWidget, variable->GetName(), currentRow, 0, Qt::AlignVCenter); // name
-        addCell(ui->variables_TableWidget, qApp->LocaleToString(*variable->GetValue()), currentRow, 1,
-                Qt::AlignHCenter | Qt::AlignVCenter, variable->IsFormulaOk()); // calculated value
+        addCell(
+            ui->variables_TableWidget,
+            variable->GetName(),
+            currentRow,
+            0,
+            Qt::AlignVCenter);   // name
+        addCell(
+            ui->variables_TableWidget,
+            qApp->LocaleToString(*variable->GetValue()),
+            currentRow,
+            1,
+            Qt::AlignHCenter | Qt::AlignVCenter,
+            variable->IsFormulaOk());   // calculated value
 
         QString formula;
-        try
-        {
-            formula = qApp->translateVariables()->FormulaToUser(variable->GetFormula(), qApp->Settings()->getOsSeparator());
-        }
-        catch (qmu::QmuParserError &error)
-        {
+        try {
+            formula = qApp->translateVariables()->FormulaToUser(
+                variable->GetFormula(), qApp->Settings()->getOsSeparator());
+        } catch (qmu::QmuParserError& error) {
             Q_UNUSED(error)
             formula = variable->GetFormula();
         }
 
-        addCell(ui->variables_TableWidget, formula, currentRow, 2, Qt::AlignVCenter); // formula
+        addCell(ui->variables_TableWidget, formula, currentRow, 2, Qt::AlignVCenter);   // formula
     }
 
-    if (freshCall)
-    {
+    if (freshCall) {
         ui->variables_TableWidget->resizeColumnsToContents();
         ui->variables_TableWidget->resizeRowsToContents();
     }
@@ -243,20 +261,19 @@ void DialogVariables::fillCustomVariables(bool freshCall)
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void DialogVariables::fillTable(const QMap<QString, T> &varTable, QTableWidget *table)
+void DialogVariables::fillTable(const QMap<QString, T>& varTable, QTableWidget* table)
 {
     SCASSERT(table != nullptr)
 
     qint32 currentRow = -1;
     QMapIterator<QString, T> i(varTable);
-    while (i.hasNext())
-    {
+    while (i.hasNext()) {
         i.next();
         qreal length = *i.value()->GetValue();
         currentRow++;
-        table->setRowCount ( varTable.size() );
+        table->setRowCount(varTable.size());
 
-        QTableWidgetItem *item = new QTableWidgetItem(i.key());
+        QTableWidgetItem* item = new QTableWidgetItem(i.key());
         item->setTextAlignment(Qt::AlignLeft);
         table->setItem(currentRow, 0, item);
 
@@ -316,19 +333,19 @@ void DialogVariables::showUnits()
 {
     const QString unit = UnitsToStr(qApp->patternUnit());
 
-    showHeaderUnits(ui->variables_TableWidget, 1, unit);// calculated value
-    showHeaderUnits(ui->variables_TableWidget, 2, unit);// formula
+    showHeaderUnits(ui->variables_TableWidget, 1, unit);   // calculated value
+    showHeaderUnits(ui->variables_TableWidget, 2, unit);   // formula
 
-    showHeaderUnits(ui->lineLengths_TableWidget, 1, unit);// lengths
-    showHeaderUnits(ui->curveLengths_TableWidget, 1, unit);// lengths
-    showHeaderUnits(ui->controlPointLengths_TableWidget, 1, unit);// lengths
-    showHeaderUnits(ui->lineAngles_TableWidget, 1, degreeSymbol);// angle
-    showHeaderUnits(ui->arcRadiuses_TableWidget, 1, unit);// radius
-    showHeaderUnits(ui->curveAngles_TableWidget, 1, degreeSymbol);// angle
+    showHeaderUnits(ui->lineLengths_TableWidget, 1, unit);           // lengths
+    showHeaderUnits(ui->curveLengths_TableWidget, 1, unit);          // lengths
+    showHeaderUnits(ui->controlPointLengths_TableWidget, 1, unit);   // lengths
+    showHeaderUnits(ui->lineAngles_TableWidget, 1, degreeSymbol);    // angle
+    showHeaderUnits(ui->arcRadiuses_TableWidget, 1, unit);           // radius
+    showHeaderUnits(ui->curveAngles_TableWidget, 1, degreeSymbol);   // angle
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::showHeaderUnits(QTableWidget *table, int column, const QString &unit)
+void DialogVariables::showHeaderUnits(QTableWidget* table, int column, const QString& unit)
 {
     SCASSERT(table != nullptr)
 
@@ -338,20 +355,20 @@ void DialogVariables::showHeaderUnits(QTableWidget *table, int column, const QSt
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::addCell(QTableWidget *table, const QString &text, int row, int column, int aligment, bool ok)
+void DialogVariables::addCell(
+    QTableWidget* table, const QString& text, int row, int column, int aligment, bool ok)
 {
     SCASSERT(table != nullptr)
 
-    QTableWidgetItem *item = new QTableWidgetItem(text);
+    QTableWidgetItem* item = new QTableWidgetItem(text);
     item->setTextAlignment(aligment);
 
     // set the item non-editable (view only), and non-selectable
     Qt::ItemFlags flags = item->flags();
-    flags &= ~(Qt::ItemIsEditable); // reset/clear the flag
+    flags &= ~(Qt::ItemIsEditable);   // reset/clear the flag
     item->setFlags(flags);
 
-    if (not ok)
-    {
+    if (not ok) {
         QBrush brush = item->foreground();
         brush.setColor(Qt::red);
         item->setForeground(brush);
@@ -365,68 +382,62 @@ QString DialogVariables::getCustomVariableName() const
 {
     qint32 num = 1;
     QString name;
-    do
-    {
-        name = CustomIncrSign + qApp->translateVariables()->InternalVarToUser(variable_) + QString().number(num);
+    do {
+        name = CustomIncrSign + qApp->translateVariables()->InternalVarToUser(variable_)
+             + QString().number(num);
         num++;
     } while (not data->IsUnique(name));
     return name;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogVariables::clearCustomVariableName(const QString &name) const
+QString DialogVariables::clearCustomVariableName(const QString& name) const
 {
     QString clear = name;
     const int index = clear.indexOf(CustomIncrSign);
-    if (index == 0)
-    {
+    if (index == 0) {
         clear.remove(0, 1);
     }
     return clear;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogVariables::evalVariableFormula(const QString &formula, bool fromUser, VContainer *data, QLabel *label)
+bool DialogVariables::evalVariableFormula(
+    const QString& formula, bool fromUser, VContainer* data, QLabel* label)
 {
-    const QString postfix = UnitsToStr(qApp->patternUnit());//Show unit in dialog label (cm, mm or inch)
-    if (formula.isEmpty())
-    {
+    const QString postfix =
+        UnitsToStr(qApp->patternUnit());   // Show unit in dialog label (cm, mm or inch)
+    if (formula.isEmpty()) {
         label->setText(tr("Error") + " (" + postfix + "). " + tr("Empty field."));
         label->setToolTip(tr("Empty field"));
         return false;
-    }
-    else
-    {
-        try
-        {
+    } else {
+        try {
             QString f;
             // Replace line return character with spaces for calc if exist
-            if (fromUser)
-            {
-                f = qApp->translateVariables()->FormulaFromUser(formula, qApp->Settings()->getOsSeparator());
-            }
-            else
-            {
+            if (fromUser) {
+                f = qApp->translateVariables()->FormulaFromUser(
+                    formula, qApp->Settings()->getOsSeparator());
+            } else {
                 f = formula;
             }
             f.replace("\n", " ");
             QScopedPointer<Calculator> cal(new Calculator());
             const qreal result = cal->EvalFormula(data->DataVariables(), f);
 
-            if (qIsInf(result) || qIsNaN(result))
-            {
+            if (qIsInf(result) || qIsNaN(result)) {
                 label->setText(tr("Error") + " (" + postfix + ").");
-                label->setToolTip(tr("Invalid result. Value is infinite or NaN. Please, check your calculations."));
+                label->setToolTip(tr(
+                    "Invalid result. Value is infinite or NaN. Please, check your calculations."));
                 return false;
             }
 
             label->setText(qApp->LocaleToString(result) + " " + postfix);
             label->setToolTip(tr("Value"));
             return true;
-        }
-        catch (qmu::QmuParserError &error)
-        {
-            label->setText(tr("Error") + " (" + postfix + "). " + tr("Parser error: %1").arg(error.GetMsg()));
+        } catch (qmu::QmuParserError& error) {
+            label->setText(
+                tr("Error") + " (" + postfix + "). " + tr("Parser error: %1").arg(error.GetMsg()));
             label->setToolTip(tr("Parser error: %1").arg(error.GetMsg()));
             return false;
         }
@@ -436,45 +447,35 @@ bool DialogVariables::evalVariableFormula(const QString &formula, bool fromUser,
 //---------------------------------------------------------------------------------------------------------------------
 void DialogVariables::setMoveControls()
 {
-    if (isSorted || isFiltered)
-    {
+    if (isSorted || isFiltered) {
         ui->toolButtonUp->setEnabled(false);
         ui->toolButtonDown->setEnabled(false);
         return;
     }
 
-    if (ui->variables_TableWidget->rowCount() > 0)
-    {
-        const QTableWidgetItem *name = ui->variables_TableWidget->item(ui->variables_TableWidget->currentRow(), 0);
+    if (ui->variables_TableWidget->rowCount() > 0) {
+        const QTableWidgetItem* name =
+            ui->variables_TableWidget->item(ui->variables_TableWidget->currentRow(), 0);
         SCASSERT(name != nullptr)
 
         ui->removeCustomVariable_ToolButton->setEnabled(not variableUsed(name->text()));
-    }
-    else
-    {
+    } else {
         ui->removeCustomVariable_ToolButton->setEnabled(false);
     }
 
-    if (ui->variables_TableWidget->rowCount() >= 2)
-    {
-        if (ui->variables_TableWidget->currentRow() == 0)
-        {
+    if (ui->variables_TableWidget->rowCount() >= 2) {
+        if (ui->variables_TableWidget->currentRow() == 0) {
             ui->toolButtonUp->setEnabled(false);
             ui->toolButtonDown->setEnabled(true);
-        }
-        else if (ui->variables_TableWidget->currentRow() == ui->variables_TableWidget->rowCount()-1)
-        {
+        } else if (
+            ui->variables_TableWidget->currentRow() == ui->variables_TableWidget->rowCount() - 1) {
             ui->toolButtonUp->setEnabled(true);
             ui->toolButtonDown->setEnabled(false);
-        }
-        else
-        {
+        } else {
             ui->toolButtonUp->setEnabled(true);
             ui->toolButtonDown->setEnabled(true);
         }
-    }
-    else
-    {
+    } else {
         ui->toolButtonUp->setEnabled(false);
         ui->toolButtonDown->setEnabled(false);
     }
@@ -483,20 +484,16 @@ void DialogVariables::setMoveControls()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogVariables::enablePieces(bool enabled)
 {
-    if (enabled)
-    {
+    if (enabled) {
         setMoveControls();
-    }
-    else
-    {
+    } else {
         ui->removeCustomVariable_ToolButton->setEnabled(enabled);
 
         ui->toolButtonUp->setEnabled(enabled);
         ui->toolButtonDown->setEnabled(enabled);
     }
 
-    if (not enabled)
-    { // Clear
+    if (not enabled) {   // Clear
         ui->name_LineEdit->blockSignals(true);
         ui->name_LineEdit->clear();
         ui->name_LineEdit->blockSignals(false);
@@ -528,28 +525,22 @@ void DialogVariables::localUpdateTree()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogVariables::variableUsed(const QString &name) const
+bool DialogVariables::variableUsed(const QString& name) const
 {
     const QVector<VFormulaField> expressions = doc->ListExpressions();
 
-    for(int i = 0; i < expressions.size(); ++i)
-    {
-        if (expressions.at(i).expression.indexOf(name) != -1)
-        {
+    for (int i = 0; i < expressions.size(); ++i) {
+        if (expressions.at(i).expression.indexOf(name) != -1) {
             // Eval formula
-            try
-            {
-                QScopedPointer<qmu::QmuTokenParser> cal(new qmu::QmuTokenParser(expressions.at(i).expression, false,
-                                                                                false));
+            try {
+                QScopedPointer<qmu::QmuTokenParser> cal(
+                    new qmu::QmuTokenParser(expressions.at(i).expression, false, false));
 
                 // Tokens (variables, measurements)
-                if (cal->GetTokens().values().contains(name))
-                {
+                if (cal->GetTokens().values().contains(name)) {
                     return true;
                 }
-            }
-            catch (const qmu::QmuParserError &)
-            {
+            } catch (const qmu::QmuParserError&) {
                 // Do nothing. Because we not sure if used. A formula is broken.
             }
         }
@@ -558,12 +549,10 @@ bool DialogVariables::variableUsed(const QString &name) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::renameCache(const QString &name, const QString &newName)
+void DialogVariables::renameCache(const QString& name, const QString& newName)
 {
-    for (int i = 0; i < renameList.size(); ++i)
-    {
-        if (renameList.at(i).second == name)
-        {
+    for (int i = 0; i < renameList.size(); ++i) {
+        if (renameList.at(i).second == name) {
             renameList[i].second = newName;
             return;
         }
@@ -598,11 +587,9 @@ void DialogVariables::FullUpdateFromFile()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogVariables::refreshPattern()
 {
-    if (hasChanges)
-    {
+    if (hasChanges) {
         QVector<VFormulaField> expressions = doc->ListExpressions();
-        for (int i = 0; i < renameList.size(); ++i)
-        {
+        for (int i = 0; i < renameList.size(); ++i) {
             doc->replaceNameInFormula(expressions, renameList.at(i).first, renameList.at(i).second);
         }
         renameList.clear();
@@ -630,15 +617,13 @@ void DialogVariables::addCustomVariable()
     const QString name = getCustomVariableName();
     qint32 currentRow = -1;
 
-    if (ui->variables_TableWidget->currentRow() == -1)
-    {
-        currentRow  = ui->variables_TableWidget->rowCount();
+    if (ui->variables_TableWidget->currentRow() == -1) {
+        currentRow = ui->variables_TableWidget->rowCount();
         doc->addEmptyCustomVariable(name);
-    }
-    else
-    {
-        currentRow  = ui->variables_TableWidget->currentRow()+1;
-        const QTableWidgetItem *item = ui->variables_TableWidget->item(ui->variables_TableWidget->currentRow(), 0);
+    } else {
+        currentRow = ui->variables_TableWidget->currentRow() + 1;
+        const QTableWidgetItem* item =
+            ui->variables_TableWidget->item(ui->variables_TableWidget->currentRow(), 0);
         doc->addEmptyCustomVariableAfter(item->text(), name);
     }
 
@@ -656,23 +641,19 @@ void DialogVariables::removeCustomVariable()
 {
     const int row = ui->variables_TableWidget->currentRow();
 
-    if (row == -1)
-    {
+    if (row == -1) {
         return;
     }
 
-    const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
     doc->removeCustomVariable(name->text());
 
     hasChanges = true;
     localUpdateTree();
 
-    if (ui->variables_TableWidget->rowCount() > 0)
-    {
+    if (ui->variables_TableWidget->rowCount() > 0) {
         ui->variables_TableWidget->selectRow(0);
-    }
-    else
-    {
+    } else {
         enablePieces(false);
     }
 }
@@ -682,18 +663,17 @@ void DialogVariables::moveUp()
 {
     const int row = ui->variables_TableWidget->currentRow();
 
-    if (row == -1)
-    {
+    if (row == -1) {
         return;
     }
 
-    const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
     doc->moveVariableUp(name->text());
 
     hasChanges = true;
     localUpdateTree();
 
-    ui->variables_TableWidget->selectRow(row-1);
+    ui->variables_TableWidget->selectRow(row - 1);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -701,40 +681,36 @@ void DialogVariables::moveDown()
 {
     const int row = ui->variables_TableWidget->currentRow();
 
-    if (row == -1)
-    {
+    if (row == -1) {
         return;
     }
 
-    const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
     doc->moveVariableDown(name->text());
 
     hasChanges = true;
     localUpdateTree();
 
-    ui->variables_TableWidget->selectRow(row+1);
+    ui->variables_TableWidget->selectRow(row + 1);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::saveCustomVariableName(const QString &text)
+void DialogVariables::saveCustomVariableName(const QString& text)
 {
     const int row = ui->variables_TableWidget->currentRow();
 
-    if (row == -1)
-    {
+    if (row == -1) {
         return;
     }
 
-    const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
 
     QString newName = text.isEmpty() ? getCustomVariableName() : CustomIncrSign + text;
 
-    if (not data->IsUnique(newName))
-    {
+    if (not data->IsUnique(newName)) {
         qint32 num = 2;
         QString tempName = newName;
-        do
-        {
+        do {
             tempName = tempName + QLatin1String("_") + QString().number(num);
             num++;
         } while (not data->IsUnique(tempName));
@@ -759,12 +735,11 @@ void DialogVariables::saveCustomVariableDescription()
 {
     const int row = ui->variables_TableWidget->currentRow();
 
-    if (row == -1)
-    {
+    if (row == -1) {
         return;
     }
 
-    const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
     doc->setVariableDescription(name->text(), ui->description_PlainTextEdit->toPlainText());
 
     localUpdateTree();
@@ -781,47 +756,43 @@ void DialogVariables::saveCustomVariableFormula()
 {
     const int row = ui->variables_TableWidget->currentRow();
 
-    if (row == -1)
-    {
+    if (row == -1) {
         return;
     }
 
-    const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
 
     // Replace line return character with spaces for calc if exist
     QString text = ui->formula_PlainTextEdit->toPlainText();
     text.replace("\n", " ");
 
-    QTableWidgetItem *formula = ui->variables_TableWidget->item(row, 2);
-    if (formula->text() == text)
-    {
-        QTableWidgetItem *result = ui->variables_TableWidget->item(row, 1);
-        //Show unit in dialog label (cm, mm or inch)
+    QTableWidgetItem* formula = ui->variables_TableWidget->item(row, 2);
+    if (formula->text() == text) {
+        QTableWidgetItem* result = ui->variables_TableWidget->item(row, 1);
+        // Show unit in dialog label (cm, mm or inch)
         const QString postfix = UnitsToStr(qApp->patternUnit());
-        ui->calculatedValue_Label->setText(result->text() + " " +postfix);
+        ui->calculatedValue_Label->setText(result->text() + " " + postfix);
         return;
     }
 
-    if (text.isEmpty())
-    {
-        //Show unit in dialog label (cm, mm or inch)
+    if (text.isEmpty()) {
+        // Show unit in dialog label (cm, mm or inch)
         const QString postfix = UnitsToStr(qApp->patternUnit());
-        ui->calculatedValue_Label->setText(tr("Error") + " (" + postfix + "). " + tr("Empty field."));
+        ui->calculatedValue_Label->setText(
+            tr("Error") + " (" + postfix + "). " + tr("Empty field."));
         return;
     }
 
     QSharedPointer<CustomVariable> variable = data->getVariable<CustomVariable>(name->text());
-    if (not evalVariableFormula(text, true, variable->GetData(), ui->calculatedValue_Label))
-    {
+    if (not evalVariableFormula(text, true, variable->GetData(), ui->calculatedValue_Label)) {
         return;
     }
 
-    try
-    {
-        const QString formula = qApp->translateVariables()->FormulaFromUser(text, qApp->Settings()->getOsSeparator());
+    try {
+        const QString formula =
+            qApp->translateVariables()->FormulaFromUser(text, qApp->Settings()->getOsSeparator());
         doc->setVariableFormula(name->text(), formula);
-    }
-    catch (qmu::QmuParserError &error) // Just in case something bad will happen
+    } catch (qmu::QmuParserError& error)   // Just in case something bad will happen
     {
         Q_UNUSED(error)
         return;
@@ -842,25 +813,25 @@ void DialogVariables::Fx()
 {
     const int row = ui->variables_TableWidget->currentRow();
 
-    if (row == -1)
-    {
+    if (row == -1) {
         return;
     }
 
-    const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
     QSharedPointer<CustomVariable> variable = data->getVariable<CustomVariable>(name->text());
 
-    EditFormulaDialog *dialog = new EditFormulaDialog(variable->GetData(), NULL_ID, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(variable->GetData(), NULL_ID, this);
     dialog->setWindowTitle(tr("Edit variable"));
-    dialog->SetFormula(qApp->translateVariables()->TryFormulaFromUser(ui->formula_PlainTextEdit->toPlainText().replace("\n", " "),
-                                                          qApp->Settings()->getOsSeparator()));
+    dialog->SetFormula(qApp->translateVariables()->TryFormulaFromUser(
+        ui->formula_PlainTextEdit->toPlainText().replace("\n", " "),
+        qApp->Settings()->getOsSeparator()));
     const QString postfix = UnitsToStr(qApp->patternUnit(), true);
-    dialog->setPostfix(postfix);//Show unit in dialog label (cm, mm or inch)
+    dialog->setPostfix(postfix);   // Show unit in dialog label (cm, mm or inch)
 
-    if (dialog->exec() == QDialog::Accepted)
-    {
-        // Because of the bug need to take QTableWidgetItem twice time. Previous update "killed" the pointer.
-        const QTableWidgetItem *name = ui->variables_TableWidget->item(row, 0);
+    if (dialog->exec() == QDialog::Accepted) {
+        // Because of the bug need to take QTableWidgetItem twice time. Previous update "killed" the
+        // pointer.
+        const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
         doc->setVariableFormula(name->text(), dialog->GetFormula());
 
         hasChanges = true;
@@ -872,7 +843,7 @@ void DialogVariables::Fx()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::closeEvent(QCloseEvent *event)
+void DialogVariables::closeEvent(QCloseEvent* event)
 {
     refreshPattern();
 
@@ -886,10 +857,9 @@ void DialogVariables::closeEvent(QCloseEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::changeEvent(QEvent *event)
+void DialogVariables::changeEvent(QEvent* event)
 {
-    if (event->type() == QEvent::LanguageChange)
-    {
+    if (event->type() == QEvent::LanguageChange) {
         // retranslate designer form (single inheritance approach)
         ui->retranslateUi(this);
         FullUpdateFromFile();
@@ -899,68 +869,57 @@ void DialogVariables::changeEvent(QEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool DialogVariables::eventFilter(QObject *object, QEvent *event)
+bool DialogVariables::eventFilter(QObject* object, QEvent* event)
 {
-    if (QLineEdit *textEdit = qobject_cast<QLineEdit *>(object))
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-            if ((keyEvent->key() == Qt::Key_Period) && (keyEvent->modifiers() & Qt::KeypadModifier))
-            {
-                if (qApp->Settings()->getOsSeparator())
-                {
+    if (QLineEdit* textEdit = qobject_cast<QLineEdit*>(object)) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            if ((keyEvent->key() == Qt::Key_Period)
+                && (keyEvent->modifiers() & Qt::KeypadModifier)) {
+                if (qApp->Settings()->getOsSeparator()) {
                     textEdit->insert(QLocale().decimalPoint());
-                }
-                else
-                {
+                } else {
                     textEdit->insert(QLocale::c().decimalPoint());
                 }
                 return true;
             }
         }
-    }
-    else
-    {
+    } else {
         // pass the event on to the parent class
         return DialogTool::eventFilter(object, event);
     }
-    return false;// pass the event to the widget
+    return false;   // pass the event to the widget
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::showEvent(QShowEvent *event)
+void DialogVariables::showEvent(QShowEvent* event)
 {
     // Skip DialogTool implementation
     QDialog::showEvent(event);
-    if ( event->spontaneous() )
-    {
+    if (event->spontaneous()) {
         return;
     }
 
-    if (isInitialized)
-    {
+    if (isInitialized) {
         return;
     }
     // do your init stuff here
 
     const QSize sz = qApp->Settings()->getVariablesDialogSize();
-    if (not sz.isEmpty())
-    {
+    if (not sz.isEmpty()) {
         resize(sz);
     }
 
-    isInitialized = true;//first show windows are held
+    isInitialized = true;   // first show windows are held
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::resizeEvent(QResizeEvent *event)
+void DialogVariables::resizeEvent(QResizeEvent* event)
 {
     // remember the size for the next time this dialog is opened, but only
     // if widget was already initialized, which rules out the resize at
     // dialog creating, which would
-    if (isInitialized)
-    {
+    if (isInitialized) {
         qApp->Settings()->setVariablesDialogSize(size());
     }
     DialogTool::resizeEvent(event);
@@ -969,20 +928,17 @@ void DialogVariables::resizeEvent(QResizeEvent *event)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogVariables::showCustomVariableDetails()
 {
-    if (ui->variables_TableWidget->rowCount() > 0)
-    {
+    if (ui->variables_TableWidget->rowCount() > 0) {
         enablePieces(true);
 
         // name
-        const QTableWidgetItem *name = ui->variables_TableWidget->item(ui->variables_TableWidget->currentRow(), 0);
+        const QTableWidgetItem* name =
+            ui->variables_TableWidget->item(ui->variables_TableWidget->currentRow(), 0);
         QSharedPointer<CustomVariable> variable;
 
-        try
-        {
+        try {
             variable = data->getVariable<CustomVariable>(name->text());
-        }
-        catch(const VExceptionBadId &error)
-        {
+        } catch (const VExceptionBadId& error) {
             Q_UNUSED(error)
             enablePieces(false);
             return;
@@ -996,58 +952,48 @@ void DialogVariables::showCustomVariableDetails()
         ui->description_PlainTextEdit->setPlainText(variable->GetDescription());
         ui->description_PlainTextEdit->blockSignals(false);
 
-        evalVariableFormula(variable->GetFormula(), false, variable->GetData(), ui->calculatedValue_Label);
+        evalVariableFormula(
+            variable->GetFormula(), false, variable->GetData(), ui->calculatedValue_Label);
         ui->formula_PlainTextEdit->blockSignals(true);
 
         QString formula;
-        try
-        {
-            formula = qApp->translateVariables()->FormulaToUser(variable->GetFormula(), qApp->Settings()->getOsSeparator());
-        }
-        catch (qmu::QmuParserError &error)
-        {
+        try {
+            formula = qApp->translateVariables()->FormulaToUser(
+                variable->GetFormula(), qApp->Settings()->getOsSeparator());
+        } catch (qmu::QmuParserError& error) {
             Q_UNUSED(error)
             formula = variable->GetFormula();
         }
 
         ui->formula_PlainTextEdit->setPlainText(formula);
         ui->formula_PlainTextEdit->blockSignals(false);
-    }
-    else
-    {
+    } else {
         enablePieces(false);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogVariables::filterVariables(const QString &filterString)
+void DialogVariables::filterVariables(const QString& filterString)
 {
     QSharedPointer<QTableWidget> currentTable = tableList.value(ui->tabWidget->currentIndex());
     currentTable->blockSignals(true);
 
-    if (filterString.isEmpty())
-    {
+    if (filterString.isEmpty()) {
         isFiltered = false;
-        for (auto i = 0; i < currentTable->rowCount(); ++i)
-        {
+        for (auto i = 0; i < currentTable->rowCount(); ++i) {
             currentTable->showRow(i);
         }
         ui->variables_TableWidget->horizontalHeader()->setSortIndicator(-1, Qt::AscendingOrder);
-    }
-    else
-    {
+    } else {
         isFiltered = true;
         ui->toolButtonUp->setEnabled(false);
         ui->toolButtonDown->setEnabled(false);
-        for (auto i = 0; i < currentTable->rowCount(); i++)
-        {
+        for (auto i = 0; i < currentTable->rowCount(); i++) {
             currentTable->hideRow(i);
         }
 
-        for (auto item : currentTable->findItems(filterString, Qt::MatchContains))
-        {
-            if (item)
-            {
+        for (auto item : currentTable->findItems(filterString, Qt::MatchContains)) {
+            if (item) {
                 currentTable->showRow(item->row());
             }
         }

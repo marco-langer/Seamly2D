@@ -31,26 +31,27 @@
 #ifndef DEF_H
 #define DEF_H
 
-#include <qcompilerdetection.h>
 #include <QFileDialog>
 #include <QLineF>
+#include <QPixmap>
+#include <QPrinter>
 #include <QString>
 #include <QStringList>
 #include <Qt>
 #include <QtGlobal>
-#include <QPrinter>
-#include <QPixmap>
 #include <csignal>
+#include <qcompilerdetection.h>
 #ifdef Q_OS_WIN
-    #include <windows.h>
+#    include <windows.h>
 #endif /* Q_OS_WIN */
 
 #include "debugbreak.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 #ifdef Q_CC_MSVC
-    #include <ciso646>
+#    include <ciso646>
 #endif /* Q_CC_MSVC */
 
 class QComboBox;
@@ -75,23 +76,25 @@ enum class Position : char
     Center
 };
 
-enum class PaperSizeFormat : char { A0 = 0,
-                                    A1,
-                                    A2,
-                                    A3,
-                                    A4,
-                                    Letter,
-                                    Legal,
-                                    Tabloid,
-                                    AnsiC,
-                                    AnsiD,
-                                    AnsiE,
-                                    Roll24in,     // Be careful when changing order roll type
-                                    Roll30in,     // Used also for showing icon
-                                    Roll36in,
-                                    Roll42in,
-                                    Roll44in,
-                                    Custom
+enum class PaperSizeFormat : char
+{
+    A0 = 0,
+    A1,
+    A2,
+    A3,
+    A4,
+    Letter,
+    Legal,
+    Tabloid,
+    AnsiC,
+    AnsiD,
+    AnsiE,
+    Roll24in,   // Be careful when changing order roll type
+    Roll30in,   // Used also for showing icon
+    Roll36in,
+    Roll42in,
+    Roll44in,
+    Custom
 };
 
 enum class LayoutExportFormat : char
@@ -103,13 +106,13 @@ enum class LayoutExportFormat : char
     JPG = 4,
     BMP = 5,
     PPM = 6,
-    OBJ = 7,              /* Wavefront OBJ*/
-    PS  = 8,
+    OBJ = 7, /* Wavefront OBJ*/
+    PS = 8,
     EPS = 9,
-    DXF_AC1006_Flat = 10,  /* R10. */
-    DXF_AC1009_Flat = 11,  /* R11 & R12. */
-    DXF_AC1012_Flat = 12,  /* R13. */
-    DXF_AC1014_Flat = 13,  /* R14. */
+    DXF_AC1006_Flat = 10, /* R10. */
+    DXF_AC1009_Flat = 11, /* R11 & R12. */
+    DXF_AC1012_Flat = 12, /* R13. */
+    DXF_AC1014_Flat = 13, /* R14. */
     DXF_AC1015_Flat = 14, /* ACAD 2000. */
     DXF_AC1018_Flat = 15, /* ACAD 2004. */
     DXF_AC1021_Flat = 16, /* ACAD 2007. */
@@ -137,15 +140,58 @@ enum class LayoutExportFormat : char
     COUNT                 /*Use only for validation*/
 };
 
-enum class NodeDetail : char { Contour, Modeling };
-enum class SceneObject : char { Point, Line, Spline, Arc, ElArc, SplinePath, Piece, Unknown };
-enum class MeasurementsType : char { Multisize, Individual , Unknown};
-enum class Unit : char { Mm = 0, Cm, Inch, Px, LAST_UNIT_DO_NOT_USE};
-enum class Source : char { FromGui, FromFile, FromTool };
-enum class NodeUsage : bool {NotInUse = false, InUse = true};
-enum class SelectionType : bool {ByMousePress, ByMouseRelease};
+enum class NodeDetail : char
+{
+    Contour,
+    Modeling
+};
+enum class SceneObject : char
+{
+    Point,
+    Line,
+    Spline,
+    Arc,
+    ElArc,
+    SplinePath,
+    Piece,
+    Unknown
+};
+enum class MeasurementsType : char
+{
+    Multisize,
+    Individual,
+    Unknown
+};
+enum class Unit : char
+{
+    Mm = 0,
+    Cm,
+    Inch,
+    Px,
+    LAST_UNIT_DO_NOT_USE
+};
+enum class Source : char
+{
+    FromGui,
+    FromFile,
+    FromTool
+};
+enum class NodeUsage : bool
+{
+    NotInUse = false,
+    InUse = true
+};
+enum class SelectionType : bool
+{
+    ByMousePress,
+    ByMouseRelease
+};
 
-enum class PageOrientation : bool {Portrait = true, Landscape = false};
+enum class PageOrientation : bool
+{
+    Portrait = true,
+    Landscape = false
+};
 
 enum class PieceNodeAngle : unsigned char
 {
@@ -160,44 +206,44 @@ enum class PieceNodeAngle : unsigned char
 struct DraftImage
 {
     DraftImage()
-    : id(0),
-      name(""),
-      filename(""),
-      pixmap(),
-      locked(false),
-      origin(Position::Center),
-      anchor(0),
-      xPos(0.0),
-      yPos(0.0),
-      width(0.0),
-      height(0.0),
-      aspectLocked(false),
-      units(Unit::Px),
-      rotation(0.0),
-      visible(true),
-      opacity(100.0),
-      order(0)
-     {}
+        : id(0)
+        , name("")
+        , filename("")
+        , pixmap()
+        , locked(false)
+        , origin(Position::Center)
+        , anchor(0)
+        , xPos(0.0)
+        , yPos(0.0)
+        , width(0.0)
+        , height(0.0)
+        , aspectLocked(false)
+        , units(Unit::Px)
+        , rotation(0.0)
+        , visible(true)
+        , opacity(100.0)
+        , order(0)
+    {}
 
-    quint32        id;
-    QString        name;
-    QString        filename;
-    QPixmap        pixmap;
-    bool           locked;
-    Position     origin;
-    quint32        anchor;
-    qreal          xPos;
-    qreal          yPos;
-    qreal          width;
-    qreal          height;
-    qreal          xScale;
-    qreal          yScale;
-    bool           aspectLocked;
-    Unit           units;
-    qreal          rotation;
-    bool           visible;
-    qreal          opacity;
-    qreal          order;
+    quint32 id;
+    QString name;
+    QString filename;
+    QPixmap pixmap;
+    bool locked;
+    Position origin;
+    quint32 anchor;
+    qreal xPos;
+    qreal yPos;
+    qreal width;
+    qreal height;
+    qreal xScale;
+    qreal yScale;
+    bool aspectLocked;
+    Unit units;
+    qreal rotation;
+    bool visible;
+    qreal opacity;
+    qreal order;
 };
 
 Q_DECLARE_METATYPE(DraftImage)
@@ -205,7 +251,7 @@ Q_DECLARE_TYPEINFO(DraftImage, Q_MOVABLE_TYPE);
 
 enum class NotchType : unsigned char
 {
-    Slit = 0, // Default
+    Slit = 0,   // Default
     TNotch,
     VInternal,
     VExternal,
@@ -214,22 +260,22 @@ enum class NotchType : unsigned char
     Diamond
 };
 
-QString      notchTypeToString(NotchType type);
-NotchType    stringToNotchType(const QString &value);
+QString notchTypeToString(NotchType type);
+NotchType stringToNotchType(const QString& value);
 
 enum class NotchSubType : unsigned char
 {
-    Straightforward = 0, // Default
+    Straightforward = 0,   // Default
     Bisector,
     Intersection
 };
 
-QString      notchSubTypeToString(NotchSubType type);
-NotchSubType stringToNotchSubType(const QString &value);
+QString notchSubTypeToString(NotchSubType type);
+NotchSubType stringToNotchSubType(const QString& value);
 
 
-Unit         StrToUnits(const QString &unit);
-QString      UnitsToStr(const Unit &unit, const bool translate = false);
+Unit StrToUnits(const QString& unit);
+QString UnitsToStr(const Unit& unit, const bool translate = false);
 
 
 enum class PiecePathIncludeType : unsigned char
@@ -238,7 +284,13 @@ enum class PiecePathIncludeType : unsigned char
     AsCustomSA = 1
 };
 
-enum class PiecePathType :  unsigned char {PiecePath = 0, CustomSeamAllowance = 1, InternalPath = 2, Unknown = 3};
+enum class PiecePathType : unsigned char
+{
+    PiecePath = 0,
+    CustomSeamAllowance = 1,
+    InternalPath = 2,
+    Unknown = 3
+};
 
 typedef int ToolVisHolderType;
 enum class Tool : ToolVisHolderType
@@ -297,7 +349,7 @@ enum class Tool : ToolVisHolderType
     AnchorPoint,
     InsertNodes,
     BackgroundImage,
-    LAST_ONE_DO_NOT_USE //add new stuffs above this, this constant must be last and never used
+    LAST_ONE_DO_NOT_USE   // add new stuffs above this, this constant must be last and never used
 };
 
 enum class Vis : ToolVisHolderType
@@ -357,38 +409,100 @@ enum class Vis : ToolVisHolderType
     ArrowedLineItem,
     BackgroundImageItem,
     ResizeHandlesItem,
-    LAST_ONE_DO_NOT_USE //add new types above this, this constant must be last and never used
+    LAST_ONE_DO_NOT_USE   // add new types above this, this constant must be last and never used
 };
 
-enum class VarType : char { Measurement, Variable, LineLength, CurveLength, CurveCLength, LineAngle, CurveAngle,
-                            ArcRadius, Unknown };
+enum class VarType : char
+{
+    Measurement,
+    Variable,
+    LineLength,
+    CurveLength,
+    CurveCLength,
+    LineAngle,
+    CurveAngle,
+    ArcRadius,
+    Unknown
+};
 
 static const int heightStep = 6;
-enum class GHeights : unsigned char { ALL,
-                                      H50=50,   H56=56,   H62=62,   H68=68,   H74=74,   H80=80,   H86=86,   H92=92,
-                                      H98=98,   H104=104, H110=110, H116=116, H122=122, H128=128, H134=134, H140=140,
-                                      H146=146, H152=152, H158=158, H164=164, H170=170, H176=176, H182=182, H188=188,
-                                      H194=194, H200=200};
+enum class GHeights : unsigned char
+{
+    ALL,
+    H50 = 50,
+    H56 = 56,
+    H62 = 62,
+    H68 = 68,
+    H74 = 74,
+    H80 = 80,
+    H86 = 86,
+    H92 = 92,
+    H98 = 98,
+    H104 = 104,
+    H110 = 110,
+    H116 = 116,
+    H122 = 122,
+    H128 = 128,
+    H134 = 134,
+    H140 = 140,
+    H146 = 146,
+    H152 = 152,
+    H158 = 158,
+    H164 = 164,
+    H170 = 170,
+    H176 = 176,
+    H182 = 182,
+    H188 = 188,
+    H194 = 194,
+    H200 = 200
+};
 
 static const int sizeStep = 2;
-enum class GSizes : unsigned char { ALL,
-                                    S22=22, S24=24, S26=26, S28=28, S30=30, S32=32, S34=34, S36=36, S38=38, S40=40,
-                                    S42=42, S44=44, S46=46, S48=48, S50=50, S52=52, S54=54, S56=56, S58=58, S60=60,
-                                    S62=62, S64=64, S66=66, S68=68, S70=70, S72=72 };
+enum class GSizes : unsigned char
+{
+    ALL,
+    S22 = 22,
+    S24 = 24,
+    S26 = 26,
+    S28 = 28,
+    S30 = 30,
+    S32 = 32,
+    S34 = 34,
+    S36 = 36,
+    S38 = 38,
+    S40 = 40,
+    S42 = 42,
+    S44 = 44,
+    S46 = 46,
+    S48 = 48,
+    S50 = 50,
+    S52 = 52,
+    S54 = 54,
+    S56 = 56,
+    S58 = 58,
+    S60 = 60,
+    S62 = 62,
+    S64 = 64,
+    S66 = 66,
+    S68 = 68,
+    S70 = 70,
+    S72 = 72
+};
 
 /* QImage supports a maximum of 32768x32768 px images (signed short).
- * This follows from the condition: width * height * colordepth < INT_MAX (4 billion) -> 32768 * 32768 * 4 = 4 billion.
- * The second condition is of course that malloc is able to allocate the requested memory.
+ * This follows from the condition: width * height * colordepth < INT_MAX (4 billion) -> 32768 *
+ * 32768 * 4 = 4 billion. The second condition is of course that malloc is able to allocate the
+ * requested memory.
  *
- * If you really need bigger images you will have to use another wrapper or split into multiple QImage's.
+ * If you really need bigger images you will have to use another wrapper or split into multiple
+ * QImage's.
  */
 #define QIMAGE_MAX 32768
 
 /*
- * This macros SCASSERT (for Stop and Continue Assert) will break into the debugger on the line of the assert and allow
- * you to continue afterwards should you choose to.
- * idea: Q_ASSERT no longer pauses debugger - http://qt-project.org/forums/viewthread/13148
- * Usefull links:
+ * This macros SCASSERT (for Stop and Continue Assert) will break into the debugger on the line of
+ * the assert and allow you to continue afterwards should you choose to. idea: Q_ASSERT no longer
+ * pauses debugger - http://qt-project.org/forums/viewthread/13148 Usefull links:
  * 1. What's the difference between __PRETTY_FUNCTION__, __FUNCTION__, __func__? -
  *    https://stackoverflow.com/questions/4384765/whats-the-difference-between-pretty-function-function-func
  *
@@ -401,46 +515,44 @@ enum class GSizes : unsigned char { ALL,
  */
 #ifndef V_NO_ASSERT
 
-#define SCASSERT(cond)                                      \
-{                                                           \
-    if (!(cond))                                            \
-    {                                                       \
-        qCritical("ASSERT: %s in %s (%s:%u)",               \
-                  #cond, Q_FUNC_INFO , __FILE__, __LINE__); \
-        debug_break();                                      \
-        abort();                                            \
-    }                                                       \
-}                                                           \
+#    define SCASSERT(cond)                                                                     \
+        {                                                                                      \
+            if (!(cond)) {                                                                     \
+                qCritical("ASSERT: %s in %s (%s:%u)", #cond, Q_FUNC_INFO, __FILE__, __LINE__); \
+                debug_break();                                                                 \
+                abort();                                                                       \
+            }                                                                                  \
+        }
 
-#else // define but disable this function if debugging is not set
-#define SCASSERT(cond) qt_noop();
+#else   // define but disable this function if debugging is not set
+#    define SCASSERT(cond) qt_noop();
 #endif /* V_NO_ASSERT */
 
 #ifndef __has_cpp_attribute
-# define __has_cpp_attribute(x) 0
+#    define __has_cpp_attribute(x) 0
 #endif
 
 #if __cplusplus > 201402L && __has_cpp_attribute(fallthrough)
-#   define V_FALLTHROUGH [[fallthrough]];
+#    define V_FALLTHROUGH [[fallthrough]];
 #elif defined(Q_CC_CLANG) && __cplusplus >= 201103L
-    /* clang's fallthrough annotations are only available starting in C++11. */
-#   define V_FALLTHROUGH [[clang::fallthrough]];
+/* clang's fallthrough annotations are only available starting in C++11. */
+#    define V_FALLTHROUGH [[clang::fallthrough]];
 #elif defined(Q_CC_MSVC)
-   /*
-    * MSVC's __fallthrough annotations are checked by /analyze (Code Analysis):
-    * https://msdn.microsoft.com/en-us/library/ms235402%28VS.80%29.aspx
-    */
-#   include <sal.h>
-#   define V_FALLTHROUGH __fallthrough;
+/*
+ * MSVC's __fallthrough annotations are checked by /analyze (Code Analysis):
+ * https://msdn.microsoft.com/en-us/library/ms235402%28VS.80%29.aspx
+ */
+#    include <sal.h>
+#    define V_FALLTHROUGH __fallthrough;
 #elif defined(Q_CC_GNU) && (__GNUC__ >= 7)
-#   define V_FALLTHROUGH [[gnu::fallthrough]];
+#    define V_FALLTHROUGH [[gnu::fallthrough]];
 #else
-#   define V_FALLTHROUGH
+#    define V_FALLTHROUGH
 #endif
 
 extern const QString LONG_OPTION_NO_HDPI_SCALING;
-bool IsOptionSet(int argc, char *argv[], const char *option);
-void initHighDpiScaling(int argc, char *argv[]);
+bool IsOptionSet(int argc, char* argv[], const char* option);
+void initHighDpiScaling(int argc, char* argv[]);
 
 // functions
 extern const QString degTorad_F;
@@ -543,43 +655,51 @@ extern const QString sm2dExt;
 extern const QString smisExt;
 extern const QString smmsExt;
 
-void SetItemOverrideCursor(QGraphicsItem *item, const QString & pixmapPath, int hotX = -1, int hotY = -1);
+void SetItemOverrideCursor(
+    QGraphicsItem* item, const QString& pixmapPath, int hotX = -1, int hotY = -1);
 
 extern const qreal PrintDPI;
 
-Q_REQUIRED_RESULT double ToPixel(double val, const Unit &unit);
-Q_REQUIRED_RESULT double FromPixel(double pix, const Unit &unit);
+Q_REQUIRED_RESULT double ToPixel(double val, const Unit& unit);
+Q_REQUIRED_RESULT double FromPixel(double pix, const Unit& unit);
 
-Q_REQUIRED_RESULT qreal UnitConvertor(qreal value, const Unit &from, const Unit &to);
-Q_REQUIRED_RESULT QMarginsF UnitConvertor(const QMarginsF &margins, const Unit &from, const Unit &to);
+Q_REQUIRED_RESULT qreal UnitConvertor(qreal value, const Unit& from, const Unit& to);
+Q_REQUIRED_RESULT QMarginsF
+UnitConvertor(const QMarginsF& margins, const Unit& from, const Unit& to);
 
-void InitLanguages(QComboBox *combobox);
+void InitLanguages(QComboBox* combobox);
 Q_REQUIRED_RESULT QStringList SupportedLocales();
 
-QString makeHeaderName(const QString &name);
-Q_REQUIRED_RESULT QString strippedName(const QString &fullFileName);
-Q_REQUIRED_RESULT QString RelativeMPath(const QString &patternPath, const QString &absoluteMPath);
-Q_REQUIRED_RESULT QString AbsoluteMPath(const QString &patternPath, const QString &relativeMPath);
-Q_REQUIRED_RESULT QString fileDialog(QWidget *parent, const QString &title,  const QString &dir,
-                                     const QString &filter, QString *selectedFilter, QFileDialog::Options options,
-                                     QFileDialog::FileMode mode,  QFileDialog::AcceptMode accept);
+QString makeHeaderName(const QString& name);
+Q_REQUIRED_RESULT QString strippedName(const QString& fullFileName);
+Q_REQUIRED_RESULT QString RelativeMPath(const QString& patternPath, const QString& absoluteMPath);
+Q_REQUIRED_RESULT QString AbsoluteMPath(const QString& patternPath, const QString& relativeMPath);
+Q_REQUIRED_RESULT QString fileDialog(
+    QWidget* parent,
+    const QString& title,
+    const QString& dir,
+    const QString& filter,
+    QString* selectedFilter,
+    QFileDialog::Options options,
+    QFileDialog::FileMode mode,
+    QFileDialog::AcceptMode accept);
 
-Q_REQUIRED_RESULT QSharedPointer<QPrinter> PreparePrinter(const QPrinterInfo &info,
-                                                          QPrinter::PrinterMode mode = QPrinter::ScreenResolution);
+Q_REQUIRED_RESULT QSharedPointer<QPrinter>
+PreparePrinter(const QPrinterInfo& info, QPrinter::PrinterMode mode = QPrinter::ScreenResolution);
 
-QMarginsF GetMinPrinterFields(const QSharedPointer<QPrinter> &printer);
-QMarginsF GetPrinterFields(const QSharedPointer<QPrinter> &printer);
+QMarginsF GetMinPrinterFields(const QSharedPointer<QPrinter>& printer);
+QMarginsF GetPrinterFields(const QSharedPointer<QPrinter>& printer);
 
-Q_REQUIRED_RESULT QPixmap darkenPixmap(const QPixmap &pixmap);
+Q_REQUIRED_RESULT QPixmap darkenPixmap(const QPixmap& pixmap);
 
-void ShowInGraphicalShell(const QString &filePath);
+void ShowInGraphicalShell(const QString& filePath);
 
-constexpr qreal accuracyPointOnLine = (0.1555/*mm*/ / 25.4) * 96.0;
+constexpr qreal accuracyPointOnLine = (0.1555 /*mm*/ / 25.4) * 96.0;
 
-Q_REQUIRED_RESULT static inline bool VFuzzyComparePoints(const QPointF &p1, const QPointF &p2,
-                                                         qreal accuracy = accuracyPointOnLine);
+Q_REQUIRED_RESULT static inline bool
+VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accuracyPointOnLine);
 
-static inline bool VFuzzyComparePoints(const QPointF &p1, const QPointF &p2, qreal accuracy)
+static inline bool VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy)
 {
     return QLineF(p1, p2).length() <= accuracy;
 }
@@ -587,16 +707,11 @@ static inline bool VFuzzyComparePoints(const QPointF &p1, const QPointF &p2, qre
 Q_REQUIRED_RESULT static inline bool VFuzzyComparePossibleNulls(double p1, double p2);
 static inline bool VFuzzyComparePossibleNulls(double p1, double p2)
 {
-    if(qFuzzyIsNull(p1))
-    {
+    if (qFuzzyIsNull(p1)) {
         return qFuzzyIsNull(p2);
-    }
-    else if(qFuzzyIsNull(p2))
-    {
+    } else if (qFuzzyIsNull(p2)) {
         return false;
-    }
-    else
-    {
+    } else {
         return qFuzzyCompare(p1, p2);
     }
 }
@@ -607,11 +722,11 @@ static inline bool VFuzzyComparePossibleNulls(double p1, double p2)
 struct CustomSARecord
 {
     CustomSARecord()
-        : startPoint(0),
-          path(0),
-          endPoint(0),
-          reverse(false),
-          includeType(PiecePathIncludeType::AsCustomSA)
+        : startPoint(0)
+        , path(0)
+        , endPoint(0)
+        , reverse(false)
+        , includeType(PiecePathIncludeType::AsCustomSA)
     {}
 
     quint32 startPoint;
@@ -636,42 +751,29 @@ Q_DECLARE_TYPEINFO(CustomSARecord, Q_MOVABLE_TYPE);
 ** this file shall be copyright (C) 2006-2008 by Adam Higerd.
 ****************************************************************************/
 
-#define QXT_DECLARE_PRIVATE(PUB) friend class PUB##Private; QxtPrivateInterface<PUB, PUB##Private> qxt_d;
+#define QXT_DECLARE_PRIVATE(PUB) \
+    friend class PUB##Private;   \
+    QxtPrivateInterface<PUB, PUB##Private> qxt_d;
 #define QXT_DECLARE_PUBLIC(PUB) friend class PUB;
-#define QXT_INIT_PRIVATE(PUB) qxt_d.setPublic(this);
-#define QXT_D(PUB) PUB##Private& d = qxt_d()
-#define QXT_P(PUB) PUB& p = qxt_p()
+#define QXT_INIT_PRIVATE(PUB)   qxt_d.setPublic(this);
+#define QXT_D(PUB)              PUB##Private& d = qxt_d()
+#define QXT_P(PUB)              PUB& p = qxt_p()
 
 template <typename PUB>
 class QxtPrivate
 {
 public:
-    QxtPrivate(): qxt_p_ptr(nullptr)
+    QxtPrivate()
+        : qxt_p_ptr(nullptr)
     {}
-    virtual ~QxtPrivate()
-    {}
-    inline void QXT_setPublic(PUB* pub)
-    {
-        qxt_p_ptr = pub;
-    }
+    virtual ~QxtPrivate() {}
+    inline void QXT_setPublic(PUB* pub) { qxt_p_ptr = pub; }
 
 protected:
-    inline PUB& qxt_p()
-    {
-        return *qxt_p_ptr;
-    }
-    inline const PUB& qxt_p() const
-    {
-        return *qxt_p_ptr;
-    }
-    inline PUB* qxt_ptr()
-    {
-        return qxt_p_ptr;
-    }
-    inline const PUB* qxt_ptr() const
-    {
-        return qxt_p_ptr;
-    }
+    inline PUB& qxt_p() { return *qxt_p_ptr; }
+    inline const PUB& qxt_p() const { return *qxt_p_ptr; }
+    inline PUB* qxt_ptr() { return qxt_p_ptr; }
+    inline const PUB* qxt_ptr() const { return qxt_p_ptr; }
 
 private:
     Q_DISABLE_COPY(QxtPrivate)
@@ -682,34 +784,19 @@ template <typename PUB, typename PVT>
 class QxtPrivateInterface
 {
     friend class QxtPrivate<PUB>;
-public:
-    QxtPrivateInterface() : pvt(new PVT)
-    {}
-    ~QxtPrivateInterface()
-    {
-        delete pvt;
-    }
 
-    inline void setPublic(PUB* pub)
-    {
-        pvt->QXT_setPublic(pub);
-    }
-    inline PVT& operator()()
-    {
-        return *static_cast<PVT*>(pvt);
-    }
-    inline const PVT& operator()() const
-    {
-        return *static_cast<PVT*>(pvt);
-    }
-    inline PVT * operator->()
-    {
-    return static_cast<PVT*>(pvt);
-    }
-    inline const PVT * operator->() const
-    {
-    return static_cast<PVT*>(pvt);
-    }
+public:
+    QxtPrivateInterface()
+        : pvt(new PVT)
+    {}
+    ~QxtPrivateInterface() { delete pvt; }
+
+    inline void setPublic(PUB* pub) { pvt->QXT_setPublic(pub); }
+    inline PVT& operator()() { return *static_cast<PVT*>(pvt); }
+    inline const PVT& operator()() const { return *static_cast<PVT*>(pvt); }
+    inline PVT* operator->() { return static_cast<PVT*>(pvt); }
+    inline const PVT* operator->() const { return static_cast<PVT*>(pvt); }
+
 private:
     Q_DISABLE_COPY(QxtPrivateInterface)
     QxtPrivate<PUB>* pvt;
@@ -720,7 +807,7 @@ private:
 */
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T, template <typename> class C>
-inline QSet<T> convertToSet(const C<T> &list)
+inline QSet<T> convertToSet(const C<T>& list)
 {
     return QSet<T>(list.begin(), list.end());
 }
@@ -730,7 +817,7 @@ inline QSet<T> convertToSet(const C<T> &list)
 */
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T, typename C>
-inline QSet<T> convertToSet(const C &list)
+inline QSet<T> convertToSet(const C& list)
 {
     return QSet<T>(list.begin(), list.end());
 }
@@ -740,10 +827,10 @@ inline QSet<T> convertToSet(const C &list)
 */
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T, template <typename> class C>
-inline QList<T> convertToList(const C<T> &set)
+inline QList<T> convertToList(const C<T>& set)
 {
     return QList<T>(set.begin(), set.end());
 }
 
 
-#endif // DEF_H
+#endif   // DEF_H

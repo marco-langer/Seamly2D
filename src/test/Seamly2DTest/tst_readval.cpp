@@ -57,11 +57,10 @@
 #include <limits>
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_ReadVal::TST_ReadVal(QObject *parent)
-    : QObject(parent),
-      m_systemLocale(QLocale::system())
-{
-}
+TST_ReadVal::TST_ReadVal(QObject* parent)
+    : QObject(parent)
+    , m_systemLocale(QLocale::system())
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_ReadVal::TestReadVal_data()
@@ -72,9 +71,8 @@ void TST_ReadVal::TestReadVal_data()
     QTest::addColumn<QLocale>("locale");
 
     const QList<QLocale> allLocales =
-            QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
-    for(int i = 0; i < allLocales.size(); ++i)
-    {
+        QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
+    for (int i = 0; i < allLocales.size(); ++i) {
         const QLocale locale = allLocales.at(i);
         PrepareVal(1., locale);
         PrepareVal(1.0, locale);
@@ -91,10 +89,7 @@ void TST_ReadVal::TestReadVal_data()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_ReadVal::TestReadVal()
-{
-    TestVal();
-}
+void TST_ReadVal::TestReadVal() { TestVal(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_ReadVal::TestInvalidData_data()
@@ -125,19 +120,13 @@ void TST_ReadVal::TestInvalidData_data()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_ReadVal::TestInvalidData()
-{
-    TestVal();
-}
+void TST_ReadVal::TestInvalidData() { TestVal(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_ReadVal::cleanupTestCase()
-{
-    QLocale::setDefault(m_systemLocale);
-}
+void TST_ReadVal::cleanupTestCase() { QLocale::setDefault(m_systemLocale); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_ReadVal::PrepareVal(qreal val, const QLocale &locale)
+void TST_ReadVal::PrepareVal(qreal val, const QLocale& locale)
 {
     const QString string = locale.toString(val);
     bool ok = false;
@@ -146,7 +135,7 @@ void TST_ReadVal::PrepareVal(qreal val, const QLocale &locale)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_ReadVal::PrepareString(const QString &str, const QLocale &locale, qreal val,  int count)
+void TST_ReadVal::PrepareString(const QString& str, const QLocale& locale, qreal val, int count)
 {
     const QString tag = QString("%1. String '%2'").arg(locale.name()).arg(str);
     QTest::newRow(qUtf8Printable(tag)) << str << count << val << locale;
@@ -163,13 +152,13 @@ void TST_ReadVal::TestVal()
     qreal resVal = 0;
     QLocale::setDefault(locale);
 
-    const int resCount = ReadVal(formula, resVal, locale, locale.decimalPoint(), locale.groupSeparator());
+    const int resCount =
+        ReadVal(formula, resVal, locale, locale.decimalPoint(), locale.groupSeparator());
 
     QString errorMsg = QString("Conversion failed. Locale: '%1'.").arg(locale.name());
     QVERIFY2(resCount == expCount, qUtf8Printable(errorMsg));
 
-    if (resCount != -1)
-    {
+    if (resCount != -1) {
         QString errorMsg = QString("Unexpected result. Locale: '%1'.").arg(locale.name());
         QVERIFY2(QmuFuzzyComparePossibleNulls(resVal, expVal), qUtf8Printable(errorMsg));
     }

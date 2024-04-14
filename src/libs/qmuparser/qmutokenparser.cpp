@@ -34,7 +34,8 @@
  **  The above copyright notice and this permission notice shall be included in all copies or
  **  substantial portions of the Software.
  **
- **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ **  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ *BUT
  **  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
  **  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  **  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
@@ -51,14 +52,13 @@
 
 #include "qmuparsererror.h"
 
-namespace qmu
-{
+namespace qmu {
 
 //---------------------------------------------------------------------------------------------------------------------
 QmuTokenParser::QmuTokenParser()
 {
     InitCharSets();
-    setAllowSubexpressions(false);//Only one expression per time
+    setAllowSubexpressions(false);   // Only one expression per time
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -77,24 +77,23 @@ QmuTokenParser::QmuTokenParser()
  * @param formula string with formula.
  * @param fromUser true if we parse formula from user
  */
-QmuTokenParser::QmuTokenParser(const QString &formula, bool osSeparator, bool fromUser)
-    :QmuFormulaBase()
+QmuTokenParser::QmuTokenParser(const QString& formula, bool osSeparator, bool fromUser)
+    : QmuFormulaBase()
 {
     InitCharSets();
-    setAllowSubexpressions(false);//Only one expression per time
+    setAllowSubexpressions(false);   // Only one expression per time
     SetVarFactory(AddVariable, this);
 
     SetSepForTr(osSeparator, fromUser);
 
     SetExpr(formula);
-    //Need run for making tokens. Don't catch exception here, because we want know if formula has error.
+    // Need run for making tokens. Don't catch exception here, because we want know if formula has
+    // error.
     Eval();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QmuTokenParser::~QmuTokenParser()
-{
-}
+QmuTokenParser::~QmuTokenParser() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -104,46 +103,39 @@ QmuTokenParser::~QmuTokenParser()
  * @param formula expression for test
  * @return true if fomula has single number
  */
-bool QmuTokenParser::IsSingle(const QString &formula)
+bool QmuTokenParser::IsSingle(const QString& formula)
 {
-    if (formula.isEmpty())
-    {
-        return false;// if don't know say no
+    if (formula.isEmpty()) {
+        return false;   // if don't know say no
     }
 
     QScopedPointer<QmuTokenParser> cal(new QmuTokenParser());
 
-    // Parser doesn't know any variable on this stage. So, we just use variable factory that for each unknown
-    // variable set value to 0.
+    // Parser doesn't know any variable on this stage. So, we just use variable factory that for
+    // each unknown variable set value to 0.
     cal->SetVarFactory(AddVariable, cal.data());
-    cal->SetSepForEval();//Reset separators options
+    cal->SetSepForEval();   // Reset separators options
 
-    try
-    {
+    try {
         cal->SetExpr(formula);
-        cal->Eval();// We don't need save result, only parse formula
-    }
-    catch (const qmu::QmuParserError &error)
-    {
+        cal->Eval();   // We don't need save result, only parse formula
+    } catch (const qmu::QmuParserError& error) {
         Q_UNUSED(error)
-        return false;// something wrong with formula, say no
+        return false;   // something wrong with formula, say no
     }
 
-    QMap<int, QString> tokens = cal->GetTokens();// Tokens (variables, measurements)
-    const QMap<int, QString> numbers = cal->GetNumbers();// All numbers in expression
+    QMap<int, QString> tokens = cal->GetTokens();           // Tokens (variables, measurements)
+    const QMap<int, QString> numbers = cal->GetNumbers();   // All numbers in expression
     delete cal.take();
 
     // Remove "-" from tokens list if exist. If don't do that unary minus operation will broken.
     RemoveAll(tokens, QStringLiteral("-"));
 
-    if (tokens.isEmpty() && numbers.size() == 1)
-    {
+    if (tokens.isEmpty() && numbers.size() == 1) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
-}// namespace qmu
+}   // namespace qmu

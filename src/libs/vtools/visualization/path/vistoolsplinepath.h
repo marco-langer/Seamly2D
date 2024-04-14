@@ -52,7 +52,6 @@
 #ifndef VISTOOLSPLINEPATH_H
 #define VISTOOLSPLINEPATH_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
@@ -60,6 +59,7 @@
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vgeometry/vsplinepath.h"
 #include "../vmisc/def.h"
@@ -71,18 +71,21 @@ class VisToolSplinePath : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolSplinePath(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolSplinePath(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolSplinePath();
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
 
-    void         setPath(const VSplinePath &value);
-    VSplinePath  getPath();
+    void setPath(const VSplinePath& value);
+    VSplinePath getPath();
 
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolSplinePath)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolSplinePath)
+    };
 signals:
-    void PathChanged(const VSplinePath &path);
+    void PathChanged(const VSplinePath& path);
 
 public slots:
     void MouseLeftPressed();
@@ -90,18 +93,18 @@ public slots:
 
 protected:
     Q_DISABLE_COPY(VisToolSplinePath)
-    QVector<VScaledEllipse *>      points;
-    QVector<VControlPointSpline *> ctrlPoints;
-    VCurvePathItem                *newCurveSegment;
-    VSplinePath                    path;
+    QVector<VScaledEllipse*> points;
+    QVector<VControlPointSpline*> ctrlPoints;
+    VCurvePathItem* newCurveSegment;
+    VSplinePath path;
 
     bool isLeftMousePressed;
     bool pointIsSelected;
 
     QPointF ctrlPoint;
 
-    VScaledEllipse * getPoint(quint32 i);
-    void Creating(const QPointF &pSpl, int size);
+    VScaledEllipse* getPoint(quint32 i);
+    void Creating(const QPointF& pSpl, int size);
 };
 
-#endif // VISTOOLSPLINEPATH_H
+#endif   // VISTOOLSPLINEPATH_H

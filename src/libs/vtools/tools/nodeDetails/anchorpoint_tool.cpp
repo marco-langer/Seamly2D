@@ -59,7 +59,8 @@
 const QString AnchorPointTool::ToolType = QStringLiteral("anchor");
 
 //---------------------------------------------------------------------------------------------------------------------
-AnchorPointTool *AnchorPointTool::Create(QSharedPointer<DialogTool> dialog, VAbstractPattern *doc, VContainer *data)
+AnchorPointTool*
+AnchorPointTool::Create(QSharedPointer<DialogTool> dialog, VAbstractPattern* doc, VContainer* data)
 {
     SCASSERT(not dialog.isNull());
     QSharedPointer<AnchorPointDialog> dialogTool = dialog.objectCast<AnchorPointDialog>();
@@ -71,68 +72,61 @@ AnchorPointTool *AnchorPointTool::Create(QSharedPointer<DialogTool> dialog, VAbs
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-AnchorPointTool *AnchorPointTool::Create(quint32 _id, quint32 pointId, quint32 pieceId, VAbstractPattern *doc, VContainer *data,
-                           const Document &parse, const Source &typeCreation, const QString &blockName,
-                           const quint32 &idTool)
+AnchorPointTool* AnchorPointTool::Create(
+    quint32 _id,
+    quint32 pointId,
+    quint32 pieceId,
+    VAbstractPattern* doc,
+    VContainer* data,
+    const Document& parse,
+    const Source& typeCreation,
+    const QString& blockName,
+    const quint32& idTool)
 {
     quint32 id = _id;
-    if (typeCreation == Source::FromGui)
-    {
+    if (typeCreation == Source::FromGui) {
         id = CreateNode<VPointF>(data, pointId);
-    }
-    else
-    {
+    } else {
         QSharedPointer<VPointF> point;
-        try
-        {
+        try {
             point = data->GeometricObject<VPointF>(pointId);
-        }
-        catch (const VExceptionBadId &error)
-        { // Possible case. Parent was deleted, but the node object is still here.
+        } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
+                                                   // node object is still here.
             Q_UNUSED(error)
             data->UpdateId(id);
-            return nullptr;// Just ignore
+            return nullptr;   // Just ignore
         }
-        VPointF *anchorPoint = new VPointF(*point);
+        VPointF* anchorPoint = new VPointF(*point);
         anchorPoint->setMode(Draw::Modeling);
         data->UpdateGObject(id, anchorPoint);
-        if (parse != Document::FullParse)
-        {
+        if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }
     }
     VAbstractTool::AddRecord(id, Tool::AnchorPoint, doc);
-    AnchorPointTool *point = nullptr;
-    if (parse == Document::FullParse)
-    {
-        point = new AnchorPointTool(doc, data, id, pointId, pieceId, typeCreation, blockName, idTool, doc);
+    AnchorPointTool* point = nullptr;
+    if (parse == Document::FullParse) {
+        point = new AnchorPointTool(
+            doc, data, id, pointId, pieceId, typeCreation, blockName, idTool, doc);
 
         VAbstractPattern::AddTool(id, point);
-        if (idTool != NULL_ID)
-        {
-            //Some nodes we don't show on scene. Tool that create this nodes must free memory.
-            VDataTool *tool = VAbstractPattern::getTool(idTool);
+        if (idTool != NULL_ID) {
+            // Some nodes we don't show on scene. Tool that create this nodes must free memory.
+            VDataTool* tool = VAbstractPattern::getTool(idTool);
             SCASSERT(tool != nullptr)
-            point->setParent(tool);// Adopted by a tool
-        }
-        else
-        {
+            point->setParent(tool);   // Adopted by a tool
+        } else {
             // Help to delete the node before each FullParse
             doc->AddToolOnRemove(point);
         }
-    }
-    else
-    {
+    } else {
         doc->UpdateToolData(id, data);
     }
     return point;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString AnchorPointTool::getTagName() const
-{
-    return VAbstractPattern::TagPoint;
-}
+QString AnchorPointTool::getTagName() const { return VAbstractPattern::TagPoint; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void AnchorPointTool::AllowHover(bool enabled)
@@ -156,30 +150,38 @@ void AnchorPointTool::AddToFile()
     doc->SetAttribute(domElement, VDomDocument::AttrId, m_id);
     doc->SetAttribute(domElement, AttrType, ToolType);
     doc->SetAttribute(domElement, AttrIdObject, idNode);
-    if (idTool != NULL_ID)
-    {
+    if (idTool != NULL_ID) {
         doc->SetAttribute(domElement, AttrIdTool, idTool);
     }
 
     AddToModeling(domElement);
 
-    if (m_pieceId > NULL_ID)
-    {
+    if (m_pieceId > NULL_ID) {
         const VPiece oldPiece = VAbstractTool::data.GetPiece(m_pieceId);
         VPiece newPiece = oldPiece;
 
         newPiece.getAnchors().append(m_id);
 
-        SavePieceOptions *saveCommand = new SavePieceOptions(oldPiece, newPiece, doc, m_pieceId);
-        qApp->getUndoStack()->push(saveCommand);// First push then make a connect
-        VAbstractTool::data.UpdatePiece(m_pieceId, newPiece);// Update piece because first save will not call lite update
-        connect(saveCommand, &SavePieceOptions::NeedLiteParsing, doc, &VAbstractPattern::LiteParseTree);
+        SavePieceOptions* saveCommand = new SavePieceOptions(oldPiece, newPiece, doc, m_pieceId);
+        qApp->getUndoStack()->push(saveCommand);   // First push then make a connect
+        VAbstractTool::data.UpdatePiece(
+            m_pieceId, newPiece);   // Update piece because first save will not call lite update
+        connect(
+            saveCommand, &SavePieceOptions::NeedLiteParsing, doc, &VAbstractPattern::LiteParseTree);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-AnchorPointTool::AnchorPointTool(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 pointId, quint32 pieceId,
-                   const Source &typeCreation, const QString &blockName, const quint32 &idTool, QObject *qoParent)
+AnchorPointTool::AnchorPointTool(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    quint32 pointId,
+    quint32 pieceId,
+    const Source& typeCreation,
+    const QString& blockName,
+    const quint32& idTool,
+    QObject* qoParent)
     : VAbstractNode(doc, data, id, pointId, blockName, idTool, qoParent)
     , m_pieceId(pieceId)
 {

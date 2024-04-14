@@ -56,8 +56,8 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
-#include "../ifc/xml/vdomdocument.h"
 #include "../ifc/ifcdef.h"
+#include "../ifc/xml/vdomdocument.h"
 #include "../vabstracttool.h"
 #include "../vdatatool.h"
 #include "vabstractnode.h"
@@ -65,40 +65,38 @@
 const QString VNodeEllipticalArc::ToolType = QStringLiteral("modeling");
 
 //---------------------------------------------------------------------------------------------------------------------
-void VNodeEllipticalArc::Create(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idArc,
-                                const Document &parse, const Source &typeCreation, const QString &blockName,
-                                const quint32 &idTool)
+void VNodeEllipticalArc::Create(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    quint32 idArc,
+    const Document& parse,
+    const Source& typeCreation,
+    const QString& blockName,
+    const quint32& idTool)
 {
-    if (parse == Document::FullParse)
-    {
+    if (parse == Document::FullParse) {
         VAbstractTool::AddRecord(id, Tool::NodeElArc, doc);
-        VNodeEllipticalArc *arc = new VNodeEllipticalArc(doc, data, id, idArc, typeCreation, blockName, idTool, doc);
+        VNodeEllipticalArc* arc =
+            new VNodeEllipticalArc(doc, data, id, idArc, typeCreation, blockName, idTool, doc);
 
         VAbstractPattern::AddTool(id, arc);
-        if (idTool != NULL_ID)
-        {
-            //Some nodes we don't show on scene. Tool that create this nodes must free memory.
-            VDataTool *tool = VAbstractPattern::getTool(idTool);
+        if (idTool != NULL_ID) {
+            // Some nodes we don't show on scene. Tool that create this nodes must free memory.
+            VDataTool* tool = VAbstractPattern::getTool(idTool);
             SCASSERT(tool != nullptr)
-            arc->setParent(tool);// Adopted by a tool
-        }
-        else
-        {
+            arc->setParent(tool);   // Adopted by a tool
+        } else {
             // Help to delete the node before each FullParse
             doc->AddToolOnRemove(arc);
         }
-    }
-    else
-    {
+    } else {
         doc->UpdateToolData(id, data);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VNodeEllipticalArc::getTagName() const
-{
-    return VAbstractPattern::TagElArc;
-}
+QString VNodeEllipticalArc::getTagName() const { return VAbstractPattern::TagElArc; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VNodeEllipticalArc::AllowHover(bool enabled)
@@ -122,8 +120,7 @@ void VNodeEllipticalArc::AddToFile()
     doc->SetAttribute(domElement, VDomDocument::AttrId, m_id);
     doc->SetAttribute(domElement, AttrType, ToolType);
     doc->SetAttribute(domElement, AttrIdObject, idNode);
-    if (idTool != NULL_ID)
-    {
+    if (idTool != NULL_ID) {
         doc->SetAttribute(domElement, AttrIdTool, idTool);
     }
 
@@ -131,10 +128,16 @@ void VNodeEllipticalArc::AddToFile()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VNodeEllipticalArc::VNodeEllipticalArc(VAbstractPattern *doc, VContainer *data, quint32 id, quint32 idArc,
-                                       const Source &typeCreation, const QString &blockName, const quint32 &idTool,
-                                       QObject *qoParent)
-    :VAbstractNode(doc, data, id, idArc, blockName, idTool, qoParent)
+VNodeEllipticalArc::VNodeEllipticalArc(
+    VAbstractPattern* doc,
+    VContainer* data,
+    quint32 id,
+    quint32 idArc,
+    const Source& typeCreation,
+    const QString& blockName,
+    const quint32& idTool,
+    QObject* qoParent)
+    : VAbstractNode(doc, data, id, idArc, blockName, idTool, qoParent)
 {
     ToolCreation(typeCreation);
 }

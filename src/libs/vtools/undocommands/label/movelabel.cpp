@@ -59,37 +59,34 @@
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vtools/tools/vabstracttool.h"
-#include "../vwidgets/vmaingraphicsview.h"
 #include "../vundocommand.h"
+#include "../vwidgets/vmaingraphicsview.h"
 #include "moveabstractlabel.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveLabel::MoveLabel(VAbstractPattern *doc, const QPointF &pos, const quint32 &id, QUndoCommand *parent)
+MoveLabel::MoveLabel(
+    VAbstractPattern* doc, const QPointF& pos, const quint32& id, QUndoCommand* parent)
     : MoveAbstractLabel(doc, id, pos, parent)
     , m_scene(qApp->getCurrentScene())
 {
     setText(tr("move point label"));
 
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         m_oldPos.rx() = qApp->toPixel(doc->GetParametrDouble(domElement, AttrMx, "0.0"));
         m_oldPos.ry() = qApp->toPixel(doc->GetParametrDouble(domElement, AttrMy, "0.0"));
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MoveLabel::mergeWith(const QUndoCommand *command)
+bool MoveLabel::mergeWith(const QUndoCommand* command)
 {
-    const MoveLabel *moveCommand = static_cast<const MoveLabel *>(command);
+    const MoveLabel* moveCommand = static_cast<const MoveLabel*>(command);
     SCASSERT(moveCommand != nullptr)
 
-    if (moveCommand->GetPointId() != nodeId)
-    {
+    if (moveCommand->GetPointId() != nodeId) {
         return false;
     }
 
@@ -99,27 +96,20 @@ bool MoveLabel::mergeWith(const QUndoCommand *command)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int MoveLabel::id() const
-{
-    return static_cast<int>(UndoCommand::MoveLabel);
-}
+int MoveLabel::id() const { return static_cast<int>(UndoCommand::MoveLabel); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MoveLabel::Do(const QPointF &pos)
+void MoveLabel::Do(const QPointF& pos)
 {
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         doc->SetAttribute(domElement, AttrMx, QString().setNum(qApp->fromPixel(pos.x())));
         doc->SetAttribute(domElement, AttrMy, QString().setNum(qApp->fromPixel(pos.y())));
 
-        if (VAbstractTool *tool = qobject_cast<VAbstractTool *>(VAbstractPattern::getTool(nodeId)))
-        {
+        if (VAbstractTool* tool = qobject_cast<VAbstractTool*>(VAbstractPattern::getTool(nodeId))) {
             tool->setPointNamePosition(nodeId, pos);
         }
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find point with id = %u.", nodeId);
     }
 }

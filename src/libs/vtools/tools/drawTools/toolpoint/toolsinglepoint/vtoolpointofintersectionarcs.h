@@ -1,29 +1,29 @@
 /******************************************************************************
-*   @file   vtoolpointofintersectionarcs.h
-**  @author Douglas S Caskey
-**  @date   30 Apr, 2023
-**
-**  @brief
-**  @copyright
-**  This source code is part of the Seamly2D project, a pattern making
-**  program to create and model patterns of clothing.
-**  Copyright (C) 2017-2023 Seamly2D project
-**  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
-**
-**  Seamly2D is free software: you can redistribute it and/or modify
-**  it under the terms of the GNU General Public License as published by
-**  the Free Software Foundation, either version 3 of the License, or
-**  (at your option) any later version.
-**
-**  Seamly2D is distributed in the hope that it will be useful,
-**  but WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-**  GNU General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
-**
-*************************************************************************/
+ *   @file   vtoolpointofintersectionarcs.h
+ **  @author Douglas S Caskey
+ **  @date   30 Apr, 2023
+ **
+ **  @brief
+ **  @copyright
+ **  This source code is part of the Seamly2D project, a pattern making
+ **  program to create and model patterns of clothing.
+ **  Copyright (C) 2017-2023 Seamly2D project
+ **  <https://github.com/fashionfreedom/seamly2d> All Rights Reserved.
+ **
+ **  Seamly2D is free software: you can redistribute it and/or modify
+ **  it under the terms of the GNU General Public License as published by
+ **  the Free Software Foundation, either version 3 of the License, or
+ **  (at your option) any later version.
+ **
+ **  Seamly2D is distributed in the hope that it will be useful,
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ **  GNU General Public License for more details.
+ **
+ **  You should have received a copy of the GNU General Public License
+ **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
+ **
+ *************************************************************************/
 
 /************************************************************************
  **
@@ -56,7 +56,6 @@
 #ifndef VTOOLPOINTOFINTERSECTIONARCS_H
 #define VTOOLPOINTOFINTERSECTIONARCS_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QGraphicsItem>
 #include <QMetaObject>
@@ -64,72 +63,95 @@
 #include <QPointF>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "vtoolsinglepoint.h"
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 class VToolPointOfIntersectionArcs : public VToolSinglePoint
 {
     Q_OBJECT
 
 public:
-    virtual void         setDialog() Q_DECL_OVERRIDE;
+    virtual void setDialog() Q_DECL_OVERRIDE;
 
-    static VToolPointOfIntersectionArcs *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene  *scene,
-                                                VAbstractPattern *doc, VContainer *data);
-    static VToolPointOfIntersectionArcs *Create(const quint32 _id, const QString &pointName, const quint32 &firstArcId,
-                                                const quint32 &secondArcId, CrossCirclesPoint pType,
-                                                qreal mx, qreal my, VMainGraphicsScene *scene,
-                                                VAbstractPattern *doc, VContainer *data, const Document &parse,
-                                                const Source &typeCreation);
+    static VToolPointOfIntersectionArcs* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static VToolPointOfIntersectionArcs* Create(
+        const quint32 _id,
+        const QString& pointName,
+        const quint32& firstArcId,
+        const quint32& secondArcId,
+        CrossCirclesPoint pType,
+        qreal mx,
+        qreal my,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
 
-    static QPointF       FindPoint(const VArc *arc1, const VArc *arc2, const CrossCirclesPoint pType);
+    static QPointF FindPoint(const VArc* arc1, const VArc* arc2, const CrossCirclesPoint pType);
 
     static const QString ToolType;
-    virtual int          type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Tool::PointOfIntersectionArcs) };
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::PointOfIntersectionArcs)
+    };
 
-    QString              FirstArcName() const;
-    QString              SecondArcName() const;
+    QString FirstArcName() const;
+    QString SecondArcName() const;
 
-    quint32              GetFirstArcId() const;
-    void                 SetFirstArcId(const quint32 &value);
+    quint32 GetFirstArcId() const;
+    void SetFirstArcId(const quint32& value);
 
-    quint32              GetSecondArcId() const;
-    void                 SetSecondArcId(const quint32 &value);
+    quint32 GetSecondArcId() const;
+    void SetSecondArcId(const quint32& value);
 
-    CrossCirclesPoint    GetCrossCirclesPoint() const;
-    void                 setCirclesCrossPoint(const CrossCirclesPoint &value);
+    CrossCirclesPoint GetCrossCirclesPoint() const;
+    void setCirclesCrossPoint(const CrossCirclesPoint& value);
 
-    virtual void         ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
 
 protected slots:
-    virtual void         showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void         RemoveReferens() Q_DECL_OVERRIDE;
-    virtual void         SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void         ReadToolAttributes(const QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SetVisualization() Q_DECL_OVERRIDE;
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(VToolPointOfIntersectionArcs)
 
     /** @brief firstArcId id first arc. */
-    quint32              firstArcId;
+    quint32 firstArcId;
 
     /** @brief secondArcId id second arc. */
-    quint32              secondArcId;
+    quint32 secondArcId;
 
-    CrossCirclesPoint    crossPoint;
+    CrossCirclesPoint crossPoint;
 
-                         VToolPointOfIntersectionArcs(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                                     const quint32 &firstArcId, const quint32 &secondArcId,
-                                                     CrossCirclesPoint pType, const Source &typeCreation,
-                                                     QGraphicsItem * parent = nullptr);};
+    VToolPointOfIntersectionArcs(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        const quint32& firstArcId,
+        const quint32& secondArcId,
+        CrossCirclesPoint pType,
+        const Source& typeCreation,
+        QGraphicsItem* parent = nullptr);
+};
 
-#endif // VTOOLPOINTOFINTERSECTIONARCS_H
+#endif   // VTOOLPOINTOFINTERSECTIONARCS_H

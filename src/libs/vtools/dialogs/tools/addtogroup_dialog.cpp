@@ -33,11 +33,11 @@
 #include "../vpatterndb/vcontainer.h"
 #include "../vtools/undocommands/addgroup.h"
 
-#include <QStringList>
 #include <QComboBox>
+#include <QStringList>
 
 //---------------------------------------------------------------------------------------------------------------------
-AddToGroupDialog::AddToGroupDialog(VContainer *data, const quint32 &toolId, QWidget *parent)
+AddToGroupDialog::AddToGroupDialog(VContainer* data, const quint32& toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)
     , ui(new Ui::AddToGroupDialog)
     , m_doc(qApp->getCurrentDocument())
@@ -54,19 +54,15 @@ AddToGroupDialog::AddToGroupDialog(VContainer *data, const quint32 &toolId, QWid
 }
 
 //---------------------------------------------------------------------------------------------------------------------
- AddToGroupDialog::~AddToGroupDialog()
-{
-    delete ui;
-}
+AddToGroupDialog::~AddToGroupDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void  AddToGroupDialog::fillNameBox()
+void AddToGroupDialog::fillNameBox()
 {
     QMap<quint32, GroupAttributes> groups = m_doc->getGroups();
     QStringList groupNames;
     auto i = groups.constBegin();
-    while (i != groups.constEnd())
-    {
+    while (i != groups.constEnd()) {
         const GroupAttributes data = i.value();
         groupNames.append(data.name);
         ++i;
@@ -75,19 +71,14 @@ void  AddToGroupDialog::fillNameBox()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString  AddToGroupDialog::getName() const
-{
-    return ui->groupName_ComboBox->currentText();
-}
+QString AddToGroupDialog::getName() const { return ui->groupName_ComboBox->currentText(); }
 
 
 //---------------------------------------------------------------------------------------------------------------------
-void  AddToGroupDialog::ShowDialog(bool click)
+void AddToGroupDialog::ShowDialog(bool click)
 {
-    if (not click)
-    {
-        if (m_groupData.isEmpty())
-        {
+    if (not click) {
+        if (m_groupData.isEmpty()) {
             return;
         }
 
@@ -98,21 +89,15 @@ void  AddToGroupDialog::ShowDialog(bool click)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void  AddToGroupDialog::SelectedObject(bool selected, quint32 object, quint32 tool)
+void AddToGroupDialog::SelectedObject(bool selected, quint32 object, quint32 tool)
 {
-    if (selected)
-    {
+    if (selected) {
         m_groupData.insert(object, tool);
         m_beep->play();
-    }
-    else
-    {
+    } else {
         m_groupData.remove(object);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QMap<quint32, quint32>  AddToGroupDialog::getGroupData() const
-{
-    return m_groupData;
-}
+QMap<quint32, quint32> AddToGroupDialog::getGroupData() const { return m_groupData; }

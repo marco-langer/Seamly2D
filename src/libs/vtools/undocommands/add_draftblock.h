@@ -22,43 +22,43 @@
  **  along with Seamly2D. If not, see <http://www.gnu.org/licenses/>.
  **************************************************************************/
 
- /************************************************************************
- **
- **  @file   add_draftblock.h
- **  @author Roman Telezhynskyi <dismine(at)gmail.com>
- **  @date   9 6, 2014
- **
- **  @brief
- **  @copyright
- **  This source code is part of the Valentina project, a pattern making
- **  program, whose allow create and modeling patterns of clothing.
- **  Copyright (C) 2013-2015 Valentina project
- **  <https://bitbucket.org/dismine/valentina> All Rights Reserved.
- **
- **  Valentina is free software: you can redistribute it and/or modify
- **  it under the terms of the GNU General Public License as published by
- **  the Free Software Foundation, either version 3 of the License, or
- **  (at your option) any later version.
- **
- **  Valentina is distributed in the hope that it will be useful,
- **  but WITHOUT ANY WARRANTY; without even the implied warranty of
- **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- **  GNU General Public License for more details.
- **
- **  You should have received a copy of the GNU General Public License
- **  along with Valentina.  If not, see <http://www.gnu.org/licenses/>.
- **
- *************************************************************************/
+/************************************************************************
+**
+**  @file   add_draftblock.h
+**  @author Roman Telezhynskyi <dismine(at)gmail.com>
+**  @date   9 6, 2014
+**
+**  @brief
+**  @copyright
+**  This source code is part of the Valentina project, a pattern making
+**  program, whose allow create and modeling patterns of clothing.
+**  Copyright (C) 2013-2015 Valentina project
+**  <https://bitbucket.org/dismine/valentina> All Rights Reserved.
+**
+**  Valentina is free software: you can redistribute it and/or modify
+**  it under the terms of the GNU General Public License as published by
+**  the Free Software Foundation, either version 3 of the License, or
+**  (at your option) any later version.
+**
+**  Valentina is distributed in the hope that it will be useful,
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**  GNU General Public License for more details.
+**
+**  You should have received a copy of the GNU General Public License
+**  along with Valentina.  If not, see <http://www.gnu.org/licenses/>.
+**
+*************************************************************************/
 
 #ifndef ADD_DRAFTBLOCK_H
 #define ADD_DRAFTBLOCK_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "vundocommand.h"
 
@@ -66,15 +66,18 @@ class AddDraftBlock : public VUndoCommand
 {
     Q_OBJECT
 public:
-                  AddDraftBlock(const QDomElement &xml, VAbstractPattern *doc, const
-                                QString &draftBlockName, QUndoCommand *parent = nullptr);
-    virtual      ~AddDraftBlock() Q_DECL_OVERRIDE;
-    virtual void  undo() Q_DECL_OVERRIDE;
-    virtual void  redo() Q_DECL_OVERRIDE;
+    AddDraftBlock(
+        const QDomElement& xml,
+        VAbstractPattern* doc,
+        const QString& draftBlockName,
+        QUndoCommand* parent = nullptr);
+    virtual ~AddDraftBlock() Q_DECL_OVERRIDE;
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
 
 private:
     Q_DISABLE_COPY(AddDraftBlock)
-    QString       draftBlockName;
+    QString draftBlockName;
 };
 
-#endif // ADD_DRAFTBLOCK_H
+#endif   // ADD_DRAFTBLOCK_H

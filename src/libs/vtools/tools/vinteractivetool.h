@@ -52,8 +52,8 @@
 #ifndef VINTERACTIVETOOL_H
 #define VINTERACTIVETOOL_H
 
-#include "vabstracttool.h"
 #include "../dialogs/tools/dialogtool.h"
+#include "vabstracttool.h"
 
 #include <QtCore/qglobal.h>
 
@@ -61,26 +61,28 @@ class VInteractiveTool : public VAbstractTool
 {
     Q_OBJECT
 public:
-                               VInteractiveTool(VAbstractPattern *doc, VContainer *data, quint32 id,
-                                                QObject *parent = nullptr);
-    virtual                   ~VInteractiveTool() Q_DECL_EQ_DEFAULT;
+    VInteractiveTool(
+        VAbstractPattern* doc, VContainer* data, quint32 id, QObject* parent = nullptr);
+    virtual ~VInteractiveTool() Q_DECL_EQ_DEFAULT;
 
-    void                       DialogLinkDestroy();
+    void DialogLinkDestroy();
 
 public slots:
-    void                       FullUpdateFromGuiOk(int result);
-    void                       FullUpdateFromGuiApply();
+    void FullUpdateFromGuiOk(int result);
+    void FullUpdateFromGuiApply();
 
 protected:
     /** @brief m_dialog tool's dialog options.*/
     QSharedPointer<DialogTool> m_dialog;
 
     /** @brief setDialog set dialog when user want change tool option. */
-    virtual void               setDialog() {/*do nothing by default*/}
-    virtual void               SaveDialogChange()=0;
+    virtual void setDialog()
+    { /*do nothing by default*/
+    }
+    virtual void SaveDialogChange() = 0;
 
 private:
     Q_DISABLE_COPY(VInteractiveTool)
 };
 
-#endif // VINTERACTIVETOOL_H
+#endif   // VINTERACTIVETOOL_H

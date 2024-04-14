@@ -52,108 +52,77 @@
 #include "tst_measurementregexp.h"
 #include "../qmuparser/qmudef.h"
 
-#include "../vmisc/logging.h"
-#include "../vpatterndb/vtranslatevars.h"
-#include "../vpatterndb/measurements_def.h"
 #include "../ifc/ifcdef.h"
+#include "../vmisc/logging.h"
+#include "../vpatterndb/measurements_def.h"
+#include "../vpatterndb/vtranslatevars.h"
 
-#include <QtTest>
 #include <QTranslator>
+#include <QtTest>
 
-const quint32 TST_MeasurementRegExp::systemCounts = 56; // count of pattern making systems
+const quint32 TST_MeasurementRegExp::systemCounts = 56;   // count of pattern making systems
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_MeasurementRegExp::TST_MeasurementRegExp(quint32 systemCode, const QString &locale, QObject *parent)
+TST_MeasurementRegExp::TST_MeasurementRegExp(
+    quint32 systemCode, const QString& locale, QObject* parent)
     : TST_AbstractRegExp(locale, parent)
     , m_systemCode(systemCode)
     , m_pmsTranslator(nullptr)
-{
-}
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-TST_MeasurementRegExp::~TST_MeasurementRegExp()
-{
-    delete m_pmsTranslator;
-}
+TST_MeasurementRegExp::~TST_MeasurementRegExp() { delete m_pmsTranslator; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_MeasurementRegExp::initTestCase()
 {
-    if (m_systemCode > systemCounts)
-    {
+    if (m_systemCode > systemCounts) {
         QFAIL("Unexpected system code.");
     }
 
-    if (m_locale.isEmpty())
-    {
+    if (m_locale.isEmpty()) {
         QFAIL("Empty locale code.");
     }
 
     const QStringList locales = SupportedLocales();
 
-    if (not locales.contains(m_locale))
-    {
+    if (not locales.contains(m_locale)) {
         QFAIL("Unsupported locale code.");
     }
 
-    if (loadMeasurements(m_locale) != NoError)
-    {
-        const QString message = QString("Couldn't load measurements. Locale = %1")
-                                        .arg(m_locale);
+    if (loadMeasurements(m_locale) != NoError) {
+        const QString message = QString("Couldn't load measurements. Locale = %1").arg(m_locale);
         QSKIP(qUtf8Printable(message));
     }
 
-    if (LoadVariables(m_locale) != NoError)
-    {
-        const QString message = QString("Couldn't load variables. Locale = %1")
-                                        .arg(m_locale);
+    if (LoadVariables(m_locale) != NoError) {
+        const QString message = QString("Couldn't load variables. Locale = %1").arg(m_locale);
         QSKIP(qUtf8Printable(message));
     }
 
-    InitTrMs();//Very important do this after loading QM files.
+    InitTrMs();   // Very important do this after loading QM files.
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::TestCheckNoEndLine_data()
-{
-    PrepareData();
-}
+void TST_MeasurementRegExp::TestCheckNoEndLine_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::TestCheckNoEndLine()
-{
-    CallTestCheckNoEndLine();
-}
+void TST_MeasurementRegExp::TestCheckNoEndLine() { CallTestCheckNoEndLine(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::TestCheckRegExpNames_data()
-{
-    PrepareData();
-}
+void TST_MeasurementRegExp::TestCheckRegExpNames_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::TestCheckRegExpNames()
-{
-    CallTestCheckRegExpNames();
-}
+void TST_MeasurementRegExp::TestCheckRegExpNames() { CallTestCheckRegExpNames(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::TestCheckIsNamesUnique_data()
-{
-    PrepareData();
-}
+void TST_MeasurementRegExp::TestCheckIsNamesUnique_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::TestCheckIsNamesUnique()
-{
-    CallTestCheckIsNamesUnique();
-}
+void TST_MeasurementRegExp::TestCheckIsNamesUnique() { CallTestCheckIsNamesUnique(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::TestCheckNoOriginalNamesInTranslation_data()
-{
-    PrepareData();
-}
+void TST_MeasurementRegExp::TestCheckNoOriginalNamesInTranslation_data() { PrepareData(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_MeasurementRegExp::TestCheckNoOriginalNamesInTranslation()
@@ -175,31 +144,26 @@ void TST_MeasurementRegExp::PrepareData()
 
     QTest::addColumn<QString>("originalName");
 
-    foreach(const QString &str, originalNames)
-    {
+    foreach (const QString& str, originalNames) {
         const QString tag = QString("Locale: '%1'. Name '%2'").arg(m_locale).arg(str);
         QTest::newRow(qUtf8Printable(tag)) << str;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QStringList TST_MeasurementRegExp::AllNames()
-{
-    return AllGroupNames();
-}
+QStringList TST_MeasurementRegExp::AllNames() { return AllGroupNames(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-int TST_MeasurementRegExp::loadMeasurements(const QString &checkedLocale)
+int TST_MeasurementRegExp::loadMeasurements(const QString& checkedLocale)
 {
     const QString path = TranslationsPath();
     const QString file = QString("measurements_%1.qm").arg(checkedLocale);
 
-    if (QFileInfo(path+QLatin1String("/")+file).size() <= 34)
-    {
+    if (QFileInfo(path + QLatin1String("/") + file).size() <= 34) {
         const QString message = QString("Translation for locale = %1 is empty. \nFull path: %2/%3")
-                .arg(checkedLocale)
-                .arg(path)
-                .arg(file);
+                                    .arg(checkedLocale)
+                                    .arg(path)
+                                    .arg(file);
         QWARN(qUtf8Printable(message));
 
         return ErrorSize;
@@ -208,9 +172,9 @@ int TST_MeasurementRegExp::loadMeasurements(const QString &checkedLocale)
     delete m_pmsTranslator;
     m_pmsTranslator = new QTranslator(this);
 
-    if (not m_pmsTranslator->load(file, path))
-    {
-        const QString message = QString("Can't load translation for locale = %1. \nFull path: %2/%3")
+    if (not m_pmsTranslator->load(file, path)) {
+        const QString message =
+            QString("Can't load translation for locale = %1. \nFull path: %2/%3")
                 .arg(checkedLocale)
                 .arg(path)
                 .arg(file);
@@ -221,9 +185,9 @@ int TST_MeasurementRegExp::loadMeasurements(const QString &checkedLocale)
         return ErrorLoad;
     }
 
-    if (not QCoreApplication::installTranslator(m_pmsTranslator))
-    {
-        const QString message = QString("Can't install translation for locale = %1. \nFull path: %2/%3")
+    if (not QCoreApplication::installTranslator(m_pmsTranslator)) {
+        const QString message =
+            QString("Can't install translation for locale = %1. \nFull path: %2/%3")
                 .arg(checkedLocale)
                 .arg(path)
                 .arg(file);
@@ -238,16 +202,14 @@ int TST_MeasurementRegExp::loadMeasurements(const QString &checkedLocale)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void TST_MeasurementRegExp::RemoveTrMeasurements(const QString &checkedLocale)
+void TST_MeasurementRegExp::RemoveTrMeasurements(const QString& checkedLocale)
 {
-    if (not m_pmsTranslator.isNull())
-    {
+    if (not m_pmsTranslator.isNull()) {
         const bool result = QCoreApplication::removeTranslator(m_pmsTranslator);
 
-        if (result == false)
-        {
-            const QString message = QString("Can't remove translation for locale = %1")
-                    .arg(checkedLocale);
+        if (result == false) {
+            const QString message =
+                QString("Can't remove translation for locale = %1").arg(checkedLocale);
             QWARN(qUtf8Printable(message));
         }
         delete m_pmsTranslator;

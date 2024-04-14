@@ -51,6 +51,7 @@
 
 #include "vposter.h"
 
+#include <QDebug>
 #include <QGraphicsLineItem>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
@@ -61,34 +62,31 @@
 #include <QString>
 #include <QVector>
 #include <Qt>
-#include <QDebug>
 
-#include "../vmisc/vmath.h"
 #include "../vmisc/def.h"
+#include "../vmisc/vmath.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-VPoster::VPoster(const QPrinter *printer)
-    :printer(printer), allowance(static_cast<quint32>(qRound(10./25.4*PrintDPI)))//1 cm
-{
-}
+VPoster::VPoster(const QPrinter* printer)
+    : printer(printer)
+    , allowance(static_cast<quint32>(qRound(10. / 25.4 * PrintDPI)))   // 1 cm
+{}
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<PosterData> VPoster::Calc(const QRect &imageRect, int page, PageOrientation orientation) const
+QVector<PosterData>
+VPoster::Calc(const QRect& imageRect, int page, PageOrientation orientation) const
 {
     QVector<PosterData> poster;
 
-    if (printer == nullptr)
-    {
+    if (printer == nullptr) {
         return poster;
     }
 
     const int rows = CountRows(imageRect.height(), orientation);
     const int columns = CountColumns(imageRect.width(), orientation);
 
-    for (int i=0; i < rows; i++)
-    {
-        for (int j=0; j< columns; j++)
-        {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
             PosterData data = Cut(i, j, imageRect, orientation);
             data.index = static_cast<quint32>(page);
             data.rows = static_cast<quint32>(rows);
@@ -101,79 +99,84 @@ QVector<PosterData> VPoster::Calc(const QRect &imageRect, int page, PageOrientat
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QGraphicsItem *> VPoster::Borders(QGraphicsItem *parent, const PosterData &img, int sheets) const
+QVector<QGraphicsItem*>
+VPoster::Borders(QGraphicsItem* parent, const PosterData& img, int sheets) const
 {
-    QVector<QGraphicsItem *> data;
+    QVector<QGraphicsItem*> data;
     QPen pen(Qt::NoBrush, 1, Qt::DashLine);
     pen.setColor(Qt::black);
 
     const QRect rec = img.rect;
-    if (img.column != 0)
-    {// Left border
-        auto *line = new QGraphicsLineItem(parent);
+    if (img.column != 0) {   // Left border
+        auto* line = new QGraphicsLineItem(parent);
         line->setPen(pen);
         line->setLine(rec.x(), rec.y(), rec.x(), rec.y() + rec.height());
         data.append(line);
 
-        auto *scissors = new QGraphicsPixmapItem(QPixmap("://scissors_vertical.png"), parent);
-        scissors->setPos(rec.x(), rec.y() + rec.height()-static_cast<int>(allowance));
+        auto* scissors = new QGraphicsPixmapItem(QPixmap("://scissors_vertical.png"), parent);
+        scissors->setPos(rec.x(), rec.y() + rec.height() - static_cast<int>(allowance));
         data.append(scissors);
     }
 
-    if (img.column != img.columns-1)
-    {// Right border
-        auto *line = new QGraphicsLineItem(parent);
+    if (img.column != img.columns - 1) {   // Right border
+        auto* line = new QGraphicsLineItem(parent);
         line->setPen(pen);
-        line->setLine(rec.x() + rec.width()-static_cast<int>(allowance), rec.y(),
-                      rec.x() + rec.width()-static_cast<int>(allowance), rec.y() + rec.height());
+        line->setLine(
+            rec.x() + rec.width() - static_cast<int>(allowance),
+            rec.y(),
+            rec.x() + rec.width() - static_cast<int>(allowance),
+            rec.y() + rec.height());
         data.append(line);
     }
 
-    if (img.row != 0)
-    {// Top border
-        auto *line = new QGraphicsLineItem(parent);
+    if (img.row != 0) {   // Top border
+        auto* line = new QGraphicsLineItem(parent);
         line->setPen(pen);
         line->setLine(rec.x(), rec.y(), rec.x() + rec.width(), rec.y());
         data.append(line);
 
-        auto *scissors = new QGraphicsPixmapItem(QPixmap("://scissors_horizontal.png"), parent);
-        scissors->setPos(rec.x() + rec.width()-static_cast<int>(allowance), rec.y());
+        auto* scissors = new QGraphicsPixmapItem(QPixmap("://scissors_horizontal.png"), parent);
+        scissors->setPos(rec.x() + rec.width() - static_cast<int>(allowance), rec.y());
         data.append(scissors);
     }
 
-    if (img.rows*img.columns > 1)
-    { // Don't show bottom border if only one page need
+    if (img.rows * img.columns > 1) {   // Don't show bottom border if only one page need
         // Bottom border (mandatory)
-        auto *line = new QGraphicsLineItem(parent);
+        auto* line = new QGraphicsLineItem(parent);
         line->setPen(pen);
-        line->setLine(rec.x(), rec.y() + rec.height()-static_cast<int>(allowance),
-                      rec.x() + rec.width(), rec.y() + rec.height()-static_cast<int>(allowance));
+        line->setLine(
+            rec.x(),
+            rec.y() + rec.height() - static_cast<int>(allowance),
+            rec.x() + rec.width(),
+            rec.y() + rec.height() - static_cast<int>(allowance));
         data.append(line);
 
-        if (img.row == img.rows-1)
-        {
-            auto *scissors = new QGraphicsPixmapItem(QPixmap("://scissors_horizontal.png"), parent);
-            scissors->setPos(rec.x() + rec.width()-static_cast<int>(allowance),
-                             rec.y() + rec.height()-static_cast<int>(allowance));
+        if (img.row == img.rows - 1) {
+            auto* scissors = new QGraphicsPixmapItem(QPixmap("://scissors_horizontal.png"), parent);
+            scissors->setPos(
+                rec.x() + rec.width() - static_cast<int>(allowance),
+                rec.y() + rec.height() - static_cast<int>(allowance));
             data.append(scissors);
         }
     }
 
     // Labels
-    auto *labels = new QGraphicsTextItem(parent);
+    auto* labels = new QGraphicsTextItem(parent);
 
     const int layoutX = 15;
     const int layoutY = 5;
-    labels->setPos(rec.x() + layoutX, rec.y() + rec.height()-static_cast<int>(allowance)+layoutY);
-    labels->setTextWidth(rec.width()-(static_cast<int>(allowance)+layoutX));
+    labels->setPos(
+        rec.x() + layoutX, rec.y() + rec.height() - static_cast<int>(allowance) + layoutY);
+    labels->setTextWidth(rec.width() - (static_cast<int>(allowance) + layoutX));
 
-    const QString grid = tr("Grid ( %1 , %2 )").arg(img.row+1).arg(img.column+1);
-    const QString page = tr("Page %1 of %2").arg(img.row*(img.columns)+img.column+1).arg(img.rows*img.columns);
+    const QString grid = tr("Grid ( %1 , %2 )").arg(img.row + 1).arg(img.column + 1);
+    const QString page = tr("Page %1 of %2")
+                             .arg(img.row * (img.columns) + img.column + 1)
+                             .arg(img.rows * img.columns);
 
     QString sheet;
-    if (sheets > 1)
-    {
-        sheet = tr("Sheet %1 of %2").arg(img.index+1).arg(sheets);
+    if (sheets > 1) {
+        sheet = tr("Sheet %1 of %2").arg(img.index + 1).arg(sheets);
     }
 
     labels->setHtml(QString("<table width='100%'>"
@@ -181,7 +184,7 @@ QVector<QGraphicsItem *> VPoster::Borders(QGraphicsItem *parent, const PosterDat
                             "<td>%1</td><td align='center'>%2</td><td align='right'>%3</td>"
                             "</tr>"
                             "</table>")
-                    .arg(grid, page, sheet));
+                        .arg(grid, page, sheet));
 
     data.append(labels);
 
@@ -194,12 +197,9 @@ int VPoster::CountRows(int height, PageOrientation orientation) const
     const qreal imgLength = height;
     qreal pageLength = 0;
 
-    if(orientation == PageOrientation::Landscape)
-    {
+    if (orientation == PageOrientation::Landscape) {
         pageLength = PageRect().width();
-    }
-    else
-    {
+    } else {
         pageLength = PageRect().height();
     }
 
@@ -232,7 +232,7 @@ int VPoster::CountRows(int height, PageOrientation orientation) const
     //             ―
     //(1) is without allowance
 
-    return qCeil(imgLength/(pageLength - static_cast<int>(allowance)));
+    return qCeil(imgLength / (pageLength - static_cast<int>(allowance)));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -241,12 +241,9 @@ int VPoster::CountColumns(int width, PageOrientation orientation) const
     const qreal imgLength = width;
     qreal pageLength = 0;
 
-    if(orientation == PageOrientation::Landscape)
-    {
+    if (orientation == PageOrientation::Landscape) {
         pageLength = PageRect().height();
-    }
-    else
-    {
+    } else {
         pageLength = PageRect().width();
     }
 
@@ -259,29 +256,26 @@ int VPoster::CountColumns(int width, PageOrientation orientation) const
     //                 |----|
     //                  ^
 
-    return qCeil(imgLength/(pageLength-static_cast<int>(allowance)));
+    return qCeil(imgLength / (pageLength - static_cast<int>(allowance)));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-PosterData VPoster::Cut(int i, int j, const QRect &imageRect, PageOrientation orientation) const
+PosterData VPoster::Cut(int i, int j, const QRect& imageRect, PageOrientation orientation) const
 {
     Q_UNUSED(imageRect)
 
     int pageLengthX, pageLengthY;
 
-    if(orientation == PageOrientation::Landscape)
-    {
+    if (orientation == PageOrientation::Landscape) {
         pageLengthX = PageRect().height();
         pageLengthY = PageRect().width();
-    }
-    else
-    {
+    } else {
         pageLengthX = PageRect().width();
         pageLengthY = PageRect().height();
     }
 
-    const int x = j*pageLengthX  - j*static_cast<int>(allowance);
-    const int y = i*pageLengthY - i*static_cast<int>(allowance);
+    const int x = j * pageLengthX - j * static_cast<int>(allowance);
+    const int y = i * pageLengthY - i * static_cast<int>(allowance);
 
     SCASSERT(x <= imageRect.width())
     SCASSERT(y <= imageRect.height())
@@ -302,15 +296,13 @@ QRect VPoster::PageRect() const
     // We convert value yourself to pixels.
     const QRectF rect = printer->pageRect(QPrinter::Millimeter);
 
-    if(printer->fullPage())
-    {
+    if (printer->fullPage()) {
         QMarginsF pMargins = printer->pageLayout().margins();
         QRectF newRect = rect.marginsRemoved(pMargins);
-        const QRect pageRectFP(0, 0, qFloor(ToPixel(newRect.width())), qFloor(ToPixel(newRect.height())));
+        const QRect pageRectFP(
+            0, 0, qFloor(ToPixel(newRect.width())), qFloor(ToPixel(newRect.height())));
         return pageRectFP;
-    }
-    else
-    {
+    } else {
         const QRect pageRect(0, 0, qFloor(ToPixel(rect.width())), qFloor(ToPixel(rect.height())));
         return pageRect;
     }
@@ -319,5 +311,5 @@ QRect VPoster::PageRect() const
 //---------------------------------------------------------------------------------------------------------------------
 qreal VPoster::ToPixel(qreal val)
 {
-    return val / 25.4 * PrintDPI; // Mm to pixels with current dpi.
+    return val / 25.4 * PrintDPI;   // Mm to pixels with current dpi.
 }

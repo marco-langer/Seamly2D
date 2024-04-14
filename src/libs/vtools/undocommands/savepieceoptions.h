@@ -61,35 +61,33 @@
 class SavePieceOptions : public VUndoCommand
 {
 public:
-                  SavePieceOptions(const VPiece &oldPiece, const VPiece &newPiece, VAbstractPattern *doc,
-                                   quint32 id, QUndoCommand *parent = nullptr);
+    SavePieceOptions(
+        const VPiece& oldPiece,
+        const VPiece& newPiece,
+        VAbstractPattern* doc,
+        quint32 id,
+        QUndoCommand* parent = nullptr);
 
-    virtual      ~SavePieceOptions();
+    virtual ~SavePieceOptions();
 
-    virtual void  undo() Q_DECL_OVERRIDE;
-    virtual void  redo() Q_DECL_OVERRIDE;
-    virtual bool  mergeWith(const QUndoCommand *command) Q_DECL_OVERRIDE;
-    virtual int   id() const Q_DECL_OVERRIDE;
-    quint32       pieceId() const;
-    VPiece        getNewPiece() const;
+    virtual void undo() Q_DECL_OVERRIDE;
+    virtual void redo() Q_DECL_OVERRIDE;
+    virtual bool mergeWith(const QUndoCommand* command) Q_DECL_OVERRIDE;
+    virtual int id() const Q_DECL_OVERRIDE;
+    quint32 pieceId() const;
+    VPiece getNewPiece() const;
 
 private:
     Q_DISABLE_COPY(SavePieceOptions)
 
-    const VPiece  m_oldPiece;
-    VPiece        m_newPiece;
+    const VPiece m_oldPiece;
+    VPiece m_newPiece;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline quint32 SavePieceOptions::pieceId() const
-{
-    return nodeId;
-}
+inline quint32 SavePieceOptions::pieceId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline VPiece SavePieceOptions::getNewPiece() const
-{
-    return m_newPiece;
-}
+inline VPiece SavePieceOptions::getNewPiece() const { return m_newPiece; }
 
-#endif // SAVEPIECEOPTIONS_H
+#endif   // SAVEPIECEOPTIONS_H

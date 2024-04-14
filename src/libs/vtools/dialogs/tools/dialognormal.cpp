@@ -62,7 +62,6 @@
 #include <QPushButton>
 #include <QToolButton>
 
-#include "../vpatterndb/vtranslatevars.h"
 #include "../../tools/vabstracttool.h"
 #include "../../visualization/line/vistoolnormal.h"
 #include "../../visualization/visualization.h"
@@ -71,6 +70,7 @@
 #include "../support/edit_formula_dialog.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
+#include "../vpatterndb/vtranslatevars.h"
 #include "ui_dialognormal.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -79,8 +79,9 @@
  * @param data container with data
  * @param parent parent widget
  */
-DialogNormal::DialogNormal(const VContainer *data, const quint32 &toolId, QWidget *parent)
-    : DialogTool(data, toolId, parent), ui(new Ui::DialogNormal)
+DialogNormal::DialogNormal(const VContainer* data, const quint32& toolId, QWidget* parent)
+    : DialogTool(data, toolId, parent)
+    , ui(new Ui::DialogNormal)
     , formula(QString())
     , angle(0)
     , formulaBaseHeight(0)
@@ -105,29 +106,42 @@ DialogNormal::DialogNormal(const VContainer *data, const quint32 &toolId, QWidge
     FillComboBoxPoints(ui->comboBoxSecondPoint);
 
     int index = ui->lineColor_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineColor());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineColor_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineWeight_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineWeight());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineWeight_ComboBox->setCurrentIndex(index);
     }
 
     index = ui->lineType_ComboBox->findData(qApp->getCurrentDocument()->getDefaultLineType());
-    if (index != -1)
-    {
+    if (index != -1) {
         ui->lineType_ComboBox->setCurrentIndex(index);
     }
 
-    connect(ui->toolButtonExprLength, &QPushButton::clicked,          this, &DialogNormal::FXLength);
-    connect(ui->lineEditNamePoint,    &QLineEdit::textChanged,        this, &DialogNormal::NamePointChanged);
-    connect(ui->plainTextEditFormula, &QPlainTextEdit::textChanged,   this, &DialogNormal::FormulaTextChanged);
-    connect(ui->pushButtonGrowLength, &QPushButton::clicked,          this, &DialogNormal::DeployFormulaTextEdit);
-    connect(ui->comboBoxFirstPoint,   &QComboBox::currentTextChanged, this, &DialogNormal::PointNameChanged);
-    connect(ui->comboBoxSecondPoint,  &QComboBox::currentTextChanged, this, &DialogNormal::PointNameChanged);
+    connect(ui->toolButtonExprLength, &QPushButton::clicked, this, &DialogNormal::FXLength);
+    connect(ui->lineEditNamePoint, &QLineEdit::textChanged, this, &DialogNormal::NamePointChanged);
+    connect(
+        ui->plainTextEditFormula,
+        &QPlainTextEdit::textChanged,
+        this,
+        &DialogNormal::FormulaTextChanged);
+    connect(
+        ui->pushButtonGrowLength,
+        &QPushButton::clicked,
+        this,
+        &DialogNormal::DeployFormulaTextEdit);
+    connect(
+        ui->comboBoxFirstPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogNormal::PointNameChanged);
+    connect(
+        ui->comboBoxSecondPoint,
+        &QComboBox::currentTextChanged,
+        this,
+        &DialogNormal::PointNameChanged);
 
     vis = new VisToolNormal(data);
 
@@ -137,22 +151,16 @@ DialogNormal::DialogNormal(const VContainer *data, const quint32 &toolId, QWidge
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogNormal::FormulaTextChanged()
-{
-    this->FormulaChangedPlainText();
-}
+void DialogNormal::FormulaTextChanged() { this->FormulaChangedPlainText(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogNormal::PointNameChanged()
 {
     QColor color = okColor;
-    if (getCurrentObjectId(ui->comboBoxFirstPoint) == getCurrentObjectId(ui->comboBoxSecondPoint))
-    {
+    if (getCurrentObjectId(ui->comboBoxFirstPoint) == getCurrentObjectId(ui->comboBoxSecondPoint)) {
         flagError = false;
         color = errorColor;
-    }
-    else
-    {
+    } else {
         flagError = true;
         color = okColor;
     }
@@ -164,22 +172,18 @@ void DialogNormal::PointNameChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogNormal::FXLength()
 {
-    EditFormulaDialog *dialog = new EditFormulaDialog(data, toolId, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(data, toolId, this);
     dialog->setWindowTitle(tr("Edit length"));
     dialog->SetFormula(GetFormula());
     dialog->setPostfix(UnitsToStr(qApp->patternUnit(), true));
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         SetFormula(dialog->GetFormula());
     }
     delete dialog;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogNormal::ShowVisualization()
-{
-    AddVisualization<VisToolNormal>();
-}
+void DialogNormal::ShowVisualization() { AddVisualization<VisToolNormal>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogNormal::DeployFormulaTextEdit()
@@ -188,10 +192,7 @@ void DialogNormal::DeployFormulaTextEdit()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogNormal::~DialogNormal()
-{
-    delete ui;
-}
+DialogNormal::~DialogNormal() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -199,39 +200,33 @@ DialogNormal::~DialogNormal()
  * @param id id of point or detail
  * @param type type of object
  */
-void DialogNormal::ChosenObject(quint32 id, const SceneObject &type)
+void DialogNormal::ChosenObject(quint32 id, const SceneObject& type)
 {
-    if (prepare == false)// After first choose we ignore all objects
+    if (prepare == false)   // After first choose we ignore all objects
     {
-        if (type == SceneObject::Point)
-        {
-            VisToolNormal *line = qobject_cast<VisToolNormal *>(vis);
+        if (type == SceneObject::Point) {
+            VisToolNormal* line = qobject_cast<VisToolNormal*>(vis);
             SCASSERT(line != nullptr)
 
-            switch (number)
-            {
-                case 0:
-                    if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point of line")))
-                    {
-                        number++;
-                        line->VisualMode(id);
+            switch (number) {
+            case 0:
+                if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point of line"))) {
+                    number++;
+                    line->VisualMode(id);
+                }
+                break;
+            case 1:
+                if (getCurrentObjectId(ui->comboBoxFirstPoint) != id) {
+                    if (SetObject(id, ui->comboBoxSecondPoint, "")) {
+                        line->setObject2Id(id);
+                        line->RefreshGeometry();
+                        prepare = true;
+                        this->setModal(true);
+                        this->show();
                     }
-                    break;
-                case 1:
-                    if (getCurrentObjectId(ui->comboBoxFirstPoint) != id)
-                    {
-                        if (SetObject(id, ui->comboBoxSecondPoint, ""))
-                        {
-                            line->setObject2Id(id);
-                            line->RefreshGeometry();
-                            prepare = true;
-                            this->setModal(true);
-                            this->show();
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                }
+                break;
+            default: break;
             }
         }
     }
@@ -245,7 +240,7 @@ void DialogNormal::SaveData()
     formula.replace("\n", " ");
     angle = ui->doubleSpinBoxAngle->value();
 
-    VisToolNormal *line = qobject_cast<VisToolNormal *>(vis);
+    VisToolNormal* line = qobject_cast<VisToolNormal*>(vis);
     SCASSERT(line != nullptr)
 
     line->setObject1Id(GetFirstPointId());
@@ -258,7 +253,7 @@ void DialogNormal::SaveData()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogNormal::closeEvent(QCloseEvent *event)
+void DialogNormal::closeEvent(QCloseEvent* event)
 {
     ui->plainTextEditFormula->blockSignals(true);
     DialogTool::closeEvent(event);
@@ -269,11 +264,11 @@ void DialogNormal::closeEvent(QCloseEvent *event)
  * @brief SetSecondPointId set id of second point
  * @param value id
  */
-void DialogNormal::SetSecondPointId(const quint32 &value)
+void DialogNormal::SetSecondPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxSecondPoint, value);
 
-    VisToolNormal *line = qobject_cast<VisToolNormal *>(vis);
+    VisToolNormal* line = qobject_cast<VisToolNormal*>(vis);
     SCASSERT(line != nullptr)
     line->setObject2Id(value);
 }
@@ -283,11 +278,11 @@ void DialogNormal::SetSecondPointId(const quint32 &value)
  * @brief SetFirstPointId set id of first point
  * @param value id
  */
-void DialogNormal::SetFirstPointId(const quint32 &value)
+void DialogNormal::SetFirstPointId(const quint32& value)
 {
     setCurrentPointId(ui->comboBoxFirstPoint, value);
 
-    VisToolNormal *line = qobject_cast<VisToolNormal *>(vis);
+    VisToolNormal* line = qobject_cast<VisToolNormal*>(vis);
     SCASSERT(line != nullptr)
     line->setObject1Id(value);
 }
@@ -297,12 +292,12 @@ void DialogNormal::SetFirstPointId(const quint32 &value)
  * @brief SetAngle set aditional angle of normal
  * @param value angle in degree
  */
-void DialogNormal::SetAngle(const qreal &value)
+void DialogNormal::SetAngle(const qreal& value)
 {
     angle = value;
     ui->doubleSpinBoxAngle->setValue(angle);
 
-    VisToolNormal *line = qobject_cast<VisToolNormal *>(vis);
+    VisToolNormal* line = qobject_cast<VisToolNormal*>(vis);
     SCASSERT(line != nullptr)
     line->SetAngle(angle);
 }
@@ -312,17 +307,16 @@ void DialogNormal::SetAngle(const qreal &value)
  * @brief SetFormula set string of formula
  * @param value formula
  */
-void DialogNormal::SetFormula(const QString &value)
+void DialogNormal::SetFormula(const QString& value)
 {
     formula = qApp->translateVariables()->FormulaToUser(value, qApp->Settings()->getOsSeparator());
     // increase height if needed.
-    if (formula.length() > 80)
-    {
+    if (formula.length() > 80) {
         this->DeployFormulaTextEdit();
     }
     ui->plainTextEditFormula->setPlainText(formula);
 
-    VisToolNormal *line = qobject_cast<VisToolNormal *>(vis);
+    VisToolNormal* line = qobject_cast<VisToolNormal*>(vis);
     SCASSERT(line != nullptr)
     line->setLength(formula);
 
@@ -344,7 +338,7 @@ QString DialogNormal::getLineType() const
  * @brief setLineType set type of line
  * @param value type
  */
-void DialogNormal::setLineType(const QString &value)
+void DialogNormal::setLineType(const QString& value)
 {
     ChangeCurrentData(ui->lineType_ComboBox, value);
     vis->setLineStyle(lineTypeToPenStyle(value));
@@ -357,7 +351,7 @@ void DialogNormal::setLineType(const QString &value)
  */
 QString DialogNormal::getLineWeight() const
 {
-        return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
+    return GetComboBoxCurrentData(ui->lineWeight_ComboBox, "0.35");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -365,7 +359,7 @@ QString DialogNormal::getLineWeight() const
  * @brief setLineWeight set weight of the lines
  * @param value type
  */
-void DialogNormal::setLineWeight(const QString &value)
+void DialogNormal::setLineWeight(const QString& value)
 {
     ChangeCurrentData(ui->lineWeight_ComboBox, value);
     vis->setLineWeight(value);
@@ -378,7 +372,7 @@ QString DialogNormal::getLineColor() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogNormal::setLineColor(const QString &value)
+void DialogNormal::setLineColor(const QString& value)
 {
     ChangeCurrentData(ui->lineColor_ComboBox, value);
 }
@@ -388,7 +382,7 @@ void DialogNormal::setLineColor(const QString &value)
  * @brief SetPointName set name of point
  * @param value name
  */
-void DialogNormal::SetPointName(const QString &value)
+void DialogNormal::SetPointName(const QString& value)
 {
     pointName = value;
     ui->lineEditNamePoint->setText(pointName);
@@ -401,7 +395,8 @@ void DialogNormal::SetPointName(const QString &value)
  */
 QString DialogNormal::GetFormula() const
 {
-    return qApp->translateVariables()->TryFormulaFromUser(formula, qApp->Settings()->getOsSeparator());
+    return qApp->translateVariables()->TryFormulaFromUser(
+        formula, qApp->Settings()->getOsSeparator());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -409,20 +404,14 @@ QString DialogNormal::GetFormula() const
  * @brief GetAngle return aditional angle of normal
  * @return angle in degree
  */
-qreal DialogNormal::GetAngle() const
-{
-    return angle;
-}
+qreal DialogNormal::GetAngle() const { return angle; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetFirstPointId return id of first point
  * @return id
  */
-quint32 DialogNormal::GetFirstPointId() const
-{
-    return getCurrentObjectId(ui->comboBoxFirstPoint);
-}
+quint32 DialogNormal::GetFirstPointId() const { return getCurrentObjectId(ui->comboBoxFirstPoint); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

@@ -55,13 +55,22 @@
 #include <QtGlobal>
 
 #ifdef Q_CC_MSVC
-    #include <ciso646>
+#    include <ciso646>
 #endif /* Q_CC_MSVC */
 
-enum class VarMeasurement : unsigned char { English=0, Metric=1 };
+enum class VarMeasurement : unsigned char
+{
+    English = 0,
+    Metric = 1
+};
 
-//Default drawing units for AutoCAD DesignCenter blocks:
-enum class VarInsunits : unsigned char { Inches=1, Millimeters=4, Centimeters=5 };
+// Default drawing units for AutoCAD DesignCenter blocks:
+enum class VarInsunits : unsigned char
+{
+    Inches = 1,
+    Millimeters = 4,
+    Centimeters = 5
+};
 
 // Helps mark end of string. See VDxfEngine::drawTextItem for more details
 extern const QString endStringPlaceholder;
@@ -69,18 +78,13 @@ extern const QString endStringPlaceholder;
 Q_REQUIRED_RESULT static inline bool DL_FuzzyComparePossibleNulls(double p1, double p2);
 static inline bool DL_FuzzyComparePossibleNulls(double p1, double p2)
 {
-    if(qFuzzyIsNull(p1))
-    {
+    if (qFuzzyIsNull(p1)) {
         return qFuzzyIsNull(p2);
-    }
-    else if(qFuzzyIsNull(p2))
-    {
+    } else if (qFuzzyIsNull(p2)) {
         return false;
-    }
-    else
-    {
+    } else {
         return qFuzzyCompare(p1, p2);
     }
 }
 
-#endif // DXFDEF_H
+#endif   // DXFDEF_H

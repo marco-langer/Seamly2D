@@ -68,16 +68,16 @@ class QRectF;
 class QPainterPath;
 class QPen;
 
-qreal sceneScale(QGraphicsScene *scene);
+qreal sceneScale(QGraphicsScene* scene);
 
-QColor correctColor(const QGraphicsItem *item, const QColor &color);
+QColor correctColor(const QGraphicsItem* item, const QColor& color);
 
 QRectF PointRect(qreal radius);
-qreal  scaledRadius(qreal scale);
-void   scaleCircleSize(QGraphicsEllipseItem *item, qreal scale);
-void   scaleRectSize(QGraphicsRectItem *item, qreal scale);
-qreal  scaleWidth(qreal width, qreal scale);
+qreal scaledRadius(qreal scale);
+void scaleCircleSize(QGraphicsEllipseItem* item, qreal scale);
+void scaleRectSize(QGraphicsRectItem* item, qreal scale);
+qreal scaleWidth(qreal width, qreal scale);
 
-QPainterPath ItemShapeFromPath(const QPainterPath &path, const QPen &pen);
+QPainterPath ItemShapeFromPath(const QPainterPath& path, const QPen& pen);
 
-#endif // GLOBAL_H
+#endif   // GLOBAL_H

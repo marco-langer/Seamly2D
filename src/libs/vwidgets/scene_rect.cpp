@@ -25,33 +25,33 @@
  **************************************************************************/
 
 #include "scene_rect.h"
+#include "../vgeometry/vpointf.h"
 #include "../vmisc/def.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vgeometry/vpointf.h"
 #include "global.h"
 #include "scalesceneitems.h"
 
 #include <QBrush>
+#include <QColor>
 #include <QFont>
 #include <QPen>
-#include <QColor>
 #include <QtDebug>
 
 //---------------------------------------------------------------------------------------------------------------------
-SceneRect::SceneRect(const QColor &lineColor, QGraphicsItem *parent)
+SceneRect::SceneRect(const QColor& lineColor, QGraphicsItem* parent)
     : QGraphicsRectItem(parent)
-    , m_rectColor(QColor(correctColor(this,lineColor)))
+    , m_rectColor(QColor(correctColor(this, lineColor)))
     , m_onlyPoint(false)
     , m_isHovered(false)
     , m_showPointName(true)
 {
     setZValue(100);
     setAcceptHoverEvents(true);
-    setFlag(QGraphicsItem::ItemIsFocusable, true); // For keyboard input focus
+    setFlag(QGraphicsItem::ItemIsFocusable, true);   // For keyboard input focus
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SceneRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void SceneRect::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     const qreal scale = sceneScale(scene());
 
@@ -62,7 +62,7 @@ void SceneRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SceneRect::refreshPointGeometry(const VPointF &point)
+void SceneRect::refreshPointGeometry(const VPointF& point)
 {
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, false);
     setPos(static_cast<QPointF>(point));
@@ -70,31 +70,22 @@ void SceneRect::refreshPointGeometry(const VPointF &point)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SceneRect::setOnlyPoint(bool value)
-{
-    m_onlyPoint = value;
-}
+void SceneRect::setOnlyPoint(bool value) { m_onlyPoint = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool SceneRect::isOnlyPoint() const
-{
-    return m_onlyPoint;
-}
+bool SceneRect::isOnlyPoint() const { return m_onlyPoint; }
 
-void SceneRect::setPointColor(const QString &value)
-{
-    m_rectColor = QColor(value);
-}
+void SceneRect::setPointColor(const QString& value) { m_rectColor = QColor(value); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SceneRect::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void SceneRect::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
     m_isHovered = true;
     QGraphicsRectItem::hoverEnterEvent(event);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SceneRect::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void SceneRect::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
     m_isHovered = false;
     QGraphicsRectItem::hoverLeaveEvent(event);
@@ -109,12 +100,9 @@ void SceneRect::setRectPen(qreal scale)
     brushColor.setAlpha(100);
 
     setPen(QPen(m_rectColor, width));
-    if (!qApp->Settings()->isWireframe())
-    {
-       setBrush(QBrush(brushColor, Qt::SolidPattern));
-    }
-    else
-    {
-       setBrush(QBrush(brushColor, Qt::NoBrush));
+    if (!qApp->Settings()->isWireframe()) {
+        setBrush(QBrush(brushColor, Qt::SolidPattern));
+    } else {
+        setBrush(QBrush(brushColor, Qt::NoBrush));
     }
 }

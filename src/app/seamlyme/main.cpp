@@ -55,15 +55,15 @@
  * @return non-zero value is code of the error
  */
 
-#include "tmainwindow.h"
+#include "../vmisc/vseamlymesettings.h"
 #include "application_me.h"
 #include "dialogs/me_welcome_dialog.h"
-#include "../vmisc/vseamlymesettings.h"
+#include "tmainwindow.h"
 
-#include <QMessageBox> // For QT_REQUIRE_VERSION
+#include <QMessageBox>   // For QT_REQUIRE_VERSION
 #include <QTimer>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     Q_INIT_RESOURCE(seamlymeicon);
     Q_INIT_RESOURCE(theme);
@@ -80,9 +80,9 @@ int main(int argc, char *argv[])
     qputenv("QT_MAC_WANTS_LAYER", "1");
     //------------------------------------------------------------------------
 
-#ifndef Q_OS_MAC // supports natively
+#ifndef Q_OS_MAC   // supports natively
     initHighDpiScaling(argc, argv);
-#endif //Q_OS_MAC
+#endif   // Q_OS_MAC
 
     ApplicationME app(argc, argv);
     app.initOptions();
@@ -93,9 +93,8 @@ int main(int argc, char *argv[])
     // its named showWelcome, but true means "do not show welcome again" and thus we invert it here
     bool showWelcome = !settings->getShowWelcome();
 
-    if (showWelcome)
-    {
-        SeamlyMeWelcomeDialog *dialog = new SeamlyMeWelcomeDialog();
+    if (showWelcome) {
+        SeamlyMeWelcomeDialog* dialog = new SeamlyMeWelcomeDialog();
         dialog->setAttribute(Qt::WA_DeleteOnClose, true);
         dialog->exec();
     }

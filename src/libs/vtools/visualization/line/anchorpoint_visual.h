@@ -37,16 +37,19 @@ class AnchorPointVisual : public VisLine
 {
     Q_OBJECT
 public:
-    explicit               AnchorPointVisual(const VContainer *data, QGraphicsItem *parent = nullptr);
-    virtual               ~AnchorPointVisual();
+    explicit AnchorPointVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
+    virtual ~AnchorPointVisual();
 
-    virtual void           RefreshGeometry() Q_DECL_OVERRIDE;
-    virtual int            type() const Q_DECL_OVERRIDE {return Type;}
-    enum                   {Type = UserType + static_cast<int>(Vis::ToolAnchorPoint)};
+    virtual void RefreshGeometry() Q_DECL_OVERRIDE;
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolAnchorPoint)
+    };
 
 private:
-                           Q_DISABLE_COPY(AnchorPointVisual)
+    Q_DISABLE_COPY(AnchorPointVisual)
     QPointer<VSimplePoint> m_point;
 };
 
-#endif // ANCHOR_POINT_VISUAL_H
+#endif   // ANCHOR_POINT_VISUAL_H

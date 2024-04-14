@@ -50,18 +50,22 @@
  *************************************************************************/
 
 #include "dialoglayoutprogress.h"
-#include "ui_dialoglayoutprogress.h"
-#include "../options.h"
 #include "../core/application_2d.h"
+#include "../options.h"
+#include "ui_dialoglayoutprogress.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 #include <QMovie>
+#include <QPushButton>
 #include <QtDebug>
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogLayoutProgress::DialogLayoutProgress(int count, QWidget *parent)
-    :QDialog(parent), ui(new Ui::DialogLayoutProgress), maxCount(count), movie(nullptr), isInitialized(false)
+DialogLayoutProgress::DialogLayoutProgress(int count, QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::DialogLayoutProgress)
+    , maxCount(count)
+    , movie(nullptr)
+    , isInitialized(false)
 {
     ui->setupUi(this);
 
@@ -73,12 +77,12 @@ DialogLayoutProgress::DialogLayoutProgress(int count, QWidget *parent)
     ui->labelMessage->setText(tr("Arranged workpieces: %1 from %2").arg(0).arg(count));
 
     movie = new QMovie("://icon/16x16/progress.gif");
-    ui->labelProgress->setMovie (movie);
-    movie->start ();
+    ui->labelProgress->setMovie(movie);
+    movie->start();
 
-    QPushButton *bCancel = ui->buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* bCancel = ui->buttonBox->button(QDialogButtonBox::Cancel);
     SCASSERT(bCancel != nullptr)
-    connect(bCancel, &QPushButton::clicked, this, [this](){emit Abort();});
+    connect(bCancel, &QPushButton::clicked, this, [this]() { emit Abort(); });
     setModal(true);
 
     this->setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
@@ -92,10 +96,7 @@ DialogLayoutProgress::~DialogLayoutProgress()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogLayoutProgress::Start()
-{
-    show();
-}
+void DialogLayoutProgress::Start() { show(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogLayoutProgress::Arranged(int count)
@@ -105,43 +106,37 @@ void DialogLayoutProgress::Arranged(int count)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogLayoutProgress::Error(const LayoutErrors &state)
+void DialogLayoutProgress::Error(const LayoutErrors& state)
 {
-    switch (state)
-    {
-        case LayoutErrors::NoError:
-            return;
-        case LayoutErrors::PrepareLayoutError:
-            qCritical() << tr("Couldn't prepare data for creation layout");
-            break;
-        case LayoutErrors::EmptyPaperError:
-            qCritical() << tr("One or more pattern pieces are bigger than the paper format you selected. Please select a bigger paper format.");
-            break;
-        case LayoutErrors::ProcessStoped:
-        default:
-            break;
+    switch (state) {
+    case LayoutErrors::NoError: return;
+    case LayoutErrors::PrepareLayoutError:
+        qCritical() << tr("Couldn't prepare data for creation layout");
+        break;
+    case LayoutErrors::EmptyPaperError:
+        qCritical() << tr(
+            "One or more pattern pieces are bigger than the paper format you selected. Please "
+            "select a bigger paper format.");
+        break;
+    case LayoutErrors::ProcessStoped:
+    default: break;
     }
 
     done(QDialog::Rejected);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogLayoutProgress::Finished()
-{
-    done(QDialog::Accepted);
-}
+void DialogLayoutProgress::Finished() { done(QDialog::Accepted); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogLayoutProgress::showEvent(QShowEvent *event)
+void DialogLayoutProgress::showEvent(QShowEvent* event)
 {
-    QDialog::showEvent( event );
-    if ( event->spontaneous() )
-    {
+    QDialog::showEvent(event);
+    if (event->spontaneous()) {
         return;
     }
 
-    if (isInitialized)
-    {
+    if (isInitialized) {
         return;
     }
     // do your init stuff here
@@ -149,5 +144,5 @@ void DialogLayoutProgress::showEvent(QShowEvent *event)
     setMaximumSize(size());
     setMinimumSize(size());
 
-    isInitialized = true;//first show windows are held
+    isInitialized = true;   // first show windows are held
 }

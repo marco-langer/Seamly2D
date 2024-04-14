@@ -21,15 +21,14 @@
 #ifndef VPROPERTYTREEVIEW_H
 #define VPROPERTYTREEVIEW_H
 
-#include <qcompilerdetection.h>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QTreeView>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-namespace VPE
-{
+namespace VPE {
 
 class VPropertyDelegate;
 class VPropertyModel;
@@ -40,11 +39,11 @@ class VPropertyTreeView : public QTreeView
     Q_OBJECT
 public:
     //! Default constructor
-    explicit VPropertyTreeView(QWidget *parent = nullptr);
+    explicit VPropertyTreeView(QWidget* parent = nullptr);
 
     //! The destructor, taking a model and setting it to the tree view
     //! \param model The model to set as model for this tree view
-    explicit VPropertyTreeView(VPropertyModel* model, QWidget *parent = nullptr);
+    explicit VPropertyTreeView(VPropertyModel* model, QWidget* parent = nullptr);
 
     //! Destructor
     virtual ~VPropertyTreeView() Q_DECL_OVERRIDE;
@@ -58,7 +57,7 @@ protected:
     virtual void init();
 
     //! protected constructor
-    VPropertyTreeView(VPropertyTreeViewPrivate* d, bool init_, QWidget *parent = nullptr);
+    VPropertyTreeView(VPropertyTreeViewPrivate* d, bool init_, QWidget* parent = nullptr);
 
     //! The protected data
     VPropertyTreeViewPrivate* d_ptr;
@@ -67,6 +66,6 @@ private:
     Q_DISABLE_COPY(VPropertyTreeView)
 };
 
-}
+}   // namespace VPE
 
-#endif // VPROPERTYTREEVIEWEEVIEW_H
+#endif   // VPROPERTYTREEVIEWEEVIEW_H

@@ -53,7 +53,6 @@
 #ifndef UNION_TOOL_H
 #define UNION_TOOL_H
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QDomNode>
 #include <QMetaObject>
@@ -62,37 +61,38 @@
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-#include "vabstracttool.h"
 #include "../ifc/ifcdef.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
 #include "../vpatterndb/vpiece.h"
+#include "vabstracttool.h"
 
 class DialogTool;
 
 struct UnionToolInitData
 {
     UnionToolInitData()
-        : piece1_Id(NULL_ID),
-          piece2_Id(NULL_ID),
-          piece1_Index(NULL_ID),
-          piece2_Index(NULL_ID),
-          scene(nullptr),
-          doc(nullptr),
-          data(nullptr),
-          parse(Document::FullParse),
-          typeCreation(Source::FromFile),
-          retainPieces(false)
+        : piece1_Id(NULL_ID)
+        , piece2_Id(NULL_ID)
+        , piece1_Index(NULL_ID)
+        , piece2_Index(NULL_ID)
+        , scene(nullptr)
+        , doc(nullptr)
+        , data(nullptr)
+        , parse(Document::FullParse)
+        , typeCreation(Source::FromFile)
+        , retainPieces(false)
     {}
 
     quint32 piece1_Id;
     quint32 piece2_Id;
     quint32 piece1_Index;
     quint32 piece2_Index;
-    VMainGraphicsScene *scene;
-    VAbstractPattern *doc;
-    VContainer *data;
+    VMainGraphicsScene* scene;
+    VAbstractPattern* doc;
+    VContainer* data;
     Document parse;
     Source typeCreation;
     bool retainPieces;
@@ -105,9 +105,12 @@ class UnionTool : public VAbstractTool
 {
     Q_OBJECT
 public:
-    static UnionTool *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene *scene,
-                                     VAbstractPattern *doc, VContainer *data);
-    static UnionTool *Create(const quint32 _id, const UnionToolInitData &initData);
+    static UnionTool* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static UnionTool* Create(const quint32 _id, const UnionToolInitData& initData);
 
     static const QString ToolType;
     static const QString TagUnionPiece;
@@ -131,7 +134,7 @@ public slots:
     /**
      * @brief FullUpdateFromFile update tool data form file.
      */
-    virtual void FullUpdateFromFile () Q_DECL_OVERRIDE {}
+    virtual void FullUpdateFromFile() Q_DECL_OVERRIDE {}
     virtual void AllowHover(bool) Q_DECL_OVERRIDE {}
     virtual void AllowSelecting(bool) Q_DECL_OVERRIDE {}
 
@@ -147,12 +150,13 @@ private:
     quint32 piece1_Index; /** @brief piece1_Index index edge in first detail. */
     quint32 piece2_Index; /** @brief piece2_Index index edge in second detail. */
 
-    UnionTool(quint32 id, const UnionToolInitData &initData, QObject *parent = nullptr);
+    UnionTool(quint32 id, const UnionToolInitData& initData, QObject* parent = nullptr);
 
-    void             addPiece(QDomElement &domElement, const VPiece &d) const;
-    void             AddToModeling(const QDomElement &domElement);
+    void addPiece(QDomElement& domElement, const VPiece& d) const;
+    void AddToModeling(const QDomElement& domElement);
     QVector<quint32> GetReferenceObjects() const;
-    QVector<quint32> ReferenceObjects(const QDomElement &root, const QString &tag, const QString &attribute) const;
+    QVector<quint32>
+    ReferenceObjects(const QDomElement& root, const QString& tag, const QString& attribute) const;
 };
 
-#endif // UNION_TOOL_H
+#endif   // UNION_TOOL_H

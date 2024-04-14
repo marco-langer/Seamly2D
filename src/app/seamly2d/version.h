@@ -59,4 +59,4 @@
 #define VER_PRODUCTNAME_STR      VER_INTERNALNAME_STR
 #define VER_FILEDESCRIPTION_STR  "Patternmaking program."
 
-#endif // VERSION_H
+#endif   // VERSION_H

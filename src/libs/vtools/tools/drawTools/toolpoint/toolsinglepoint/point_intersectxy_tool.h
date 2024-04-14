@@ -32,19 +32,20 @@
 #ifndef POINT_INTERSECTXY_TOOL_H
 #define POINT_INTERSECTXY_TOOL_H
 
-#include "toollinepoint/doubleline_point_tool.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/def.h"
+#include "toollinepoint/doubleline_point_tool.h"
 
-#include <qcompilerdetection.h>
 #include <QDomElement>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
-template <class T> class QSharedPointer;
+template <class T>
+class QSharedPointer;
 
 /**
  * @brief The PointIntersectXYTool class tool for creation point intersection two lines.
@@ -53,43 +54,66 @@ class PointIntersectXYTool : public DoubleLinePointTool
 {
     Q_OBJECT
 public:
-    virtual void         setDialog() Q_DECL_OVERRIDE;
+    virtual void setDialog() Q_DECL_OVERRIDE;
 
-    static PointIntersectXYTool *Create(QSharedPointer<DialogTool> dialog, VMainGraphicsScene  *scene,
-                                            VAbstractPattern *doc, VContainer *data);
-    static PointIntersectXYTool *Create(const quint32 _id, const QString &pointName, const QString &lineType,
-                                            const QString &lineWeight,
-                                            const QString &lineColor, const quint32 &firstPointId,
-                                            const quint32 &secondPointId, qreal mx, qreal my, bool showPointName,
-                                            VMainGraphicsScene *scene, VAbstractPattern *doc, VContainer *data,
-                                            const Document &parse, const Source &typeCreation);
+    static PointIntersectXYTool* Create(
+        QSharedPointer<DialogTool> dialog,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data);
+    static PointIntersectXYTool* Create(
+        const quint32 _id,
+        const QString& pointName,
+        const QString& lineType,
+        const QString& lineWeight,
+        const QString& lineColor,
+        const quint32& firstPointId,
+        const quint32& secondPointId,
+        qreal mx,
+        qreal my,
+        bool showPointName,
+        VMainGraphicsScene* scene,
+        VAbstractPattern* doc,
+        VContainer* data,
+        const Document& parse,
+        const Source& typeCreation);
 
     static const QString ToolType;
-    virtual int          type() const Q_DECL_OVERRIDE {return Type;}
-    enum                 {Type = UserType + static_cast<int>(Tool::PointOfIntersection)};
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::PointOfIntersection)
+    };
 
-    QString              firstPointName() const;
-    QString              secondPointName() const;
+    QString firstPointName() const;
+    QString secondPointName() const;
 
-    virtual void         ShowVisualization(bool show) Q_DECL_OVERRIDE;
+    virtual void ShowVisualization(bool show) Q_DECL_OVERRIDE;
 
 protected slots:
-    virtual void         showContextMenu(QGraphicsSceneContextMenuEvent *event, quint32 id=NULL_ID) Q_DECL_OVERRIDE;
+    virtual void
+    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void         RemoveReferens() Q_DECL_OVERRIDE;
-    virtual void         SaveDialog(QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SaveOptions(QDomElement &tag, QSharedPointer<VGObject> &obj) Q_DECL_OVERRIDE;
-    virtual void         ReadToolAttributes(const QDomElement &domElement) Q_DECL_OVERRIDE;
-    virtual void         SetVisualization() Q_DECL_OVERRIDE;
+    virtual void RemoveReferens() Q_DECL_OVERRIDE;
+    virtual void SaveDialog(QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) Q_DECL_OVERRIDE;
+    virtual void ReadToolAttributes(const QDomElement& domElement) Q_DECL_OVERRIDE;
+    virtual void SetVisualization() Q_DECL_OVERRIDE;
 
 private:
-                         Q_DISABLE_COPY(PointIntersectXYTool)
-                         PointIntersectXYTool(VAbstractPattern *doc, VContainer *data, const quint32 &id,
-                                              const QString &lineType, const QString &lineWeight,
-                                              const QString &lineColor,
-                                              const quint32 &firstPointId, const quint32 &secondPointId,
-                                              const Source &typeCreation, QGraphicsItem * parent = nullptr);
+    Q_DISABLE_COPY(PointIntersectXYTool)
+    PointIntersectXYTool(
+        VAbstractPattern* doc,
+        VContainer* data,
+        const quint32& id,
+        const QString& lineType,
+        const QString& lineWeight,
+        const QString& lineColor,
+        const quint32& firstPointId,
+        const quint32& secondPointId,
+        const Source& typeCreation,
+        QGraphicsItem* parent = nullptr);
 };
 
-#endif // POINT_INTERSECTXY_TOOL_H
+#endif   // POINT_INTERSECTXY_TOOL_H

@@ -52,12 +52,12 @@
 #ifndef VISTOOLCUTARC_H
 #define VISTOOLCUTARC_H
 
-#include <qcompilerdetection.h>
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
 #include "vispath.h"
@@ -66,19 +66,23 @@ class VisToolCutArc : public VisPath
 {
     Q_OBJECT
 public:
-    explicit VisToolCutArc(const VContainer *data, QGraphicsItem *parent = nullptr);
+    explicit VisToolCutArc(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCutArc() Q_DECL_EQ_DEFAULT;
 
     virtual void RefreshGeometry() Q_DECL_OVERRIDE;
-    void         setLength(const QString &expression);
-    virtual int  type() const Q_DECL_OVERRIDE {return Type;}
-    enum { Type = UserType + static_cast<int>(Vis::ToolCutArc)};
+    void setLength(const QString& expression);
+    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Vis::ToolCutArc)
+    };
+
 protected:
     Q_DISABLE_COPY(VisToolCutArc)
-    VScaledEllipse *point;
-    VCurvePathItem *arc1;
-    VCurvePathItem *arc2;
-    qreal           length;
+    VScaledEllipse* point;
+    VCurvePathItem* arc1;
+    VCurvePathItem* arc2;
+    qreal length;
 };
 
-#endif // VISTOOLCUTARC_H
+#endif   // VISTOOLCUTARC_H

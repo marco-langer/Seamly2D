@@ -55,12 +55,12 @@
 
 #include "vformulapropertyeditor.h"
 
-#include <QHBoxLayout>
-#include <QFileDialog>
-#include <QKeyEvent>
 #include <QApplication>
 #include <QColorDialog>
 #include <QDebug>
+#include <QFileDialog>
+#include <QHBoxLayout>
+#include <QKeyEvent>
 #include <QRegularExpression>
 
 #include "../vpropertyexplorer/vproperty.h"
@@ -68,7 +68,7 @@
 
 // VFormulaPropertyEditor
 //---------------------------------------------------------------------------------------------------------------------
-VFormulaPropertyEditor::VFormulaPropertyEditor(QWidget *parent)
+VFormulaPropertyEditor::VFormulaPropertyEditor(QWidget* parent)
     : QWidget(parent)
     , formula(VFormula())
     , toolButton(nullptr)
@@ -97,7 +97,7 @@ VFormulaPropertyEditor::VFormulaPropertyEditor(QWidget *parent)
     connect(toolButton, &QToolButton::clicked, this, &VFormulaPropertyEditor::onToolButtonClicked);
 
     // Add label, spacer & button to a horizontal layout)
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout* layout = new QHBoxLayout(this);
     layout->setSpacing(3);
     layout->setMargin(0);
     layout->addWidget(textLabel);
@@ -108,8 +108,7 @@ VFormulaPropertyEditor::VFormulaPropertyEditor(QWidget *parent)
 //---------------------------------------------------------------------------------------------------------------------
 void VFormulaPropertyEditor::SetFormula(const VFormula& formula)
 {
-    if (this->formula != formula)
-    {
+    if (this->formula != formula) {
         this->formula = formula;
         textLabel->setText(this->formula.getStringValue());
     }
@@ -118,28 +117,26 @@ void VFormulaPropertyEditor::SetFormula(const VFormula& formula)
 //---------------------------------------------------------------------------------------------------------------------
 void VFormulaPropertyEditor::onToolButtonClicked()
 {
-    EditFormulaDialog* dialog = new EditFormulaDialog(formula.getData(), formula.getToolId(),
-                                                                qApp->getMainWindow());
+    EditFormulaDialog* dialog =
+        new EditFormulaDialog(formula.getData(), formula.getToolId(), qApp->getMainWindow());
     dialog->setCheckZero(formula.getCheckZero());
     dialog->setPostfix(formula.getPostfix());
     dialog->SetFormula(formula.GetFormula(FormulaType::FromUser));
 
-    if (dialog->exec() == QDialog::Accepted)
-    {
+    if (dialog->exec() == QDialog::Accepted) {
         formula.SetFormula(dialog->GetFormula(), FormulaType::ToUser);
         textLabel->setText(formula.getStringValue());
         delete dialog;
         emit dataChangedByUser(formula, this);
-        VPE::UserChangeEvent *event = new VPE::UserChangeEvent();
-        QCoreApplication::postEvent ( this, event );
+        VPE::UserChangeEvent* event = new VPE::UserChangeEvent();
+        QCoreApplication::postEvent(this, event);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VFormulaPropertyEditor::eventFilter(QObject *obj, QEvent *event)
+bool VFormulaPropertyEditor::eventFilter(QObject* obj, QEvent* event)
 {
-    if (obj == toolButton && event->type() == QEvent::KeyPress)
-    {
+    if (obj == toolButton && event->type() == QEvent::KeyPress) {
         // Ignore the event, so that eventually the delegate gets the event.
         event->ignore();
         return true;
@@ -149,7 +146,4 @@ bool VFormulaPropertyEditor::eventFilter(QObject *obj, QEvent *event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VFormula VFormulaPropertyEditor::GetFormula() const
-{
-    return formula;
-}
+VFormula VFormulaPropertyEditor::GetFormula() const { return formula; }

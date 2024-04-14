@@ -31,8 +31,8 @@
 
 #include "vispath.h"
 
-#include "../visualization.h"
 #include "../ifc/ifcdef.h"
+#include "../visualization.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vsimplepoint.h"
@@ -40,11 +40,11 @@
 #include <QPen>
 
 //---------------------------------------------------------------------------------------------------------------------
-VisPath::VisPath(const VContainer *data, QGraphicsItem *parent)
+VisPath::VisPath(const VContainer* data, QGraphicsItem* parent)
     : Visualization(data)
     , VCurvePathItem(parent)
 {
-    this->setZValue(1);// Show on top real tool
+    this->setZValue(1);   // Show on top real tool
     initPen();
 }
 
@@ -60,21 +60,15 @@ void VisPath::initPen()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VisPath::AddOnScene()
-{
-    addItem(this);
-}
+void VisPath::AddOnScene() { addItem(this); }
 
 //---------------------------------------------------------------------------------------------------------------------
-VSimplePoint *VisPath::GetPoint(QVector<VSimplePoint *> &points, quint32 i, const QColor &color)
+VSimplePoint* VisPath::GetPoint(QVector<VSimplePoint*>& points, quint32 i, const QColor& color)
 {
-    if (not points.isEmpty() && static_cast<quint32>(points.size() - 1) >= i)
-    {
+    if (not points.isEmpty() && static_cast<quint32>(points.size() - 1) >= i) {
         return points.at(static_cast<int>(i));
-    }
-    else
-    {
-        VSimplePoint *point = new VSimplePoint(NULL_ID, color);
+    } else {
+        VSimplePoint* point = new VSimplePoint(NULL_ID, color);
         point->SetPointHighlight(true);
         point->setParentItem(this);
         point->SetVisualizationMode(true);

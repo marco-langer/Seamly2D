@@ -53,71 +53,74 @@
 #ifndef APPLICATION_ME_H
 #define APPLICATION_ME_H
 
-#include "../vpatterndb/vtranslatevars.h"
 #include "../vmisc/def.h"
-#include "../vmisc/vseamlymesettings.h"
 #include "../vmisc/vabstractapplication.h"
+#include "../vmisc/vseamlymesettings.h"
+#include "../vpatterndb/vtranslatevars.h"
 #include "dialogs/dialogmdatabase.h"
 
-class ApplicationME;// use in define
+class ApplicationME;   // use in define
 class TMainWindow;
 class QLocalServer;
 
 #if defined(qApp)
-#undef qApp
+#    undef qApp
 #endif
 #define qApp (static_cast<ApplicationME*>(VAbstractApplication::instance()))
 
-enum class SocketConnection : bool {Client = false, Server = true};
+enum class SocketConnection : bool
+{
+    Client = false,
+    Server = true
+};
 
 class ApplicationME : public VAbstractApplication
 {
     Q_OBJECT
 
 public:
-                                        ApplicationME(int &argc, char **argv);
-    virtual                            ~ApplicationME() Q_DECL_OVERRIDE;
+    ApplicationME(int& argc, char** argv);
+    virtual ~ApplicationME() Q_DECL_OVERRIDE;
 
-    virtual bool                        notify(QObject * receiver, QEvent * event) Q_DECL_OVERRIDE;
+    virtual bool notify(QObject* receiver, QEvent* event) Q_DECL_OVERRIDE;
 
-    bool                                isTestMode() const;
-    virtual bool                        isAppInGUIMode() const Q_DECL_OVERRIDE;
-    TMainWindow                        *mainWindow();
-    QList<TMainWindow*>                 mainWindows();
-    TMainWindow                        *newMainWindow();
+    bool isTestMode() const;
+    virtual bool isAppInGUIMode() const Q_DECL_OVERRIDE;
+    TMainWindow* mainWindow();
+    QList<TMainWindow*> mainWindows();
+    TMainWindow* newMainWindow();
 
-    void                                initOptions();
+    void initOptions();
 
-    virtual const VTranslateVars       *translateVariables() Q_DECL_OVERRIDE;
+    virtual const VTranslateVars* translateVariables() Q_DECL_OVERRIDE;
 
-    virtual void                        openSettings() Q_DECL_OVERRIDE;
-    VSeamlyMeSettings                  *seamlyMeSettings();
+    virtual void openSettings() Q_DECL_OVERRIDE;
+    VSeamlyMeSettings* seamlyMeSettings();
 
-    void                                showDataBase();
-    void                                retranslateGroups();
-    void                                retranslateTables();
-    void                                parseCommandLine(const SocketConnection &connection,
-                                                         const QStringList &arguments);
+    void showDataBase();
+    void retranslateGroups();
+    void retranslateTables();
+    void parseCommandLine(const SocketConnection& connection, const QStringList& arguments);
 
 public slots:
-    void                                processCommandLine();
+    void processCommandLine();
 
 protected:
-    virtual void                        initTranslateVariables() Q_DECL_OVERRIDE;
-    virtual bool                        event(QEvent *e) Q_DECL_OVERRIDE;
+    virtual void initTranslateVariables() Q_DECL_OVERRIDE;
+    virtual bool event(QEvent* e) Q_DECL_OVERRIDE;
 
 private slots:
-    void                                newLocalSocketConnection();
+    void newLocalSocketConnection();
 
 private:
     Q_DISABLE_COPY(ApplicationME)
-    QList<QPointer<TMainWindow>>        m_mainWindows;
-    QLocalServer                       *m_localServer;
-    VTranslateVars                     *m_trVars;
+    QList<QPointer<TMainWindow>> m_mainWindows;
+    QLocalServer* m_localServer;
+    VTranslateVars* m_trVars;
     QPointer<MeasurementDatabaseDialog> m_dataBase;
-    bool                                m_testMode;
+    bool m_testMode;
 
-    void                                clean();
+    void clean();
 };
 
-#endif // APPLICATION_ME_H
+#endif   // APPLICATION_ME_H

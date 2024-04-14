@@ -57,11 +57,11 @@
 #ifndef VFORMULAPROPERTYEDITOR_H
 #define VFORMULAPROPERTYEDITOR_H
 
-#include <QWidget>
-#include <QToolButton>
-#include <QLineEdit>
 #include <QLabel>
+#include <QLineEdit>
 #include <QSpacerItem>
+#include <QToolButton>
+#include <QWidget>
 
 #include "../vpatterndb/vformula.h"
 
@@ -71,37 +71,37 @@ class VFormulaPropertyEditor : public QWidget
 
 public:
     //! Constructor taking a widget as parent
-    explicit      VFormulaPropertyEditor(QWidget *parent);
+    explicit VFormulaPropertyEditor(QWidget* parent);
 
     //! Destructor
-    virtual      ~VFormulaPropertyEditor() Q_DECL_EQ_DEFAULT;
+    virtual ~VFormulaPropertyEditor() Q_DECL_EQ_DEFAULT;
 
     //! Returns the formula currently set
-    VFormula      GetFormula() const;
+    VFormula GetFormula() const;
 
     //! Needed for proper event handling
-    virtual bool  eventFilter(QObject *obj, QEvent *ev) Q_DECL_OVERRIDE;
+    virtual bool eventFilter(QObject* obj, QEvent* ev) Q_DECL_OVERRIDE;
 
 signals:
     //! This is emitted, when the user changes the color
-    void          dataChangedByUser(const VFormula &GetFormula, VFormulaPropertyEditor* editor);
+    void dataChangedByUser(const VFormula& GetFormula, VFormulaPropertyEditor* editor);
 
-    void          dataChanged();
+    void dataChanged();
 
 public slots:
     //! Sets the color of the widget
-    void          SetFormula(const VFormula &formula);
+    void SetFormula(const VFormula& formula);
 
 private slots:
-    void          onToolButtonClicked();
+    void onToolButtonClicked();
 
 private:
     Q_DISABLE_COPY(VFormulaPropertyEditor)
-    VFormula      formula;
-    QToolButton  *toolButton;
-    QLabel       *textLabel;
-    QSpacerItem  *spacer;
+    VFormula formula;
+    QToolButton* toolButton;
+    QLabel* textLabel;
+    QSpacerItem* spacer;
 };
 
 
-#endif // VFORMULAPROPERTYEDITOR_H
+#endif   // VFORMULAPROPERTYEDITOR_H

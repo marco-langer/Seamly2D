@@ -51,43 +51,51 @@
 
 #include "vcurvevariable.h"
 
-#include "../vmisc/def.h"
 #include "../ifc/ifcdef.h"
-#include "vinternalvariable.h"
+#include "../vmisc/def.h"
 #include "vcurvevariable_p.h"
+#include "vinternalvariable.h"
 
 #ifdef Q_COMPILER_RVALUE_REFS
-VCurveVariable &VCurveVariable::operator=(VCurveVariable &&var) Q_DECL_NOTHROW
-{ Swap(var); return *this; }
+VCurveVariable& VCurveVariable::operator=(VCurveVariable&& var) Q_DECL_NOTHROW
+{
+    Swap(var);
+    return *this;
+}
 #endif
 
-void VCurveVariable::Swap(VCurveVariable &var) Q_DECL_NOTHROW
-{ VInternalVariable::Swap(var); std::swap(d, var.d); }
+void VCurveVariable::Swap(VCurveVariable& var) Q_DECL_NOTHROW
+{
+    VInternalVariable::Swap(var);
+    std::swap(d, var.d);
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VCurveVariable::VCurveVariable()
-    :VInternalVariable(), d(new VCurveVariableData)
+    : VInternalVariable()
+    , d(new VCurveVariableData)
 {
     SetType(VarType::Unknown);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveVariable::VCurveVariable(const quint32 &id, const quint32 &parentId)
-    :VInternalVariable(), d(new VCurveVariableData(id, parentId))
+VCurveVariable::VCurveVariable(const quint32& id, const quint32& parentId)
+    : VInternalVariable()
+    , d(new VCurveVariableData(id, parentId))
 {
     SetType(VarType::Unknown);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveVariable::VCurveVariable(const VCurveVariable &var)
-    :VInternalVariable(var), d(var.d)
+VCurveVariable::VCurveVariable(const VCurveVariable& var)
+    : VInternalVariable(var)
+    , d(var.d)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveVariable &VCurveVariable::operator=(const VCurveVariable &var)
+VCurveVariable& VCurveVariable::operator=(const VCurveVariable& var)
 {
-    if ( &var == this )
-    {
+    if (&var == this) {
         return *this;
     }
     VInternalVariable::operator=(var);
@@ -96,49 +104,33 @@ VCurveVariable &VCurveVariable::operator=(const VCurveVariable &var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveVariable::~VCurveVariable()
-{}
+VCurveVariable::~VCurveVariable() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCurveVariable::Filter(quint32 id)
 {
-    if (id == NULL_ID)
-    {
+    if (id == NULL_ID) {
         return false;
     }
 
-    if (d->parentId != NULL_ID)//Do not check if value zero
-    {// Not all curves have parents. Only those who was created after cutting the parent curve.
+    if (d->parentId != NULL_ID)   // Do not check if value zero
+    {   // Not all curves have parents. Only those who was created after cutting the parent curve.
         return d->id == id || d->parentId == id;
-    }
-    else
-    {
+    } else {
         return d->id == id;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-quint32 VCurveVariable::GetId() const
-{
-    return d->id;
-}
+quint32 VCurveVariable::GetId() const { return d->id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCurveVariable::SetId(const quint32 &id)
-{
-    d->id = id;
-}
+void VCurveVariable::SetId(const quint32& id) { d->id = id; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-quint32 VCurveVariable::GetParentId() const
-{
-    return d->parentId;
-}
+quint32 VCurveVariable::GetParentId() const { return d->parentId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VCurveVariable::SetParentId(const quint32 &value)
-{
-    d->parentId = value;
-}
+void VCurveVariable::SetParentId(const quint32& value) { d->parentId = value; }

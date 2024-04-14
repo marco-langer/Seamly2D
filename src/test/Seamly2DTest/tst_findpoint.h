@@ -58,7 +58,7 @@ class TST_FindPoint : public QObject
 {
     Q_OBJECT
 public:
-    explicit TST_FindPoint(QObject *parent = nullptr);
+    explicit TST_FindPoint(QObject* parent = nullptr);
 
 private slots:
     void TestPointOfIntersectionCurves_data();
@@ -77,4 +77,4 @@ private slots:
     void TestShoulderPoint();
 };
 
-#endif // TST_FINDPOINT_H
+#endif   // TST_FINDPOINT_H

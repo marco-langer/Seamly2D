@@ -53,17 +53,27 @@
 
 #include <QDomElement>
 
-#include "../ifc/xml/vabstractpattern.h"
 #include "../ifc/ifcdef.h"
+#include "../ifc/xml/vabstractpattern.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/def.h"
 #include "vundocommand.h"
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveSPoint::MoveSPoint(VAbstractPattern *doc, const double &x, const double &y, const quint32 &id,
-                       QGraphicsScene *scene, QUndoCommand *parent)
-    : VUndoCommand(QDomElement(), doc, parent), oldX(0.0), oldY(0.0), newX(x), newY(y), scene(scene)
+MoveSPoint::MoveSPoint(
+    VAbstractPattern* doc,
+    const double& x,
+    const double& y,
+    const quint32& id,
+    QGraphicsScene* scene,
+    QUndoCommand* parent)
+    : VUndoCommand(QDomElement(), doc, parent)
+    , oldX(0.0)
+    , oldY(0.0)
+    , newX(x)
+    , newY(y)
+    , scene(scene)
 {
     setText(tr("move single point"));
     nodeId = id;
@@ -74,24 +84,20 @@ MoveSPoint::MoveSPoint(VAbstractPattern *doc, const double &x, const double &y, 
 
     SCASSERT(scene != nullptr)
     QDomElement domElement = doc->elementById(id, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         oldX = qApp->toPixel(doc->GetParametrDouble(domElement, AttrX, "0.0"));
         oldY = qApp->toPixel(doc->GetParametrDouble(domElement, AttrY, "0.0"));
 
         qCDebug(vUndo, "SPoint oldX %f", oldX);
         qCDebug(vUndo, "SPoint oldY %f", oldY);
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find spoint with id = %u.", nodeId);
         return;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MoveSPoint::~MoveSPoint()
-{}
+MoveSPoint::~MoveSPoint() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 void MoveSPoint::undo()
@@ -110,15 +116,14 @@ void MoveSPoint::redo()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool MoveSPoint::mergeWith(const QUndoCommand *command)
+bool MoveSPoint::mergeWith(const QUndoCommand* command)
 {
-    const MoveSPoint *moveCommand = static_cast<const MoveSPoint *>(command);
+    const MoveSPoint* moveCommand = static_cast<const MoveSPoint*>(command);
     SCASSERT(moveCommand != nullptr)
     const quint32 id = moveCommand->getSPointId();
 
     qCDebug(vUndo, "Mergin.");
-    if (id != nodeId)
-    {
+    if (id != nodeId) {
         qCDebug(vUndo, "Merging canceled.");
         return false;
     }
@@ -132,10 +137,7 @@ bool MoveSPoint::mergeWith(const QUndoCommand *command)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int MoveSPoint::id() const
-{
-    return static_cast<int>(UndoCommand::MoveSPoint);
-}
+int MoveSPoint::id() const { return static_cast<int>(UndoCommand::MoveSPoint); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MoveSPoint::Do(double x, double y)
@@ -144,15 +146,12 @@ void MoveSPoint::Do(double x, double y)
     qCDebug(vUndo, "Move to y %f", y);
 
     QDomElement domElement = doc->elementById(nodeId, VAbstractPattern::TagPoint);
-    if (domElement.isElement())
-    {
+    if (domElement.isElement()) {
         doc->SetAttribute(domElement, AttrX, QString().setNum(qApp->fromPixel(x)));
         doc->SetAttribute(domElement, AttrY, QString().setNum(qApp->fromPixel(y)));
 
         emit NeedLiteParsing(Document::LiteBlockParse);
-    }
-    else
-    {
+    } else {
         qCDebug(vUndo, "Can't find spoint with id = %u.", nodeId);
         return;
     }

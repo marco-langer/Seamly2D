@@ -31,102 +31,109 @@
 #include <qcompilerdetection.h>
 
 #include "../vmisc/def.h"
-#include "../vwidgets/resize_handle.h"
 #include "../vmisc/vabstractapplication.h"
+#include "../vwidgets/resize_handle.h"
 
+#include <QGraphicsItem>
 #include <QMetaObject>
 #include <QPointF>
 #include <QString>
 #include <QVariant>
 #include <QVector>
 #include <QtCore/qglobal.h>
-#include <QGraphicsItem>
 
 class ResizeHandlesItem;
 
 /**
  * @brief The ImageItem class pointer label.
  */
-class ImageItem : public QObject, public QGraphicsItem
+class ImageItem
+    : public QObject
+    , public QGraphicsItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
 
 public:
-    explicit         ImageItem(VAbstractPattern *doc, DraftImage image, QGraphicsItem *parent = nullptr);
-    virtual         ~ImageItem() = default;
+    explicit ImageItem(VAbstractPattern* doc, DraftImage image, QGraphicsItem* parent = nullptr);
+    virtual ~ImageItem() = default;
 
-    virtual int      type() const override {return Type;}
-    enum             {Type = UserType + static_cast<int>(Tool::BackgroundImage)};
+    virtual int type() const override { return Type; }
+    enum
+    {
+        Type = UserType + static_cast<int>(Tool::BackgroundImage)
+    };
 
-    virtual QRectF   boundingRect() const override;
+    virtual QRectF boundingRect() const override;
 
-    virtual void     paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                           QWidget *widget = nullptr) override;
+    virtual void paint(
+        QPainter* painter,
+        const QStyleOptionGraphicsItem* option,
+        QWidget* widget = nullptr) override;
 
-    static constexpr qreal      maxImageZvalue = -100;
+    static constexpr qreal maxImageZvalue = -100;
 
-    void             moveToBottom();
-    void             moveToTop();
-    void             moveUp();
-    void             moveDown();
+    void moveToBottom();
+    void moveToTop();
+    void moveUp();
+    void moveDown();
 
 
-    DraftImage       getImage();
-    void             setImage(DraftImage image);
-    void             updateImage();
-    void             updateImageAndHandles(DraftImage image);
+    DraftImage getImage();
+    void setImage(DraftImage image);
+    void updateImage();
+    void updateImageAndHandles(DraftImage image);
 
-    void             setLock(bool checked);
+    void setLock(bool checked);
 
-    void             enableSelection(bool enable);
-    void             enableHovering(bool enable);
+    void enableSelection(bool enable);
+    void enableHovering(bool enable);
 
-    void             deleteImageItem();
+    void deleteImageItem();
 
 signals:
-    void             imageUpdated(DraftImage image);
-    void             showContextMenu(QGraphicsSceneContextMenuEvent *event);
-    void             deleteImage(quint32 id);
-    void             imageSelected(quint32 id);
-    void             setStatusMessage(QString message);
+    void imageUpdated(DraftImage image);
+    void showContextMenu(QGraphicsSceneContextMenuEvent* event);
+    void deleteImage(quint32 id);
+    void imageSelected(quint32 id);
+    void setStatusMessage(QString message);
 
 protected:
-    virtual void     hoverEnterEvent (QGraphicsSceneHoverEvent *event) override;
-    virtual void     hoverMoveEvent (QGraphicsSceneHoverEvent *event) override;
-    virtual void     hoverLeaveEvent (QGraphicsSceneHoverEvent *event) override;
-    virtual void     contextMenuEvent (QGraphicsSceneContextMenuEvent *event) override;
-    virtual void     mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void     mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void     mouseReleaseEvent (QGraphicsSceneMouseEvent *event) override;
-    virtual void     keyReleaseEvent (QKeyEvent *event) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void keyReleaseEvent(QKeyEvent* event) override;
 
 private:
-    VAbstractPattern  *m_doc;
-    QPointF            m_offset;
-    QRectF             m_boundingRect;
-    QRectF             m_handleRect;
-    QRectF             m_actualRect;
-    ResizeHandlesItem *m_resizeHandles;
-    Position           m_resizePosition;
-    QLineF             m_rotateLine;
-    QPolygonF          m_angleHandle;
-    qreal              m_angle;
-    bool               m_mousePressed;
-    bool               m_isHovered;
-    SelectionType      m_selectionType;
-    bool               m_transformationMode;
-    DraftImage         m_image;
-    qreal              m_pixmapWidth;
-    qreal              m_pixmapHeight;
-    bool               m_selectable;
-    qreal              m_minDimension;
-    qreal              m_maxDimension;
+    VAbstractPattern* m_doc;
+    QPointF m_offset;
+    QRectF m_boundingRect;
+    QRectF m_handleRect;
+    QRectF m_actualRect;
+    ResizeHandlesItem* m_resizeHandles;
+    Position m_resizePosition;
+    QLineF m_rotateLine;
+    QPolygonF m_angleHandle;
+    qreal m_angle;
+    bool m_mousePressed;
+    bool m_isHovered;
+    SelectionType m_selectionType;
+    bool m_transformationMode;
+    DraftImage m_image;
+    qreal m_pixmapWidth;
+    qreal m_pixmapHeight;
+    bool m_selectable;
+    qreal m_minDimension;
+    qreal m_maxDimension;
 
-    void               initializeItem();
-    void               updateFromHandles(QRectF rect);
-    void               setPixmap(const QPixmap &pixmap);
-    void               showImageStatusMessage();
+    void initializeItem();
+    void updateFromHandles(QRectF rect);
+    void setPixmap(const QPixmap& pixmap);
+    void showImageStatusMessage();
 };
 
-#endif // IMAGE_ITEM_H
+#endif   // IMAGE_ITEM_H
