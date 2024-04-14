@@ -66,13 +66,11 @@ class VExceptionConversionError : public VException
 {
 public:
     VExceptionConversionError(const QString& error, const QString& str);
-    VExceptionConversionError(const VExceptionConversionError& error);
-    VExceptionConversionError& operator=(const VExceptionConversionError& error);
-    virtual ~VExceptionConversionError() = default;
+
     virtual QString ErrorMessage() const override;
     QString String() const;
 
-protected:
+private:
     /** @brief str string, where happend error */
     QString str;
 };

@@ -64,32 +64,9 @@
  * @param error string with error
  */
 VException::VException(const QString& error)
-    : QException()
-    , error(error)
-    , moreInfo(QString())
+    : error{ error }
 {
     Q_ASSERT_X(not error.isEmpty(), Q_FUNC_INFO, "Error message is empty");
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VException copy constructor
- * @param e exception
- */
-VException::VException(const VException& error)
-    : error(error.WhatUtf8())
-    , moreInfo(error.MoreInformation())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VException& VException::operator=(const VException& error)
-{
-    if (&error == this) {
-        return *this;
-    }
-    this->error = error.WhatUtf8();
-    this->moreInfo = error.MoreInformation();
-    return *this;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -149,23 +126,8 @@ const char* VException::what() const noexcept { return error.toUtf8().constData(
 
 //-----------------------------------------VExceptionToolWasDeleted----------------------------------------------------
 VExceptionToolWasDeleted::VExceptionToolWasDeleted(const QString& error)
-    : VException(error)
+    : VException{ error }
 {}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionToolWasDeleted::VExceptionToolWasDeleted(const VExceptionToolWasDeleted& error)
-    : VException(error)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionToolWasDeleted& VExceptionToolWasDeleted::operator=(const VExceptionToolWasDeleted& error)
-{
-    if (&error == this) {
-        return *this;
-    }
-    VException::operator=(error);
-    return *this;
-}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

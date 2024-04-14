@@ -67,16 +67,14 @@ class VExceptionBadId : public VException
 public:
     VExceptionBadId(const QString& error, const quint32& id);
     VExceptionBadId(const QString& error, const QString& key);
-    VExceptionBadId(const VExceptionBadId& error);
-    VExceptionBadId& operator=(const VExceptionBadId& error);
-    virtual ~VExceptionBadId() = default;
+
     virtual QString ErrorMessage() const override;
     quint32 BadId() const;
     QString BadKey() const;
 
-protected:
+private:
     /** @brief id id */
-    quint32 id;
+    quint32 id{ null_id };
 
     /** @brief key key */
     QString key;

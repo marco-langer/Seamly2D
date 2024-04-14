@@ -64,41 +64,13 @@
  * @param domElement som element
  */
 VExceptionWrongId::VExceptionWrongId(const QString& what, const QDomElement& domElement)
-    : VException(what)
-    , tagText(QString())
-    , tagName(QString())
-    , lineNumber(-1)
+    : VException{ what }
 {
     Q_ASSERT_X(not domElement.isNull(), Q_FUNC_INFO, "domElement is null");
     QTextStream stream(&tagText);
     domElement.save(stream, 4);
     tagName = domElement.tagName();
     lineNumber = domElement.lineNumber();
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VExceptionWrongId copy constructor
- * @param e exception
- */
-VExceptionWrongId::VExceptionWrongId(const VExceptionWrongId& error)
-    : VException(error)
-    , tagText(error.TagText())
-    , tagName(error.TagName())
-    , lineNumber(error.LineNumber())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionWrongId& VExceptionWrongId::operator=(const VExceptionWrongId& error)
-{
-    if (&error == this) {
-        return *this;
-    }
-    VException::operator=(error);
-    tagText = error.TagText();
-    tagName = error.TagName();
-    lineNumber = error.LineNumber();
-    return *this;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

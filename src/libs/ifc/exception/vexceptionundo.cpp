@@ -56,10 +56,5 @@
 
 //---------------------------------------------------------------------------------------------------------------------
 VExceptionUndo::VExceptionUndo(const QString& what)
-    : VException(what)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionUndo::VExceptionUndo(const VExceptionUndo& error)
-    : VException(error)
+    : VException{ what }
 {}

@@ -69,16 +69,14 @@ class VExceptionWrongId : public VException
 {
 public:
     VExceptionWrongId(const QString& what, const QDomElement& domElement);
-    VExceptionWrongId(const VExceptionWrongId& error);
-    VExceptionWrongId& operator=(const VExceptionWrongId& error);
-    virtual ~VExceptionWrongId() = default;
+
     virtual QString ErrorMessage() const override;
     virtual QString DetailedInformation() const override;
     QString TagText() const;
     QString TagName() const;
     qint32 LineNumber() const;
 
-protected:
+private:
     /** @brief tagText tag text */
     QString tagText;
 
@@ -86,7 +84,7 @@ protected:
     QString tagName;
 
     /** @brief lineNumber line number */
-    qint32 lineNumber;
+    qint32 lineNumber{ -1 };
 };
 
 //---------------------------------------------------------------------------------------------------------------------

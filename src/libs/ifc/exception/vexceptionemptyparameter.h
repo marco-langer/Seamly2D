@@ -69,9 +69,7 @@ class VExceptionEmptyParameter : public VException
 public:
     VExceptionEmptyParameter(
         const QString& what, const QString& name, const QDomElement& domElement);
-    VExceptionEmptyParameter(const VExceptionEmptyParameter& error);
-    VExceptionEmptyParameter& operator=(const VExceptionEmptyParameter& error);
-    virtual ~VExceptionEmptyParameter() = default;
+
     virtual QString ErrorMessage() const override;
     virtual QString DetailedInformation() const override;
     QString Name() const;
@@ -79,7 +77,7 @@ public:
     QString TagName() const;
     qint32 LineNumber() const;
 
-protected:
+private:
     /** @brief name name attribute */
     QString name;
 
@@ -90,7 +88,7 @@ protected:
     QString tagName;
 
     /** @brief lineNumber line number */
-    qint32 lineNumber;
+    qint32 lineNumber{ -1 };
 };
 
 //---------------------------------------------------------------------------------------------------------------------

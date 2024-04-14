@@ -63,41 +63,13 @@
  * @param domElement dom element
  */
 VExceptionObjectError::VExceptionObjectError(const QString& what, const QDomElement& domElement)
-    : VException(what)
-    , tagText(QString())
-    , tagName(QString())
-    , lineNumber(-1)
+    : VException{ what }
 {
     Q_ASSERT_X(not domElement.isNull(), Q_FUNC_INFO, "domElement is null");
     QTextStream stream(&tagText);
     domElement.save(stream, 4);
     tagName = domElement.tagName();
     lineNumber = domElement.lineNumber();
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VExceptionObjectError copy constructor
- * @param e exception
- */
-VExceptionObjectError::VExceptionObjectError(const VExceptionObjectError& error)
-    : VException(error)
-    , tagText(error.TagText())
-    , tagName(error.TagName())
-    , lineNumber(error.LineNumber())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionObjectError& VExceptionObjectError::operator=(const VExceptionObjectError& error)
-{
-    if (&error == this) {
-        return *this;
-    }
-    VException::operator=(error);
-    tagText = error.TagText();
-    tagName = error.TagName();
-    lineNumber = error.LineNumber();
-    return *this;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

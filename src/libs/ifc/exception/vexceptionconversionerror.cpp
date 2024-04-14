@@ -63,32 +63,10 @@
  * @param str string, where happend error
  */
 VExceptionConversionError::VExceptionConversionError(const QString& error, const QString& str)
-    : VException(error)
-    , str(str)
+    : VException{ error }
+    , str{ str }
 {
     Q_ASSERT_X(not str.isEmpty(), Q_FUNC_INFO, "Error converting string is empty");
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VExceptionConversionError copy constructor
- * @param e exception
- */
-VExceptionConversionError::VExceptionConversionError(const VExceptionConversionError& error)
-    : VException(error)
-    , str(error.String())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionConversionError&
-VExceptionConversionError::operator=(const VExceptionConversionError& error)
-{
-    if (&error == this) {
-        return *this;
-    }
-    VException::operator=(error);
-    str = error.String();
-    return *this;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

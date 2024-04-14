@@ -66,11 +66,8 @@
  */
 VExceptionEmptyParameter::VExceptionEmptyParameter(
     const QString& what, const QString& name, const QDomElement& domElement)
-    : VException(what)
-    , name(name)
-    , tagText(QString())
-    , tagName(QString())
-    , lineNumber(-1)
+    : VException{ what }
+    , name{ name }
 {
     Q_ASSERT_X(not domElement.isNull(), Q_FUNC_INFO, "domElement is null");
     Q_ASSERT_X(not name.isEmpty(), Q_FUNC_INFO, "Parameter name is empty");
@@ -78,33 +75,6 @@ VExceptionEmptyParameter::VExceptionEmptyParameter(
     domElement.save(stream, 4);
     tagName = domElement.tagName();
     lineNumber = domElement.lineNumber();
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VExceptionEmptyParameter copy constructor
- * @param e exception
- */
-VExceptionEmptyParameter::VExceptionEmptyParameter(const VExceptionEmptyParameter& error)
-    : VException(error)
-    , name(error.Name())
-    , tagText(error.TagText())
-    , tagName(error.TagName())
-    , lineNumber(error.LineNumber())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionEmptyParameter& VExceptionEmptyParameter::operator=(const VExceptionEmptyParameter& error)
-{
-    if (&error == this) {
-        return *this;
-    }
-    VException::operator=(error);
-    name = error.Name();
-    tagText = error.TagText();
-    tagName = error.TagName();
-    lineNumber = error.LineNumber();
-    return *this;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -60,9 +60,8 @@
  * @param id id
  */
 VExceptionBadId::VExceptionBadId(const QString& error, const quint32& id)
-    : VException(error)
-    , id(id)
-    , key(QString())
+    : VException{ error }
+    , id{ id }
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -72,33 +71,9 @@ VExceptionBadId::VExceptionBadId(const QString& error, const quint32& id)
  * @param key string key
  */
 VExceptionBadId::VExceptionBadId(const QString& error, const QString& key)
-    : VException(error)
-    , id(NULL_ID)
-    , key(key)
+    : VException{ error }
+    , key{ key }
 {}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VExceptionBadId copy constructor
- * @param e exception
- */
-VExceptionBadId::VExceptionBadId(const VExceptionBadId& error)
-    : VException(error)
-    , id(error.BadId())
-    , key(error.BadKey())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VExceptionBadId& VExceptionBadId::operator=(const VExceptionBadId& error)
-{
-    if (&error == this) {
-        return *this;
-    }
-    VException::operator=(error);
-    this->id = error.BadId();
-    this->key = error.BadKey();
-    return *this;
-}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

@@ -68,16 +68,14 @@ class VExceptionObjectError : public VException
 {
 public:
     VExceptionObjectError(const QString& what, const QDomElement& domElement);
-    VExceptionObjectError(const VExceptionObjectError& error);
-    VExceptionObjectError& operator=(const VExceptionObjectError& error);
-    virtual ~VExceptionObjectError() = default;
+
     virtual QString ErrorMessage() const override;
     virtual QString DetailedInformation() const override;
     QString TagText() const;
     QString TagName() const;
     qint32 LineNumber() const;
 
-protected:
+private:
     /** @brief tagText tag text */
     QString tagText;
 
@@ -85,7 +83,7 @@ protected:
     QString tagName;
 
     /** @brief lineNumber line number */
-    qint32 lineNumber;
+    qint32 lineNumber{ -1 };
 };
 
 //---------------------------------------------------------------------------------------------------------------------
