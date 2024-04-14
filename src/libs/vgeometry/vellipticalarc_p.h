@@ -13,7 +13,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VEllipticalArcData : public QSharedData
 {
 public:
-    VEllipticalArcData();
+    VEllipticalArcData() = default;
     VEllipticalArcData(
         qreal radius1,
         qreal radius2,
@@ -27,15 +27,15 @@ public:
     virtual ~VEllipticalArcData();
 
     /** @brief radius1 elliptical arc major radius. */
-    qreal radius1;
+    qreal radius1{ 0.0 };
     /** @brief radius2 elliptical arc minor radius. */
-    qreal radius2;
+    qreal radius2{ 0.0 };
     /** @brief formulaRadius1 formula for elliptical arc major radius. */
     QString formulaRadius1;
     /** @brief formulaRadius2 formula for elliptical arc minor radius. */
     QString formulaRadius2;
     /** @brief rotationAngle in degree. */
-    qreal rotationAngle;
+    qreal rotationAngle{ 0.0 };
     /** @brief formulaRotationAngle formula for rotationAngle. */
     QString formulaRotationAngle;
     /** @brief m_transform for elliptical arc */
@@ -44,17 +44,6 @@ public:
 private:
     VEllipticalArcData& operator=(const VEllipticalArcData&) = delete;
 };
-
-//---------------------------------------------------------------------------------------------------------------------
-VEllipticalArcData::VEllipticalArcData()
-    : radius1(0)
-    , radius2(0)
-    , formulaRadius1()
-    , formulaRadius2()
-    , rotationAngle(0)
-    , formulaRotationAngle()
-    , m_transform()
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 VEllipticalArcData::VEllipticalArcData(

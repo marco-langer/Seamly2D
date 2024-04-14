@@ -64,10 +64,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VCubicBezierPathData : public QSharedData
 {
 public:
-    VCubicBezierPathData()
-        : path()
-    {}
-
+    VCubicBezierPathData() = default;
     VCubicBezierPathData(const VCubicBezierPathData& splPath)
         : QSharedData(splPath)
         , path(splPath.path)

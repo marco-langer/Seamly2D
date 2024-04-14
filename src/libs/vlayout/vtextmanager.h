@@ -50,12 +50,10 @@ class VAbstractPattern;
 struct TextLine
 {
     QString m_text;
-    int m_iFontSize;   // 0 means default
-    bool bold;
-    bool italic;
-    Qt::Alignment m_eAlign;
-
-    TextLine();
+    int m_iFontSize{ MIN_FONT_SIZE };   // 0 means default
+    bool bold{ false };
+    bool italic{ false };
+    Qt::Alignment m_eAlign{ Qt::AlignCenter };
 };
 
 /**
@@ -66,7 +64,7 @@ class VTextManager
 {
     Q_DECLARE_TR_FUNCTIONS(VTextManager)
 public:
-    VTextManager();
+    VTextManager() = default;
     virtual ~VTextManager() = default;
 
     VTextManager(const VTextManager& text);

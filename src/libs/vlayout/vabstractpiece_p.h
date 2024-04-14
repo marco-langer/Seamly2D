@@ -66,20 +66,7 @@ class VAbstractPieceData : public QSharedData
 {
     Q_DECLARE_TR_FUNCTIONS(VAbstractPieceData)
 public:
-    VAbstractPieceData()
-        : m_name(tr("Piece"))
-        , m_color("white")
-        , m_fill()
-        , m_pieceLock(false)
-        , m_forbidFlipping(false)
-        , m_seamAllowance(false)
-        , m_seamAllowanceBuiltIn(false)
-        , m_hideMainPath(false)
-        , m_width(0)
-        , m_mx(0)
-        , m_my(0)
-    {}
-
+    VAbstractPieceData() = default;
     VAbstractPieceData(const VAbstractPieceData& piece)
         : QSharedData(piece)
         , m_name(piece.m_name)
@@ -97,18 +84,18 @@ public:
 
     ~VAbstractPieceData() = default;
 
-    QString m_name;
-    QString m_color;
+    QString m_name{ tr("Piece") };
+    QString m_color{ "white" };
     QString m_fill;
-    bool m_pieceLock;
+    bool m_pieceLock{ false };
     /** @brief forbidFlipping forbid piece be mirrored in a layout. */
-    bool m_forbidFlipping;
-    bool m_seamAllowance;
-    bool m_seamAllowanceBuiltIn;
-    bool m_hideMainPath;
-    qreal m_width;
-    qreal m_mx;
-    qreal m_my;
+    bool m_forbidFlipping{ false };
+    bool m_seamAllowance{ false };
+    bool m_seamAllowanceBuiltIn{ false };
+    bool m_hideMainPath{ false };
+    qreal m_width{ 0.0 };
+    qreal m_mx{ 0.0 };
+    qreal m_my{ 0.0 };
 
 private:
     VAbstractPieceData& operator=(const VAbstractPieceData&) = delete;

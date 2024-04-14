@@ -142,22 +142,22 @@ private:
     Q_DISABLE_COPY(VLayoutGenerator)
     QVector<VLayoutPaper> papers;
     VBank* bank;
-    qreal paperHeight;
-    qreal paperWidth;
+    qreal paperHeight{ 0.0 };
+    qreal paperWidth{ 0.0 };
     QMarginsF margins;
-    bool usePrinterFields;
+    bool usePrinterFields{ true };
     std::atomic_bool stopGeneration;
-    LayoutErrors state;
-    quint32 shift;
-    bool rotate;
-    int rotationIncrease;
-    bool autoCrop;
-    bool saveLength;
-    bool unitePages;
-    bool stripOptimizationEnabled;
-    quint8 multiplier;
-    bool stripOptimization;
-    bool textAsPaths;
+    LayoutErrors state{ LayoutErrors::NoError };
+    quint32 shift{ 0 };
+    bool rotate{ true };
+    int rotationIncrease{ 180 };
+    bool autoCrop{ false };
+    bool saveLength{ false };
+    bool unitePages{ false };
+    bool stripOptimizationEnabled{ false };
+    quint8 multiplier{ 1 };
+    bool stripOptimization{ false };
+    bool textAsPaths{ false };
 
     int PageHeight() const;
     int PageWidth() const;

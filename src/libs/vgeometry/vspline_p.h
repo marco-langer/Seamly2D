@@ -66,7 +66,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VSplineData : public QSharedData
 {
 public:
-    VSplineData();
+    VSplineData() = default;
     VSplineData(const VSplineData& spline);
     VSplineData(
         VPointF p1, VPointF p4, qreal angle1, qreal angle2, qreal kAsm1, qreal kAsm2, qreal kCurve);
@@ -93,51 +93,36 @@ public:
     VPointF p4;
 
     /** @brief angle1 first angle control line. */
-    qreal angle1;
+    qreal angle1{ 0.0 };
 
     /** @brief angle1F the first control point angle formula*/
-    QString angle1F;
+    QString angle1F{ "0" };
 
     /** @brief angle2 second angle control line. */
-    qreal angle2;
+    qreal angle2{ 0.0 };
 
     /** @brief angle2F the second control point angle formula*/
-    QString angle2F;
+    QString angle2F{ "0" };
 
     /** @brief c1Length the length from the first spline point to the first control point. */
-    qreal c1Length;
+    qreal c1Length{ 0.0 };
 
     /** @brief c1LengthF the formula from the first spline point to the first control point. */
-    QString c1LengthF;
+    QString c1LengthF{ "0" };
 
     /** @brief c2Length the length from the fourth spline point to the second control point. */
-    qreal c2Length;
+    qreal c2Length{ 0.0 };
 
     /** @brief c2LengthF the formula length from the fourth spline point to the second control
      * point. */
-    QString c2LengthF;
+    QString c2LengthF{ "0" };
 
     /** @brief kCurve coefficient of curvature spline. */
-    qreal kCurve;
+    qreal kCurve{ 1.0 };
 
 private:
     VSplineData& operator=(const VSplineData&) = delete;
 };
-
-//---------------------------------------------------------------------------------------------------------------------
-VSplineData::VSplineData()
-    : p1()
-    , p4()
-    , angle1(0)
-    , angle1F("0")
-    , angle2(0)
-    , angle2F("0")
-    , c1Length(0)
-    , c1LengthF("0")
-    , c2Length(0)
-    , c2LengthF("0")
-    , kCurve(1)
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 VSplineData::VSplineData(const VSplineData& spline)
@@ -161,13 +146,9 @@ VSplineData::VSplineData(
     : p1(p1)
     , p4(p4)
     , angle1(angle1)
-    , angle1F(QString().number(angle1))
+    , angle1F(QString::number(angle1))
     , angle2(angle2)
-    , angle2F(QString().number(angle2))
-    , c1Length(0)
-    , c1LengthF("0")
-    , c2Length(0)
-    , c2LengthF("0")
+    , angle2F(QString::number(angle2))
     , kCurve(kCurve)
 {
     const qreal L = GetL(static_cast<QPointF>(p1), static_cast<QPointF>(p4), kCurve);
@@ -187,15 +168,6 @@ VSplineData::VSplineData(
 VSplineData::VSplineData(VPointF p1, QPointF p2, QPointF p3, VPointF p4)
     : p1(p1)
     , p4(p4)
-    , angle1(0)
-    , angle1F("0")
-    , angle2(0)
-    , angle2F("0")
-    , c1Length(0)
-    , c1LengthF("0")
-    , c2Length(0)
-    , c2LengthF("0")
-    , kCurve(1)
 {
     QLineF p1p2(static_cast<QPointF>(p1), static_cast<QPointF>(p2));
 
@@ -236,7 +208,6 @@ VSplineData::VSplineData(
     , c1LengthF(c1LengthF)
     , c2Length(c2Length)
     , c2LengthF(c2LengthF)
-    , kCurve(1)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

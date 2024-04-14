@@ -75,19 +75,6 @@ QT_WARNING_POP
 #endif
 
 //---------------------------------------------------------------------------------------------------------------------
-VBank::VBank()
-    : pieces(QVector<VLayoutPiece>())
-    , unsorted(QHash<int, qint64>())
-    , big(QHash<int, qint64>())
-    , middle(QHash<int, qint64>())
-    , small(QHash<int, qint64>())
-    , layoutWidth(0)
-    , caseType(Cases::CaseDesc)
-    , prepare(false)
-    , diagonal(0)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
 qreal VBank::GetLayoutWidth() const { return layoutWidth; }
 
 //---------------------------------------------------------------------------------------------------------------------

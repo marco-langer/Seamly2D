@@ -79,7 +79,7 @@ enum class Cases : char
 class VBank
 {
 public:
-    VBank();
+    VBank() = default;
 
     qreal GetLayoutWidth() const;
     void SetLayoutWidth(const qreal& value);
@@ -110,11 +110,11 @@ private:
     QHash<int, qint64> middle;
     QHash<int, qint64> small;
 
-    qreal layoutWidth;
+    qreal layoutWidth{ 0.0 };
 
-    Cases caseType;
-    bool prepare;
-    qreal diagonal;
+    Cases caseType{ Cases::CaseDesc };
+    bool prepare{ false };
+    qreal diagonal{ 0.0 };
 
     void PrepareGroup();
 

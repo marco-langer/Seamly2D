@@ -104,7 +104,6 @@
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
 #include <QFileDialog>
-#include <QFileSystemWatcher>
 #include <QFontComboBox>
 #include <QImageReader>
 #include <QInputDialog>
@@ -151,51 +150,6 @@ const QString strCtrl = QStringLiteral("Ctrl");             // String
 MainWindow::MainWindow(QWidget* parent)
     : MainWindowsNoGUI(parent)
     , ui(new Ui::MainWindow)
-    , watcher(new QFileSystemWatcher(this))
-    , currentTool(Tool::Arrow)
-    , lastUsedTool(Tool::Arrow)
-    , draftScene(nullptr)
-    , pieceScene(nullptr)
-    , mouseCoordinates(nullptr)
-    , infoToolButton(nullptr)
-    , helpLabel(nullptr)
-    , isInitialized(false)
-    , mChanges(false)
-    , mChangesAsked(true)
-    , patternReadOnly(false)
-    , dialogTable(nullptr)
-    , dialogTool()
-    , historyDialog(nullptr)
-    , fontComboBox(nullptr)
-    , fontSizeComboBox(nullptr)
-    , draftBlockComboBox(nullptr)
-    , draftBlockLabel(nullptr)
-    , mode(Draw::Calculation)
-    , currentBlockIndex(0)
-    , currentToolBoxIndex(0)
-    , isToolOptionsDockVisible(true)
-    , isGroupsDockVisible(true)
-    , isLayoutsDockVisible(false)
-    , isToolboxDockVisible(true)
-    , drawMode(true)
-    , recentFileActs()
-    , separatorAct(nullptr)
-    , leftGoToStage(nullptr)
-    , rightGoToStage(nullptr)
-    , autoSaveTimer(nullptr)
-    , guiEnabled(true)
-    , gradationHeights(nullptr)
-    , gradationSizes(nullptr)
-    , gradationHeightsLabel(nullptr)
-    , gradationSizesLabel(nullptr)
-    , toolProperties(nullptr)
-    , groupsWidget(nullptr)
-    , patternPiecesWidget(nullptr)
-    , lock(nullptr)
-    , zoomScaleSpinBox(nullptr)
-    , m_penToolBar(nullptr)
-    , m_penReset(nullptr)
-    , m_zoomToPointComboBox(nullptr)
 {
     for (int i = 0; i < MaxRecentFiles; ++i) {
         recentFileActs[i] = nullptr;

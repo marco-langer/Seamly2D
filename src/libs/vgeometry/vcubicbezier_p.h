@@ -67,7 +67,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VCubicBezierData : public QSharedData
 {
 public:
-    VCubicBezierData();
+    VCubicBezierData() = default;
     VCubicBezierData(const VCubicBezierData& curve);
     VCubicBezierData(const VPointF& p1, const VPointF& p2, const VPointF& p3, const VPointF& p4);
     virtual ~VCubicBezierData();
@@ -87,14 +87,6 @@ public:
 private:
     VCubicBezierData& operator=(const VCubicBezierData&) = delete;
 };
-
-//---------------------------------------------------------------------------------------------------------------------
-VCubicBezierData::VCubicBezierData()
-    : p1()
-    , p2()
-    , p3()
-    , p4()
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 VCubicBezierData::VCubicBezierData(const VCubicBezierData& curve)

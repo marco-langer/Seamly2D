@@ -41,18 +41,6 @@
 #include "../vpatterndb/vcontainer.h"
 #include "vtextmanager.h"
 
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief TextLine::TextLine default constructor
- */
-TextLine::TextLine()
-    : m_text()
-    , m_iFontSize(MIN_FONT_SIZE)
-    , bold(false)
-    , italic(false)
-    , m_eAlign(Qt::AlignCenter)
-{}
-
 QList<TextLine> VTextManager::m_patternLabelLines = QList<TextLine>();
 
 namespace {
@@ -169,14 +157,6 @@ QList<TextLine> PrepareLines(const QVector<VLabelTemplateLine>& lines)
 }
 }   // namespace
 
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VTextManager::VTextManager constructor
- */
-VTextManager::VTextManager()
-    : m_font()
-    , m_liLines()
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 VTextManager::VTextManager(const VTextManager& text)

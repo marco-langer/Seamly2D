@@ -62,10 +62,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VSplinePathData : public QSharedData
 {
 public:
-    VSplinePathData()
-        : path(QVector<VSplinePoint>())
-    {}
-
+    VSplinePathData() = default;
     VSplinePathData(const VSplinePathData& splPath)
         : QSharedData(splPath)
         , path(splPath.path)

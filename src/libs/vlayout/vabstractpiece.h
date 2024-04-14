@@ -76,7 +76,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VSAPoint : public QPointF
 {
 public:
-    constexpr VSAPoint();
+    constexpr VSAPoint() = default;
     constexpr VSAPoint(qreal xpos, qreal ypos);
     constexpr explicit VSAPoint(const QPointF& p);
 
@@ -92,36 +92,22 @@ public:
     void SetAngleType(PieceNodeAngle value);
 
 private:
-    qreal m_before;
-    qreal m_after;
-    PieceNodeAngle m_angle;
+    qreal m_before{ -1.0 };
+    qreal m_after{ -1.0 };
+    PieceNodeAngle m_angle{ PieceNodeAngle::ByLength };
 };
 
 Q_DECLARE_METATYPE(VSAPoint)
 Q_DECLARE_TYPEINFO(VSAPoint, Q_MOVABLE_TYPE);
 
 //---------------------------------------------------------------------------------------------------------------------
-constexpr inline VSAPoint::VSAPoint()
-    : QPointF()
-    , m_before(-1)
-    , m_after(-1)
-    , m_angle(PieceNodeAngle::ByLength)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
 constexpr inline VSAPoint::VSAPoint(qreal xpos, qreal ypos)
     : QPointF(xpos, ypos)
-    , m_before(-1)
-    , m_after(-1)
-    , m_angle(PieceNodeAngle::ByLength)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
 constexpr inline VSAPoint::VSAPoint(const QPointF& p)
     : QPointF(p)
-    , m_before(-1)
-    , m_after(-1)
-    , m_angle(PieceNodeAngle::ByLength)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

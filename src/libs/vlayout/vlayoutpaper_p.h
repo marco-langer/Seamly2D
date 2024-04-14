@@ -67,30 +67,9 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VLayoutPaperData : public QSharedData
 {
 public:
-    VLayoutPaperData()
-        : pieces(QVector<VLayoutPiece>())
-        , globalContour(VContour())
-        , paperIndex(0)
-        , frame(0)
-        , layoutWidth(0)
-        , globalRotate(true)
-        , localRotate(true)
-        , globalRotationIncrease(180)
-        , localRotationIncrease(180)
-        , saveLength(false)
-    {}
-
+    VLayoutPaperData() = default;
     VLayoutPaperData(int height, int width)
-        : pieces(QVector<VLayoutPiece>())
-        , globalContour(VContour(height, width))
-        , paperIndex(0)
-        , frame(0)
-        , layoutWidth(0)
-        , globalRotate(true)
-        , localRotate(true)
-        , globalRotationIncrease(180)
-        , localRotationIncrease(180)
-        , saveLength(false)
+        : globalContour(VContour(height, width))
     {}
 
     VLayoutPaperData(const VLayoutPaperData& paper)
@@ -115,14 +94,14 @@ public:
     /** @brief globalContour list of global points contour. */
     VContour globalContour;
 
-    quint32 paperIndex;
-    quint32 frame;
-    qreal layoutWidth;
-    bool globalRotate;
-    bool localRotate;
-    int globalRotationIncrease;
-    int localRotationIncrease;
-    bool saveLength;
+    quint32 paperIndex{ 0 };
+    quint32 frame{ 0 };
+    qreal layoutWidth{ 0 };
+    bool globalRotate{ true };
+    bool localRotate{ true };
+    int globalRotationIncrease{ 180 };
+    int localRotationIncrease{ 180 };
+    bool saveLength{ false };
 
 private:
     VLayoutPaperData& operator=(const VLayoutPaperData&) = delete;

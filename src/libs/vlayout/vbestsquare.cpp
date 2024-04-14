@@ -55,14 +55,8 @@
 
 //---------------------------------------------------------------------------------------------------------------------
 VBestSquare::VBestSquare(const QSizeF& sheetSize, bool saveLength)
-    : resI(0)
-    , resJ(0)
-    , resTransform(QTransform())
-    , bestSize(QSizeF(sheetSize.width() + 10, sheetSize.height() + 10))
+    : bestSize(QSizeF(sheetSize.width() + 10, sheetSize.height() + 10))
     , sheetWidth(sheetSize.width())
-    , valideResult(false)
-    , resMirror(false)
-    , type(BestFrom::Rotation)
     , saveLength(saveLength)
 {}
 

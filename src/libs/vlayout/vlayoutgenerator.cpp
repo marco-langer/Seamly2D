@@ -63,32 +63,14 @@
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutGenerator::VLayoutGenerator(QObject* parent)
     : QObject(parent)
-    , papers()
     , bank(new VBank())
-    , paperHeight(0)
-    , paperWidth(0)
-    , margins()
-    , usePrinterFields(true)
     ,
 #ifdef Q_CC_MSVC
     // See https://stackoverflow.com/questions/15750917/initializing-stdatomic-bool
     stopGeneration(ATOMIC_VAR_INIT(false))
-    ,
 #else
     stopGeneration(false)
-    ,
 #endif
-    state(LayoutErrors::NoError)
-    , shift(0)
-    , rotate(true)
-    , rotationIncrease(180)
-    , autoCrop(false)
-    , saveLength(false)
-    , unitePages(false)
-    , stripOptimizationEnabled(false)
-    , multiplier(1)
-    , stripOptimization(false)
-    , textAsPaths(false)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

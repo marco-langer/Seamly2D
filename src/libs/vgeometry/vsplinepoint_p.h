@@ -67,13 +67,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VFSplinePointData : public QSharedData
 {
 public:
-    VFSplinePointData()
-        : pSpline(VPointF())
-        , angle1(0)
-        , angle2(180)
-        , kAsm1(1)
-        , kAsm2(1)
-    {}
+    VFSplinePointData() = default;
 
     VFSplinePointData(VPointF pSpline, qreal kAsm1, qreal angle1, qreal kAsm2, qreal angle2)
         : pSpline(pSpline)
@@ -104,16 +98,16 @@ public:
     VPointF pSpline;
 
     /** @brief angle1 first angle spline. */
-    qreal angle1;
+    qreal angle1{ 0.0 };
 
     /** @brief angle2 second angle spline. */
-    qreal angle2;
+    qreal angle2{ 180.0 };
 
     /** @brief kAsm1 coefficient of length first control line. */
-    qreal kAsm1;
+    qreal kAsm1{ 1.0 };
 
     /** @brief kAsm2 coefficient of length second control line. */
-    qreal kAsm2;
+    qreal kAsm2{ 1.0 };
 
 private:
     VFSplinePointData& operator=(const VFSplinePointData&) = delete;
@@ -126,17 +120,7 @@ VFSplinePointData::~VFSplinePointData() {}
 class VSplinePointData : public QSharedData
 {
 public:
-    VSplinePointData()
-        : pSpline()
-        , angle1(0)
-        , angle1F("0")
-        , angle2(180)
-        , angle2F("180")
-        , length1(0)
-        , length1F("0")
-        , length2(0)
-        , length2F("0")
-    {}
+    VSplinePointData() = default;
 
     VSplinePointData(
         VPointF pSpline,
@@ -168,20 +152,20 @@ public:
     VPointF pSpline;
 
     /** @brief angle1 first angle spline. */
-    qreal angle1;
-    QString angle1F;
+    qreal angle1{ 0.0 };
+    QString angle1F{ "0" };
 
     /** @brief angle2 second angle spline. */
-    qreal angle2;
-    QString angle2F;
+    qreal angle2{ 180.0 };
+    QString angle2F{ "180" };
 
     /** @brief length1 length a first control line. */
-    qreal length1;
-    QString length1F;
+    qreal length1{ 0.0 };
+    QString length1F{ "0" };
 
     /** @brief length2 length a second control line. */
-    qreal length2;
-    QString length2F;
+    qreal length2{ 0.0 };
+    QString length2F{ "0" };
 
 private:
     VSplinePointData& operator=(const VSplinePointData&) = delete;

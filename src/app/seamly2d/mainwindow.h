@@ -60,6 +60,7 @@
 #include "core/vcmdexport.h"
 #include "mainwindowsnogui.h"
 
+#include <QFileSystemWatcher>
 #include <QMap>
 #include <QPointer>
 #include <QSharedPointer>
@@ -291,19 +292,19 @@ private:
     /** @brief ui keeps information about user interface */
     Ui::MainWindow* ui;
 
-    QFileSystemWatcher* watcher;
+    QFileSystemWatcher* watcher{ new QFileSystemWatcher(this) };
 
     /** @brief tool current tool */
-    Tool currentTool;
+    Tool currentTool{ Tool::Arrow };
 
     /** @brief tool last used tool */
-    Tool lastUsedTool;
+    Tool lastUsedTool{ Tool::Arrow };
 
     /** @brief draftScene draft block scene. */
-    VMainGraphicsScene* draftScene;
+    VMainGraphicsScene* draftScene{ nullptr };
 
     /** @brief pieceScene pattern piece scene. */
-    VMainGraphicsScene* pieceScene;
+    VMainGraphicsScene* pieceScene{ nullptr };
 
     /** @brief mouseCoordinates pointer to label who show mouse coordinate. */
     QPointer<MouseCoordinates> mouseCoordinates;
@@ -311,60 +312,61 @@ private:
     QPointer<QToolButton> infoToolButton;
 
     /** @brief helpLabel help show tooltip. */
-    QLabel* helpLabel;
+    QLabel* helpLabel{ nullptr };
 
     /** @brief isInitialized true after first show window. */
-    bool isInitialized;
+    bool isInitialized{ false };
 
     /** @brief mChanges true if measurement file was changed. */
-    bool mChanges;
-    bool mChangesAsked;
+    bool mChanges{ false };
+    bool mChangesAsked{ true };
 
-    bool patternReadOnly;
+    bool patternReadOnly{ false };
 
     QPointer<DialogVariables> dialogTable;
     QSharedPointer<DialogTool> dialogTool;
     QPointer<HistoryDialog> historyDialog;
 
-    QFontComboBox* fontComboBox;
-    QComboBox* fontSizeComboBox;
-    QComboBox* basePointComboBox;
-    QComboBox* draftBlockComboBox; /** @brief draftBlockComboBox stores names of draft blocks.*/
-    QLabel* draftBlockLabel;
-    Draw mode;                  /** @brief mode stores current draw mode. */
-    qint32 currentBlockIndex;   /** @brief currentBlockIndex  current selected draft block.*/
-    qint32 currentToolBoxIndex; /** @brief currentToolBoxIndex  current set of tools. */
-    bool isToolOptionsDockVisible;
-    bool isGroupsDockVisible;
-    bool isLayoutsDockVisible;
-    bool isToolboxDockVisible;
-    bool drawMode; /** @brief drawMode true if draft scene active. */
+    QFontComboBox* fontComboBox{ nullptr };
+    QComboBox* fontSizeComboBox{ nullptr };
+    QComboBox* basePointComboBox{ nullptr };
+    QComboBox* draftBlockComboBox{
+        nullptr
+    }; /** @brief draftBlockComboBox stores names of draft blocks.*/
+    QLabel* draftBlockLabel{ nullptr };
+    Draw mode{ Draw::Calculation };  /** @brief mode stores current draw mode. */
+    qint32 currentBlockIndex{ 0 };   /** @brief currentBlockIndex  current selected draft block.*/
+    qint32 currentToolBoxIndex{ 0 }; /** @brief currentToolBoxIndex  current set of tools. */
+    bool isToolOptionsDockVisible{ true };
+    bool isGroupsDockVisible{ true };
+    bool isLayoutsDockVisible{ false };
+    bool isToolboxDockVisible{ true };
+    bool drawMode{ true }; /** @brief drawMode true if draft scene active. */
 
     enum
     {
         MaxRecentFiles = 5
     };
     QAction* recentFileActs[MaxRecentFiles];
-    QAction* separatorAct;
+    QAction* separatorAct{ nullptr };
 
-    QLabel* leftGoToStage;
-    QLabel* rightGoToStage;
-    QTimer* autoSaveTimer;
-    bool guiEnabled;
+    QLabel* leftGoToStage{ nullptr };
+    QLabel* rightGoToStage{ nullptr };
+    QTimer* autoSaveTimer{ nullptr };
+    bool guiEnabled{ true };
     QPointer<QComboBox> gradationHeights;
     QPointer<QComboBox> gradationSizes;
     QPointer<QLabel> gradationHeightsLabel;
     QPointer<QLabel> gradationSizesLabel;
-    VToolOptionsPropertyBrowser* toolProperties;
-    GroupsWidget* groupsWidget;
-    PiecesWidget* patternPiecesWidget;
+    VToolOptionsPropertyBrowser* toolProperties{ nullptr };
+    GroupsWidget* groupsWidget{ nullptr };
+    PiecesWidget* patternPiecesWidget{ nullptr };
     std::shared_ptr<VLockGuard<char>> lock;
 
-    QDoubleSpinBox* zoomScaleSpinBox;
-
-    PenToolBar* m_penToolBar;   //!< for selecting the current pen
-    PenToolBar* m_penReset;
-    QComboBox* m_zoomToPointComboBox;
+    QDoubleSpinBox* zoomScaleSpinBox{ nullptr };
+    PenToolBar* m_penToolBar{ nullptr };   //!< for selecting the current pen
+    PenToolBar* m_penReset{ nullptr };
+    QComboBox* m_zoomToPointComboBox{ nullptr };
 
     void SetDefaultHeight();
     void SetDefaultSize();

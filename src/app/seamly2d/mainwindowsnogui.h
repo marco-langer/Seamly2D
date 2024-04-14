@@ -59,6 +59,7 @@
 
 #include "../vlayout/vlayoutgenerator.h"
 #include "../vlayout/vlayoutpiece.h"
+#include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vabstractmainwindow.h"
 #include "dialogs/export_layout_dialog.h"
 #include "xml/vpattern.h"
@@ -111,12 +112,13 @@ public slots:
 protected:
     QVector<VLayoutPiece> pieceList;
 
-    QGraphicsScene* currentScene;    /** @brief currentScene pointer to current scene. */
-    QGraphicsScene* tempSceneLayout; /** @brief pattern container with data (points, arcs, splines,
-                                        spline paths, variables) */
-    VContainer* pattern; /** @brief pattern container with data (points, arcs, splines, spline
-                            paths, variables) */
-    VPattern* doc;       /** @brief doc dom document container */
+    QGraphicsScene* currentScene{ nullptr };    /** @brief currentScene pointer to current scene. */
+    QGraphicsScene* tempSceneLayout{ nullptr }; /** @brief pattern container with data (points,
+                                        arcs, splines, spline paths, variables) */
+
+    /** @brief pattern container with data (points, arcs, splines, spline paths, variables) */
+    VContainer* pattern{ new VContainer{ qApp->translateVariables(), qApp->patternUnitP() } };
+    VPattern* doc{ nullptr }; /** @brief doc dom document container */
 
     QList<QGraphicsItem*> papers;
     QList<QGraphicsItem*> shadows;
@@ -124,16 +126,16 @@ protected:
     QList<QList<QGraphicsItem*>> pieces;
     QVector<QVector<VLayoutPiece>> piecesOnLayout;
 
-    QAction* undoAction;
-    QAction* redoAction;
-    QAction* actionDockWidgetToolOptions;
-    QAction* actionDockWidgetGroups;
-    QAction* actionDockWidgetLayouts;
-    QAction* actionDockWidgetToolbox;
+    QAction* undoAction{ nullptr };
+    QAction* redoAction{ nullptr };
+    QAction* actionDockWidgetToolOptions{ nullptr };
+    QAction* actionDockWidgetGroups{ nullptr };
+    QAction* actionDockWidgetLayouts{ nullptr };
+    QAction* actionDockWidgetToolbox{ nullptr };
 
-    bool isNoScaling;
-    bool isLayoutStale;
-    bool ignoreMargins;
+    bool isNoScaling{ false };
+    bool isLayoutStale{ true };
+    bool ignoreMargins{ false };
     QMarginsF margins;
     QSizeF paperSize;
 
@@ -157,9 +159,9 @@ private slots:
 private:
     Q_DISABLE_COPY(MainWindowsNoGUI)
 
-    bool isTiled;
-    bool isAutoCrop;
-    bool isUnitePages;
+    bool isTiled{ false };
+    bool isAutoCrop{ false };
+    bool isUnitePages{ false };
 
     QString layoutPrinterName;
 

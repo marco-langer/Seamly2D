@@ -65,12 +65,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VLayoutPiecePathData : public QSharedData
 {
 public:
-    VLayoutPiecePathData()
-        : m_points()
-        , m_penStyle(Qt::SolidLine)
-        , m_cut(false)
-    {}
-
+    VLayoutPiecePathData() = default;
     VLayoutPiecePathData(const QVector<QPointF> points, bool cut, Qt::PenStyle penStyle)
         : m_points(points)
         , m_penStyle(penStyle)
@@ -90,9 +85,9 @@ public:
     QVector<QPointF> m_points;
 
     /** @brief m_penStyle path pen style. */
-    Qt::PenStyle m_penStyle;
+    Qt::PenStyle m_penStyle{ Qt::SolidLine };
 
-    bool m_cut;
+    bool m_cut{ false };
 
 private:
     VLayoutPiecePathData& operator=(const VLayoutPiecePathData&) = delete;

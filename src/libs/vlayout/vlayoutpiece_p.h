@@ -73,23 +73,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VLayoutPieceData : public QSharedData
 {
 public:
-    VLayoutPieceData()
-        : contour()
-        , seamAllowance()
-        , layoutAllowance()
-        , notches()
-        , m_internalPaths()
-        , m_cutoutPaths()
-        , transform()
-        , layoutWidth(0)
-        , mirror(false)
-        , pieceLabel()
-        , patternInfo()
-        , grainlinePoints()
-        , m_tmPiece()
-        , m_tmPattern()
-    {}
-
+    VLayoutPieceData() = default;
     VLayoutPieceData(const VLayoutPieceData& piece)
         : QSharedData(piece)
         , contour(piece.contour)
@@ -116,10 +100,10 @@ public:
     QVector<QLineF> notches;            //! @brief notches list of notches.
     QVector<VLayoutPiecePath> m_internalPaths;   //! @brief m_internalPaths list of internal paths.
     QVector<VLayoutPiecePath>
-        m_cutoutPaths;      //! @brief m_cutoutPaths list of internal cutout paths.
-    QTransform transform;   //! @brief transform transformation transform
-    qreal layoutWidth;      //! @brief layoutWidth value layout allowance width in pixels.
-    bool mirror;
+        m_cutoutPaths;          //! @brief m_cutoutPaths list of internal cutout paths.
+    QTransform transform;       //! @brief transform transformation transform
+    qreal layoutWidth{ 0.0 };   //! @brief layoutWidth value layout allowance width in pixels.
+    bool mirror{ false };
     QVector<QPointF> pieceLabel;        //! @brief pieceLabel piece label rectangle
     QVector<QPointF> patternInfo;       //! @brief patternInfo pattern info rectangle
     QVector<QPointF> grainlinePoints;   //! @brief grainlineInfo line

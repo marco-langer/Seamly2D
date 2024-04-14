@@ -59,7 +59,6 @@
 #include "../vpatterndb/floatItemData/vpatternlabeldata.h"
 #include "../vpatterndb/floatItemData/vpiecelabeldata.h"
 #include "../vpatterndb/measurements_def.h"
-#include "../vpatterndb/vcontainer.h"
 #include "../vtools/tools/pattern_piece_tool.h"
 #include "../vtools/tools/vabstracttool.h"
 #include "../vwidgets/vmaingraphicsscene.h"
@@ -110,32 +109,6 @@ void RemoveLayoutPath(const QString& path, bool usedNotExistedDir)
 //---------------------------------------------------------------------------------------------------------------------
 MainWindowsNoGUI::MainWindowsNoGUI(QWidget* parent)
     : VAbstractMainWindow(parent)
-    , pieceList()
-    , currentScene(nullptr)
-    , tempSceneLayout(nullptr)
-    , pattern(new VContainer(qApp->translateVariables(), qApp->patternUnitP()))
-    , doc(nullptr)
-    , papers()
-    , shadows()
-    , scenes()
-    , pieces()
-    , piecesOnLayout()
-    , undoAction(nullptr)
-    , redoAction(nullptr)
-    , actionDockWidgetToolOptions(nullptr)
-    , actionDockWidgetGroups(nullptr)
-    , actionDockWidgetLayouts(nullptr)
-    , actionDockWidgetToolbox(nullptr)
-    , isNoScaling(false)
-    , isLayoutStale(true)
-    , ignoreMargins(false)
-    , margins()
-    , paperSize()
-    , isTiled(false)
-    , isAutoCrop(false)
-    , isUnitePages(false)
-    , layoutPrinterName()
-
 {
     InitTempLayoutScene();
 }

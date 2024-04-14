@@ -84,14 +84,14 @@ public:
 
 private:
     // All nedded information about best result
-    int resI;                  // Edge of global contour
-    int resJ;                  // Edge of detail
+    int resI{ 0 };             // Edge of global contour
+    int resJ{ 0 };             // Edge of detail
     QTransform resTransform;   // Transform for rotation and translation detail
     QSizeF bestSize;
     qreal sheetWidth;
-    bool valideResult;
-    bool resMirror;
-    BestFrom type;
+    bool valideResult{ false };
+    bool resMirror{ false };
+    BestFrom type{ BestFrom::Rotation };
     bool saveLength;
 
     static qint64 Square(const QSizeF& size);

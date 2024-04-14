@@ -64,13 +64,7 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VPointFData : public QSharedData
 {
 public:
-    VPointFData()
-        : _mx(0)
-        , _my(0)
-        , _x(0)
-        , _y(0)
-        , m_showPointName(true)
-    {}
+    VPointFData() = default;
 
     VPointFData(const VPointFData& point)
         : QSharedData(point)
@@ -82,11 +76,8 @@ public:
     {}
 
     explicit VPointFData(const QPointF& point)
-        : _mx(0)
-        , _my(0)
-        , _x(point.x())
+        : _x(point.x())
         , _y(point.y())
-        , m_showPointName(true)
     {}
 
     VPointFData(qreal x, qreal y, qreal mx, qreal my)
@@ -94,7 +85,6 @@ public:
         , _my(my)
         , _x(x)
         , _y(y)
-        , m_showPointName(true)
     {}
 
     VPointFData(const QPointF& point, qreal mx, qreal my)
@@ -102,25 +92,24 @@ public:
         , _my(my)
         , _x(point.x())
         , _y(point.y())
-        , m_showPointName(true)
     {}
 
     virtual ~VPointFData();
 
     /** @brief _mx offset name respect to x */
-    qreal _mx;
+    qreal _mx{ 0.0 };
 
     /** @brief _my offset name respect to y */
-    qreal _my;
+    qreal _my{ 0.0 };
 
     /** @brief _x x coordinate */
-    qreal _x;
+    qreal _x{ 0.0 };
 
     /** @brief _y y coordinate */
-    qreal _y;
+    qreal _y{ 0.0 };
 
     /** @brief m_showPointName hide or show name for this point */
-    bool m_showPointName;
+    bool m_showPointName{ true };
 
 private:
     VPointFData& operator=(const VPointFData&) = delete;

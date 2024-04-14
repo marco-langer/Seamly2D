@@ -64,14 +64,14 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VArcData : public QSharedData
 {
 public:
-    VArcData();
+    VArcData() = default;
     VArcData(qreal radius, const QString& formulaRadius);
     explicit VArcData(qreal radius);
     VArcData(const VArcData& arc);
     virtual ~VArcData();
 
     /** @brief radius arc radius. */
-    qreal radius;
+    qreal radius{ 0.0 };
 
     /** @brief formulaRadius formula for arc radius. */
     QString formulaRadius;
@@ -79,12 +79,6 @@ public:
 private:
     VArcData& operator=(const VArcData&) = delete;
 };
-
-//---------------------------------------------------------------------------------------------------------------------
-VArcData::VArcData()
-    : radius(0)
-    , formulaRadius(QString())
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 VArcData::VArcData(qreal radius, const QString& formulaRadius)

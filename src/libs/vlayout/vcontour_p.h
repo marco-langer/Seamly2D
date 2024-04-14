@@ -64,18 +64,10 @@ QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
 class VContourData : public QSharedData
 {
 public:
-    VContourData()
-        : globalContour(QVector<QPointF>())
-        , paperHeight(0)
-        , paperWidth(0)
-        , shift(0)
-    {}
-
+    VContourData() = default;
     VContourData(int height, int width)
-        : globalContour(QVector<QPointF>())
-        , paperHeight(height)
+        : paperHeight(height)
         , paperWidth(width)
-        , shift(0)
     {}
 
     VContourData(const VContourData& contour)
@@ -92,12 +84,12 @@ public:
     QVector<QPointF> globalContour;
 
     /** @brief paperHeight height of paper in pixels*/
-    int paperHeight;
+    int paperHeight{ 0 };
 
     /** @brief paperWidth width of paper in pixels*/
-    int paperWidth;
+    int paperWidth{ 0 };
 
-    quint32 shift;
+    quint32 shift{ 0 };
 
 private:
     VContourData& operator=(const VContourData&) = delete;
