@@ -111,8 +111,8 @@ public:
 
     bool arrangePiece(const VLayoutPiece& piece, std::atomic_bool& stop);
     int Count() const;
-    Q_REQUIRED_RESULT QGraphicsRectItem* GetPaperItem(bool autoCrop, bool textAsPaths) const;
-    Q_REQUIRED_RESULT QList<QGraphicsItem*> getPieceItems(bool textAsPaths) const;
+    [[nodiscard]] QGraphicsRectItem* GetPaperItem(bool autoCrop, bool textAsPaths) const;
+    [[nodiscard]] QList<QGraphicsItem*> getPieceItems(bool textAsPaths) const;
 
     QVector<VLayoutPiece> getPieces() const;
     void setPieces(const QList<VLayoutPiece>& pieces);

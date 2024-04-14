@@ -94,7 +94,7 @@ public:
     //! instead it is tried to fill all the data into container. This can also be used when
     //! subclassing this function. \return Returns the newly created property (or container, if it
     //! was not NULL)
-    Q_REQUIRED_RESULT virtual VProperty*
+    [[nodiscard]] virtual VProperty*
     clone(bool include_children = true, VProperty* container = nullptr) const override;
 
     //! Sets the value of the property

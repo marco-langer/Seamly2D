@@ -168,17 +168,17 @@ public:
 
     QPainterPath LayoutAllowancePath() const;
 
-    Q_REQUIRED_RESULT QGraphicsItem* GetItem(bool textAsPaths) const;
+    [[nodiscard]] QGraphicsItem* GetItem(bool textAsPaths) const;
 
 private:
     QSharedDataPointer<VLayoutPieceData> d;
 
     QVector<QPointF> piecePath() const;
 
-    Q_REQUIRED_RESULT QGraphicsPathItem* createMainItem() const;
+    [[nodiscard]] QGraphicsPathItem* createMainItem() const;
     void createAllowanceItem(QGraphicsItem* parent) const;
     void createNotchesItem(QGraphicsItem* parent) const;
-    Q_REQUIRED_RESULT QGraphicsPathItem* getMainPathItem() const;
+    [[nodiscard]] QGraphicsPathItem* getMainPathItem() const;
 
     void createInternalPathItem(int i, QGraphicsItem* parent) const;
     void createCutoutPathItem(int i, QGraphicsItem* parent) const;

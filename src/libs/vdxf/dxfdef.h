@@ -75,7 +75,7 @@ enum class VarInsunits : unsigned char
 // Helps mark end of string. See VDxfEngine::drawTextItem for more details
 extern const QString endStringPlaceholder;
 
-Q_REQUIRED_RESULT static inline bool DL_FuzzyComparePossibleNulls(double p1, double p2);
+[[nodiscard]] static inline bool DL_FuzzyComparePossibleNulls(double p1, double p2);
 static inline bool DL_FuzzyComparePossibleNulls(double p1, double p2)
 {
     if (qFuzzyIsNull(p1)) {

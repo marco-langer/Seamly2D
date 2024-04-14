@@ -106,8 +106,8 @@ private:
     VarInsunits varInsunits;
     DRW_Text* textBuffer;
 
-    Q_REQUIRED_RESULT double FromPixel(double pix, const VarInsunits& unit) const;
-    Q_REQUIRED_RESULT double ToPixel(double val, const VarInsunits& unit) const;
+    [[nodiscard]] double FromPixel(double pix, const VarInsunits& unit) const;
+    [[nodiscard]] double ToPixel(double val, const VarInsunits& unit) const;
 
     bool ExportToAAMA(const QVector<VLayoutPiece>& details);
     void ExportAAMAOutline(dx_ifaceBlock* detailBlock, const VLayoutPiece& detail);
@@ -119,14 +119,14 @@ private:
     void ExportAAMAGlobalText(
         const QSharedPointer<dx_iface>& input, const QVector<VLayoutPiece>& details);
 
-    Q_REQUIRED_RESULT DRW_Entity*
+    [[nodiscard]] DRW_Entity*
     AAMAPolygon(const QVector<QPointF>& polygon, const QString& layer, bool forceClosed);
-    Q_REQUIRED_RESULT DRW_Entity* AAMALine(const QLineF& line, const QString& layer);
-    Q_REQUIRED_RESULT DRW_Entity*
+    [[nodiscard]] DRW_Entity* AAMALine(const QLineF& line, const QString& layer);
+    [[nodiscard]] DRW_Entity*
     AAMAText(const QPointF& pos, const QString& text, const QString& layer);
 
     template <class P, class V>
-    Q_REQUIRED_RESULT P*
+    [[nodiscard]] P*
     CreateAAMAPolygon(const QVector<QPointF>& polygon, const QString& layer, bool forceClosed);
 };
 

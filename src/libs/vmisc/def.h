@@ -660,21 +660,20 @@ void SetItemOverrideCursor(
 
 extern const qreal PrintDPI;
 
-Q_REQUIRED_RESULT double ToPixel(double val, const Unit& unit);
-Q_REQUIRED_RESULT double FromPixel(double pix, const Unit& unit);
+[[nodiscard]] double ToPixel(double val, const Unit& unit);
+[[nodiscard]] double FromPixel(double pix, const Unit& unit);
 
-Q_REQUIRED_RESULT qreal UnitConvertor(qreal value, const Unit& from, const Unit& to);
-Q_REQUIRED_RESULT QMarginsF
-UnitConvertor(const QMarginsF& margins, const Unit& from, const Unit& to);
+[[nodiscard]] qreal UnitConvertor(qreal value, const Unit& from, const Unit& to);
+[[nodiscard]] QMarginsF UnitConvertor(const QMarginsF& margins, const Unit& from, const Unit& to);
 
 void InitLanguages(QComboBox* combobox);
-Q_REQUIRED_RESULT QStringList SupportedLocales();
+[[nodiscard]] QStringList SupportedLocales();
 
 QString makeHeaderName(const QString& name);
-Q_REQUIRED_RESULT QString strippedName(const QString& fullFileName);
-Q_REQUIRED_RESULT QString RelativeMPath(const QString& patternPath, const QString& absoluteMPath);
-Q_REQUIRED_RESULT QString AbsoluteMPath(const QString& patternPath, const QString& relativeMPath);
-Q_REQUIRED_RESULT QString fileDialog(
+[[nodiscard]] QString strippedName(const QString& fullFileName);
+[[nodiscard]] QString RelativeMPath(const QString& patternPath, const QString& absoluteMPath);
+[[nodiscard]] QString AbsoluteMPath(const QString& patternPath, const QString& relativeMPath);
+[[nodiscard]] QString fileDialog(
     QWidget* parent,
     const QString& title,
     const QString& dir,
@@ -684,19 +683,19 @@ Q_REQUIRED_RESULT QString fileDialog(
     QFileDialog::FileMode mode,
     QFileDialog::AcceptMode accept);
 
-Q_REQUIRED_RESULT QSharedPointer<QPrinter>
+[[nodiscard]] QSharedPointer<QPrinter>
 PreparePrinter(const QPrinterInfo& info, QPrinter::PrinterMode mode = QPrinter::ScreenResolution);
 
 QMarginsF GetMinPrinterFields(const QSharedPointer<QPrinter>& printer);
 QMarginsF GetPrinterFields(const QSharedPointer<QPrinter>& printer);
 
-Q_REQUIRED_RESULT QPixmap darkenPixmap(const QPixmap& pixmap);
+[[nodiscard]] QPixmap darkenPixmap(const QPixmap& pixmap);
 
 void ShowInGraphicalShell(const QString& filePath);
 
 constexpr qreal accuracyPointOnLine = (0.1555 /*mm*/ / 25.4) * 96.0;
 
-Q_REQUIRED_RESULT static inline bool
+[[nodiscard]] static inline bool
 VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accuracyPointOnLine);
 
 static inline bool VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy)
@@ -704,7 +703,7 @@ static inline bool VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qre
     return QLineF(p1, p2).length() <= accuracy;
 }
 
-Q_REQUIRED_RESULT static inline bool VFuzzyComparePossibleNulls(double p1, double p2);
+[[nodiscard]] static inline bool VFuzzyComparePossibleNulls(double p1, double p2);
 static inline bool VFuzzyComparePossibleNulls(double p1, double p2)
 {
     if (qFuzzyIsNull(p1)) {

@@ -145,7 +145,7 @@ private:
         const QStringList& groupList,
         const QStringList& measurementList = QStringList());
 
-    Q_REQUIRED_RESULT QTreeWidgetItem* addMeasurementGroup(const QString& text);
+    [[nodiscard]] QTreeWidgetItem* addMeasurementGroup(const QString& text);
 
     void addMeasurement(
         QTreeWidgetItem* group, const QString& groupName, const QStringList& newMeasurements);

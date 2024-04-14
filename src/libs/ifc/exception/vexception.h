@@ -74,7 +74,7 @@ public:
     [[noreturn]] virtual void raise() const override;
 
     // cppcheck-suppress unusedFunction
-    Q_REQUIRED_RESULT virtual VException* clone() const override;
+    [[nodiscard]] virtual VException* clone() const override;
 
     virtual QString ErrorMessage() const;
     virtual QString DetailedInformation() const;

@@ -100,8 +100,8 @@ public:
 
     LayoutErrors State() const;
 
-    Q_REQUIRED_RESULT QList<QGraphicsItem*> GetPapersItems() const;
-    Q_REQUIRED_RESULT QList<QList<QGraphicsItem*>> getAllPieceItems() const;
+    [[nodiscard]] QList<QGraphicsItem*> GetPapersItems() const;
+    [[nodiscard]] QList<QList<QGraphicsItem*>> getAllPieceItems() const;
 
     QVector<QVector<VLayoutPiece>> getAllPieces() const;
 

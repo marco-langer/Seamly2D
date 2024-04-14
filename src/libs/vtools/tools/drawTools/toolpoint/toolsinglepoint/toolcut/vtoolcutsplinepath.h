@@ -105,7 +105,7 @@ public:
     };
     virtual void ShowVisualization(bool show) override;
 
-    Q_REQUIRED_RESULT static VPointF* CutSplinePath(
+    [[nodiscard]] static VPointF* CutSplinePath(
         qreal length,
         const QSharedPointer<VAbstractCubicBezierPath>& splPath,
         const QString& pName,
