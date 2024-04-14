@@ -44,7 +44,7 @@ SeamlyWelcomeDialog::SeamlyWelcomeDialog(QWidget* parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     //-------------------- Units setup
-    initUnits(MeasurementsType::Individual);
+    initUnits();
 
     //-------------------- Decimal separator setup
     ui->separator_CheckBox->setText(
@@ -141,7 +141,7 @@ void SeamlyWelcomeDialog::seperatorChanged()
 //---------------------------------------------------------------------------------------------------------------------
 // @brief initUnits initinailize the units combobox
 // @param type measurment type
-void SeamlyWelcomeDialog::initUnits(const MeasurementsType& type)
+void SeamlyWelcomeDialog::initUnits()
 {
     ui->units_ComboBox->addItem(tr("Centimeters"), unitCM);
     ui->units_ComboBox->addItem(tr("Millimeters"), unitMM);
