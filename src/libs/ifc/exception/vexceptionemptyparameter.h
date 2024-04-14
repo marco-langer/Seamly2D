@@ -71,7 +71,7 @@ public:
         const QString& what, const QString& name, const QDomElement& domElement);
     VExceptionEmptyParameter(const VExceptionEmptyParameter& error);
     VExceptionEmptyParameter& operator=(const VExceptionEmptyParameter& error);
-    virtual ~VExceptionEmptyParameter() V_NOEXCEPT_EXPR(true) = default;
+    virtual ~VExceptionEmptyParameter() = default;
     virtual QString ErrorMessage() const override;
     virtual QString DetailedInformation() const override;
     QString Name() const;

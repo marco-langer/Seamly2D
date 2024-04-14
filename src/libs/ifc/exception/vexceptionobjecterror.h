@@ -70,7 +70,7 @@ public:
     VExceptionObjectError(const QString& what, const QDomElement& domElement);
     VExceptionObjectError(const VExceptionObjectError& error);
     VExceptionObjectError& operator=(const VExceptionObjectError& error);
-    virtual ~VExceptionObjectError() V_NOEXCEPT_EXPR(true) = default;
+    virtual ~VExceptionObjectError() = default;
     virtual QString ErrorMessage() const override;
     virtual QString DetailedInformation() const override;
     QString TagText() const;

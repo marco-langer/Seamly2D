@@ -69,7 +69,7 @@ public:
     explicit VException(const QString& error);
     VException(const VException& error);
     VException& operator=(const VException& error);
-    virtual ~VException() V_NOEXCEPT_EXPR(true) = default;
+    virtual ~VException() = default;
 
     Q_NORETURN virtual void raise() const override;
 
@@ -78,10 +78,10 @@ public:
 
     virtual QString ErrorMessage() const;
     virtual QString DetailedInformation() const;
-    QString WhatUtf8() const V_NOEXCEPT_EXPR(true);
+    QString WhatUtf8() const noexcept;
     void AddMoreInformation(const QString& info);
     QString MoreInformation() const;
-    virtual const char* what() const V_NOEXCEPT_EXPR(true) override;
+    virtual const char* what() const noexcept override;
 
 protected:
     /** @brief error string with error */
@@ -98,7 +98,7 @@ protected:
  * @brief What return string with error
  * @return string with error
  */
-inline QString VException::WhatUtf8() const V_NOEXCEPT_EXPR(true) { return error; }
+inline QString VException::WhatUtf8() const noexcept { return error; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -115,7 +115,7 @@ public:
     explicit VExceptionToolWasDeleted(const QString& error);
     VExceptionToolWasDeleted(const VExceptionToolWasDeleted& error);
     VExceptionToolWasDeleted& operator=(const VExceptionToolWasDeleted& error);
-    virtual ~VExceptionToolWasDeleted() V_NOEXCEPT_EXPR(true) = default;
+    virtual ~VExceptionToolWasDeleted() = default;
 
     Q_NORETURN virtual void raise() const override;
     // cppcheck-suppress unusedFunction

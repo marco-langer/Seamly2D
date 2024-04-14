@@ -145,7 +145,7 @@ VException* VException::clone() const { return new VException(*this); }
 Q_NORETURN void VException::raise() const { throw *this; }
 
 //---------------------------------------------------------------------------------------------------------------------
-const char* VException::what() const V_NOEXCEPT_EXPR(true) { return error.toUtf8().constData(); }
+const char* VException::what() const noexcept { return error.toUtf8().constData(); }
 
 //-----------------------------------------VExceptionToolWasDeleted----------------------------------------------------
 VExceptionToolWasDeleted::VExceptionToolWasDeleted(const QString& error)

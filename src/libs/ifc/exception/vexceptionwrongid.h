@@ -71,7 +71,7 @@ public:
     VExceptionWrongId(const QString& what, const QDomElement& domElement);
     VExceptionWrongId(const VExceptionWrongId& error);
     VExceptionWrongId& operator=(const VExceptionWrongId& error);
-    virtual ~VExceptionWrongId() V_NOEXCEPT_EXPR(true) = default;
+    virtual ~VExceptionWrongId() = default;
     virtual QString ErrorMessage() const override;
     virtual QString DetailedInformation() const override;
     QString TagText() const;
