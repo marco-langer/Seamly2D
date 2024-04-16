@@ -4041,11 +4041,11 @@ void VPattern::PrepareForParse(const Document& parse)
     SCASSERT(pieceScene != nullptr)
     if (parse == Document::FullParse) {
         TestUniqueId();
-        foreach (ImageItem* item, getBackgroundImageMap().values()) {
+        for (ImageItem* item : getBackgroundImageMap().values()) {
             draftScene->removeItem(item);
         }
         draftScene->clear();
-        foreach (ImageItem* item, getBackgroundImageMap().values()) {
+        for (ImageItem* item : getBackgroundImageMap().values()) {
             draftScene->addItem(item);
         }
         draftScene->initializeOrigins();

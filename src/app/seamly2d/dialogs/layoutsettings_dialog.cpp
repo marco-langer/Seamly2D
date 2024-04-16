@@ -616,7 +616,7 @@ void LayoutSettingsDialog::DialogAccepted()
     if (disableSettings == false) {
         WriteSettings();
     }
-    accepted();
+    emit accepted();
 }
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -292,7 +292,7 @@ void MainWindow::addDraftBlock(const QString& blockName)
     VPointF* point = new VPointF(startPosition.x(), startPosition.y(), label, 5, 10);
     auto spoint = VToolBasePoint::Create(
         0, blockName, point, m_draftScene, doc, pattern, Document::FullParse, Source::FromGui);
-    m_ui->view->itemClicked(spoint);
+    emit m_ui->view->itemClicked(spoint);
 
     setToolsEnabled(true);
     setWidgetsEnabled(true);
@@ -666,7 +666,7 @@ void MainWindow::SetToolButton(
         if (qApp->devicePixelRatio() >= 2) {
             // Try to load HiDPI versions of the cursors if available
             auto cursorHidpiResource = QString(cursor).replace(".png", "@2x.png");
-            if (QFileInfo(cursorResource).exists()) {
+            if (QFileInfo::exists(cursorResource)) {
                 cursorResource = cursorHidpiResource;
             }
         }
@@ -756,7 +756,7 @@ void MainWindow::ClosedDialog(int result)
         QGraphicsItem* tool =
             dynamic_cast<QGraphicsItem*>(DrawTool::Create(m_dialogTool, scene, doc, pattern));
         // Do not check for nullptr! See issue #719.
-        m_ui->view->itemClicked(tool);
+        emit m_ui->view->itemClicked(tool);
     }
     handleArrowTool(true);
 }
@@ -1721,16 +1721,13 @@ QString MainWindow::getImageFilename()
 
     const QString path = qApp->Seamly2DSettings()->getImageFilePath();
 
-    bool usedNotExistedDir = false;
     QDir directory(path);
     if (!directory.exists()) {
-        usedNotExistedDir = directory.mkpath(".");
+        directory.mkpath(".");
     }
 
-    const QString filename = QFileDialog::getOpenFileName(
+    return QFileDialog::getOpenFileName(
         this, tr("Open Image File"), path, filter, nullptr, QFileDialog::DontUseNativeDialog);
-
-    return filename;
 }
 
 // Pieces
@@ -3911,7 +3908,7 @@ bool MainWindow::SaveAs()
 
     QDir directory(dir);
     if (!directory.exists()) {
-        usedNotExistedDir = directory.mkpath(".");
+        directory.mkpath(".");
     }
 
     fileName = fileDialog(
@@ -6102,7 +6099,7 @@ QString MainWindow::createDraftBlockName(const QString& text)
 MainWindow::~MainWindow()
 {
     CancelTool();
-    CleanLayout();
+    MainWindow::CleanLayout();
 
     delete doc;
     delete m_ui;
@@ -6299,7 +6296,7 @@ QStringList MainWindow::GetUnlokedRestoreFileList() const
         // Clear all files that do not exist.
         QStringList filtered;
         for (int i = 0; i < files.size(); ++i) {
-            if (QFileInfo(files.at(i)).exists()) {
+            if (QFileInfo::exists(files.at(i))) {
                 filtered.append(files.at(i));
             }
         }
@@ -6575,11 +6572,10 @@ void MainWindow::exportDraftBlocksAs()
     dialog.setWindowTitle("Export Draft Blocks");
 
     if (dialog.exec() == QDialog::Accepted) {
-        const QString filename =
-            QString("%1/%2%3")
-                .arg(dialog.path())                                              // 1
-                .arg(dialog.fileName())                                          // 2
-                .arg(ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 3
+        const QString filename = QString("%1/%2%3").arg(
+            dialog.path(),                                              // 1
+            dialog.fileName(),                                          // 2
+            ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 3
 
         QRectF rect;
         rect = m_draftScene->itemsBoundingRect();

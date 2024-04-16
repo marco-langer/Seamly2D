@@ -107,7 +107,7 @@ public:
     void replaceNameInFormula(
         QVector<VFormulaField>& expressions, const QString& name, const QString& newName);
 
-    QStringList GetCurrentAlphabet() const;
+    QStringList GetCurrentAlphabet() const override;
 
     virtual QString
     GenerateLabel(const LabelType& type, const QString& reservedName = QString()) const override;

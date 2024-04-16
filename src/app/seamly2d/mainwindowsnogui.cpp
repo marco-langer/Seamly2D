@@ -229,10 +229,11 @@ void MainWindowsNoGUI::ExportData(
             for (int i = 0; i < piecesOnLayout.size(); ++i) {
                 const QString name =
                     QString("%1/%2_0%3%4")
-                        .arg(dialog.path())                                              // 1
-                        .arg(dialog.fileName())                                          // 2
-                        .arg(QString::number(i + 1))                                     // 3
-                        .arg(ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 4
+                        .arg(
+                            dialog.path(),                                              // 1
+                            dialog.fileName(),                                          // 2
+                            QString::number(i + 1),                                     // 3
+                            ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 4
 
                 QGraphicsRectItem* paper = qgraphicsitem_cast<QGraphicsRectItem*>(papers.at(i));
                 SCASSERT(paper != nullptr)
@@ -273,11 +274,10 @@ void MainWindowsNoGUI::ExportFlatLayout(
     const LayoutExportFormat format = dialog.format();
 
     if (format == LayoutExportFormat::PDFTiled && dialog.mode() == Draw::Layout) {
-        const QString name =
-            QString("%1/%2%3")
-                .arg(path)                                                       // 1
-                .arg(dialog.fileName())                                          // 2
-                .arg(ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 3
+        const QString name = QString("%1/%2%3").arg(
+            path,                                                       // 1
+            dialog.fileName(),                                          // 2
+            ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 3
 
         PdfTiledFile(name);
     } else {
@@ -452,16 +452,17 @@ void MainWindowsNoGUI::exportPiecesAsApparelLayout(
         pieceList[i].setTransform(moveTransform);
     }
 
-    QString increment = QStringLiteral("");
+    QString increment;
     if (dialog.mode() == Draw::Layout) {
-        increment = QStringLiteral("_01");
+        increment = QStringLiteral(u"_01");
     }
 
     const QString name = QString("%1/%2%3%4")
-                             .arg(dialog.path())                                              // 1
-                             .arg(dialog.fileName())                                          // 2
-                             .arg(increment)                                                  // 3
-                             .arg(ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 4
+                             .arg(
+                                 dialog.path(),                                              // 1
+                                 dialog.fileName(),                                          // 2
+                                 increment,                                                  // 3
+                                 ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 4
 
     ExportApparelLayout(dialog, pieceList, name, rect.size());
 }
@@ -1066,7 +1067,7 @@ void MainWindowsNoGUI::convertPdfToPs(const QStringList& params) const
     QFile f(params.last());
     if (f.exists() == false) {
         const QString msg =
-            tr("Creating file '%1' failed! %2").arg(params.last()).arg(proc.errorString());
+            tr("Creating file '%1' failed! %2").arg(params.last(), proc.errorString());
         QMessageBox msgBox(
             QMessageBox::Critical,
             tr("Critical error!"),
@@ -1512,18 +1513,19 @@ void MainWindowsNoGUI::ExportScene(
     const QMarginsF& margins) const
 {
     for (int i = 0; i < scenes.size(); ++i) {
-        QString increment = QStringLiteral("");
+        QString increment;
         QGraphicsRectItem* paper = qgraphicsitem_cast<QGraphicsRectItem*>(papers.at(i));
         if (paper) {
             if (dialog.mode() == Draw::Layout) {
-                increment = QStringLiteral("_0") + QString::number(i + 1);
+                increment = QStringLiteral(u"_0") + QString::number(i + 1);
             }
             const QString name =
                 QString("%1/%2%3%4")
-                    .arg(dialog.path())                                              // 1
-                    .arg(dialog.fileName())                                          // 2
-                    .arg(increment)                                                  // 3
-                    .arg(ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 4
+                    .arg(
+                        dialog.path(),                                              // 1
+                        dialog.fileName(),                                          // 2
+                        increment,                                                  // 3
+                        ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 4
 
             QBrush* brush = new QBrush();
             brush->setColor(QColor(Qt::white));
