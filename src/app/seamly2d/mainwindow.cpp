@@ -1704,7 +1704,7 @@ void MainWindow::updateImage(DraftImage image)
     qCDebug(vMainWindow, "Opacity = %f", image.opacity);
     qCDebug(vMainWindow, "Order = %d\n", static_cast<int>(image.order));
 
-    ImageItem* item = static_cast<ImageItem*>(qApp->getCurrentScene()->focusItem());
+    auto* item = dynamic_cast<ImageItem*>(qApp->getCurrentScene()->focusItem());
     if (item) {
         item->setImage(image);
     }
