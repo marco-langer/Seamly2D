@@ -6065,10 +6065,10 @@ QString MainWindow::createDraftBlockName(const QString& text)
     dialog->resize(300, 100);
     dialog->setTextValue(text);
     QString draftBlockName;
-    while (1) {
+    while (true) {
         const bool result = dialog->exec();
-        draftBlockName = dialog->textValue();
-        if (result == false || draftBlockName.isEmpty()) {
+        draftBlockName = dialog->textValue().trimmed();
+        if (!result || draftBlockName.isEmpty()) {
             delete dialog;
             return QString();
         }
