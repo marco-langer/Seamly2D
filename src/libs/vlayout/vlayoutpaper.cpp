@@ -286,7 +286,12 @@ bool VLayoutPaper::SaveResult(const VBestSquare& bestResult, const VLayoutPiece&
 #ifdef LAYOUT_DEBUG
 #    ifdef SHOW_BEST
         VPosition::DrawDebug(
-            d->globalContour, workDetail, UINT_MAX, d->paperIndex, d->pieces.count(), d->pieces);
+            d->globalContour,
+            workDetail,
+            std::numeric_limits<unsigned int>::max(),
+            d->paperIndex,
+            d->pieces.count(),
+            d->pieces);
 #    endif
 #endif
     }

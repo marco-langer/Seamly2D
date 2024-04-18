@@ -81,7 +81,7 @@
 //---------------------------------------------------------------------------------------------------------------------
 VisToolRotation::VisToolRotation(const VContainer* data, QGraphicsItem* parent)
     : VisOperation(data, parent)
-    , angle(INT_MIN)
+    , angle(std::numeric_limits<int>::min())
     , point(nullptr)
     , angleArc(nullptr)
     , xAxis(nullptr)
@@ -113,7 +113,7 @@ void VisToolRotation::RefreshGeometry()
         DrawPoint(point, static_cast<QPointF>(*origin), supportColor2);
 
         QLineF rLine;
-        if (VFuzzyComparePossibleNulls(angle, INT_MIN)) {
+        if (VFuzzyComparePossibleNulls(angle, std::numeric_limits<int>::min())) {
             rLine = QLineF(static_cast<QPointF>(*origin), Visualization::scenePos);
 
             if (QGuiApplication::keyboardModifiers() == Qt::ShiftModifier) {

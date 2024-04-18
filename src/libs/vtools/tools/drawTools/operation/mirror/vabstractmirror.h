@@ -190,8 +190,8 @@ DestinationItem VAbstractMirror::createItem(
     rotated.setIdObject(idTool);
 
     DestinationItem item;
-    item.mx = INT_MAX;
-    item.my = INT_MAX;
+    item.mx = std::numeric_limits<int>::max();
+    item.my = std::numeric_limits<int>::max();
     item.id = data->AddGObject(new Item(rotated));
     return item;
 }

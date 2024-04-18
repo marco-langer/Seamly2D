@@ -755,7 +755,7 @@ qreal DialogTool::Eval(
     SCASSERT(label != nullptr)
     SCASSERT(labelEditFormula != nullptr)
 
-    qreal result = INT_MIN;   // Value can be 0, so use max imposible value
+    qreal result = std::numeric_limits<int>::min();   // Value can be 0, so use max imposible value
 
     if (text.isEmpty()) {
         flag = false;

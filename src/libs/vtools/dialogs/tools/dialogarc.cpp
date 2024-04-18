@@ -89,8 +89,8 @@ DialogArc::DialogArc(const VContainer* data, const quint32& toolId, QWidget* par
     , formulaBaseHeight(0)
     , formulaBaseHeightF1(0)
     , formulaBaseHeightF2(0)
-    , angleF1(INT_MIN)
-    , angleF2(INT_MIN)
+    , angleF1(std::numeric_limits<int>::min())
+    , angleF2(std::numeric_limits<int>::min())
     , m_arc()
     , m_Id()
     , newDuplicate(-1)
@@ -531,7 +531,8 @@ void DialogArc::EvalF()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArc::CheckAngles()
 {
-    if (static_cast<int>(angleF1) == INT_MIN || static_cast<int>(angleF2) == INT_MIN) {
+    if (static_cast<int>(angleF1) == std::numeric_limits<int>::min()
+        || static_cast<int>(angleF2) == std::numeric_limits<int>::min()) {
         return;
     }
 

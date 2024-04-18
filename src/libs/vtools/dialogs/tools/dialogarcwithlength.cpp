@@ -83,7 +83,7 @@ DialogArcWithLength::DialogArcWithLength(
     , formulaBaseHeightRadius(0)
     , formulaBaseHeightF1(0)
     , formulaBaseHeightLength(0)
-    , angleF1(INT_MIN)
+    , angleF1(std::numeric_limits<int>::min())
     , m_arc()
     , m_Id()
     , newDuplicate(-1)

@@ -52,7 +52,7 @@
 
 #include "vbank.h"
 
-#include <climits>
+#include <limits>
 
 #include "../vmisc/diagnostic.h"
 #include "../vmisc/logging.h"
@@ -246,8 +246,8 @@ void VBank::PrepareGroup()
 //---------------------------------------------------------------------------------------------------------------------
 void VBank::PrepareThreeGroups()
 {
-    qint64 sMax = LLONG_MIN;
-    qint64 sMin = LLONG_MAX;
+    qint64 sMax = std::numeric_limits<qint64>::min();
+    qint64 sMin = std::numeric_limits<qint64>::max();
 
     SqMaxMin(sMax, sMin);
 
@@ -271,8 +271,8 @@ void VBank::PrepareThreeGroups()
 //---------------------------------------------------------------------------------------------------------------------
 void VBank::PrepareTwoGroups()
 {
-    qint64 sMax = LLONG_MIN;
-    qint64 sMin = LLONG_MAX;
+    qint64 sMax = std::numeric_limits<qint64>::min();
+    qint64 sMin = std::numeric_limits<qint64>::max();
 
     SqMaxMin(sMax, sMin);
 
@@ -337,7 +337,7 @@ int VBank::GetNextTwoGroups() const
 int VBank::GetNextDescGroup() const
 {
     int index = -1;
-    qint64 sMax = LLONG_MIN;
+    qint64 sMax = std::numeric_limits<qint64>::min();
 
     QHash<int, qint64>::const_iterator i = big.constBegin();
     while (i != big.constEnd()) {
@@ -355,8 +355,8 @@ int VBank::GetNextDescGroup() const
 //---------------------------------------------------------------------------------------------------------------------
 void VBank::SqMaxMin(qint64& sMax, qint64& sMin) const
 {
-    sMax = LLONG_MIN;
-    sMin = LLONG_MAX;
+    sMax = std::numeric_limits<qint64>::min();
+    sMin = std::numeric_limits<qint64>::max();
 
     QHash<int, qint64>::const_iterator i = unsorted.constBegin();
     while (i != unsorted.constEnd()) {

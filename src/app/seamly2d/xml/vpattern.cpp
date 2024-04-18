@@ -90,6 +90,8 @@
 #include <QUndoStack>
 #include <QtNumeric>
 
+#include <limits>
+
 const QString VPattern::AttrReadOnly = QStringLiteral("readOnly");
 
 namespace {
@@ -3814,7 +3816,7 @@ QString VPattern::GenerateLabel(const LabelType& type, const QString& reservedNa
             if (data->IsUnique(name)) {
                 return name;
             }
-            if (i == INT_MAX) {
+            if (i == std::numeric_limits<int>::max()) {
                 break;
             }
             ++i;
@@ -3832,7 +3834,7 @@ QString VPattern::GenerateLabel(const LabelType& type, const QString& reservedNa
         do {
             name = QString("%1%2").arg(labelBase).arg(num);
             num++;
-            if (num == INT_MAX) {
+            if (num == std::numeric_limits<int>::max()) {
                 break;
             }
         } while (data->IsUnique(name) == false || name == reservedName);
@@ -3865,7 +3867,7 @@ QString VPattern::GenerateSuffix(const QString& type) const
             }
         }
 
-        if (num == INT_MAX) {
+        if (num == std::numeric_limits<int>::max()) {
             break;
         }
         ++num;

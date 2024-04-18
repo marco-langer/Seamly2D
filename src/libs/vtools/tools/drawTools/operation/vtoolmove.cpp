@@ -747,8 +747,8 @@ DestinationItem VToolMove::createItem(
     moved.setIdObject(idTool);
 
     DestinationItem item;
-    item.mx = INT_MAX;
-    item.my = INT_MAX;
+    item.mx = std::numeric_limits<int>::max();
+    item.my = std::numeric_limits<int>::max();
     item.id = data->AddGObject(new Item(moved));
     return item;
 }

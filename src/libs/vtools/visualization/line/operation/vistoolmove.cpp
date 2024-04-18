@@ -88,7 +88,7 @@ VisToolMove::VisToolMove(const VContainer* data, QGraphicsItem* parent)
     : VisOperation(data, parent)
     , angle(0)
     , length(0)
-    , rotationAngle(INT_MIN)
+    , rotationAngle(std::numeric_limits<int>::min())
     , originPointItem(nullptr)
     , rotationOriginPointItem(nullptr)
     , rotationFinishPointItem(nullptr)
@@ -159,7 +159,7 @@ void VisToolMove::RefreshGeometry()
         }
 
         QLineF rotationLine;
-        if (VFuzzyComparePossibleNulls(rotationAngle, INT_MIN)) {
+        if (VFuzzyComparePossibleNulls(rotationAngle, std::numeric_limits<int>::min())) {
             rotationLine = QLineF(m_rotationPoint, Visualization::scenePos);
 
             if (QGuiApplication::keyboardModifiers() == Qt::ShiftModifier) {

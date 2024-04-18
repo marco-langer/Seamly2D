@@ -246,10 +246,10 @@ void VAbstractOperation::ExtractData(
                 if (not element.isNull()) {
                     DestinationItem d;
                     d.id = VDomDocument::GetParametrUInt(element, AttrIdObject, NULL_ID_STR);
-                    d.mx = qApp->toPixel(
-                        VDomDocument::GetParametrDouble(element, AttrMx, QString::number(INT_MAX)));
-                    d.my = qApp->toPixel(
-                        VDomDocument::GetParametrDouble(element, AttrMy, QString::number(INT_MAX)));
+                    d.mx = qApp->toPixel(VDomDocument::GetParametrDouble(
+                        element, AttrMx, QString::number(std::numeric_limits<int>::max())));
+                    d.my = qApp->toPixel(VDomDocument::GetParametrDouble(
+                        element, AttrMy, QString::number(std::numeric_limits<int>::max())));
                     d.showPointName =
                         VDomDocument::getParameterBool(element, AttrShowPointName, trueStr);
                     destination.append(d);
@@ -553,8 +553,9 @@ void VAbstractOperation::SaveSourceDestination(QDomElement& tag)
         QDomElement item = doc->createElement(TagItem);
         doc->SetAttribute(item, AttrIdObject, destinationItem.id);
 
-        if (not VFuzzyComparePossibleNulls(destinationItem.mx, INT_MAX)
-            && not VFuzzyComparePossibleNulls(destinationItem.my, INT_MAX)) {
+        if (not VFuzzyComparePossibleNulls(destinationItem.mx, std::numeric_limits<int>::max())
+            && not VFuzzyComparePossibleNulls(
+                destinationItem.my, std::numeric_limits<int>::max())) {
             doc->SetAttribute(item, AttrMx, qApp->fromPixel(destinationItem.mx));
             doc->SetAttribute(item, AttrMy, qApp->fromPixel(destinationItem.my));
             doc->SetAttribute<bool>(item, AttrShowPointName, destinationItem.showPointName);

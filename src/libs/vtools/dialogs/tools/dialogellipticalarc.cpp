@@ -95,9 +95,9 @@ DialogEllipticalArc::DialogEllipticalArc(
     , formulaBaseHeightF1(0)
     , formulaBaseHeightF2(0)
     , formulaBaseHeightRotationAngle(0)
-    , angleF1(INT_MIN)
-    , angleF2(INT_MIN)
-    , angleRotation(INT_MIN)
+    , angleF1(std::numeric_limits<int>::min())
+    , angleF2(std::numeric_limits<int>::min())
+    , angleRotation(std::numeric_limits<int>::min())
     , m_arc()
     , m_Id()
     , newDuplicate(-1)
@@ -534,7 +534,8 @@ void DialogEllipticalArc::EvalAngles()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogEllipticalArc::CheckAngles()
 {
-    if (static_cast<int>(angleF1) == INT_MIN || static_cast<int>(angleF2) == INT_MIN) {
+    if (static_cast<int>(angleF1) == std::numeric_limits<int>::min()
+        || static_cast<int>(angleF2) == std::numeric_limits<int>::min()) {
         return;
     }
 
