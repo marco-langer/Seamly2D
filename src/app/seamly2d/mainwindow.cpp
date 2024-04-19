@@ -6054,22 +6054,20 @@ void MainWindow::initializeAutoSave()
 //---------------------------------------------------------------------------------------------------------------------
 QString MainWindow::createDraftBlockName(const QString& text)
 {
-    QInputDialog* dialog = new QInputDialog(this);
-    dialog->setInputMode(QInputDialog::TextInput);
-    dialog->setLabelText(tr("Name:"));
-    dialog->setTextEchoMode(QLineEdit::Normal);
-    dialog->setWindowTitle(tr("Draft block."));
-    dialog->setWindowFlags(
+    QInputDialog dialog{ this };
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setLabelText(tr("Name:"));
+    dialog.setWindowTitle(tr("Draft block."));
+    dialog.setWindowFlags(
         windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMaximizeButtonHint
         & ~Qt::WindowMinimizeButtonHint);
-    dialog->resize(300, 100);
-    dialog->setTextValue(text);
+    dialog.resize(300, 100);
+    dialog.setTextValue(text);
     QString draftBlockName;
     while (true) {
-        const bool result = dialog->exec();
-        draftBlockName = dialog->textValue().trimmed();
+        const bool result = dialog.exec();
+        draftBlockName = dialog.textValue().trimmed();
         if (!result || draftBlockName.isEmpty()) {
-            delete dialog;
             return QString();
         }
         if (m_draftBlockComboBox->findText(draftBlockName) == -1) {
@@ -6091,7 +6089,6 @@ QString MainWindow::createDraftBlockName(const QString& text)
         default: break;                               // should never be reached
         }
     }
-    delete dialog;
     return draftBlockName;
 }
 
