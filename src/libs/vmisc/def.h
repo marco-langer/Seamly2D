@@ -695,16 +695,13 @@ void ShowInGraphicalShell(const QString& filePath);
 
 constexpr qreal accuracyPointOnLine = (0.1555 /*mm*/ / 25.4) * 96.0;
 
-[[nodiscard]] static inline bool
-VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accuracyPointOnLine);
 
-static inline bool VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy)
+[[nodiscard]] inline bool VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accuracyPointOnLine)
 {
     return QLineF(p1, p2).length() <= accuracy;
 }
 
-[[nodiscard]] static inline bool VFuzzyComparePossibleNulls(double p1, double p2);
-static inline bool VFuzzyComparePossibleNulls(double p1, double p2)
+[[nodiscard]] inline bool VFuzzyComparePossibleNulls(double p1, double p2)
 {
     if (qFuzzyIsNull(p1)) {
         return qFuzzyIsNull(p2);
@@ -716,7 +713,7 @@ static inline bool VFuzzyComparePossibleNulls(double p1, double p2)
 }
 
 /**
- * @brief The CustomSA struct contains record about custom seam allowanse (SA).
+ * @brief The CustomSA struct contains record about custom seam allowance (SA).
  */
 struct CustomSARecord
 {
