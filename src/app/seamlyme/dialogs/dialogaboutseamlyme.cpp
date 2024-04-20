@@ -83,7 +83,7 @@ DialogAboutSeamlyMe::DialogAboutSeamlyMe(QWidget* parent)
     // mApp->Settings()->getOsSeparator() ? setLocale(QLocale()) : setLocale(QLocale::c());
 
     RetranslateUi();
-    connect(ui->pushButton_Web_Site, &QPushButton::clicked, this, [this]() {
+    connect(ui->pushButton_Web_Site, &QPushButton::clicked, this, []() {
         if (QDesktopServices::openUrl(QUrl(VER_COMPANYDOMAIN_STR)) == false) {
             qWarning() << tr("Cannot open your default browser");
         }
@@ -155,7 +155,7 @@ void DialogAboutSeamlyMe::FontPointSize(QWidget* w, int pointSize)
 void DialogAboutSeamlyMe::RetranslateUi()
 {
     QString revision = BUILD_REVISION;
-    if (BUILD_REVISION == "unknown") {
+    if (revision == "unknown") {
         revision = tr("unknown");
     }
     ui->label_SeamlyMe_Version->setText(QString("SeamlyMe %1").arg(APP_VERSION_STR));
@@ -164,7 +164,7 @@ void DialogAboutSeamlyMe::RetranslateUi()
 
     const QDate date =
         QLocale::c().toDate(QString(__DATE__).simplified(), QLatin1String("MMM d yyyy"));
-    ui->label_SeamlyMe_Built->setText(tr("Built on %1 at %2").arg(date.toString()).arg(__TIME__));
+    ui->label_SeamlyMe_Built->setText(tr("Built on %1 at %2").arg(date.toString(), __TIME__));
 
     ui->label_Legal_Stuff->setText(QApplication::translate(
         "InternalStrings",
