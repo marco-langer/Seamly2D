@@ -64,8 +64,8 @@
 #include <QTextStream>
 #include <QVector>
 #include <QtDebug>
+#include <QtMath>
 
-#include "../vmisc/vmath.h"
 
 class QPaintDevice;
 class QPixmap;

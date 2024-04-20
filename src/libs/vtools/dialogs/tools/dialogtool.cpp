@@ -79,6 +79,7 @@
 #include <QWidget>
 #include <Qt>
 #include <QtDebug>
+#include <QtMath>
 #include <limits.h>
 #include <new>
 #include <qiterator.h>

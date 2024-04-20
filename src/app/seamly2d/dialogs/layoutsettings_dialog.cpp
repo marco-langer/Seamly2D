@@ -48,7 +48,6 @@
 #include "../core/application_2d.h"
 #include "../ifc/xml/vdomdocument.h"
 #include "../vlayout/vlayoutgenerator.h"
-#include "../vmisc/vmath.h"
 #include "../vmisc/vsettings.h"
 #include "../vwidgets/page_format_combobox.h"
 #include "ui_layoutsettings_dialog.h"
@@ -56,6 +55,7 @@
 #include <QMessageBox>
 #include <QPrinterInfo>
 #include <QPushButton>
+#include <QtMath>
 
 //---------------------------------------------------------------------------------------------------------------------
 LayoutSettingsDialog::LayoutSettingsDialog(

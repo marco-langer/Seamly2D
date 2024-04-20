@@ -58,8 +58,8 @@
 #include <QPolygonF>
 #include <QRectF>
 #include <Qt>
+#include <QtMath>
 
-#include "../vmisc/vmath.h"
 #include "vcontour_p.h"
 #include "vlayoutpiece.h"
 

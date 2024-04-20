@@ -68,6 +68,7 @@
 #include <QStringDataPtr>
 #include <QUndoStack>
 #include <Qt>
+#include <QtMath>
 #include <new>
 
 #include "../../../dialogs/tools/dialogsplinepath.h"
@@ -89,7 +90,6 @@
 #include "../vgeometry/vspline.h"
 #include "../vgeometry/vsplinepoint.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/../vgeometry/vsplinepath.h"
 #include "../vwidgets/vcontrolpointspline.h"

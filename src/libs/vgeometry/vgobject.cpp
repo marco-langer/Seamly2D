@@ -57,10 +57,10 @@
 #include <QPointF>
 #include <QRectF>
 #include <QTransform>
+#include <QtMath>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 #include "vgobject_p.h"
 
 const double VGObject::accuracyPointOnLine = (0.1555 /*mm*/ / 25.4) * 96.0;

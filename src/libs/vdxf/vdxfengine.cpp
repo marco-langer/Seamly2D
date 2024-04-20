@@ -44,10 +44,10 @@
 #include <QTextItem>
 #include <Qt>
 #include <QtDebug>
+#include <QtMath>
 
 #include "../vlayout/vlayoutpiece.h"
 #include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 #include "dxiface.h"
 
 static const qreal AAMATextHeight = 2.5;

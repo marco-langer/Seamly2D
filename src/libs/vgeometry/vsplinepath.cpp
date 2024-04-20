@@ -54,7 +54,6 @@
 #include <QPoint>
 
 #include "../ifc/exception/vexception.h"
-#include "../vmisc/vmath.h"
 #include "vabstractcurve.h"
 #include "vsplinepath_p.h"
 

@@ -51,13 +51,13 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QtDebug>
+#include <QtMath>
 #include <map>
 #ifdef QMUP_USE_OPENMP
 #    include <omp.h>
 #endif
 #include <assert.h>
 
-#include "../vmisc/vmath.h"
 #include "qmudef.h"
 
 /**

@@ -73,13 +73,13 @@
 #include <QTransform>
 #include <QWheelEvent>
 #include <QWidget>
+#include <QtMath>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
-#include "../vmisc/vmath.h"
 #include "../vmisc/vsettings.h"
 #include "vabstractmainwindow.h"
 #include "vmaingraphicsscene.h"

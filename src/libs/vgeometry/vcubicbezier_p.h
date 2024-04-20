@@ -56,7 +56,6 @@
 #include <QSharedData>
 
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "vpointf.h"
 
 QT_WARNING_PUSH

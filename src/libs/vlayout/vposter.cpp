@@ -62,9 +62,10 @@
 #include <QString>
 #include <QVector>
 #include <Qt>
+#include <QtMath>
 
 #include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
+
 
 //---------------------------------------------------------------------------------------------------------------------
 VPoster::VPoster(const QPrinter* printer)

@@ -66,12 +66,12 @@
 #include <QTransform>
 #include <Qt>
 #include <QtDebug>
+#include <QtMath>
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/calculator.h"
 #include "../vpatterndb/floatItemData/vpatternlabeldata.h"
 #include "../vpatterndb/floatItemData/vpiecelabeldata.h"

@@ -50,9 +50,9 @@
  *************************************************************************/
 
 #include "vpieceitem.h"
-#include "../vmisc/vmath.h"
 
 #include <QGraphicsScene>
+#include <QtMath>
 
 //---------------------------------------------------------------------------------------------------------------------
 VPieceItem::VPieceItem(QGraphicsItem* pParent)

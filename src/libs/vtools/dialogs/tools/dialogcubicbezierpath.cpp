@@ -72,7 +72,6 @@
 #include "../../visualization/visualization.h"
 #include "../ifc/ifcdef.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vabstractmainwindow.h"
 #include "dialogtool.h"

@@ -31,11 +31,11 @@
 #include <QLineF>
 #include <QPainterPath>
 #include <QPoint>
+#include <QtMath>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "vabstractcurve.h"
 #include "vellipticalarc_p.h"
 #include "vspline.h"

@@ -64,7 +64,6 @@
 #include <QtDebug>
 
 #include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 
 Q_DECLARE_METATYPE(QMarginsF)
 

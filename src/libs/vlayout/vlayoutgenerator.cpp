@@ -54,9 +54,9 @@
 #include <QGraphicsRectItem>
 #include <QRectF>
 #include <QThreadPool>
+#include <QtMath>
 
 #include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 #include "vlayoutpaper.h"
 #include "vlayoutpiece.h"
 

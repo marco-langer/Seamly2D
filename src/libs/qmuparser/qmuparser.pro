@@ -31,5 +31,3 @@ OBJECTS_DIR = obj
 include(qmuparser.pri)
 
 include(warnings.pri)
-
-include (../libs.pri)

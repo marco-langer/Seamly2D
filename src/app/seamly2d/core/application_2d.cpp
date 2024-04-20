@@ -61,7 +61,6 @@
 #include "../qmuparser/qmuparsererror.h"
 #include "../version.h"
 #include "../vmisc/logging.h"
-#include "../vmisc/vmath.h"
 #include "../vwidgets/vmaingraphicsview.h"
 
 #include <QDateTime>

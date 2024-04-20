@@ -36,6 +36,7 @@
 #include <QTypeInfo>
 #include <QVector>
 #include <QtGlobal>
+#include <QtMath>
 #include <qcompilerdetection.h>
 
 #include "vabstractarc.h"

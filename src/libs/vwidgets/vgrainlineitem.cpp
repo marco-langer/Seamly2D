@@ -35,11 +35,11 @@
 #include <QGraphicsView>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <QtMath>
 
 #include "../vmisc/def.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
-#include "../vmisc/vmath.h"
 
 #include "vgrainlineitem.h"
 

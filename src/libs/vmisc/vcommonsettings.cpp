@@ -68,7 +68,6 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/pmsystems.h"
 
 namespace {

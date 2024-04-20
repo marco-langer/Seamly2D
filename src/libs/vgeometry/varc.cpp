@@ -53,10 +53,10 @@
 
 #include <QLineF>
 #include <QPointF>
+#include <QtMath>
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
-#include "../vmisc/vmath.h"
 #include "vabstractcurve.h"
 #include "varc_p.h"
 #include "vspline.h"
@@ -470,7 +470,7 @@ void VArc::FindF2(qreal length)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VArc::MaxLength() const { return M_2PI * d->radius; }
+qreal VArc::MaxLength() const { return 2 * M_PI * d->radius; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

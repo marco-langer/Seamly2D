@@ -19,7 +19,6 @@ HEADERS += \
     $$PWD/stable.h \
     $$PWD/def.h \
     $$PWD/logging.h \
-    $$PWD/vmath.h \
     $$PWD/vsettings.h \
     $$PWD/vabstractapplication.h \
     $$PWD/projectversion.h \

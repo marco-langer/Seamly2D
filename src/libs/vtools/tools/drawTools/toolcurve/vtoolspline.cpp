@@ -68,6 +68,7 @@
 #include <QUndoStack>
 #include <QVector>
 #include <Qt>
+#include <QtMath>
 #include <new>
 
 #include "../../../dialogs/tools/dialogspline.h"
@@ -85,7 +86,6 @@
 #include "../vgeometry/vpointf.h"
 #include "../vgeometry/vspline.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vcontrolpointspline.h"
 #include "../vwidgets/vmaingraphicsscene.h"

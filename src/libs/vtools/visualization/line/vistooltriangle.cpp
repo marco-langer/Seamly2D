@@ -64,7 +64,6 @@
 #include "../vgeometry/vpointf.h"
 #include "../visualization.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/vcontainer.h"
 #include "visline.h"
 

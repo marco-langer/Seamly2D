@@ -50,9 +50,9 @@
 #include <QStack>
 #include <QString>
 #include <QtDebug>
+#include <QtMath>
 #include <assert.h>
 
-#include "../vmisc/vmath.h"
 #include "qmudef.h"
 #include "qmuparsererror.h"
 

@@ -33,10 +33,10 @@
 #include <QFontMetrics>
 #include <QLatin1String>
 #include <QRegularExpression>
+#include <QtMath>
 
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/floatItemData/vpiecelabeldata.h"
 #include "../vpatterndb/vcontainer.h"
 #include "vtextmanager.h"

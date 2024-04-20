@@ -35,11 +35,11 @@
 #include <QGuiApplication>
 #include <QPen>
 #include <QRectF>
+#include <QtMath>
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vgobject.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "../vpatterndb/vcontainer.h"
 
 //---------------------------------------------------------------------------------------------------------------------

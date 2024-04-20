@@ -68,7 +68,6 @@
 #include "../vmisc/customevents.h"
 #include "../vmisc/projectversion.h"
 #include "../vmisc/vabstractapplication.h"
-#include "../vmisc/vmath.h"
 #include "../vmisc/vsettings.h"
 #include "../vpatterndb/calculator.h"
 #include "../vpatterndb/floatItemData/vgrainlinedata.h"

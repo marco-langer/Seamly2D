@@ -61,7 +61,6 @@
 #include <string>
 #include <utility>
 
-#include "../vmisc/vmath.h"
 #include "qmudef.h"
 #include "qmuparser.h"
 #include "qmuparsererror.h"

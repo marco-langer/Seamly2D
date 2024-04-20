@@ -27,10 +27,10 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QtGlobal>
+#include <QtMath>
 #include <sstream>
 #include <string>
 
-#include "../vmisc/vmath.h"
 #include "qmuparserdef.h"
 #include "qmuparsererror.h"
 

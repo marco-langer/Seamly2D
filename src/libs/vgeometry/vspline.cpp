@@ -53,7 +53,6 @@
 
 #include <QLineF>
 
-#include "../vmisc/vmath.h"
 #include "vabstractcurve.h"
 #include "vspline_p.h"
 
@@ -302,7 +301,7 @@ QVector<QPointF> VSpline::SplinePoints(
     p1pX.setAngle(angle1);
     qreal L = 0, radius = 0, angle = 90;
     radius = QLineF(QPointF(p1.x(), p4.y()), p4).length();
-    L = kCurve * radius * 4 / 3 * tan(angle * M_PI_4 / 180.0);
+    L = kCurve * radius * 4 / 3 * tan(angle * (M_PI / 4) / 180.0);
     QLineF p1p2(p1.x(), p1.y(), p1.x() + L * kAsm1, p1.y());
     p1p2.setAngle(angle1);
     QLineF p4p3(p4.x(), p4.y(), p4.x() + L * kAsm2, p4.y());
@@ -493,8 +492,8 @@ qint32 VSpline::Cubic(QVector<qreal>& x, qreal a, qreal b, qreal c)
     if (pow(r, 2) < pow(q, 3)) {   // equation has three real roots, use formula Vieta
         const qreal t = acos(r / sqrt(pow(q, 3))) / 3.;
         x.insert(0, -2. * sqrt(q) * cos(t) - a / 3);
-        x.insert(1, -2. * sqrt(q) * cos(t + (2 * M_2PI / 3.)) - a / 3.);
-        x.insert(2, -2. * sqrt(q) * cos(t - (2 * M_2PI / 3.)) - a / 3.);
+        x.insert(1, -2. * sqrt(q) * cos(t + (4 * M_PI / 3.)) - a / 3.);
+        x.insert(2, -2. * sqrt(q) * cos(t - (4 * M_PI / 3.)) - a / 3.);
         return (3);
     } else {   // 1 real root + 2 complex
         // Formula Cardano

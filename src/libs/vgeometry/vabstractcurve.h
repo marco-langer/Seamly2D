@@ -56,7 +56,6 @@
 #include <qcompilerdetection.h>
 
 #include "../ifc/ifcdef.h"
-#include "../vmisc/vmath.h"
 #include "vgeometrydef.h"
 #include "vgobject.h"
 

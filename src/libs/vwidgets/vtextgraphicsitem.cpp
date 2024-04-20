@@ -39,11 +39,11 @@
 #include <QPoint>
 #include <QStyleOptionGraphicsItem>
 #include <Qt>
+#include <QtMath>
 
 #include "../vmisc/def.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
-#include "../vmisc/vmath.h"
 #include "vtextgraphicsitem.h"
 
 const qreal resizeSquare = (3. /*mm*/ / 25.4) * PrintDPI;
