@@ -40,7 +40,6 @@
 #include <QList>
 #include <QTextStream>
 
-#include "../vmisc/diagnostic.h"
 
 class QxtCsvModelPrivate : public QxtPrivate<QxtCsvModel>
 {

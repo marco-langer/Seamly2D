@@ -67,7 +67,6 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/logging.h"
 
 class QDomElement;

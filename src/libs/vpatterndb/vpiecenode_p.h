@@ -54,7 +54,6 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vmisc/def.h"
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
 #include <QDataStream>

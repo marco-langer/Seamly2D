@@ -23,7 +23,6 @@
 
 // ONLY INCLUDE THIS IN .CPP FILES
 
-#include "../vmisc/diagnostic.h"
 #include "vproperty_p.h"
 
 #include <QPointer>

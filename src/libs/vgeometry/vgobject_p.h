@@ -53,7 +53,6 @@
 #define VGOBJECT_P_H
 
 #include "../ifc/ifcdef.h"
-#include "../vmisc/diagnostic.h"
 #include "vgeometrydef.h"
 #include <QSharedData>
 

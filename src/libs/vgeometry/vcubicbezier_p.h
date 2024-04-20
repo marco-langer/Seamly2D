@@ -55,7 +55,6 @@
 #include <QLineF>
 #include <QSharedData>
 
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vmath.h"
 #include "vpointf.h"

@@ -52,9 +52,10 @@
 #ifndef VARCRADIUSDATA_H
 #define VARCRADIUSDATA_H
 
+#include "../ifc/ifcdef.h"
+
 #include <QSharedData>
 
-#include "../vmisc/diagnostic.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")

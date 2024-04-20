@@ -57,8 +57,6 @@
 #include <memory>
 #include <stdint.h>
 
-#include "../vmisc/diagnostic.h"
-
 #include <QFileInfo>
 #include <QLockFile>
 #if defined(Q_OS_WIN)

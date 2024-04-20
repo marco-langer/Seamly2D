@@ -52,7 +52,6 @@
 #ifndef VABSTRACTARC_P_H
 #define VABSTRACTARC_P_H
 
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vabstractapplication.h"
 #include "vgeometrydef.h"
 #include "vpointf.h"

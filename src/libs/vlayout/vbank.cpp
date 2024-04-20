@@ -54,7 +54,6 @@
 
 #include <limits>
 
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/logging.h"
 #include "vlayoutpiece.h"
 

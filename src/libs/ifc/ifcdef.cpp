@@ -65,8 +65,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
-#include "../vmisc/diagnostic.h"
-
 const QString CustomMSign = QStringLiteral("@");
 const QString CustomIncrSign = QStringLiteral("#");
 

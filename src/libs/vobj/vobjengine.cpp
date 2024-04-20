@@ -65,7 +65,6 @@
 #include <QVector>
 #include <QtDebug>
 
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vmath.h"
 
 class QPaintDevice;

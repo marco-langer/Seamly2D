@@ -52,7 +52,6 @@
 #ifndef VPOINTF_P_H
 #define VPOINTF_P_H
 
-#include "../vmisc/diagnostic.h"
 #include "vgeometrydef.h"
 #include <QPointF>
 #include <QSharedData>

@@ -56,7 +56,6 @@
 #include <QSharedData>
 #include <QVector>
 
-#include "../vmisc/diagnostic.h"
 #include "vpiecenode.h"
 
 QT_WARNING_PUSH

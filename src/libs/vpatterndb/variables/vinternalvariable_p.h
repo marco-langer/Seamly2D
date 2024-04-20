@@ -53,7 +53,7 @@
 #define VINTERNALVARIABLE_P_H
 
 #include "../vmisc/def.h"
-#include "../vmisc/diagnostic.h"
+
 #include <QSharedData>
 
 QT_WARNING_PUSH

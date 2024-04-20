@@ -54,7 +54,6 @@
 
 #include <QSharedData>
 
-#include "../vmisc/diagnostic.h"
 #include "vpointf.h"
 
 QT_WARNING_PUSH

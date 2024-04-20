@@ -107,8 +107,6 @@
 
 #include <QtGlobal>
 
-#include "../vmisc/diagnostic.h"
-
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_MSVC(4701)
 QT_WARNING_DISABLE_GCC("-Wold-style-cast")

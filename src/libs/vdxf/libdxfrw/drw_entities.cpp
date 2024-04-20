@@ -11,7 +11,6 @@
 ******************************************************************************/
 
 #include "drw_entities.h"
-#include "../vmisc/diagnostic.h"
 #include "intern/drw_dbg.h"
 #include "intern/dxfreader.h"
 #include <cstdlib>

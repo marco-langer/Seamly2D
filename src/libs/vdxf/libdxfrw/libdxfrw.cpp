@@ -12,7 +12,6 @@
 
 
 #include "libdxfrw.h"
-#include "../vmisc/diagnostic.h"
 #include "intern/drw_dbg.h"
 #include "intern/drw_textcodec.h"
 #include "intern/dxfreader.h"

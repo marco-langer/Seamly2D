@@ -21,7 +21,6 @@
 #ifndef VABSTRACTPROPERTYFACTORY_H
 #define VABSTRACTPROPERTYFACTORY_H
 
-#include "../vmisc/diagnostic.h"
 #include <QObject>
 
 namespace VPE {

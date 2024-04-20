@@ -53,7 +53,7 @@
 #define VNODEDETAIL_P_H
 
 #include "../ifc/ifcdef.h"
-#include "../vmisc/diagnostic.h"
+
 #include <QSharedData>
 
 QT_WARNING_PUSH

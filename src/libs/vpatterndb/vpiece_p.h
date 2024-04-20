@@ -56,7 +56,6 @@
 #include <QVector>
 
 #include "../vmisc/def.h"
-#include "../vmisc/diagnostic.h"
 #include "floatItemData/vgrainlinedata.h"
 #include "floatItemData/vpatternlabeldata.h"
 #include "floatItemData/vpiecelabeldata.h"

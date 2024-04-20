@@ -56,7 +56,6 @@
 #include <QSharedData>
 #include <QVector>
 
-#include "../vmisc/diagnostic.h"
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")

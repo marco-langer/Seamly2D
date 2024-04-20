@@ -23,7 +23,6 @@
 
 // ONLY INCLUDE THIS IN .CPP FILES
 
-#include "../vmisc/diagnostic.h"
 #include "vproperty.h"
 #include <QList>
 
@@ -31,6 +30,8 @@ namespace VPE {
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wweak-vtables")
+
+class VPropertyFormWidget;
 
 class VPropertyFormWidgetPrivate
 {

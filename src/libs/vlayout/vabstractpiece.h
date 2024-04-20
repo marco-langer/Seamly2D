@@ -59,7 +59,7 @@
 
 #include "../vgeometry/vgobject.h"
 #include "../vmisc/def.h"
-#include "../vmisc/diagnostic.h"
+
 
 template <class T>
 class QVector;

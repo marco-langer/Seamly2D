@@ -59,7 +59,6 @@
 #include "../vgeometry/vellipticalarc.h"
 #include "../vgeometry/vpointf.h"
 #include "../vgeometry/vsplinepath.h"
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/toolcut/vtoolcutarc.h"
 #include "../vtools/tools/drawTools/toolpoint/toolsinglepoint/toolcut/vtoolcutspline.h"

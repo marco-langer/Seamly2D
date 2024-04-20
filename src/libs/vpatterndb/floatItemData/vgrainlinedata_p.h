@@ -33,7 +33,6 @@
 #include <QSharedData>
 
 #include "../ifc/ifcdef.h"
-#include "../vmisc/diagnostic.h"
 #include "floatitemdef.h"
 
 QT_WARNING_PUSH

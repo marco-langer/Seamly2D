@@ -23,7 +23,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../vmisc/diagnostic.h"
 #include "delaunay.h"
 
 QT_WARNING_PUSH

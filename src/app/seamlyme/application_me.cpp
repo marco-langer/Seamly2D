@@ -57,7 +57,6 @@
 #include "../ifc/exception/vexceptionobjecterror.h"
 #include "../ifc/exception/vexceptionwrongid.h"
 #include "../qmuparser/qmuparsererror.h"
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vsysexits.h"
 #include "tmainwindow.h"

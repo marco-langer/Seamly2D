@@ -47,7 +47,6 @@
 
 #include "../vlayout/vlayoutpiece.h"
 #include "../vmisc/def.h"
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vmath.h"
 #include "dxiface.h"
 

@@ -1,7 +1,6 @@
 #ifndef VELLIPTICALARC_P
 #define VELLIPTICALARC_P
 
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vabstractapplication.h"
 #include "vpointf.h"
 #include <QSharedData>

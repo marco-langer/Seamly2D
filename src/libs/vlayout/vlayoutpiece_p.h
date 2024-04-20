@@ -58,7 +58,6 @@
 #include <QTransform>
 #include <QVector>
 
-#include "../vmisc/diagnostic.h"
 #include "../vpatterndb/floatItemData/vgrainlinedata.h"
 #include "../vpatterndb/floatItemData/vpatternlabeldata.h"
 #include "../vpatterndb/floatItemData/vpiecelabeldata.h"

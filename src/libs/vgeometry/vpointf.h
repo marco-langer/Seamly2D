@@ -59,7 +59,6 @@
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
-#include "../vmisc/diagnostic.h"
 #include "vgeometrydef.h"
 #include "vgobject.h"
 

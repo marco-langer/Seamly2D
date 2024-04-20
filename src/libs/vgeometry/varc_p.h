@@ -52,7 +52,6 @@
 #ifndef VARC_P_H
 #define VARC_P_H
 
-#include "../vmisc/diagnostic.h"
 #include "../vmisc/vabstractapplication.h"
 #include "vgeometrydef.h"
 #include <QSharedData>
