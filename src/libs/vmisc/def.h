@@ -696,7 +696,8 @@ void ShowInGraphicalShell(const QString& filePath);
 constexpr qreal accuracyPointOnLine = (0.1555 /*mm*/ / 25.4) * 96.0;
 
 
-[[nodiscard]] inline bool VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accuracyPointOnLine)
+[[nodiscard]] inline bool
+VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accuracyPointOnLine)
 {
     return QLineF(p1, p2).length() <= accuracy;
 }
@@ -817,16 +818,5 @@ inline QSet<T> convertToSet(const C& list)
 {
     return QSet<T>(list.begin(), list.end());
 }
-
-/*
-    Convert to a QList
-*/
-//---------------------------------------------------------------------------------------------------------------------
-template <typename T, template <typename> class C>
-inline QList<T> convertToList(const C<T>& set)
-{
-    return QList<T>(set.begin(), set.end());
-}
-
 
 #endif   // DEF_H
