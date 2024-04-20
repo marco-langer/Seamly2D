@@ -40,9 +40,9 @@
 #include "../vmisc/vsysexits.h"
 
 class VCommandLine;
-typedef std::shared_ptr<VCommandLine> VCommandLinePtr;
-typedef QList<QCommandLineOption*> VCommandLineOptions;
-typedef std::shared_ptr<VLayoutGenerator> VLayoutGeneratorPtr;
+using VCommandLinePtr = std::shared_ptr<VCommandLine>;
+using VCommandLineOptions = QList<QCommandLineOption*>;
+using VLayoutGeneratorPtr = std::shared_ptr<VLayoutGenerator>;
 
 //@brief: class used to install export command line options and parse their values
 // QCommandLineParser* object must exists until this object alive

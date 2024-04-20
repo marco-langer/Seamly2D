@@ -60,7 +60,7 @@
 #include "vgeometrydef.h"
 #include "vgobject.h"
 
-typedef QPair<QLineF, QLineF> DirectionArrow;
+using DirectionArrow = QPair<QLineF, QLineF>;
 
 class QPainterPath;
 class VAbstractCurveData;
