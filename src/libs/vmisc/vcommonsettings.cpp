@@ -67,8 +67,8 @@
 #include <QtDebug>
 
 #include "../ifc/ifcdef.h"
-#include "../vmisc/def.h"
 #include "../vpatterndb/pmsystems.h"
+#include "def.h"
 
 namespace {
 const QString settingImagesPath = QStringLiteral("paths/images");

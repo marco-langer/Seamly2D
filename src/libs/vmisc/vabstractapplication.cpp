@@ -62,8 +62,8 @@
 #include <Qt>
 #include <QtDebug>
 
-#include "../vmisc/def.h"
-#include "../vmisc/logging.h"
+#include "def.h"
+#include "logging.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractApplication::VAbstractApplication(int& argc, char** argv)

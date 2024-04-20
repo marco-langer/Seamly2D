@@ -60,7 +60,7 @@
 #include <QtGlobal>
 
 #include "../vlayout/vbank.h"
-#include "../vmisc/def.h"
+#include "def.h"
 #include "vcommonsettings.h"
 
 template <class T>

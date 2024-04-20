@@ -63,7 +63,7 @@
 #include <QVariant>
 #include <QtDebug>
 
-#include "../vmisc/def.h"
+#include "def.h"
 
 Q_DECLARE_METATYPE(QMarginsF)
 

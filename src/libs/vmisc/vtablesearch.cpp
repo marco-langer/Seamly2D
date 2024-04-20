@@ -56,7 +56,7 @@
 #include <QTableWidgetItem>
 #include <Qt>
 
-#include "../vmisc/def.h"
+#include "def.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 VTableSearch::VTableSearch(QTableWidget* table, QObject* parent)

@@ -63,7 +63,6 @@
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
-#include "../vmisc/def.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vtranslatevars.h"
 #include "def.h"
