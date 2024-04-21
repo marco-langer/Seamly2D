@@ -119,27 +119,27 @@ void MultiSizeConverter::applyPatches()
     case (0x000300):
         convertToVer0_4_0();
         ValidateXML(getSchema(0x000400), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000400):
         convertToVer0_4_1();
         ValidateXML(getSchema(0x000401), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000401):
         convertToVer0_4_2();
         ValidateXML(getSchema(0x000402), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000402):
         convertToVer0_4_3();
         ValidateXML(getSchema(0x000403), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000403):
         convertToVer0_4_4();
         ValidateXML(getSchema(0x000404), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000404):
         convertToVer0_4_5();
         ValidateXML(getSchema(0x000405), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000405): break;
     default: InvalidVersion(m_ver); break;
     }

@@ -118,23 +118,23 @@ void IndividualSizeConverter::applyPatches()
     case (0x000200):
         convertToVer0_3_0();
         ValidateXML(getSchema(0x000300), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000300):
         convertToVer0_3_1();
         ValidateXML(getSchema(0x000301), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000301):
         convertToVer0_3_2();
         ValidateXML(getSchema(0x000302), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000302):
         convertToVer0_3_3();
         ValidateXML(getSchema(0x000303), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000303):
         convertToVer0_3_4();
         ValidateXML(getSchema(0x000304), m_convertedFileName);
-        V_FALLTHROUGH
+        [[fallthrough]];
     case (0x000304): break;
     default: InvalidVersion(m_ver); break;
     }

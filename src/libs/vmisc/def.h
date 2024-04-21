@@ -498,27 +498,6 @@ enum class GSizes : unsigned char
  */
 #define QIMAGE_MAX 32768
 
-#ifndef __has_cpp_attribute
-#    define __has_cpp_attribute(x) 0
-#endif
-
-#if __cplusplus > 201402L && __has_cpp_attribute(fallthrough)
-#    define V_FALLTHROUGH [[fallthrough]];
-#elif defined(Q_CC_CLANG) && __cplusplus >= 201103L
-/* clang's fallthrough annotations are only available starting in C++11. */
-#    define V_FALLTHROUGH [[clang::fallthrough]];
-#elif defined(Q_CC_MSVC)
-/*
- * MSVC's __fallthrough annotations are checked by /analyze (Code Analysis):
- * https://msdn.microsoft.com/en-us/library/ms235402%28VS.80%29.aspx
- */
-#    include <sal.h>
-#    define V_FALLTHROUGH __fallthrough;
-#elif defined(Q_CC_GNU) && (__GNUC__ >= 7)
-#    define V_FALLTHROUGH [[gnu::fallthrough]];
-#else
-#    define V_FALLTHROUGH
-#endif
 
 extern const QString LONG_OPTION_NO_HDPI_SCALING;
 bool IsOptionSet(int argc, char* argv[], const char* option);
