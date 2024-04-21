@@ -45,7 +45,6 @@
 #    include <windows.h>
 #endif /* Q_OS_WIN */
 
-#include "debugbreak.h"
 
 template <class T>
 class QSharedPointer;
@@ -498,35 +497,6 @@ enum class GSizes : unsigned char
  * QImage's.
  */
 #define QIMAGE_MAX 32768
-
-/*
- * This macros SCASSERT (for Stop and Continue Assert) will break into the debugger on the line of
- * the assert and allow you to continue afterwards should you choose to. idea: Q_ASSERT no longer
- * pauses debugger - http://qt-project.org/forums/viewthread/13148 Usefull links:
- * 1. What's the difference between __PRETTY_FUNCTION__, __FUNCTION__, __func__? -
- *    https://stackoverflow.com/questions/4384765/whats-the-difference-between-pretty-function-function-func
- *
- * 2. Windows Predefined Macros - http://msdn.microsoft.com/library/b0084kay.aspx
- *
- * 3. Windows DebugBreak function - http://msdn.microsoft.com/en-us/library/ms679297%28VS.85%29.aspx
- *
- * 4. Continue to debug after failed assertion on Linux? [C/C++] -
- * https://stackoverflow.com/questions/1721543/continue-to-debug-after-failed-assertion-on-linux-c-c
- */
-#ifndef V_NO_ASSERT
-
-#    define SCASSERT(cond)                                                                     \
-        {                                                                                      \
-            if (!(cond)) {                                                                     \
-                qCritical("ASSERT: %s in %s (%s:%u)", #cond, Q_FUNC_INFO, __FILE__, __LINE__); \
-                debug_break();                                                                 \
-                abort();                                                                       \
-            }                                                                                  \
-        }
-
-#else   // define but disable this function if debugging is not set
-#    define SCASSERT(cond) qt_noop();
-#endif /* V_NO_ASSERT */
 
 #ifndef __has_cpp_attribute
 #    define __has_cpp_attribute(x) 0

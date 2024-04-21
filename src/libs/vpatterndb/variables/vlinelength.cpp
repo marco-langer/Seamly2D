@@ -58,6 +58,7 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
+#include "../vmisc/scassert.h"
 #include "vinternalvariable.h"
 #include "vlinelength_p.h"
 

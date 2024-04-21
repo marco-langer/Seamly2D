@@ -16,6 +16,7 @@ SOURCES += \
 *msvc*:SOURCES += $$PWD/stable.cpp
 
 HEADERS += \
+    $$PWD/scassert.h \
     $$PWD/stable.h \
     $$PWD/def.h \
     $$PWD/logging.h \

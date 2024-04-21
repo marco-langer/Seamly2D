@@ -57,7 +57,7 @@
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vspline.h"
-#include "../vmisc/def.h"
+#include "../vmisc/scassert.h"
 #include "vcurvevariable.h"
 
 //---------------------------------------------------------------------------------------------------------------------

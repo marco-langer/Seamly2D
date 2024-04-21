@@ -65,6 +65,7 @@
 #include "../ifc/exception/vexceptionbadid.h"
 #include "../ifc/ifcdef.h"
 #include "../qmuparser/qmutokenparser.h"
+#include "../vmisc/scassert.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vpatterndb/vpiecenode.h"

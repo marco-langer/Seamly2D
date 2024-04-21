@@ -72,7 +72,7 @@
 #include "../vgeometry/vabstractcubicbezierpath.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vgobject.h"
-#include "../vmisc/def.h"
+#include "../vmisc/scassert.h"
 #include "variables.h"
 #include "variables/vinternalvariable.h"
 #include "vpiece.h"

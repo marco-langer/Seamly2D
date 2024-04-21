@@ -65,7 +65,7 @@
 #include <QWidget>
 #include <Qt>
 
-#include "../vmisc/def.h"
+#include "../vmisc/scassert.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 VWidgetPopup::VWidgetPopup(QWidget* parent)

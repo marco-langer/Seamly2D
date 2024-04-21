@@ -64,6 +64,7 @@
 
 #include "def.h"
 #include "logging.h"
+#include "scassert.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractApplication::VAbstractApplication(int& argc, char** argv)

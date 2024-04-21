@@ -63,6 +63,7 @@
 #include "../exception/vexceptionwrongid.h"
 #include "../ifcdef.h"
 #include "../vmisc/logging.h"
+#include "../vmisc/scassert.h"
 
 #include <QAbstractMessageHandler>
 #include <QByteArray>

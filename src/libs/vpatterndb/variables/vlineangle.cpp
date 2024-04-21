@@ -59,7 +59,7 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
-#include "../vmisc/def.h"
+#include "../vmisc/scassert.h"
 #include "vinternalvariable.h"
 #include "vlineangle_p.h"
 

@@ -76,6 +76,7 @@
 #include "../qmuparser/qmuparsererror.h"
 #include "../qmuparser/qmutokenparser.h"
 #include "../vmisc/projectversion.h"
+#include "../vmisc/scassert.h"
 #include "../vpatterndb/calculator.h"
 #include "../vpatterndb/measurements_def.h"
 #include "../vpatterndb/pmsystems.h"

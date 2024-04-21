@@ -57,6 +57,7 @@
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/varc.h"
 #include "../vgeometry/vellipticalarc.h"
+#include "../vmisc/scassert.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 VArcRadius::VArcRadius()

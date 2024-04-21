@@ -51,6 +51,7 @@
 
 #include "global.h"
 #include "../vmisc/def.h"
+#include "../vmisc/scassert.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsScene>

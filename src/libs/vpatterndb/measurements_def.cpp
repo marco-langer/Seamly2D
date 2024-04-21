@@ -54,7 +54,7 @@
  *************************************************************************/
 
 #include "measurements_def.h"
-#include "../vmisc/def.h"
+#include "../vmisc/scassert.h"
 #include "vtranslatemeasurements.h"
 
 // Keep synchronize all names with initialization in VTranslateVars class!!!!!

@@ -56,7 +56,7 @@
 #include "dialogaboutseamlyme.h"
 #include "../fervor/fvupdater.h"
 #include "../version.h"
-#include "../vmisc/def.h"
+#include "../vmisc/scassert.h"
 #include "ui_dialogaboutseamlyme.h"
 
 #include <QDate>
