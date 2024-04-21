@@ -17,7 +17,7 @@ TARGET = fervor
 # We want to create a library
 TEMPLATE = lib
 
-CONFIG += staticlib
+CONFIG += staticlib c++17
 
 include(fervor.pri)
 

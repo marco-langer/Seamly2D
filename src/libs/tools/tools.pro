@@ -18,7 +18,7 @@ TEMPLATE = lib
 
 CONFIG += \
     staticlib \# Making static library
-    c++11 # We use C++11 standard
+    c++17
 
 # Use out-of-source builds (shadow builds)
 CONFIG -= debug_and_release debug_and_release_target

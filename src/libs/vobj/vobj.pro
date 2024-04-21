@@ -14,7 +14,7 @@ TARGET = vobj
 # We want create a library
 TEMPLATE = lib
 
-CONFIG += staticlib
+CONFIG += staticlib c++17
 
 include(vobj.pri)
 

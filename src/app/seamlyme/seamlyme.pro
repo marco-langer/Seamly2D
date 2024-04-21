@@ -113,6 +113,7 @@ OTHER_FILES += \
 
 include(warnings.pri)
 
+CONFIG += c++17
 # precompiled headers clash with the BUILD_REVISION define, thus disable here
 CONFIG -= precompile_header
 

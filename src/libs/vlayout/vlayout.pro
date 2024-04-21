@@ -16,7 +16,7 @@ TARGET = vlayout
 # We want create library
 TEMPLATE = lib
 
-CONFIG += staticlib
+CONFIG += staticlib c++17
 
 include(vlayout.pri)
 

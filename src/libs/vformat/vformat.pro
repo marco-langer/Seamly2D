@@ -20,7 +20,7 @@ TARGET = vformat
 # We want create a library
 TEMPLATE = lib
 
-CONFIG += staticlib
+CONFIG += staticlib c++17
 
 include(vformat.pri)
 

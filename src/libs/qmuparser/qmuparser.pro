@@ -17,7 +17,7 @@ TARGET = qmuparser
 # We want create a library
 TEMPLATE = lib
 
-CONFIG += staticlib
+CONFIG += staticlib c++17
 
 # directory for executable file
 DESTDIR = bin

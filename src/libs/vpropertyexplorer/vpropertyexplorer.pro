@@ -20,7 +20,7 @@ TARGET = vpropertyexplorer
 # We want create library
 TEMPLATE = lib
 
-CONFIG += staticlib
+CONFIG += staticlib c++17
 
 # directory for executable file
 DESTDIR = bin
