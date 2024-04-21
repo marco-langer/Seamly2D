@@ -955,7 +955,6 @@ void VPatternConverter::toVersion0_6_1()
     QStringList oldnames = QStringList() << strPassmark << strPassmarkLine << strPassmarkAngle
                                          << strShowSecondPassmark << strTypeLine << strPenStyle;
 
-    QString newName = "";
     qint32 index = 0;
 
     for (int i = 0; i < nodenames.size(); i++) {
@@ -967,7 +966,6 @@ void VPatternConverter::toVersion0_6_1()
             QDomNamedNodeMap map = node.attributes();
 
             for (int k = 0; k < map.size(); k++) {
-                index = -1;
                 QDomNode mapItem = map.item(k);
                 QDomAttr attribute = mapItem.toAttr();
                 QString attributeName = attribute.name();
