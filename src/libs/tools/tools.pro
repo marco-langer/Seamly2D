@@ -8,7 +8,7 @@
 message("Entering tools.pro")
 include(../../../common.pri)
 
-QT       += widgets xml printsupport
+QT += widgets xml
 
 # Name of the library
 TARGET = tools

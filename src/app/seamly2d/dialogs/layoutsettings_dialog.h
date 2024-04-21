@@ -160,7 +160,6 @@ private:
     void InitPrinter();
     QSizeF Template();
 
-    QMarginsF MinPrinterFields() const;
     QMarginsF GetDefPrinterFields() const;
 
     Unit PaperUnit() const;

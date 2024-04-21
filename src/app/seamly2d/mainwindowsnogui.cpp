@@ -104,6 +104,30 @@ void RemoveLayoutPath(const QString& path, bool usedNotExistedDir)
         dir.rmpath(".");
     }
 }
+
+
+QSharedPointer<QPrinter>
+preparePrinter(const QString& printerName, QPrinter::PrinterMode mode = QPrinter::ScreenResolution)
+{
+    QPrinterInfo printerInfo = QPrinterInfo::printerInfo(printerName);
+    if (printerInfo.isNull() || printerInfo.printerName().isEmpty()) {
+        printerInfo = QPrinterInfo::defaultPrinter();
+    }
+
+    if (printerInfo.isNull() || printerInfo.printerName().isEmpty()) {
+        const QStringList list = QPrinterInfo::availablePrinterNames();
+
+        if (list.isEmpty()) {
+            return QSharedPointer<QPrinter>{};
+        }
+        printerInfo = QPrinterInfo::printerInfo(list.first());
+    }
+
+    QSharedPointer<QPrinter> printer{ new QPrinter{ printerInfo, mode } };
+    printer->setResolution(static_cast<int>(PrintDPI));
+    return printer;
+}
+
 }   // namespace
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -1237,12 +1261,8 @@ void MainWindowsNoGUI::PrintPreview()
         }
     }
 
-    QPrinterInfo info = QPrinterInfo::printerInfo(layoutPrinterName);
-    if (info.isNull() || info.printerName().isEmpty()) {
-        info = QPrinterInfo::defaultPrinter();
-    }
-    QSharedPointer<QPrinter> printer = PreparePrinter(info);
-    if (printer.isNull()) {
+    QSharedPointer<QPrinter> printer = preparePrinter(layoutPrinterName);
+    if (printer.isNull() || !printer->isValid()) {
         qCritical(
             "%s\n\n%s",
             qUtf8Printable(tr("Print error")),
@@ -1267,13 +1287,9 @@ void MainWindowsNoGUI::LayoutPrint()
             return;
         }
     }
-    // display print dialog and if accepted print
-    QPrinterInfo info = QPrinterInfo::printerInfo(layoutPrinterName);
-    if (info.isNull() || info.printerName().isEmpty()) {
-        info = QPrinterInfo::defaultPrinter();
-    }
-    QSharedPointer<QPrinter> printer = PreparePrinter(info, QPrinter::HighResolution);
-    if (printer.isNull()) {
+
+    QSharedPointer<QPrinter> printer = preparePrinter(layoutPrinterName, QPrinter::HighResolution);
+    if (printer.isNull() || !printer->isValid()) {
         qCritical(
             "%s\n\n%s",
             qUtf8Printable(tr("Print error")),

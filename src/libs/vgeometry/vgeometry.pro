@@ -8,7 +8,7 @@
 message("Entering vgeometry.pro")
 include(../../../common.pri)
 
-QT += widgets printsupport
+QT += widgets
 
 # Name of library
 TARGET = vgeometry

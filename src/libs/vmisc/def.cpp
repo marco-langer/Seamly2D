@@ -52,7 +52,6 @@
 #include <QObject>
 #include <QPixmap>
 #include <QPixmapCache>
-#include <QPrinterInfo>
 #include <QProcess>
 #include <QRgb>
 #include <QStaticStringData>
@@ -384,49 +383,6 @@ QString fileDialog(
     }
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-QSharedPointer<QPrinter> PreparePrinter(const QPrinterInfo& info, QPrinter::PrinterMode mode)
-{
-    QPrinterInfo tmpInfo = info;
-    if (tmpInfo.isNull() || tmpInfo.printerName().isEmpty()) {
-        const QStringList list = QPrinterInfo::availablePrinterNames();
-
-        if (list.isEmpty()) {
-            return QSharedPointer<QPrinter>();
-        } else {
-            tmpInfo = QPrinterInfo::printerInfo(list.first());
-        }
-    }
-
-    auto printer = QSharedPointer<QPrinter>(new QPrinter(tmpInfo, mode));
-    printer->setResolution(static_cast<int>(PrintDPI));
-    return printer;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-QMarginsF GetMinPrinterFields(const QSharedPointer<QPrinter>& printer)
-{
-    QPageLayout layout = printer->pageLayout();
-    layout.setUnits(QPageLayout::Millimeter);
-    const QMarginsF minMargins = layout.minimumMargins();
-    QMarginsF min;
-    min.setLeft(UnitConvertor(minMargins.left(), Unit::Mm, Unit::Px));
-    min.setRight(UnitConvertor(minMargins.right(), Unit::Mm, Unit::Px));
-    min.setTop(UnitConvertor(minMargins.top(), Unit::Mm, Unit::Px));
-    min.setBottom(UnitConvertor(minMargins.bottom(), Unit::Mm, Unit::Px));
-    return min;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-QMarginsF GetPrinterFields(const QSharedPointer<QPrinter>& printer)
-{
-    if (printer.isNull()) {
-        return QMarginsF();
-    }
-
-    // We can't use Unit::Px because our dpi in most cases is different
-    return UnitConvertor(printer->pageLayout().margins(), Unit::Mm, Unit::Px);
-}
 
 //---------------------------------------------------------------------------------------------------------------------
 QPixmap darkenPixmap(const QPixmap& pixmap)

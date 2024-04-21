@@ -57,6 +57,30 @@
 #include <QPushButton>
 #include <QtMath>
 
+
+namespace {
+
+QMarginsF getMinPrinterFields(const QString& printerName)
+{
+    const QPrinterInfo printerInfo = QPrinterInfo::printerInfo(printerName);
+    if (printerInfo.isNull()) {
+        return QMarginsF{};
+    }
+
+    const QPrinter printer{ printerInfo };
+    QPageLayout layout = printer.pageLayout();
+    layout.setUnits(QPageLayout::Millimeter);
+    const QMarginsF minMargins = layout.minimumMargins();
+    QMarginsF min;
+    min.setLeft(UnitConvertor(minMargins.left(), Unit::Mm, Unit::Px));
+    min.setRight(UnitConvertor(minMargins.right(), Unit::Mm, Unit::Px));
+    min.setTop(UnitConvertor(minMargins.top(), Unit::Mm, Unit::Px));
+    min.setBottom(UnitConvertor(minMargins.bottom(), Unit::Mm, Unit::Px));
+    return min;
+}
+
+}   // namespace
+
 //---------------------------------------------------------------------------------------------------------------------
 LayoutSettingsDialog::LayoutSettingsDialog(
     VLayoutGenerator* generator, QWidget* parent, bool disableSettings)
@@ -570,7 +594,7 @@ void LayoutSettingsDialog::DialogAccepted()
         if (printer.isNull()) {
             generator->SetPrinterFields(true, GetFields());
         } else {
-            const QMarginsF minFields = MinPrinterFields();
+            const QMarginsF minFields = getMinPrinterFields(ui->comboBoxPrinter->currentText());
             const QMarginsF fields = GetFields();
             if (fields.left() < minFields.left() || fields.right() < minFields.right()
                 || fields.top() < minFields.top() || fields.bottom() < minFields.bottom()) {
@@ -647,15 +671,7 @@ void LayoutSettingsDialog::RestoreDefaults()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void LayoutSettingsDialog::PrinterMargins()
-{
-    QPrinterInfo printer = QPrinterInfo::printerInfo(ui->comboBoxPrinter->currentText());
-    if (not printer.isNull()) {
-        SetFields(GetPrinterFields(QSharedPointer<QPrinter>(new QPrinter(printer))));
-    } else {
-        SetFields(QMarginsF());
-    }
-}
+void LayoutSettingsDialog::PrinterMargins() { SetFields(GetDefPrinterFields()); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void LayoutSettingsDialog::CorrectMaxFileds()
@@ -793,26 +809,13 @@ QSizeF LayoutSettingsDialog::getTemplateSize(const PaperSizeFormat& tmpl, const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QMarginsF LayoutSettingsDialog::MinPrinterFields() const
-{
-    QPrinterInfo printer = QPrinterInfo::printerInfo(ui->comboBoxPrinter->currentText());
-    if (not printer.isNull()) {
-        QSharedPointer<QPrinter> pr = QSharedPointer<QPrinter>(new QPrinter(printer));
-        return GetMinPrinterFields(pr);
-    } else {
-        return QMarginsF();
-    }
-}
-
-//---------------------------------------------------------------------------------------------------------------------
 QMarginsF LayoutSettingsDialog::GetDefPrinterFields() const
 {
-    QPrinterInfo printer = QPrinterInfo::printerInfo(ui->comboBoxPrinter->currentText());
-    if (not printer.isNull()) {
-        return GetPrinterFields(QSharedPointer<QPrinter>(new QPrinter(printer)));
-    } else {
-        return QMarginsF();
+    const QPrinterInfo printerInfo = QPrinterInfo::printerInfo(ui->comboBoxPrinter->currentText());
+    if (!printerInfo.isNull()) {
+        return UnitConvertor(QPrinter{ printerInfo }.pageLayout().margins(), Unit::Mm, Unit::Px);
     }
+    return QMarginsF{};
 }
 
 //---------------------------------------------------------------------------------------------------------------------

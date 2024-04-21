@@ -56,6 +56,7 @@
 #ifndef TMAINWINDOW_H
 #define TMAINWINDOW_H
 
+#include <QPrinter>
 #include <QTableWidget>
 
 #include "../vmisc/def.h"

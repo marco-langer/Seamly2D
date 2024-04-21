@@ -10,7 +10,7 @@ message("Entering ifc.pro")
 include(../../../common.pri)
 
 # Library work with xml.
-QT       += xml xmlpatterns printsupport
+QT += widgets xml xmlpatterns # TODO widgets is only needed by including def.h
 
 # We don't need gui library.
 QT       -= gui
@@ -46,5 +46,3 @@ RESOURCES += \
 include(warnings.pri)
 
 include (../libs.pri)
-
-DISTFILES +=

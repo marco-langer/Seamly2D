@@ -34,7 +34,6 @@
 #include <QFileDialog>
 #include <QLineF>
 #include <QPixmap>
-#include <QPrinter>
 #include <QString>
 #include <QStringList>
 #include <Qt>
@@ -631,12 +630,6 @@ QString makeHeaderName(const QString& name);
     QFileDialog::Options options,
     QFileDialog::FileMode mode,
     QFileDialog::AcceptMode accept);
-
-[[nodiscard]] QSharedPointer<QPrinter>
-PreparePrinter(const QPrinterInfo& info, QPrinter::PrinterMode mode = QPrinter::ScreenResolution);
-
-QMarginsF GetMinPrinterFields(const QSharedPointer<QPrinter>& printer);
-QMarginsF GetPrinterFields(const QSharedPointer<QPrinter>& printer);
 
 [[nodiscard]] QPixmap darkenPixmap(const QPixmap& pixmap);
 

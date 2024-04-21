@@ -8,7 +8,7 @@
 message("Entering vdxf.pro")
 include(../../../common.pri)
 
-QT += printsupport xml
+QT += widgets xml # TODO widgets is only needed by including def.h
 
 # Name of library
 TARGET = vdxf

@@ -8,7 +8,7 @@
 message("Entering vmisc.pro")
 include(../../../common.pri)
 
-QT += widgets printsupport testlib gui multimedia
+QT += widgets testlib gui multimedia
 
 # Name of library
 TARGET = vmisc

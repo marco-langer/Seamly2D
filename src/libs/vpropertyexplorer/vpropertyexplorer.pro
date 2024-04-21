@@ -9,7 +9,7 @@ message("Entering vpropertyexplorer.pro")
 include(../../../common.pri)
 
 # Library use widgets
-QT       += core widgets xml printsupport
+QT += core widgets xml
 
 # We don't need gui library.
 QT       -= gui

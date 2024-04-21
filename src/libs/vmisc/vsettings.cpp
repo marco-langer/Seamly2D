@@ -54,8 +54,6 @@
 #include <QDir>
 #include <QLocale>
 #include <QMetaType>
-#include <QPrinter>
-#include <QPrinterInfo>
 #include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>

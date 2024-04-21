@@ -9,7 +9,7 @@ message("Entering fervor.pro")
 
 include(../../../common.pri)
 
-QT       += network widgets xml printsupport
+QT += network widgets xml
 
 # Name of library
 TARGET = fervor
