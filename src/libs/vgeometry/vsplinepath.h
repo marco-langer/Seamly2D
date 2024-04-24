@@ -48,7 +48,6 @@
 #define VSPLINEPATH_H
 
 #include <QCoreApplication>
-#include <QPainterPath>
 #include <QPointF>
 #include <QSharedDataPointer>
 #include <QString>
