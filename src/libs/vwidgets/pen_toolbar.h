@@ -28,7 +28,6 @@
 #ifndef PEN_TOOLBAR_H
 #define PEN_TOOLBAR_H
 
-#include <QAction>
 #include <QObject>
 #include <QPointer>
 #include <QToolBar>
@@ -38,7 +37,6 @@
 #include "linetype_combobox.h"
 #include "lineweight_combobox.h"
 
-class QAction;
 class QToolButton;
 
 class ColorComboBox;
@@ -74,10 +72,6 @@ public slots:
 
 signals:
     void penChanged(Pen pen);
-
-private:
-    QAction* resetAction;
-    QAction* savePresetAction;
 };
 
 #endif
