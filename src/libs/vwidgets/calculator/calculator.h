@@ -69,7 +69,6 @@ class CalculatorUtil : public QWidget
 
 public:
     explicit CalculatorUtil(QWidget* parent = nullptr);
-    virtual ~CalculatorUtil();
 
 private slots:
     void digitClicked();

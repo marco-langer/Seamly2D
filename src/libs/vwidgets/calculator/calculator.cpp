@@ -145,9 +145,7 @@ CalculatorUtil::CalculatorUtil(QWidget* parent)
 
     setWindowTitle(tr("Calculator"));
 }
-//! [6]
-//---------------------------------------------------------------------------------------------------------------------
-CalculatorUtil::~CalculatorUtil() {}
+
 
 //! [7]
 void CalculatorUtil::digitClicked()
