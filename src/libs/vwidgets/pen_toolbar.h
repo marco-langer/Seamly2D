@@ -29,7 +29,6 @@
 #define PEN_TOOLBAR_H
 
 #include <QObject>
-#include <QPointer>
 #include <QToolBar>
 
 #include "color_combobox.h"
@@ -55,12 +54,6 @@ class PenToolBar : public QToolBar
 public:
     PenToolBar(const QString& title, QWidget* parent = nullptr);
 
-    Pen getPen() const;
-    Pen currentPen;
-    QPointer<ColorComboBox> colorBox;
-    QPointer<LineTypeComboBox> lineTypeBox;
-    QPointer<LineWeightComboBox> lineWeightBox;
-
 private slots:
     void colorChanged(const QString& color);
     void lineWeightChanged(const qreal& weight);
@@ -70,6 +63,12 @@ private slots:
 
 signals:
     void penChanged(Pen pen);
+
+private:
+    Pen m_currentPen;
+    ColorComboBox* m_colorBox;
+    LineTypeComboBox* m_lineTypeBox;
+    LineWeightComboBox* m_lineWeightBox;
 };
 
 #endif
