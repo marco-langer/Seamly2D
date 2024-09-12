@@ -46,8 +46,6 @@ public:
     QString getLineType() const { return m_currentLineType; }
     void setLineType(const QString& type);
 
-    void init();
-
 private slots:
     void updateLineType(int index);
 
@@ -55,7 +53,9 @@ signals:
     void lineTypeChanged(const QString& type);
 
 private:
+    void init();
     QIcon createIcon(const QString& type);
+
     QString m_currentLineType;
     int m_iconWidth;
     int m_iconHeight;

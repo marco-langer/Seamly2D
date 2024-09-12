@@ -40,8 +40,6 @@ public:
     LineWeightComboBox(
         int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
 
-    void init();
-
     qreal getLineWeight() const;
     void setLineWeight(const qreal& weight);
 
@@ -52,7 +50,9 @@ signals:
     void lineWeightChanged(const qreal& weight);
 
 private:
+    void init();
     QIcon createIcon(const qreal& width);
+
     qreal m_currentWeight;
     int m_iconWidth;
     int m_iconHeight;

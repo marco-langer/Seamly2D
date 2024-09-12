@@ -41,7 +41,6 @@ class PageFormatCombobox : public QComboBox
 public:
     explicit PageFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
 
-    void init();
     PaperSizeFormat getPageFormat() const;
     void setPageFormat(PaperSizeFormat& format);
     static QString MakeHelpTemplateList();
@@ -53,8 +52,10 @@ signals:
     void pageFormatChanged(const PaperSizeFormat& format);
 
 private:
+    void init();
     static QVector<std::pair<QString, PaperSizeFormat>> initFormats();
     static QString getFormatName(PaperSizeFormat format);
+
     PaperSizeFormat m_currentFormat;
 };
 

@@ -41,8 +41,6 @@ class ExportFormatCombobox : public QComboBox
 public:
     explicit ExportFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
 
-    void init();
-
     LayoutExportFormat getExportFormat() const;
     void setExportFormat(LayoutExportFormat& format);
     static QString exportFormatDescription(LayoutExportFormat format);
@@ -56,9 +54,11 @@ signals:
     void exportFormatChanged(const LayoutExportFormat& format);
 
 private:
+    void init();
     static QVector<std::pair<QString, LayoutExportFormat>> initFormats();
     static bool supportPSTest();
     static bool testPdf();
+
     static bool havePdf;
     static bool tested;
     LayoutExportFormat m_currentFormat;
