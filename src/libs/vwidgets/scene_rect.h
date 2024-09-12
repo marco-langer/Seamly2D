@@ -53,11 +53,6 @@ public:
     virtual void refreshPointGeometry(const VPointF& point);
 
 protected:
-    QColor m_rectColor; /** @brief m_rectColor color of point. */
-    bool m_onlyPoint{ false };
-    bool m_isHovered{ false };
-    bool m_showPointName{ true };
-
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
@@ -70,6 +65,11 @@ private:
     Q_DISABLE_COPY(SceneRect)
 
     void setRectPen(qreal scale);
+
+    QColor m_rectColor; /** @brief m_rectColor color of point. */
+    bool m_onlyPoint{ false };
+    bool m_isHovered{ false };
+    bool m_showPointName{ true };
 };
 
 #endif   // SCENE_RECT_H
