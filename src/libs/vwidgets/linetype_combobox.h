@@ -45,7 +45,7 @@ public:
 
     virtual ~LineTypeComboBox();
 
-    QString getLineType() { return m_currentLineType; }
+    QString getLineType() const { return m_currentLineType; }
     void setLineType(const QString& type);
 
     void init();

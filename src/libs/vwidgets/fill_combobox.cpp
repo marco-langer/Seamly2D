@@ -196,6 +196,6 @@ void PieceFillComboBox::fillChanged(int index)
     emit fillChangedSignal(m_currentFill);
 }
 
-int PieceFillComboBox::getIconWidth() { return m_iconWidth; }
+int PieceFillComboBox::getIconWidth() const { return m_iconWidth; }
 
-int PieceFillComboBox::getIconHeight() { return m_iconHeight; }
+int PieceFillComboBox::getIconHeight() const { return m_iconHeight; }

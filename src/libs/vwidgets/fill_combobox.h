@@ -45,8 +45,8 @@ public:
     QString getFill() const;
     void setFill(const QString& fill);
     QPixmap createFillIcon(const int w, const int h, Qt::BrushStyle style);
-    int getIconWidth();
-    int getIconHeight();
+    int getIconWidth() const;
+    int getIconHeight() const;
 
 private slots:
     void fillChanged(int index);

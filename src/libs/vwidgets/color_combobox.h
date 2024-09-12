@@ -25,8 +25,8 @@ public:
     QString getColor() const;
     void setColor(const QString& color);
     void setItems(QMap<QString, QString> map);
-    int getIconWidth();
-    int getIconHeight();
+    int getIconWidth() const;
+    int getIconHeight() const;
 
 private slots:
     void colorChanged(int index);

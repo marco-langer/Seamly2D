@@ -326,7 +326,7 @@ void VGraphicsSimpleTextItem::keyReleaseEvent(QKeyEvent* event)
     QGraphicsSimpleTextItem::keyReleaseEvent(event);
 }
 
-QColor VGraphicsSimpleTextItem::getTextBrushColor()
+QColor VGraphicsSimpleTextItem::getTextBrushColor() const
 {
     if (qApp->Settings()->getUseToolColor()) {
         QColor textColor = correctColor(this, m_textColor);

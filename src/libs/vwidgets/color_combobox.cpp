@@ -128,6 +128,6 @@ void ColorComboBox::colorChanged(int index)
 
 QString ColorComboBox::getColor() const { return m_currentColor; }
 
-int ColorComboBox::getIconWidth() { return m_iconWidth; }
+int ColorComboBox::getIconWidth() const { return m_iconWidth; }
 
-int ColorComboBox::getIconHeight() { return m_iconHeight; }
+int ColorComboBox::getIconHeight() const { return m_iconHeight; }

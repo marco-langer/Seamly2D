@@ -95,7 +95,7 @@ public:
     void textSelectionType(const SelectionType& type);
     void setShowParentTooltip(bool show);
 
-    QColor getTextBrushColor();
+    QColor getTextBrushColor() const;
     void setTextColor(const QColor& color);
 
     void setPosition(QPointF pos);
