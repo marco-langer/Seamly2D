@@ -8,7 +8,7 @@
 #include <QComboBox>
 #include <QString>
 #include <QWidget>
-#include <memory>
+
 
 /**
  * A comboBox for choosing a color.

@@ -33,7 +33,6 @@
 #include <QPointer>
 #include <QToolBar>
 #include <QToolButton>
-#include <memory>
 
 #include "color_combobox.h"
 #include "linetype_combobox.h"

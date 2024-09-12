@@ -61,7 +61,7 @@
 #include <QVector>
 #include <QtGlobal>
 #include <atomic>
-#include <memory>
+
 #include <qcompilerdetection.h>
 
 #include "vbank.h"

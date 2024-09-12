@@ -28,7 +28,7 @@
 #include <QIcon>
 #include <QPen>
 #include <QWidget>
-#include <memory>
+
 
 class QIcon;
 

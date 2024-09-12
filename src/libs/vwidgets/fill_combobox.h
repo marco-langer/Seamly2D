@@ -27,7 +27,7 @@
 
 #include <QComboBox>
 #include <QString>
-#include <memory>
+
 
 /**
  * A comboBox for choosing a fill pattern.
