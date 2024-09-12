@@ -73,21 +73,21 @@ protected:
 
 private:
     Q_DISABLE_COPY(VGrainlineItem)
-    qreal m_dRotation;
-    qreal m_dStartRotation;
-    qreal m_dLength;
+    qreal m_dRotation{ 0.0 };
+    qreal m_dStartRotation{ 0.0 };
+    qreal m_dLength{ 0.0 };
     QPolygonF m_polyBound;
     QPointF m_ptStartPos;
     QPointF m_ptStartMove;
-    qreal m_dScale;
+    qreal m_dScale{ 1.0 };
     QPolygonF m_polyResize;
-    qreal m_dStartLength;
+    qreal m_dStartLength{ 0.0 };
     QPointF m_ptStart;
     QPointF m_ptFinish;
     QPointF m_ptCenter;
-    qreal m_dAngle;
-    ArrowType m_eArrowType;
-    qreal m_penWidth;
+    qreal m_dAngle{ 0.0 };
+    ArrowType m_eArrowType{ ArrowType::atBoth };
+    qreal m_penWidth{ 3.0 };
 
     qreal GetScale() const;
 

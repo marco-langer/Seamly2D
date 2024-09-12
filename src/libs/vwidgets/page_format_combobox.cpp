@@ -35,7 +35,6 @@
  */
 PageFormatCombobox::PageFormatCombobox(QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentFormat()
 {
     setObjectName(name);
     setEditable(false);

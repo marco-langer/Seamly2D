@@ -57,12 +57,6 @@
 //---------------------------------------------------------------------------------------------------------------------
 VPieceItem::VPieceItem(QGraphicsItem* pParent)
     : QGraphicsObject(pParent)
-    , m_rectBoundingBox()
-    , m_eMode(VPieceItem::mNormal)
-    , m_bReleased(false)
-    , m_ptRotCenter()
-    , m_moveType(AllModifications)
-    , m_inactiveZ(1)
 {
     m_rectBoundingBox.setTopLeft(QPointF(0, 0));
     setAcceptHoverEvents(true);

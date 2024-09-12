@@ -30,8 +30,7 @@
 #include "../ifc/xml/vabstractpattern.h"
 
 GroupTableWidgetItem::GroupTableWidgetItem(VAbstractPattern* doc)
-    : QTableWidgetItem()
-    , m_doc(doc)
+    : m_doc(doc)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

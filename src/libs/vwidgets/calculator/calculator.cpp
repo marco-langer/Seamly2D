@@ -59,14 +59,7 @@
 //! [0]
 CalculatorUtil::CalculatorUtil(QWidget* parent)
     : QWidget(parent)
-    , sumInMemory(0.0)
-    , sumSoFar(0.0)
-    , factorSoFar(0.0)
-    , pendingAdditiveOperator(QString())
-    , pendingMultiplicativeOperator(QString())
-    , waitingForOperand(true)
     , display(new QLineEdit("0"))
-    , digitButtons()
 {
     //! [0]
     //! [1]

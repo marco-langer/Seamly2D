@@ -122,18 +122,18 @@ protected:
 private:
     Q_DISABLE_COPY(GraphicsViewZoom)
     QGraphicsView* m_view;
-    Qt::KeyboardModifiers m_modifiers;
-    qreal m_zoomSpeedFactor;
+    Qt::KeyboardModifiers m_modifiers{ Qt::ControlModifier };
+    qreal m_zoomSpeedFactor{ 1.0015 };
     QPointF targetScenePos;
     QPointF targetViewPos;
-    int m_duration;
-    int m_updateInterval;
+    int m_duration{ 0 };
+    int m_updateInterval{ 0 };
     QTimeLine* verticalScrollAnim;
     /** @brief _numScheduledVerticalScrollings keep number scheduled vertical scrollings. */
-    qint32 m_numScheduledVerticalScrollings;
+    qint32 m_numScheduledVerticalScrollings{ 0 };
     QTimeLine* horizontalScrollAnim;
     /** @brief _numScheduledHorizontalScrollings keep number scheduled horizontal scrollings. */
-    qint32 m_numScheduledHorizontalScrollings;
+    qint32 m_numScheduledHorizontalScrollings{ 0 };
 
     void fictiveSceneRect(QGraphicsScene* sc, QGraphicsView* view);
 
@@ -143,12 +143,12 @@ private:
     void panTriggered(QPanGesture* gesture);
     void pinchTriggered(QPinchGesture* gesture);
 
-    QGesture* pan;
-    QGesture* pinch;
-    qreal horizontalOffset;
-    qreal verticalOffset;
-    qreal scaleFactor;
-    qreal currentScaleFactor;
+    QGesture* pan{ nullptr };
+    QGesture* pinch{ nullptr };
+    qreal horizontalOffset{ 0.0 };
+    qreal verticalOffset{ 0.0 };
+    qreal scaleFactor{ 0.0 };
+    qreal currentScaleFactor{ 0.0 };
 };
 
 /**
@@ -208,16 +208,16 @@ protected:
 private:
     Q_DISABLE_COPY(VMainGraphicsView)
     GraphicsViewZoom* zoom;
-    bool showToolProperties;
-    bool showScrollBars;
-    bool isallowRubberBand;
-    bool isZoomToAreaActive;
-    bool isRubberBandActive;
-    bool isRubberBandColorSet;
-    bool isZoomPanActive;
-    bool isPanDragActive;
-    QRubberBand* rubberBand;
-    QRect* rubberBandRect;
+    bool showToolProperties{ true };
+    bool showScrollBars{ false };
+    bool isallowRubberBand{ true };
+    bool isZoomToAreaActive{ false };
+    bool isRubberBandActive{ false };
+    bool isRubberBandColorSet{ false };
+    bool isZoomPanActive{ false };
+    bool isPanDragActive{ false };
+    QRubberBand* rubberBand{ nullptr };
+    QRect* rubberBandRect{ nullptr };
     QPoint startPoint;
     QPoint endPoint;
     QPoint m_ptStartPos;

@@ -42,8 +42,6 @@
  */
 ResizeHandlesItem::ResizeHandlesItem(QGraphicsItem* parent, qreal minDimension, qreal maxDimension)
     : QGraphicsItem(parent)
-    , m_handleItems()
-    , m_parentRect()
     , m_minDimension(minDimension)
     , m_maxDimension(maxDimension)
 {

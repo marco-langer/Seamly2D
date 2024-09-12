@@ -55,8 +55,6 @@
 VAbstractSimple::VAbstractSimple(quint32 id, QObject* parent)
     : QObject(parent)
     , id(id)
-    , selectionType(SelectionType::ByMouseRelease)
-    , type(GOType::Unknown)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

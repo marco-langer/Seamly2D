@@ -68,7 +68,7 @@ protected:
 
 private:
     Q_DISABLE_COPY(VLineEdit)
-    bool m_selectOnMousePress;
+    bool m_selectOnMousePress{ false };
 };
 
 #endif   // VLINEEDIT_H

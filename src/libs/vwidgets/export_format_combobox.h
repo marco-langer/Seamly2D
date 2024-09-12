@@ -61,7 +61,7 @@ private:
 
     static bool havePdf;
     static bool tested;
-    LayoutExportFormat m_currentFormat;
+    LayoutExportFormat m_currentFormat{ LayoutExportFormat::SVG };
 };
 
 #endif   // EXPORT_FORMAT_COMBOBOX_H

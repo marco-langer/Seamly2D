@@ -102,12 +102,12 @@ protected:
         mRotate
     };
     QRectF m_rectBoundingBox;
-    Mode m_eMode;
-    bool m_bReleased;
+    Mode m_eMode{ VPieceItem::mNormal };
+    bool m_bReleased{ false };
     QPointF m_ptRotCenter;
-    VPieceItem::MoveTypes m_moveType;
+    VPieceItem::MoveTypes m_moveType{ AllModifications };
 
-    qreal m_inactiveZ;
+    qreal m_inactiveZ{ 1.0 };
 
     virtual double GetAngle(const QPointF& pt) const;
 

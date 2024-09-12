@@ -41,9 +41,6 @@
 SceneRect::SceneRect(const QColor& lineColor, QGraphicsItem* parent)
     : QGraphicsRectItem(parent)
     , m_rectColor(QColor(correctColor(this, lineColor)))
-    , m_onlyPoint(false)
-    , m_isHovered(false)
-    , m_showPointName(true)
 {
     setZValue(100);
     setAcceptHoverEvents(true);

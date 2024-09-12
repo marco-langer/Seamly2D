@@ -81,13 +81,13 @@ public:
     void refreshLeader();
 
 protected:
+    QColor m_pointColor;                  /** @brief m_pointColor color of point. */
     VGraphicsSimpleTextItem* m_pointName; /** @brief namePoint point text. */
     VScaledLine*
-        m_pointLeader;   /** @brief pointL line that we see if Text is moved too away from point. */
-    QColor m_pointColor; /** @brief m_pointColor color of point. */
-    bool m_onlyPoint;
-    bool m_isHovered;
-    bool m_showPointName;
+        m_pointLeader; /** @brief pointL line that we see if Text is moved too away from point. */
+    bool m_onlyPoint{ false };
+    bool m_isHovered{ false };
+    bool m_showPointName{ true };
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;

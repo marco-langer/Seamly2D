@@ -74,12 +74,6 @@
  */
 VMainGraphicsScene::VMainGraphicsScene(QObject* parent)
     : QGraphicsScene(parent)
-    , horScrollBar(0)
-    , verScrollBar(0)
-    , m_previousTransform(QTransform())
-    , m_currentTransform(QTransform())
-    , scenePos(QPointF())
-    , origins()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -90,12 +84,6 @@ VMainGraphicsScene::VMainGraphicsScene(QObject* parent)
  */
 VMainGraphicsScene::VMainGraphicsScene(const QRectF& sceneRect, QObject* parent)
     : QGraphicsScene(sceneRect, parent)
-    , horScrollBar(0)
-    , verScrollBar(0)
-    , m_previousTransform(QTransform())
-    , m_currentTransform(QTransform())
-    , scenePos()
-    , origins()
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

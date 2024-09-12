@@ -66,12 +66,9 @@
 //---------------------------------------------------------------------------------------------------------------------
 VScenePoint::VScenePoint(const QColor& lineColor, QGraphicsItem* parent)
     : QGraphicsEllipseItem(parent)
+    , m_pointColor(correctColor(this, lineColor))
     , m_pointName(new VGraphicsSimpleTextItem(m_pointColor, this))
     , m_pointLeader(new VScaledLine(this))
-    , m_pointColor(QColor(correctColor(this, lineColor)))
-    , m_onlyPoint(false)
-    , m_isHovered(false)
-    , m_showPointName(true)
 {
     m_pointLeader->setBasicWidth(widthHairLine);
     m_pointLeader->setLine(QLineF(0, 0, 1, 0));

@@ -112,13 +112,6 @@ QRectF GetBoundingRect(QRectF rectBB, qreal rotation)
  */
 VTextGraphicsItem::VTextGraphicsItem(QGraphicsItem* parent)
     : VPieceItem(parent)
-    , m_startPos()
-    , m_start()
-    , m_startSize()
-    , m_rotation(0)
-    , m_angle(0)
-    , m_rectResize()
-    , m_textMananger()
 {
     m_inactiveZ = 2;
     setSize(minW, minH);

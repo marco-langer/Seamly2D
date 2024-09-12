@@ -85,9 +85,9 @@ protected:
     /** @brief id spline id. */
     quint32 id;
 
-    SelectionType selectionType;
+    SelectionType selectionType{ SelectionType::ByMouseRelease };
 
-    GOType type;
+    GOType type{ GOType::Unknown };
 
 private:
     Q_DISABLE_COPY(VAbstractSimple)

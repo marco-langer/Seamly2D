@@ -25,6 +25,8 @@
 #ifndef FILL_COMBOBOX_H
 #define FILL_COMBOBOX_H
 
+#include "../ifc/ifcdef.h"
+
 #include <QComboBox>
 #include <QString>
 
@@ -54,9 +56,10 @@ signals:
 
 private:
     void init();
-    QString m_currentFill;
-    int m_iconWidth;
-    int m_iconHeight;
+
+    QString m_currentFill{ FillNone };
+    int m_iconWidth{ 40 };
+    int m_iconHeight{ 14 };
 };
 
 #endif

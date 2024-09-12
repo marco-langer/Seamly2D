@@ -23,8 +23,6 @@
 
 #include "linetype_combobox.h"
 
-#include "../ifc/ifcdef.h"
-
 #include <QAbstractItemView>
 #include <QComboBox>
 #include <QPainter>
@@ -36,9 +34,6 @@
  */
 LineTypeComboBox::LineTypeComboBox(QWidget* parent)
     : QComboBox(parent)
-    , m_currentLineType(LineTypeSolidLine)
-    , m_iconWidth(40)
-    , m_iconHeight(14)
 {
     setEditable(false);
     init();
@@ -49,7 +44,6 @@ LineTypeComboBox::LineTypeComboBox(QWidget* parent)
  */
 LineTypeComboBox::LineTypeComboBox(int width, int height, QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentLineType(LineTypeSolidLine)
     , m_iconWidth(width)
     , m_iconHeight(height)
 {

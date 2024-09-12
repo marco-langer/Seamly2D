@@ -73,9 +73,7 @@ class QSharedPointer;
 //---------------------------------------------------------------------------------------------------------------------
 VSimpleCurve::VSimpleCurve(quint32 id, const QSharedPointer<VAbstractCurve>& curve, QObject* parent)
     : VAbstractSimple(id, parent)
-    , VCurvePathItem()
     , m_curve(curve)
-    , m_isHovered(false)
 {
     this->setBrush(QBrush(Qt::NoBrush));
     this->setAcceptHoverEvents(true);

@@ -102,10 +102,10 @@ public slots:
 
 protected:
     Q_DISABLE_COPY(VWidgetPopup)
-    QWidget* mWidget;
-    bool mOwn;
-    QWidget* mOldParent;
-    int lifeTime;
+    QWidget* mWidget{ nullptr };
+    bool mOwn{ true };
+    QWidget* mOldParent{ nullptr };
+    int lifeTime{ -1 };
 };
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -124,8 +124,8 @@ protected:
 private:
     Q_DISABLE_COPY(VSimplePoint)
 
-    bool m_visualizationMode;
-    bool m_alwaysHovered;
+    bool m_visualizationMode{ false };
+    bool m_alwaysHovered{ false };
 };
 
 #endif   // VSIMPLEPOINT_H

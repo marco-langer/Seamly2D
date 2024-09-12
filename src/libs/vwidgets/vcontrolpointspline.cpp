@@ -78,11 +78,8 @@
 VControlPointSpline::VControlPointSpline(
     const qint32& indexSpline, SplinePointPosition position, QGraphicsItem* parent)
     : SceneRect(QColor(Qt::red), parent)
-    , controlLine(nullptr)
     , indexSpline(indexSpline)
     , position(position)
-    , freeAngle(true)
-    , freeLength(true)
 {
     init();
 }
@@ -105,7 +102,6 @@ VControlPointSpline::VControlPointSpline(
     bool freeLength,
     QGraphicsItem* parent)
     : SceneRect(QColor(Qt::red), parent)
-    , controlLine(nullptr)
     , indexSpline(indexSpline)
     , position(position)
     , freeAngle(freeAngle)

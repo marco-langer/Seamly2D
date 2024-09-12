@@ -49,7 +49,6 @@
 #define RESIZE_RECT_SIZE 10
 #define ROTATE_CIRC_R    7
 #define ACTIVE_Z         10
-#define LINE_PEN_WIDTH   3
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -58,21 +57,6 @@
  */
 VGrainlineItem::VGrainlineItem(QGraphicsItem* painterarent)
     : VPieceItem(painterarent)
-    , m_dRotation(0)
-    , m_dStartRotation(0)
-    , m_dLength(0)
-    , m_polyBound()
-    , m_ptStartPos()
-    , m_ptStartMove()
-    , m_dScale(1)
-    , m_polyResize()
-    , m_dStartLength(0)
-    , m_ptStart()
-    , m_ptFinish()
-    , m_ptCenter()
-    , m_dAngle(0)
-    , m_eArrowType(ArrowType::atBoth)
-    , m_penWidth(LINE_PEN_WIDTH)
 {
     setAcceptHoverEvents(true);
     m_inactiveZ = 5;

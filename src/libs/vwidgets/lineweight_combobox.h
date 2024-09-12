@@ -53,9 +53,9 @@ private:
     void init();
     QIcon createIcon(const qreal& width);
 
-    qreal m_currentWeight;
-    int m_iconWidth;
-    int m_iconHeight;
+    qreal m_currentWeight{ 0.35 };
+    int m_iconWidth{ 40 };
+    int m_iconHeight{ 12 };
 };
 
 #endif

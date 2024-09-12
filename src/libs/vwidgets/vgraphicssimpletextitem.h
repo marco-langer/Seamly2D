@@ -126,11 +126,11 @@ protected:
 private:
     /** @brief fontSize label font size. */
     qint32 m_fontSize;
-    qreal m_scale;
+    qreal m_scale{ 1.0 };
     QColor m_textColor;
-    bool m_isNameHovered;
-    SelectionType selectionType;
-    bool m_showParentTooltip;
+    bool m_isNameHovered{ false };
+    SelectionType selectionType{ SelectionType::ByMouseRelease };
+    bool m_showParentTooltip{ true };
     QPointF m_pointNamePos{};
 
     void initItem();

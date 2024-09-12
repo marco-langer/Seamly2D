@@ -112,7 +112,7 @@ private:
     Q_DISABLE_COPY(VSimpleCurve)
 
     QSharedPointer<VAbstractCurve> m_curve;
-    bool m_isHovered;
+    bool m_isHovered{ false };
 };
 
 #endif   // VSIMPLECURVE_H

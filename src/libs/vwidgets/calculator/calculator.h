@@ -96,17 +96,17 @@ private:
     //! [2]
 
     //! [3]
-    double sumInMemory;
+    double sumInMemory{ 0.0 };
     //! [3] //! [4]
-    double sumSoFar;
+    double sumSoFar{ 0.0 };
     //! [4] //! [5]
-    double factorSoFar;
+    double factorSoFar{ 0.0 };
     //! [5] //! [6]
     QString pendingAdditiveOperator;
     //! [6] //! [7]
     QString pendingMultiplicativeOperator;
     //! [7] //! [8]
-    bool waitingForOperand;
+    bool waitingForOperand{ true };
     //! [8]
 
     //! [9]

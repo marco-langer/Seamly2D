@@ -74,8 +74,6 @@
 VSimplePoint::VSimplePoint(quint32 id, const QColor& currentColor, QObject* parent)
     : VAbstractSimple(id, parent)
     , VScenePoint(currentColor)
-    , m_visualizationMode(false)
-    , m_alwaysHovered(false)
 {
     m_pointColor = currentColor;
     connect(

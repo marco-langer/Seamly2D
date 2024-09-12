@@ -70,10 +70,6 @@
 //---------------------------------------------------------------------------------------------------------------------
 VWidgetPopup::VWidgetPopup(QWidget* parent)
     : QFrame(parent, Qt::Popup)
-    , mWidget(nullptr)
-    , mOwn(true)
-    , mOldParent(nullptr)
-    , lifeTime(-1)
 {
     setAttribute(Qt::WA_WindowPropagation);
 

@@ -20,9 +20,6 @@ Q_LOGGING_CATEGORY(colorComboBox, "color_combobox")
  */
 ColorComboBox::ColorComboBox(QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentColor("black")
-    , m_iconWidth(40)
-    , m_iconHeight(14)
 {
     setObjectName(name);
     setEditable(false);
@@ -34,7 +31,6 @@ ColorComboBox::ColorComboBox(QWidget* parent, const char* name)
  */
 ColorComboBox::ColorComboBox(int width, int height, QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentColor("black")
     , m_iconWidth(width)
     , m_iconHeight(height)
 {

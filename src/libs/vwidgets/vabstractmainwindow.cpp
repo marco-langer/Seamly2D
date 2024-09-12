@@ -64,8 +64,6 @@
 
 VAbstractMainWindow::VAbstractMainWindow(QWidget* parent)
     : QMainWindow(parent)
-    , m_curFileFormatVersion(0x0)
-    , m_curFileFormatVersionStr(QLatin1String("0.0.0"))
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

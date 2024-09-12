@@ -174,10 +174,10 @@ signals:
 
 private:
     /** @brief horScrollBar value horizontal scroll bar. */
-    qint32 horScrollBar;
+    qint32 horScrollBar{ 0 };
 
     /** @brief verScrollBar value vertical scroll bar. */
-    qint32 verScrollBar;
+    qint32 verScrollBar{ 0 };
 
     /** @brief _transform view transform value. */
     QTransform m_previousTransform;

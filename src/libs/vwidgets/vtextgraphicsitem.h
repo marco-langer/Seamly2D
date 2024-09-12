@@ -92,8 +92,8 @@ private:
     QPointF m_startPos;
     QPointF m_start;
     QSizeF m_startSize;
-    double m_rotation;
-    double m_angle;
+    double m_rotation{ 0.0 };
+    double m_angle{ 0.0 };
     QRectF m_rectResize;
     VTextManager m_textMananger;
 

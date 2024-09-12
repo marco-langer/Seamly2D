@@ -34,9 +34,6 @@
  */
 LineWeightComboBox::LineWeightComboBox(QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentWeight(0.35)
-    , m_iconWidth(40)
-    , m_iconHeight(12)
 {
     setObjectName(name);
     setEditable(false);
@@ -48,7 +45,6 @@ LineWeightComboBox::LineWeightComboBox(QWidget* parent, const char* name)
  */
 LineWeightComboBox::LineWeightComboBox(int width, int height, QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentWeight(0.35)
     , m_iconWidth(width)
     , m_iconHeight(height)
 {

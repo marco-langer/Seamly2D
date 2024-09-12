@@ -54,9 +54,9 @@ public:
 
 protected:
     QColor m_rectColor; /** @brief m_rectColor color of point. */
-    bool m_onlyPoint;
-    bool m_isHovered;
-    bool m_showPointName;
+    bool m_onlyPoint{ false };
+    bool m_isHovered{ false };
+    bool m_showPointName{ true };
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;

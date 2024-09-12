@@ -36,9 +36,9 @@ signals:
 private:
     void init();
 
-    QString m_currentColor;
-    int m_iconWidth;
-    int m_iconHeight;
+    QString m_currentColor{ QStringLiteral("black") };
+    int m_iconWidth{ 40 };
+    int m_iconHeight{ 14 };
 };
 
 #endif

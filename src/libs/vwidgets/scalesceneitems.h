@@ -54,6 +54,8 @@
 
 #include <QGraphicsLineItem>
 
+#include "global.h"
+
 #include "../vmisc/def.h"
 #include "vcurvepathitem.h"
 
@@ -82,7 +84,7 @@ public:
 private:
     Q_DISABLE_COPY(VScaledLine)
 
-    qreal basicWidth;
+    qreal basicWidth{ widthMainLine };
 };
 
 class ArrowedLineItem : public QGraphicsLineItem

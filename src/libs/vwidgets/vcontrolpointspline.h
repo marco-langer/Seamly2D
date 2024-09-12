@@ -123,7 +123,7 @@ public slots:
 
 protected:
     /** @brief controlLine pointer to line control point. */
-    VScaledLine* controlLine;
+    VScaledLine* controlLine{ nullptr };
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
@@ -140,8 +140,8 @@ private:
     /** @brief position position point in spline. */
     SplinePointPosition position;
 
-    bool freeAngle;
-    bool freeLength;
+    bool freeAngle{ true };
+    bool freeLength{ true };
 
     void init();
     void setCtrlLine(const QPointF& controlPoint, const QPointF& splinePoint);

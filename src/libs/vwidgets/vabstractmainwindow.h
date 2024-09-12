@@ -81,8 +81,8 @@ protected slots:
     void exportToCSV(QString& file);
 
 protected:
-    int m_curFileFormatVersion;
-    QString m_curFileFormatVersionStr;
+    int m_curFileFormatVersion{ 0 };
+    QString m_curFileFormatVersionStr{ QLatin1String("0.0.0") };
 
     bool
     ContinueFormatRewrite(const QString& currentFormatVersion, const QString& maxFormatVersion);

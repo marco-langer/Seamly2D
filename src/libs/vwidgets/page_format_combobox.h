@@ -56,7 +56,7 @@ private:
     static QVector<std::pair<QString, PaperSizeFormat>> initFormats();
     static QString getFormatName(PaperSizeFormat format);
 
-    PaperSizeFormat m_currentFormat;
+    PaperSizeFormat m_currentFormat{ PaperSizeFormat::A0 };
 };
 
 #endif   // PAGE_FORMAT_COMBOBOX_H

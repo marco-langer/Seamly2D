@@ -40,9 +40,6 @@ Q_LOGGING_CATEGORY(fillComboBox, "fill_combobox")
  */
 PieceFillComboBox::PieceFillComboBox(QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentFill(FillNone)
-    , m_iconWidth(40)
-    , m_iconHeight(14)
 {
     setObjectName(name);
     setEditable(false);
@@ -55,7 +52,6 @@ PieceFillComboBox::PieceFillComboBox(QWidget* parent, const char* name)
  */
 PieceFillComboBox::PieceFillComboBox(int width, int height, QWidget* parent, const char* name)
     : QComboBox(parent)
-    , m_currentFill(FillNone)
     , m_iconWidth(width)
     , m_iconHeight(height)
 {

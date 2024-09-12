@@ -24,6 +24,8 @@
 #ifndef LINETYPE_COMBOBOX_H
 #define LINETYPE_COMBOBOX_H
 
+#include "../ifc/ifcdef.h"
+
 #include <QComboBox>
 #include <QIcon>
 #include <QPen>
@@ -56,9 +58,9 @@ private:
     void init();
     QIcon createIcon(const QString& type);
 
-    QString m_currentLineType;
-    int m_iconWidth;
-    int m_iconHeight;
+    QString m_currentLineType{ LineTypeSolidLine };
+    int m_iconWidth{ 40 };
+    int m_iconHeight{ 14 };
 };
 
 #endif

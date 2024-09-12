@@ -28,8 +28,7 @@
 #include "../vpatterndb/vpiece.h"
 
 PieceTableWidgetItem::PieceTableWidgetItem(VContainer* data)
-    : QTableWidgetItem()
-    , m_data(data)
+    : m_data(data)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------

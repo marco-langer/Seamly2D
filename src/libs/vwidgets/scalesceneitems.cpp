@@ -50,7 +50,6 @@
  *************************************************************************/
 
 #include "scalesceneitems.h"
-#include "global.h"
 #include "vcurvepathitem.h"
 
 #include <QPen>
@@ -59,13 +58,11 @@
 //---------------------------------------------------------------------------------------------------------------------
 VScaledLine::VScaledLine(QGraphicsItem* parent)
     : QGraphicsLineItem(parent)
-    , basicWidth(widthMainLine)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
 VScaledLine::VScaledLine(const QLineF& line, QGraphicsItem* parent)
     : QGraphicsLineItem(line, parent)
-    , basicWidth(widthMainLine)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
