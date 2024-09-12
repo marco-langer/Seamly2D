@@ -31,13 +31,11 @@
 #include <QObject>
 #include <QPointer>
 #include <QToolBar>
-#include <QToolButton>
 
 #include "color_combobox.h"
 #include "linetype_combobox.h"
 #include "lineweight_combobox.h"
 
-class QToolButton;
 
 class ColorComboBox;
 class LineWeightComboBox;

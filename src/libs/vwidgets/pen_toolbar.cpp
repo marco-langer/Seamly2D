@@ -25,11 +25,12 @@
  **
  *************************************************************************/
 
+#include "pen_toolbar.h"
 
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
 
-#include "pen_toolbar.h"
+#include <QToolButton>
 
 Q_LOGGING_CATEGORY(penToolBar, "pentoolbar")
 
