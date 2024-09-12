@@ -61,7 +61,7 @@ public:
     QPointer<LineTypeComboBox> lineTypeBox;
     QPointer<LineWeightComboBox> lineWeightBox;
 
-public slots:
+private slots:
     void colorChanged(const QString& color);
     void lineWeightChanged(const qreal& weight);
     void lineTypeChanged(const QString& type);
