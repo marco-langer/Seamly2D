@@ -59,14 +59,13 @@ private:
             const QStyleOptionGraphicsItem* option,
             QWidget* widget = nullptr) override;
 
-        virtual QVariant
-        itemChange(GraphicsItemChange change, const QVariant& value) Q_DECL_OVERRIDE;
-        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
-        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) Q_DECL_OVERRIDE;
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) Q_DECL_OVERRIDE;
-        virtual void keyReleaseEvent(QKeyEvent* event) Q_DECL_OVERRIDE;
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+        virtual void keyReleaseEvent(QKeyEvent* event) override;
 
     private:
         QPointF limitPosition(const QPointF& newPos);
@@ -84,7 +83,7 @@ public:
         QGraphicsItem* parent = nullptr, qreal minDimension = 16, qreal maxDimension = 16000);
     virtual ~ResizeHandlesItem() = default;
 
-    virtual int type() const Q_DECL_OVERRIDE { return Type; }
+    virtual int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ResizeHandlesItem)
