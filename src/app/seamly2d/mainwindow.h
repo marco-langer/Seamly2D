@@ -365,7 +365,6 @@ private:
 
     QDoubleSpinBox* m_zoomScaleSpinBox{ nullptr };
     PenToolBar* m_penToolBar{ nullptr };   //!< for selecting the current pen
-    PenToolBar* m_penReset{ nullptr };
     QComboBox* m_zoomToPointComboBox{ nullptr };
 
     void SetDefaultHeight();
