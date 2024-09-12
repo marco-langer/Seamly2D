@@ -76,7 +76,7 @@ public:
         QPainter* painter,
         const QStyleOptionGraphicsItem* option,
         QWidget* widget = nullptr) override;
-    virtual void refreshPointGeometry(const VPointF& point);
+    void refreshPointGeometry(const VPointF& point);
 
     void refreshLeader();
 
