@@ -55,7 +55,7 @@ class PenToolBar : public QToolBar
     Q_OBJECT
 
 public:
-    PenToolBar(const QString& title, QWidget* parent = 0);
+    PenToolBar(const QString& title, QWidget* parent = nullptr);
 
     Pen getPen() const;
     Pen currentPen;
