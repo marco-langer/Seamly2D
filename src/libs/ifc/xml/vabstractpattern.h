@@ -73,7 +73,6 @@
 class QDomElement;
 class VPiecePath;
 class VPieceNode;
-class PenToolBar;
 
 enum class Document : char
 {
