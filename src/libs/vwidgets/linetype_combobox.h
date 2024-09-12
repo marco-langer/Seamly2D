@@ -40,7 +40,7 @@ class LineTypeComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    LineTypeComboBox(QWidget* parent = nullptr);
+    explicit LineTypeComboBox(QWidget* parent = nullptr);
     LineTypeComboBox(int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
 
     QString getLineType() const { return m_currentLineType; }

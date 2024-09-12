@@ -39,7 +39,7 @@ class ExportFormatCombobox : public QComboBox
     Q_OBJECT
 
 public:
-    ExportFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
+    explicit ExportFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
 
     void init();
 

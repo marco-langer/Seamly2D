@@ -39,7 +39,7 @@ class PageFormatCombobox : public QComboBox
     Q_OBJECT
 
 public:
-    PageFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
+    explicit PageFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
 
     void init();
     PaperSizeFormat getPageFormat() const;

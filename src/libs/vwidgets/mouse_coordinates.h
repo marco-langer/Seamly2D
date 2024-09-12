@@ -41,7 +41,7 @@ class MouseCoordinates : public QWidget
     Q_OBJECT
 
 public:
-    MouseCoordinates(const Unit& units, QWidget* parent = nullptr);
+    explicit MouseCoordinates(const Unit& units, QWidget* parent = nullptr);
 
 public slots:
     void updateCoordinates(const QPointF& scenePos);

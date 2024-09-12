@@ -70,7 +70,7 @@ class VAbstractSimple : public QObject
 {
     Q_OBJECT
 public:
-    VAbstractSimple(quint32 id, QObject* parent = nullptr);
+    explicit VAbstractSimple(quint32 id, QObject* parent = nullptr);
 
     virtual void ToolSelectionType(const SelectionType& type);
 

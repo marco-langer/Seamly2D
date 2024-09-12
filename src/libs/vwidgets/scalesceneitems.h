@@ -63,7 +63,7 @@ class VScaledLine : public QGraphicsLineItem
 {
 public:
     explicit VScaledLine(QGraphicsItem* parent = nullptr);
-    VScaledLine(const QLineF& line, QGraphicsItem* parent = nullptr);
+    explicit VScaledLine(const QLineF& line, QGraphicsItem* parent = nullptr);
 
     virtual int type() const override { return Type; }
     enum

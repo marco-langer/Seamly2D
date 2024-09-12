@@ -36,7 +36,7 @@ class LineWeightComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    LineWeightComboBox(QWidget* parent = nullptr, const char* name = nullptr);
+    explicit LineWeightComboBox(QWidget* parent = nullptr, const char* name = nullptr);
     LineWeightComboBox(
         int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
 

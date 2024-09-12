@@ -18,7 +18,7 @@ class ColorComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    ColorComboBox(QWidget* parent = nullptr, const char* name = nullptr);
+    explicit ColorComboBox(QWidget* parent = nullptr, const char* name = nullptr);
     ColorComboBox(int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
 
     QString getColor() const;

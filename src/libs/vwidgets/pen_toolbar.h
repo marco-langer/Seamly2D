@@ -30,6 +30,7 @@
 
 #include <QObject>
 #include <QToolBar>
+#include <QWidget>
 
 #include "color_combobox.h"
 #include "linetype_combobox.h"
@@ -52,7 +53,7 @@ class PenToolBar : public QToolBar
     Q_OBJECT
 
 public:
-    PenToolBar(const QString& title, QWidget* parent = nullptr);
+    explicit PenToolBar(const QString& title, QWidget* parent = nullptr);
 
 private slots:
     void colorChanged(const QString& color);
