@@ -81,7 +81,6 @@ private:
 public:
     explicit ResizeHandlesItem(
         QGraphicsItem* parent = nullptr, qreal minDimension = 16, qreal maxDimension = 16000);
-    virtual ~ResizeHandlesItem() = default;
 
     virtual int type() const override { return Type; }
     enum

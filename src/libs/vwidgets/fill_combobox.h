@@ -39,8 +39,6 @@ class PieceFillComboBox : public QComboBox
 public:
     PieceFillComboBox(QWidget* parent = nullptr, const char* name = nullptr);
     PieceFillComboBox(int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
-    virtual ~PieceFillComboBox();
-
 
     QString getFill() const;
     void setFill(const QString& fill);

@@ -46,11 +46,6 @@ MouseCoordinates::MouseCoordinates(const Unit& units, QWidget* parent)
     ui->unitsText_Label->setText(UnitsToStr(m_units));
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-/*
- * Destructor
- */
-MouseCoordinates::~MouseCoordinates() {}
 
 //---------------------------------------------------------------------------------------------------------------------
 /*

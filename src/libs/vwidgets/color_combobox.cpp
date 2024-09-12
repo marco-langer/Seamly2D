@@ -44,10 +44,6 @@ ColorComboBox::ColorComboBox(int width, int height, QWidget* parent, const char*
     init();
 }
 
-/**
- * Destructor
- */
-ColorComboBox::~ColorComboBox() {}
 
 /*
  * Initialisation called from constructor or manually but only once.

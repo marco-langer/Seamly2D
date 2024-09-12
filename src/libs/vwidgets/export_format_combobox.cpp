@@ -55,10 +55,6 @@ ExportFormatCombobox::ExportFormatCombobox(QWidget* parent, const char* name)
     init();
 }
 
-/**
- * Destructor
- */
-ExportFormatCombobox::~ExportFormatCombobox() {}
 
 /**
  * Initialisation called from constructor or manually but only once.

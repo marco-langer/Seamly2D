@@ -40,7 +40,6 @@ class ExportFormatCombobox : public QComboBox
 
 public:
     ExportFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
-    virtual ~ExportFormatCombobox();
 
     void init();
 

@@ -39,7 +39,6 @@ public:
     LineWeightComboBox(QWidget* parent = nullptr, const char* name = nullptr);
     LineWeightComboBox(
         int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
-    virtual ~LineWeightComboBox();
 
     void init();
 

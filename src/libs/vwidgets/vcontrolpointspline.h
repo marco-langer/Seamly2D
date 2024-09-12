@@ -85,7 +85,6 @@ public:
         bool freeAngle,
         bool freeLength,
         QGraphicsItem* parent = nullptr);
-    virtual ~VControlPointSpline() = default;
 
     virtual int type() const override { return Type; }
     enum

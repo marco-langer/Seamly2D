@@ -65,7 +65,7 @@ class VScenePoint : public QGraphicsEllipseItem
 {
 public:
     explicit VScenePoint(const QColor& lineColor, QGraphicsItem* parent = nullptr);
-    virtual ~VScenePoint() = default;
+
     virtual int type() const override { return Type; }
     enum
     {

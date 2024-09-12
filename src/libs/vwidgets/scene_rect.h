@@ -39,7 +39,7 @@ class SceneRect : public QGraphicsRectItem
 {
 public:
     explicit SceneRect(const QColor& lineColor, QGraphicsItem* parent = nullptr);
-    virtual ~SceneRect() = default;
+
     virtual int type() const override { return Type; }
     enum
     {

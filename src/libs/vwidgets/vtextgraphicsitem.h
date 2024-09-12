@@ -53,7 +53,6 @@ class VTextGraphicsItem : public VPieceItem
     Q_OBJECT
 public:
     explicit VTextGraphicsItem(QGraphicsItem* pParent = nullptr);
-    virtual ~VTextGraphicsItem() = default;
 
     virtual void
     paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;

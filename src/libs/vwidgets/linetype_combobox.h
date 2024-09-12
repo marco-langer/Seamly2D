@@ -43,8 +43,6 @@ public:
     LineTypeComboBox(QWidget* parent = nullptr);
     LineTypeComboBox(int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
 
-    virtual ~LineTypeComboBox();
-
     QString getLineType() const { return m_currentLineType; }
     void setLineType(const QString& type);
 

@@ -77,7 +77,6 @@ public:
     explicit VGraphicsSimpleTextItem(QColor color, QGraphicsItem* parent = nullptr);
     explicit VGraphicsSimpleTextItem(
         const QString& text, QColor textColor, QGraphicsItem* parent = nullptr);
-    virtual ~VGraphicsSimpleTextItem() = default;
 
     qint32 BaseFontSize() const;
     virtual int type() const override { return Type; }

@@ -76,7 +76,6 @@ class VSimplePoint
     Q_OBJECT
 public:
     VSimplePoint(quint32 id, const QColor& currentColor, QObject* parent = nullptr);
-    virtual ~VSimplePoint() = default;
 
     virtual int type() const override { return Type; }
     enum

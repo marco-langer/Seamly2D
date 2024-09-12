@@ -57,11 +57,6 @@ LineTypeComboBox::LineTypeComboBox(int width, int height, QWidget* parent, const
     init();
 }
 
-/**
- * Destructor
- */
-LineTypeComboBox::~LineTypeComboBox() {}
-
 
 /**
  * Initialisation called from constructor or manually but only once.

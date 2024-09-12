@@ -61,7 +61,6 @@ class VCurvePathItem : public QGraphicsPathItem
 {
 public:
     explicit VCurvePathItem(QGraphicsItem* parent = nullptr);
-    virtual ~VCurvePathItem() = default;
 
     virtual QPainterPath shape() const override;
 

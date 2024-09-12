@@ -20,7 +20,6 @@ class ColorComboBox : public QComboBox
 public:
     ColorComboBox(QWidget* parent = nullptr, const char* name = nullptr);
     ColorComboBox(int width, int height, QWidget* parent = nullptr, const char* name = nullptr);
-    virtual ~ColorComboBox();
 
     QString getColor() const;
     void setColor(const QString& color);

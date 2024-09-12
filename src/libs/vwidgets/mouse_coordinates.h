@@ -42,7 +42,6 @@ class MouseCoordinates : public QWidget
 
 public:
     MouseCoordinates(const Unit& units, QWidget* parent = nullptr);
-    virtual ~MouseCoordinates();
 
 public slots:
     void updateCoordinates(const QPointF& scenePos);

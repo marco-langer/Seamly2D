@@ -90,11 +90,6 @@ PenToolBar::PenToolBar(const QString& title, QWidget* parent)
 }
 
 
-/**
- * Destructor
- */
-PenToolBar::~PenToolBar() = default;
-
 Pen PenToolBar::getPen() const { return currentPen; }
 
 /**

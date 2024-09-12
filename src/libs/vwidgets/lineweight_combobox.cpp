@@ -57,10 +57,6 @@ LineWeightComboBox::LineWeightComboBox(int width, int height, QWidget* parent, c
     init();
 }
 
-/**
- * Destructor
- */
-LineWeightComboBox::~LineWeightComboBox() {}
 
 /**
  * Initialisation called from constructor or manually but only once.

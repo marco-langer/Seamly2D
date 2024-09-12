@@ -40,7 +40,6 @@ class PageFormatCombobox : public QComboBox
 
 public:
     PageFormatCombobox(QWidget* parent = nullptr, const char* name = nullptr);
-    virtual ~PageFormatCombobox();
 
     void init();
     PaperSizeFormat getPageFormat() const;

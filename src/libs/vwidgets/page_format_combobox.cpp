@@ -42,10 +42,6 @@ PageFormatCombobox::PageFormatCombobox(QWidget* parent, const char* name)
     init();
 }
 
-/**
- * Destructor
- */
-PageFormatCombobox::~PageFormatCombobox() {}
 
 /**
  * Initialisation called from constructor or manually but only once.

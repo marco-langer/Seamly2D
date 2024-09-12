@@ -78,7 +78,6 @@ class VSimpleCurve
 public:
     VSimpleCurve(
         quint32 id, const QSharedPointer<VAbstractCurve>& curve, QObject* parent = nullptr);
-    virtual ~VSimpleCurve() = default;
 
     virtual int type() const override { return Type; }
     enum

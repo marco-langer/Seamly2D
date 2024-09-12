@@ -64,10 +64,6 @@ PieceFillComboBox::PieceFillComboBox(int width, int height, QWidget* parent, con
     init();
 }
 
-/**
- * Destructor
- */
-PieceFillComboBox::~PieceFillComboBox() {}
 
 /*
  * Initialisation called from constructor or manually but only once.

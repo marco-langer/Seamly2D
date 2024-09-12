@@ -38,7 +38,6 @@ class VGrainlineItem : public VPieceItem
     Q_OBJECT
 public:
     explicit VGrainlineItem(QGraphicsItem* pParent = nullptr);
-    virtual ~VGrainlineItem() = default;
 
     virtual QPainterPath shape() const override;
 

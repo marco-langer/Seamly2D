@@ -58,7 +58,6 @@ class PenToolBar : public QToolBar
 
 public:
     PenToolBar(const QString& title, QWidget* parent = 0);
-    virtual ~PenToolBar();
 
     Pen getPen() const;
     Pen currentPen;

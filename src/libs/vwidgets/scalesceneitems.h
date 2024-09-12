@@ -64,7 +64,6 @@ class VScaledLine : public QGraphicsLineItem
 public:
     explicit VScaledLine(QGraphicsItem* parent = nullptr);
     VScaledLine(const QLineF& line, QGraphicsItem* parent = nullptr);
-    virtual ~VScaledLine() = default;
 
     virtual int type() const override { return Type; }
     enum
@@ -91,7 +90,6 @@ class ArrowedLineItem : public QGraphicsLineItem
 public:
     explicit ArrowedLineItem(QGraphicsItem* parent = nullptr);
     ArrowedLineItem(const QLineF& line, QGraphicsItem* parent = nullptr);
-    virtual ~ArrowedLineItem() = default;
 
     virtual int type() const override { return Type; }
     enum
@@ -114,7 +112,6 @@ class VScaledEllipse : public QGraphicsEllipseItem
 {
 public:
     explicit VScaledEllipse(QGraphicsItem* parent = nullptr);
-    virtual ~VScaledEllipse() = default;
 
     virtual int type() const override { return Type; }
     enum

@@ -73,7 +73,6 @@ public:
     Q_DECLARE_FLAGS(MoveTypes, MoveType)
 
     explicit VPieceItem(QGraphicsItem* pParent = nullptr);
-    virtual ~VPieceItem();
 
     virtual QRectF boundingRect() const override;
 
