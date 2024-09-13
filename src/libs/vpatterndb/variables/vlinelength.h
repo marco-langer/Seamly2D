@@ -76,14 +76,14 @@ public:
         Unit patternUnit);
     VLengthLine(const VLengthLine& var);
 
-    virtual ~VLengthLine() override;
+    ~VLengthLine() override;
 
     VLengthLine& operator=(const VLengthLine& var);
     VLengthLine& operator=(VLengthLine&& var) noexcept;
 
     void Swap(VLengthLine& var) noexcept;
 
-    virtual bool Filter(quint32 id) override;
+    bool Filter(quint32 id) override;
     void SetValue(const VPointF* p1, const VPointF* p2);
     quint32 GetP1Id() const;
     quint32 GetP2Id() const;

@@ -78,9 +78,9 @@ signals:
     void updateProperties();
 
 protected:
-    virtual void changeEvent(QEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
-    virtual void resizeEvent(QResizeEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
     void Apply();

@@ -68,14 +68,14 @@ public:
     VCurveVariable(const quint32& id, const quint32& parentId);
     VCurveVariable(const VCurveVariable& var);
 
-    virtual ~VCurveVariable() override;
+    ~VCurveVariable() override;
 
     VCurveVariable& operator=(const VCurveVariable& var);
     VCurveVariable& operator=(VCurveVariable&& var) noexcept;
 
     void Swap(VCurveVariable& var) noexcept;
 
-    virtual bool Filter(quint32 id) override;
+    bool Filter(quint32 id) override;
 
     quint32 GetId() const;
     void SetId(const quint32& id);

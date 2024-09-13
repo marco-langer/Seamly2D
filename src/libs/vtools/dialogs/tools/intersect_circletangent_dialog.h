@@ -70,7 +70,7 @@ public:
     void setCirclesCrossPoint(const CrossCirclesPoint& p);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
     void PointChanged();
 
     void DeployCircleRadiusTextEdit();
@@ -79,13 +79,13 @@ public slots:
     void EvalCircleRadius();
 
 protected:
-    virtual void ShowVisualization() override;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
-    virtual void closeEvent(QCloseEvent* event) override;
-    virtual void CheckState() final;
+    void SaveData() override;
+    void closeEvent(QCloseEvent* event) override;
+    void CheckState() final;
 
 private:
     Q_DISABLE_COPY(IntersectCircleTangentDialog)

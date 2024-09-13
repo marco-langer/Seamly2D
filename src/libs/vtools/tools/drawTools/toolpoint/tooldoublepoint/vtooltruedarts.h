@@ -80,7 +80,7 @@ public:
         const QPointF& dartP3,
         QPointF& p1,
         QPointF& p2);
-    virtual void setDialog() override;
+    void setDialog() override;
 
     static VToolTrueDarts* Create(
         QSharedPointer<DialogTool> dialog,
@@ -111,13 +111,13 @@ public:
         const Source& typeCreation);
 
     static const QString ToolType;
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::TrueDarts)
     };
 
-    virtual void ShowVisualization(bool show) override;
+    void ShowVisualization(bool show) override;
 
     QString BaseLineP1Name() const;
     QString BaseLineP2Name() const;
@@ -141,15 +141,14 @@ public:
     void SetDartP3Id(const quint32& value);
 
 protected slots:
-    virtual void
-    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
+    void showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
 
 protected:
-    virtual void RemoveReferens() override;
-    virtual void SaveDialog(QDomElement& domElement) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
-    virtual void ReadToolAttributes(const QDomElement& domElement) override;
-    virtual void SetVisualization() override;
+    void RemoveReferens() override;
+    void SaveDialog(QDomElement& domElement) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void ReadToolAttributes(const QDomElement& domElement) override;
+    void SetVisualization() override;
 
 private:
     Q_DISABLE_COPY(VToolTrueDarts)

@@ -77,7 +77,7 @@ class VToolShoulderPoint : public VToolLinePoint
 {
     Q_OBJECT
 public:
-    virtual void setDialog() override;
+    void setDialog() override;
     static QPointF FindPoint(
         const QPointF& p1Line,
         const QPointF& p2Line,
@@ -109,7 +109,7 @@ public:
         const Source& typeCreation);
 
     static const QString ToolType;
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::ShoulderPoint)
@@ -124,20 +124,19 @@ public:
     quint32 getPShoulder() const;
     void setPShoulder(const quint32& value);
 
-    virtual void ShowVisualization(bool show) override;
+    void ShowVisualization(bool show) override;
 
 protected slots:
-    virtual void
-    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
+    void showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
 
 
 protected:
-    virtual void RemoveReferens() override;
-    virtual void SaveDialog(QDomElement& domElement) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
-    virtual void ReadToolAttributes(const QDomElement& domElement) override;
-    virtual void SetVisualization() override;
-    virtual QString makeToolTip() const override;
+    void RemoveReferens() override;
+    void SaveDialog(QDomElement& domElement) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void ReadToolAttributes(const QDomElement& domElement) override;
+    void SetVisualization() override;
+    QString makeToolTip() const override;
 
 private:
     Q_DISABLE_COPY(VToolShoulderPoint)

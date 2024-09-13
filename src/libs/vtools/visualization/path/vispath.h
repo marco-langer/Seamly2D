@@ -74,15 +74,15 @@ public:
     explicit VisPath(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisPath() = default;
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::Path)
     };
 
 protected:
-    virtual void initPen() override;
-    virtual void AddOnScene() override;
+    void initPen() override;
+    void AddOnScene() override;
 
     VSimplePoint* GetPoint(QVector<VSimplePoint*>& points, quint32 i, const QColor& color);
 

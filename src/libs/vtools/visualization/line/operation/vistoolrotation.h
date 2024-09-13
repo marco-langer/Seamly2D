@@ -73,14 +73,14 @@ public:
     explicit VisToolRotation(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolRotation();
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
 
     void SetOriginPointId(quint32 value);
 
     QString Angle() const;
     void SetAngle(const QString& expression);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolRotation)

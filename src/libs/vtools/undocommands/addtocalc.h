@@ -67,11 +67,11 @@ class AddToCalc : public VUndoCommand
 public:
     AddToCalc(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent = nullptr);
     virtual ~AddToCalc() = default;
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
 
 protected:
-    virtual void RedoFullParsing() override;
+    void RedoFullParsing() override;
 
 private:
     Q_DISABLE_COPY(AddToCalc)

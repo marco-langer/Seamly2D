@@ -66,8 +66,8 @@ class DelGroup : public VUndoCommand
 public:
     DelGroup(VAbstractPattern* doc, quint32 id, QUndoCommand* parent = nullptr);
     virtual ~DelGroup();
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
 signals:
     void updateGroups();
 

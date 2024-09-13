@@ -86,16 +86,16 @@ public:
 #endif
 
 protected:
-    virtual int minVer() const override;
-    virtual int maxVer() const override;
+    int minVer() const override;
+    int maxVer() const override;
 
-    virtual QString minVerStr() const override;
-    virtual QString maxVerStr() const override;
+    QString minVerStr() const override;
+    QString maxVerStr() const override;
 
-    virtual QString getSchema(int ver) const override;
-    virtual void applyPatches() override;
-    virtual void downgradeToCurrentMaxVersion() override;
-    virtual bool isReadOnly() const override;
+    QString getSchema(int ver) const override;
+    void applyPatches() override;
+    void downgradeToCurrentMaxVersion() override;
+    bool isReadOnly() const override;
 
 private:
     Q_DISABLE_COPY(MultiSizeConverter)

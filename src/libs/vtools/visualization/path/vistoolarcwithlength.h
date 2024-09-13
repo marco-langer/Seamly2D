@@ -69,11 +69,11 @@ public:
     explicit VisToolArcWithLength(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolArcWithLength() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
     void setRadius(const QString& expression);
     void setF1(const QString& expression);
     void setLength(const QString& expression);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolArcWithLength)

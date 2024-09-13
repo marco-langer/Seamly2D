@@ -71,14 +71,14 @@ public:
         const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolPointOfIntersectionCurves() = default;
 
-    virtual void RefreshGeometry() override;
-    virtual void VisualMode(const quint32& id) override;
+    void RefreshGeometry() override;
+    void VisualMode(const quint32& id) override;
 
     void setObject2Id(const quint32& value);
     void setVCrossPoint(const VCrossCurvesPoint& value);
     void setHCrossPoint(const HCrossCurvesPoint& value);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolPointOfIntersectionCurves)

@@ -47,7 +47,7 @@ public:
     virtual ~ShowInfoDialog();
 
 protected:
-    virtual void showEvent(QShowEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 
 private:
     Ui::ShowInfoDialog* ui;

@@ -70,8 +70,8 @@ public:
     VExceptionEmptyParameter(
         const QString& what, const QString& name, const QDomElement& domElement);
 
-    virtual QString ErrorMessage() const override;
-    virtual QString DetailedInformation() const override;
+    QString ErrorMessage() const override;
+    QString DetailedInformation() const override;
     QString Name() const;
     QString TagText() const;
     QString TagName() const;

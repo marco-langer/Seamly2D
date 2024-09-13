@@ -70,9 +70,9 @@ public:
         VAbstractPattern* doc,
         const QString& blockName,
         QUndoCommand* parent = nullptr);
-    virtual ~AddDetNode() override;
-    virtual void undo() override;
-    virtual void redo() override;
+    ~AddDetNode() override;
+    void undo() override;
+    void redo() override;
 
 private:
     Q_DISABLE_COPY(AddDetNode)

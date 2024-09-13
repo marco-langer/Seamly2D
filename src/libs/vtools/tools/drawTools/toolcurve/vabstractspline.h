@@ -88,17 +88,16 @@ public:
         VAbstractPattern* doc, VContainer* data, quint32 id, QGraphicsItem* parent = nullptr);
     virtual ~VAbstractSpline() = default;
 
-    virtual QPainterPath shape() const override;
-    virtual void
-    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-    virtual int type() const override { return Type; }
+    QPainterPath shape() const override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+    int type() const override { return Type; }
 
     enum
     {
         Type = UserType + static_cast<int>(Tool::AbstractSpline)
     };
 
-    virtual QString getTagName() const override;
+    QString getTagName() const override;
     void ShowHandles(bool show);
 
     QString getLineColor() const;
@@ -112,15 +111,15 @@ public:
 
     QString name() const;
 
-    virtual void GroupVisibility(quint32 object, bool visible) override;
+    void GroupVisibility(quint32 object, bool visible) override;
 
 public slots:
-    virtual void FullUpdateFromFile() override;
-    virtual void Disable(bool disable, const QString& draftBlockName) override;
-    virtual void piecesMode(bool mode) override;
-    virtual void AllowHover(bool enabled) override;
-    virtual void AllowSelecting(bool enabled) override;
-    virtual QString makeToolTip() const override;
+    void FullUpdateFromFile() override;
+    void Disable(bool disable, const QString& draftBlockName) override;
+    void piecesMode(bool mode) override;
+    void AllowHover(bool enabled) override;
+    void AllowSelecting(bool enabled) override;
+    QString makeToolTip() const override;
 
 signals:
     /**
@@ -144,17 +143,17 @@ protected:
      */
     virtual void RefreshGeometry();
 
-    virtual void ShowTool(quint32 id, bool enable) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
-    virtual void keyReleaseEvent(QKeyEvent* event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void ReadToolAttributes(const QDomElement& domElement) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void ShowTool(quint32 id, bool enable) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void ReadToolAttributes(const QDomElement& domElement) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
     virtual void refreshCtrlPoints();
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
 
     VSpline CorrectedSpline(
         const VSpline& spline, const SplinePointPosition& position, const QPointF& pos) const;

@@ -44,7 +44,7 @@ public:
     virtual ~MeShortcutsDialog();
 
 protected:
-    virtual void showEvent(QShowEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 
 private:
     Ui::MeShortcutsDialog* ui;

@@ -67,7 +67,7 @@ class MeasurementDatabaseDialog : public QDialog
 public:
     explicit MeasurementDatabaseDialog(const QStringList& measurements, QWidget* parent = nullptr);
     explicit MeasurementDatabaseDialog(QWidget* parent = nullptr);
-    virtual ~MeasurementDatabaseDialog() override;
+    ~MeasurementDatabaseDialog() override;
 
     void retranslateGroups();
 
@@ -75,8 +75,8 @@ public:
     static QString imageUrl(const QString& number);
 
 protected:
-    virtual void changeEvent(QEvent* event) override;
-    virtual bool eventFilter(QObject* target, QEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    bool eventFilter(QObject* target, QEvent* event) override;
 
 private slots:
     void updateChecks(QTreeWidgetItem* item, int column);

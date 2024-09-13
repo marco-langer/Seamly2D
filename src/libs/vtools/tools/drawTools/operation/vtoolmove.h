@@ -74,7 +74,7 @@ class VToolMove : public VAbstractOperation
     Q_OBJECT
 public:
     virtual ~VToolMove() = default;
-    virtual void setDialog() override;
+    void setDialog() override;
     static VToolMove* Create(
         QSharedPointer<DialogTool> dialog,
         VMainGraphicsScene* scene,
@@ -98,7 +98,7 @@ public:
 
     static const QString ToolType;
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::Move)
@@ -117,18 +117,17 @@ public:
     quint32 getOriginPointId() const;
     void setOriginPointId(const quint32& value);
 
-    virtual void ShowVisualization(bool show) override;
+    void ShowVisualization(bool show) override;
 
 protected slots:
-    virtual void
-    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
+    void showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
 
 protected:
-    virtual void SetVisualization() override;
-    virtual void SaveDialog(QDomElement& domElement) override;
-    virtual void ReadToolAttributes(const QDomElement& domElement) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
-    virtual QString makeToolTip() const override;
+    void SetVisualization() override;
+    void SaveDialog(QDomElement& domElement) override;
+    void ReadToolAttributes(const QDomElement& domElement) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    QString makeToolTip() const override;
 
 private:
     Q_DISABLE_COPY(VToolMove)

@@ -40,21 +40,19 @@ class SceneRect : public QGraphicsRectItem
 public:
     explicit SceneRect(const QColor& lineColor, QGraphicsItem* parent = nullptr);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ScenePoint)
     };
 
-    virtual void paint(
-        QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        override;
     void refreshPointGeometry(const VPointF& point);
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
     void setOnlyPoint(bool value);
     bool isOnlyPoint() const;

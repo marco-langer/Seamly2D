@@ -76,16 +76,16 @@ public:
     QString getSeamAllowanceWidthFormula() const;
     void setSeamAllowanceWidthFormula(const QString& formula);
 
-    virtual void SetPiecesList(const QVector<quint32>& list) override;
+    void SetPiecesList(const QVector<quint32>& list) override;
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void ShowDialog(bool click) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ShowDialog(bool click) override;
 
 protected:
-    virtual void CheckState() final;
-    virtual void ShowVisualization() override;
-    virtual void closeEvent(QCloseEvent* event) override;
+    void CheckState() final;
+    void ShowVisualization() override;
+    void closeEvent(QCloseEvent* event) override;
 
 private slots:
     void ShowContextMenu(const QPoint& pos);

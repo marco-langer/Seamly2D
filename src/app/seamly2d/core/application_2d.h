@@ -75,9 +75,9 @@ class Application2D : public VAbstractApplication
     Q_OBJECT
 public:
     Application2D(int& argc, char** argv);
-    virtual ~Application2D() override;
+    ~Application2D() override;
     static void startNewSeamly2D(const QString& fileName = QString());
-    virtual bool notify(QObject* receiver, QEvent* event) override;
+    bool notify(QObject* receiver, QEvent* event) override;
 
     void initOptions();
 
@@ -91,17 +91,17 @@ public:
     void startLogging();
     QTextStream* logFile();
 
-    virtual const VTranslateVars* translateVariables() override;
+    const VTranslateVars* translateVariables() override;
 
     bool static isGUIMode();
-    virtual bool isAppInGUIMode() const override;
+    bool isAppInGUIMode() const override;
 
-    virtual void openSettings() override;
+    void openSettings() override;
     VSettings* Seamly2DSettings();
 
 protected:
-    virtual void initTranslateVariables() override;
-    virtual bool event(QEvent* e) override;
+    void initTranslateVariables() override;
+    bool event(QEvent* e) override;
 
 private:
     Q_DISABLE_COPY(Application2D)

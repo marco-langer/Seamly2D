@@ -117,7 +117,7 @@ public slots:
     void animFinished();
 
 protected:
-    virtual bool eventFilter(QObject* object, QEvent* event) override;
+    bool eventFilter(QObject* object, QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(GraphicsViewZoom)
@@ -198,10 +198,10 @@ public slots:
     void resetScrollAnimations();
 
 protected:
-    virtual void mousePressEvent(QMouseEvent* event) override;
-    virtual void mouseMoveEvent(QMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QMouseEvent* event) override;
-    virtual void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 
     QSharedPointer<QCursor> curMagnifier;
 

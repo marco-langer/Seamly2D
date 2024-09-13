@@ -70,12 +70,12 @@ public:
         const QString& newBlockName,
         QComboBox* combo,
         QUndoCommand* parent = nullptr);
-    virtual ~RenameDraftBlock() override;
+    ~RenameDraftBlock() override;
 
-    virtual void undo() override;
-    virtual void redo() override;
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    void undo() override;
+    void redo() override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
     QString getNewName() const;
     QString getOldName() const;
 

@@ -44,8 +44,8 @@ public:
         quint32 groupId,
         QUndoCommand* parent = nullptr);
     virtual ~RemoveGroupItem();
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
 
 signals:
     void updateGroups();

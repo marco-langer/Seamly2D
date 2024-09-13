@@ -91,7 +91,7 @@ public:
         qreal my,
         quint32 idObject = 0,
         const Draw& mode = Draw::Calculation);
-    virtual ~VPointF() override;
+    ~VPointF() override;
 
     VPointF& operator=(const VPointF& point);
     VPointF& operator=(VPointF&& point) noexcept;

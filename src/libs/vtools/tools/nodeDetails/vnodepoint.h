@@ -87,15 +87,15 @@ public:
         const quint32& idTool = 0);
 
     static const QString ToolType;
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::NodePoint)
     };
-    virtual QString getTagName() const override;
+    QString getTagName() const override;
 
-    virtual void setPointNamePosition(quint32 id, const QPointF& pos) override;
-    virtual void setPointNameVisiblity(quint32 id, bool visible) override;
+    void setPointNamePosition(quint32 id, const QPointF& pos) override;
+    void setPointNameVisiblity(quint32 id, bool visible) override;
 
 signals:
     /**
@@ -107,23 +107,23 @@ signals:
     // void Delete();
 
 public slots:
-    virtual void FullUpdateFromFile() override;
+    void FullUpdateFromFile() override;
     void nameChangedPosition(const QPointF& pos);
     void pointChosen();
     void EnableToolMove(bool move);
-    virtual void AllowHover(bool enabled) override;
-    virtual void AllowSelecting(bool enabled) override;
+    void AllowHover(bool enabled) override;
+    void AllowSelecting(bool enabled) override;
     void allowTextHover(bool enabled);
     void allowTextSelectable(bool enabled);
 
 protected:
-    virtual void AddToFile() override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void ShowNode() override;
-    virtual void HideNode() override;
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    void AddToFile() override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void ShowNode() override;
+    void HideNode() override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
 
 private:
     Q_DISABLE_COPY(VNodePoint)

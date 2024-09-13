@@ -77,7 +77,7 @@ class VSimplePoint
 public:
     VSimplePoint(quint32 id, const QColor& currentColor, QObject* parent = nullptr);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::SimplePoint)
@@ -95,7 +95,7 @@ public:
     void EnableToolMove(bool move);
     void allowTextHover(bool enabled);
     void allowTextSelectable(bool enabled);
-    virtual void ToolSelectionType(const SelectionType& type) override;
+    void ToolSelectionType(const SelectionType& type) override;
 
 signals:
     /**
@@ -113,13 +113,13 @@ public slots:
     void pointnameChangedPosition(const QPointF& pos);
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void keyReleaseEvent(QKeyEvent* event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
 
 private:
     Q_DISABLE_COPY(VSimplePoint)

@@ -70,17 +70,17 @@ public:
     static constexpr const int LabelTemplateMaxVer = CONVERTER_VERSION_CHECK(1, 0, 0);
 
 protected:
-    virtual int minVer() const override;
-    virtual int maxVer() const override;
+    int minVer() const override;
+    int maxVer() const override;
 
-    virtual QString minVerStr() const override;
-    virtual QString maxVerStr() const override;
+    QString minVerStr() const override;
+    QString maxVerStr() const override;
 
-    virtual QString getSchema(int ver) const override;
-    virtual void applyPatches() override;
-    virtual void downgradeToCurrentMaxVersion() override;
+    QString getSchema(int ver) const override;
+    void applyPatches() override;
+    void downgradeToCurrentMaxVersion() override;
 
-    virtual bool isReadOnly() const override { return false; }
+    bool isReadOnly() const override { return false; }
 
 private:
     Q_DISABLE_COPY(VLabelTemplateConverter)

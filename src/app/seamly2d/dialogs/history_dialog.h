@@ -79,14 +79,14 @@ class HistoryDialog : public DialogTool
     Q_OBJECT
 public:
     HistoryDialog(VContainer* data, VPattern* doc, QWidget* parent = nullptr);
-    virtual ~HistoryDialog() override;
+    ~HistoryDialog() override;
 
 public slots:
-    virtual void DialogAccepted() override;
+    void DialogAccepted() override;
     /** TODO ISSUE 79 : create real function
      * @brief DialogApply apply data and emit signal about applied dialog.
      */
-    virtual void DialogApply() override {}
+    void DialogApply() override {}
     void cellClicked(int row, int column);
     void changedCursor(quint32 id);
     void updateHistory();
@@ -100,9 +100,9 @@ signals:
     void showHistoryTool(quint32 id, bool enable);
 
 protected:
-    virtual void closeEvent(QCloseEvent* event) override;
-    virtual void changeEvent(QEvent* event) override;
-    virtual bool eventFilter(QObject* object, QEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    bool eventFilter(QObject* object, QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(HistoryDialog)

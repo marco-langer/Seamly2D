@@ -69,13 +69,13 @@ public:
     explicit VisToolCubicBezier(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCubicBezier() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
 
     void setObject2Id(const quint32& value);
     void setObject3Id(const quint32& value);
     void setObject4Id(const quint32& value);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolCubicBezier)

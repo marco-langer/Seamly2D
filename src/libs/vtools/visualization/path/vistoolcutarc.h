@@ -69,9 +69,9 @@ public:
     explicit VisToolCutArc(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCutArc() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
     void setLength(const QString& expression);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolCutArc)

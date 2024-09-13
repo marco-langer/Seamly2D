@@ -79,14 +79,14 @@ public:
         QUndoCommand* parent = nullptr);
     virtual ~MoveDoubleLabel() = default;
 
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
 
     quint32 GetToolId() const;
     MoveDoublePoint GetPointType() const;
 
 protected:
-    virtual void Do(const QPointF& pos) override;
+    void Do(const QPointF& pos) override;
 
 private:
     Q_DISABLE_COPY(MoveDoubleLabel)

@@ -79,13 +79,13 @@ public:
     VAbstractPoint(VAbstractPattern* doc, VContainer* data, quint32 id);
     virtual ~VAbstractPoint() = default;
 
-    virtual QString getTagName() const override;
+    QString getTagName() const override;
 
     template <typename T>
     void ShowToolVisualization(bool show);
 
 public slots:
-    virtual void ShowTool(quint32 id, bool enable) override;
+    void ShowTool(quint32 id, bool enable) override;
     void deletePoint();
 
 protected:

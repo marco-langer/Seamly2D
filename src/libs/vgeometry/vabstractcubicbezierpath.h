@@ -81,11 +81,11 @@ public:
     virtual VSpline GetSpline(qint32 index) const = 0;
     virtual QVector<VSplinePoint> GetSplinePath() const = 0;
 
-    virtual QPainterPath GetPath() const override;
-    virtual QVector<QPointF> getPoints() const override;
-    virtual qreal GetLength() const override;
+    QPainterPath GetPath() const override;
+    QVector<QPointF> getPoints() const override;
+    qreal GetLength() const override;
 
-    virtual QVector<DirectionArrow> DirectionArrows() const override;
+    QVector<DirectionArrow> DirectionArrows() const override;
 
     int Segment(const QPointF& p) const;
 
@@ -98,13 +98,13 @@ public:
         QPointF& spl2p2,
         QPointF& spl2p3) const;
 
-    virtual QString NameForHistory(const QString& toolName) const override;
+    QString NameForHistory(const QString& toolName) const override;
 
     virtual VPointF FirstPoint() const = 0;
     virtual VPointF LastPoint() const = 0;
 
 protected:
-    virtual void CreateName() override;
+    void CreateName() override;
 };
 
 #endif   // VABSTRACTCUBICBEZIERPATH_H

@@ -80,7 +80,7 @@ class VAbstractTool : public VDataTool
     Q_OBJECT
 public:
     VAbstractTool(VAbstractPattern* doc, VContainer* data, quint32 id, QObject* parent = nullptr);
-    virtual ~VAbstractTool() override;
+    ~VAbstractTool() override;
     quint32 getId() const;
 
     static bool m_suppressContextMenu;

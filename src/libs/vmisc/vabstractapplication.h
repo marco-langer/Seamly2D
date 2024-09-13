@@ -86,7 +86,7 @@ class VAbstractApplication : public QApplication
     Q_OBJECT
 public:
     VAbstractApplication(int& argc, char** argv);
-    virtual ~VAbstractApplication() override;
+    ~VAbstractApplication() override;
 
     virtual const VTranslateVars* translateVariables() = 0;
 

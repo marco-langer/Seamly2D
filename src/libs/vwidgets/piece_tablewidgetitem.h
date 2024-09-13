@@ -33,7 +33,7 @@ class PieceTableWidgetItem : public QTableWidgetItem
 {
 public:
     explicit PieceTableWidgetItem(VContainer* data);
-    virtual bool operator<(const QTableWidgetItem& other) const override;
+    bool operator<(const QTableWidgetItem& other) const override;
 
 private:
     VContainer* m_data;

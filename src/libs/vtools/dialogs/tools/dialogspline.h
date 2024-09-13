@@ -78,7 +78,7 @@ class DialogSpline : public DialogTool
     Q_OBJECT
 public:
     DialogSpline(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogSpline() override;
+    ~DialogSpline() override;
 
     VSpline GetSpline() const;
     void SetSpline(const VSpline& spline);
@@ -93,18 +93,18 @@ public:
     void setLineColor(const QString& value);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void PointNameChanged() override;
-    virtual void ShowDialog(bool click) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void PointNameChanged() override;
+    void ShowDialog(bool click) override;
 
 protected:
-    virtual void CheckState() final;
-    virtual void ShowVisualization() override;
+    void CheckState() final;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
-    virtual void closeEvent(QCloseEvent* event) override;
+    void SaveData() override;
+    void closeEvent(QCloseEvent* event) override;
 
 private slots:
     void DeployAngle1TextEdit();

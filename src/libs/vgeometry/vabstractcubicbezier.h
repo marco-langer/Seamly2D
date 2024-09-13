@@ -83,13 +83,13 @@ public:
     QPointF CutSpline(
         qreal length, QPointF& spl1p2, QPointF& spl1p3, QPointF& spl2p2, QPointF& spl2p3) const;
 
-    virtual QString NameForHistory(const QString& toolName) const override;
+    QString NameForHistory(const QString& toolName) const override;
 
     qreal GetParmT(qreal length) const;
     qreal LengthT(qreal t) const;
 
 protected:
-    virtual void CreateName() override;
+    void CreateName() override;
 
     static qreal CalcSqDistance(qreal x1, qreal y1, qreal x2, qreal y2);
     static void PointBezier_r(

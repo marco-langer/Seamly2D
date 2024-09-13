@@ -75,11 +75,11 @@ public:
         QUndoCommand* parent = nullptr);
     virtual ~MovePiece();
 
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
     // cppcheck-suppress unusedFunction
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
     quint32 getPieceId() const;
     double getNewX() const;
     double getNewY() const;

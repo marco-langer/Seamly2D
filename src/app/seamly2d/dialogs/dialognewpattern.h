@@ -72,7 +72,7 @@ public:
     Unit PatternUnit() const;
 
 protected:
-    virtual void showEvent(QShowEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 private slots:
     void CheckState();
 

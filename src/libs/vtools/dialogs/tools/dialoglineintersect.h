@@ -74,7 +74,7 @@ class DialogLineIntersect : public DialogTool
     Q_OBJECT
 public:
     DialogLineIntersect(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogLineIntersect() override;
+    ~DialogLineIntersect() override;
 
     quint32 GetP1Line1() const;
     void SetP1Line1(const quint32& value);
@@ -90,16 +90,16 @@ public:
 
     void SetPointName(const QString& value);
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
     void PointChanged();
-    virtual void PointNameChanged() override;
+    void PointNameChanged() override;
 
 protected:
-    virtual void ShowVisualization() override;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
+    void SaveData() override;
 
 private:
     Q_DISABLE_COPY(DialogLineIntersect)
@@ -110,7 +110,7 @@ private:
     /** @brief flagPoint keep state of point */
     bool flagPoint;
 
-    virtual void CheckState() final;
+    void CheckState() final;
     bool CheckIntersecion();
 };
 

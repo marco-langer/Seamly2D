@@ -70,11 +70,11 @@ public:
         QUndoCommand* parent = nullptr);
     virtual ~MoveLabel() = default;
 
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
 
 protected:
-    virtual void Do(const QPointF& pos) override;
+    void Do(const QPointF& pos) override;
 
 private:
     Q_DISABLE_COPY(MoveLabel)

@@ -77,7 +77,7 @@ class DialogSplinePath : public DialogTool
     Q_OBJECT
 public:
     DialogSplinePath(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogSplinePath() override;
+    ~DialogSplinePath() override;
 
     VSplinePath GetPath() const;
     void SetPath(const VSplinePath& value);
@@ -92,15 +92,15 @@ public:
     void setLineColor(const QString& value);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void ShowDialog(bool click) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ShowDialog(bool click) override;
     void PathUpdated(const VSplinePath& path);
 
 protected:
-    virtual void ShowVisualization() override;
-    virtual void SaveData() override;
-    virtual void CheckState() final;
-    virtual void closeEvent(QCloseEvent* event) override;
+    void ShowVisualization() override;
+    void SaveData() override;
+    void CheckState() final;
+    void closeEvent(QCloseEvent* event) override;
 
 private slots:
     void PointChanged(int row);

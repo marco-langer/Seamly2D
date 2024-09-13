@@ -87,7 +87,7 @@ public:
     Rotate(const QPointF& originPoint, qreal degrees, const QString& prefix = QString()) const;
     VSplinePath Flip(const QLineF& axis, const QString& prefix = QString()) const;
     VSplinePath Move(qreal length, qreal angle, const QString& prefix = QString()) const;
-    virtual ~VSplinePath() override;
+    ~VSplinePath() override;
 
     VSplinePoint& operator[](int indx);
     VSplinePath& operator=(const VSplinePath& path);
@@ -97,27 +97,27 @@ public:
 
     void append(const VSplinePoint& point);
 
-    virtual qint32 CountSubSpl() const override;
-    virtual qint32 CountPoints() const override;
-    virtual void Clear() override;
-    virtual VSpline GetSpline(qint32 index) const override;
+    qint32 CountSubSpl() const override;
+    qint32 CountPoints() const override;
+    void Clear() override;
+    VSpline GetSpline(qint32 index) const override;
 
-    virtual QVector<VSplinePoint> GetSplinePath() const override;
+    QVector<VSplinePoint> GetSplinePath() const override;
     QVector<VFSplinePoint> GetFSplinePath() const;
 
-    virtual qreal GetStartAngle() const override;
-    virtual qreal GetEndAngle() const override;
+    qreal GetStartAngle() const override;
+    qreal GetEndAngle() const override;
 
-    virtual qreal GetC1Length() const override;
-    virtual qreal GetC2Length() const override;
+    qreal GetC1Length() const override;
+    qreal GetC2Length() const override;
 
     void UpdatePoint(qint32 indexSpline, const SplinePointPosition& pos, const VSplinePoint& point);
     VSplinePoint GetSplinePoint(qint32 indexSpline, SplinePointPosition pos) const;
 
     const VSplinePoint& at(int indx) const;
 
-    virtual VPointF FirstPoint() const override;
-    virtual VPointF LastPoint() const override;
+    VPointF FirstPoint() const override;
+    VPointF LastPoint() const override;
 
 private:
     QSharedDataPointer<VSplinePathData> d;

@@ -99,7 +99,7 @@ private slots:
     void draftBlockHasGroups(bool value);
 
 protected:
-    virtual void changeEvent(QEvent* event) override;
+    void changeEvent(QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(GroupsWidget)

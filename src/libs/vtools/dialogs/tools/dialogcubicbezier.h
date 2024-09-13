@@ -92,15 +92,15 @@ public:
     void setLineColor(const QString& value);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void PointNameChanged() override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void PointNameChanged() override;
 
 protected:
-    virtual void ShowVisualization() override;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
+    void SaveData() override;
 
 private:
     Q_DISABLE_COPY(DialogCubicBezier)

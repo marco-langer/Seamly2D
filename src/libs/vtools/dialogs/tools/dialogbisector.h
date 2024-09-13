@@ -73,7 +73,7 @@ class DialogBisector : public DialogTool
     Q_OBJECT
 public:
     DialogBisector(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogBisector() override;
+    ~DialogBisector() override;
 
     void SetPointName(const QString& value);
 
@@ -99,7 +99,7 @@ public:
     void SetThirdPointId(const quint32& value);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
@@ -108,16 +108,16 @@ public slots:
      * @brief FormulaTextChanged when formula text changes for validation and calc
      */
     void FormulaTextChanged();
-    virtual void PointNameChanged() override;
+    void PointNameChanged() override;
     void FXLength();
 
 protected:
-    virtual void ShowVisualization() override;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
-    virtual void closeEvent(QCloseEvent* event) override;
+    void SaveData() override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     Q_DISABLE_COPY(DialogBisector)

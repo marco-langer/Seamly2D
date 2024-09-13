@@ -59,13 +59,13 @@ private:
             const QStyleOptionGraphicsItem* option,
             QWidget* widget = nullptr) override;
 
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
-        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-        virtual void keyReleaseEvent(QKeyEvent* event) override;
+        QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+        void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+        void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+        void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+        void keyReleaseEvent(QKeyEvent* event) override;
 
     private:
         QPointF limitPosition(const QPointF& newPos);
@@ -82,7 +82,7 @@ public:
     explicit ResizeHandlesItem(
         QGraphicsItem* parent = nullptr, qreal minDimension = 16, qreal maxDimension = 16000);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ResizeHandlesItem)

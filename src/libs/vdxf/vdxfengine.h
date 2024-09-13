@@ -58,19 +58,19 @@ public:
     VDxfEngine();
     virtual ~VDxfEngine();
 
-    virtual bool begin(QPaintDevice* pdev) override;
-    virtual bool end() override;
-    virtual void updateState(const QPaintEngineState& state) override;
-    virtual void drawPath(const QPainterPath& path) override;
-    virtual void drawLines(const QLineF* lines, int lineCount) override;
-    virtual void drawLines(const QLine* lines, int lineCount) override;
-    virtual void drawPolygon(const QPointF* points, int pointCount, PolygonDrawMode mode) override;
-    virtual void drawPolygon(const QPoint* points, int pointCount, PolygonDrawMode mode) override;
-    virtual void drawEllipse(const QRectF& rect) override;
-    virtual void drawEllipse(const QRect& rect) override;
-    virtual void drawTextItem(const QPointF& p, const QTextItem& textItem) override;
-    virtual Type type() const override;
-    virtual void drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr) override;
+    bool begin(QPaintDevice* pdev) override;
+    bool end() override;
+    void updateState(const QPaintEngineState& state) override;
+    void drawPath(const QPainterPath& path) override;
+    void drawLines(const QLineF* lines, int lineCount) override;
+    void drawLines(const QLine* lines, int lineCount) override;
+    void drawPolygon(const QPointF* points, int pointCount, PolygonDrawMode mode) override;
+    void drawPolygon(const QPoint* points, int pointCount, PolygonDrawMode mode) override;
+    void drawEllipse(const QRectF& rect) override;
+    void drawEllipse(const QRect& rect) override;
+    void drawTextItem(const QPointF& p, const QTextItem& textItem) override;
+    Type type() const override;
+    void drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr) override;
 
     QSize getSize() const;
     void setSize(const QSize& value);

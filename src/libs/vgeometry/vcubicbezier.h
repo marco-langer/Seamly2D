@@ -89,29 +89,29 @@ public:
 
     void Swap(VCubicBezier& curve) noexcept;
 
-    virtual VPointF GetP1() const override;
+    VPointF GetP1() const override;
     void SetP1(const VPointF& p);
 
-    virtual VPointF GetP2() const override;
+    VPointF GetP2() const override;
     void SetP2(const VPointF& p);
 
-    virtual VPointF GetP3() const override;
+    VPointF GetP3() const override;
     void SetP3(const VPointF& p);
 
-    virtual VPointF GetP4() const override;
+    VPointF GetP4() const override;
     void SetP4(const VPointF& p);
 
-    virtual qreal GetStartAngle() const override;
-    virtual qreal GetEndAngle() const override;
-    virtual qreal GetLength() const override;
-    virtual QVector<QPointF> getPoints() const override;
+    qreal GetStartAngle() const override;
+    qreal GetEndAngle() const override;
+    qreal GetLength() const override;
+    QVector<QPointF> getPoints() const override;
 
-    virtual qreal GetC1Length() const override;
-    virtual qreal GetC2Length() const override;
+    qreal GetC1Length() const override;
+    qreal GetC2Length() const override;
 
 protected:
-    virtual QPointF GetControlPoint1() const override;
-    virtual QPointF GetControlPoint2() const override;
+    QPointF GetControlPoint1() const override;
+    QPointF GetControlPoint2() const override;
 
 private:
     QSharedDataPointer<VCubicBezierData> d;

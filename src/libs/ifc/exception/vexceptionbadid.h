@@ -68,7 +68,7 @@ public:
     VExceptionBadId(const QString& error, const quint32& id);
     VExceptionBadId(const QString& error, const QString& key);
 
-    virtual QString ErrorMessage() const override;
+    QString ErrorMessage() const override;
     quint32 BadId() const;
     QString BadKey() const;
 

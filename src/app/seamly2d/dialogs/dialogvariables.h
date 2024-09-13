@@ -74,17 +74,17 @@ class DialogVariables : public DialogTool
     Q_OBJECT
 public:
     DialogVariables(VContainer* data, VPattern* doc, QWidget* parent = nullptr);
-    virtual ~DialogVariables() override;
+    ~DialogVariables() override;
 
 signals:
     void updateProperties();
 
 protected:
-    virtual void closeEvent(QCloseEvent* event) override;
-    virtual void changeEvent(QEvent* event) override;
-    virtual bool eventFilter(QObject* object, QEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
-    virtual void resizeEvent(QResizeEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    bool eventFilter(QObject* object, QEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
     void showCustomVariableDetails();

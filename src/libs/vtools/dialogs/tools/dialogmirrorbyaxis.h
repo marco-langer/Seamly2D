@@ -90,21 +90,21 @@ public:
     QVector<SourceItem> getSourceObjects() const;
     void setSourceObjects(const QVector<SourceItem>& value);
 
-    virtual void ShowDialog(bool click) override;
+    void ShowDialog(bool click) override;
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void SelectedObject(bool selected, quint32 id, quint32 tool) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void SelectedObject(bool selected, quint32 id, quint32 tool) override;
 
 private slots:
     void suffixChanged();
 
 protected:
-    virtual void CheckState() final;
-    virtual void ShowVisualization() override;
+    void CheckState() final;
+    void ShowVisualization() override;
 
     /** @brief SaveData Put dialog data in local variables */
-    virtual void SaveData() override;
+    void SaveData() override;
 
 private slots:
     void pointChanged();

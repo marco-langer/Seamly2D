@@ -73,7 +73,7 @@ public:
     void Apply();
 
 protected:
-    virtual void changeEvent(QEvent* event) override;
+    void changeEvent(QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(PreferencesConfigurationPage)

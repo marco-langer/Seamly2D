@@ -69,13 +69,13 @@ public:
     explicit VisToolCurveIntersectAxis(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCurveIntersectAxis() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
 
     QString Angle() const;
     void SetAngle(const QString& expression);
     void setAxisPointId(const quint32& value);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolLineIntersectAxis)

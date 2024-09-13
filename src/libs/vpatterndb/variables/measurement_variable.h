@@ -101,7 +101,7 @@ public:
         const QString& tagName = QString());
 
     MeasurementVariable(const MeasurementVariable& m);
-    virtual ~MeasurementVariable() override;
+    ~MeasurementVariable() override;
 
     MeasurementVariable& operator=(const MeasurementVariable& m);
     MeasurementVariable& operator=(MeasurementVariable&& m) noexcept;
@@ -120,10 +120,10 @@ public:
     int Index() const;
     bool IsFormulaOk() const;
 
-    virtual bool isNotUsed() const override;
+    bool isNotUsed() const override;
 
-    virtual qreal GetValue() const override;
-    virtual qreal* GetValue() override;
+    qreal GetValue() const override;
+    qreal* GetValue() override;
 
     VContainer* GetData();
 

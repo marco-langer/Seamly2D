@@ -73,11 +73,11 @@ public:
         const VSpline& newSpl,
         const quint32& id,
         QUndoCommand* parent = nullptr);
-    virtual ~MoveSpline() override;
-    virtual void undo() override;
-    virtual void redo() override;
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    ~MoveSpline() override;
+    void undo() override;
+    void redo() override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
     quint32 getSplineId() const;
     VSpline getNewSpline() const;
 

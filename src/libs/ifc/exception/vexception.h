@@ -70,16 +70,16 @@ class VException : public QException
 public:
     explicit VException(QString error);
 
-    [[noreturn]] virtual void raise() const override;
+    [[noreturn]] void raise() const override;
 
     // cppcheck-suppress unusedFunction
-    [[nodiscard]] virtual VException* clone() const override;
+    [[nodiscard]] VException* clone() const override;
 
     virtual QString ErrorMessage() const;
     virtual QString DetailedInformation() const;
     void AddMoreInformation(const QString& info);
     QString MoreInformation() const;
-    virtual const char* what() const noexcept override;
+    const char* what() const noexcept override;
 
 protected:
     /** @brief error string with error */
@@ -106,9 +106,9 @@ class VExceptionToolWasDeleted : public VException
 public:
     explicit VExceptionToolWasDeleted(QString error);
 
-    [[noreturn]] virtual void raise() const override;
+    [[noreturn]] void raise() const override;
     // cppcheck-suppress unusedFunction
-    virtual VExceptionToolWasDeleted* clone() const override;
+    VExceptionToolWasDeleted* clone() const override;
 };
 
 #endif   // VEXCEPTION_H

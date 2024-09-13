@@ -91,12 +91,12 @@ public:
 
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void ShowDialog(bool click) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ShowDialog(bool click) override;
 
 protected:
-    virtual void ShowVisualization() override;
-    virtual void SaveData() override;
+    void ShowVisualization() override;
+    void SaveData() override;
 
 private slots:
     void PointChanged(int row);

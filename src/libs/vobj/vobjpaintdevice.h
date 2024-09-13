@@ -66,8 +66,8 @@ class VObjPaintDevice : public QPaintDevice
 {
 public:
     VObjPaintDevice();
-    virtual ~VObjPaintDevice() override;
-    virtual QPaintEngine* paintEngine() const override;
+    ~VObjPaintDevice() override;
+    QPaintEngine* paintEngine() const override;
 
     QString getFileName() const;
     void setFileName(const QString& value);
@@ -82,7 +82,7 @@ public:
     void setResolution(int dpi);
 
 protected:
-    virtual int metric(PaintDeviceMetric metric) const override;
+    int metric(PaintDeviceMetric metric) const override;
 
 private:
     Q_DISABLE_COPY(VObjPaintDevice)

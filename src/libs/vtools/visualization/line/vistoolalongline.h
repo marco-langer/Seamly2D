@@ -69,10 +69,10 @@ public:
     explicit VisToolAlongLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolAlongLine() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
     void setObject2Id(const quint32& value);
     void setLength(const QString& expression);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolAlongLine)

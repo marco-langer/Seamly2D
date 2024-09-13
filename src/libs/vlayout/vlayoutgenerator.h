@@ -76,7 +76,7 @@ class VLayoutGenerator : public QObject
     Q_OBJECT
 public:
     explicit VLayoutGenerator(QObject* parent = nullptr);
-    virtual ~VLayoutGenerator() override;
+    ~VLayoutGenerator() override;
 
     void setPieces(const QVector<VLayoutPiece>& details);
     void SetLayoutWidth(qreal width);

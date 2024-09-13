@@ -39,13 +39,12 @@ class VGrainlineItem : public VPieceItem
 public:
     explicit VGrainlineItem(QGraphicsItem* pParent = nullptr);
 
-    virtual QPainterPath shape() const override;
+    QPainterPath shape() const override;
 
-    virtual void
-    paint(QPainter* pP, const QStyleOptionGraphicsItem* pOption, QWidget* pWidget) override;
+    void paint(QPainter* pP, const QStyleOptionGraphicsItem* pOption, QWidget* pWidget) override;
     void UpdateGeometry(const QPointF& ptPos, qreal dRotation, qreal dLength, ArrowType eAT);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::GrainlineItem)
@@ -58,15 +57,15 @@ signals:
     void itemRotated(qreal dRot, const QPointF& ptNewPos);
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* pME) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* pME) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* pME) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* pME) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* pME) override;
-    virtual void Update() override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* pME) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* pME) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* pME) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* pME) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* pME) override;
+    void Update() override;
     void UpdateRectangle();
 
-    virtual double GetAngle(const QPointF& pt) const override;
+    double GetAngle(const QPointF& pt) const override;
 
     QPointF Rotate(const QPointF& pt, const QPointF& ptCenter, qreal dAng) const;
     QPointF GetInsideCorner(int i, qreal dDist) const;

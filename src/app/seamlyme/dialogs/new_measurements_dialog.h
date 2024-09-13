@@ -75,8 +75,8 @@ public:
     int baseHeight() const;
 
 protected:
-    virtual void changeEvent(QEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 
 private slots:
     void currentTypeChanged(int index);

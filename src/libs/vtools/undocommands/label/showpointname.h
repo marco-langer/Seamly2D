@@ -34,8 +34,8 @@ class ShowPointName : public VUndoCommand
 public:
     ShowPointName(VAbstractPattern* doc, quint32 id, bool visible, QUndoCommand* parent = nullptr);
     virtual ~ShowPointName() = default;
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
 
 private:
     Q_DISABLE_COPY(ShowPointName)

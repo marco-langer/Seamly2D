@@ -54,11 +54,10 @@ class VTextGraphicsItem : public VPieceItem
 public:
     explicit VTextGraphicsItem(QGraphicsItem* pParent = nullptr);
 
-    virtual void
-    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-    virtual void Update() override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+    void Update() override;
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::TextGraphicsItem)
@@ -73,11 +72,11 @@ public:
     int getTextLines() const;
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
     void UpdateBox();
     void correctLabel();

@@ -80,7 +80,7 @@ class TMainWindow : public VAbstractMainWindow
 
 public:
     explicit TMainWindow(QWidget* parent = nullptr);
-    virtual ~TMainWindow() override;
+    ~TMainWindow() override;
 
     QString CurrentFile() const;
 
@@ -93,16 +93,16 @@ public:
     bool LoadFile(const QString& path);
 
 public slots:
-    virtual void ShowToolTip(const QString& toolTip) override;
-    virtual void zoomToSelected() override;
-    virtual void updateGroups() override;
+    void ShowToolTip(const QString& toolTip) override;
+    void zoomToSelected() override;
+    void updateGroups() override;
 
 protected:
-    virtual void closeEvent(QCloseEvent* event) override;
-    virtual void changeEvent(QEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
-    virtual bool eventFilter(QObject* object, QEvent* event) override;
-    virtual void exportToCSVData(const QString& fileName, const DialogExportToCSV& dialog) final;
+    void closeEvent(QCloseEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+    bool eventFilter(QObject* object, QEvent* event) override;
+    void exportToCSVData(const QString& fileName, const DialogExportToCSV& dialog) final;
     void handleExportToCSV();
 
 private slots:

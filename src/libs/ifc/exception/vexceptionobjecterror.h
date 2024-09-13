@@ -69,8 +69,8 @@ class VExceptionObjectError : public VException
 public:
     VExceptionObjectError(const QString& what, const QDomElement& domElement);
 
-    virtual QString ErrorMessage() const override;
-    virtual QString DetailedInformation() const override;
+    QString ErrorMessage() const override;
+    QString DetailedInformation() const override;
     QString TagText() const;
     QString TagName() const;
     qint32 LineNumber() const;

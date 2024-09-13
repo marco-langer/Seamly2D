@@ -62,9 +62,9 @@ public:
     explicit VLineEdit(const QString& contents, QWidget* parent = nullptr);
 
 protected:
-    virtual void focusInEvent(QFocusEvent* e) override;
-    virtual void focusOutEvent(QFocusEvent* e) override;
-    virtual void mousePressEvent(QMouseEvent* e) override;
+    void focusInEvent(QFocusEvent* e) override;
+    void focusOutEvent(QFocusEvent* e) override;
+    void mousePressEvent(QMouseEvent* e) override;
 
 private:
     Q_DISABLE_COPY(VLineEdit)

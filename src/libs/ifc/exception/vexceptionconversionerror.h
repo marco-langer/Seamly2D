@@ -67,7 +67,7 @@ class VExceptionConversionError : public VException
 public:
     VExceptionConversionError(const QString& error, const QString& str);
 
-    virtual QString ErrorMessage() const override;
+    QString ErrorMessage() const override;
     QString String() const;
 
 private:

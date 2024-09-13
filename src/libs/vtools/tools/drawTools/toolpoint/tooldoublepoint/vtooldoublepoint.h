@@ -84,7 +84,7 @@ public:
         QGraphicsItem* parent = nullptr);
     virtual ~VToolDoublePoint() = default;
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::DoublePoint)
@@ -96,26 +96,26 @@ public:
     QString nameP2() const;
     void setNameP2(const QString& name);
 
-    virtual void GroupVisibility(quint32 object, bool visible) override;
-    virtual void setPointNamePosition(quint32 id, const QPointF& pos) override;
-    virtual bool isPointNameVisible(quint32 id) const override;
-    virtual void setPointNameVisiblity(quint32 id, bool visible) override;
+    void GroupVisibility(quint32 object, bool visible) override;
+    void setPointNamePosition(quint32 id, const QPointF& pos) override;
+    bool isPointNameVisible(quint32 id) const override;
+    void setPointNameVisiblity(quint32 id, bool visible) override;
 
 public slots:
     void changePointName1Position(const QPointF& pos);
     void changePointName2Position(const QPointF& pos);
-    virtual void Disable(bool disable, const QString& draftBlockName) override;
-    virtual void EnableToolMove(bool move) override;
+    void Disable(bool disable, const QString& draftBlockName) override;
+    void EnableToolMove(bool move) override;
     void point1Chosen();
     void point2Chosen();
     void point1Selected(bool selected);
     void point2Selected(bool selected);
-    virtual void FullUpdateFromFile() override;
-    virtual void AllowHover(bool enabled) override;
-    virtual void AllowSelecting(bool enabled) override;
+    void FullUpdateFromFile() override;
+    void AllowHover(bool enabled) override;
+    void AllowSelecting(bool enabled) override;
     void allowTextHover(bool enabled);
     void allowTextSelectable(bool enabled);
-    virtual void ToolSelectionType(const SelectionType& type) override;
+    void ToolSelectionType(const SelectionType& type) override;
 
 protected:
     VSimplePoint* firstPoint;
@@ -124,13 +124,13 @@ protected:
     quint32 p1id;
     quint32 p2id;
 
-    virtual void updatePointNamePosition(quint32 id, const QPointF& pos) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
-    virtual void keyReleaseEvent(QKeyEvent* event) override;
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
-    virtual void AddToFile() override;
-    virtual void updatePointNameVisibility(quint32 id, bool visible) override;
+    void updatePointNamePosition(quint32 id, const QPointF& pos) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void AddToFile() override;
+    void updatePointNameVisibility(quint32 id, bool visible) override;
     QString complexToolTip(quint32 itemId) const;
 
 private:

@@ -71,7 +71,7 @@ public:
     VVariable(const QString& name, const QString& description = QString());
     VVariable(const VVariable& var);
 
-    virtual ~VVariable() override;
+    ~VVariable() override;
 
     VVariable& operator=(const VVariable& var);
     VVariable& operator=(VVariable&& var) noexcept;

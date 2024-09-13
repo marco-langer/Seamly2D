@@ -117,17 +117,17 @@ public:
 
     void Swap(VSpline& spline) noexcept;
 
-    virtual VPointF GetP1() const override;
+    VPointF GetP1() const override;
     void SetP1(const VPointF& p);
 
-    virtual VPointF GetP2() const override;
-    virtual VPointF GetP3() const override;
+    VPointF GetP2() const override;
+    VPointF GetP3() const override;
 
-    virtual VPointF GetP4() const override;
+    VPointF GetP4() const override;
     void SetP4(const VPointF& p);
 
-    virtual qreal GetStartAngle() const override;
-    virtual qreal GetEndAngle() const override;
+    qreal GetStartAngle() const override;
+    qreal GetEndAngle() const override;
 
     QString GetStartAngleFormula() const;
     QString GetEndAngleFormula() const;
@@ -135,8 +135,8 @@ public:
     void SetStartAngle(qreal angle, const QString& formula);
     void SetEndAngle(qreal angle, const QString& formula);
 
-    virtual qreal GetC1Length() const override;
-    virtual qreal GetC2Length() const override;
+    qreal GetC1Length() const override;
+    qreal GetC2Length() const override;
 
     QString GetC1LengthFormula() const;
     QString GetC2LengthFormula() const;
@@ -144,7 +144,7 @@ public:
     void SetC1Length(qreal length, const QString& formula);
     void SetC2Length(qreal length, const QString& formula);
 
-    virtual qreal GetLength() const override;
+    qreal GetLength() const override;
     qreal GetKasm1() const;
     qreal GetKasm2() const;
     qreal GetKcurve() const;
@@ -152,7 +152,7 @@ public:
     using VAbstractCubicBezier::CutSpline;
     QPointF CutSpline(qreal length, VSpline& spl1, VSpline& spl2) const;
 
-    virtual QVector<QPointF> getPoints() const override;
+    QVector<QPointF> getPoints() const override;
     // cppcheck-suppress unusedFunction
     static QVector<QPointF> SplinePoints(
         const QPointF& p1,
@@ -165,8 +165,8 @@ public:
     qreal ParamT(const QPointF& pBt) const;
 
 protected:
-    virtual QPointF GetControlPoint1() const override;
-    virtual QPointF GetControlPoint2() const override;
+    QPointF GetControlPoint1() const override;
+    QPointF GetControlPoint2() const override;
 
 private:
     QSharedDataPointer<VSplineData> d;

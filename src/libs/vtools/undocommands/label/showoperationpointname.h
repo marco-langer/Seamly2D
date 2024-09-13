@@ -41,8 +41,8 @@ public:
         QUndoCommand* parent = nullptr);
     virtual ~ShowOperationPointName() = default;
 
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
 
 private:
     Q_DISABLE_COPY(ShowOperationPointName)

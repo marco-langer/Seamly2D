@@ -85,7 +85,7 @@ public:
         QGraphicsItem* parent = nullptr);
     virtual ~VToolSinglePoint() = default;
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::SinglePoint)
@@ -96,34 +96,34 @@ public:
 
     void SetEnabled(bool enabled);
 
-    virtual void GroupVisibility(quint32 object, bool visible) override;
-    virtual bool isPointNameVisible(quint32 id) const override;
-    virtual void setPointNameVisiblity(quint32 id, bool visible) override;
-    virtual void setPointNamePosition(quint32 id, const QPointF& pos) override;
+    void GroupVisibility(quint32 object, bool visible) override;
+    bool isPointNameVisible(quint32 id) const override;
+    void setPointNameVisiblity(quint32 id, bool visible) override;
+    void setPointNamePosition(quint32 id, const QPointF& pos) override;
 
 public slots:
     void pointnameChangedPosition(const QPointF& pos);
-    virtual void Disable(bool disable, const QString& draftBlockName) override;
-    virtual void EnableToolMove(bool move) override;
+    void Disable(bool disable, const QString& draftBlockName) override;
+    void EnableToolMove(bool move) override;
     void pointChosen();
     void pointSelected(bool selected);
-    virtual void FullUpdateFromFile() override;
-    virtual void AllowHover(bool enabled) override;
-    virtual void AllowSelecting(bool enabled) override;
+    void FullUpdateFromFile() override;
+    void AllowHover(bool enabled) override;
+    void AllowSelecting(bool enabled) override;
     void allowTextHover(bool enabled);
     void allowTextSelectable(bool enabled);
-    virtual void ToolSelectionType(const SelectionType& type) override;
+    void ToolSelectionType(const SelectionType& type) override;
 
 protected:
-    virtual void updatePointNameVisibility(quint32 id, bool visible) override;
-    virtual void updatePointNamePosition(quint32 id, const QPointF& pos) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
-    virtual void keyReleaseEvent(QKeyEvent* event) override;
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void updatePointNameVisibility(quint32 id, bool visible) override;
+    void updatePointNamePosition(quint32 id, const QPointF& pos) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
 
 private:
     Q_DISABLE_COPY(VToolSinglePoint)

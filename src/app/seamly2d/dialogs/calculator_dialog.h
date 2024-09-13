@@ -50,7 +50,7 @@ public:
     virtual ~CalculatorDialog();
 
 protected:
-    virtual void showEvent(QShowEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 
 private:
     Ui::CalculatorDialog* ui;

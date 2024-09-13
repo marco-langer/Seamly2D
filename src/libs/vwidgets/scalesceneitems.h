@@ -67,16 +67,14 @@ public:
     explicit VScaledLine(QGraphicsItem* parent = nullptr);
     explicit VScaledLine(const QLineF& line, QGraphicsItem* parent = nullptr);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ScaledLine)
     };
 
-    virtual void paint(
-        QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        override;
 
     qreal GetBasicWidth() const;
     void setBasicWidth(const qreal& value);
@@ -93,16 +91,14 @@ public:
     explicit ArrowedLineItem(QGraphicsItem* parent = nullptr);
     ArrowedLineItem(const QLineF& line, QGraphicsItem* parent = nullptr);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ArrowedLineItem)
     };
 
-    virtual void paint(
-        QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        override;
 
 private:
     Q_DISABLE_COPY(ArrowedLineItem)
@@ -115,16 +111,14 @@ class VScaledEllipse : public QGraphicsEllipseItem
 public:
     explicit VScaledEllipse(QGraphicsItem* parent = nullptr);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ScaledEllipse)
     };
 
-    virtual void paint(
-        QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        override;
 
 private:
     Q_DISABLE_COPY(VScaledEllipse)

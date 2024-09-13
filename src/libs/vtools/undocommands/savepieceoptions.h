@@ -70,10 +70,10 @@ public:
 
     virtual ~SavePieceOptions();
 
-    virtual void undo() override;
-    virtual void redo() override;
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    void undo() override;
+    void redo() override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
     quint32 pieceId() const;
     VPiece getNewPiece() const;
 

@@ -60,18 +60,16 @@ public:
         const quint32& firstPointId,
         const quint32& secondPointId,
         QGraphicsItem* parent = nullptr);
-    virtual ~DoubleLinePointTool() override;
+    ~DoubleLinePointTool() override;
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::LinePoint)
     };
 
-    virtual void paint(
-        QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        override;
 
     QString point1Name() const;
     QString point2Name() const;
@@ -86,8 +84,8 @@ public:
     void setLineColor(const QString& value);
 
 public slots:
-    virtual void Disable(bool disable, const QString& draftBlockName) override;
-    virtual void FullUpdateFromFile() override;
+    void Disable(bool disable, const QString& draftBlockName) override;
+    void FullUpdateFromFile() override;
 
 protected:
     quint32 firstPointId;    /** @brief firstPointId id first line point. */
@@ -97,11 +95,11 @@ protected:
     QString lineColor;       /** @brief lineColor color of a line. */
 
     virtual void RefreshGeometry();
-    virtual void RemoveReferens() override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual QString makeToolTip() const override;
+    void RemoveReferens() override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    QString makeToolTip() const override;
 
 private:
     Q_DISABLE_COPY(DoubleLinePointTool)

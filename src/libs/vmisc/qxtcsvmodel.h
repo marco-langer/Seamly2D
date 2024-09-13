@@ -64,14 +64,13 @@ public:
         QChar separator = ',');
     virtual ~QxtCsvModel() = default;
 
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    virtual bool
-    setData(const QModelIndex& index, const QVariant& data, int role = Qt::EditRole) override;
-    virtual QVariant
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex& index, const QVariant& data, int role = Qt::EditRole) override;
+    QVariant
     headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    virtual bool setHeaderData(
+    bool setHeaderData(
         int section,
         Qt::Orientation orientation,
         const QVariant& value,
@@ -86,18 +85,16 @@ public:
 
 
     bool insertRow(int row, const QModelIndex& parent = QModelIndex());
-    virtual bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     bool removeRow(int row, const QModelIndex& parent = QModelIndex());
-    virtual bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     bool insertColumn(int col, const QModelIndex& parent = QModelIndex());
-    virtual bool
-    insertColumns(int col, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool insertColumns(int col, int count, const QModelIndex& parent = QModelIndex()) override;
 
     bool removeColumn(int col, const QModelIndex& parent = QModelIndex());
-    virtual bool
-    removeColumns(int col, int count, const QModelIndex& parent = QModelIndex()) override;
+    bool removeColumns(int col, int count, const QModelIndex& parent = QModelIndex()) override;
 
     void setSource(
         QIODevice* file,
@@ -138,7 +135,7 @@ public:
     QuoteMode quoteMode() const;
     void setQuoteMode(QuoteMode mode);
 
-    virtual Qt::ItemFlags flags(const QModelIndex& index) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:
     Q_DISABLE_COPY(QxtCsvModel)

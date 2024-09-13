@@ -72,13 +72,13 @@ public:
     explicit VisToolTriangle(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolTriangle() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
 
     void setObject2Id(const quint32& value);
     void setHypotenuseP1Id(const quint32& value);
     void setHypotenuseP2Id(const quint32& value);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolTriangle)

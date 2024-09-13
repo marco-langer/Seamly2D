@@ -71,12 +71,12 @@ public:
     explicit VisToolCubicBezierPath(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolCubicBezierPath();
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
 
     void setPath(const VCubicBezierPath& value);
     VCubicBezierPath getPath();
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolCubicBezierPath)

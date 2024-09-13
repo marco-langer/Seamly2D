@@ -75,8 +75,8 @@ public:
         const QString& blockName = QString(),
         QUndoCommand* parent = nullptr);
     virtual ~AddPiece();
-    virtual void undo() override;   // cppcheck-suppress unusedFunction
-    virtual void redo() override;   // cppcheck-suppress unusedFunction
+    void undo() override;   // cppcheck-suppress unusedFunction
+    void redo() override;   // cppcheck-suppress unusedFunction
 
 private:
     Q_DISABLE_COPY(AddPiece)

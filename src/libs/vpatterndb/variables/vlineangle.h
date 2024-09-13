@@ -69,14 +69,14 @@ public:
     VLineAngle(const VPointF* p1, const quint32& p1Id, const VPointF* p2, const quint32& p2Id);
     VLineAngle(const VLineAngle& var);
 
-    virtual ~VLineAngle() override;
+    ~VLineAngle() override;
 
     VLineAngle& operator=(const VLineAngle& var);
     VLineAngle& operator=(VLineAngle&& var) noexcept;
 
     void Swap(VLineAngle& var) noexcept;
 
-    virtual bool Filter(quint32 id) override;
+    bool Filter(quint32 id) override;
     void SetValue(const VPointF* p1, const VPointF* p2);
     quint32 GetP1Id() const;
     quint32 GetP2Id() const;

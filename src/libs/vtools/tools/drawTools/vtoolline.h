@@ -78,7 +78,7 @@ class VToolLine
 {
     Q_OBJECT
 public:
-    virtual void setDialog() override;
+    void setDialog() override;
 
     static VToolLine* Create(
         QSharedPointer<DialogTool> dialog,
@@ -98,17 +98,15 @@ public:
         const Document& parse,
         const Source& typeCreation);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::Line)
     };
-    virtual QString getTagName() const override;
+    QString getTagName() const override;
 
-    virtual void paint(
-        QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        override;
 
     QString FirstPointName() const;
     QString SecondPointName() const;
@@ -122,37 +120,36 @@ public:
     QString getLineColor() const;
     void setLineColor(const QString& value);
 
-    virtual void ShowVisualization(bool show) override;
+    void ShowVisualization(bool show) override;
 
-    virtual void setLineType(const QString& value) override;
+    void setLineType(const QString& value) override;
     void setLineWeight(const QString& value) override;
 
-    virtual void GroupVisibility(quint32 object, bool visible) override;
+    void GroupVisibility(quint32 object, bool visible) override;
 
 public slots:
-    virtual void FullUpdateFromFile() override;
-    virtual void ShowTool(quint32 id, bool enable) override;
-    virtual void Disable(bool disable, const QString& draftBlockName) override;
-    virtual void AllowHover(bool enabled) override;
-    virtual void AllowSelecting(bool enabled) override;
+    void FullUpdateFromFile() override;
+    void ShowTool(quint32 id, bool enable) override;
+    void Disable(bool disable, const QString& draftBlockName) override;
+    void AllowHover(bool enabled) override;
+    void AllowSelecting(bool enabled) override;
 
 protected slots:
-    virtual void
-    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
+    void showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
 
 protected:
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
-    virtual void AddToFile() override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void RemoveReferens() override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
-    virtual void keyReleaseEvent(QKeyEvent* event) override;
-    virtual void SaveDialog(QDomElement& domElement) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
-    virtual void ReadToolAttributes(const QDomElement& domElement) override;
-    virtual void SetVisualization() override;
-    virtual QString makeToolTip() const override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    void AddToFile() override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void RemoveReferens() override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    void SaveDialog(QDomElement& domElement) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void ReadToolAttributes(const QDomElement& domElement) override;
+    void SetVisualization() override;
+    QString makeToolTip() const override;
 
 private:
     Q_DISABLE_COPY(VToolLine)

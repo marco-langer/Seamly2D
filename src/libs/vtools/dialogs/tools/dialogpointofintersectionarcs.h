@@ -73,7 +73,7 @@ class DialogPointOfIntersectionArcs : public DialogTool
 public:
     DialogPointOfIntersectionArcs(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogPointOfIntersectionArcs() override;
+    ~DialogPointOfIntersectionArcs() override;
 
     void SetPointName(const QString& value);
 
@@ -87,15 +87,15 @@ public:
     void SetCrossArcPoint(const CrossCirclesPoint& p);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
     virtual void ArcChanged();
 
 protected:
-    virtual void ShowVisualization() override;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
+    void SaveData() override;
 
 private:
     Q_DISABLE_COPY(DialogPointOfIntersectionArcs)

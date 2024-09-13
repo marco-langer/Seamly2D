@@ -51,13 +51,13 @@ public:
     explicit IntersectCircleTangentVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~IntersectCircleTangentVisual() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
 
     void setObject2Id(const quint32& value);
     void setCRadius(const QString& value);
     void setCrossPoint(const CrossCirclesPoint& value);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolPointFromCircleAndTangent)

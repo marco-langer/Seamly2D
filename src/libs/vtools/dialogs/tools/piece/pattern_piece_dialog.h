@@ -103,17 +103,17 @@ public:
     QString getSeamAllowanceWidthFormula() const;
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void ShowDialog(bool click) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ShowDialog(bool click) override;
 
 protected:
-    virtual void SaveData() override;   //! @brief SaveData Put dialog data in local variables
-    virtual void CheckState() final;
-    virtual bool eventFilter(QObject* object, QEvent* event) override;
+    void SaveData() override;   //! @brief SaveData Put dialog data in local variables
+    void CheckState() final;
+    bool eventFilter(QObject* object, QEvent* event) override;
 
-    virtual void closeEvent(QCloseEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
-    virtual void resizeEvent(QResizeEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
     void setErrorText(TabOrder tab, QString text);

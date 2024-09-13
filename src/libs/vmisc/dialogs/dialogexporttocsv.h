@@ -75,8 +75,8 @@ public:
     QChar Separator() const;
 
 protected:
-    virtual void changeEvent(QEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 
 private:
     Q_DISABLE_COPY(DialogExportToCSV)

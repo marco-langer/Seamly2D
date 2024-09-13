@@ -85,14 +85,14 @@ public:
         QObject* parent = nullptr);
     virtual ~VAbstractNode() = default;
     static const QString AttrIdTool;
-    virtual void ShowVisualization(bool show) override;
-    virtual void incrementReferens() override;
-    virtual void decrementReferens() override;
+    void ShowVisualization(bool show) override;
+    void incrementReferens() override;
+    void decrementReferens() override;
 
     ParentType GetParentType() const;
     void SetParentType(const ParentType& value);
 
-    virtual void GroupVisibility(quint32 object, bool visible) override;
+    void GroupVisibility(quint32 object, bool visible) override;
 
     bool IsExluded() const;
     void SetExluded(bool exluded);
@@ -111,8 +111,8 @@ protected:
     bool m_exluded;
 
     void AddToModeling(const QDomElement& domElement);
-    virtual void ToolCreation(const Source& typeCreation) override;
-    virtual void SetVisualization() override {}
+    void ToolCreation(const Source& typeCreation) override;
+    void SetVisualization() override {}
 
     virtual void ShowNode() = 0;
     virtual void HideNode() = 0;

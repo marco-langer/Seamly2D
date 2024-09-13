@@ -73,11 +73,11 @@ public:
         const quint32& id,
         QGraphicsScene* scene,
         QUndoCommand* parent = nullptr);
-    virtual ~MoveSPoint() override;
-    virtual void undo() override;
-    virtual void redo() override;
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    ~MoveSPoint() override;
+    void undo() override;
+    void redo() override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
     quint32 getSPointId() const;
     double getNewX() const;
     double getNewY() const;

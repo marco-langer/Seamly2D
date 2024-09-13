@@ -69,7 +69,7 @@ class DialogArc : public DialogTool
     Q_OBJECT
 public:
     DialogArc(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogArc() override;
+    ~DialogArc() override;
 
     VArc getArc() const;
     void setArc(const VArc& arc);
@@ -96,7 +96,7 @@ public:
     void setLineColor(const QString& value);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
@@ -113,13 +113,13 @@ public slots:
 
 protected:
     void pointNameChanged();
-    virtual void CheckState() final;
-    virtual void ShowVisualization() override;
+    void CheckState() final;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
-    virtual void closeEvent(QCloseEvent* event) override;
+    void SaveData() override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     Q_DISABLE_COPY(DialogArc)

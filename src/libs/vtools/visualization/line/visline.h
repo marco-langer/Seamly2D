@@ -77,7 +77,7 @@ public:
     explicit VisLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisLine() = default;
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::Line)
@@ -89,8 +89,8 @@ protected:
     QPointF Ray(const QPointF& firstPoint) const;
     QLineF Axis(const QPointF& p, const qreal& angle) const;
     QLineF Axis(const QPointF& p1, const QPointF& p2) const;
-    virtual void initPen() override;
-    virtual void AddOnScene() override;
+    void initPen() override;
+    void AddOnScene() override;
 
     void DrawRay(
         VScaledLine* lineItem,

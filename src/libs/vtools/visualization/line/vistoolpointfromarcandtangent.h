@@ -73,12 +73,12 @@ public:
     explicit VisToolPointFromArcAndTangent(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolPointFromArcAndTangent() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
 
     void setArcId(const quint32& value);
     void setCrossPoint(const CrossCirclesPoint& value);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolPointFromArcAndTangent)

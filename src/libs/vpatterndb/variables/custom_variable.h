@@ -79,7 +79,7 @@ public:
         const QString& description = QString());
     CustomVariable(const CustomVariable& variable);
 
-    virtual ~CustomVariable() override;
+    ~CustomVariable() override;
 
     CustomVariable& operator=(const CustomVariable& variable);
     CustomVariable& operator=(CustomVariable&& variable) noexcept;

@@ -81,16 +81,16 @@ public:
         const quint32& idTool = 0);
 
     static const QString ToolType;
-    virtual QString getTagName() const override;
+    QString getTagName() const override;
 public slots:
-    virtual void FullUpdateFromFile() override {}
-    virtual void AllowHover(bool enabled) override;
-    virtual void AllowSelecting(bool enabled) override;
+    void FullUpdateFromFile() override {}
+    void AllowHover(bool enabled) override;
+    void AllowSelecting(bool enabled) override;
 
 protected:
-    virtual void AddToFile() override;
-    virtual void ShowNode() override {}
-    virtual void HideNode() override {}
+    void AddToFile() override;
+    void ShowNode() override {}
+    void HideNode() override {}
 
 private:
     Q_DISABLE_COPY(VNodeSplinePath)

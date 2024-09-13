@@ -103,7 +103,7 @@ class MainWindow : public MainWindowsNoGUI
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    virtual ~MainWindow() override;
+    ~MainWindow() override;
 
     bool LoadPattern(const QString& fileName, const QString& customMeasureFile = QString());
 
@@ -112,9 +112,9 @@ public slots:
     void penChanged(Pen pen);
     void basePointChanged();
 
-    virtual void ShowToolTip(const QString& toolTip) override;
-    virtual void updateGroups() override;
-    virtual void zoomToSelected() override;
+    void ShowToolTip(const QString& toolTip) override;
+    void updateGroups() override;
+    void zoomToSelected() override;
     void showAllGroups();
     void hideAllGroups();
     void lockAllGroups();
@@ -156,15 +156,15 @@ signals:
     void signalZoomPanActive(bool enable) const;
 
 protected:
-    virtual void keyPressEvent(QKeyEvent* event) override;
-    virtual void keyReleaseEvent(QKeyEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
-    virtual void changeEvent(QEvent* event) override;
-    virtual void closeEvent(QCloseEvent* event) override;
-    virtual void customEvent(QEvent* event) override;
-    virtual void CleanLayout() override;
-    virtual void PrepareSceneList() override;
-    virtual void exportToCSVData(const QString& fileName, const DialogExportToCSV& dialog) final;
+    void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
+    void customEvent(QEvent* event) override;
+    void CleanLayout() override;
+    void PrepareSceneList() override;
+    void exportToCSVData(const QString& fileName, const DialogExportToCSV& dialog) final;
     void handleExportToCSV();
 
 private slots:

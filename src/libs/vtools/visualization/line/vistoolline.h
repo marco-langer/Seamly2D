@@ -72,16 +72,16 @@ public:
     explicit VisToolLine(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolLine() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
     void setPoint2Id(const quint32& value);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolLine)
     };
 
 protected:
-    virtual void DrawLine(
+    void DrawLine(
         VScaledLine* lineItem,
         const QLineF& line,
         const QColor& color,

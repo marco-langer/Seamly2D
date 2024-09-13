@@ -87,25 +87,25 @@ public:
 
     void append(const VPointF& point);
 
-    virtual qint32 CountSubSpl() const override;
-    virtual qint32 CountPoints() const override;
-    virtual void Clear() override;
-    virtual VSpline GetSpline(qint32 index) const override;
-    virtual qreal GetStartAngle() const override;
-    virtual qreal GetEndAngle() const override;
+    qint32 CountSubSpl() const override;
+    qint32 CountPoints() const override;
+    void Clear() override;
+    VSpline GetSpline(qint32 index) const override;
+    qreal GetStartAngle() const override;
+    qreal GetEndAngle() const override;
 
-    virtual qreal GetC1Length() const override;
-    virtual qreal GetC2Length() const override;
+    qreal GetC1Length() const override;
+    qreal GetC2Length() const override;
 
-    virtual QVector<VSplinePoint> GetSplinePath() const override;
+    QVector<VSplinePoint> GetSplinePath() const override;
     QVector<VPointF> GetCubicPath() const;
 
     static qint32 CountSubSpl(qint32 size);
     static qint32 SubSplOffset(qint32 subSplIndex);
     static qint32 SubSplPointsCount(qint32 countSubSpl);
 
-    virtual VPointF FirstPoint() const override;
-    virtual VPointF LastPoint() const override;
+    VPointF FirstPoint() const override;
+    VPointF LastPoint() const override;
 
 private:
     QSharedDataPointer<VCubicBezierPathData> d;

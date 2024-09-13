@@ -60,19 +60,19 @@ class VLitePattern : public VAbstractPattern
 public:
     explicit VLitePattern(QObject* parent = nullptr);
 
-    virtual void CreateEmptyFile() override;
+    void CreateEmptyFile() override;
 
-    virtual void IncrementReferens(quint32 id) const override;
-    virtual void DecrementReferens(quint32 id) const override;
-    virtual QStringList GetCurrentAlphabet() const override;
-    virtual QString
+    void IncrementReferens(quint32 id) const override;
+    void DecrementReferens(quint32 id) const override;
+    QStringList GetCurrentAlphabet() const override;
+    QString
     GenerateLabel(const LabelType& type, const QString& reservedName = QString()) const override;
-    virtual QString GenerateSuffix(const QString& type) const override;
+    QString GenerateSuffix(const QString& type) const override;
 
-    virtual void UpdateToolData(const quint32& id, VContainer* data) override;
+    void UpdateToolData(const quint32& id, VContainer* data) override;
 
 public slots:
-    virtual void LiteParseTree(const Document& parse) override;
+    void LiteParseTree(const Document& parse) override;
 
 private:
     Q_DISABLE_COPY(VLitePattern)

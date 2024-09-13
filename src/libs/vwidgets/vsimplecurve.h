@@ -79,7 +79,7 @@ public:
     VSimpleCurve(
         quint32 id, const QSharedPointer<VAbstractCurve>& curve, QObject* parent = nullptr);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::SimpleCurve)
@@ -99,14 +99,14 @@ public slots:
     void CurveSelected(bool selected);
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
-    virtual void keyReleaseEvent(QKeyEvent* event) override;
-    virtual void ScalePenWidth() override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
+    void ScalePenWidth() override;
 
 private:
     Q_DISABLE_COPY(VSimpleCurve)

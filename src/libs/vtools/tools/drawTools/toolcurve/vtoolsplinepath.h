@@ -78,7 +78,7 @@ class VToolSplinePath : public VAbstractSpline
     Q_OBJECT
 public:
     virtual ~VToolSplinePath() = default;
-    virtual void setDialog() override;
+    void setDialog() override;
     static VToolSplinePath* Create(
         QSharedPointer<DialogTool> dialog,
         VMainGraphicsScene* scene,
@@ -112,7 +112,7 @@ public:
     static const QString OldToolType;
     static void
     UpdatePathPoints(VAbstractPattern* doc, QDomElement& element, const VSplinePath& path);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::SplinePath)
@@ -121,7 +121,7 @@ public:
     VSplinePath getSplinePath() const;
     void setSplinePath(const VSplinePath& splPath);
 
-    virtual void ShowVisualization(bool show) override;
+    void ShowVisualization(bool show) override;
 
 signals:
     /**
@@ -140,23 +140,22 @@ public slots:
 
     void ControlPointChangePosition(
         const qint32& indexSpline, const SplinePointPosition& position, const QPointF& pos);
-    virtual void EnableToolMove(bool move) override;
+    void EnableToolMove(bool move) override;
 
 protected slots:
-    virtual void
-    showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
+    void showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32 id = NULL_ID) override;
 
 protected:
-    virtual void RemoveReferens() override;
-    virtual void SaveDialog(QDomElement& domElement) override;
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void SetVisualization() override;
-    virtual void refreshCtrlPoints() override;
+    void RemoveReferens() override;
+    void SaveDialog(QDomElement& domElement) override;
+    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void SetVisualization() override;
+    void refreshCtrlPoints() override;
 
 private:
     Q_DISABLE_COPY(VToolSplinePath)

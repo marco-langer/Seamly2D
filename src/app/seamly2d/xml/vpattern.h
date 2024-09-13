@@ -75,22 +75,22 @@ public:
         VMainGraphicsScene* pieceScene,
         QObject* parent = nullptr);
 
-    virtual void CreateEmptyFile() override;
+    void CreateEmptyFile() override;
 
     void Parse(const Document& parse);
 
     void setCurrentData();
-    virtual void UpdateToolData(const quint32& id, VContainer* data) override;
+    void UpdateToolData(const quint32& id, VContainer* data) override;
 
-    virtual void IncrementReferens(quint32 id) const override;
-    virtual void DecrementReferens(quint32 id) const override;
+    void IncrementReferens(quint32 id) const override;
+    void DecrementReferens(quint32 id) const override;
 
     quint32 getActiveBasePoint();
 
     QVector<quint32> getActivePatternPieces() const;
 
-    virtual void setXMLContent(const QString& fileName) override;
-    virtual bool SaveDocument(const QString& fileName, QString& error) override;
+    void setXMLContent(const QString& fileName) override;
+    bool SaveDocument(const QString& fileName, QString& error) override;
 
     QRectF ActiveDrawBoundingRect() const;
 
@@ -109,9 +109,9 @@ public:
 
     QStringList GetCurrentAlphabet() const override;
 
-    virtual QString
+    QString
     GenerateLabel(const LabelType& type, const QString& reservedName = QString()) const override;
-    virtual QString GenerateSuffix(const QString& type) const override;
+    QString GenerateSuffix(const QString& type) const override;
 
     bool IsDefCustom() const;
     void SetDefCustom(bool value);
@@ -130,10 +130,10 @@ public:
     static const QString AttrReadOnly;
 
 public slots:
-    virtual void LiteParseTree(const Document& parse) override;
+    void LiteParseTree(const Document& parse) override;
 
 protected:
-    virtual void customEvent(QEvent* event) override;
+    void customEvent(QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(VPattern)

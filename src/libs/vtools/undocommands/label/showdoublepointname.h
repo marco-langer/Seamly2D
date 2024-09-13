@@ -48,8 +48,8 @@ public:
         QUndoCommand* parent = nullptr);
     virtual ~ShowDoublePointName() = default;
 
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
 
 private:
     Q_DISABLE_COPY(ShowDoublePointName)

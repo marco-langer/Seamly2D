@@ -81,33 +81,31 @@ public:
         const QString& blockName = QString(),
         const quint32& idTool = 0);
 
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Tool::InternalPath)
     };
-    virtual QString getTagName() const override;
+    QString getTagName() const override;
 
-    virtual void paint(
-        QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr)
+        override;
 
-    virtual void incrementReferens() override;
-    virtual void decrementReferens() override;
+    void incrementReferens() override;
+    void decrementReferens() override;
 
     static void AddAttributes(
         VAbstractPattern* doc, QDomElement& domElement, quint32 id, const VPiecePath& path);
 public slots:
-    virtual void FullUpdateFromFile() override;
-    virtual void AllowHover(bool enabled) override;
-    virtual void AllowSelecting(bool enabled) override;
+    void FullUpdateFromFile() override;
+    void AllowHover(bool enabled) override;
+    void AllowSelecting(bool enabled) override;
 
 protected:
-    virtual void AddToFile() override;
-    virtual void ShowNode() override;
-    virtual void HideNode() override;
-    virtual void ToolCreation(const Source& typeCreation) override;
+    void AddToFile() override;
+    void ShowNode() override;
+    void HideNode() override;
+    void ToolCreation(const Source& typeCreation) override;
 
 private:
     Q_DISABLE_COPY(VToolInternalPath)

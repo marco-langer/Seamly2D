@@ -83,7 +83,7 @@ public:
     VLayoutPiece();
     VLayoutPiece(const VLayoutPiece& detail);
 
-    virtual ~VLayoutPiece() override;
+    ~VLayoutPiece() override;
 
     VLayoutPiece& operator=(const VLayoutPiece& detail);
     VLayoutPiece& operator=(VLayoutPiece&& detail) noexcept;

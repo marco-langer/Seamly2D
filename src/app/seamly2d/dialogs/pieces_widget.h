@@ -86,7 +86,7 @@ private slots:
     void showContextMenu(const QPoint& pos);
 
 protected:
-    virtual void changeEvent(QEvent* event) override;
+    void changeEvent(QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(PiecesWidget)

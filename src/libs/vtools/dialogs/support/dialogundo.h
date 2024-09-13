@@ -76,10 +76,10 @@ class DialogUndo : public QDialog
 public:
     explicit DialogUndo(QWidget* parent = nullptr);
     UndoButton Result() const;
-    virtual ~DialogUndo() override;
+    ~DialogUndo() override;
 
 protected:
-    virtual void closeEvent(QCloseEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
 private slots:
     void Cancel();
 

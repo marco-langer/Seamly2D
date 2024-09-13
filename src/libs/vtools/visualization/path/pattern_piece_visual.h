@@ -66,9 +66,9 @@ public:
     PatternPieceVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~PatternPieceVisual() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
     void SetPiece(const VPiece& piece);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolPiece)

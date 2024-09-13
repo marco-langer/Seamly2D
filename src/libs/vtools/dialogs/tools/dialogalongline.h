@@ -73,7 +73,7 @@ class DialogAlongLine : public DialogTool
     Q_OBJECT
 public:
     DialogAlongLine(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogAlongLine() override;
+    ~DialogAlongLine() override;
 
     void SetPointName(const QString& value);
 
@@ -95,9 +95,9 @@ public:
     quint32 GetSecondPointId() const;
     void SetSecondPointId(const quint32& value);
 
-    virtual void Build(const Tool& type) override;
+    void Build(const Tool& type) override;
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
     /**
      * @brief DeployFormulaTextEdit grow or shrink formula input
      */
@@ -111,12 +111,12 @@ public slots:
     void FXLength();
 
 protected:
-    virtual void ShowVisualization() override;
+    void ShowVisualization() override;
     /**
      * @brief SaveData Put dialog data in local variables
      */
-    virtual void SaveData() override;
-    virtual void closeEvent(QCloseEvent* event) override;
+    void SaveData() override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     Q_DISABLE_COPY(DialogAlongLine)

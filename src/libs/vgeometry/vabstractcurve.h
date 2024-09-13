@@ -72,7 +72,7 @@ public:
         const quint32& idObject = NULL_ID,
         const Draw& mode = Draw::Calculation);
     explicit VAbstractCurve(const VAbstractCurve& curve);
-    virtual ~VAbstractCurve() override;
+    ~VAbstractCurve() override;
 
     VAbstractCurve& operator=(const VAbstractCurve& curve);
     VAbstractCurve& operator=(VAbstractCurve&& curve) noexcept;

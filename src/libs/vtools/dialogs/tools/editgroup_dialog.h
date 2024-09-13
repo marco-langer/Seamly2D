@@ -86,10 +86,10 @@ public:
     QString getLineWeight() const;
     void setLineWeight(const QString& weight);
 
-    virtual void ShowDialog(bool click) override;
+    void ShowDialog(bool click) override;
 
 public slots:
-    virtual void SelectedObject(bool selected, quint32 object, quint32 tool) override;
+    void SelectedObject(bool selected, quint32 object, quint32 tool) override;
 
 private slots:
     void nameChanged();

@@ -40,9 +40,9 @@ public:
     PieceAnchorPointVisual(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~PieceAnchorPointVisual() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
     void setAnchors(const QVector<quint32>& anchors);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::PieceAnchors)

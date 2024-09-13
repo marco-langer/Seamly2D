@@ -44,9 +44,9 @@ public:
         VAbstractPattern* doc,
         QUndoCommand* parent = nullptr);
     virtual ~SetPieceColor();
-    virtual void undo() override;
-    virtual void redo() override;
-    virtual int id() const override;
+    void undo() override;
+    void redo() override;
+    int id() const override;
     quint32 getpieceId() const;
     QString getColor() const;
 

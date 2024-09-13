@@ -71,11 +71,11 @@ public:
         VAbstractPattern* doc,
         const quint32& id,
         QUndoCommand* parent = nullptr);
-    virtual ~SaveToolOptions() override;
-    virtual void undo() override;
-    virtual void redo() override;
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    ~SaveToolOptions() override;
+    void undo() override;
+    void redo() override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
     QDomElement getNewXml() const;
     quint32 getToolId() const;
 

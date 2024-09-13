@@ -91,14 +91,14 @@ public:
     quint32 getOriginPointId() const;
     void setOriginPointId(const quint32& value);
 
-    virtual void ShowDialog(bool click) override;
+    void ShowDialog(bool click) override;
 
     QVector<SourceItem> getSourceObjects() const;
     void setSourceObjects(const QVector<SourceItem>& value);
 
 public slots:
-    virtual void ChosenObject(quint32 id, const SceneObject& type) override;
-    virtual void SelectedObject(bool selected, quint32 id, quint32 tool) override;
+    void ChosenObject(quint32 id, const SceneObject& type) override;
+    void SelectedObject(bool selected, quint32 id, quint32 tool) override;
 
 private slots:
     void angleChanged();
@@ -113,12 +113,12 @@ private slots:
     void originChanged(const QString& text);
 
 protected:
-    virtual void CheckState() final;
-    virtual void ShowVisualization() override;
+    void CheckState() final;
+    void ShowVisualization() override;
 
     /** @brief SaveData Put dialog data in local variables */
-    virtual void SaveData() override;
-    virtual void closeEvent(QCloseEvent* event) override;
+    void SaveData() override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     Q_DISABLE_COPY(DialogMove)

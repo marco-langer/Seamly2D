@@ -72,13 +72,13 @@ public:
         QUndoCommand* parent = nullptr);
     virtual ~MoveOperationLabel() = default;
 
-    virtual bool mergeWith(const QUndoCommand* command) override;
-    virtual int id() const override;
+    bool mergeWith(const QUndoCommand* command) override;
+    int id() const override;
 
     quint32 GetToolId() const;
 
 protected:
-    virtual void Do(const QPointF& pos) override;
+    void Do(const QPointF& pos) override;
 
 private:
     Q_DISABLE_COPY(MoveOperationLabel)

@@ -67,16 +67,16 @@ public:
     VisToolInternalPath(const VContainer* data, QGraphicsItem* parent = nullptr);
     virtual ~VisToolInternalPath() = default;
 
-    virtual void RefreshGeometry() override;
+    void RefreshGeometry() override;
     void SetPath(const VPiecePath& path);
-    virtual int type() const override { return Type; }
+    int type() const override { return Type; }
     enum
     {
         Type = UserType + static_cast<int>(Vis::ToolInternalPath)
     };
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
     Q_DISABLE_COPY(VisToolInternalPath)

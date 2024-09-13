@@ -46,8 +46,8 @@ public:
         quint32 destinationId,
         QUndoCommand* parent = nullptr);
     virtual ~MoveGroupItem();
-    virtual void undo() override;
-    virtual void redo() override;
+    void undo() override;
+    void redo() override;
 
 signals:
     void updateGroups();

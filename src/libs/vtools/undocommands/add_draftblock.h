@@ -71,9 +71,9 @@ public:
         VAbstractPattern* doc,
         const QString& draftBlockName,
         QUndoCommand* parent = nullptr);
-    virtual ~AddDraftBlock() override;
-    virtual void undo() override;
-    virtual void redo() override;
+    ~AddDraftBlock() override;
+    void undo() override;
+    void redo() override;
 
 private:
     Q_DISABLE_COPY(AddDraftBlock)

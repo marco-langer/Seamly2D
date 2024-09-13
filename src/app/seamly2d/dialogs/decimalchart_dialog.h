@@ -44,7 +44,7 @@ public:
     virtual ~DecimalChartDialog();
 
 protected:
-    virtual void showEvent(QShowEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 
 private:
     Ui::DecimalChartDialog* ui;
