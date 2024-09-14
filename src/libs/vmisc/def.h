@@ -203,45 +203,25 @@ enum class PieceNodeAngle : unsigned char
 
 struct DraftImage
 {
-    DraftImage()
-        : id(0)
-        , name("")
-        , filename("")
-        , pixmap()
-        , locked(false)
-        , origin(Position::Center)
-        , anchor(0)
-        , xPos(0.0)
-        , yPos(0.0)
-        , width(0.0)
-        , height(0.0)
-        , aspectLocked(false)
-        , units(Unit::Px)
-        , rotation(0.0)
-        , visible(true)
-        , opacity(100.0)
-        , order(0)
-    {}
-
-    quint32 id;
+    quint32 id{ 0 };
     QString name;
     QString filename;
     QPixmap pixmap;
-    bool locked;
-    Position origin;
-    quint32 anchor;
-    qreal xPos;
-    qreal yPos;
-    qreal width;
-    qreal height;
-    qreal xScale;
-    qreal yScale;
-    bool aspectLocked;
-    Unit units;
-    qreal rotation;
-    bool visible;
-    qreal opacity;
-    qreal order;
+    bool locked{ false };
+    Position origin{ Position::Center };
+    quint32 anchor{ 0 };
+    qreal xPos{ 0.0 };
+    qreal yPos{ 0.0 };
+    qreal width{ 0.0 };
+    qreal height{ 0.0 };
+    qreal xScale{ 0.0 };
+    qreal yScale{ 0.0 };
+    bool aspectLocked{ false };
+    Unit units{ Unit::Px };
+    qreal rotation{ 0.0 };
+    bool visible{ true };
+    qreal opacity{ 100.0 };
+    qreal order{ 0.0 };
 };
 
 Q_DECLARE_METATYPE(DraftImage)
@@ -660,19 +640,11 @@ VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accur
  */
 struct CustomSARecord
 {
-    CustomSARecord()
-        : startPoint(0)
-        , path(0)
-        , endPoint(0)
-        , reverse(false)
-        , includeType(PiecePathIncludeType::AsCustomSA)
-    {}
-
-    quint32 startPoint;
-    quint32 path;
-    quint32 endPoint;
-    bool reverse;
-    PiecePathIncludeType includeType;
+    quint32 startPoint{ 0 };
+    quint32 path{ 0 };
+    quint32 endPoint{ 0 };
+    bool reverse{ false };
+    PiecePathIncludeType includeType{ PiecePathIncludeType::AsCustomSA };
 };
 
 Q_DECLARE_METATYPE(CustomSARecord)
