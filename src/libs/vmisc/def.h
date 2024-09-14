@@ -57,9 +57,8 @@ class QMarginsF;
 class VTranslateMeasurements;
 class QGraphicsItem;
 
-#define SceneSize 50000
-
-#define HANDLE_SIZE 12
+inline constexpr int SceneSize{ 50'000 };
+inline constexpr int HANDLE_SIZE{ 12 };
 
 enum class Position : char
 {
@@ -403,7 +402,7 @@ enum class VarType : char
     Unknown
 };
 
-static const int heightStep = 6;
+inline constexpr int heightStep{ 6 };
 enum class GHeights : unsigned char
 {
     ALL,
@@ -435,7 +434,7 @@ enum class GHeights : unsigned char
     H200 = 200
 };
 
-static const int sizeStep = 2;
+inline constexpr int sizeStep{ 2 };
 enum class GSizes : unsigned char
 {
     ALL,
@@ -475,7 +474,7 @@ enum class GSizes : unsigned char
  * If you really need bigger images you will have to use another wrapper or split into multiple
  * QImage's.
  */
-#define QIMAGE_MAX 32768
+inline constexpr int QIMAGE_MAX{ 32'768 };
 
 
 extern const QString LONG_OPTION_NO_HDPI_SCALING;
@@ -615,7 +614,7 @@ QString makeHeaderName(const QString& name);
 
 void ShowInGraphicalShell(const QString& filePath);
 
-constexpr qreal accuracyPointOnLine = (0.1555 /*mm*/ / 25.4) * 96.0;
+inline constexpr qreal accuracyPointOnLine{ (0.1555 /*mm*/ / 25.4) * 96.0 };
 
 
 [[nodiscard]] inline bool

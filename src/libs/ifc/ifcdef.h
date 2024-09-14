@@ -70,12 +70,12 @@ extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 #    include <windows.h>
 #endif /*Q_OS_WIN32*/
 
-static const quint32 null_id = 0;
+inline constexpr quint32 null_id{ 0 };
 
 #define NULL_ID \
     null_id   // use this value for initialization variables that keeps id values. 0 mean Unknown id
               // value.
-#define NULL_ID_STR "0"
+inline constexpr const char* NULL_ID_STR{ "0" };
 
 
 extern const QString AttrType;
