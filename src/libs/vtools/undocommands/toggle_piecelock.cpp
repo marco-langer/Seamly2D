@@ -52,7 +52,7 @@ TogglePieceLock::TogglePieceLock(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-TogglePieceLock::~TogglePieceLock() {}
+TogglePieceLock::~TogglePieceLock() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceLock::undo()

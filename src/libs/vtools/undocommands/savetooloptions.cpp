@@ -74,7 +74,7 @@ SaveToolOptions::SaveToolOptions(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SaveToolOptions::~SaveToolOptions() {}
+SaveToolOptions::~SaveToolOptions() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void SaveToolOptions::undo()

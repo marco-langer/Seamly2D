@@ -97,7 +97,7 @@ VContour& VContour::operator=(const VContour& contour)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VContour::~VContour() {}
+VContour::~VContour() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void VContour::SetContour(const QVector<QPointF>& contour) { d->globalContour = contour; }

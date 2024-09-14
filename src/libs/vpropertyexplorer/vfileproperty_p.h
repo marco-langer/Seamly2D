@@ -54,7 +54,7 @@ public:
     virtual ~VFilePropertyPrivate() Q_DECL_OVERRIDE;
 };
 
-VFilePropertyPrivate::~VFilePropertyPrivate() {}
+VFilePropertyPrivate::~VFilePropertyPrivate() = default;
 
 }   // namespace VPE
 

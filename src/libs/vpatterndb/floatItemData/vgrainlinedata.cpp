@@ -67,7 +67,7 @@ VGrainlineData& VGrainlineData::operator=(const VGrainlineData& data)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VGrainlineData::~VGrainlineData() {}
+VGrainlineData::~VGrainlineData() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VGrainlineData::GetLength() const { return d->m_qsLength; }

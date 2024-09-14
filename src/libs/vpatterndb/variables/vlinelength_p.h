@@ -92,7 +92,7 @@ private:
     VLengthLineData& operator=(const VLengthLineData&) = delete;
 };
 
-VLengthLineData::~VLengthLineData() {}
+VLengthLineData::~VLengthLineData() = default;
 
 QT_WARNING_POP
 

@@ -81,7 +81,7 @@ DeleteDraftBlock::DeleteDraftBlock(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-DeleteDraftBlock::~DeleteDraftBlock() {}
+DeleteDraftBlock::~DeleteDraftBlock() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void DeleteDraftBlock::undo()

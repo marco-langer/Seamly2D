@@ -118,7 +118,7 @@ VLengthLine& VLengthLine::operator=(const VLengthLine& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLengthLine::~VLengthLine() {}
+VLengthLine::~VLengthLine() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VLengthLine::Filter(quint32 id) { return id == d->p1Id || id == d->p2Id; }

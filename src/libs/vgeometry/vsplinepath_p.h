@@ -79,7 +79,7 @@ private:
     VSplinePathData& operator=(const VSplinePathData&) = delete;
 };
 
-VSplinePathData::~VSplinePathData() {}
+VSplinePathData::~VSplinePathData() = default;
 
 QT_WARNING_POP
 

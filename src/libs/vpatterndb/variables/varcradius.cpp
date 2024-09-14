@@ -114,4 +114,4 @@ VArcRadius& VArcRadius::operator=(const VArcRadius& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArcRadius::~VArcRadius() {}
+VArcRadius::~VArcRadius() = default;

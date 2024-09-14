@@ -102,7 +102,7 @@ private:
     VGObjectData& operator=(const VGObjectData&) = delete;
 };
 
-VGObjectData::~VGObjectData() {}
+VGObjectData::~VGObjectData() = default;
 
 QT_WARNING_POP
 

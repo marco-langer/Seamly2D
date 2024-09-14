@@ -211,7 +211,7 @@ VSplineData::VSplineData(
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VSplineData::~VSplineData() {}
+VSplineData::~VSplineData() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 qreal VSplineData::GetL(const QPointF& p1, const QPointF& p4, qreal kCurve)

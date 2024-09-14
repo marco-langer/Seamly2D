@@ -66,7 +66,7 @@ VPatternLabelData& VPatternLabelData::operator=(const VPatternLabelData& data)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPatternLabelData::~VPatternLabelData() {}
+VPatternLabelData::~VPatternLabelData() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VPatternLabelData::GetLabelWidth() const { return d->m_pieceLabelWidth; }

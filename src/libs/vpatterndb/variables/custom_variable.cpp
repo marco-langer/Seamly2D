@@ -117,7 +117,7 @@ CustomVariable& CustomVariable::operator=(const CustomVariable& variable)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-CustomVariable::~CustomVariable() {}
+CustomVariable::~CustomVariable() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

@@ -93,7 +93,7 @@ QmuTokenParser::QmuTokenParser(const QString& formula, bool osSeparator, bool fr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QmuTokenParser::~QmuTokenParser() {}
+QmuTokenParser::~QmuTokenParser() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

@@ -90,7 +90,7 @@ VAbstractPiece& VAbstractPiece::operator=(const VAbstractPiece& piece)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractPiece::~VAbstractPiece() {}
+VAbstractPiece::~VAbstractPiece() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VAbstractPiece::GetName() const { return d->m_name; }

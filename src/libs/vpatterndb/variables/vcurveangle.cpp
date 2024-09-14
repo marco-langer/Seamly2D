@@ -119,4 +119,4 @@ VCurveAngle& VCurveAngle::operator=(const VCurveAngle& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveAngle::~VCurveAngle() {}
+VCurveAngle::~VCurveAngle() = default;

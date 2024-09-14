@@ -134,7 +134,7 @@ VAbstractArc& VAbstractArc::operator=(const VAbstractArc& arc)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArc::~VAbstractArc() {}
+VAbstractArc::~VAbstractArc() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VAbstractArc::GetFormulaF1() const { return d->formulaF1; }

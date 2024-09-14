@@ -102,7 +102,7 @@ VCurveVariable& VCurveVariable::operator=(const VCurveVariable& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveVariable::~VCurveVariable() {}
+VCurveVariable::~VCurveVariable() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VCurveVariable::Filter(quint32 id)

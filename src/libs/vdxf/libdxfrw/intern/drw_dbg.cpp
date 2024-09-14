@@ -39,7 +39,7 @@ public:
         (void)z;
     }
     print_none() {}
-    virtual ~print_none() {}
+    virtual ~print_none() = default;
 };
 
 class print_debug : public print_none

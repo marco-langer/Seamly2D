@@ -114,7 +114,7 @@ VAbstractApplication::VAbstractApplication(int& argc, char** argv)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractApplication::~VAbstractApplication() {}
+VAbstractApplication::~VAbstractApplication() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

@@ -88,7 +88,7 @@ private:
     VCurveVariableData& operator=(const VCurveVariableData&) = delete;
 };
 
-VCurveVariableData::~VCurveVariableData() {}
+VCurveVariableData::~VCurveVariableData() = default;
 
 QT_WARNING_POP
 

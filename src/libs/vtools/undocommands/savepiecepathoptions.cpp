@@ -77,7 +77,7 @@ SavePiecePathOptions::SavePiecePathOptions(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SavePiecePathOptions::~SavePiecePathOptions() {}
+SavePiecePathOptions::~SavePiecePathOptions() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void SavePiecePathOptions::undo()

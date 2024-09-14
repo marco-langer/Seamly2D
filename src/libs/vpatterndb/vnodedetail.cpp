@@ -145,7 +145,7 @@ VNodeDetail& VNodeDetail::operator=(const VNodeDetail& node)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VNodeDetail::~VNodeDetail() {}
+VNodeDetail::~VNodeDetail() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 quint32 VNodeDetail::getId() const { return d->id; }

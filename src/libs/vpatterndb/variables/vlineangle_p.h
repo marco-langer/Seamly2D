@@ -89,7 +89,7 @@ private:
     VLineAngleData& operator=(const VLineAngleData&) = delete;
 };
 
-VLineAngleData::~VLineAngleData() {}
+VLineAngleData::~VLineAngleData() = default;
 
 QT_WARNING_POP
 

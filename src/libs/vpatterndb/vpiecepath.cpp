@@ -185,7 +185,7 @@ VPiecePath& VPiecePath::operator=(const VPiecePath& path)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPiecePath::~VPiecePath() {}
+VPiecePath::~VPiecePath() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPiecePath::Append(const VPieceNode& node) { d->m_nodes.append(node); }

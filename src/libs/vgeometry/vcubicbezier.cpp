@@ -151,7 +151,7 @@ VCubicBezier VCubicBezier::Move(qreal length, qreal angle, const QString& prefix
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier::~VCubicBezier() {}
+VCubicBezier::~VCubicBezier() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 VPointF VCubicBezier::GetP1() const { return d->p1; }

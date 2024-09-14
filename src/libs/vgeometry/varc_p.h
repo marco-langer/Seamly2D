@@ -99,7 +99,7 @@ VArcData::VArcData(const VArcData& arc)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VArcData::~VArcData() {}
+VArcData::~VArcData() = default;
 
 QT_WARNING_POP
 

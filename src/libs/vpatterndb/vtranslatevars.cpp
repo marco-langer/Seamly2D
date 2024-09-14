@@ -89,7 +89,7 @@ VTranslateVars::VTranslateVars()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VTranslateVars::~VTranslateVars() {}
+VTranslateVars::~VTranslateVars() = default;
 
 #define translate(context, source, disambiguation) \
     qmu::QmuTranslation::translate((context), (source), (disambiguation))

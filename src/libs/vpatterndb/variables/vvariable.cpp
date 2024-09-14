@@ -101,7 +101,7 @@ VVariable& VVariable::operator=(const VVariable& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VVariable::~VVariable() {}
+VVariable::~VVariable() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VVariable::GetDescription() const { return d->description; }

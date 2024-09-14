@@ -101,7 +101,7 @@ private:
     VPiecePathData& operator=(const VPiecePathData&) = delete;
 };
 
-VPiecePathData::~VPiecePathData() {}
+VPiecePathData::~VPiecePathData() = default;
 
 QT_WARNING_POP
 

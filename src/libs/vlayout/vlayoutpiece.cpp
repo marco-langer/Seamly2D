@@ -383,7 +383,7 @@ VLayoutPiece& VLayoutPiece::operator=(const VLayoutPiece& piece)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPiece::~VLayoutPiece() {}
+VLayoutPiece::~VLayoutPiece() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutPiece VLayoutPiece::Create(const VPiece& piece, const VContainer* pattern)

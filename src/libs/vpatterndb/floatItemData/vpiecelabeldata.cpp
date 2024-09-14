@@ -67,7 +67,7 @@ VPieceLabelData& VPieceLabelData::operator=(const VPieceLabelData& data)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPieceLabelData::~VPieceLabelData() {}
+VPieceLabelData::~VPieceLabelData() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPieceLabelData::Clear() { d->m_qsLetter.clear(); }

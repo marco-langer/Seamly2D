@@ -71,7 +71,7 @@ AddGroup::AddGroup(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-AddGroup::~AddGroup() {}
+AddGroup::~AddGroup() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void AddGroup::undo()

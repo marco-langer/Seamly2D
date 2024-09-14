@@ -156,7 +156,7 @@ private:
     MeasurementVariableData& operator=(const MeasurementVariableData&) = delete;
 };
 
-MeasurementVariableData::~MeasurementVariableData() {}
+MeasurementVariableData::~MeasurementVariableData() = default;
 
 QT_WARNING_POP
 

@@ -139,7 +139,7 @@ VAbstractArcData::VAbstractArcData(const VAbstractArcData& arc)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractArcData::~VAbstractArcData() {}
+VAbstractArcData::~VAbstractArcData() = default;
 
 QT_WARNING_POP
 

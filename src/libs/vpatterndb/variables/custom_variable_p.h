@@ -97,7 +97,7 @@ private:
     CustomVariableData& operator=(const CustomVariableData&) = delete;
 };
 
-CustomVariableData::~CustomVariableData() {}
+CustomVariableData::~CustomVariableData() = default;
 
 QT_WARNING_POP
 

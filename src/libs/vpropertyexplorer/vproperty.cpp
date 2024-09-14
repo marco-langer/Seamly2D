@@ -322,6 +322,6 @@ void VPE::VProperty::childValueChanged(const QVariant& value, int typeForParent)
     Q_UNUSED(typeForParent)
 }
 
-VPE::UserChangeEvent::~UserChangeEvent() {}
+VPE::UserChangeEvent::~UserChangeEvent() = default;
 
-VPE::VPropertyPrivate::~VPropertyPrivate() {}
+VPE::VPropertyPrivate::~VPropertyPrivate() = default;

@@ -97,7 +97,7 @@ VAbstractCurve& VAbstractCurve::operator=(const VAbstractCurve& curve)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractCurve::~VAbstractCurve() {}
+VAbstractCurve::~VAbstractCurve() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QVector<QPointF> VAbstractCurve::GetSegmentPoints(

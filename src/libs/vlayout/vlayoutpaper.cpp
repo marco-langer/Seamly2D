@@ -107,7 +107,7 @@ VLayoutPaper& VLayoutPaper::operator=(const VLayoutPaper& paper)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPaper::~VLayoutPaper() {}
+VLayoutPaper::~VLayoutPaper() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 int VLayoutPaper::GetHeight() const { return d->globalContour.GetHeight(); }

@@ -110,7 +110,7 @@ VisToolMove::VisToolMove(const VContainer* data, QGraphicsItem* parent)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolMove::~VisToolMove() {}
+VisToolMove::~VisToolMove() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolMove::RefreshGeometry()

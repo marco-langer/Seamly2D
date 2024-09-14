@@ -113,7 +113,7 @@ private:
     VFSplinePointData& operator=(const VFSplinePointData&) = delete;
 };
 
-VFSplinePointData::~VFSplinePointData() {}
+VFSplinePointData::~VFSplinePointData() = default;
 
 //--------------------------------------VSplinePointData---------------------------------------------------------------
 

@@ -81,7 +81,7 @@ VInternalVariable& VInternalVariable::operator=(const VInternalVariable& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VInternalVariable::~VInternalVariable() {}
+VInternalVariable::~VInternalVariable() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VInternalVariable::Filter(quint32 id)

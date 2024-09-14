@@ -30,7 +30,7 @@ namespace qmu {
 const QmuParserErrorMsg QmuParserErrorMsg::m_Instance;
 
 //---------------------------------------------------------------------------------------------------------------------
-QmuParserErrorMsg::~QmuParserErrorMsg() {}
+QmuParserErrorMsg::~QmuParserErrorMsg() = default;
 
 #define translate(context, source, disambiguation) \
     QmuTranslation::translate((context), (source), (disambiguation))

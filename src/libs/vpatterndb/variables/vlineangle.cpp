@@ -116,7 +116,7 @@ VLineAngle& VLineAngle::operator=(const VLineAngle& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLineAngle::~VLineAngle() {}
+VLineAngle::~VLineAngle() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VLineAngle::Filter(quint32 id) { return id == d->p1Id || id == d->p2Id; }

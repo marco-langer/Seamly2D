@@ -80,7 +80,7 @@ TogglePieceInLayout::TogglePieceInLayout(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-TogglePieceInLayout::~TogglePieceInLayout() {}
+TogglePieceInLayout::~TogglePieceInLayout() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceInLayout::undo()

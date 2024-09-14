@@ -89,7 +89,7 @@ private:
     VInternalVariableData& operator=(const VInternalVariableData&) = delete;
 };
 
-VInternalVariableData::~VInternalVariableData() {}
+VInternalVariableData::~VInternalVariableData() = default;
 
 QT_WARNING_POP
 

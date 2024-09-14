@@ -47,7 +47,7 @@ RemoveGroupItem::RemoveGroupItem(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-RemoveGroupItem::~RemoveGroupItem() {}
+RemoveGroupItem::~RemoveGroupItem() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void RemoveGroupItem::undo()

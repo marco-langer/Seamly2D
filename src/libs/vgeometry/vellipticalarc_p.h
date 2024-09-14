@@ -85,7 +85,7 @@ VEllipticalArcData::VEllipticalArcData(const VEllipticalArcData& arc)
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArcData::~VEllipticalArcData() {}
+VEllipticalArcData::~VEllipticalArcData() = default;
 
 QT_WARNING_POP
 

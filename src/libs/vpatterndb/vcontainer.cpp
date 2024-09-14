@@ -657,4 +657,4 @@ const QHash<QString, QSharedPointer<VInternalVariable>>* VContainer::DataVariabl
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VContainerData::~VContainerData() {}
+VContainerData::~VContainerData() = default;

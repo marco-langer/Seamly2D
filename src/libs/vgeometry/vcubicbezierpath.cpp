@@ -156,7 +156,7 @@ VCubicBezierPath VCubicBezierPath::Move(qreal length, qreal angle, const QString
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezierPath::~VCubicBezierPath() {}
+VCubicBezierPath::~VCubicBezierPath() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 VPointF& VCubicBezierPath::operator[](int indx) { return d->path[indx]; }

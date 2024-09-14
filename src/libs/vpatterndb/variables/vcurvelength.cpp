@@ -111,4 +111,4 @@ VCurveLength& VCurveLength::operator=(const VCurveLength& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCurveLength::~VCurveLength() {}
+VCurveLength::~VCurveLength() = default;

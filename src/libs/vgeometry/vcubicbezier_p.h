@@ -105,7 +105,7 @@ VCubicBezierData::VCubicBezierData(
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezierData::~VCubicBezierData() {}
+VCubicBezierData::~VCubicBezierData() = default;
 
 QT_WARNING_POP
 

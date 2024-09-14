@@ -84,7 +84,7 @@ SavePieceOptions::SavePieceOptions(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-SavePieceOptions::~SavePieceOptions() {}
+SavePieceOptions::~SavePieceOptions() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void SavePieceOptions::undo()

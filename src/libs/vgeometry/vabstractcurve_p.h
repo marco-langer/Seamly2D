@@ -86,7 +86,7 @@ private:
     VAbstractCurveData& operator=(const VAbstractCurveData&) = delete;
 };
 
-VAbstractCurveData::~VAbstractCurveData() {}
+VAbstractCurveData::~VAbstractCurveData() = default;
 
 QT_WARNING_POP
 

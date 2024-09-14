@@ -89,7 +89,7 @@ VLayoutPiecePath& VLayoutPiecePath::operator=(const VLayoutPiecePath& path)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath::~VLayoutPiecePath() {}
+VLayoutPiecePath::~VLayoutPiecePath() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QPainterPath VLayoutPiecePath::GetPainterPath() const

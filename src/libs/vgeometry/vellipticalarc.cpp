@@ -241,7 +241,7 @@ VEllipticalArc VEllipticalArc::Move(qreal length, qreal angle, const QString& pr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc::~VEllipticalArc() {}
+VEllipticalArc::~VEllipticalArc() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

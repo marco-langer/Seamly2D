@@ -106,7 +106,7 @@ VFSplinePoint& VFSplinePoint::operator=(const VFSplinePoint& point)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VFSplinePoint::~VFSplinePoint() {}
+VFSplinePoint::~VFSplinePoint() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -238,7 +238,7 @@ VSplinePoint& VSplinePoint::operator=(const VSplinePoint& point)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VSplinePoint::~VSplinePoint() {}
+VSplinePoint::~VSplinePoint() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 VPointF VSplinePoint::P() const { return d->pSpline; }

@@ -114,7 +114,7 @@ private:
     VPointFData& operator=(const VPointFData&) = delete;
 };
 
-VPointFData::~VPointFData() {}
+VPointFData::~VPointFData() = default;
 
 QT_WARNING_POP
 

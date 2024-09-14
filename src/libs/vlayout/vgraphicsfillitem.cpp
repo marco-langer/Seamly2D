@@ -36,7 +36,7 @@ VGraphicsFillItem::VGraphicsFillItem(const QColor& color, bool fill, QGraphicsIt
 {}
 
 //---------------------------------------------------------------------------------------------------------------------
-VGraphicsFillItem::~VGraphicsFillItem() {}
+VGraphicsFillItem::~VGraphicsFillItem() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void VGraphicsFillItem::paint(

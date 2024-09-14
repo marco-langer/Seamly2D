@@ -74,7 +74,7 @@ RenameDraftBlock::RenameDraftBlock(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-RenameDraftBlock::~RenameDraftBlock() {}
+RenameDraftBlock::~RenameDraftBlock() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void RenameDraftBlock::undo()

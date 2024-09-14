@@ -149,7 +149,7 @@ MeasurementVariable& MeasurementVariable::operator=(const MeasurementVariable& m
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-MeasurementVariable::~MeasurementVariable() {}
+MeasurementVariable::~MeasurementVariable() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QStringList MeasurementVariable::ListHeights(QMap<GHeights, bool> heights, Unit patternUnit)

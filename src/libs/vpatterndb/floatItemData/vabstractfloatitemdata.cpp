@@ -82,7 +82,7 @@ VAbstractFloatItemData& VAbstractFloatItemData::operator=(const VAbstractFloatIt
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractFloatItemData::~VAbstractFloatItemData() {}
+VAbstractFloatItemData::~VAbstractFloatItemData() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QPointF VAbstractFloatItemData::GetPos() const { return d->m_ptPos; }

@@ -91,7 +91,7 @@ VisToolRotation::VisToolRotation(const VContainer* data, QGraphicsItem* parent)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VisToolRotation::~VisToolRotation() {}
+VisToolRotation::~VisToolRotation() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QT_WARNING_PUSH

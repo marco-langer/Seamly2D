@@ -69,7 +69,7 @@ VTranslateMeasurements::VTranslateMeasurements()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VTranslateMeasurements::~VTranslateMeasurements() {}
+VTranslateMeasurements::~VTranslateMeasurements() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

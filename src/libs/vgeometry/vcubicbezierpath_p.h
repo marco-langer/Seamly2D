@@ -78,7 +78,7 @@ private:
     VCubicBezierPathData& operator=(const VCubicBezierPathData&) = delete;
 };
 
-VCubicBezierPathData::~VCubicBezierPathData() {}
+VCubicBezierPathData::~VCubicBezierPathData() = default;
 
 QT_WARNING_POP
 

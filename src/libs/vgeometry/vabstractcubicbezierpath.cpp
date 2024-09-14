@@ -81,7 +81,7 @@ VAbstractCubicBezierPath& VAbstractCubicBezierPath::operator=(const VAbstractCub
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractCubicBezierPath::~VAbstractCubicBezierPath() {}
+VAbstractCubicBezierPath::~VAbstractCubicBezierPath() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

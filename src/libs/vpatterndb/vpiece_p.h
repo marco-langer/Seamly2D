@@ -116,7 +116,7 @@ private:
     VPieceData& operator=(const VPieceData&) = delete;
 };
 
-VPieceData::~VPieceData() {}
+VPieceData::~VPieceData() = default;
 
 QT_WARNING_POP
 

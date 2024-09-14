@@ -72,4 +72,4 @@ VAbstractBezier& VAbstractBezier::operator=(const VAbstractBezier& curve)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VAbstractBezier::~VAbstractBezier() {}
+VAbstractBezier::~VAbstractBezier() = default;
