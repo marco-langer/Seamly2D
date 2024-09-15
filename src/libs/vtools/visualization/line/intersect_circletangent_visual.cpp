@@ -44,7 +44,7 @@
 #include <QGraphicsLineItem>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
+
 
 //---------------------------------------------------------------------------------------------------------------------
 IntersectCircleTangentVisual::IntersectCircleTangentVisual(

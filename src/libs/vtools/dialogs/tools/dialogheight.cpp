@@ -61,7 +61,6 @@
 #include <QPointer>
 #include <QSet>
 #include <QSharedPointer>
-#include <new>
 
 #include "../../visualization/line/visline.h"
 #include "../../visualization/line/vistoolheight.h"

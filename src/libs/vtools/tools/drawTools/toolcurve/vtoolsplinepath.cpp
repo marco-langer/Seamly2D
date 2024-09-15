@@ -69,7 +69,6 @@
 #include <QUndoStack>
 #include <Qt>
 #include <QtMath>
-#include <new>
 
 #include "../../../dialogs/tools/dialogsplinepath.h"
 #include "../../../dialogs/tools/dialogtool.h"

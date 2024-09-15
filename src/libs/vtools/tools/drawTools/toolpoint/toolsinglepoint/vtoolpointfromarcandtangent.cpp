@@ -76,7 +76,6 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
-#include <new>
 
 
 const QString VToolPointFromArcAndTangent::ToolType = QStringLiteral("pointFromArcAndTangent");

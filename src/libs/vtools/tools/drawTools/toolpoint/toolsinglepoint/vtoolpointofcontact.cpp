@@ -57,7 +57,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QtDebug>
-#include <new>
 
 #include "../../../../dialogs/tools/dialogpointofcontact.h"
 #include "../../../../dialogs/tools/dialogtool.h"

@@ -69,7 +69,6 @@
 #include <QStringDataPtr>
 #include <QToolTip>
 #include <Qt>
-#include <new>
 
 #include "../../../vgeometry/vpointf.h"
 #include "../../../vwidgets/vgraphicssimpletextitem.h"

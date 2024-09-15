@@ -72,7 +72,6 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
-#include <new>
 
 
 const QString IntersectCirclesTool::ToolType = QStringLiteral("pointOfIntersectionCircles");

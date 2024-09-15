@@ -43,7 +43,7 @@
 #include <QPointF>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
+
 
 //---------------------------------------------------------------------------------------------------------------------
 PointIntersectXYVisual::PointIntersectXYVisual(const VContainer* data, QGraphicsItem* parent)

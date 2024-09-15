@@ -57,7 +57,6 @@
 #include <QPen>
 #include <QPointF>
 #include <QSharedPointer>
-#include <new>
 
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/vtooltriangle.h"
 #include "../ifc/ifcdef.h"

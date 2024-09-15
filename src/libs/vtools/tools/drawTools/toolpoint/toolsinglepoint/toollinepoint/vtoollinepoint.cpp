@@ -58,7 +58,6 @@
 #include <QPoint>
 #include <QPointF>
 #include <Qt>
-#include <new>
 
 #include "../../../../vabstracttool.h"
 #include "../../../vdrawtool.h"

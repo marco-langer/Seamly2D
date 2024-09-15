@@ -65,7 +65,6 @@
 #include <QStringList>
 #include <QToolButton>
 #include <Qt>
-#include <new>
 
 #include "../../visualization/line/operation/vistoolmirrorbyline.h"
 #include "../../visualization/visualization.h"

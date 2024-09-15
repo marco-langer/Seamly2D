@@ -69,7 +69,6 @@
 #include <QToolButton>
 #include <QVariant>
 #include <Qt>
-#include <new>
 
 #include "../../tools/vabstracttool.h"
 #include "../../visualization/path/vistoolsplinepath.h"

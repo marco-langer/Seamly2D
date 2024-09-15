@@ -54,7 +54,6 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
-#include <new>
 
 #include "../../../../../dialogs/tools/dialogheight.h"
 #include "../../../../../dialogs/tools/dialogtool.h"

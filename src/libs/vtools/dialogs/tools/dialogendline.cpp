@@ -61,7 +61,6 @@
 #include <QSharedPointer>
 #include <QTimer>
 #include <QToolButton>
-#include <new>
 
 #include "../../tools/vabstracttool.h"
 #include "../../visualization/line/vistoolendline.h"

@@ -47,7 +47,6 @@
 #include <QPoint>
 #include <QPointF>
 #include <Qt>
-#include <new>
 
 
 /**

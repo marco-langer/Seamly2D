@@ -62,7 +62,6 @@
 #include <QPushButton>
 #include <QSet>
 #include <QSharedPointer>
-#include <new>
 
 #include "../../visualization/line/vistoollineintersect.h"
 #include "../../visualization/visualization.h"

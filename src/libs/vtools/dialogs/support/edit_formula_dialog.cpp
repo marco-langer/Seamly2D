@@ -79,7 +79,6 @@
 #include <QToolButton>
 #include <QWidget>
 #include <Qt>
-#include <new>
 #include <qiterator.h>
 
 #include "../ifc/xml/vdomdocument.h"

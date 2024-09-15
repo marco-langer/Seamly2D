@@ -71,7 +71,6 @@
 #include <QStringDataPtr>
 #include <QUndoStack>
 #include <QtDebug>
-#include <new>
 
 #include "../dialogs/tools/dialogtool.h"
 #include "../dialogs/tools/union_dialog.h"

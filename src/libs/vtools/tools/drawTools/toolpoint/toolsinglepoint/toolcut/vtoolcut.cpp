@@ -53,7 +53,6 @@
 
 #include <QDomElement>
 #include <QSharedPointer>
-#include <new>
 
 #include "../../../../vabstracttool.h"
 #include "../../../vdrawtool.h"

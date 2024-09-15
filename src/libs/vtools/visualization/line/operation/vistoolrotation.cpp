@@ -60,7 +60,6 @@
 #include <Qt>
 #include <QtAlgorithms>
 #include <limits.h>
-#include <new>
 
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/varc.h"

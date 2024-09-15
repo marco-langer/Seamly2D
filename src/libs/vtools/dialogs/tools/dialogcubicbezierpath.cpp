@@ -65,7 +65,6 @@
 #include <QVariant>
 #include <QVector>
 #include <Qt>
-#include <new>
 
 #include "../../tools/vabstracttool.h"
 #include "../../visualization/path/vistoolcubicbezierpath.h"

@@ -57,7 +57,6 @@
 #include <QPainterPath>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
 
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/vtoolpointfromarcandtangent.h"
 #include "../ifc/ifcdef.h"

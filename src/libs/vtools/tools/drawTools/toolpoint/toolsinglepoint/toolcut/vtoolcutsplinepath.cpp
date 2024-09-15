@@ -56,7 +56,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QVector>
-#include <new>
 
 #include "../../../../../dialogs/tools/dialogcutsplinepath.h"
 #include "../../../../../dialogs/tools/dialogtool.h"

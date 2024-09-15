@@ -55,7 +55,6 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
-#include <new>
 
 #include "../../../../../dialogs/tools/dialogcutspline.h"
 #include "../../../../../dialogs/tools/dialogtool.h"

@@ -46,7 +46,7 @@
 #include <QPointF>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
+
 
 //---------------------------------------------------------------------------------------------------------------------
 IntersectCirclesVisual::IntersectCirclesVisual(const VContainer* data, QGraphicsItem* parent)

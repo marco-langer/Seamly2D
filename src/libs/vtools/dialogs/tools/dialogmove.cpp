@@ -70,7 +70,6 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
-#include <new>
 
 #include "../../tools/drawTools/operation/vabstractoperation.h"
 #include "../../visualization/line/operation/vistoolmove.h"

@@ -59,7 +59,6 @@
 #include <QPointF>
 #include <Qt>
 #include <QtDebug>
-#include <new>
 
 #include "../../dialogs/tools/dialogline.h"
 #include "../../dialogs/tools/dialogtool.h"

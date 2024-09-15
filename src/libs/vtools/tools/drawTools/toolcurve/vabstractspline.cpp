@@ -60,7 +60,6 @@
 #include <QLineF>
 #include <QPen>
 #include <Qt>
-#include <new>
 
 #include "../../../visualization/line/visline.h"
 #include "../../vabstracttool.h"

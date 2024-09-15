@@ -72,7 +72,6 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
-#include <new>
 
 
 const QString IntersectCircleTangentTool::ToolType = QStringLiteral("pointFromCircleAndTangent");

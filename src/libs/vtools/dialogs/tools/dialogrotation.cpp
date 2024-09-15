@@ -68,7 +68,6 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
-#include <new>
 
 #include "../../visualization/line/operation/vistoolrotation.h"
 #include "../../visualization/visualization.h"

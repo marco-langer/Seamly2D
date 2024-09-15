@@ -55,7 +55,6 @@
 #include <QLineF>
 #include <QPointF>
 #include <QSharedPointer>
-#include <new>
 
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/toollinepoint/vtoolbisector.h"
 #include "../ifc/ifcdef.h"

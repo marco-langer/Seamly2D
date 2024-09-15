@@ -64,7 +64,6 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
-#include <new>
 
 #include "../../tools/vabstracttool.h"
 #include "../../visualization/path/vistoolspline.h"

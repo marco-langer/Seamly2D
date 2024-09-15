@@ -56,7 +56,6 @@
 #include <QPointF>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
 
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/toolcut/vtoolcutsplinepath.h"
 #include "../ifc/ifcdef.h"

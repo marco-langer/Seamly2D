@@ -57,7 +57,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <Qt>
-#include <new>
 
 #include "../../../dialogs/tools/dialogcubicbezierpath.h"
 #include "../../../dialogs/tools/dialogtool.h"

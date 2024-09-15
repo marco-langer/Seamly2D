@@ -56,7 +56,6 @@
 #include <QPointF>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
 
 #include "../../tools/drawTools/toolpoint/toolsinglepoint/vtoolpointofintersectioncurves.h"
 #include "../ifc/ifcdef.h"

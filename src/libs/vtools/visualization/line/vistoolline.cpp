@@ -55,7 +55,6 @@
 #include <QPen>
 #include <QPointF>
 #include <QSharedPointer>
-#include <new>
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"

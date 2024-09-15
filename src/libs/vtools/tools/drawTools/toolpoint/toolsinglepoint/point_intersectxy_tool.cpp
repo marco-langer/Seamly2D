@@ -70,7 +70,6 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
-#include <new>
 
 
 const QString PointIntersectXYTool::ToolType = QStringLiteral("intersectXY");

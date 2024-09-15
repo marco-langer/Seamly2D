@@ -68,7 +68,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QUndoStack>
-#include <new>
 
 #include "../../../../dialogs/tools/dialogsinglepoint.h"
 #include "../../../../dialogs/tools/dialogtool.h"

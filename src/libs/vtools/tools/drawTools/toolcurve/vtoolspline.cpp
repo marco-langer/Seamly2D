@@ -68,7 +68,6 @@
 #include <QVector>
 #include <Qt>
 #include <QtMath>
-#include <new>
 
 #include "../../../dialogs/tools/dialogspline.h"
 #include "../../../dialogs/tools/dialogtool.h"

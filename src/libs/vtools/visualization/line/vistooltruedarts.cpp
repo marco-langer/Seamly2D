@@ -56,7 +56,6 @@
 #include <QPointF>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
 
 #include "../../tools/drawTools/toolpoint/tooldoublepoint/vtooltruedarts.h"
 #include "../ifc/ifcdef.h"

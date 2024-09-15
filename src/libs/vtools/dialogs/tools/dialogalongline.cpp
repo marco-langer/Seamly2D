@@ -62,7 +62,6 @@
 #include <QPushButton>
 #include <QSharedPointer>
 #include <QToolButton>
-#include <new>
 
 #include "../../visualization/line/vistoolalongline.h"
 #include "../../visualization/visualization.h"

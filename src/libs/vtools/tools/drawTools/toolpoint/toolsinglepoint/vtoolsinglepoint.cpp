@@ -64,7 +64,6 @@
 #include <QSharedPointer>
 #include <QUndoStack>
 #include <Qt>
-#include <new>
 
 #include "../../../../undocommands/label/movelabel.h"
 #include "../../../../undocommands/label/showpointname.h"

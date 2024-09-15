@@ -56,7 +56,6 @@
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
-#include <new>
 
 #include "../../../../dialogs/tools/dialogtool.h"
 #include "../../../../dialogs/tools/dialogtruedarts.h"

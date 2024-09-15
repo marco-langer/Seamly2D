@@ -74,7 +74,6 @@
 #include <QStyle>
 #include <QUndoStack>
 #include <QVector>
-#include <new>
 #include <qnumeric.h>
 
 #include "../dialogs/support/dialogundo.h"

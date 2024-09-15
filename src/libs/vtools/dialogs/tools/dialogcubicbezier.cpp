@@ -56,7 +56,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPointer>
-#include <new>
 
 #include "../../tools/vabstracttool.h"
 #include "../../visualization/path/vistoolcubicbezier.h"

@@ -57,7 +57,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QtMath>
-#include <new>
 
 #include "../../../../dialogs/tools/dialogtool.h"
 #include "../../../../dialogs/tools/dialogtriangle.h"

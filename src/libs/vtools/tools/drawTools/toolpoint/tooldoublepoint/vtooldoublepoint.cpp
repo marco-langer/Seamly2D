@@ -57,7 +57,6 @@
 #include <QPoint>
 #include <QUndoStack>
 #include <Qt>
-#include <new>
 
 #include "../../../../undocommands/label/movedoublelabel.h"
 #include "../../../../undocommands/label/showdoublepointname.h"

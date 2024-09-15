@@ -50,7 +50,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <Qt>
-#include <new>
 
 #include "../../../dialogs/tools/dialogellipticalarc.h"
 #include "../../../dialogs/tools/dialogtool.h"

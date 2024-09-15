@@ -57,7 +57,6 @@
 #include <QPointF>
 #include <QSharedPointer>
 #include <Qt>
-#include <new>
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vgobject.h"

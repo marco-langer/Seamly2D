@@ -61,7 +61,6 @@
 #include <QSharedPointer>
 #include <QTimer>
 #include <QToolButton>
-#include <new>
 
 #include "../../visualization/line/vistoolcurveintersectaxis.h"
 #include "../../visualization/visualization.h"
