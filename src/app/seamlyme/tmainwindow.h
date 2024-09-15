@@ -242,8 +242,6 @@ private:
     void ReadSettings();
     void WriteSettings();
 
-    QStringList FilterMeasurements(const QStringList& mNew, const QStringList& mFilter);
-
     void UpdatePatternUnit();
 
     bool LoadFromExistingFile(const QString& path);

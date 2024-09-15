@@ -89,6 +89,7 @@
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QProcess>
+#include <QSet>
 #include <QTextCodec>
 #include <QtNumeric>
 
@@ -120,7 +121,19 @@ enum
     ColumnInHeights
 };
 
-//---------------------------------------------------------------------------------------------------------------------
+
+namespace {
+
+QStringList filterMeasurements(const QStringList& mNew, const QStringList& mFilter)
+{
+    auto filtered{ QSet<QString>{ mNew.begin(), mNew.end() }.subtract(
+        { mFilter.begin(), mFilter.end() }) };
+    return { filtered.begin(), filtered.end() };
+}
+
+}   // namespace
+
+
 TMainWindow::TMainWindow(QWidget* parent)
     : VAbstractMainWindow(parent)
     , ui(new Ui::TMainWindow)
@@ -1584,7 +1597,7 @@ void TMainWindow::ImportFromPattern()
         return;
     }
 
-    measurements = FilterMeasurements(measurements, individualMeasurements->ListAll());
+    measurements = filterMeasurements(measurements, individualMeasurements->ListAll());
 
     qint32 currentRow;
 
@@ -2937,11 +2950,6 @@ void TMainWindow::WriteSettings()
     settings->SetToolbarsState(saveState(APP_VERSION));
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-QStringList TMainWindow::FilterMeasurements(const QStringList& mNew, const QStringList& mFilter)
-{
-    return convertToSet<QString>(mNew).subtract(convertToSet<QString>(mFilter)).values();
-}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TMainWindow::UpdatePatternUnit()

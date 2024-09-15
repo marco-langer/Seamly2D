@@ -56,6 +56,7 @@
 #include "../vmisc/logging.h"
 #include "../vpatterndb/vtranslatevars.h"
 
+#include <QSet>
 #include <QTranslator>
 #include <QtTest>
 
@@ -198,7 +199,7 @@ void TST_AbstractRegExp::CallTestCheckNoOriginalNamesInTranslation()
     QFETCH(QString, originalName);
 
     static const QStringList originalNames = AllNames();
-    static const QSet<QString> names = convertToSet<QString>(originalNames);
+    static const QSet<QString> names{ originalNames.begin(), originalNames.end() };
 
     const QString translated = m_trMs->VarToUser(originalName);
     if (names.contains(translated)) {
