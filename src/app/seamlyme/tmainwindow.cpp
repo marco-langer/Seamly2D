@@ -264,7 +264,7 @@ bool TMainWindow::LoadFile(const QString& path)
 {
     QString filename = path;
     if (individualMeasurements == nullptr) {
-        if (!QFileInfo(filename).exists()) {
+        if (!QFileInfo::exists(filename)) {
             qCCritical(
                 tMainWindow, "%s", qUtf8Printable(tr("File '%1' doesn't exist!").arg(filename)));
             if (qApp->isTestMode()) {
@@ -2971,7 +2971,7 @@ void TMainWindow::UpdatePatternUnit()
 bool TMainWindow::LoadFromExistingFile(const QString& path)
 {
     if (individualMeasurements == nullptr) {
-        if (!QFileInfo(path).exists()) {
+        if (!QFileInfo::exists(path)) {
             qCCritical(tMainWindow, "%s", qUtf8Printable(tr("File '%1' doesn't exist!").arg(path)));
             if (qApp->isTestMode()) {
                 qApp->exit(V_EX_NOINPUT);

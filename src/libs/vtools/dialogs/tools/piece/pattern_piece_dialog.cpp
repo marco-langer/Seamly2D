@@ -2857,7 +2857,7 @@ void PatternPieceDialog::initializeLabelsTab()
     if (m_pieceLabelLines.isEmpty()) {
         VLabelTemplate labelTemplate;
         QString filename = qApp->Settings()->getDefaultPieceTemplate();
-        if (QFileInfo(filename).exists()) {
+        if (QFileInfo::exists(filename)) {
             labelTemplate.setXMLContent(VLabelTemplateConverter(filename).Convert());
             m_pieceLabelLines = labelTemplate.ReadLines();
         }
@@ -2937,7 +2937,7 @@ void PatternPieceDialog::initializeLabelsTab()
     if (m_patternLabelLines.isEmpty()) {
         VLabelTemplate labelTemplate;
         QString filename = qApp->Settings()->getDefaultPatternTemplate();
-        if (QFileInfo(filename).exists()) {
+        if (QFileInfo::exists(filename)) {
             labelTemplate.setXMLContent(VLabelTemplateConverter(filename).Convert());
             m_patternLabelLines = labelTemplate.ReadLines();
             qApp->getCurrentDocument()->setPatternLabelTemplate(m_patternLabelLines);

@@ -216,7 +216,7 @@ bool AbstractTest::CopyRecursively(const QString& srcFilePath, const QString& tg
             }
         }
     } else {
-        if (QFileInfo(tgtFilePath).exists()) {
+        if (QFileInfo::exists(tgtFilePath)) {
             const QString msg = QString("File '%1' exists.").arg(srcFilePath);
             QWARN(qUtf8Printable(msg));
 

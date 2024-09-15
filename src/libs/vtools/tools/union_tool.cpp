@@ -1587,7 +1587,7 @@ void createUnion(
     newPiece.GetPatternPieceData().SetLabelHeight(
         QString::number(qApp->Settings()->getDefaultLabelHeight()));
     QString filename = qApp->Settings()->getDefaultPieceTemplate();
-    if (QFileInfo(filename).exists()) {
+    if (QFileInfo::exists(filename)) {
         VLabelTemplate labelTemplate;
         labelTemplate.setXMLContent(VLabelTemplateConverter(filename).Convert());
         newPiece.GetPatternPieceData().SetLabelTemplate(labelTemplate.ReadLines());

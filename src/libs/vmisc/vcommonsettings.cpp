@@ -55,6 +55,7 @@
 #include <QApplication>
 #include <QDate>
 #include <QDir>
+#include <QFileInfo>
 #include <QFont>
 #include <QLocale>
 #include <QMessageLogger>
@@ -1304,7 +1305,7 @@ QStringList VCommonSettings::GetRecentFileList() const
     QStringList cleared;
 
     for (int i = 0; i < files.size(); ++i) {
-        if (QFileInfo(files.at(i)).exists()) {
+        if (QFileInfo::exists(files.at(i))) {
             cleared.append(files.at(i));
         }
     }

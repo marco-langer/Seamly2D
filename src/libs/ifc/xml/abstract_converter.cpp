@@ -262,7 +262,7 @@ void VAbstractConverter::ReserveFile() const
                               .arg(sequencePart)
                               .arg(info.completeSuffix());
         sequencePart = QString("_(%1)").arg(++sequenceNumber);
-    } while (QFileInfo(reserveFileName).exists());
+    } while (QFileInfo::exists(reserveFileName));
 
     if (!SafeCopy(m_convertedFileName, reserveFileName, error)) {
 #ifdef Q_OS_WIN32
