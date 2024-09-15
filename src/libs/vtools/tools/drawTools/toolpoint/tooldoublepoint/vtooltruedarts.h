@@ -57,6 +57,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -65,8 +66,6 @@
 #include "../vmisc/def.h"
 #include "vtooldoublepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 class VToolTrueDarts : public VToolDoublePoint
 {

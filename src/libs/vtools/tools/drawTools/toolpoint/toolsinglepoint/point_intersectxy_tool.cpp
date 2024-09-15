@@ -67,14 +67,11 @@
 #include "toollinepoint/doubleline_point_tool.h"
 
 #include <QPointF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
 #include <new>
 
-template <class T>
-class QSharedPointer;
 
 const QString PointIntersectXYTool::ToolType = QStringLiteral("intersectXY");
 

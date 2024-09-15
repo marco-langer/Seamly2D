@@ -69,14 +69,11 @@
 #include "vtoolsinglepoint.h"
 
 #include <QMessageBox>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
 #include <new>
 
-template <class T>
-class QSharedPointer;
 
 const QString IntersectCirclesTool::ToolType = QStringLiteral("pointOfIntersectionCircles");
 

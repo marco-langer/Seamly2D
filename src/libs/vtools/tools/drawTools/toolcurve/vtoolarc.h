@@ -50,6 +50,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -60,8 +61,6 @@
 #include "vabstractspline.h"
 
 class VFormula;
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolArc class tool for creation arc.

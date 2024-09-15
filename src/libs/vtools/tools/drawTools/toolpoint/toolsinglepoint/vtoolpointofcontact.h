@@ -57,6 +57,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -66,8 +67,6 @@
 #include "vtoolsinglepoint.h"
 
 class VFormula;
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolPointOfContact class tool for creation point intersection arc ad line.

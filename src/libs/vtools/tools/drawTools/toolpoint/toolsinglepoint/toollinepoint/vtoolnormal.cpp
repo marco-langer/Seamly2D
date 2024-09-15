@@ -52,7 +52,6 @@
 #include "vtoolnormal.h"
 
 #include <QLineF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -75,8 +74,6 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolNormal::ToolType = QStringLiteral("normal");
 

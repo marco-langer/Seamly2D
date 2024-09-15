@@ -53,7 +53,6 @@
 
 #include <QLine>
 #include <QLineF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -73,8 +72,6 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtooldoublepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolTrueDarts::ToolType = QStringLiteral("trueDarts");
 

@@ -52,7 +52,6 @@
 #include "vtoolarc.h"
 
 #include <QPen>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>

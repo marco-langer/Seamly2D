@@ -56,6 +56,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <Qt>
@@ -66,8 +67,6 @@
 #include "../vmisc/def.h"
 #include "vtoolsinglepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolBasePoint class tool for creation pattern base point. Only base point can move.

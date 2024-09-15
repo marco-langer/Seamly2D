@@ -55,7 +55,6 @@
 #include <QDomElement>
 #include <QKeyEvent>
 #include <QPoint>
-#include <QSharedPointer>
 #include <QUndoStack>
 #include <Qt>
 #include <new>

@@ -40,12 +40,11 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The PointIntersectXYTool class tool for creation point intersection two lines.

@@ -52,6 +52,7 @@
 #ifndef VTOOLMIRRORBYLINE_H
 #define VTOOLMIRRORBYLINE_H
 
+#include <QSharedPointer>
 #include <QtGlobal>
 
 #include "vabstractmirror.h"

@@ -53,7 +53,6 @@
 
 #include <QLineF>
 #include <QPointF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -77,8 +76,6 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolAlongLine::ToolType = QStringLiteral("alongLine");
 

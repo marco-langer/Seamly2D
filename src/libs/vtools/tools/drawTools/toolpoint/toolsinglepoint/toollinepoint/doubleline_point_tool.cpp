@@ -46,14 +46,10 @@
 #include <QPen>
 #include <QPoint>
 #include <QPointF>
-#include <QSharedPointer>
 #include <Qt>
 #include <new>
 
-template <class T>
-class QSharedPointer;
 
-//---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief DoubleLinePointTool constructor.
  * @param doc dom document container.

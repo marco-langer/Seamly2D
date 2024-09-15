@@ -99,8 +99,6 @@
 #include "../vpatterndb/vpiecenode.h"
 #include "../vpatterndb/vtranslatevars.h"
 
-template <class T>
-class QSharedPointer;
 
 Q_LOGGING_CATEGORY(vDialog, "v.dialog")
 

@@ -56,6 +56,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
@@ -67,8 +68,6 @@
 #include "vabstractspline.h"
 
 class VSplinePath;
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolSplinePath class tool for creation spline path.

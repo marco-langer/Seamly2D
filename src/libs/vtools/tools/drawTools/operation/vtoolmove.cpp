@@ -56,7 +56,6 @@
 #include <QDomNodeList>
 #include <QMapIterator>
 #include <QPoint>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -93,8 +92,6 @@
 #include "../vwidgets/vabstractsimple.h"
 #include "../vwidgets/vmaingraphicsscene.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolMove::ToolType = QStringLiteral("moving");
 

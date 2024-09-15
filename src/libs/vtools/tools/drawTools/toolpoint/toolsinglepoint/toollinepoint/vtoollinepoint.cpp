@@ -57,7 +57,6 @@
 #include <QPen>
 #include <QPoint>
 #include <QPointF>
-#include <QSharedPointer>
 #include <Qt>
 #include <new>
 
@@ -73,10 +72,7 @@
 #include "../vtoolsinglepoint.h"
 #include "../vwidgets/scalesceneitems.h"
 
-template <class T>
-class QSharedPointer;
 
-//---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VToolLinePoint constructor.
  * @param doc dom document container.

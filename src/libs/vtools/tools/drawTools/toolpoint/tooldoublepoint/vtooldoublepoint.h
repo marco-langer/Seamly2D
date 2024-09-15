@@ -57,6 +57,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
@@ -66,8 +67,6 @@
 #include "../vmisc/def.h"
 
 class VSimplePoint;
-template <class T>
-class QSharedPointer;
 
 class VToolDoublePoint
     : public VAbstractPoint

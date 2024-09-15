@@ -67,10 +67,7 @@
 #include "../vmisc/vabstractapplication.h"
 #include "global.h"
 
-template <class T>
-class QSharedPointer;
 
-//---------------------------------------------------------------------------------------------------------------------
 VSimpleCurve::VSimpleCurve(quint32 id, const QSharedPointer<VAbstractCurve>& curve, QObject* parent)
     : VAbstractSimple(id, parent)
     , m_curve(curve)

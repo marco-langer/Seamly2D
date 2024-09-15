@@ -52,7 +52,6 @@
 #include "vtoolcutarc.h"
 
 #include <QPointF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -75,8 +74,6 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolcut.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolCutArc::ToolType = QStringLiteral("cutArc");
 

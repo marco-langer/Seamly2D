@@ -52,7 +52,6 @@
 #include "vtoolcutspline.h"
 
 #include <QPointF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -77,8 +76,6 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolcut.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolCutSpline::ToolType = QStringLiteral("cutSpline");
 const QString VToolCutSpline::AttrSpline = QStringLiteral("spline");

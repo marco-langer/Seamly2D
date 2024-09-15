@@ -58,6 +58,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -67,8 +68,6 @@
 #include "../vpatterndb/vformula.h"
 #include "vtoollinepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 class VToolLineIntersectAxis : public VToolLinePoint
 {

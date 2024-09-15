@@ -59,6 +59,7 @@
 #include <QMap>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QTableWidgetItem>
 #include <QtGlobal>
@@ -79,8 +80,6 @@ enum VariableTab
     Functions = 8
 };
 
-template <class T>
-class QSharedPointer;
 class MeasurementVariable;
 
 namespace Ui {

@@ -57,6 +57,7 @@
 #include <QGraphicsLineItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
@@ -66,8 +67,6 @@
 #include "../vmisc/def.h"
 #include "vdrawtool.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolLine class tool for creation line.

@@ -98,8 +98,6 @@
 #include "../vpatterndb/vtranslatevars.h"
 #include "ui_edit_formula_dialog.h"
 
-template <class T>
-class QSharedPointer;
 
 enum
 {

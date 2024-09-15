@@ -65,15 +65,11 @@
 #include <QDomNode>
 #include <QMessageLogger>
 #include <QScopedPointer>
-#include <QSharedPointer>
 #include <QUndoStack>
 #include <Qt>
 #include <QtDebug>
 
-template <class T>
-class QSharedPointer;
 
-//---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VDrawTool constructor.
  * @param doc dom document container.

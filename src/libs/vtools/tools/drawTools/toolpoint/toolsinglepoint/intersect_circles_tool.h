@@ -41,13 +41,12 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
 class VFormula;
-template <class T>
-class QSharedPointer;
 
 class IntersectCirclesTool : public VToolSinglePoint
 {

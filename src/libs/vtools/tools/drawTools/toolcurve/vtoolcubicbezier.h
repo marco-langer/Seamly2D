@@ -55,6 +55,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -64,8 +65,6 @@
 #include "vabstractspline.h"
 
 class VCubicBezier;
-template <class T>
-class QSharedPointer;
 
 class VToolCubicBezier : public VAbstractSpline
 {

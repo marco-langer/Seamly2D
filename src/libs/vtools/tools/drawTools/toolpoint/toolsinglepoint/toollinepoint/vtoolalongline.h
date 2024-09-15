@@ -56,6 +56,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -64,8 +65,6 @@
 #include "../vmisc/def.h"
 #include "vtoollinepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolAlongLine class tool for creation point along line.

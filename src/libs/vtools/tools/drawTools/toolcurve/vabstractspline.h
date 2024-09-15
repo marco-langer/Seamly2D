@@ -59,6 +59,7 @@
 #include <QObject>
 #include <QPainterPath>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <QVector>
@@ -75,8 +76,6 @@
 #include "../vwidgets/vmaingraphicsview.h"
 
 class VControlPointSpline;
-template <class T>
-class QSharedPointer;
 
 class VAbstractSpline
     : public VDrawTool

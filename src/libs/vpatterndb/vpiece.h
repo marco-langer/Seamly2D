@@ -76,8 +76,6 @@ class VPieceData;
 class VPieceNode;
 template <class T>
 class QVector;
-template <class T>
-class QSharedPointer;
 class VPiecePath;
 class VPatternLabelData;
 class VPieceLabelData;

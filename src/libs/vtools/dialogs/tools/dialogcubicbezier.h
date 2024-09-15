@@ -63,8 +63,6 @@
 #include "../vmisc/def.h"
 #include "dialogtool.h"
 
-template <class T>
-class QSharedPointer;
 
 namespace Ui {
 class DialogCubicBezier;

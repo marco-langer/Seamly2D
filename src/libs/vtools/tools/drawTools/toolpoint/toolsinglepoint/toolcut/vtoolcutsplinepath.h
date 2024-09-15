@@ -56,6 +56,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -65,8 +66,6 @@
 #include "vtoolcut.h"
 
 class VSplinePath;
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolCutSplinePath class for tool CutSplinePath. This tool find point on splinePath

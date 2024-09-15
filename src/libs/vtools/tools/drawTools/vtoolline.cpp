@@ -57,7 +57,6 @@
 #include <QMessageLogger>
 #include <QPen>
 #include <QPointF>
-#include <QSharedPointer>
 #include <Qt>
 #include <QtDebug>
 #include <new>
@@ -76,10 +75,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vdrawtool.h"
 
-template <class T>
-class QSharedPointer;
 
-//---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief VToolLine constructor.
  * @param doc dom document container.

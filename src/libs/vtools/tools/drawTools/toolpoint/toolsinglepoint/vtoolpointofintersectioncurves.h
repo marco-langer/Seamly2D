@@ -57,6 +57,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
@@ -66,8 +67,6 @@
 #include "../vmisc/def.h"
 #include "vtoolsinglepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 class VToolPointOfIntersectionCurves : public VToolSinglePoint
 {

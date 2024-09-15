@@ -56,6 +56,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -65,8 +66,6 @@
 #include "../vmisc/def.h"
 #include "vabstractspline.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolSpline class tool for creation spline. I mean bezier curve.

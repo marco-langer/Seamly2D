@@ -67,8 +67,6 @@
 #include "vcurvepathitem.h"
 
 class VAbstractCurve;
-template <class T>
-class QSharedPointer;
 
 class VSimpleCurve
     : public VAbstractSimple

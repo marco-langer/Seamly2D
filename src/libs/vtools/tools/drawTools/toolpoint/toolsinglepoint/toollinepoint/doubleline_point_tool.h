@@ -36,12 +36,11 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The DoubleLinePointTool class parent for all tools what creates a point with 2 lines.

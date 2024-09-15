@@ -53,7 +53,6 @@
 
 #include <QLineF>
 #include <QMessageLogger>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -79,8 +78,6 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolsinglepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolPointOfContact::ToolType = QStringLiteral("pointOfContact");
 

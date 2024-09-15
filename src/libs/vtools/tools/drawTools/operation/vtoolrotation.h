@@ -55,6 +55,7 @@
 #include <QMap>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
@@ -65,8 +66,7 @@
 #include "../vmisc/def.h"
 #include "vabstractoperation.h"
 
-template <class T>
-class QSharedPointer;
+
 class VFormula;
 
 class VToolRotation : public VAbstractOperation

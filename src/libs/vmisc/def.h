@@ -45,9 +45,6 @@
 #endif /* Q_OS_WIN */
 
 
-template <class T>
-class QSharedPointer;
-
 #ifdef Q_CC_MSVC
 #    include <ciso646>
 #endif /* Q_CC_MSVC */

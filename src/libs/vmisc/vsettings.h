@@ -63,8 +63,6 @@
 #include "def.h"
 #include "vcommonsettings.h"
 
-template <class T>
-class QSharedPointer;
 
 class VSettings : public VCommonSettings
 {

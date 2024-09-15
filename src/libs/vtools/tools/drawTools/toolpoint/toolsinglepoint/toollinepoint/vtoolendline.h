@@ -56,6 +56,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -65,8 +66,6 @@
 #include "../vpatterndb/vformula.h"
 #include "vtoollinepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolEndLine class tool for creation point on the line end.

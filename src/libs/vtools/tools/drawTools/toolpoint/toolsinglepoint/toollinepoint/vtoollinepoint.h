@@ -55,6 +55,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -63,8 +64,6 @@
 #include "../vpatterndb/vformula.h"
 #include "../vtoolsinglepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolLinePoint class parent for all tools what create point with line.

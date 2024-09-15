@@ -54,7 +54,6 @@
 #include <QLine>
 #include <QLineF>
 #include <QPointF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -75,8 +74,6 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolsinglepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 const QString VToolLineIntersect::ToolType = QStringLiteral("lineIntersect");
 

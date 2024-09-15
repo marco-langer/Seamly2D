@@ -56,6 +56,7 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -64,8 +65,6 @@
 #include "../vmisc/def.h"
 #include "vtoolcut.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolCutSpline class for tool CutSpline. This tool find point on spline and cut spline

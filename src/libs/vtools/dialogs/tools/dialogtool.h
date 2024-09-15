@@ -68,6 +68,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QSharedDataPointer>
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
@@ -89,8 +90,6 @@ struct NodeInfo
     QString name{};
 };
 
-template <class T>
-class QSharedPointer;
 
 Q_DECLARE_LOGGING_CATEGORY(vDialog)
 

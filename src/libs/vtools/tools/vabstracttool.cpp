@@ -102,8 +102,6 @@
 #include "../vwidgets/vmaingraphicsview.h"
 #include "nodeDetails/nodedetails.h"
 
-template <class T>
-class QSharedPointer;
 
 bool VAbstractTool::m_suppressContextMenu = false;
 const QString VAbstractTool::AttrInUse = QStringLiteral("inUse");

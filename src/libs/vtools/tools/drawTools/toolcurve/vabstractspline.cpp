@@ -59,7 +59,6 @@
 #include <QKeyEvent>
 #include <QLineF>
 #include <QPen>
-#include <QSharedPointer>
 #include <Qt>
 #include <new>
 

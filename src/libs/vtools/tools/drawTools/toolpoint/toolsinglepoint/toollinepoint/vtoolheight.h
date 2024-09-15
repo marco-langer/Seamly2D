@@ -58,6 +58,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -66,8 +67,6 @@
 #include "../vmisc/def.h"
 #include "vtoollinepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolHeight class tool for creation point of height. Help find point of projection

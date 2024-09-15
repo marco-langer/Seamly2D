@@ -56,6 +56,7 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
@@ -65,8 +66,6 @@
 #include "../vmisc/def.h"
 #include "../vwidgets/vscenepoint.h"
 
-template <class T>
-class QSharedPointer;
 
 /**
  * @brief The VToolSinglePoint class parent for all tools what create points.

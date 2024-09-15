@@ -61,7 +61,6 @@
 #include <QPen>
 #include <QPoint>
 #include <QRectF>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>

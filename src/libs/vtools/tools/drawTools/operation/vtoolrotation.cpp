@@ -56,7 +56,6 @@
 #include <QDomNodeList>
 #include <QMapIterator>
 #include <QPoint>
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -97,8 +96,6 @@ class QGraphicsSceneContextMenuEvent;
 class QPainter;
 class QStyleOptionGraphicsItem;
 class QWidget;
-template <class T>
-class QSharedPointer;
 
 const QString VToolRotation::ToolType = QStringLiteral("rotation");
 
