@@ -150,9 +150,9 @@ public:
     void Swap(VContainer& data) noexcept;
 
     template <typename T>
-    const QSharedPointer<T> GeometricObject(const quint32& id) const;
-    const QSharedPointer<VGObject> GetGObject(quint32 id) const;
-    static const QSharedPointer<VGObject> GetFakeGObject(quint32 id);
+    QSharedPointer<T> GeometricObject(const quint32& id) const;
+    QSharedPointer<VGObject> GetGObject(quint32 id) const;
+    static QSharedPointer<VGObject> GetFakeGObject(quint32 id);
     VPiece GetPiece(quint32 id) const;
     VPiecePath GetPiecePath(quint32 id) const;
     template <typename T>
@@ -212,14 +212,14 @@ public:
     const QHash<quint32, VPiece>* DataPieces() const;
     const QHash<QString, QSharedPointer<VInternalVariable>>* DataVariables() const;
 
-    const QMap<QString, QSharedPointer<MeasurementVariable>> DataMeasurements() const;
-    const QMap<QString, QSharedPointer<CustomVariable>> variablesData() const;
-    const QMap<QString, QSharedPointer<VLengthLine>> lineLengthsData() const;
-    const QMap<QString, QSharedPointer<VCurveLength>> curveLengthsData() const;
-    const QMap<QString, QSharedPointer<VCurveCLength>> controlPointLengthsData() const;
-    const QMap<QString, QSharedPointer<VLineAngle>> lineAnglesData() const;
-    const QMap<QString, QSharedPointer<VArcRadius>> arcRadiusesData() const;
-    const QMap<QString, QSharedPointer<VCurveAngle>> curveAnglesData() const;
+    QMap<QString, QSharedPointer<MeasurementVariable>> DataMeasurements() const;
+    QMap<QString, QSharedPointer<CustomVariable>> variablesData() const;
+    QMap<QString, QSharedPointer<VLengthLine>> lineLengthsData() const;
+    QMap<QString, QSharedPointer<VCurveLength>> curveLengthsData() const;
+    QMap<QString, QSharedPointer<VCurveCLength>> controlPointLengthsData() const;
+    QMap<QString, QSharedPointer<VLineAngle>> lineAnglesData() const;
+    QMap<QString, QSharedPointer<VArcRadius>> arcRadiusesData() const;
+    QMap<QString, QSharedPointer<VCurveAngle>> curveAnglesData() const;
 
     static bool IsUnique(const QString& name);
     static QStringList AllUniqueNames();
@@ -246,7 +246,7 @@ private:
 
     template <typename key, typename val>
     // cppcheck-suppress functionStatic
-    const val GetObject(const QHash<key, val>& obj, key id) const;
+    val GetObject(const QHash<key, val>& obj, key id) const;
 
     template <typename T>
     void UpdateObject(const quint32& id, const QSharedPointer<T>& point);
@@ -255,7 +255,7 @@ private:
     static quint32 AddObject(QHash<key, val>& obj, val value);
 
     template <typename T>
-    const QMap<QString, QSharedPointer<T>> DataVar(const VarType& type) const;
+    QMap<QString, QSharedPointer<T>> DataVar(const VarType& type) const;
 };
 
 Q_DECLARE_TYPEINFO(VContainer, Q_MOVABLE_TYPE);
@@ -266,7 +266,7 @@ Q_DECLARE_TYPEINFO(VContainer, Q_MOVABLE_TYPE);
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
-const QSharedPointer<T> VContainer::GeometricObject(const quint32& id) const
+QSharedPointer<T> VContainer::GeometricObject(const quint32& id) const
 {
     if (id == NULL_ID) {
         throw VExceptionBadId(tr("Can't find object"), id);

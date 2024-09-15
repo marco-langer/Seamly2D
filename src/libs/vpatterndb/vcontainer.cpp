@@ -146,13 +146,13 @@ VContainer::~VContainer()
  * @return point
  */
 // cppcheck-suppress unusedFunction
-const QSharedPointer<VGObject> VContainer::GetGObject(quint32 id) const
+QSharedPointer<VGObject> VContainer::GetGObject(quint32 id) const
 {
     return GetObject(d->gObjects, id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QSharedPointer<VGObject> VContainer::GetFakeGObject(quint32 id)
+QSharedPointer<VGObject> VContainer::GetFakeGObject(quint32 id)
 {
     VGObject* obj = new VGObject();
     obj->setId(id);
@@ -168,7 +168,7 @@ const QSharedPointer<VGObject> VContainer::GetFakeGObject(quint32 id)
  * @return Object
  */
 template <typename key, typename val>
-const val VContainer::GetObject(const QHash<key, val>& obj, key id) const
+val VContainer::GetObject(const QHash<key, val>& obj, key id) const
 {
     if (obj.contains(id)) {
         return obj.value(id);
@@ -505,49 +505,49 @@ void VContainer::removeCustomVariable(const QString& name)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<MeasurementVariable>> VContainer::DataMeasurements() const
+QMap<QString, QSharedPointer<MeasurementVariable>> VContainer::DataMeasurements() const
 {
     return DataVar<MeasurementVariable>(VarType::Measurement);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<CustomVariable>> VContainer::variablesData() const
+QMap<QString, QSharedPointer<CustomVariable>> VContainer::variablesData() const
 {
     return DataVar<CustomVariable>(VarType::Variable);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<VLengthLine>> VContainer::lineLengthsData() const
+QMap<QString, QSharedPointer<VLengthLine>> VContainer::lineLengthsData() const
 {
     return DataVar<VLengthLine>(VarType::LineLength);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<VCurveLength>> VContainer::curveLengthsData() const
+QMap<QString, QSharedPointer<VCurveLength>> VContainer::curveLengthsData() const
 {
     return DataVar<VCurveLength>(VarType::CurveLength);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<VCurveCLength>> VContainer::controlPointLengthsData() const
+QMap<QString, QSharedPointer<VCurveCLength>> VContainer::controlPointLengthsData() const
 {
     return DataVar<VCurveCLength>(VarType::CurveCLength);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<VLineAngle>> VContainer::lineAnglesData() const
+QMap<QString, QSharedPointer<VLineAngle>> VContainer::lineAnglesData() const
 {
     return DataVar<VLineAngle>(VarType::LineAngle);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<VArcRadius>> VContainer::arcRadiusesData() const
+QMap<QString, QSharedPointer<VArcRadius>> VContainer::arcRadiusesData() const
 {
     return DataVar<VArcRadius>(VarType::ArcRadius);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QMap<QString, QSharedPointer<VCurveAngle>> VContainer::curveAnglesData() const
+QMap<QString, QSharedPointer<VCurveAngle>> VContainer::curveAnglesData() const
 {
     return DataVar<VCurveAngle>(VarType::CurveAngle);
 }
@@ -574,7 +574,7 @@ const VTranslateVars* VContainer::getTranslateVariables() const { return d->trVa
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
-const QMap<QString, QSharedPointer<T>> VContainer::DataVar(const VarType& type) const
+QMap<QString, QSharedPointer<T>> VContainer::DataVar(const VarType& type) const
 {
     QMap<QString, QSharedPointer<T>> map;
     // Sorting QHash by id
