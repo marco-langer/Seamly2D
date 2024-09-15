@@ -54,7 +54,8 @@
 
 #include <QVector>
 #include <QtDebug>
-#include <limits.h>
+
+#include <limits>
 
 #include "../ifc/exception/vexception.h"
 #include "../vgeometry/vabstractcubicbezierpath.h"

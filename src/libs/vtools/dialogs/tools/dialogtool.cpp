@@ -80,9 +80,10 @@
 #include <Qt>
 #include <QtDebug>
 #include <QtMath>
-#include <limits.h>
 #include <qiterator.h>
 #include <qnumeric.h>
+
+#include <limits>
 
 #include "../../tools/vabstracttool.h"
 #include "../ifc/xml/vabstractpattern.h"

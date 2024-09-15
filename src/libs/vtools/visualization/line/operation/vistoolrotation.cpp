@@ -59,7 +59,8 @@
 #include <QSharedPointer>
 #include <Qt>
 #include <QtAlgorithms>
-#include <limits.h>
+
+#include <limits>
 
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/varc.h"

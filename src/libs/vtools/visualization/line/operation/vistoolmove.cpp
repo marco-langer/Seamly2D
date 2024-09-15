@@ -60,7 +60,8 @@
 #include <QSharedPointer>
 #include <Qt>
 #include <QtAlgorithms>
-#include <limits.h>
+
+#include <limits>
 
 #include "../ifc/xml/vdomdocument.h"
 #include "../vgeometry/vabstractcurve.h"

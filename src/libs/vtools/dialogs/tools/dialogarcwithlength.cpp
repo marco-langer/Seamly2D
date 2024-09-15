@@ -54,7 +54,8 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
-#include <limits.h>
+
+#include <limits>
 
 #include "../../visualization/path/vistoolarcwithlength.h"
 #include "../../visualization/visualization.h"

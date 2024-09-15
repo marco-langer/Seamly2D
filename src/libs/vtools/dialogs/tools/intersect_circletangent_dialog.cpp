@@ -51,7 +51,7 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
-#include <limits.h>
+
 
 //---------------------------------------------------------------------------------------------------------------------
 IntersectCircleTangentDialog::IntersectCircleTangentDialog(

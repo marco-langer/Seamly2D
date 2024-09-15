@@ -60,7 +60,6 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QUndoStack>
-#include <limits.h>
 #include <qiterator.h>
 
 #include "../../../../dialogs/tools/dialogmirrorbyaxis.h"

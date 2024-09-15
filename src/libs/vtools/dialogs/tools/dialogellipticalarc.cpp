@@ -53,7 +53,8 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
-#include <limits.h>
+
+#include <limits>
 
 #include "../../tools/vabstracttool.h"
 #include "../../visualization/path/vistoolellipticalarc.h"

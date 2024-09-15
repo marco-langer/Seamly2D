@@ -60,8 +60,9 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QUndoStack>
-#include <limits.h>
 #include <qiterator.h>
+
+#include <limits>
 
 #include "../../../dialogs/tools/dialogrotation.h"
 #include "../../../dialogs/tools/dialogtool.h"

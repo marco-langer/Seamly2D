@@ -31,7 +31,7 @@
 #include <QStringList>
 #include <QVector>
 #include <QtGlobal>
-#include <limits.h>
+#include <limits>
 #include <memory>
 #include <qcompilerdetection.h>
 #include <string>

@@ -54,7 +54,8 @@
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
-#include <limits.h>
+
+#include <limits>
 
 #include "../ifc/xml/vdomdocument.h"
 #include "../vgeometry/vpointf.h"

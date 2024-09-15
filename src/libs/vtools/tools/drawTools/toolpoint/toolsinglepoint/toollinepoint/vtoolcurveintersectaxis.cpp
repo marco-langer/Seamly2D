@@ -59,7 +59,8 @@
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QVector>
-#include <limits.h>
+
+#include <limits>
 
 #include "../../../../../dialogs/tools/dialogcurveintersectaxis.h"
 #include "../../../../../dialogs/tools/dialogtool.h"
