@@ -61,6 +61,9 @@
 #include <QMenu>
 #include <QSound>
 
+#include <algorithm>
+
+
 //---------------------------------------------------------------------------------------------------------------------
 InsertNodesDialog::InsertNodesDialog(const VContainer* data, quint32 toolId, QWidget* parent)
     : DialogTool(data, toolId, parent)

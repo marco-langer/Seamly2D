@@ -60,6 +60,9 @@
 #include "../vwidgets/vmaingraphicsview.h"
 #include "vcmdexport.h"
 
+#include <memory>
+
+
 class Application2D;   // use in define
 
 #if defined(qApp)

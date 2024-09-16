@@ -54,6 +54,8 @@
 
 #include <QtGlobal>
 
+#include <limits>
+
 #include "../vabstractoperation.h"
 
 class VAbstractMirror : public VAbstractOperation

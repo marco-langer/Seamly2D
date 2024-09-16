@@ -67,6 +67,8 @@
 #include <Qt>
 #include <QtAlgorithms>
 
+#include <limits>
+
 #include "vbestsquare.h"
 #include "vcontour.h"
 #include "vlayoutpaper_p.h"

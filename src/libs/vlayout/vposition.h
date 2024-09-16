@@ -56,8 +56,9 @@
 #include <QRunnable>
 #include <QVector>
 #include <QtGlobal>
-#include <atomic>
 #include <qcompilerdetection.h>
+
+#include <atomic>
 
 #include "vbestsquare.h"
 #include "vcontour.h"

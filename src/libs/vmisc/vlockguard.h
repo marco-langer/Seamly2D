@@ -53,12 +53,12 @@
 #ifndef VLOCKGUARD_H
 #define VLOCKGUARD_H
 
-#include <QString>
-#include <memory>
-#include <stdint.h>
-
 #include <QFileInfo>
 #include <QLockFile>
+#include <QString>
+
+#include <memory>
+
 #if defined(Q_OS_WIN)
 #    include <windows.h>
 #endif

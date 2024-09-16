@@ -56,8 +56,9 @@
 #include <QSharedDataPointer>
 #include <QTypeInfo>
 #include <QtGlobal>
-#include <atomic>
 #include <qcompilerdetection.h>
+
+#include <atomic>
 
 #include "vlayoutdef.h"
 

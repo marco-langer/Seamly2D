@@ -60,6 +60,7 @@
 #include <QString>
 #include <QVector>
 #include <QtGlobal>
+
 #include <atomic>
 
 #include <qcompilerdetection.h>

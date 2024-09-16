@@ -75,7 +75,8 @@
 #include <QThread>
 #include <QTranslator>
 #include <Qt>
-#include <iostream>
+
+#include <exception>
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wmissing-prototypes")

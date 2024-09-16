@@ -37,6 +37,7 @@
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
+
 #include <string>
 
 #include "../vmisc/def.h"

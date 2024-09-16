@@ -65,6 +65,8 @@
 #include <QPointer>
 #include <QSharedPointer>
 
+#include <memory>
+
 namespace Ui {
 class MainWindow;
 }

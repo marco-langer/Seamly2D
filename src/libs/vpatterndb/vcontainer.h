@@ -64,8 +64,9 @@
 #include <QStringList>
 #include <QTypeInfo>
 #include <QtGlobal>
-#include <new>
 #include <qcompilerdetection.h>
+
+#include <new>
 
 #include "../ifc/exception/vexceptionbadid.h"
 #include "../ifc/ifcdef.h"

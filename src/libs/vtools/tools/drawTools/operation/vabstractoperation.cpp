@@ -56,6 +56,10 @@
 #include "../vgeometry/vpointf.h"
 #include "vabstractoperation.h"
 
+#include <algorithm>
+#include <limits>
+
+
 const QString VAbstractOperation::TagItem = QStringLiteral("item");
 const QString VAbstractOperation::TagSource = QStringLiteral("source");
 const QString VAbstractOperation::TagDestination = QStringLiteral("destination");

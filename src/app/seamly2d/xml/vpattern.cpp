@@ -90,6 +90,8 @@
 #include <QtNumeric>
 
 #include <limits>
+#include <new>
+
 
 const QString VPattern::AttrReadOnly = QStringLiteral("readOnly");
 

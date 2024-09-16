@@ -71,6 +71,8 @@
 #include <QToolButton>
 #include <Qt>
 
+#include <algorithm>
+
 #include "../../tools/drawTools/operation/vabstractoperation.h"
 #include "../../visualization/line/operation/vistoolmove.h"
 #include "../../visualization/visualization.h"

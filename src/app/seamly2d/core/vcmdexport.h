@@ -32,8 +32,8 @@
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QTextStream>
+
 #include <memory>
-#include <vector>
 
 #include "../dialogs/layoutsettings_dialog.h"
 #include "../vmisc/def.h"

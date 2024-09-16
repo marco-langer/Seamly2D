@@ -66,6 +66,8 @@
 #include <QToolButton>
 #include <Qt>
 
+#include <algorithm>
+
 #include "../../visualization/line/operation/vistoolmirrorbyline.h"
 #include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"

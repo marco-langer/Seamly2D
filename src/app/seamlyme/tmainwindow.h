@@ -65,6 +65,9 @@
 #include "../vwidgets/vabstractmainwindow.h"
 #include "dialogs/me_shortcuts_dialog.h"
 
+#include <memory>
+
+
 namespace Ui {
 class TMainWindow;
 }

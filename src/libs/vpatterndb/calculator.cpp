@@ -51,15 +51,18 @@
 
 #include "calculator.h"
 
+#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
 #include <QStringList>
 
+#include <cmath>
+
 #include "../qmuparser/qmuparsererror.h"
 #include "../vmisc/def.h"
 #include "variables/vinternalvariable.h"
-#include <QSharedPointer>
+
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief Calculator class wraper for QMuParser. Make easy initialization math parser.
