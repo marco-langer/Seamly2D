@@ -59,7 +59,6 @@
 #include <QPointF>
 #include <QSharedPointer>
 #include <Qt>
-#include <QtAlgorithms>
 
 #include <limits>
 

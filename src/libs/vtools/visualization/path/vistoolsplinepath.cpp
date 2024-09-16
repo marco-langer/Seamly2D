@@ -56,7 +56,6 @@
 #include <QPainterPath>
 #include <QPoint>
 #include <Qt>
-#include <QtAlgorithms>
 
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vgeometrydef.h"
