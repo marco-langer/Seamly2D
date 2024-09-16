@@ -73,7 +73,7 @@ public:
         const quint32& id,
         QGraphicsScene* scene,
         QUndoCommand* parent = nullptr);
-    ~MoveSPoint() override;
+
     void undo() override;
     void redo() override;
     bool mergeWith(const QUndoCommand* command) override;

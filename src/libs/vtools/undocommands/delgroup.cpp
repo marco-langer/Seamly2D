@@ -72,8 +72,6 @@ DelGroup::DelGroup(VAbstractPattern* doc, quint32 id, QUndoCommand* parent)
     xml = doc->CloneNodeById(nodeId);
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-DelGroup::~DelGroup() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void DelGroup::undo()

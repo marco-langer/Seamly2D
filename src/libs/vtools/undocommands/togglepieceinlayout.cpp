@@ -79,8 +79,6 @@ TogglePieceInLayout::TogglePieceInLayout(
     setText(tr("Piece in Layout List"));
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-TogglePieceInLayout::~TogglePieceInLayout() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void TogglePieceInLayout::undo()

@@ -70,7 +70,6 @@ public:
         const QString& newBlockName,
         QComboBox* combo,
         QUndoCommand* parent = nullptr);
-    ~RenameDraftBlock() override;
 
     void undo() override;
     void redo() override;

@@ -73,7 +73,6 @@ public:
         const quint32& id,
         QGraphicsScene* scene,
         QUndoCommand* parent = nullptr);
-    virtual ~MovePiece();
 
     void undo() override;
     void redo() override;

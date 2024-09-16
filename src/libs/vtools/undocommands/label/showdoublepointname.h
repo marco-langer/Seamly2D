@@ -46,7 +46,6 @@ public:
         bool visible,
         ShowDoublePoint type,
         QUndoCommand* parent = nullptr);
-    virtual ~ShowDoublePointName() = default;
 
     void undo() override;
     void redo() override;

@@ -68,7 +68,6 @@ public:
         const QPointF& pos,
         const quint32& id,
         QUndoCommand* parent = nullptr);
-    virtual ~MoveLabel() = default;
 
     bool mergeWith(const QUndoCommand* command) override;
     int id() const override;

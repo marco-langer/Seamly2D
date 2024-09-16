@@ -70,8 +70,6 @@ AddGroup::AddGroup(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* 
     nodeId = doc->getParameterId(xml);
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-AddGroup::~AddGroup() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void AddGroup::undo()

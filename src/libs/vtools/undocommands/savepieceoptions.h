@@ -68,8 +68,6 @@ public:
         quint32 id,
         QUndoCommand* parent = nullptr);
 
-    virtual ~SavePieceOptions();
-
     void undo() override;
     void redo() override;
     bool mergeWith(const QUndoCommand* command) override;

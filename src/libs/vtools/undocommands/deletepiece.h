@@ -65,7 +65,6 @@ class DeletePiece : public VUndoCommand
 public:
     DeletePiece(
         VAbstractPattern* doc, quint32 id, const VPiece& piece, QUndoCommand* parent = nullptr);
-    virtual ~DeletePiece();
 
     void undo() override;
     void redo() override;

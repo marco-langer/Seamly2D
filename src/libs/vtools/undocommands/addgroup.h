@@ -66,7 +66,7 @@ class AddGroup : public VUndoCommand
     Q_OBJECT
 public:
     AddGroup(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent = nullptr);
-    virtual ~AddGroup();
+
     void undo() override;
     void redo() override;
 signals:

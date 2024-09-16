@@ -67,7 +67,6 @@ public:
         VContainer* data,
         quint32 id,
         QUndoCommand* parent = nullptr);
-    virtual ~SavePiecePathOptions();
 
     void undo() override;
     void redo() override;

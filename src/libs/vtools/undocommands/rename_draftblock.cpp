@@ -73,8 +73,6 @@ RenameDraftBlock::RenameDraftBlock(
     m_oldBlockName = doc->getActiveDraftBlockName();
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-RenameDraftBlock::~RenameDraftBlock() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void RenameDraftBlock::undo()

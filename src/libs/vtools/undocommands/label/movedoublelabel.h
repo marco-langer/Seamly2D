@@ -77,7 +77,6 @@ public:
         quint32 toolId,
         quint32 pointId,
         QUndoCommand* parent = nullptr);
-    virtual ~MoveDoubleLabel() = default;
 
     bool mergeWith(const QUndoCommand* command) override;
     int id() const override;

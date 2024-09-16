@@ -71,7 +71,7 @@ public:
         VAbstractPattern* doc,
         const QString& draftBlockName,
         QUndoCommand* parent = nullptr);
-    ~AddDraftBlock() override;
+
     void undo() override;
     void redo() override;
 

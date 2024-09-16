@@ -67,8 +67,6 @@ class MoveAbstractLabel : public VUndoCommand
 public:
     MoveAbstractLabel(
         VAbstractPattern* doc, quint32 pointId, const QPointF& pos, QUndoCommand* parent = nullptr);
-    virtual ~MoveAbstractLabel() = default;
-
 
     void undo() override;
     void redo() override;

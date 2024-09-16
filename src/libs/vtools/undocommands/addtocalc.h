@@ -66,7 +66,7 @@ class AddToCalc : public VUndoCommand
     Q_OBJECT
 public:
     AddToCalc(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent = nullptr);
-    virtual ~AddToCalc() = default;
+
     void undo() override;
     void redo() override;
 

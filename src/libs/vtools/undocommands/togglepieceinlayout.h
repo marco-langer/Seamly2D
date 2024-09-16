@@ -71,7 +71,7 @@ public:
         VContainer* data,
         VAbstractPattern* doc,
         QUndoCommand* parent = nullptr);
-    virtual ~TogglePieceInLayout();
+
     void undo() override;
     void redo() override;
     int id() const override;

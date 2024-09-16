@@ -43,7 +43,7 @@ public:
         VAbstractPattern* doc,
         quint32 nodeId,
         QUndoCommand* parent = nullptr);
-    virtual ~AddGroupItem();
+
     void undo() override;
     void redo() override;
 

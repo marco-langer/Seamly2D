@@ -76,8 +76,6 @@ SavePiecePathOptions::SavePiecePathOptions(
     nodeId = id;
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-SavePiecePathOptions::~SavePiecePathOptions() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 void SavePiecePathOptions::undo()

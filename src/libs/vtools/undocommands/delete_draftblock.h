@@ -68,7 +68,7 @@ class DeleteDraftBlock : public VUndoCommand
 public:
     DeleteDraftBlock(
         VAbstractPattern* doc, const QString& draftBlockName, QUndoCommand* parent = nullptr);
-    ~DeleteDraftBlock() override;
+
     void undo() override;
     void redo() override;
 

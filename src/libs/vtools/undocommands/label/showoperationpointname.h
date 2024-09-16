@@ -39,7 +39,6 @@ public:
         quint32 idPoint,
         bool visible,
         QUndoCommand* parent = nullptr);
-    virtual ~ShowOperationPointName() = default;
 
     void undo() override;
     void redo() override;

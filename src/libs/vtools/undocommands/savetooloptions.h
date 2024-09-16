@@ -71,7 +71,7 @@ public:
         VAbstractPattern* doc,
         const quint32& id,
         QUndoCommand* parent = nullptr);
-    ~SaveToolOptions() override;
+
     void undo() override;
     void redo() override;
     bool mergeWith(const QUndoCommand* command) override;

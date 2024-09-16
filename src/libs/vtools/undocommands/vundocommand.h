@@ -98,7 +98,6 @@ class VUndoCommand
     Q_OBJECT
 public:
     VUndoCommand(const QDomElement& xml, VAbstractPattern* doc, QUndoCommand* parent = nullptr);
-    virtual ~VUndoCommand() = default;
 
 signals:
     void ClearScene();

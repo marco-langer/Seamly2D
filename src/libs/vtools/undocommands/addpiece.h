@@ -74,7 +74,7 @@ public:
         const VPiece& piece,
         const QString& blockName = QString(),
         QUndoCommand* parent = nullptr);
-    virtual ~AddPiece();
+
     void undo() override;   // cppcheck-suppress unusedFunction
     void redo() override;   // cppcheck-suppress unusedFunction
 
