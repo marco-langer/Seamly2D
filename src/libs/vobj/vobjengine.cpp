@@ -79,7 +79,7 @@ class QRectF;
 #endif /* Q_CC_MSVC */
 
 //---------------------------------------------------------------------------------------------------------------------
-static inline QPaintEngine::PaintEngineFeatures svgEngineFeatures()
+static QPaintEngine::PaintEngineFeatures svgEngineFeatures()
 {
     QT_WARNING_PUSH
     QT_WARNING_DISABLE_CLANG("-Wsign-conversion")

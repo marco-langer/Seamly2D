@@ -90,8 +90,7 @@ QT_WARNING_POP
 constexpr auto DAYS_TO_KEEP_LOGS = 3;
 
 //---------------------------------------------------------------------------------------------------------------------
-inline void
-noisyFailureMsgHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+void noisyFailureMsgHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     // Why on earth didn't Qt want to make failed signal/slot connections qWarning?
     if ((type == QtDebugMsg) && msg.contains(QStringLiteral("::connect"))) {

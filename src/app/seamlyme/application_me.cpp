@@ -89,8 +89,7 @@ QT_WARNING_POP
 #include <QCommandLineParser>
 
 //---------------------------------------------------------------------------------------------------------------------
-inline void
-noisyFailureMsgHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+void noisyFailureMsgHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     Q_UNUSED(context)
 

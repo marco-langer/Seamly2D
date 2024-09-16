@@ -169,10 +169,10 @@ QString MessageHandler::statusMessage() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline qint64 MessageHandler::line() const { return m_sourceLocation.line(); }
+qint64 MessageHandler::line() const { return m_sourceLocation.line(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline qint64 MessageHandler::column() const { return m_sourceLocation.column(); }
+qint64 MessageHandler::column() const { return m_sourceLocation.column(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
