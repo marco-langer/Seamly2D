@@ -60,17 +60,16 @@ struct TextLine
  * @brief The VTextManager class this class is used to determine whether a collection of
  * text lines can fit into specified bounding box and with what font size
  */
-class VTextManager
+class VTextManager final
 {
     Q_DECLARE_TR_FUNCTIONS(VTextManager)
 public:
     VTextManager() = default;
-    virtual ~VTextManager() = default;
 
     VTextManager(const VTextManager& text);
     VTextManager& operator=(const VTextManager& text);
 
-    virtual int GetSpacing() const;
+    int GetSpacing() const;
 
     void setFont(const QFont& font);
     const QFont& GetFont() const;
