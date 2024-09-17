@@ -42,7 +42,6 @@ class VPieceLabelData;
 class VAbstractPattern;
 
 #define MIN_FONT_SIZE 5
-#define MAX_FONT_SIZE 128
 
 /**
  * @brief The TextLine struct holds the information about one text line
