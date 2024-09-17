@@ -63,12 +63,8 @@ struct TextLine
 class VTextManager final
 {
     Q_DECLARE_TR_FUNCTIONS(VTextManager)
+
 public:
-    VTextManager() = default;
-
-    VTextManager(const VTextManager& text);
-    VTextManager& operator=(const VTextManager& text);
-
     int GetSpacing() const;
 
     void setFont(const QFont& font);

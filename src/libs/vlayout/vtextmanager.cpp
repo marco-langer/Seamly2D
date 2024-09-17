@@ -159,23 +159,6 @@ QList<TextLine> PrepareLines(const QVector<VLabelTemplateLine>& lines)
 
 
 //---------------------------------------------------------------------------------------------------------------------
-VTextManager::VTextManager(const VTextManager& text)
-    : m_font(text.GetFont())
-    , m_liLines(text.GetAllSourceLines())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VTextManager& VTextManager::operator=(const VTextManager& text)
-{
-    if (&text == this) {
-        return *this;
-    }
-    m_font = text.GetFont();
-    m_liLines = text.GetAllSourceLines();
-    return *this;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetSpacing returns the vertical spacing between the lines
  * @return spacing
