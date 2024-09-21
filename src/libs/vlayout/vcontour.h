@@ -52,16 +52,13 @@
 #ifndef VCONTOUR_H
 #define VCONTOUR_H
 
-#include <QSharedDataPointer>
+#include <QPointF>
 #include <QSizeF>
-#include <QTypeInfo>
 #include <QVector>
 #include <QtGlobal>
 
 #include "vlayoutdef.h"
 
-class VContourData;
-class QPointF;
 class QLineF;
 class QRectF;
 class QPainterPath;
@@ -70,16 +67,8 @@ class VLayoutPiece;
 class VContour
 {
 public:
-    VContour();
+    VContour() = default;
     VContour(int height, int width);
-    VContour(const VContour& contour);
-
-    ~VContour();
-
-    VContour& operator=(const VContour& contour);
-    VContour& operator=(VContour&& contour) noexcept;
-
-    void Swap(VContour& contour) noexcept;
 
     void SetContour(const QVector<QPointF>& contour);
     QVector<QPointF> GetContour() const;
@@ -111,11 +100,18 @@ public:
     QPainterPath ContourPath() const;
 
 private:
-    QSharedDataPointer<VContourData> d;
-
     void AppendWhole(QVector<QPointF>& contour, const VLayoutPiece& detail, int detJ) const;
-};
 
-Q_DECLARE_TYPEINFO(VContour, Q_MOVABLE_TYPE);
+    /** @brief globalContour list of global points contour. */
+    QVector<QPointF> m_globalContour;
+
+    /** @brief paperHeight height of paper in pixels*/
+    int m_paperHeight{ 0 };
+
+    /** @brief paperWidth width of paper in pixels*/
+    int m_paperWidth{ 0 };
+
+    quint32 m_shift{ 0 };
+};
 
 #endif   // VCONTOUR_H

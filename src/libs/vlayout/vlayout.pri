@@ -8,7 +8,6 @@ HEADERS += \
     $$PWD/vlayoutpaper.h \
     $$PWD/vbank.h \
     $$PWD/vcontour.h \
-    $$PWD/vcontour_p.h \
     $$PWD/vbestsquare.h \
     $$PWD/vposition.h \
     $$PWD/vtextmanager.h \

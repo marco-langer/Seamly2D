@@ -60,78 +60,48 @@
 #include <Qt>
 #include <QtMath>
 
-#include "vcontour_p.h"
 #include "vlayoutpiece.h"
 
-VContour& VContour::operator=(VContour&& contour) noexcept
-{
-    Swap(contour);
-    return *this;
-}
 
-void VContour::Swap(VContour& contour) noexcept { std::swap(d, contour.d); }
-
-//---------------------------------------------------------------------------------------------------------------------
-VContour::VContour()
-    : d(new VContourData())
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
 VContour::VContour(int height, int width)
-    : d(new VContourData(height, width))
+    : m_paperHeight{ height }
+    , m_paperWidth{ width }
 {}
 
-//---------------------------------------------------------------------------------------------------------------------
-VContour::VContour(const VContour& contour)
-    : d(contour.d)
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VContour& VContour::operator=(const VContour& contour)
-{
-    if (&contour == this) {
-        return *this;
-    }
-    d = contour.d;
-    return *this;
-}
+void VContour::SetContour(const QVector<QPointF>& contour) { m_globalContour = contour; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VContour::~VContour() = default;
+QVector<QPointF> VContour::GetContour() const { return m_globalContour; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContour::SetContour(const QVector<QPointF>& contour) { d->globalContour = contour; }
+quint32 VContour::GetShift() const { return m_shift; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> VContour::GetContour() const { return d->globalContour; }
+void VContour::SetShift(quint32 shift) { m_shift = shift; }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VContour::GetShift() const { return d->shift; }
+int VContour::GetHeight() const { return m_paperHeight; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContour::SetShift(quint32 shift) { d->shift = shift; }
+void VContour::setHeight(int height) { m_paperHeight = height; }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VContour::GetHeight() const { return d->paperHeight; }
+int VContour::GetWidth() const { return m_paperWidth; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContour::setHeight(int height) { d->paperHeight = height; }
+void VContour::SetWidth(int width) { m_paperWidth = width; }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VContour::GetWidth() const { return d->paperWidth; }
-
-//---------------------------------------------------------------------------------------------------------------------
-void VContour::SetWidth(int width) { d->paperWidth = width; }
-
-//---------------------------------------------------------------------------------------------------------------------
-QSizeF VContour::GetSize() const { return QSizeF(d->paperWidth, d->paperHeight); }
+QSizeF VContour::GetSize() const { return QSizeF(m_paperWidth, m_paperHeight); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QVector<QPointF>
 VContour::UniteWithContour(const VLayoutPiece& detail, int globalI, int detJ, BestFrom type) const
 {
     QVector<QPointF> newContour;
-    if (d->globalContour.isEmpty())   //-V807
+    if (m_globalContour.isEmpty())   //-V807
     {
         AppendWhole(newContour, detail, 0);
     } else {
@@ -144,14 +114,14 @@ VContour::UniteWithContour(const VLayoutPiece& detail, int globalI, int detJ, Be
         }
 
         int i2 = 0;
-        if (globalI == d->globalContour.count()) {
+        if (globalI == m_globalContour.count()) {
             i2 = 0;
         } else {
             i2 = globalI;
         }
 
         int i = 0;
-        while (i < d->globalContour.count()) {
+        while (i < m_globalContour.count()) {
             if (i == i2) {
                 if (type == BestFrom::Rotation) {
                     AppendWhole(newContour, detail, detJ);
@@ -176,11 +146,11 @@ VContour::UniteWithContour(const VLayoutPiece& detail, int globalI, int detJ, Be
             }
 
             if (newContour.isEmpty() == false) {
-                if (newContour.last() != d->globalContour.at(i)) {
-                    newContour.append(d->globalContour.at(i));
+                if (newContour.last() != m_globalContour.at(i)) {
+                    newContour.append(m_globalContour.at(i));
                 }
             } else {
-                newContour.append(d->globalContour.at(i));
+                newContour.append(m_globalContour.at(i));
             }
             ++i;
         }
@@ -191,17 +161,17 @@ VContour::UniteWithContour(const VLayoutPiece& detail, int globalI, int detJ, Be
 //---------------------------------------------------------------------------------------------------------------------
 int VContour::GlobalEdgesCount() const
 {
-    if (d->globalContour.isEmpty()) {
+    if (m_globalContour.isEmpty()) {
         return 10;
     } else {
-        return d->globalContour.count();
+        return m_globalContour.count();
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QLineF VContour::GlobalEdge(int i) const
 {
-    if (d->globalContour.isEmpty())   //-V807
+    if (m_globalContour.isEmpty())   //-V807
     {
         // Because sheet is blank we have one global edge for all cases - Ox axis.
         if (i < 1 || i > GlobalEdgesCount()) {   // Doesn't exist such edge
@@ -216,9 +186,9 @@ QLineF VContour::GlobalEdge(int i) const
         }
         QLineF edge;
         if (i < GlobalEdgesCount()) {
-            edge = QLineF(d->globalContour.at(i - 1), d->globalContour.at(i));
+            edge = QLineF(m_globalContour.at(i - 1), m_globalContour.at(i));
         } else {   // Closed countour
-            edge = QLineF(d->globalContour.at(GlobalEdgesCount() - 1), d->globalContour.at(0));
+            edge = QLineF(m_globalContour.at(GlobalEdgesCount() - 1), m_globalContour.at(0));
         }
         return edge;
     }
@@ -228,11 +198,11 @@ QLineF VContour::GlobalEdge(int i) const
 QVector<QPointF> VContour::CutEdge(const QLineF& edge) const
 {
     QVector<QPointF> points;
-    if (d->shift == 0) {
+    if (m_shift == 0) {
         points.append(edge.p1());
         points.append(edge.p2());
     } else {
-        const int n = qFloor(edge.length() / d->shift);
+        const int n = qFloor(edge.length() / m_shift);
 
         if (n <= 0) {
             points.append(edge.p1());
@@ -263,7 +233,7 @@ QVector<QPointF> VContour::CutEmptySheetEdge() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QPointF& VContour::at(int i) const { return d->globalContour.at(i); }
+const QPointF& VContour::at(int i) const { return m_globalContour.at(i); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QRectF VContour::BoundingRect() const
@@ -312,4 +282,4 @@ void VContour::AppendWhole(QVector<QPointF>& contour, const VLayoutPiece& detail
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QLineF VContour::EmptySheetEdge() const { return QLineF(0, 0, d->paperWidth - 5, 0); }
+QLineF VContour::EmptySheetEdge() const { return QLineF(0, 0, m_paperWidth - 5, 0); }
