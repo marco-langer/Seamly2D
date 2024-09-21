@@ -53,25 +53,17 @@
 #define VLAYOUTPIECEPATH_H
 
 #include <QPointF>
-#include <QSharedDataPointer>
+#include <QVector>
 
-class VLayoutPiecePathData;
+
 class QPainterPath;
 
 class VLayoutPiecePath
 {
 public:
-    VLayoutPiecePath();
+    VLayoutPiecePath() = default;
     VLayoutPiecePath(
         const QVector<QPointF>& points, bool cut, Qt::PenStyle penStyle = Qt::SolidLine);
-    VLayoutPiecePath(const VLayoutPiecePath& path);
-
-    virtual ~VLayoutPiecePath();
-
-    VLayoutPiecePath& operator=(const VLayoutPiecePath& path);
-    VLayoutPiecePath& operator=(VLayoutPiecePath&& path) noexcept;
-
-    void Swap(VLayoutPiecePath& path) noexcept;
 
     QPainterPath GetPainterPath() const;
 
@@ -85,9 +77,13 @@ public:
     void SetCutPath(bool cut);
 
 private:
-    QSharedDataPointer<VLayoutPiecePathData> d;
-};
+    /** @brief m_points list of path points. */
+    QVector<QPointF> m_points;
 
-Q_DECLARE_TYPEINFO(VLayoutPiecePath, Q_MOVABLE_TYPE);
+    /** @brief m_penStyle path pen style. */
+    Qt::PenStyle m_penStyle{ Qt::SolidLine };
+
+    bool m_cut{ false };
+};
 
 #endif   // VLAYOUTPIECEPATH_H

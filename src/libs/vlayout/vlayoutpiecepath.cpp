@@ -50,72 +50,42 @@
  *************************************************************************/
 
 #include "vlayoutpiecepath.h"
-#include "vlayoutdef.h"
-#include "vlayoutpiecepath_p.h"
 
 #include <QPainterPath>
 
-VLayoutPiecePath& VLayoutPiecePath::operator=(VLayoutPiecePath&& path) noexcept
-{
-    Swap(path);
-    return *this;
-}
-
-void VLayoutPiecePath::Swap(VLayoutPiecePath& path) noexcept { std::swap(d, path.d); }
-
-//---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath::VLayoutPiecePath()
-    : d(new VLayoutPiecePathData)
-{}
-
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutPiecePath::VLayoutPiecePath(const QVector<QPointF>& points, bool cut, Qt::PenStyle penStyle)
-    : d(new VLayoutPiecePathData(points, cut, penStyle))
+    : m_points{ points }
+    , m_penStyle{ penStyle }
+    , m_cut{ cut }
 {}
 
-//---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath::VLayoutPiecePath(const VLayoutPiecePath& path)
-    : d(path.d)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath& VLayoutPiecePath::operator=(const VLayoutPiecePath& path)
-{
-    if (&path == this) {
-        return *this;
-    }
-    d = path.d;
-    return *this;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-VLayoutPiecePath::~VLayoutPiecePath() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
 QPainterPath VLayoutPiecePath::GetPainterPath() const
 {
     QPainterPath path;
-    if (not d->m_points.isEmpty()) {
-        path.addPolygon(QPolygonF(d->m_points));
+    if (not m_points.isEmpty()) {
+        path.addPolygon(QPolygonF(m_points));
         path.setFillRule(Qt::WindingFill);
     }
     return path;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> VLayoutPiecePath::Points() const { return d->m_points; }
+QVector<QPointF> VLayoutPiecePath::Points() const { return m_points; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPiecePath::SetPoints(const QVector<QPointF>& points) { d->m_points = points; }
+void VLayoutPiecePath::SetPoints(const QVector<QPointF>& points) { m_points = points; }
 
 //---------------------------------------------------------------------------------------------------------------------
-Qt::PenStyle VLayoutPiecePath::PenStyle() const { return d->m_penStyle; }
+Qt::PenStyle VLayoutPiecePath::PenStyle() const { return m_penStyle; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPiecePath::SetPenStyle(const Qt::PenStyle& penStyle) { d->m_penStyle = penStyle; }
+void VLayoutPiecePath::SetPenStyle(const Qt::PenStyle& penStyle) { m_penStyle = penStyle; }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VLayoutPiecePath::IsCutPath() const { return d->m_cut; }
+bool VLayoutPiecePath::IsCutPath() const { return m_cut; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPiecePath::SetCutPath(bool cut) { d->m_cut = cut; }
+void VLayoutPiecePath::SetCutPath(bool cut) { m_cut = cut; }

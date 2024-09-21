@@ -17,8 +17,7 @@ HEADERS += \
     $$PWD/vabstractpiece_p.h \
     $$PWD/vlayoutpiece.h \
     $$PWD/vlayoutpiece_p.h \
-    $$PWD/vlayoutpiecepath.h \
-    $$PWD/vlayoutpiecepath_p.h
+    $$PWD/vlayoutpiecepath.h
 
 SOURCES += \
     $$PWD/vlayoutgenerator.cpp \
