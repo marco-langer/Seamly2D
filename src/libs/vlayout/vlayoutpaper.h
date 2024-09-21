@@ -53,39 +53,27 @@
 #ifndef VLAYOUTPAPER_H
 #define VLAYOUTPAPER_H
 
-#include <QSharedDataPointer>
-#include <QTypeInfo>
+#include "vcontour.h"
+#include "vlayoutdef.h"
+#include "vlayoutpiece.h"
+
+#include <QList>
+#include <QVector>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
 #include <atomic>
 
-#include "vlayoutdef.h"
-
 class VBestSquare;
-class VLayoutPaperData;
-class VLayoutPiece;
 class QGraphicsRectItem;
 class QRectF;
 class QGraphicsItem;
-template <typename T>
-class QList;
-template <typename T>
-class QVector;
 
 class VLayoutPaper
 {
 public:
-    VLayoutPaper();
+    VLayoutPaper() = default;
     VLayoutPaper(int height, int width);
-    VLayoutPaper(const VLayoutPaper& paper);
-
-    ~VLayoutPaper();
-
-    VLayoutPaper& operator=(const VLayoutPaper& paper);
-    VLayoutPaper& operator=(VLayoutPaper&& paper) noexcept;
-
-    void Swap(VLayoutPaper& paper) noexcept;
 
     int GetHeight() const;
     void setHeight(int height);
@@ -121,11 +109,23 @@ public:
     QRectF piecesBoundingRect() const;
 
 private:
-    QSharedDataPointer<VLayoutPaperData> d;
     bool AddToSheet(const VLayoutPiece& piece, std::atomic_bool& stop);
     bool SaveResult(const VBestSquare& bestResult, const VLayoutPiece& piece);
-};
 
-Q_DECLARE_TYPEINFO(VLayoutPaper, Q_MOVABLE_TYPE);
+    /** @brief pieces list of arranged pieces. */
+    QVector<VLayoutPiece> m_pieces;
+
+    /** @brief globalContour list of global points contour. */
+    VContour m_globalContour;
+
+    quint32 m_paperIndex{ 0 };
+    quint32 m_frame{ 0 };
+    qreal m_layoutWidth{ 0 };
+    bool m_globalRotate{ true };
+    bool m_localRotate{ true };
+    int m_globalRotationIncrease{ 180 };
+    int m_localRotationIncrease{ 180 };
+    bool m_saveLength{ false };
+};
 
 #endif   // VLAYOUTPAPER_H

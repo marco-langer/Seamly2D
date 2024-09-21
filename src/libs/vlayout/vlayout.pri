@@ -6,7 +6,6 @@ HEADERS += \
     $$PWD/vlayoutgenerator.h \
     $$PWD/vlayoutdef.h \
     $$PWD/vlayoutpaper.h \
-    $$PWD/vlayoutpaper_p.h \
     $$PWD/vbank.h \
     $$PWD/vcontour.h \
     $$PWD/vcontour_p.h \

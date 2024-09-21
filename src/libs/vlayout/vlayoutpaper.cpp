@@ -71,116 +71,85 @@
 
 #include "vbestsquare.h"
 #include "vcontour.h"
-#include "vlayoutpaper_p.h"
 #include "vlayoutpiece.h"
 #include "vposition.h"
 
-VLayoutPaper& VLayoutPaper::operator=(VLayoutPaper&& paper) noexcept
-{
-    Swap(paper);
-    return *this;
-}
 
-void VLayoutPaper::Swap(VLayoutPaper& paper) noexcept { std::swap(d, paper.d); }
-
-//---------------------------------------------------------------------------------------------------------------------
-VLayoutPaper::VLayoutPaper()
-    : d(new VLayoutPaperData)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
 VLayoutPaper::VLayoutPaper(int height, int width)
-    : d(new VLayoutPaperData(height, width))
+    : m_globalContour(VContour{ height, width })
 {}
 
-//---------------------------------------------------------------------------------------------------------------------
-VLayoutPaper::VLayoutPaper(const VLayoutPaper& paper)
-    : d(paper.d)
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPaper& VLayoutPaper::operator=(const VLayoutPaper& paper)
-{
-    if (&paper == this) {
-        return *this;
-    }
-    d = paper.d;
-    return *this;
-}
+int VLayoutPaper::GetHeight() const { return m_globalContour.GetHeight(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-VLayoutPaper::~VLayoutPaper() = default;
+void VLayoutPaper::setHeight(int height) { m_globalContour.setHeight(height); }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VLayoutPaper::GetHeight() const { return d->globalContour.GetHeight(); }
+int VLayoutPaper::GetWidth() const { return m_globalContour.GetWidth(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPaper::setHeight(int height) { d->globalContour.setHeight(height); }
+void VLayoutPaper::SetWidth(int width) { m_globalContour.SetWidth(width); }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VLayoutPaper::GetWidth() const { return d->globalContour.GetWidth(); }
-
-//---------------------------------------------------------------------------------------------------------------------
-void VLayoutPaper::SetWidth(int width) { d->globalContour.SetWidth(width); }
-
-//---------------------------------------------------------------------------------------------------------------------
-qreal VLayoutPaper::GetLayoutWidth() const { return d->layoutWidth; }
+qreal VLayoutPaper::GetLayoutWidth() const { return m_layoutWidth; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPaper::SetLayoutWidth(qreal width)
 {
     if (width >= 0) {
-        d->layoutWidth = width;
+        m_layoutWidth = width;
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VLayoutPaper::GetShift() const { return d->globalContour.GetShift(); }
+quint32 VLayoutPaper::GetShift() const { return m_globalContour.GetShift(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPaper::SetShift(quint32 shift) { d->globalContour.SetShift(shift); }
+void VLayoutPaper::SetShift(quint32 shift) { m_globalContour.SetShift(shift); }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VLayoutPaper::GetRotate() const { return d->globalRotate; }
+bool VLayoutPaper::GetRotate() const { return m_globalRotate; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPaper::SetRotate(bool value)
 {
-    d->globalRotate = value;
-    d->localRotate = d->globalRotate;
+    m_globalRotate = value;
+    m_localRotate = m_globalRotate;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VLayoutPaper::GetRotationIncrease() const { return d->globalRotationIncrease; }
+int VLayoutPaper::GetRotationIncrease() const { return m_globalRotationIncrease; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPaper::SetRotationIncrease(int value)
 {
-    d->globalRotationIncrease = value;
+    m_globalRotationIncrease = value;
 
-    if ((d->globalRotationIncrease >= 1 && d->globalRotationIncrease <= 180
-         && 360 % d->globalRotationIncrease == 0)
+    if ((m_globalRotationIncrease >= 1 && m_globalRotationIncrease <= 180
+         && 360 % m_globalRotationIncrease == 0)
         == false) {
-        d->globalRotationIncrease = 180;
+        m_globalRotationIncrease = 180;
     }
 
-    d->localRotationIncrease = d->globalRotationIncrease;
+    m_localRotationIncrease = m_globalRotationIncrease;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VLayoutPaper::IsSaveLength() const { return d->saveLength; }
+bool VLayoutPaper::IsSaveLength() const { return m_saveLength; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPaper::SetSaveLength(bool value) { d->saveLength = value; }
+void VLayoutPaper::SetSaveLength(bool value) { m_saveLength = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPaper::SetPaperIndex(quint32 index) { d->paperIndex = index; }
+void VLayoutPaper::SetPaperIndex(quint32 index) { m_paperIndex = index; }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VLayoutPaper::arrangePiece(const VLayoutPiece& piece, std::atomic_bool& stop)
 {
     // First need set size of paper
-    if (d->globalContour.GetHeight() <= 0 || d->globalContour.GetWidth() <= 0) {
+    if (m_globalContour.GetHeight() <= 0 || m_globalContour.GetWidth() <= 0) {
         return false;
     }
 
@@ -188,50 +157,50 @@ bool VLayoutPaper::arrangePiece(const VLayoutPiece& piece, std::atomic_bool& sto
         return false;   // Not enough edges
     }
 
-    if (piece.IsForbidFlipping() && not d->globalRotate) {   // Compensate forbidden flipping by
-                                                             // rotating. 180 degree will be enough.
-        d->localRotate = true;
-        d->localRotationIncrease = 180;
+    if (piece.IsForbidFlipping() && not m_globalRotate) {   // Compensate forbidden flipping by
+                                                            // rotating. 180 degree will be enough.
+        m_localRotate = true;
+        m_localRotationIncrease = 180;
     } else {   // Return to global values if was changed
-        d->localRotate = d->globalRotate;
-        d->localRotationIncrease = d->globalRotationIncrease;
+        m_localRotate = m_globalRotate;
+        m_localRotationIncrease = m_globalRotationIncrease;
     }
 
-    d->frame = 0;
+    m_frame = 0;
 
     return AddToSheet(piece, stop);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-int VLayoutPaper::Count() const { return d->pieces.count(); }
+int VLayoutPaper::Count() const { return m_pieces.count(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VLayoutPaper::AddToSheet(const VLayoutPiece& piece, std::atomic_bool& stop)
 {
-    VBestSquare bestResult(d->globalContour.GetSize(), d->saveLength);
+    VBestSquare bestResult(m_globalContour.GetSize(), m_saveLength);
     QThreadPool* thread_pool = QThreadPool::globalInstance();
     thread_pool->setExpiryTimeout(1000);
     QVector<VPosition*> threads;
 
     int pieceEdgesCount = 0;
 
-    if (d->globalContour.GetContour().isEmpty()) {
+    if (m_globalContour.GetContour().isEmpty()) {
         pieceEdgesCount = piece.pieceEdgesCount();
     } else {
         pieceEdgesCount = piece.LayoutEdgesCount();
     }
 
-    for (int j = 1; j <= d->globalContour.GlobalEdgesCount(); ++j) {
+    for (int j = 1; j <= m_globalContour.GlobalEdgesCount(); ++j) {
         for (int i = 1; i <= pieceEdgesCount; ++i) {
             VPosition* thread = new VPosition(
-                d->globalContour,
+                m_globalContour,
                 j,
                 piece,
                 i,
                 &stop,
-                d->localRotate,
-                d->localRotationIncrease,
-                d->saveLength);
+                m_localRotate,
+                m_localRotationIncrease,
+                m_saveLength);
 // Info for debug
 #ifdef LAYOUT_DEBUG
             thread->setPaperIndex(d->paperIndex);
@@ -244,7 +213,7 @@ bool VLayoutPaper::AddToSheet(const VLayoutPiece& piece, std::atomic_bool& stop)
             threads.append(thread);
             thread_pool->start(thread);
 
-            d->frame = d->frame + 3 + static_cast<quint32>(360 / d->localRotationIncrease * 2);
+            m_frame = m_frame + 3 + static_cast<quint32>(360 / m_localRotationIncrease * 2);
         }
     }
 
@@ -277,13 +246,13 @@ bool VLayoutPaper::SaveResult(const VBestSquare& bestResult, const VLayoutPiece&
         VLayoutPiece workDetail = piece;
         workDetail.setTransform(bestResult.Transform());   // Don't forget set transform
         workDetail.SetMirror(bestResult.isMirror());
-        const QVector<QPointF> newGContour = d->globalContour.UniteWithContour(
+        const QVector<QPointF> newGContour = m_globalContour.UniteWithContour(
             workDetail, bestResult.GContourEdge(), bestResult.pieceEdge(), bestResult.Type());
         if (newGContour.isEmpty()) {
             return false;
         }
-        d->pieces.append(workDetail);
-        d->globalContour.SetContour(newGContour);
+        m_pieces.append(workDetail);
+        m_globalContour.SetContour(newGContour);
 
 #ifdef LAYOUT_DEBUG
 #    ifdef SHOW_BEST
@@ -312,16 +281,16 @@ QGraphicsRectItem* VLayoutPaper::GetPaperItem(bool autoCrop, bool textAsPaths) c
             scene->addItem(list.at(i));
         }
         const int height = scene->itemsBoundingRect().toRect().height();
-        if (d->globalContour.GetHeight() > height)   //-V807
+        if (m_globalContour.GetHeight() > height)   //-V807
         {
-            paper = new QGraphicsRectItem(QRectF(0, 0, d->globalContour.GetWidth(), height));
+            paper = new QGraphicsRectItem(QRectF(0, 0, m_globalContour.GetWidth(), height));
         } else {
             paper = new QGraphicsRectItem(
-                QRectF(0, 0, d->globalContour.GetWidth(), d->globalContour.GetHeight()));
+                QRectF(0, 0, m_globalContour.GetWidth(), m_globalContour.GetHeight()));
         }
     } else {
         paper = new QGraphicsRectItem(
-            QRectF(0, 0, d->globalContour.GetWidth(), d->globalContour.GetHeight()));
+            QRectF(0, 0, m_globalContour.GetWidth(), m_globalContour.GetHeight()));
     }
     paper->setPen(QPen(Qt::black, 1));
     paper->setBrush(QBrush(Qt::white));
@@ -332,24 +301,24 @@ QGraphicsRectItem* VLayoutPaper::GetPaperItem(bool autoCrop, bool textAsPaths) c
 QList<QGraphicsItem*> VLayoutPaper::getPieceItems(bool textAsPaths) const
 {
     QList<QGraphicsItem*> list;
-    for (int i = 0; i < d->pieces.count(); ++i) {
-        list.append(d->pieces.at(i).GetItem(textAsPaths));
+    for (int i = 0; i < m_pieces.count(); ++i) {
+        list.append(m_pieces.at(i).GetItem(textAsPaths));
     }
     return list;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<VLayoutPiece> VLayoutPaper::getPieces() const { return d->pieces; }
+QVector<VLayoutPiece> VLayoutPaper::getPieces() const { return m_pieces; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLayoutPaper::setPieces(const QList<VLayoutPiece>& pieces) { d->pieces = pieces.toVector(); }
+void VLayoutPaper::setPieces(const QList<VLayoutPiece>& pieces) { m_pieces = pieces.toVector(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QRectF VLayoutPaper::piecesBoundingRect() const
 {
     QRectF rec;
-    for (int i = 0; i < d->pieces.count(); ++i) {
-        rec = rec.united(d->pieces.at(i).pieceBoundingRect());
+    for (int i = 0; i < m_pieces.count(); ++i) {
+        rec = rec.united(m_pieces.at(i).pieceBoundingRect());
     }
 
     return rec;
