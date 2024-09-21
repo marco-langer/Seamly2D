@@ -20,9 +20,9 @@
  **
  **  You should have received a copy of the GNU General Public License
  **  along with Seamly2D. If not, see <http://www.gnu.org/licenses/>.
- **************************************************************************/
+ **************************************************************************
 
-/************************************************************************
+ ************************************************************************
  **  @file   vtoolcubicbezier.cpp
  **  @author Roman Telezhynskyi <dismine(at)gmail.com>
  **  @date   10 3, 2016

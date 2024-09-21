@@ -20,10 +20,9 @@
  **
  **  You should have received a copy of the GNU General Public License
  **  along with Seamly2D. if not, see <http://www.gnu.org/licenses/>.
- **************************************************************************/
+ **************************************************************************
 
-
-/************************************************************************
+ ************************************************************************
  **
  **  @file   dialogeditlabel.h
  **  @author Roman Telezhynskyi <dismine(at)gmail.com>

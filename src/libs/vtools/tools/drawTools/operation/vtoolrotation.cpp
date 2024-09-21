@@ -20,9 +20,9 @@
  **
  **  You should have received a copy of the GNU General Public License
  **  along with Seamly2D. If not, see <http://www.gnu.org/licenses/>.
- **************************************************************************/
+ **************************************************************************
 
-/************************************************************************
+ ************************************************************************
  **  @file   vtoolrotation.cpp
  **  @author Roman Telezhynskyi <dismine(at)gmail.com>
  **  @date   12 4, 2016

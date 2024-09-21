@@ -1,5 +1,3 @@
-#pragma once
-
 /************************************************************************
 **
 **  @file   scassert.h
@@ -27,6 +25,8 @@
 **  along with Seamly2D.  If not, see <http://www.gnu.org/licenses/>.
 **
 *************************************************************************/
+
+#pragma once
 
 #include "debugbreak.h"
 
