@@ -52,9 +52,9 @@
 
 #include "vpiecepath.h"
 #include "../vgeometry/vpointf.h"
-#include "../vlayout/vabstractpiece.h"
 #include "vcontainer.h"
 #include "vpiecepath_p.h"
+#include "vsapoint.h"
 
 #include <QPainterPath>
 
