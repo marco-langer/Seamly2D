@@ -77,11 +77,13 @@ public:
     void Swap(VLineAngle& var) noexcept;
 
     bool Filter(quint32 id) override;
-    void SetValue(const VPointF& p1, const VPointF& p2);
+
     quint32 GetP1Id() const;
     quint32 GetP2Id() const;
 
 private:
+    void SetValue(const VPointF& p1, const VPointF& p2);
+
     QSharedDataPointer<VLineAngleData> d;
 };
 
