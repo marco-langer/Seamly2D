@@ -367,34 +367,30 @@ void VContainer::AddLine(const quint32& firstPointId, const quint32& secondPoint
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContainer::AddArc(
-    const QSharedPointer<VAbstractCurve>& arc, const quint32& id, const quint32& parentId)
+void VContainer::AddArc(const VAbstractCurve& arc, const quint32& id, const quint32& parentId)
 {
-    SCASSERT(arc)
     AddCurve(arc, id, parentId);
 
-    if (arc->getType() == GOType::Arc) {
-        const QSharedPointer<VArc> casted = arc.staticCast<VArc>();
+    if (arc.getType() == GOType::Arc) {
+        const auto& casted{ static_cast<const VArc&>(arc) };
 
-        VArcRadius* radius = new VArcRadius(id, parentId, *casted, *GetPatternUnit());
+        VArcRadius* radius = new VArcRadius(id, parentId, casted, *GetPatternUnit());
         AddVariable(radius->GetName(), radius);
-    } else if (arc->getType() == GOType::EllipticalArc) {
-        const QSharedPointer<VEllipticalArc> casted = arc.staticCast<VEllipticalArc>();
+    } else if (arc.getType() == GOType::EllipticalArc) {
+        const auto& casted{ static_cast<const VEllipticalArc&>(arc) };
 
-        VArcRadius* radius1 = new VArcRadius(id, parentId, *casted, 1, *GetPatternUnit());
+        VArcRadius* radius1 = new VArcRadius(id, parentId, casted, 1, *GetPatternUnit());
         AddVariable(radius1->GetName(), radius1);
 
-        VArcRadius* radius2 = new VArcRadius(id, parentId, *casted, 2, *GetPatternUnit());
+        VArcRadius* radius2 = new VArcRadius(id, parentId, casted, 2, *GetPatternUnit());
         AddVariable(radius2->GetName(), radius2);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContainer::AddCurve(
-    const QSharedPointer<VAbstractCurve>& curve, const quint32& id, quint32 parentId)
+void VContainer::AddCurve(const VAbstractCurve& curve, const quint32& id, quint32 parentId)
 {
-    SCASSERT(curve)
-    const GOType curveType = curve->getType();
+    const GOType curveType = curve.getType();
     if (curveType != GOType::Spline && curveType != GOType::SplinePath
         && curveType != GOType::CubicBezier && curveType != GOType::CubicBezierPath
         && curveType != GOType::Arc && curveType != GOType::EllipticalArc) {
@@ -402,59 +398,57 @@ void VContainer::AddCurve(
             tr("Can't create a curve with type '%1'").arg(static_cast<int>(curveType)));
     }
 
-    VCurveLength* length = new VCurveLength(id, parentId, *curve, *GetPatternUnit());
+    VCurveLength* length = new VCurveLength(id, parentId, curve, *GetPatternUnit());
     AddVariable(length->GetName(), length);
 
-    VCurveAngle* startAngle = new VCurveAngle(id, parentId, *curve, CurveAngle::StartAngle);
+    VCurveAngle* startAngle = new VCurveAngle(id, parentId, curve, CurveAngle::StartAngle);
     AddVariable(startAngle->GetName(), startAngle);
 
-    VCurveAngle* endAngle = new VCurveAngle(id, parentId, *curve, CurveAngle::EndAngle);
+    VCurveAngle* endAngle = new VCurveAngle(id, parentId, curve, CurveAngle::EndAngle);
     AddVariable(endAngle->GetName(), endAngle);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContainer::AddSpline(
-    const QSharedPointer<VAbstractBezier>& curve, quint32 id, quint32 parentId)
+void VContainer::AddSpline(const VAbstractBezier& curve, quint32 id, quint32 parentId)
 {
-    SCASSERT(curve)
     AddCurve(curve, id, parentId);
 
     VCurveCLength* c1Length =
-        new VCurveCLength(id, parentId, *curve, CurveCLength::C1, *GetPatternUnit());
+        new VCurveCLength(id, parentId, curve, CurveCLength::C1, *GetPatternUnit());
     AddVariable(c1Length->GetName(), c1Length);
 
     VCurveCLength* c2Length =
-        new VCurveCLength(id, parentId, *curve, CurveCLength::C2, *GetPatternUnit());
+        new VCurveCLength(id, parentId, curve, CurveCLength::C2, *GetPatternUnit());
     AddVariable(c2Length->GetName(), c2Length);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VContainer::AddCurveWithSegments(
-    const QSharedPointer<VAbstractCubicBezierPath>& curve, const quint32& id, quint32 parentId)
+    const VAbstractCubicBezierPath& curve, const quint32& id, quint32 parentId)
 {
     AddSpline(curve, id, parentId);
 
-    for (qint32 i = 1; i <= curve->CountSubSpl(); ++i) {
-        const VSpline spl = curve->GetSpline(i);
+    for (qint32 i = 1; i <= curve.CountSubSpl(); ++i) {
+        const VSpline spl = curve.GetSpline(i);
 
         VCurveLength* length =
-            new VCurveLength(id, parentId, curve->name(), spl, *GetPatternUnit(), i);
+            new VCurveLength(id, parentId, curve.name(), spl, *GetPatternUnit(), i);
         AddVariable(length->GetName(), length);
 
         VCurveAngle* startAngle =
-            new VCurveAngle(id, parentId, curve->name(), spl, CurveAngle::StartAngle, i);
+            new VCurveAngle(id, parentId, curve.name(), spl, CurveAngle::StartAngle, i);
         AddVariable(startAngle->GetName(), startAngle);
 
         VCurveAngle* endAngle =
-            new VCurveAngle(id, parentId, curve->name(), spl, CurveAngle::EndAngle, i);
+            new VCurveAngle(id, parentId, curve.name(), spl, CurveAngle::EndAngle, i);
         AddVariable(endAngle->GetName(), endAngle);
 
         VCurveCLength* c1Length = new VCurveCLength(
-            id, parentId, curve->name(), spl, CurveCLength::C1, *GetPatternUnit(), i);
+            id, parentId, curve.name(), spl, CurveCLength::C1, *GetPatternUnit(), i);
         AddVariable(c1Length->GetName(), c1Length);
 
         VCurveCLength* c2Length = new VCurveCLength(
-            id, parentId, curve->name(), spl, CurveCLength::C2, *GetPatternUnit(), i);
+            id, parentId, curve.name(), spl, CurveCLength::C2, *GetPatternUnit(), i);
         AddVariable(c2Length->GetName(), c2Length);
     }
 }

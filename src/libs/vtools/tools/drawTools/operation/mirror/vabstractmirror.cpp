@@ -220,7 +220,7 @@ DestinationItem VAbstractMirror::createArc(
 {
     const DestinationItem item =
         createItem<Item>(idTool, idItem, firstPoint, secondPoint, suffix, data);
-    data->AddArc(data->GeometricObject<Item>(item.id), item.id);
+    data->AddArc(*data->GeometricObject<Item>(item.id), item.id);
     return item;
 }
 
@@ -255,5 +255,5 @@ void VAbstractMirror::updateArc(
     quint32 id)
 {
     updateItem<Item>(idTool, idItem, firstPoint, secondPoint, suffix, data, id);
-    data->AddArc(data->GeometricObject<Item>(id), id);
+    data->AddArc(*data->GeometricObject<Item>(id), id);
 }

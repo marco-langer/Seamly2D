@@ -212,13 +212,13 @@ VToolCutSplinePath* VToolCutSplinePath::Create(
     if (typeCreation == Source::FromGui) {
         id = data->AddGObject(p);
 
-        data->AddSpline(QSharedPointer<VAbstractBezier>(splPath1), NULL_ID, id);
-        data->AddSpline(QSharedPointer<VAbstractBezier>(splPath2), NULL_ID, id);
+        data->AddSpline(*splPath1, NULL_ID, id);
+        data->AddSpline(*splPath2, NULL_ID, id);
     } else {
         data->UpdateGObject(id, p);
 
-        data->AddSpline(QSharedPointer<VAbstractBezier>(splPath1), NULL_ID, id);
-        data->AddSpline(QSharedPointer<VAbstractBezier>(splPath2), NULL_ID, id);
+        data->AddSpline(*splPath1, NULL_ID, id);
+        data->AddSpline(*splPath2, NULL_ID, id);
 
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
@@ -235,6 +235,10 @@ VToolCutSplinePath* VToolCutSplinePath::Create(
         doc->IncrementReferens(splPath->getIdTool());
         return point;
     }
+
+    delete splPath1;
+    delete splPath2;
+
     return nullptr;
 }
 

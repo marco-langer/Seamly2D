@@ -232,10 +232,10 @@ VToolEllipticalArc* VToolEllipticalArc::Create(
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
         id = data->AddGObject(elArc);
-        data->AddArc(data->GeometricObject<VEllipticalArc>(id), id);
+        data->AddArc(*data->GeometricObject<VEllipticalArc>(id), id);
     } else {
         data->UpdateGObject(id, elArc);
-        data->AddArc(data->GeometricObject<VEllipticalArc>(id), id);
+        data->AddArc(*data->GeometricObject<VEllipticalArc>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

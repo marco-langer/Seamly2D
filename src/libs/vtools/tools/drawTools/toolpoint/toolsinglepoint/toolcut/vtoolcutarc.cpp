@@ -201,14 +201,14 @@ VToolCutArc* VToolCutArc::Create(
         id = data->AddGObject(p);
         a1->setId(VContainer::getNextId());
         a2->setId(VContainer::getNextId());
-        data->AddArc(a1, a1->id(), id);
-        data->AddArc(a2, a2->id(), id);
+        data->AddArc(*a1, a1->id(), id);
+        data->AddArc(*a2, a2->id(), id);
     } else {
         data->UpdateGObject(id, p);
         a1->setId(id + 1);
         a2->setId(id + 2);
-        data->AddArc(a1, a1->id(), id);
-        data->AddArc(a2, a2->id(), id);
+        data->AddArc(*a1, a1->id(), id);
+        data->AddArc(*a2, a2->id(), id);
 
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

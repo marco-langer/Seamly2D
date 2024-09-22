@@ -202,12 +202,12 @@ VToolCutSpline* VToolCutSpline::Create(
 
     if (typeCreation == Source::FromGui) {
         id = data->AddGObject(p);
-        data->AddSpline(spline1, NULL_ID, id);
-        data->AddSpline(spline2, NULL_ID, id);
+        data->AddSpline(*spline1, NULL_ID, id);
+        data->AddSpline(*spline2, NULL_ID, id);
     } else {
         data->UpdateGObject(id, p);
-        data->AddSpline(spline1, NULL_ID, id);
-        data->AddSpline(spline2, NULL_ID, id);
+        data->AddSpline(*spline1, NULL_ID, id);
+        data->AddSpline(*spline2, NULL_ID, id);
 
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

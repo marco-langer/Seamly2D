@@ -453,8 +453,8 @@ void VToolCurveIntersectAxis::InitArc(
         a2->setName(arc2.name());
     }
 
-    data->AddArc(a1, arc1.id(), p->id());
-    data->AddArc(a2, arc2.id(), p->id());
+    data->AddArc(*a1, arc1.id(), p->id());
+    data->AddArc(*a2, arc2.id(), p->id());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -497,8 +497,8 @@ void VToolCurveIntersectAxis::InitSegments(
             delete spl2;
         }
 
-        data->AddSpline(spline1, NULL_ID, p->id());
-        data->AddSpline(spline2, NULL_ID, p->id());
+        data->AddSpline(*spline1, NULL_ID, p->id());
+        data->AddSpline(*spline2, NULL_ID, p->id());
         break;
     }
     case GOType::CubicBezierPath:
@@ -537,8 +537,8 @@ void VToolCurveIntersectAxis::InitSegments(
             delete splPath2;
         }
 
-        data->AddSpline(splP1, NULL_ID, p->id());
-        data->AddSpline(splP2, NULL_ID, p->id());
+        data->AddSpline(*splP1, NULL_ID, p->id());
+        data->AddSpline(*splP2, NULL_ID, p->id());
         break;
     }
     case GOType::Point:

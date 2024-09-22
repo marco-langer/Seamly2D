@@ -262,10 +262,10 @@ VToolSplinePath* VToolSplinePath::Create(
 
     if (typeCreation == Source::FromGui) {
         id = data->AddGObject(path);
-        data->AddCurveWithSegments(data->GeometricObject<VAbstractCubicBezierPath>(id), id);
+        data->AddCurveWithSegments(*data->GeometricObject<VAbstractCubicBezierPath>(id), id);
     } else {
         data->UpdateGObject(id, path);
-        data->AddCurveWithSegments(data->GeometricObject<VAbstractCubicBezierPath>(id), id);
+        data->AddCurveWithSegments(*data->GeometricObject<VAbstractCubicBezierPath>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

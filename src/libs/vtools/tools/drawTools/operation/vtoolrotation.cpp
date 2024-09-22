@@ -475,7 +475,7 @@ DestinationItem VToolRotation::createArc(
     VContainer* data)
 {
     const DestinationItem item = createItem<Item>(idTool, idItem, origin, angle, suffix, data);
-    data->AddArc(data->GeometricObject<Item>(item.id), item.id);
+    data->AddArc(*data->GeometricObject<Item>(item.id), item.id);
     return item;
 }
 
@@ -490,7 +490,7 @@ DestinationItem VToolRotation::createCurve(
     VContainer* data)
 {
     const DestinationItem item = createItem<Item>(idTool, idItem, origin, angle, suffix, data);
-    data->AddSpline(data->GeometricObject<Item>(item.id), item.id);
+    data->AddSpline(*data->GeometricObject<Item>(item.id), item.id);
     return item;
 }
 
@@ -505,7 +505,7 @@ DestinationItem VToolRotation::createCurveWithSegments(
     VContainer* data)
 {
     const DestinationItem item = createItem<Item>(idTool, idItem, origin, angle, suffix, data);
-    data->AddCurveWithSegments(data->GeometricObject<Item>(item.id), item.id);
+    data->AddCurveWithSegments(*data->GeometricObject<Item>(item.id), item.id);
     return item;
 }
 
@@ -557,7 +557,7 @@ void VToolRotation::updateArc(
     quint32 id)
 {
     updateItem<Item>(idTool, idItem, origin, angle, suffix, data, id);
-    data->AddArc(data->GeometricObject<Item>(id), id);
+    data->AddArc(*data->GeometricObject<Item>(id), id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -572,7 +572,7 @@ void VToolRotation::updateCurve(
     quint32 id)
 {
     updateItem<Item>(idTool, idItem, origin, angle, suffix, data, id);
-    data->AddSpline(data->GeometricObject<Item>(id), id);
+    data->AddSpline(*data->GeometricObject<Item>(id), id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -587,5 +587,5 @@ void VToolRotation::updateCurveWithSegments(
     quint32 id)
 {
     updateItem<Item>(idTool, idItem, origin, angle, suffix, data, id);
-    data->AddCurveWithSegments(data->GeometricObject<Item>(id), id);
+    data->AddCurveWithSegments(*data->GeometricObject<Item>(id), id);
 }

@@ -210,10 +210,10 @@ VToolArc* VToolArc::Create(
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
         id = data->AddGObject(arc);
-        data->AddArc(data->GeometricObject<VArc>(id), id);
+        data->AddArc(*data->GeometricObject<VArc>(id), id);
     } else {
         data->UpdateGObject(id, arc);
-        data->AddArc(data->GeometricObject<VArc>(id), id);
+        data->AddArc(*data->GeometricObject<VArc>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

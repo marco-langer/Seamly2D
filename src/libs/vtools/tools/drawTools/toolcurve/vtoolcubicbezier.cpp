@@ -143,10 +143,10 @@ VToolCubicBezier* VToolCubicBezier::Create(
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
         id = data->AddGObject(spline);
-        data->AddSpline(data->GeometricObject<VAbstractBezier>(id), id);
+        data->AddSpline(*data->GeometricObject<VAbstractBezier>(id), id);
     } else {
         data->UpdateGObject(id, spline);
-        data->AddSpline(data->GeometricObject<VAbstractBezier>(id), id);
+        data->AddSpline(*data->GeometricObject<VAbstractBezier>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

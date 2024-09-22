@@ -166,16 +166,10 @@ public:
     quint32 AddPiece(const VPiece& piece);
     quint32 AddPiecePath(const VPiecePath& path);
     void AddLine(const quint32& firstPointId, const quint32& secondPointId);
-    void AddArc(
-        const QSharedPointer<VAbstractCurve>& arc,
-        const quint32& id,
-        const quint32& parentId = NULL_ID);
-    void
-    AddSpline(const QSharedPointer<VAbstractBezier>& curve, quint32 id, quint32 parentId = NULL_ID);
+    void AddArc(const VAbstractCurve& arc, const quint32& id, const quint32& parentId = NULL_ID);
+    void AddSpline(const VAbstractBezier& curve, quint32 id, quint32 parentId = NULL_ID);
     void AddCurveWithSegments(
-        const QSharedPointer<VAbstractCubicBezierPath>& curve,
-        const quint32& id,
-        quint32 parentId = NULL_ID);
+        const VAbstractCubicBezierPath& curve, const quint32& id, quint32 parentId = NULL_ID);
 
     template <typename T>
     void AddVariable(const QString& name, T* var);
@@ -239,8 +233,7 @@ private:
 
     QSharedDataPointer<VContainerData> d;
 
-    void AddCurve(
-        const QSharedPointer<VAbstractCurve>& curve, const quint32& id, quint32 parentId = NULL_ID);
+    void AddCurve(const VAbstractCurve& curve, const quint32& id, quint32 parentId = NULL_ID);
 
     template <class T>
     uint qHash(const QSharedPointer<T>& p);

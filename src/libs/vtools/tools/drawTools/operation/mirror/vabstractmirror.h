@@ -210,7 +210,7 @@ DestinationItem VAbstractMirror::createCurve(
 {
     const DestinationItem item =
         createItem<Item>(idTool, idItem, firstPoint, secondPoint, suffix, data);
-    data->AddSpline(data->GeometricObject<Item>(item.id), item.id);
+    data->AddSpline(*data->GeometricObject<Item>(item.id), item.id);
     return item;
 }
 
@@ -226,7 +226,7 @@ DestinationItem VAbstractMirror::createCurveWithSegments(
 {
     const DestinationItem item =
         createItem<Item>(idTool, idItem, firstPoint, secondPoint, suffix, data);
-    data->AddCurveWithSegments(data->GeometricObject<Item>(item.id), item.id);
+    data->AddCurveWithSegments(*data->GeometricObject<Item>(item.id), item.id);
     return item;
 }
 
@@ -259,7 +259,7 @@ void VAbstractMirror::updateCurve(
     quint32 id)
 {
     updateItem<Item>(idTool, idItem, firstPoint, secondPoint, suffix, data, id);
-    data->AddSpline(data->GeometricObject<Item>(id), id);
+    data->AddSpline(*data->GeometricObject<Item>(id), id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -274,7 +274,7 @@ void VAbstractMirror::updateCurveWithSegments(
     quint32 id)
 {
     updateItem<Item>(idTool, idItem, firstPoint, secondPoint, suffix, data, id);
-    data->AddCurveWithSegments(data->GeometricObject<Item>(id), id);
+    data->AddCurveWithSegments(*data->GeometricObject<Item>(id), id);
 }
 
 #endif   // VABSTRACTMIRROR_H
