@@ -66,7 +66,7 @@ class VLineAngle : public VInternalVariable
 {
 public:
     VLineAngle();
-    VLineAngle(const VPointF* p1, const quint32& p1Id, const VPointF* p2, const quint32& p2Id);
+    VLineAngle(const VPointF& p1, const quint32& p1Id, const VPointF& p2, const quint32& p2Id);
     VLineAngle(const VLineAngle& var);
 
     ~VLineAngle() override;
@@ -77,7 +77,7 @@ public:
     void Swap(VLineAngle& var) noexcept;
 
     bool Filter(quint32 id) override;
-    void SetValue(const VPointF* p1, const VPointF* p2);
+    void SetValue(const VPointF& p1, const VPointF& p2);
     quint32 GetP1Id() const;
     quint32 GetP2Id() const;
 

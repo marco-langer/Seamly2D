@@ -355,12 +355,14 @@ void VContainer::AddLine(const quint32& firstPointId, const quint32& secondPoint
 {
     const QSharedPointer<VPointF> first = GeometricObject<VPointF>(firstPointId);
     const QSharedPointer<VPointF> second = GeometricObject<VPointF>(secondPointId);
+    SCASSERT(first)
+    SCASSERT(second)
 
-    VLengthLine* length = new VLengthLine(
-        first.data(), firstPointId, second.data(), secondPointId, *GetPatternUnit());
+    VLengthLine* length =
+        new VLengthLine(*first, firstPointId, *second, secondPointId, *GetPatternUnit());
     AddVariable(length->GetName(), length);
 
-    VLineAngle* angle = new VLineAngle(first.data(), firstPointId, second.data(), secondPointId);
+    VLineAngle* angle = new VLineAngle(*first, firstPointId, *second, secondPointId);
     AddVariable(angle->GetName(), angle);
 }
 
@@ -368,20 +370,21 @@ void VContainer::AddLine(const quint32& firstPointId, const quint32& secondPoint
 void VContainer::AddArc(
     const QSharedPointer<VAbstractCurve>& arc, const quint32& id, const quint32& parentId)
 {
+    SCASSERT(arc)
     AddCurve(arc, id, parentId);
 
     if (arc->getType() == GOType::Arc) {
         const QSharedPointer<VArc> casted = arc.staticCast<VArc>();
 
-        VArcRadius* radius = new VArcRadius(id, parentId, casted.data(), *GetPatternUnit());
+        VArcRadius* radius = new VArcRadius(id, parentId, *casted, *GetPatternUnit());
         AddVariable(radius->GetName(), radius);
     } else if (arc->getType() == GOType::EllipticalArc) {
         const QSharedPointer<VEllipticalArc> casted = arc.staticCast<VEllipticalArc>();
 
-        VArcRadius* radius1 = new VArcRadius(id, parentId, casted.data(), 1, *GetPatternUnit());
+        VArcRadius* radius1 = new VArcRadius(id, parentId, *casted, 1, *GetPatternUnit());
         AddVariable(radius1->GetName(), radius1);
 
-        VArcRadius* radius2 = new VArcRadius(id, parentId, casted.data(), 2, *GetPatternUnit());
+        VArcRadius* radius2 = new VArcRadius(id, parentId, *casted, 2, *GetPatternUnit());
         AddVariable(radius2->GetName(), radius2);
     }
 }
@@ -390,6 +393,7 @@ void VContainer::AddArc(
 void VContainer::AddCurve(
     const QSharedPointer<VAbstractCurve>& curve, const quint32& id, quint32 parentId)
 {
+    SCASSERT(curve)
     const GOType curveType = curve->getType();
     if (curveType != GOType::Spline && curveType != GOType::SplinePath
         && curveType != GOType::CubicBezier && curveType != GOType::CubicBezierPath
@@ -398,13 +402,13 @@ void VContainer::AddCurve(
             tr("Can't create a curve with type '%1'").arg(static_cast<int>(curveType)));
     }
 
-    VCurveLength* length = new VCurveLength(id, parentId, curve.data(), *GetPatternUnit());
+    VCurveLength* length = new VCurveLength(id, parentId, *curve, *GetPatternUnit());
     AddVariable(length->GetName(), length);
 
-    VCurveAngle* startAngle = new VCurveAngle(id, parentId, curve.data(), CurveAngle::StartAngle);
+    VCurveAngle* startAngle = new VCurveAngle(id, parentId, *curve, CurveAngle::StartAngle);
     AddVariable(startAngle->GetName(), startAngle);
 
-    VCurveAngle* endAngle = new VCurveAngle(id, parentId, curve.data(), CurveAngle::EndAngle);
+    VCurveAngle* endAngle = new VCurveAngle(id, parentId, *curve, CurveAngle::EndAngle);
     AddVariable(endAngle->GetName(), endAngle);
 }
 
@@ -412,14 +416,15 @@ void VContainer::AddCurve(
 void VContainer::AddSpline(
     const QSharedPointer<VAbstractBezier>& curve, quint32 id, quint32 parentId)
 {
+    SCASSERT(curve)
     AddCurve(curve, id, parentId);
 
     VCurveCLength* c1Length =
-        new VCurveCLength(id, parentId, curve.data(), CurveCLength::C1, *GetPatternUnit());
+        new VCurveCLength(id, parentId, *curve, CurveCLength::C1, *GetPatternUnit());
     AddVariable(c1Length->GetName(), c1Length);
 
     VCurveCLength* c2Length =
-        new VCurveCLength(id, parentId, curve.data(), CurveCLength::C2, *GetPatternUnit());
+        new VCurveCLength(id, parentId, *curve, CurveCLength::C2, *GetPatternUnit());
     AddVariable(c2Length->GetName(), c2Length);
 }
 

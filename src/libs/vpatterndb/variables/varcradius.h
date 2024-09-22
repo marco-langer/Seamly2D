@@ -66,11 +66,11 @@ class VArcRadius : public VCurveVariable
 {
 public:
     VArcRadius();
-    VArcRadius(const quint32& id, const quint32& parentId, const VArc* arc, Unit patternUnit);
+    VArcRadius(const quint32& id, const quint32& parentId, const VArc& arc, Unit patternUnit);
     VArcRadius(
         const quint32& id,
         const quint32& parentId,
-        const VEllipticalArc* elArc,
+        const VEllipticalArc& elArc,
         const int numberRadius,
         Unit patternUnit);
     VArcRadius(const VArcRadius& var);

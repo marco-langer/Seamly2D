@@ -72,7 +72,7 @@ class VCurveAngle : public VCurveVariable
 public:
     VCurveAngle();
     VCurveAngle(
-        const quint32& id, const quint32& parentId, const VAbstractCurve* curve, CurveAngle angle);
+        const quint32& id, const quint32& parentId, const VAbstractCurve& curve, CurveAngle angle);
     VCurveAngle(
         const quint32& id,
         const quint32& parentId,

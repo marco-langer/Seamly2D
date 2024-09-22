@@ -68,7 +68,7 @@ class VCurveLength : public VCurveVariable
 public:
     VCurveLength();
     VCurveLength(
-        const quint32& id, const quint32& parentId, const VAbstractCurve* curve, Unit patternUnit);
+        const quint32& id, const quint32& parentId, const VAbstractCurve& curve, Unit patternUnit);
     VCurveLength(
         const quint32& id,
         const quint32& parentId,

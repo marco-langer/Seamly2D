@@ -57,7 +57,6 @@
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vabstractcurve.h"
 #include "../vgeometry/vspline.h"
-#include "../vmisc/scassert.h"
 #include "vcurvevariable.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -69,17 +68,16 @@ VCurveAngle::VCurveAngle()
 
 //---------------------------------------------------------------------------------------------------------------------
 VCurveAngle::VCurveAngle(
-    const quint32& id, const quint32& parentId, const VAbstractCurve* curve, CurveAngle angle)
+    const quint32& id, const quint32& parentId, const VAbstractCurve& curve, CurveAngle angle)
     : VCurveVariable(id, parentId)
 {
     SetType(VarType::CurveAngle);
-    SCASSERT(curve != nullptr)
     if (angle == CurveAngle::StartAngle) {
-        SetValue(curve->GetStartAngle());
-        SetName(angle1_V + curve->name());
+        SetValue(curve.GetStartAngle());
+        SetName(angle1_V + curve.name());
     } else {
-        SetValue(curve->GetEndAngle());
-        SetName(angle2_V + curve->name());
+        SetValue(curve.GetEndAngle());
+        SetName(angle2_V + curve.name());
     }
 }
 

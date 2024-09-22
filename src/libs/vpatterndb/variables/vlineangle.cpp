@@ -59,7 +59,6 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vgeometry/vpointf.h"
-#include "../vmisc/scassert.h"
 #include "vinternalvariable.h"
 #include "vlineangle_p.h"
 
@@ -85,16 +84,13 @@ VLineAngle::VLineAngle()
 
 //---------------------------------------------------------------------------------------------------------------------
 VLineAngle::VLineAngle(
-    const VPointF* p1, const quint32& p1Id, const VPointF* p2, const quint32& p2Id)
+    const VPointF& p1, const quint32& p1Id, const VPointF& p2, const quint32& p2Id)
     : VInternalVariable()
     , d(new VLineAngleData(p1Id, p2Id))
 {
     SetType(VarType::LineAngle);
 
-    SCASSERT(p1 != nullptr)
-    SCASSERT(p2 != nullptr)
-
-    SetName(QString(angleLine_ + "%1_%2").arg(p1->name(), p2->name()));
+    SetName(QString(angleLine_ + "%1_%2").arg(p1.name(), p2.name()));
     SetValue(p1, p2);
 }
 
@@ -122,13 +118,11 @@ VLineAngle::~VLineAngle() = default;
 bool VLineAngle::Filter(quint32 id) { return id == d->p1Id || id == d->p2Id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VLineAngle::SetValue(const VPointF* p1, const VPointF* p2)
+void VLineAngle::SetValue(const VPointF& p1, const VPointF& p2)
 {
-    SCASSERT(p1 != nullptr)
-    SCASSERT(p2 != nullptr)
     // Correct angle. Try avoid results like 6,7563e-15.
     const qreal angle =
-        qFloor(QLineF(static_cast<QPointF>(*p1), static_cast<QPointF>(*p2)).angle() * 100000.)
+        qFloor(QLineF(static_cast<QPointF>(p1), static_cast<QPointF>(p2)).angle() * 100000.)
         / 100000.;
     VInternalVariable::SetValue(angle);
 }

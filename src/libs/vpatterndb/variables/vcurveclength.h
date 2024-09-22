@@ -74,7 +74,7 @@ public:
     VCurveCLength(
         const quint32& id,
         const quint32& parentId,
-        const VAbstractBezier* curve,
+        const VAbstractBezier& curve,
         CurveCLength cType,
         Unit patternUnit);
     VCurveCLength(
