@@ -209,8 +209,7 @@ void DialogCubicBezierPath::ChosenObject(quint32 id, const SceneObject& type)
             return;
         }
 
-        const auto point = data->GeometricObject<VPointF>(id);
-        NewItem(*point);
+        NewItem(*data->GeometricObject<VPointF>(id));
 
         SavePath();
 
@@ -287,9 +286,9 @@ void DialogCubicBezierPath::currentPointChanged(int index)
 {
     const quint32 id = qvariant_cast<quint32>(ui->comboBoxPoint->itemData(index));
     QListWidgetItem* item = ui->listWidget->item(ui->listWidget->currentRow());
-    const auto point = data->GeometricObject<VPointF>(id);
-    DataPoint(*point);
-    item->setData(Qt::UserRole, QVariant::fromValue(*point));
+    const auto& point{ *data->GeometricObject<VPointF>(id) };
+    DataPoint(point);
+    item->setData(Qt::UserRole, QVariant::fromValue(point));
 
     QColor color = okColor;
     if (not IsPathValid()) {

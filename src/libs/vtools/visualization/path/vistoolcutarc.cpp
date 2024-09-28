@@ -88,11 +88,11 @@ VisToolCutArc::VisToolCutArc(const VContainer* data, QGraphicsItem* parent)
 void VisToolCutArc::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VArc> arc = Visualization::data->GeometricObject<VArc>(object1Id);
+        const auto& arc{ *Visualization::data->GeometricObject<VArc>(object1Id) };
         DrawPath(
             this,
-            arc->GetPath(),
-            arc->DirectionArrows(),
+            arc.GetPath(),
+            arc.DirectionArrows(),
             supportColor,
             lineStyle,
             lineWeight,
@@ -101,8 +101,8 @@ void VisToolCutArc::RefreshGeometry()
         if (not qFuzzyIsNull(length)) {
             VArc ar1;
             VArc ar2;
-            QPointF p = arc->CutArc(length, ar1, ar2);
-            DrawPoint(point, p, mainColor);
+
+            DrawPoint(point, arc.CutArc(length, ar1, ar2), mainColor);
 
             DrawPath(
                 arc1,

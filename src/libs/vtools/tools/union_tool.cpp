@@ -461,10 +461,10 @@ quint32 AddNodeArc(
     quint32 pRotate,
     qreal angle)
 {
-    const QSharedPointer<VArc> arc = initData.data->GeometricObject<VArc>(node.GetId());
-    VPointF p1 = VPointF(arc->GetP1(), "A", 0, 0);
-    VPointF p2 = VPointF(arc->GetP2(), "A", 0, 0);
-    QScopedPointer<VPointF> center(new VPointF(arc->GetCenter()));
+    const auto& arc{ *initData.data->GeometricObject<VArc>(node.GetId()) };
+    VPointF p1 = VPointF(arc.GetP1(), "A", 0, 0);
+    VPointF p2 = VPointF(arc.GetP2(), "A", 0, 0);
+    QScopedPointer<VPointF> center(new VPointF(arc.GetCenter()));
 
     if (not qFuzzyIsNull(dx) || not qFuzzyIsNull(dy) || pRotate != NULL_ID) {
         const QPointF p = static_cast<QPointF>(*initData.data->GeometricObject<VPointF>(pRotate));
@@ -482,8 +482,8 @@ quint32 AddNodeArc(
     Q_UNUSED(idCenter)
     QScopedPointer<VArc> arc1(new VArc(
         *tmpCenter,
-        arc->GetRadius(),
-        arc->GetFormulaRadius(),
+        arc.GetRadius(),
+        arc.GetFormulaRadius(),
         l1.angle(),
         QString().setNum(l1.angle()),
         l2.angle(),
@@ -522,11 +522,10 @@ quint32 AddNodeElArc(
     quint32 pRotate,
     qreal angle)
 {
-    const QSharedPointer<VEllipticalArc> arc =
-        initData.data->GeometricObject<VEllipticalArc>(node.GetId());
-    VPointF p1 = VPointF(arc->GetP1(), "A", 0, 0);
-    VPointF p2 = VPointF(arc->GetP2(), "A", 0, 0);
-    QScopedPointer<VPointF> center(new VPointF(arc->GetCenter()));
+    const auto& arc{ *initData.data->GeometricObject<VEllipticalArc>(node.GetId()) };
+    VPointF p1 = VPointF(arc.GetP1(), "A", 0, 0);
+    VPointF p2 = VPointF(arc.GetP2(), "A", 0, 0);
+    QScopedPointer<VPointF> center(new VPointF(arc.GetCenter()));
 
     if (not qFuzzyIsNull(dx) || not qFuzzyIsNull(dy) || pRotate != NULL_ID) {
         const QPointF p = static_cast<QPointF>(*initData.data->GeometricObject<VPointF>(pRotate));
@@ -544,10 +543,10 @@ quint32 AddNodeElArc(
     Q_UNUSED(idCenter)
     QScopedPointer<VEllipticalArc> arc1(new VEllipticalArc(
         *tmpCenter,
-        arc->GetRadius1(),
-        arc->GetRadius2(),
-        arc->GetFormulaRadius1(),
-        arc->GetFormulaRadius2(),
+        arc.GetRadius1(),
+        arc.GetRadius2(),
+        arc.GetFormulaRadius1(),
+        arc.GetFormulaRadius2(),
         l1.angle(),
         QString().setNum(l1.angle()),
         l2.angle(),
@@ -588,13 +587,12 @@ quint32 AddNodeSpline(
     quint32 pRotate,
     qreal angle)
 {
-    const QSharedPointer<VAbstractCubicBezier> spline =
-        initData.data->GeometricObject<VAbstractCubicBezier>(node.GetId());
+    const auto& spline{ *initData.data->GeometricObject<VAbstractCubicBezier>(node.GetId()) };
 
-    QScopedPointer<VPointF> p1(new VPointF(spline->GetP1()));
-    VPointF p2 = VPointF(spline->GetP2());
-    VPointF p3 = VPointF(spline->GetP3());
-    QScopedPointer<VPointF> p4(new VPointF(spline->GetP4()));
+    QScopedPointer<VPointF> p1(new VPointF(spline.GetP1()));
+    VPointF p2{ spline.GetP2() };
+    VPointF p3{ spline.GetP3() };
+    QScopedPointer<VPointF> p4(new VPointF(spline.GetP4()));
 
     if (not qFuzzyIsNull(dx) || not qFuzzyIsNull(dy) || pRotate != NULL_ID) {
         const QPointF p = static_cast<QPointF>(*initData.data->GeometricObject<VPointF>(pRotate));
@@ -639,10 +637,10 @@ quint32 AddNodeSplinePath(
 {
     QScopedPointer<VSplinePath> path(new VSplinePath());
     path->setMode(Draw::Modeling);
-    const QSharedPointer<VAbstractCubicBezierPath> splinePath =
-        initData.data->GeometricObject<VAbstractCubicBezierPath>(node.GetId());
-    for (qint32 i = 1; i <= splinePath->CountSubSpl(); ++i) {
-        const VSpline spline = splinePath->GetSpline(i);
+    const auto& splinePath{ *initData.data->GeometricObject<VAbstractCubicBezierPath>(
+        node.GetId()) };
+    for (qint32 i = 1; i <= splinePath.CountSubSpl(); ++i) {
+        const VSpline spline = splinePath.GetSpline(i);
 
         QScopedPointer<VPointF> p1(new VPointF(spline.GetP1()));
         VPointF p2 = VPointF(spline.GetP2());
@@ -679,8 +677,8 @@ quint32 AddNodeSplinePath(
         const QString angle2F = QString().number(angle2);
         qreal pL2 = 0;
         QString pL2F("0");
-        if (i + 1 <= splinePath->CountSubSpl()) {
-            const VSpline nextSpline = splinePath->GetSpline(i + 1);
+        if (i + 1 <= splinePath.CountSubSpl()) {
+            const VSpline nextSpline = splinePath.GetSpline(i + 1);
             pL2 = nextSpline.GetC1Length();
             pL2F = nextSpline.GetC1LengthFormula();
         }
@@ -943,10 +941,10 @@ void UpdateNodeArc(
     quint32 pRotate,
     qreal angle)
 {
-    const QSharedPointer<VArc> arc = data->GeometricObject<VArc>(node.GetId());
-    VPointF p1 = VPointF(arc->GetP1());
-    VPointF p2 = VPointF(arc->GetP2());
-    QScopedPointer<VPointF> center(new VPointF(arc->GetCenter()));
+    const auto& arc{ *data->GeometricObject<VArc>(node.GetId()) };
+    VPointF p1 = VPointF(arc.GetP1());
+    VPointF p2 = VPointF(arc.GetP2());
+    QScopedPointer<VPointF> center(new VPointF(arc.GetCenter()));
 
     if (not qFuzzyIsNull(dx) || not qFuzzyIsNull(dy) || pRotate != NULL_ID) {
         const QPointF p = static_cast<QPointF>(*data->GeometricObject<VPointF>(pRotate));
@@ -961,8 +959,8 @@ void UpdateNodeArc(
 
     QScopedPointer<VArc> arc1(new VArc(
         *center,
-        arc->GetRadius(),
-        arc->GetFormulaRadius(),
+        arc.GetRadius(),
+        arc.GetFormulaRadius(),
         l1.angle(),
         QString().setNum(l1.angle()),
         l2.angle(),
@@ -981,10 +979,10 @@ void UpdateNodeElArc(
     quint32 pRotate,
     qreal angle)
 {
-    const QSharedPointer<VEllipticalArc> arc = data->GeometricObject<VEllipticalArc>(node.GetId());
-    VPointF p1 = VPointF(arc->GetP1());
-    VPointF p2 = VPointF(arc->GetP2());
-    QScopedPointer<VPointF> center(new VPointF(arc->GetCenter()));
+    const auto& arc{ *data->GeometricObject<VEllipticalArc>(node.GetId()) };
+    VPointF p1{ arc.GetP1() };
+    VPointF p2{ arc.GetP2() };
+    QScopedPointer<VPointF> center(new VPointF(arc.GetCenter()));
 
     if (not qFuzzyIsNull(dx) || not qFuzzyIsNull(dy) || pRotate != NULL_ID) {
         const QPointF p = static_cast<QPointF>(*data->GeometricObject<VPointF>(pRotate));
@@ -999,10 +997,10 @@ void UpdateNodeElArc(
 
     QScopedPointer<VEllipticalArc> arc1(new VEllipticalArc(
         *center,
-        arc->GetRadius1(),
-        arc->GetRadius2(),
-        arc->GetFormulaRadius1(),
-        arc->GetFormulaRadius2(),
+        arc.GetRadius1(),
+        arc.GetRadius2(),
+        arc.GetFormulaRadius1(),
+        arc.GetFormulaRadius2(),
         l1.angle(),
         QString().setNum(l1.angle()),
         l2.angle(),
@@ -1023,13 +1021,12 @@ void UpdateNodeSpline(
     quint32 pRotate,
     qreal angle)
 {
-    const QSharedPointer<VAbstractCubicBezier> spline =
-        data->GeometricObject<VAbstractCubicBezier>(node.GetId());
+    const auto& spline{ *data->GeometricObject<VAbstractCubicBezier>(node.GetId()) };
 
-    QScopedPointer<VPointF> p1(new VPointF(spline->GetP1()));
-    VPointF p2 = VPointF(spline->GetP2());
-    VPointF p3 = VPointF(spline->GetP3());
-    QScopedPointer<VPointF> p4(new VPointF(spline->GetP4()));
+    QScopedPointer<VPointF> p1(new VPointF(spline.GetP1()));
+    VPointF p2 = VPointF(spline.GetP2());
+    VPointF p3 = VPointF(spline.GetP3());
+    QScopedPointer<VPointF> p4(new VPointF(spline.GetP4()));
 
     if (not qFuzzyIsNull(dx) || not qFuzzyIsNull(dy) || pRotate != NULL_ID) {
         const QPointF p = static_cast<QPointF>(*data->GeometricObject<VPointF>(pRotate));
@@ -1057,11 +1054,9 @@ void UpdateNodeSplinePath(
 {
     QScopedPointer<VSplinePath> path(new VSplinePath());
     path->setMode(Draw::Modeling);
-    const QSharedPointer<VAbstractCubicBezierPath> splinePath =
-        data->GeometricObject<VAbstractCubicBezierPath>(node.GetId());
-    SCASSERT(splinePath != nullptr)
-    for (qint32 i = 1; i <= splinePath->CountSubSpl(); ++i) {
-        const VSpline spline = splinePath->GetSpline(i);
+    const auto& splinePath{ *data->GeometricObject<VAbstractCubicBezierPath>(node.GetId()) };
+    for (qint32 i = 1; i <= splinePath.CountSubSpl(); ++i) {
+        const VSpline spline = splinePath.GetSpline(i);
 
         QScopedPointer<VPointF> p1(new VPointF(spline.GetP1()));
         VPointF p2 = VPointF(spline.GetP2());
@@ -1099,8 +1094,8 @@ void UpdateNodeSplinePath(
 
         qreal pL2 = 0;
         QString pL2F("0");
-        if (i + 1 <= splinePath->CountSubSpl()) {
-            const VSpline nextSpline = splinePath->GetSpline(i + 1);
+        if (i + 1 <= splinePath.CountSubSpl()) {
+            const VSpline nextSpline = splinePath.GetSpline(i + 1);
             pL2 = nextSpline.GetC1Length();
             pL2F = nextSpline.GetC1LengthFormula();
         }

@@ -111,8 +111,7 @@ void VToolCut::setCurveCutId(const quint32& value)
 {
     if (value != NULL_ID) {
         curveCutId = value;
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -132,13 +131,12 @@ void VToolCut::SetFormula(const VFormula& value)
     if (value.error() == false) {
         formula = value.GetFormula(FormulaType::FromUser);
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VToolCut::CurveName() const { return VAbstractTool::data.GetGObject(curveCutId)->name(); }
+QString VToolCut::CurveName() const { return VAbstractTool::data.GetGObject(curveCutId).name(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -155,7 +153,7 @@ void VToolCut::RefreshGeometry()
  */
 void VToolCut::RemoveReferens()
 {
-    const auto curve = VAbstractTool::data.GetGObject(curveCutId);
+    const auto& curve{ VAbstractTool::data.GetGObject(curveCutId) };
 
-    doc->DecrementReferens(curve->getIdTool());
+    doc->DecrementReferens(curve.getIdTool());
 }

@@ -92,12 +92,11 @@ VisToolCurveIntersectAxis::VisToolCurveIntersectAxis(const VContainer* data, QGr
 void VisToolCurveIntersectAxis::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VAbstractCurve> curve =
-            Visualization::data->GeometricObject<VAbstractCurve>(object1Id);
+        const auto& curve{ *Visualization::data->GeometricObject<VAbstractCurve>(object1Id) };
         DrawPath(
             visCurve,
-            curve->GetPath(),
-            curve->DirectionArrows(),
+            curve.GetPath(),
+            curve.DirectionArrows(),
             supportColor,
             Qt::SolidLine,
             lineWeight,
@@ -105,21 +104,20 @@ void VisToolCurveIntersectAxis::RefreshGeometry()
 
         if (axisPointId > NULL_ID) {
             QLineF axis;
-            const QSharedPointer<VPointF> first =
-                Visualization::data->GeometricObject<VPointF>(axisPointId);
+            const auto& first{ *Visualization::data->GeometricObject<VPointF>(axisPointId) };
             if (VFuzzyComparePossibleNulls(angle, -1)) {
-                axis = Axis(static_cast<QPointF>(*first), Visualization::scenePos);
+                axis = Axis(static_cast<QPointF>(first), Visualization::scenePos);
             } else {
-                axis = Axis(static_cast<QPointF>(*first), angle);
+                axis = Axis(static_cast<QPointF>(first), angle);
             }
-            DrawPoint(basePoint, static_cast<QPointF>(*first), mainColor);
+            DrawPoint(basePoint, static_cast<QPointF>(first), mainColor);
             DrawLine(axisLine, axis, supportColor, lineWeight, Qt::DashLine);
 
             QPointF intersectPoint;
-            const bool isIntersect = VToolCurveIntersectAxis::FindPoint(
-                static_cast<QPointF>(*first), axis.angle(), curve, &intersectPoint);
+            const bool isIntersect{ VToolCurveIntersectAxis::FindPoint(
+                static_cast<QPointF>(first), axis.angle(), curve, &intersectPoint) };
             if (isIntersect) {
-                QLineF axis_line(static_cast<QPointF>(*first), intersectPoint);
+                QLineF axis_line(static_cast<QPointF>(first), intersectPoint);
                 DrawLine(this, axis_line, mainColor, lineWeight, lineStyle);
                 DrawPoint(point, intersectPoint, mainColor);
             }

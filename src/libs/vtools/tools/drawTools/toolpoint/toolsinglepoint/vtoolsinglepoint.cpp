@@ -153,8 +153,7 @@ void VToolSinglePoint::GroupVisibility(quint32 object, bool visible)
 bool VToolSinglePoint::isPointNameVisible(quint32 id) const
 {
     if (m_id == id) {
-        const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
-        return point->isShowPointName();
+        return VAbstractTool::data.GeometricObject<VPointF>(id)->isShowPointName();
     } else {
         return false;
     }
@@ -164,9 +163,9 @@ bool VToolSinglePoint::isPointNameVisible(quint32 id) const
 void VToolSinglePoint::setPointNameVisiblity(quint32 id, bool visible)
 {
     if (m_id == id) {
-        const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
-        point->setShowPointName(visible);
-        refreshPointGeometry(*point);
+        auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(id) };
+        point.setShowPointName(visible);
+        refreshPointGeometry(point);
     }
 }
 
@@ -182,9 +181,9 @@ void VToolSinglePoint::updatePointNameVisibility(quint32 id, bool visible)
 void VToolSinglePoint::setPointNamePosition(quint32 id, const QPointF& pos)
 {
     if (id == m_id) {
-        QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
-        point->setMx(pos.x());
-        point->setMy(pos.y());
+        auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(id) };
+        point.setMx(pos.x());
+        point.setMy(pos.y());
         m_pointName->blockSignals(true);
         m_pointName->setPosition(pos);
         m_pointName->blockSignals(false);
@@ -337,12 +336,12 @@ void VToolSinglePoint::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolSinglePoint::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolSinglePoint::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
-    QSharedPointer<VPointF> point = qSharedPointerDynamicCast<VPointF>(obj);
-    SCASSERT(point.isNull() == false)
+    const auto* point{ dynamic_cast<const VPointF*>(obj) };
+    SCASSERT(point)
 
     doc->SetAttribute(tag, AttrName, point->name());
     doc->SetAttribute(tag, AttrMx, qApp->fromPixel(point->mx()));

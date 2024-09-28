@@ -101,10 +101,7 @@ public:
         const Source& typeCreation);
 
     static bool FindPoint(
-        const QPointF& point,
-        qreal angle,
-        const QSharedPointer<VAbstractCurve>& curve,
-        QPointF* intersectPoint);
+        const QPointF& point, qreal angle, const VAbstractCurve& curve, QPointF* intersectPoint);
 
     static const QString ToolType;
     int type() const override { return Type; }
@@ -128,7 +125,7 @@ protected slots:
 
 protected:
     void SaveDialog(QDomElement& domElement) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     void ReadToolAttributes(const QDomElement& domElement) override;
     void SetVisualization() override;
 

@@ -392,8 +392,8 @@ void DialogEndLine::ShowDialog(bool click)
             /*We will ignore click if pointer is in point circle*/
             VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
             SCASSERT(scene != nullptr)
-            const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(GetBasePointId());
-            QLineF line = QLineF(static_cast<QPointF>(*point), scene->getScenePos());
+            const auto& point{ *data->GeometricObject<VPointF>(GetBasePointId()) };
+            const QLineF line{ static_cast<QPointF>(point), scene->getScenePos() };
 
             // Radius of point circle, but little bigger. Need handle with hover sizes.
             if (line.length() <= defPointRadiusPixel * 1.5) {

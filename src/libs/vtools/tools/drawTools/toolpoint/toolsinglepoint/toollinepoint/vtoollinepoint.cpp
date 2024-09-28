@@ -154,12 +154,12 @@ void VToolLinePoint::RefreshGeometry()
  */
 void VToolLinePoint::RemoveReferens()
 {
-    const auto basePoint = VAbstractTool::data.GetGObject(basePointId);
-    doc->DecrementReferens(basePoint->getIdTool());
+    const auto& basePoint{ VAbstractTool::data.GetGObject(basePointId) };
+    doc->DecrementReferens(basePoint.getIdTool());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolLinePoint::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolLinePoint::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 
@@ -185,10 +185,10 @@ void VToolLinePoint::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolLinePoint::makeToolTip() const
 {
-    const QSharedPointer<VPointF> first = VAbstractTool::data.GeometricObject<VPointF>(basePointId);
-    const QSharedPointer<VPointF> second = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& first{ *VAbstractTool::data.GeometricObject<VPointF>(basePointId) };
+    const auto& second{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
 
-    const QLineF line(static_cast<QPointF>(*first), static_cast<QPointF>(*second));
+    const QLineF line{ static_cast<QPointF>(first), static_cast<QPointF>(second) };
 
     const QString toolTip = QString(
                                 "<table>"
@@ -202,7 +202,7 @@ QString VToolLinePoint::makeToolTip() const
                                 .arg(tr("Angle"))
                                 .arg(line.angle())
                                 .arg(tr("Name"))
-                                .arg(second->name());
+                                .arg(second.name());
 
     return toolTip;
 }
@@ -232,8 +232,8 @@ qreal VToolLinePoint::GetAngle() const { return angle; }
 void VToolLinePoint::SetAngle(const qreal& value)
 {
     angle = value;
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOption(obj);
+
+    SaveOption(&VAbstractTool::data.GetGObject(m_id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -244,8 +244,7 @@ void VToolLinePoint::setLineColor(const QString& value)
 {
     lineColor = value;
 
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOption(obj);
+    SaveOption(&VAbstractTool::data.GetGObject(m_id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -257,8 +256,7 @@ void VToolLinePoint::SetBasePointId(const quint32& value)
     if (value != NULL_ID) {
         basePointId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -279,13 +277,12 @@ void VToolLinePoint::SetFormulaLength(const VFormula& value)
     if (value.error() == false) {
         formulaLength = value.GetFormula(FormulaType::FromUser);
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolLinePoint::BasePointName() const
 {
-    return VAbstractTool::data.GetGObject(basePointId)->name();
+    return VAbstractTool::data.GetGObject(basePointId).name();
 }

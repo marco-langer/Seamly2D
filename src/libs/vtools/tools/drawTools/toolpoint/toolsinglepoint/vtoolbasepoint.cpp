@@ -125,8 +125,8 @@ void VToolBasePoint::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogSinglePoint> dialogTool = m_dialog.objectCast<DialogSinglePoint>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
-    dialogTool->SetData(p->name(), static_cast<QPointF>(*p));
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
+    dialogTool->SetData(p.name(), static_cast<QPointF>(p));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -180,8 +180,7 @@ void VToolBasePoint::AddToFile()
     QDomElement sPoint = doc->createElement(getTagName());
 
     // Create SPoint tag
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOptions(sPoint, obj);
+    SaveOptions(sPoint, &VAbstractTool::data.GetGObject(m_id));
 
     // Create pattern piece structure
     QDomElement patternPiece = doc->createElement(VAbstractPattern::TagDraftBlock);
@@ -266,21 +265,18 @@ void VToolBasePoint::decrementReferens()
 //---------------------------------------------------------------------------------------------------------------------
 QPointF VToolBasePoint::GetBasePointPos() const
 {
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
-    QPointF pos(qApp->fromPixel(p->x()), qApp->fromPixel(p->y()));
-    return pos;
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
+    return QPointF{ qApp->fromPixel(p.x()), qApp->fromPixel(p.y()) };
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VToolBasePoint::SetBasePointPos(const QPointF& pos)
 {
-    QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
-    p->setX(qApp->toPixel(pos.x()));
-    p->setY(qApp->toPixel(pos.y()));
+    auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
+    p.setX(qApp->toPixel(pos.x()));
+    p.setY(qApp->toPixel(pos.y()));
 
-    QSharedPointer<VGObject> obj = qSharedPointerCast<VGObject>(p);
-
-    SaveOption(obj);
+    SaveOption(&p);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -367,12 +363,12 @@ void VToolBasePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolBasePoint::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolBasePoint::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 
-    QSharedPointer<VPointF> point = qSharedPointerDynamicCast<VPointF>(obj);
-    SCASSERT(point.isNull() == false)
+    const auto* point{ dynamic_cast<const VPointF*>(obj) };
+    SCASSERT(point)
 
     doc->SetAttribute(tag, AttrType, ToolType);
     doc->SetAttribute(tag, AttrX, qApp->fromPixel(point->x()));
@@ -389,14 +385,14 @@ void VToolBasePoint::ReadToolAttributes(const QDomElement& domElement)
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolBasePoint::makeToolTip() const
 {
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
 
     const QString toolTipStr = QString(
                                    "<table>"
                                    "<tr> <td><b>%1:</b> %2</td> </tr>"
                                    "</table>")
                                    .arg(tr("Name"))
-                                   .arg(point->name());
+                                   .arg(point.name());
     return toolTipStr;
 }
 

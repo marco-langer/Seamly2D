@@ -93,7 +93,7 @@ void VAbstractMirror::createDestination(
         for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
             const quint32 objectId = item.id;
-            const QSharedPointer<VGObject> obj = data->GetGObject(objectId);
+            const auto& obj{ data->GetGObject(objectId) };
 
             // This check helps to find missed objects in the switch
             Q_STATIC_ASSERT_X(
@@ -101,7 +101,7 @@ void VAbstractMirror::createDestination(
 
             QT_WARNING_PUSH
             QT_WARNING_DISABLE_GCC("-Wswitch-default")
-            switch (static_cast<GOType>(obj->getType())) {
+            switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point:
                 dest.append(createPoint(id, objectId, fPoint, sPoint, suffix, data));
                 break;
@@ -137,7 +137,7 @@ void VAbstractMirror::createDestination(
         for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
             const quint32 objectId = item.id;
-            const QSharedPointer<VGObject> obj = data->GetGObject(objectId);
+            const auto& obj{ data->GetGObject(objectId) };
 
             // This check helps to find missed objects in the switch
             Q_STATIC_ASSERT_X(
@@ -145,7 +145,7 @@ void VAbstractMirror::createDestination(
 
             QT_WARNING_PUSH
             QT_WARNING_DISABLE_GCC("-Wswitch-default")
-            switch (static_cast<GOType>(obj->getType())) {
+            switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point: {
                 const DestinationItem& item = dest.at(i);
                 updatePoint(id, objectId, fPoint, sPoint, suffix, data, item);
@@ -196,8 +196,8 @@ DestinationItem VAbstractMirror::createPoint(
     const QString& suffix,
     VContainer* data)
 {
-    const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(idItem);
-    VPointF rotated = point->Flip(QLineF(firstPoint, secondPoint), suffix);
+    VPointF rotated{ data->GeometricObject<VPointF>(idItem)->Flip(
+        QLineF(firstPoint, secondPoint), suffix) };
     rotated.setIdObject(idTool);
 
     DestinationItem item;
@@ -234,8 +234,8 @@ void VAbstractMirror::updatePoint(
     VContainer* data,
     const DestinationItem& item)
 {
-    const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(idItem);
-    VPointF rotated = point->Flip(QLineF(firstPoint, secondPoint), suffix);
+    VPointF rotated{ data->GeometricObject<VPointF>(idItem)->Flip(
+        QLineF(firstPoint, secondPoint), suffix) };
     rotated.setIdObject(idTool);
     rotated.setMx(item.mx);
     rotated.setMy(item.my);

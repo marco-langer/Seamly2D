@@ -75,13 +75,12 @@ VisToolLine::VisToolLine(const VContainer* data, QGraphicsItem* parent)
 void VisToolLine::RefreshGeometry()
 {
     QLineF line;
-    const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
+    const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
     if (point2Id == NULL_ID) {
-        line = QLineF(static_cast<QPointF>(*first), Visualization::scenePos);
+        line = QLineF{ static_cast<QPointF>(first), Visualization::scenePos };
     } else {
-        const QSharedPointer<VPointF> second =
-            Visualization::data->GeometricObject<VPointF>(point2Id);
-        line = QLineF(static_cast<QPointF>(*first), static_cast<QPointF>(*second));
+        const auto& second{ *Visualization::data->GeometricObject<VPointF>(point2Id) };
+        line = QLineF{ static_cast<QPointF>(first), static_cast<QPointF>(second) };
     }
     DrawLine(this, line, mainColor, lineWeight, lineStyle);
 }

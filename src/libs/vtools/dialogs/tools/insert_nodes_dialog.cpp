@@ -167,17 +167,17 @@ void InsertNodesDialog::SelectedObject(bool selected, quint32 objId, quint32 too
         if (nodeIterator == m_nodes.cend()) {
             GOType objType = GOType::Unknown;
             try {
-                objType = data->GetGObject(objId)->getType();
+                objType = data->GetGObject(objId).getType();
             } catch (const VExceptionBadId&) {
                 qWarning() << "Cannot find an object with id" << objId;
                 return;
             }
             m_beep->play();
             bool appendCurve = false;
-            QSharedPointer<VGObject> previousObj = nullptr;
+            const VGObject* previousObj{ nullptr };
             quint32 previousObjId = getLastNodeId();
             if (previousObjId != NULL_ID) {
-                previousObj = data->GetGObject(previousObjId);
+                previousObj = &data->GetGObject(previousObjId);
             }
 
             VPieceNode node;
@@ -190,13 +190,12 @@ void InsertNodesDialog::SelectedObject(bool selected, quint32 objId, quint32 too
                     if (previousObjType == GOType::Arc || previousObjType == GOType::EllipticalArc
                         || previousObjType == GOType::Spline
                         || previousObjType == GOType::CubicBezier) {
-                        const QSharedPointer<VAbstractCurve> curve =
-                            data->GeometricObject<VAbstractCurve>(previousObjId);
+                        const auto& curve{ *data->GeometricObject<VAbstractCurve>(previousObjId) };
                         const QPointF point =
                             static_cast<QPointF>(*data->GeometricObject<VPointF>(objId));
 
-                        if (curve->isPointOnCurve(point) && point != curve->getFirstPoint()
-                            && point != curve->getLastPoint()) {
+                        if (curve.isPointOnCurve(point) && point != curve.getFirstPoint()
+                            && point != curve.getLastPoint()) {
                             switch (previousObjType) {
                             case GOType::Arc:
                                 node2 = VPieceNode(
@@ -461,21 +460,21 @@ quint32 InsertNodesDialog::getLastNodeId() const
  */
 bool InsertNodesDialog::correctCurveDirection(quint32 curveObjId)
 {
-    const QSharedPointer<VGObject> curveObj = data->GetGObject(curveObjId);
-    const QString curveName = curveObj->name();
+    const auto& curveObj{ data->GetGObject(curveObjId) };
+    const QString curveName = curveObj.name();
     quint32 nodeId;
-    const QSharedPointer<VAbstractCurve> curve = data->GeometricObject<VAbstractCurve>(curveObjId);
+    const auto& curve{ *data->GeometricObject<VAbstractCurve>(curveObjId) };
 
     for (auto& node : m_nodes) {
         nodeId = node.GetId();
-        const QSharedPointer<VGObject> nodeObj = data->GetGObject(nodeId);
-        if (static_cast<GOType>(nodeObj->getType()) == GOType::Point) {
+        const auto& nodeObj{ data->GetGObject(nodeId) };
+        if (static_cast<GOType>(nodeObj.getType()) == GOType::Point) {
             const QPointF point = static_cast<QPointF>(*data->GeometricObject<VPointF>(nodeId));
-            if (point == curve->getLastPoint()) {
+            if (point == curve.getLastPoint()) {
                 ui->statusMsg_Label->setText(
                     ui->statusMsg_Label->text() + curveName + tr(" was auto reversed.") + "\n");
                 return true;
-            } else if (point == curve->getFirstPoint()) {
+            } else if (point == curve.getFirstPoint()) {
                 return false;
             }
         }
@@ -497,14 +496,14 @@ void InsertNodesDialog::insertCurveNodes(VPieceNode curveNode)
     quint32 prevNodeId;
     quint32 curveNodeId = curveNode.GetId();
 
-    const QSharedPointer<VAbstractCurve> curve = data->GeometricObject<VAbstractCurve>(curveNodeId);
+    const auto& curve{ *data->GeometricObject<VAbstractCurve>(curveNodeId) };
     for (int i = 0; i < m_nodes.size(); ++i) {
         nodeId = m_nodes.value(i).GetId();
-        const QSharedPointer<VGObject> nodeObj = data->GetGObject(nodeId);
-        if (static_cast<GOType>(nodeObj->getType()) == GOType::Point) {
+        const auto& nodeObj{ data->GetGObject(nodeId) };
+        if (static_cast<GOType>(nodeObj.getType()) == GOType::Point) {
             const QPointF point = static_cast<QPointF>(*data->GeometricObject<VPointF>(nodeId));
-            if (curve->isPointOnCurve(point) && point != curve->getFirstPoint()
-                && point != curve->getLastPoint() && curveNodeId != nodeId) {
+            if (curve.isPointOnCurve(point) && point != curve.getFirstPoint()
+                && point != curve.getLastPoint() && curveNodeId != nodeId) {
                 if (i > 0) {
                     prevNodeId = m_nodes.value(i - 1).GetId();
                 }

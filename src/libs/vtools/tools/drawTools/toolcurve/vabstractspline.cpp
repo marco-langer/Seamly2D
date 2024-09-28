@@ -91,9 +91,8 @@ VAbstractSpline::VAbstractSpline(
 //---------------------------------------------------------------------------------------------------------------------
 QPainterPath VAbstractSpline::shape() const
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    const QVector<QPointF> points = curve->getPoints();
+    const auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id) };
+    const QVector<QPointF> points{ curve.getPoints() };
 
     QPainterPath path;
     for (qint32 i = 0; i < points.count() - 1; ++i) {
@@ -103,7 +102,7 @@ QPainterPath VAbstractSpline::shape() const
 
     if (m_isHovered || m_piecesMode) {
         path.addPath(VAbstractCurve::ShowDirection(
-            curve->DirectionArrows(),
+            curve.DirectionArrows(),
             scaleWidth(VAbstractCurve::lengthCurveDirectionArrow, sceneScale(scene()))));
     }
     path.setFillRule(Qt::WindingFill);
@@ -118,16 +117,15 @@ void VAbstractSpline::paint(
     // sceneScale(scene()));
 
 
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
+    const auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id) };
     const qreal weight =
-        ToPixel(doc->useGroupLineWeight(m_id, curve->getLineWeight()).toDouble(), Unit::Mm);
+        ToPixel(doc->useGroupLineWeight(m_id, curve.getLineWeight()).toDouble(), Unit::Mm);
     const qreal width = scaleWidth(m_isHovered ? weight + 4 : weight, sceneScale(scene()));
 
     setPen(QPen(
-        correctColor(this, doc->useGroupColor(m_id, curve->getLineColor())),
+        correctColor(this, doc->useGroupColor(m_id, curve.getLineColor())),
         width,
-        lineTypeToPenStyle(doc->useGroupLineType(m_id, curve->GetPenStyle())),
+        lineTypeToPenStyle(doc->useGroupLineType(m_id, curve.GetPenStyle())),
         Qt::RoundCap));
 
     refreshCtrlPoints();
@@ -142,7 +140,7 @@ void VAbstractSpline::paint(
         painter->setBrush(brush());
 
         painter->drawPath(VAbstractCurve::ShowDirection(
-            curve->DirectionArrows(),
+            curve.DirectionArrows(),
             scaleWidth(VAbstractCurve::lengthCurveDirectionArrow, sceneScale(scene()))));
 
         painter->restore();
@@ -192,8 +190,7 @@ void VAbstractSpline::AllowSelecting(bool enabled)
 //---------------------------------------------------------------------------------------------------------------------
 QString VAbstractSpline::makeToolTip() const
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
+    const auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id) };
 
     const QString toolTip = QString(
                                 "<table>"
@@ -201,10 +198,10 @@ QString VAbstractSpline::makeToolTip() const
                                 "<tr> <td><b>%1:</b> %2 %3</td> </tr>"
                                 "</table>")
                                 .arg(tr("Length"))
-                                .arg(qApp->fromPixel(curve->GetLength()))
+                                .arg(qApp->fromPixel(curve.GetLength()))
                                 .arg(UnitsToStr(qApp->patternUnit(), true))
                                 .arg(tr("Name"))
-                                .arg(curve->name());
+                                .arg(curve.name());
 
     return toolTip;
 }
@@ -318,11 +315,13 @@ void VAbstractSpline::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 void VAbstractSpline::ReadToolAttributes(const QDomElement& domElement) { Q_UNUSED(domElement) }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractSpline::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VAbstractSpline::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
-    const QSharedPointer<VAbstractCurve> curve = qSharedPointerCast<VAbstractCurve>(obj);
+    const auto* curve{ dynamic_cast<const VAbstractCurve*>(obj) };
+    SCASSERT(curve)
+
     doc->SetAttribute(tag, AttrColor, curve->getLineColor());
     doc->SetAttribute(tag, AttrPenStyle, curve->GetPenStyle());
     doc->SetAttribute(tag, AttrLineWeight, curve->getLineWeight());
@@ -418,9 +417,7 @@ VSpline VAbstractSpline::CorrectedSpline(
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractSpline::InitDefShape()
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    this->setPath(curve->GetPath());
+    this->setPath(VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id)->GetPath());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -434,37 +431,29 @@ void VAbstractSpline::ShowHandles(bool show)
 //---------------------------------------------------------------------------------------------------------------------
 QString VAbstractSpline::getLineColor() const
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    return curve->getLineColor();
+    return VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id)->getLineColor();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractSpline::setLineColor(const QString& value)
 {
-    QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    curve->setLineColor(value);
-    QSharedPointer<VGObject> obj = qSharedPointerCast<VGObject>(curve);
-    SaveOption(obj);
+    auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id) };
+    curve.setLineColor(value);
+    SaveOption(&curve);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VAbstractSpline::GetPenStyle() const
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    return curve->GetPenStyle();
+    return VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id)->GetPenStyle();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractSpline::SetPenStyle(const QString& value)
 {
-    QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    curve->SetPenStyle(value);
-    QSharedPointer<VGObject> obj = qSharedPointerCast<VGObject>(curve);
-    SaveOption(obj);
+    auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id) };
+    curve.SetPenStyle(value);
+    SaveOption(&curve);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -474,9 +463,7 @@ void VAbstractSpline::SetPenStyle(const QString& value)
  */
 QString VAbstractSpline::getLineWeight() const
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    return curve->getLineWeight();
+    return VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id)->getLineWeight();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -486,11 +473,9 @@ QString VAbstractSpline::getLineWeight() const
  */
 void VAbstractSpline::setLineWeight(const QString& value)
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id);
-    curve->setLineWeight(value);
-    QSharedPointer<VGObject> obj = qSharedPointerCast<VGObject>(curve);
-    SaveOption(obj);
+    auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(m_id) };
+    curve.setLineWeight(value);
+    SaveOption(&curve);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

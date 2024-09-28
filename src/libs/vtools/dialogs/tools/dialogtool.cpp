@@ -590,13 +590,13 @@ QFont DialogTool::NodeFont(bool nodeExcluded)
 NodeInfo DialogTool::getNodeInfo(const VPieceNode& node, bool showNotch) const
 {
     NodeInfo info;
-    const QSharedPointer<VGObject> obj = data->GetGObject(node.GetId());
-    info.name = obj->name();
+    const auto& obj{ data->GetGObject(node.GetId()) };
+    info.name = obj.name();
     info.icon = "://icon/24x24/spacer.png";
 
     if (node.GetTypeTool() != Tool::NodePoint) {
         int bias = 0;
-        qApp->translateVariables()->VariablesToUser(info.name, 0, obj->name(), bias);
+        qApp->translateVariables()->VariablesToUser(info.name, 0, obj.name(), bias);
 
         if (node.GetReverse()) {
             info.icon = "://icon/24x24/reverse.png";
@@ -979,15 +979,14 @@ void DialogTool::FillList(QComboBox* box, const QMap<QString, quint32>& list) co
 template <typename T>
 void DialogTool::PrepareList(QMap<QString, quint32>& list, quint32 id) const
 {
-    const auto obj = data->GeometricObject<T>(id);
-    SCASSERT(obj != nullptr)
+    const auto& obj{ *data->GeometricObject<T>(id) };
 
-    QString newName = obj->name();
+    QString newName = obj.name();
     int bias = 0;
-    if (qApp->translateVariables()->VariablesToUser(newName, 0, obj->name(), bias)) {
+    if (qApp->translateVariables()->VariablesToUser(newName, 0, obj.name(), bias)) {
         list[newName] = id;
     } else {
-        list[obj->name()] = id;
+        list[obj.name()] = id;
     }
 }
 

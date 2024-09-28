@@ -174,7 +174,7 @@ protected:
 
     void AddToFile() override;
     void ReadToolAttributes(const QDomElement& domElement) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
 
 
     // void         updatePointNameVisibility(quint32 id, bool visible) override;

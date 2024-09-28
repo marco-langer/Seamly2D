@@ -99,14 +99,14 @@ template <class Item>
 int VisOperation::addFlippedCurve(
     const QPointF& firstPoint, const QPointF& secondPoint, quint32 id, int i)
 {
-    const QSharedPointer<Item> curve = Visualization::data->template GeometricObject<Item>(id);
+    const auto& curve{ *Visualization::data->template GeometricObject<Item>(id) };
 
     ++i;
     VCurvePathItem* path = GetCurve(static_cast<quint32>(i), supportColor2);
     DrawPath(
         path,
-        curve->GetPath(),
-        curve->DirectionArrows(),
+        curve.GetPath(),
+        curve.DirectionArrows(),
         supportColor2,
         Qt::SolidLine,
         lineWeight,
@@ -115,7 +115,7 @@ int VisOperation::addFlippedCurve(
     ++i;
     path = GetCurve(static_cast<quint32>(i), supportColor);
     if (object1Id != NULL_ID) {
-        const Item flipped = curve->Flip(QLineF(firstPoint, secondPoint));
+        const Item flipped{ curve.Flip(QLineF(firstPoint, secondPoint)) };
         DrawPath(
             path,
             flipped.GetPath(),

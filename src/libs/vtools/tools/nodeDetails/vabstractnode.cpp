@@ -51,7 +51,6 @@
 
 #include "vabstractnode.h"
 
-#include <QSharedPointer>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -108,8 +107,7 @@ void VAbstractNode::incrementReferens()
         if (idTool != NULL_ID) {
             doc->IncrementReferens(idTool);
         } else {
-            const QSharedPointer<VGObject> node = VAbstractTool::data.GetGObject(idNode);
-            doc->IncrementReferens(node->getIdTool());
+            doc->IncrementReferens(VAbstractTool::data.GetGObject(idNode).getIdTool());
         }
         ShowNode();
         QDomElement domElement = doc->elementById(m_id, getTagName());
@@ -130,8 +128,7 @@ void VAbstractNode::decrementReferens()
         if (idTool != NULL_ID) {
             doc->DecrementReferens(idTool);
         } else {
-            const QSharedPointer<VGObject> node = VAbstractTool::data.GetGObject(idNode);
-            doc->DecrementReferens(node->getIdTool());
+            doc->DecrementReferens(VAbstractTool::data.GetGObject(idNode).getIdTool());
         }
         HideNode();
         QDomElement domElement = doc->elementById(m_id, getTagName());

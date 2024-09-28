@@ -108,20 +108,20 @@ void VisToolSpline::RefreshGeometry()
     const static qreal radius = defPointRadiusPixel * 1.5;
 
     if (object1Id > NULL_ID) {
-        const auto first = Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(point1, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(point1, static_cast<QPointF>(first), supportColor);
 
         if (mode == Mode::Creation) {
             if (isLeftMousePressed && not p2Selected) {
                 p2 = Visualization::scenePos;
                 controlPoints[0]->refreshCtrlPoint(
-                    1, SplinePointPosition::FirstPoint, p2, static_cast<QPointF>(*first));
+                    1, SplinePointPosition::FirstPoint, p2, static_cast<QPointF>(first));
 
                 if (not controlPoints[0]->isVisible()) {
-                    if (QLineF(static_cast<QPointF>(*first), p2).length() > radius) {
+                    if (QLineF{ static_cast<QPointF>(first), p2 }.length() > radius) {
                         controlPoints[0]->show();
                     } else {
-                        p2 = static_cast<QPointF>(*first);
+                        p2 = static_cast<QPointF>(first);
                     }
                 }
             } else {
@@ -130,25 +130,27 @@ void VisToolSpline::RefreshGeometry()
         }
 
         if (object4Id <= NULL_ID) {
-            VSpline spline(*first, p2, Visualization::scenePos, VPointF(Visualization::scenePos));
+            const VSpline spline{
+                first, p2, Visualization::scenePos, VPointF{ Visualization::scenePos }
+            };
             DrawPath(this, spline.GetPath(), mainColor, lineStyle, lineWeight, Qt::RoundCap);
         } else {
-            const auto second = Visualization::data->GeometricObject<VPointF>(object4Id);
-            DrawPoint(point4, static_cast<QPointF>(*second), supportColor);
+            const auto& second{ *Visualization::data->GeometricObject<VPointF>(object4Id) };
+            DrawPoint(point4, static_cast<QPointF>(second), supportColor);
 
             if (mode == Mode::Creation) {
                 if (isLeftMousePressed && not p3Selected) {
-                    QLineF ctrlLine(static_cast<QPointF>(*second), Visualization::scenePos);
+                    QLineF ctrlLine{ static_cast<QPointF>(second), Visualization::scenePos };
                     ctrlLine.setAngle(ctrlLine.angle() + 180);
                     p3 = ctrlLine.p2();
                     controlPoints[1]->refreshCtrlPoint(
-                        1, SplinePointPosition::LastPoint, p3, static_cast<QPointF>(*second));
+                        1, SplinePointPosition::LastPoint, p3, static_cast<QPointF>(second));
 
                     if (not controlPoints[1]->isVisible()) {
-                        if (QLineF(static_cast<QPointF>(*second), p3).length() > radius) {
+                        if (QLineF{ static_cast<QPointF>(second), p3 }.length() > radius) {
                             controlPoints[1]->show();
                         } else {
-                            p3 = static_cast<QPointF>(*second);
+                            p3 = static_cast<QPointF>(second);
                         }
                     }
                 } else {
@@ -158,10 +160,15 @@ void VisToolSpline::RefreshGeometry()
 
             if (VFuzzyComparePossibleNulls(angle1, EMPTY_ANGLE)
                 || VFuzzyComparePossibleNulls(angle2, EMPTY_ANGLE)) {
-                VSpline spline(*first, p2, p3, *second);
-                DrawPath(this, spline.GetPath(), mainColor, lineStyle, lineWeight, Qt::RoundCap);
+                DrawPath(
+                    this,
+                    VSpline{ first, p2, p3, second }.GetPath(),
+                    mainColor,
+                    lineStyle,
+                    lineWeight,
+                    Qt::RoundCap);
             } else {
-                VSpline spline(*first, *second, angle1, angle2, kAsm1, kAsm2, kCurve);
+                const VSpline spline{ first, second, angle1, angle2, kAsm1, kAsm2, kCurve };
                 DrawPath(
                     this,
                     spline.GetPath(),

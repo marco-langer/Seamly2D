@@ -88,8 +88,7 @@ void VAbstractOperation::setSuffix(const QString& suffix)
 {
     // Don't know if need check name here.
     this->suffix = suffix;
-    QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-    SaveOption(obj);
+    SaveOption(VContainer::GetFakeGObject(m_id).get());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -139,9 +138,9 @@ void VAbstractOperation::setPointNameVisiblity(quint32 id, bool visible)
         if (obj && obj->GetType() == GOType::Point) {
             VSimplePoint* item = qobject_cast<VSimplePoint*>(obj);
             SCASSERT(item != nullptr)
-            const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
-            point->setShowPointName(visible);
-            item->refreshPointGeometry(*point);
+            auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(id) };
+            point.setShowPointName(visible);
+            item->refreshPointGeometry(point);
         }
     }
 }
@@ -172,10 +171,10 @@ void VAbstractOperation::setPointNamePosition(quint32 id, const QPointF& pos)
         if (obj && obj->GetType() == GOType::Point) {
             VSimplePoint* item = qobject_cast<VSimplePoint*>(obj);
             SCASSERT(item != nullptr)
-            QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
-            point->setMx(pos.x());
-            point->setMy(pos.y());
-            item->refreshPointGeometry(*(point.data()));
+            auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(id) };
+            point.setMx(pos.x());
+            point.setMy(pos.y());
+            item->refreshPointGeometry(point);
 
             if (QGraphicsScene* sc = scene()) {
                 VMainGraphicsView::NewSceneRect(sc, qApp->getSceneView(), item);
@@ -514,8 +513,7 @@ VAbstractOperation::VAbstractOperation(
 void VAbstractOperation::AddToFile()
 {
     QDomElement domElement = doc->createElement(getTagName());
-    QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-    SaveOptions(domElement, obj);
+    SaveOptions(domElement, VContainer::GetFakeGObject(m_id).get());
     AddToCalculation(domElement);
 }
 
@@ -527,7 +525,7 @@ void VAbstractOperation::ReadToolAttributes(const QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VAbstractOperation::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VAbstractOperation::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
@@ -630,14 +628,14 @@ void VAbstractOperation::InitOperatedObjects()
 {
     for (int i = 0; i < destination.size(); ++i) {
         const DestinationItem item = destination.at(i);
-        const QSharedPointer<VGObject> object = VAbstractTool::data.GetGObject(item.id);
+        const auto& object{ VAbstractTool::data.GetGObject(item.id) };
 
         // This check helps to find missed objects in the switch
         Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
         QT_WARNING_PUSH
         QT_WARNING_DISABLE_GCC("-Wswitch-default")
-        switch (static_cast<GOType>(object->getType())) {
+        switch (static_cast<GOType>(object.getType())) {
         case GOType::Point: {
             VSimplePoint* point = new VSimplePoint(item.id, QColor(Qt::black));
             point->setParentItem(this);
@@ -665,18 +663,18 @@ void VAbstractOperation::InitOperatedObjects()
             break;
         }
         case GOType::Arc:
-            InitCurve(item.id, &(VAbstractTool::data), object->getType(), SceneObject::Arc);
+            InitCurve(item.id, &(VAbstractTool::data), object.getType(), SceneObject::Arc);
             break;
         case GOType::EllipticalArc:
-            InitCurve(item.id, &(VAbstractTool::data), object->getType(), SceneObject::ElArc);
+            InitCurve(item.id, &(VAbstractTool::data), object.getType(), SceneObject::ElArc);
             break;
         case GOType::Spline:
         case GOType::CubicBezier:
-            InitCurve(item.id, &(VAbstractTool::data), object->getType(), SceneObject::Spline);
+            InitCurve(item.id, &(VAbstractTool::data), object.getType(), SceneObject::Spline);
             break;
         case GOType::SplinePath:
         case GOType::CubicBezierPath:
-            InitCurve(item.id, &(VAbstractTool::data), object->getType(), SceneObject::SplinePath);
+            InitCurve(item.id, &(VAbstractTool::data), object.getType(), SceneObject::SplinePath);
             break;
         case GOType::Unknown:
         case GOType::Curve:
@@ -691,22 +689,21 @@ void VAbstractOperation::InitOperatedObjects()
 //---------------------------------------------------------------------------------------------------------------------
 QString VAbstractOperation::complexPointToolTip(quint32 itemId) const
 {
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(itemId);
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(itemId) };
 
     const QString toolTipStr = QString(
                                    "<table>"
                                    "<tr> <td><b>%1:</b> %2</td> </tr>"
                                    "%3"
                                    "</table>")
-                                   .arg(tr("Name"), point->name(), makeToolTip());
+                                   .arg(tr("Name"), point.name(), makeToolTip());
     return toolTipStr;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VAbstractOperation::complexCurveToolTip(quint32 itemId) const
 {
-    const QSharedPointer<VAbstractCurve> curve =
-        VAbstractTool::data.GeometricObject<VAbstractCurve>(itemId);
+    const auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(itemId) };
 
     const QString toolTipStr = QString(
                                    "<table>"
@@ -715,9 +712,9 @@ QString VAbstractOperation::complexCurveToolTip(quint32 itemId) const
                                    "%6"
                                    "</table>")
                                    .arg(tr("Name"))
-                                   .arg(curve->name())
+                                   .arg(curve.name())
                                    .arg(tr("Length"))
-                                   .arg(qApp->fromPixel(curve->GetLength()))
+                                   .arg(qApp->fromPixel(curve.GetLength()))
                                    .arg(UnitsToStr(qApp->patternUnit(), true))
                                    .arg(makeToolTip());
     return toolTipStr;

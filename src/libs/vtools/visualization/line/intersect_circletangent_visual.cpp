@@ -73,25 +73,23 @@ void IntersectCircleTangentVisual::RefreshGeometry()
 {
     if (object1Id > NULL_ID)   // tangent point
     {
-        const QSharedPointer<VPointF> tan =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(tangent, static_cast<QPointF>(*tan), supportColor);
+        const auto& tan{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(tangent, static_cast<QPointF>(tan), supportColor);
 
         if (object2Id > NULL_ID)   // circle center
         {
-            const QSharedPointer<VPointF> center =
-                Visualization::data->GeometricObject<VPointF>(object2Id);
-            DrawPoint(cCenter, static_cast<QPointF>(*center), supportColor);
+            const auto& center{ *Visualization::data->GeometricObject<VPointF>(object2Id) };
+            DrawPoint(cCenter, static_cast<QPointF>(center), supportColor);
 
             if (cRadius > 0) {
                 cPath->setRect(PointRect(cRadius));
                 DrawPoint(
-                    cPath, static_cast<QPointF>(*center), m_secondarySupportColor, Qt::DashLine);
+                    cPath, static_cast<QPointF>(center), m_secondarySupportColor, Qt::DashLine);
 
-                FindRays(static_cast<QPointF>(*tan), static_cast<QPointF>(*center), cRadius);
+                FindRays(static_cast<QPointF>(tan), static_cast<QPointF>(center), cRadius);
 
-                const QPointF fPoint = IntersectCircleTangentTool::FindPoint(
-                    static_cast<QPointF>(*tan), static_cast<QPointF>(*center), cRadius, crossPoint);
+                const QPointF fPoint{ IntersectCircleTangentTool::FindPoint(
+                    static_cast<QPointF>(tan), static_cast<QPointF>(center), cRadius, crossPoint) };
                 DrawPoint(point, fPoint, mainColor);
             }
         }

@@ -134,7 +134,7 @@ inline void VToolCut::ShowToolVisualization(bool show)
     }
 
     VDataTool* parent =
-        VAbstractPattern::getTool(VAbstractTool::data.GetGObject(curveCutId)->getIdTool());
+        VAbstractPattern::getTool(VAbstractTool::data.GetGObject(curveCutId).getIdTool());
     if (VAbstractSpline* parentCurve = qobject_cast<VAbstractSpline*>(parent)) {
         m_piecesMode ? parentCurve->ShowHandles(m_piecesMode) : parentCurve->ShowHandles(show);
     }

@@ -56,7 +56,6 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointF>
-#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <QtGlobal>
@@ -122,7 +121,7 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
     void keyReleaseEvent(QKeyEvent* event) override;
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
 
 private:
     Q_DISABLE_COPY(VToolSinglePoint)

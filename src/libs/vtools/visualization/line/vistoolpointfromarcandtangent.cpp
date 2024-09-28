@@ -90,26 +90,25 @@ void VisToolPointFromArcAndTangent::RefreshGeometry()
 {
     if (object1Id > NULL_ID)   // tangent point
     {
-        const QSharedPointer<VPointF> tan =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(tangent, static_cast<QPointF>(*tan), supportColor);
+        const auto& tan{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(tangent, static_cast<QPointF>(tan), supportColor);
 
         if (arcId > NULL_ID)   // circle center
         {
-            const QSharedPointer<VArc> arc = Visualization::data->GeometricObject<VArc>(arcId);
+            const auto& arc{ *Visualization::data->GeometricObject<VArc>(arcId) };
             DrawPath(
                 arcPath,
-                arc->GetPath(),
-                arc->DirectionArrows(),
+                arc.GetPath(),
+                arc.DirectionArrows(),
                 Qt::darkGreen,
                 Qt::SolidLine,
                 lineWeight,
                 Qt::RoundCap);
 
-            FindRays(static_cast<QPointF>(*tan), arc.data());
+            FindRays(static_cast<QPointF>(tan), &arc);
 
-            const QPointF fPoint = VToolPointFromArcAndTangent::FindPoint(
-                static_cast<QPointF>(*tan), arc.data(), crossPoint);
+            const QPointF fPoint{ VToolPointFromArcAndTangent::FindPoint(
+                static_cast<QPointF>(tan), &arc, crossPoint) };
             DrawPoint(point, fPoint, mainColor);
         }
     }

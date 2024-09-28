@@ -166,7 +166,7 @@ VToolMirrorByAxis* VToolMirrorByAxis::Create(
         doc->IncrementReferens(originPoint.getIdTool());
         for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
-            doc->IncrementReferens(data->GetGObject(item.id)->getIdTool());
+            doc->IncrementReferens(data->GetGObject(item.id).getIdTool());
         }
         return tool;
     }
@@ -180,15 +180,13 @@ AxisType VToolMirrorByAxis::getAxisType() const { return m_axisType; }
 void VToolMirrorByAxis::setAxisType(AxisType value)
 {
     m_axisType = value;
-
-    QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-    SaveOption(obj);
+    SaveOption(VContainer::GetFakeGObject(m_id).get());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolMirrorByAxis::getOriginPointName() const
 {
-    return VAbstractTool::data.GetGObject(m_originPointId)->name();
+    return VAbstractTool::data.GetGObject(m_originPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -199,9 +197,7 @@ void VToolMirrorByAxis::setOriginPointId(const quint32& value)
 {
     if (value != NULL_ID) {
         m_originPointId = value;
-
-        QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-        SaveOption(obj);
+        SaveOption(VContainer::GetFakeGObject(m_id).get());
     }
 }
 
@@ -247,7 +243,7 @@ void VToolMirrorByAxis::ReadToolAttributes(const QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByAxis::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolMirrorByAxis::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 

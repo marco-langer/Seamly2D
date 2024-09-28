@@ -129,14 +129,13 @@ bool FindLabelGeometry(
 
     if (topLeftAnchorPoint != NULL_ID && bottomRightAnchorPoint != NULL_ID) {
         try {
-            const auto topLeftAnchorPointPoint =
-                pattern->GeometricObject<VPointF>(topLeftAnchorPoint);
-            const auto bottomRightAnchorPointPoint =
-                pattern->GeometricObject<VPointF>(bottomRightAnchorPoint);
+            const auto& topLeftAnchorPointPoint{ *pattern->GeometricObject<VPointF>(
+                topLeftAnchorPoint) };
+            const auto& bottomRightAnchorPointPoint{ *pattern->GeometricObject<VPointF>(
+                bottomRightAnchorPoint) };
 
-            const QRectF labelRect = QRectF(
-                static_cast<QPointF>(*topLeftAnchorPointPoint),
-                static_cast<QPointF>(*bottomRightAnchorPointPoint));
+            const QRectF labelRect{ static_cast<QPointF>(topLeftAnchorPointPoint),
+                                    static_cast<QPointF>(bottomRightAnchorPointPoint) };
             labelWidth = qAbs(labelRect.width());
             labelHeight = qAbs(labelRect.height());
 
@@ -162,12 +161,12 @@ bool FindLabelGeometry(
     const quint32 centerAnchor = labelData.centerAnchorPoint();
     if (centerAnchor != NULL_ID) {
         try {
-            const auto centerAnchorPoint = pattern->GeometricObject<VPointF>(centerAnchor);
+            const auto& centerAnchorPoint{ *pattern->GeometricObject<VPointF>(centerAnchor) };
 
             const qreal lWidth = ToPixel(labelWidth, *pattern->GetPatternUnit());
             const qreal lHeight = ToPixel(labelHeight, *pattern->GetPatternUnit());
 
-            pos = static_cast<QPointF>(*centerAnchorPoint) - QRectF(0, 0, lWidth, lHeight).center();
+            pos = static_cast<QPointF>(centerAnchorPoint) - QRectF(0, 0, lWidth, lHeight).center();
         } catch (const VExceptionBadId&) {
             pos = labelData.GetPos();
         }
@@ -193,11 +192,11 @@ bool FindGrainlineGeometry(
 
     if (topAnchorPoint != NULL_ID && bottomAnchorPoint != NULL_ID) {
         try {
-            const auto topAnchor_Point = pattern->GeometricObject<VPointF>(topAnchorPoint);
-            const auto bottomAnchor_Point = pattern->GeometricObject<VPointF>(bottomAnchorPoint);
+            const auto& topAnchor_Point{ *pattern->GeometricObject<VPointF>(topAnchorPoint) };
+            const auto& bottomAnchor_Point{ *pattern->GeometricObject<VPointF>(bottomAnchorPoint) };
 
-            QLineF grainline(
-                static_cast<QPointF>(*bottomAnchor_Point), static_cast<QPointF>(*topAnchor_Point));
+            QLineF grainline{ static_cast<QPointF>(bottomAnchor_Point),
+                              static_cast<QPointF>(topAnchor_Point) };
             length = grainline.length();
             rotationAngle = grainline.angle();
 
@@ -230,13 +229,12 @@ bool FindGrainlineGeometry(
     const quint32 centerAnchor = data.centerAnchorPoint();
     if (centerAnchor != NULL_ID) {
         try {
-            const auto centerAnchorPoint = pattern->GeometricObject<VPointF>(centerAnchor);
+            const auto& centerAnchorPoint{ *pattern->GeometricObject<VPointF>(centerAnchor) };
 
-            QLineF grainline(
-                centerAnchorPoint->x(),
-                centerAnchorPoint->y(),
-                centerAnchorPoint->x() + length / 2.0,
-                centerAnchorPoint->y());
+            QLineF grainline{ centerAnchorPoint.x(),
+                              centerAnchorPoint.y(),
+                              centerAnchorPoint.x() + length / 2.0,
+                              centerAnchorPoint.y() };
 
             grainline.setAngle(qRadiansToDegrees(rotationAngle));
             grainline = QLineF(grainline.p2(), grainline.p1());

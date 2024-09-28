@@ -89,23 +89,21 @@ VisToolNormal::VisToolNormal(const VContainer* data, QGraphicsItem* parent)
 void VisToolNormal::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> first =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(lineP1, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(lineP1, static_cast<QPointF>(first), supportColor);
 
         if (object2Id <= NULL_ID) {
-            QLineF line_mouse(static_cast<QPointF>(*first), Visualization::scenePos);
+            const QLineF line_mouse{ static_cast<QPointF>(first), Visualization::scenePos };
             DrawLine(line, line_mouse, supportColor, lineWeight);
 
             QLineF normal = line_mouse.normalVector();
             QPointF endRay = Ray(normal.p1(), normal.angle());
             DrawLine(this, QLineF(normal.p1(), endRay), mainColor, lineWeight);
         } else {
-            const QSharedPointer<VPointF> second =
-                Visualization::data->GeometricObject<VPointF>(object2Id);
-            DrawPoint(lineP2, static_cast<QPointF>(*second), supportColor);
+            const auto& second{ *Visualization::data->GeometricObject<VPointF>(object2Id) };
+            DrawPoint(lineP2, static_cast<QPointF>(second), supportColor);
 
-            QLineF line_mouse(static_cast<QPointF>(*first), static_cast<QPointF>(*second));
+            const QLineF line_mouse{ static_cast<QPointF>(first), static_cast<QPointF>(second) };
             DrawLine(line, line_mouse, supportColor, lineWeight);
 
             if (qFuzzyIsNull(length)) {
@@ -113,9 +111,9 @@ void VisToolNormal::RefreshGeometry()
                 QPointF endRay = Ray(normal.p1(), normal.angle());
                 DrawLine(this, QLineF(normal.p1(), endRay), mainColor, lineWeight);
             } else {
-                QPointF fPoint = VToolNormal::FindPoint(
-                    static_cast<QPointF>(*first), static_cast<QPointF>(*second), length, angle);
-                QLineF mainLine = QLineF(static_cast<QPointF>(*first), fPoint);
+                const QPointF fPoint{ VToolNormal::FindPoint(
+                    static_cast<QPointF>(first), static_cast<QPointF>(second), length, angle) };
+                const QLineF mainLine{ static_cast<QPointF>(first), fPoint };
                 DrawLine(this, mainLine, mainColor, lineWeight, lineStyle);
 
                 DrawPoint(point, mainLine.p2(), mainColor);

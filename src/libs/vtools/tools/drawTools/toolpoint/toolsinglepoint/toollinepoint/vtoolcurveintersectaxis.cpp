@@ -120,15 +120,14 @@ void VToolCurveIntersectAxis::setDialog()
     QSharedPointer<DialogCurveIntersectAxis> dialogTool =
         m_dialog.objectCast<DialogCurveIntersectAxis>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> intersectPoint =
-        VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& intersectPoint{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->setLineType(m_lineType);
     dialogTool->setLineWeight(m_lineWeight);
     dialogTool->setLineColor(lineColor);
     dialogTool->SetAngle(formulaAngle);
     dialogTool->SetBasePointId(basePointId);
     dialogTool->setCurveId(curveId);
-    dialogTool->SetPointName(intersectPoint->name());
+    dialogTool->SetPointName(intersectPoint.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -192,13 +191,13 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> basePoint = data->GeometricObject<VPointF>(basePointId);
+    const auto& basePoint{ *data->GeometricObject<VPointF>(basePointId) };
     const qreal angle = CheckFormula(_id, formulaAngle, data);
-    const QSharedPointer<VAbstractCurve> curve = data->GeometricObject<VAbstractCurve>(curveId);
+    const auto& curve{ *data->GeometricObject<VAbstractCurve>(curveId) };
 
     QPointF intersectPoint;
-    const bool isIntersect =
-        FindPoint(static_cast<QPointF>(*basePoint), angle, curve, &intersectPoint);
+    const bool isIntersect{ FindPoint(
+        static_cast<QPointF>(basePoint), angle, curve, &intersectPoint) };
 
     if (not isIntersect) {
         const QString msg =
@@ -206,8 +205,8 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
                "<b><big>to curve %3 with an axis angle of %4°</big></b><br><br>"
                "Using origin point as a place holder until pattern is corrected.")
                 .arg(pointName)
-                .arg(basePoint->name())
-                .arg(curve->name())
+                .arg(basePoint.name())
+                .arg(curve.name())
                 .arg(angle);
         QMessageBox msgBox(qApp->getMainWindow());
         msgBox.setWindowTitle(tr("Intersection Point of Curve & Axis"));
@@ -219,7 +218,7 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
         msgBox.exec();
     }
 
-    const qreal segLength = curve->GetLengthByPoint(intersectPoint);
+    const qreal segLength{ curve.GetLengthByPoint(intersectPoint) };
     quint32 id = _id;
     VPointF* p = new VPointF(intersectPoint, pointName, mx, my);
     p->setShowPointName(showPointName);
@@ -230,12 +229,12 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
 
         VContainer::getNextId();
         VContainer::getNextId();
-        InitSegments(curve->getType(), segLength, p, curveId, data);
+        InitSegments(curve.getType(), segLength, p, curveId, data);
     } else {
         data->UpdateGObject(id, p);
         data->AddLine(basePointId, id);
 
-        InitSegments(curve->getType(), segLength, p, curveId, data);
+        InitSegments(curve.getType(), segLength, p, curveId, data);
 
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
@@ -258,8 +257,8 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(basePoint->getIdTool());
-        doc->IncrementReferens(curve->getIdTool());
+        doc->IncrementReferens(basePoint.getIdTool());
+        doc->IncrementReferens(curve.getIdTool());
         return point;
     }
     return nullptr;
@@ -267,21 +266,18 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VToolCurveIntersectAxis::FindPoint(
-    const QPointF& axisPoint,
-    qreal angle,
-    const QSharedPointer<VAbstractCurve>& curve,
-    QPointF* intersectPoint)
+    const QPointF& axisPoint, qreal angle, const VAbstractCurve& curve, QPointF* intersectPoint)
 {
     constexpr int intMax{ std::numeric_limits<int>::max() };
     QRectF rectangle = QRectF(0, 0, intMax, intMax);
     rectangle.translate(-intMax / 2.0, -intMax / 2.0);
 
     QLineF axis = QLineF(axisPoint, VGObject::BuildRay(axisPoint, angle, rectangle));
-    QVector<QPointF> points = curve->IntersectLine(axis);
+    QVector<QPointF> points = curve.IntersectLine(axis);
 
     if (points.isEmpty()) {
         QLineF axis2 = QLineF(axisPoint, VGObject::BuildRay(axisPoint, angle + 180, rectangle));
-        points = curve->IntersectLine(axis2);
+        points = curve.IntersectLine(axis2);
     }
 
     if (points.size() > 0) {
@@ -322,15 +318,14 @@ void VToolCurveIntersectAxis::SetFormulaAngle(const VFormula& value)
     if (value.error() == false) {
         formulaAngle = value.GetFormula(FormulaType::FromUser);
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolCurveIntersectAxis::CurveName() const
 {
-    return VAbstractTool::data.GetGObject(curveId)->name();
+    return VAbstractTool::data.GetGObject(curveId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -342,8 +337,7 @@ void VToolCurveIntersectAxis::setCurveId(const quint32& value)
     if (value != NULL_ID) {
         curveId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -381,7 +375,7 @@ void VToolCurveIntersectAxis::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCurveIntersectAxis::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolCurveIntersectAxis::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolLinePoint::SaveOptions(tag, obj);
 
@@ -427,14 +421,14 @@ void VToolCurveIntersectAxis::InitArc(
     QSharedPointer<Item> a1;
     QSharedPointer<Item> a2;
 
-    const QSharedPointer<Item> arc = data->GeometricObject<Item>(curveId);
+    const auto& arc{ *data->GeometricObject<Item>(curveId) };
     Item arc1;
     Item arc2;
 
     if (not VFuzzyComparePossibleNulls(segLength, -1)) {
-        arc->CutArc(segLength, arc1, arc2);
+        arc.CutArc(segLength, arc1, arc2);
     } else {
-        arc->CutArc(0, arc1, arc2);
+        arc.CutArc(0, arc1, arc2);
     }
 
     // Arc highly depend on id. Need for creating the name.
@@ -471,16 +465,16 @@ void VToolCurveIntersectAxis::InitSegments(
         QSharedPointer<VAbstractBezier> spline1;
         QSharedPointer<VAbstractBezier> spline2;
 
-        const auto spl = data->GeometricObject<VAbstractCubicBezier>(curveId);
+        const auto& spl{ *data->GeometricObject<VAbstractCubicBezier>(curveId) };
         QPointF spl1p2, spl1p3, spl2p2, spl2p3;
         if (not VFuzzyComparePossibleNulls(segLength, -1)) {
-            spl->CutSpline(segLength, spl1p2, spl1p3, spl2p2, spl2p3);
+            spl.CutSpline(segLength, spl1p2, spl1p3, spl2p2, spl2p3);
         } else {
-            spl->CutSpline(0, spl1p2, spl1p3, spl2p2, spl2p3);
+            spl.CutSpline(0, spl1p2, spl1p3, spl2p2, spl2p3);
         }
 
-        VSpline* spl1 = new VSpline(spl->GetP1(), spl1p2, spl1p3, *p);
-        VSpline* spl2 = new VSpline(*p, spl2p2, spl2p3, spl->GetP4());
+        VSpline* spl1 = new VSpline(spl.GetP1(), spl1p2, spl1p3, *p);
+        VSpline* spl2 = new VSpline(*p, spl2p2, spl2p3, spl.GetP4());
 
         if (not VFuzzyComparePossibleNulls(segLength, -1)) {
             spline1 = QSharedPointer<VAbstractBezier>(spl1);
@@ -506,7 +500,7 @@ void VToolCurveIntersectAxis::InitSegments(
         QSharedPointer<VAbstractBezier> splP1;
         QSharedPointer<VAbstractBezier> splP2;
 
-        const auto splPath = data->GeometricObject<VAbstractCubicBezierPath>(curveId);
+        const auto& splPath{ *data->GeometricObject<VAbstractCubicBezierPath>(curveId) };
         VSplinePath* splPath1 = nullptr;
         VSplinePath* splPath2 = nullptr;
         if (not VFuzzyComparePossibleNulls(segLength, -1)) {

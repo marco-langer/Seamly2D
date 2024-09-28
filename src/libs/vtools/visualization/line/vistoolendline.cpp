@@ -83,17 +83,17 @@ VisToolEndLine::VisToolEndLine(const VContainer* data, QGraphicsItem* parent)
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolEndLine::RefreshGeometry()
 {
-    const QSharedPointer<VPointF> first = Visualization::data->GeometricObject<VPointF>(object1Id);
+    const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
     QLineF line;
     if (qFuzzyIsNull(length)) {
         if (QGuiApplication::keyboardModifiers() == Qt::ShiftModifier) {
-            line = QLineF(static_cast<QPointF>(*first), Visualization::scenePos);
+            line = QLineF{ static_cast<QPointF>(first), Visualization::scenePos };
             line.setAngle(CorrectAngle(line.angle()));
         } else {
-            line = QLineF(static_cast<QPointF>(*first), Visualization::scenePos);
+            line = QLineF{ static_cast<QPointF>(first), Visualization::scenePos };
         }
     } else {
-        line = VGObject::BuildLine(static_cast<QPointF>(*first), length, angle);
+        line = VGObject::BuildLine(static_cast<QPointF>(first), length, angle);
         DrawPoint(point, line.p2(), mainColor);
     }
     DrawLine(this, line, mainColor, lineWeight, lineStyle);

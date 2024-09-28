@@ -187,8 +187,8 @@ DestinationItem VAbstractMirror::createItem(
     const QString& suffix,
     VContainer* data)
 {
-    const QSharedPointer<Item> i = data->GeometricObject<Item>(idItem);
-    Item rotated = i->Flip(QLineF(firstPoint, secondPoint), suffix);
+    Item rotated{ data->GeometricObject<Item>(idItem)->Flip(
+        QLineF(firstPoint, secondPoint), suffix) };
     rotated.setIdObject(idTool);
 
     DestinationItem item;
@@ -241,8 +241,8 @@ void VAbstractMirror::updateItem(
     VContainer* data,
     quint32 id)
 {
-    const QSharedPointer<Item> i = data->GeometricObject<Item>(idItem);
-    Item rotated = i->Flip(QLineF(firstPoint, secondPoint), suffix);
+    Item rotated{ data->GeometricObject<Item>(idItem)->Flip(
+        QLineF(firstPoint, secondPoint), suffix) };
     rotated.setIdObject(idTool);
     data->UpdateGObject(id, new Item(rotated));
 }

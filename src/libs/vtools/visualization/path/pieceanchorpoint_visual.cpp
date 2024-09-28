@@ -45,9 +45,8 @@ void PieceAnchorPointVisual::RefreshGeometry()
     for (int i = 0; i < m_anchors.size(); ++i) {
         VSimplePoint* point = GetPoint(static_cast<quint32>(i), supportColor);
         point->setOnlyPoint(false);
-        const QSharedPointer<VPointF> p =
-            Visualization::data->GeometricObject<VPointF>(m_anchors.at(i));
-        point->refreshPointGeometry(*p);
+        point->refreshPointGeometry(
+            *Visualization::data->GeometricObject<VPointF>(m_anchors.at(i)));
         point->setVisible(true);
     }
 }

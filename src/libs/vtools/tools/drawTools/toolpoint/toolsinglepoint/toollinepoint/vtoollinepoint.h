@@ -55,7 +55,6 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
-#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -121,7 +120,7 @@ protected:
 
     virtual void RefreshGeometry();
     void RemoveReferens() override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
     QString makeToolTip() const override;

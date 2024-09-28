@@ -105,12 +105,12 @@ QPointF findRotationOrigin(
     qCDebug(vTool, "Find center of objects: ");
     for (auto item : objects) {
         qCDebug(vTool, "Object:  %d", item.id);
-        const QSharedPointer<VGObject> object = data->GetGObject(item.id);
+        const auto& object{ data->GetGObject(item.id) };
 
         Q_STATIC_ASSERT_X(
             static_cast<int>(GOType::AllCurves) == 10, "Not all objects were handled.");
 
-        switch (static_cast<GOType>(object->getType())) {
+        switch (static_cast<GOType>(object.getType())) {
         case GOType::Point:
             originObjects.append(data->GeometricObject<VPointF>(item.id)->toQPointF());
             break;
@@ -240,12 +240,12 @@ VToolMove* VToolMove::Create(
     calcRotation = CheckFormula(_id, formulaRotation, data);
 
     QPointF rotationOrigin;
-    QSharedPointer<VPointF> originPoint;
+    VPointF* originPoint{ nullptr };
 
     if (originPointId == NULL_ID) {
         rotationOrigin = findRotationOrigin(source, data, calcLength, calcAngle);
     } else {
-        originPoint = data->GeometricObject<VPointF>(originPointId);
+        originPoint = &*data->GeometricObject<VPointF>(originPointId);
         rotationOrigin = static_cast<QPointF>(*originPoint);
         QLineF moveLine(
             rotationOrigin, QPointF(rotationOrigin.x() + calcLength, rotationOrigin.y()));
@@ -265,7 +265,7 @@ VToolMove* VToolMove::Create(
         for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
             qCDebug(vTool, "Add Object:  %d", item.id);
-            const QSharedPointer<VGObject> object = data->GetGObject(item.id);
+            const auto& object{ data->GetGObject(item.id) };
 
             // This check helps to find missed objects in the switch
             Q_STATIC_ASSERT_X(
@@ -276,7 +276,7 @@ VToolMove* VToolMove::Create(
             qCDebug(vTool, "VToolMove - Rotation Origin");
             qCDebug(vTool, "X:  %f", rotationOrigin.x());
             qCDebug(vTool, "Y:  %f", rotationOrigin.y());
-            switch (static_cast<GOType>(object->getType())) {
+            switch (static_cast<GOType>(object.getType())) {
             case GOType::Point:
                 qCDebug(vTool, "VToolMove - Point");
                 qCDebug(vTool, "length:  %f", calcLength);
@@ -379,7 +379,7 @@ VToolMove* VToolMove::Create(
         for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
             qCDebug(vTool, "Add Object:  %d\n", item.id);
-            const QSharedPointer<VGObject> object = data->GetGObject(item.id);
+            const auto& object{ data->GetGObject(item.id) };
 
             // This check helps to find missed objects in the switch
             Q_STATIC_ASSERT_X(
@@ -387,7 +387,7 @@ VToolMove* VToolMove::Create(
 
             QT_WARNING_PUSH
             QT_WARNING_DISABLE_GCC("-Wswitch-default")
-            switch (static_cast<GOType>(object->getType())) {
+            switch (static_cast<GOType>(object.getType())) {
             case GOType::Point: {
                 updatePoint(
                     id,
@@ -504,14 +504,14 @@ VToolMove* VToolMove::Create(
         initOperationToolConnections(scene, tool);
         VAbstractPattern::AddTool(id, tool);
 
-        if (!originPoint.isNull()) {
+        if (originPoint) {
             doc->IncrementReferens(originPoint->getIdTool());
         }
         qCDebug(vTool, "Increment references");
         for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
             qCDebug(vTool, "Object:  %d", item.id);
-            doc->IncrementReferens(data->GetGObject(item.id)->getIdTool());
+            doc->IncrementReferens(data->GetGObject(item.id).getIdTool());
         }
         return tool;
     }
@@ -535,8 +535,7 @@ void VToolMove::SetFormulaAngle(const VFormula& value)
     if (value.error() == false) {
         formulaAngle = value.GetFormula(FormulaType::FromUser);
 
-        QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-        SaveOption(obj);
+        SaveOption(VContainer::GetFakeGObject(m_id).get());
     }
 }
 
@@ -557,8 +556,7 @@ void VToolMove::SetFormulaLength(const VFormula& value)
     if (value.error() == false) {
         formulaLength = value.GetFormula(FormulaType::FromUser);
 
-        QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-        SaveOption(obj);
+        SaveOption(VContainer::GetFakeGObject(m_id).get());
     }
 }
 
@@ -579,8 +577,7 @@ void VToolMove::setFormulaRotation(const VFormula& value)
     if (value.error() == false) {
         formulaRotation = value.GetFormula(FormulaType::FromUser);
 
-        QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-        SaveOption(obj);
+        SaveOption(VContainer::GetFakeGObject(m_id).get());
     }
 }
 
@@ -590,7 +587,7 @@ QString VToolMove::getOriginPointName() const
     if (m_originPointId == NULL_ID) {
         return tr("Center point");
     } else {
-        return VAbstractTool::data.GetGObject(m_originPointId)->name();
+        return VAbstractTool::data.GetGObject(m_originPointId).name();
     }
 }
 
@@ -602,8 +599,7 @@ void VToolMove::setOriginPointId(const quint32& value)
 {
     m_originPointId = value;
 
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetFakeGObject(m_id);
-    SaveOption(obj);
+    SaveOption(VAbstractTool::data.GetFakeGObject(m_id).get());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -659,7 +655,7 @@ void VToolMove::ReadToolAttributes(const QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMove::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolMove::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VAbstractOperation::SaveOptions(tag, obj);
 
@@ -714,8 +710,9 @@ DestinationItem VToolMove::createPoint(
     const QString& suffix,
     VContainer* data)
 {
-    const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(idItem);
-    VPointF moved = point->Move(length, angle, suffix).Rotate(rotationOrigin, rotation);
+    VPointF moved{ data->GeometricObject<VPointF>(idItem)
+                       ->Move(length, angle, suffix)
+                       .Rotate(rotationOrigin, rotation) };
     moved.setIdObject(idTool);
 
     DestinationItem item;
@@ -738,8 +735,9 @@ DestinationItem VToolMove::createItem(
     const QString& suffix,
     VContainer* data)
 {
-    const QSharedPointer<Item> i = data->GeometricObject<Item>(idItem);
-    Item moved = i->Move(length, angle, suffix).Rotate(rotationOrigin, rotation);
+    Item moved{ data->GeometricObject<Item>(idItem)
+                    ->Move(length, angle, suffix)
+                    .Rotate(rotationOrigin, rotation) };
     moved.setIdObject(idTool);
 
     DestinationItem item;
@@ -815,8 +813,9 @@ void VToolMove::updatePoint(
     VContainer* data,
     const DestinationItem& item)
 {
-    const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(idItem);
-    VPointF moved = point->Move(length, angle, suffix).Rotate(rotationOrigin, rotation);
+    VPointF moved{ data->GeometricObject<VPointF>(idItem)
+                       ->Move(length, angle, suffix)
+                       .Rotate(rotationOrigin, rotation) };
     moved.setIdObject(idTool);
     moved.setMx(item.mx);
     moved.setMy(item.my);
@@ -837,8 +836,9 @@ void VToolMove::updateItem(
     VContainer* data,
     quint32 id)
 {
-    const QSharedPointer<Item> i = data->GeometricObject<Item>(idItem);
-    Item moved = i->Move(length, angle, suffix).Rotate(rotationOrigin, rotation);
+    Item moved{ data->GeometricObject<Item>(idItem)
+                    ->Move(length, angle, suffix)
+                    .Rotate(rotationOrigin, rotation) };
     moved.setIdObject(idTool);
     data->UpdateGObject(id, new Item(moved));
 }

@@ -146,36 +146,35 @@ VContainer::~VContainer()
  * @return point
  */
 // cppcheck-suppress unusedFunction
-QSharedPointer<VGObject> VContainer::GetGObject(quint32 id) const
+const VGObject& VContainer::GetGObject(quint32 id) const
 {
-    return GetObject(d->gObjects, id);
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-QSharedPointer<VGObject> VContainer::GetFakeGObject(quint32 id)
-{
-    VGObject* obj = new VGObject();
-    obj->setId(id);
-    QSharedPointer<VGObject> pointer(obj);
-    return pointer;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief GetObject return object from container
- * @param obj container
- * @param id id of object
- * @return Object
- */
-template <typename key, typename val>
-val VContainer::GetObject(const QHash<key, val>& obj, key id) const
-{
-    if (obj.contains(id)) {
-        return obj.value(id);
-    } else {
-        throw VExceptionBadId(tr("Can't find object: "), id);
+    auto iter{ d->gObjects.find(id) };
+    if (iter != d->gObjects.end()) {
+        return **iter;
     }
+
+    throw VExceptionBadId(tr("Can't find object: "), id);
 }
+
+
+VGObject& VContainer::GetGObject(quint32 id)
+{
+    auto iter{ d->gObjects.find(id) };
+    if (iter != d->gObjects.end()) {
+        return **iter;
+    }
+
+    throw VExceptionBadId(tr("Can't find object: "), id);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+std::unique_ptr<VGObject> VContainer::GetFakeGObject(quint32 id)
+{
+    auto obj{ std::make_unique<VGObject>() };
+    obj->setId(id);
+    return obj;
+}
+
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiece VContainer::GetPiece(quint32 id) const
@@ -353,16 +352,14 @@ void VContainer::ClearVariables(const VarType& type)
  */
 void VContainer::AddLine(const quint32& firstPointId, const quint32& secondPointId)
 {
-    const QSharedPointer<VPointF> first = GeometricObject<VPointF>(firstPointId);
-    const QSharedPointer<VPointF> second = GeometricObject<VPointF>(secondPointId);
-    SCASSERT(first)
-    SCASSERT(second)
+    const auto& first{ *GeometricObject<VPointF>(firstPointId) };
+    const auto& second{ *GeometricObject<VPointF>(secondPointId) };
 
-    VLengthLine* length =
-        new VLengthLine(*first, firstPointId, *second, secondPointId, *GetPatternUnit());
+    auto* length{ new VLengthLine{
+        first, firstPointId, second, secondPointId, *GetPatternUnit() } };
     AddVariable(length->GetName(), length);
 
-    VLineAngle* angle = new VLineAngle(*first, firstPointId, *second, secondPointId);
+    auto* angle{ new VLineAngle{ first, firstPointId, second, secondPointId } };
     AddVariable(angle->GetName(), angle);
 }
 

@@ -806,52 +806,47 @@ void GroupsWidget::addGroupItem(const quint32& toolId, const quint32& objId, con
             break;
 
         case Tool::Spline: {
-            const QSharedPointer<VSpline> spl = m_data->GeometricObject<VSpline>(toolId);
-            SCASSERT(!spl.isNull())
             iconFileName = ":/toolicon/32x32/spline.png";
-            objName = tr("%1 - Curve Interactive").arg(spl->NameForHistory(tr("Spl_")));
+            objName =
+                tr("%1 - Curve Interactive")
+                    .arg(m_data->GeometricObject<VSpline>(toolId)->NameForHistory(tr("Spl_")));
             break;
         }
 
         case Tool::CubicBezier: {
-            const QSharedPointer<VCubicBezier> spl = m_data->GeometricObject<VCubicBezier>(toolId);
-            SCASSERT(!spl.isNull())
             iconFileName = ":/toolicon/32x32/cubic_bezier.png";
-            objName = tr("%1 - Curve Fixed").arg(spl->NameForHistory(tr("Spl_")));
+            objName =
+                tr("%1 - Curve Fixed")
+                    .arg(m_data->GeometricObject<VCubicBezier>(toolId)->NameForHistory(tr("Spl_")));
             break;
         }
 
         case Tool::Arc: {
-            const QSharedPointer<VArc> arc = m_data->GeometricObject<VArc>(toolId);
-            SCASSERT(!arc.isNull())
             iconFileName = ":/toolicon/32x32/arc.png";
-            objName = tr("%1 - Arc Radius & Angles").arg(arc->NameForHistory(tr("Arc_")));
+            objName = tr("%1 - Arc Radius & Angles")
+                          .arg(m_data->GeometricObject<VArc>(toolId)->NameForHistory(tr("Arc_")));
             break;
         }
 
         case Tool::ArcWithLength: {
-            const QSharedPointer<VArc> arc = m_data->GeometricObject<VArc>(toolId);
-            SCASSERT(!arc.isNull())
             iconFileName = ":/toolicon/32x32/arc_with_length.png";
-            objName = tr("%1 - Arc Radius & Length").arg(arc->NameForHistory(tr("Arc_")));
+            objName = tr("%1 - Arc Radius & Length")
+                          .arg(m_data->GeometricObject<VArc>(toolId)->NameForHistory(tr("Arc_")));
             break;
         }
 
         case Tool::SplinePath: {
-            const QSharedPointer<VSplinePath> splPath =
-                m_data->GeometricObject<VSplinePath>(toolId);
-            SCASSERT(!splPath.isNull())
+            const VSplinePath& splPath{ *m_data->GeometricObject<VSplinePath>(toolId) };
             iconFileName = ":/toolicon/32x32/splinePath.png";
-            objName = tr("%1 - Spline Interactive").arg(splPath->NameForHistory(tr("SplPath_")));
+            objName = tr("%1 - Spline Interactive").arg(splPath.NameForHistory(tr("SplPath_")));
             break;
         }
 
         case Tool::CubicBezierPath: {
-            const QSharedPointer<VCubicBezierPath> splPath =
-                m_data->GeometricObject<VCubicBezierPath>(toolId);
-            SCASSERT(!splPath.isNull())
+            const VCubicBezierPath& splPath{ *m_data->GeometricObject<VCubicBezierPath>(toolId) };
+
             iconFileName = ":/toolicon/32x32/cubic_bezier_path.png";
-            objName = tr("%1 - Spline Fixed").arg(splPath->NameForHistory(tr("SplPath_")));
+            objName = tr("%1 - Spline Fixed").arg(splPath.NameForHistory(tr("SplPath_")));
             break;
         }
 
@@ -876,29 +871,18 @@ void GroupsWidget::addGroupItem(const quint32& toolId, const quint32& objId, con
             break;
 
         case Tool::CutArc: {
-            const QSharedPointer<VArc> arc =
-                m_data->GeometricObject<VArc>(attrUInt(domElement, AttrArc));
-            SCASSERT(!arc.isNull())
             iconFileName = ":/toolicon/32x32/arc_cut.png";
             objName = tr("%1 - Point On Arc").arg(getPointName(toolId));
             break;
         }
 
         case Tool::CutSpline: {
-            const quint32 splineId = attrUInt(domElement, VToolCutSpline::AttrSpline);
-            const QSharedPointer<VAbstractCubicBezier> spl =
-                m_data->GeometricObject<VAbstractCubicBezier>(splineId);
-            SCASSERT(!spl.isNull())
             iconFileName = ":/toolicon/32x32/spline_cut_point.png";
             objName = tr("%1 - Point On Curve").arg(getPointName(toolId));
             break;
         }
 
         case Tool::CutSplinePath: {
-            const quint32 splinePathId = attrUInt(domElement, VToolCutSplinePath::AttrSplinePath);
-            const QSharedPointer<VAbstractCubicBezierPath> splPath =
-                m_data->GeometricObject<VAbstractCubicBezierPath>(splinePathId);
-            SCASSERT(!splPath.isNull())
             iconFileName = ":/toolicon/32x32/splinePath_cut_point.png";
             objName = tr("%1 - Point On Spline").arg(getPointName(toolId));
             break;
@@ -949,11 +933,9 @@ void GroupsWidget::addGroupItem(const quint32& toolId, const quint32& objId, con
             break;
 
         case Tool::EllipticalArc: {
-            const QSharedPointer<VEllipticalArc> elArc =
-                m_data->GeometricObject<VEllipticalArc>(toolId);
-            SCASSERT(!elArc.isNull())
+            const VEllipticalArc& elArc{ *m_data->GeometricObject<VEllipticalArc>(toolId) };
             iconFileName = ":/toolicon/32x32/el_arc.png";
-            objName = tr("%1 - Arc Elliptical").arg(elArc->NameForHistory(tr("ElArc_")));
+            objName = tr("%1 - Arc Elliptical").arg(elArc.NameForHistory(tr("ElArc_")));
             break;
         }
 
@@ -964,21 +946,18 @@ void GroupsWidget::addGroupItem(const quint32& toolId, const quint32& objId, con
         }
 
         case Tool::Move: {
-            const QSharedPointer<VGObject> obj = m_data->GetGObject(objId);
             iconFileName = ":/toolicon/32x32/move.png";
             objName = tr("%1 - Move").arg(getObjName(objId == NULL_ID ? toolId : objId));
             break;
         }
 
         case Tool::MirrorByLine: {
-            const QSharedPointer<VGObject> obj = m_data->GetGObject(objId);
             iconFileName = ":/toolicon/32x32/mirror_by_line.png";
             objName = tr("%1 - Mirror by Line").arg(getObjName(objId == NULL_ID ? toolId : objId));
             break;
         }
 
         case Tool::MirrorByAxis: {
-            const QSharedPointer<VGObject> obj = m_data->GetGObject(objId);
             iconFileName = ":/toolicon/32x32/mirror_by_axis.png";
             objName = tr("%1 - Mirror by Axis").arg(getObjName(objId == NULL_ID ? toolId : objId));
             break;
@@ -1055,8 +1034,7 @@ quint32 GroupsWidget::attrUInt(const QDomElement& domElement, const QString& nam
 QString GroupsWidget::getObjName(quint32 toolId)
 {
     try {
-        const auto obj = m_data->GetGObject(toolId);
-        return obj->name();
+        return m_data->GetGObject(toolId).name();
     } catch (const VExceptionBadId& error) {
         qCDebug(
             WidgetGroups,
@@ -1252,7 +1230,7 @@ void GroupsWidget::itemDoubleClicked(QListWidgetItem* item)
     }
 
     if (objects->contains(toolId)) {
-        objType = m_data->GetGObject(toolId)->getType();
+        objType = m_data->GetGObject(toolId).getType();
     } else {
         // Some tools are not GObjects in the container. Need to look in the Dom Doc instead
         const QDomElement domElement = m_doc->elementById(toolId);
@@ -1262,22 +1240,18 @@ void GroupsWidget::itemDoubleClicked(QListWidgetItem* item)
         } else {
             return;
         }
-        objType = m_data->GetGObject(toolId)->getType();
+        objType = m_data->GetGObject(toolId).getType();
     }
 
     switch (objType) {
     case GOType::Point: {
-        QSharedPointer<VPointF> point = m_data->GeometricObject<VPointF>(toolId);
-        zoomToObject(point);
+        zoomToObject(*m_data->GeometricObject<VPointF>(toolId));
         return;
     }
 
     case GOType::Arc:
     case GOType::EllipticalArc: {
-        const QSharedPointer<VAbstractArc> curve = m_data->GeometricObject<VAbstractArc>(toolId);
-        QSharedPointer<VPointF> point(new VPointF(curve->GetCenter()));
-
-        zoomToObject(point);
+        zoomToObject(VPointF{ m_data->GeometricObject<VAbstractArc>(toolId)->GetCenter() });
         return;
     }
 
@@ -1285,10 +1259,7 @@ void GroupsWidget::itemDoubleClicked(QListWidgetItem* item)
     case GOType::SplinePath:
     case GOType::CubicBezier:
     case GOType::CubicBezierPath: {
-        const QSharedPointer<VAbstractCurve> curve =
-            m_data->GeometricObject<VAbstractCurve>(toolId);
-        QSharedPointer<VPointF> point(new VPointF(curve->getFirstPoint()));
-        zoomToObject(point);
+        zoomToObject(VPointF{ m_data->GeometricObject<VAbstractCurve>(toolId)->getFirstPoint() });
         return;
     }
 
@@ -1308,7 +1279,7 @@ void GroupsWidget::itemDoubleClicked(QListWidgetItem* item)
  * @param point If selected list item is a point use the item's toolId. if the list item is a curve
  or line then use the tool's first point.
  */
-void GroupsWidget::zoomToObject(QSharedPointer<VPointF> point)
+void GroupsWidget::zoomToObject(const VPointF& point)
 {
     VMainGraphicsScene* scene = qobject_cast<VMainGraphicsScene*>(qApp->getCurrentScene());
     SCASSERT(scene != nullptr)
@@ -1316,14 +1287,14 @@ void GroupsWidget::zoomToObject(QSharedPointer<VPointF> point)
 
     VMainGraphicsView* view = qobject_cast<VMainGraphicsView*>(scene->views().first());
     view->zoomByScale(1.3);
-    view->centerOn(point->toQPointF());
+    view->centerOn(point.toQPointF());
 
     int row = ui->groups_TableWidget->currentRow();
     setGroupVisibility(ui->groups_TableWidget->item(row, 0), getGroupId(), true);
 
     // show point name if it's hidden
-    quint32 toolId = point->getIdTool();
-    const quint32 objectId = point->getIdObject();
+    quint32 toolId = point.getIdTool();
+    const quint32 objectId = point.getIdObject();
     if (objectId != NULL_ID) {
         toolId = objectId;
     }

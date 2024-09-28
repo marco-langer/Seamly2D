@@ -55,13 +55,12 @@ VisToolEllipticalArc::VisToolEllipticalArc(const VContainer* data, QGraphicsItem
 void VisToolEllipticalArc::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> first =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(arcCenter, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(arcCenter, static_cast<QPointF>(first), supportColor);
 
         if (not qFuzzyIsNull(radius1) && not qFuzzyIsNull(radius2) && f1 >= 0 && f2 >= 0
             && rotationAngle >= 0) {
-            VEllipticalArc elArc = VEllipticalArc(*first, radius1, radius2, f1, f2, rotationAngle);
+            VEllipticalArc elArc{ first, radius1, radius2, f1, f2, rotationAngle };
             DrawPath(
                 this,
                 elArc.GetPath(),

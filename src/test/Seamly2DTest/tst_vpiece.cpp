@@ -101,30 +101,24 @@ void TST_VPiece::ClearLoop()
     QVector<VFSplinePoint> points;
 
     {
-        const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(203);
-        VFSplinePoint p(
-            *point.data(),
-            0.79455646129695412,
-            449.62747641208136,
-            1.6867283804609809,
-            269.62747641208136);
+        const auto& point{ *data->GeometricObject<VPointF>(203) };
+        const VFSplinePoint p{
+            point, 0.79455646129695412, 449.62747641208136, 1.6867283804609809, 269.62747641208136
+        };
         points.append(p);
     }
 
     {
-        const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(57);
-        VFSplinePoint p(
-            *point.data(),
-            0.4456850846354396,
-            120.24000000000034,
-            1.0255399999999999,
-            300.24000000000035);
+        const auto& point{ *data->GeometricObject<VPointF>(57) };
+        const VFSplinePoint p{
+            point, 0.4456850846354396, 120.24000000000034, 1.0255399999999999, 300.24000000000035
+        };
         points.append(p);
     }
 
     {
-        const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(56);
-        VFSplinePoint p(*point.data(), 1.0085299999999999, 184.58891, 1, 4.5889100000000003);
+        const auto& point{ *data->GeometricObject<VPointF>(56) };
+        const VFSplinePoint p{ point, 1.0085299999999999, 184.58891, 1, 4.5889100000000003 };
         points.append(p);
     }
 
@@ -228,47 +222,27 @@ void TST_VPiece::Issue620()
     QVector<VSplinePoint> points;
 
     {
-        const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(6);
-        VSplinePoint p(
-            *point.data(),
-            239.37700000000001,
-            "239.377",
-            419.37700000000001,
-            "59.3765",
-            0,
-            "0",
-            109.55943307086613,
-            "2.89876");
+        const auto& point{ *data->GeometricObject<VPointF>(6) };
+        const VSplinePoint p{
+            point, 239.37700000000001, "239.377", 419.37700000000001, "59.3765", 0,
+            "0",   109.55943307086613, "2.89876"
+        };
         points.append(p);
     }
 
     {
-        const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(5);
-        VSplinePoint p(
-            *point.data(),
-            273.97199999999998,
-            "273.972",
-            453.97199999999998,
-            "93.9724",
-            88.161637795275595,
-            "2.33261",
-            56.135055118110238,
-            "1.48524");
+        const auto& point{ *data->GeometricObject<VPointF>(5) };
+        const VSplinePoint p{ point,     273.97199999999998, "273.972", 453.97199999999998,
+                              "93.9724", 88.161637795275595, "2.33261", 56.135055118110238,
+                              "1.48524" };
         points.append(p);
     }
 
     {
-        const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(1);
-        VSplinePoint p(
-            *point.data(),
-            337.32600000000002,
-            "337.326",
-            157.32599999999999,
-            "157.326",
-            71.189669291338589,
-            "1.88356",
-            50.093858267716534,
-            "1.3254");
+        const auto& point{ *data->GeometricObject<VPointF>(1) };
+        const VSplinePoint p{ point,     337.32600000000002, "337.326", 157.32599999999999,
+                              "157.326", 71.189669291338589, "1.88356", 50.093858267716534,
+                              "1.3254" };
         points.append(p);
     }
 

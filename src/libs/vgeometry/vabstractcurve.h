@@ -114,8 +114,8 @@ public:
 
     static qreal PathLength(const QVector<QPointF>& path);
 
-    QPointF getFirstPoint();
-    QPointF getLastPoint();
+    QPointF getFirstPoint() const;
+    QPointF getLastPoint() const;
 
     static QVector<QPointF> CurveIntersectLine(const QVector<QPointF>& points, const QLineF& line);
 

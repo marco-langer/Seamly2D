@@ -138,8 +138,8 @@ protected:
     virtual void SaveDialog(QDomElement& domElement) = 0;
     void SaveDialogChange() final;
     void AddToFile() override;
-    void SaveOption(QSharedPointer<VGObject>& obj);
-    virtual void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj);
+    void SaveOption(const VGObject* obj);
+    virtual void SaveOptions(QDomElement& tag, const VGObject* obj);
     virtual QString makeToolTip() const;
 
     bool CorrectDisable(bool disable, const QString& draftBlockName) const;
@@ -192,7 +192,7 @@ void VDrawTool::ContextMenu(
     GOType itemType = GOType::Unknown;
     if (itemId != NULL_ID) {
         try {
-            itemType = data.GetGObject(itemId)->getType();
+            itemType = data.GetGObject(itemId).getType();
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
             qWarning() << qUtf8Printable(error.ErrorMessage());

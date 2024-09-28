@@ -97,30 +97,28 @@ void VisToolAlongLine::setLength(const QString& expression)
 void VisToolAlongLine::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> first =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(lineP1, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(lineP1, static_cast<QPointF>(first), supportColor);
 
         if (object2Id <= NULL_ID) {
             DrawLine(
                 line,
-                QLineF(static_cast<QPointF>(*first), Visualization::scenePos),
+                QLineF{ static_cast<QPointF>(first), Visualization::scenePos },
                 supportColor,
                 lineWeight);
         } else {
-            const QSharedPointer<VPointF> second =
-                Visualization::data->GeometricObject<VPointF>(object2Id);
-            DrawPoint(lineP2, static_cast<QPointF>(*second), supportColor);
+            const auto& second{ *Visualization::data->GeometricObject<VPointF>(object2Id) };
+            DrawPoint(lineP2, static_cast<QPointF>(second), supportColor);
 
             DrawLine(
                 line,
-                QLineF(static_cast<QPointF>(*first), static_cast<QPointF>(*second)),
+                QLineF{ static_cast<QPointF>(first), static_cast<QPointF>(second) },
                 supportColor,
                 lineWeight);
 
             if (not qFuzzyIsNull(length)) {
-                QLineF mainLine =
-                    VGObject::BuildLine(static_cast<QPointF>(*first), length, line->line().angle());
+                const QLineF mainLine{ VGObject::BuildLine(
+                    static_cast<QPointF>(first), length, line->line().angle()) };
                 DrawLine(this, mainLine, mainColor, lineWeight, lineStyle);
 
                 DrawPoint(point, mainLine.p2(), mainColor);

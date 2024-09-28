@@ -259,13 +259,13 @@ void DialogLineIntersect::PointNameChanged()
     set.insert(p1Line2Id);
     set.insert(p2Line2Id);
 
-    const QSharedPointer<VPointF> p1Line1 = data->GeometricObject<VPointF>(p1Line1Id);
-    const QSharedPointer<VPointF> p2Line1 = data->GeometricObject<VPointF>(p2Line1Id);
-    const QSharedPointer<VPointF> p1Line2 = data->GeometricObject<VPointF>(p1Line2Id);
-    const QSharedPointer<VPointF> p2Line2 = data->GeometricObject<VPointF>(p2Line2Id);
+    const auto& p1Line1{ *data->GeometricObject<VPointF>(p1Line1Id) };
+    const auto& p2Line1{ *data->GeometricObject<VPointF>(p2Line1Id) };
+    const auto& p1Line2{ *data->GeometricObject<VPointF>(p1Line2Id) };
+    const auto& p2Line2{ *data->GeometricObject<VPointF>(p2Line2Id) };
 
-    QLineF line1(static_cast<QPointF>(*p1Line1), static_cast<QPointF>(*p2Line1));
-    QLineF line2(static_cast<QPointF>(*p1Line2), static_cast<QPointF>(*p2Line2));
+    const QLineF line1{ static_cast<QPointF>(p1Line1), static_cast<QPointF>(p2Line1) };
+    const QLineF line2{ static_cast<QPointF>(p1Line2), static_cast<QPointF>(p2Line2) };
     QPointF fPoint;
     QLineF::IntersectType intersect = line1.intersects(line2, &fPoint);
 
@@ -304,13 +304,13 @@ void DialogLineIntersect::CheckState()
  */
 bool DialogLineIntersect::CheckIntersecion()
 {
-    const QSharedPointer<VPointF> p1L1 = data->GeometricObject<VPointF>(GetP1Line1());
-    const QSharedPointer<VPointF> p2L1 = data->GeometricObject<VPointF>(GetP2Line1());
-    const QSharedPointer<VPointF> p1L2 = data->GeometricObject<VPointF>(GetP1Line2());
-    const QSharedPointer<VPointF> p2L2 = data->GeometricObject<VPointF>(GetP2Line2());
+    const auto& p1L1{ *data->GeometricObject<VPointF>(GetP1Line1()) };
+    const auto& p2L1{ *data->GeometricObject<VPointF>(GetP2Line1()) };
+    const auto& p1L2{ *data->GeometricObject<VPointF>(GetP1Line2()) };
+    const auto& p2L2{ *data->GeometricObject<VPointF>(GetP2Line2()) };
 
-    QLineF line1(static_cast<QPointF>(*p1L1), static_cast<QPointF>(*p2L1));
-    QLineF line2(static_cast<QPointF>(*p1L2), static_cast<QPointF>(*p2L2));
+    const QLineF line1{ static_cast<QPointF>(p1L1), static_cast<QPointF>(p2L1) };
+    const QLineF line2{ static_cast<QPointF>(p1L2), static_cast<QPointF>(p2L2) };
     QPointF fPoint;
     QLineF::IntersectType intersect = line1.intersects(line2, &fPoint);
     if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection) {

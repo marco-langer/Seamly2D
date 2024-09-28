@@ -152,13 +152,12 @@ void VDrawTool::SaveDialogChange()
 void VDrawTool::AddToFile()
 {
     QDomElement domElement = doc->createElement(getTagName());
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOptions(domElement, obj);
+    SaveOptions(domElement, &VAbstractTool::data.GetGObject(m_id));
     AddToCalculation(domElement);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VDrawTool::SaveOption(QSharedPointer<VGObject>& obj)
+void VDrawTool::SaveOption(const VGObject* obj)
 {
     qCDebug(vTool, "Saving tool options");
     QDomElement oldDomElement = doc->elementById(m_id, getTagName());
@@ -177,7 +176,7 @@ void VDrawTool::SaveOption(QSharedPointer<VGObject>& obj)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VDrawTool::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VDrawTool::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     Q_UNUSED(obj)
 
@@ -245,8 +244,7 @@ void VDrawTool::AddToCalculation(const QDomElement& domElement)
 void VDrawTool::addDependence(QList<quint32>& list, quint32 objectId) const
 {
     if (objectId != NULL_ID) {
-        auto originPoint = VAbstractTool::data.GetGObject(objectId);
-        list.append(originPoint->getIdTool());
+        list.append(VAbstractTool::data.GetGObject(objectId).getIdTool());
     }
 }
 
@@ -258,8 +256,7 @@ void VDrawTool::setLineType(const QString& value)
 {
     m_lineType = value;
 
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOption(obj);
+    SaveOption(&VAbstractTool::data.GetGObject(m_id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -270,8 +267,7 @@ void VDrawTool::setLineWeight(const QString& value)
 {
     m_lineWeight = value;
 
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOption(obj);
+    SaveOption(&VAbstractTool::data.GetGObject(m_id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

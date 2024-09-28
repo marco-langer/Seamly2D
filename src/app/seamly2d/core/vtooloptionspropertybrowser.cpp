@@ -562,7 +562,7 @@ template <class Tool>
 QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GOType objType)
 {
     quint32 toolId = tool->getId();
-    QHash<quint32, QSharedPointer<VGObject>> objects;
+    QHash<quint32, const VGObject*> objects;
 
     QVector<VToolRecord> history = qApp->getCurrentDocument()->getBlockHistory();
     for (qint32 i = 0; i < history.size(); ++i) {
@@ -584,8 +584,7 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
                     if (objs->contains(id))   // Avoid badId Get GObject only if not a line tool
                                               // which is not an object
                     {
-                        QSharedPointer<VGObject> obj = m_data->GetGObject(id);
-                        objects.insert(id, obj);
+                        objects.insert(id, &m_data->GetGObject(id));
                     }
                 }
                 break;
@@ -609,8 +608,7 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
                     if (objs->contains(id))   // Avoid badId Get GObject only if not a line tool
                                               // which is not an object
                     {
-                        QSharedPointer<VGObject> obj = m_data->GetGObject(id);
-                        objects.insert(id, obj);
+                        objects.insert(id, &m_data->GetGObject(id));
                     }
                 }
                 break;
@@ -620,8 +618,7 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
                 if (objs->contains(recId))   // Avoid badId Get GObject only if not a line tool
                                              // which is not an object
                 {
-                    QSharedPointer<VGObject> obj = m_data->GetGObject(recId);
-                    objects.insert(recId, obj);
+                    objects.insert(recId, &m_data->GetGObject(recId));
                 }
                 break;
             }
@@ -633,9 +630,9 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
 
 endLoop:
     QMap<QString, quint32> map;
-    QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
+    QHash<quint32, const VGObject*>::const_iterator i;
     for (i = objects.constBegin(); i != objects.constEnd(); ++i) {
-        QSharedPointer<VGObject> obj = i.value();
+        const VGObject* obj{ i.value() };
         if (obj->getMode() == Draw::Calculation) {
             switch (objType) {
             case GOType::Point:
@@ -671,7 +668,6 @@ endLoop:
                     map.insert(obj->name(), i.key());
                 }
                 break;
-
             case GOType::EllipticalArc:
             case GOType::Unknown:
             default: break;
@@ -1586,7 +1582,6 @@ void VToolOptionsPropertyBrowser::changeDataToolSpline(VPE::VProperty* property)
     SCASSERT(tool != nullptr)
 
     auto spl = tool->getSpline();
-    VPointF point;
 
     const VFormula f = value.value<VFormula>();
 
@@ -1594,16 +1589,18 @@ void VToolOptionsPropertyBrowser::changeDataToolSpline(VPE::VProperty* property)
     case 0:                // AttrName
         Q_UNREACHABLE();   // The attribute is read only
         break;
-    case 6:   // AttrFirstPoint
-        point = *m_data->GeometricObject<VPointF>(value.toInt());
+    case 6: {   // AttrFirstPoint
+        const auto& point{ *m_data->GeometricObject<VPointF>(value.toInt()) };
         spl.SetP1(point);
         tool->setSpline(spl);
         break;
-    case 7:   // AttrSecondPoint
-        point = *m_data->GeometricObject<VPointF>(value.toInt());
+    }
+    case 7: {   // AttrSecondPoint
+        const auto& point{ *m_data->GeometricObject<VPointF>(value.toInt()) };
         spl.SetP4(point);
         tool->setSpline(spl);
         break;
+    }
     case 9:   // AttrAngle1
         if (not f.error()) {
             spl.SetStartAngle(f.getDoubleValue(), f.GetFormula(FormulaType::FromUser));
@@ -1653,7 +1650,6 @@ void VToolOptionsPropertyBrowser::changeDataToolCubicBezier(VPE::VProperty* prop
     SCASSERT(tool != nullptr)
 
     auto spline = tool->getSpline();
-    VPointF point;
 
     switch (propertiesList().indexOf(id)) {
     case 0:                // AttrName
@@ -1669,23 +1665,19 @@ void VToolOptionsPropertyBrowser::changeDataToolCubicBezier(VPE::VProperty* prop
         tool->setLineWeight(value.toString());
         break;
     case 55:   // AttrPoint1
-        point = *m_data->GeometricObject<VPointF>(value.toInt());
-        spline.SetP1(point);
+        spline.SetP1(*m_data->GeometricObject<VPointF>(value.toInt()));
         tool->setSpline(spline);
         break;
     case 56:   // AttrPoint2
-        point = *m_data->GeometricObject<VPointF>(value.toInt());
-        spline.SetP2(point);
+        spline.SetP2(*m_data->GeometricObject<VPointF>(value.toInt()));
         tool->setSpline(spline);
         break;
     case 57:   // AttrPoint3
-        point = *m_data->GeometricObject<VPointF>(value.toInt());
-        spline.SetP3(point);
+        spline.SetP3(*m_data->GeometricObject<VPointF>(value.toInt()));
         tool->setSpline(spline);
         break;
     case 58:   // AttrPoint4
-        point = *m_data->GeometricObject<VPointF>(value.toInt());
-        spline.SetP4(point);
+        spline.SetP4(*m_data->GeometricObject<VPointF>(value.toInt()));
         tool->setSpline(spline);
         break;
     default: qWarning() << "Unknown property type. id = " << id; break;

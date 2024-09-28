@@ -320,7 +320,7 @@ void VToolInternalPath::RefreshGeometry()
 void VToolInternalPath::IncrementNodes(const VPiecePath& path) const
 {
     for (int i = 0; i < path.CountNodes(); ++i) {
-        doc->IncrementReferens(VAbstractTool::data.GetGObject(path.at(i).GetId())->getIdTool());
+        doc->IncrementReferens(VAbstractTool::data.GetGObject(path.at(i).GetId()).getIdTool());
     }
 }
 
@@ -328,6 +328,6 @@ void VToolInternalPath::IncrementNodes(const VPiecePath& path) const
 void VToolInternalPath::DecrementNodes(const VPiecePath& path) const
 {
     for (int i = 0; i < path.CountNodes(); ++i) {
-        doc->DecrementReferens(VAbstractTool::data.GetGObject(path.at(i).GetId())->getIdTool());
+        doc->DecrementReferens(VAbstractTool::data.GetGObject(path.at(i).GetId()).getIdTool());
     }
 }

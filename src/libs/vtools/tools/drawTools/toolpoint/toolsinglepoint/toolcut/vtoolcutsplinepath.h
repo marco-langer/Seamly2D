@@ -106,7 +106,7 @@ public:
 
     [[nodiscard]] static VPointF* CutSplinePath(
         qreal length,
-        const QSharedPointer<VAbstractCubicBezierPath>& splPath,
+        const VAbstractCubicBezierPath& splPath,
         const QString& pName,
         VSplinePath** splPath1,
         VSplinePath** splPath2);
@@ -116,7 +116,7 @@ protected slots:
 
 protected:
     void SaveDialog(QDomElement& domElement) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     void ReadToolAttributes(const QDomElement& domElement) override;
     void SetVisualization() override;
     QString makeToolTip() const override;

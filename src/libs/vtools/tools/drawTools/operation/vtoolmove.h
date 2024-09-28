@@ -126,7 +126,7 @@ protected:
     void SetVisualization() override;
     void SaveDialog(QDomElement& domElement) override;
     void ReadToolAttributes(const QDomElement& domElement) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     QString makeToolTip() const override;
 
 private:

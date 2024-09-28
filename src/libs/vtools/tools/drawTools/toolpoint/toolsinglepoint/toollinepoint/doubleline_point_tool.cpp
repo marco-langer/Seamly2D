@@ -146,14 +146,14 @@ void DoubleLinePointTool::RefreshGeometry()
  */
 void DoubleLinePointTool::RemoveReferens()
 {
-    const auto point1 = VAbstractTool::data.GetGObject(firstPointId);
-    const auto point2 = VAbstractTool::data.GetGObject(secondPointId);
-    doc->DecrementReferens(point1->getIdTool());
-    doc->DecrementReferens(point2->getIdTool());
+    const auto& point1{ VAbstractTool::data.GetGObject(firstPointId) };
+    const auto& point2{ VAbstractTool::data.GetGObject(secondPointId) };
+    doc->DecrementReferens(point1.getIdTool());
+    doc->DecrementReferens(point2.getIdTool());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DoubleLinePointTool::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void DoubleLinePointTool::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 
@@ -181,14 +181,12 @@ void DoubleLinePointTool::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 //---------------------------------------------------------------------------------------------------------------------
 QString DoubleLinePointTool::makeToolTip() const
 {
-    const QSharedPointer<VPointF> point1 =
-        VAbstractTool::data.GeometricObject<VPointF>(firstPointId);
-    const QSharedPointer<VPointF> point2 =
-        VAbstractTool::data.GeometricObject<VPointF>(secondPointId);
-    const QSharedPointer<VPointF> point3 = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& point1{ *VAbstractTool::data.GeometricObject<VPointF>(firstPointId) };
+    const auto& point2{ *VAbstractTool::data.GeometricObject<VPointF>(secondPointId) };
+    const auto& point3{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
 
-    const QLineF line1(static_cast<QPointF>(*point1), static_cast<QPointF>(*point3));
-    const QLineF line2(static_cast<QPointF>(*point2), static_cast<QPointF>(*point3));
+    const QLineF line1{ static_cast<QPointF>(point1), static_cast<QPointF>(point3) };
+    const QLineF line2{ static_cast<QPointF>(point2), static_cast<QPointF>(point3) };
 
     const QString toolTip = QString(
                                 "<table>"
@@ -225,9 +223,9 @@ QString DoubleLinePointTool::makeToolTip() const
                                 "</table>")
                                 .arg(tr("Name"))                              // 1
                                 .arg(tr("Length"))                            // 2
-                                .arg(point1->name())                          // 3
-                                .arg(point2->name())                          // 4
-                                .arg(point3->name())                          // 5
+                                .arg(point1.name())                           // 3
+                                .arg(point2.name())                           // 4
+                                .arg(point3.name())                           // 5
                                 .arg(qApp->fromPixel(line1.length()))         // 6
                                 .arg(qApp->fromPixel(line2.length()))         // 7
                                 .arg(UnitsToStr(qApp->patternUnit(), true))   // 8
@@ -262,9 +260,7 @@ QString DoubleLinePointTool::getLineColor() const { return lineColor; }
 void DoubleLinePointTool::setLineColor(const QString& value)
 {
     lineColor = value;
-
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOption(obj);
+    SaveOption(&VAbstractTool::data.GetGObject(m_id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -275,9 +271,7 @@ void DoubleLinePointTool::setFirstPointId(const quint32& value)
 {
     if (value != NULL_ID) {
         firstPointId = value;
-
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -289,20 +283,18 @@ void DoubleLinePointTool::setSecondPointId(const quint32& value)
 {
     if (value != NULL_ID) {
         secondPointId = value;
-
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString DoubleLinePointTool::point1Name() const
 {
-    return VAbstractTool::data.GetGObject(firstPointId)->name();
+    return VAbstractTool::data.GetGObject(firstPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString DoubleLinePointTool::point2Name() const
 {
-    return VAbstractTool::data.GetGObject(secondPointId)->name();
+    return VAbstractTool::data.GetGObject(secondPointId).name();
 }

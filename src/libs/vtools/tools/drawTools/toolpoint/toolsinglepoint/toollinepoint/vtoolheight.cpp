@@ -116,14 +116,14 @@ void VToolHeight::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogHeight> dialogTool = m_dialog.objectCast<DialogHeight>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->setLineType(m_lineType);
     dialogTool->setLineWeight(m_lineWeight);
     dialogTool->setLineColor(lineColor);
     dialogTool->SetBasePointId(basePointId);
     dialogTool->SetP1LineId(p1LineId);
     dialogTool->SetP2LineId(p2LineId);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -214,13 +214,13 @@ VToolHeight* VToolHeight::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> basePoint = data->GeometricObject<VPointF>(basePointId);
-    const QSharedPointer<VPointF> p1Line = data->GeometricObject<VPointF>(p1LineId);
-    const QSharedPointer<VPointF> p2Line = data->GeometricObject<VPointF>(p2LineId);
+    const auto& basePoint{ *data->GeometricObject<VPointF>(basePointId) };
+    const auto& p1Line{ *data->GeometricObject<VPointF>(p1LineId) };
+    const auto& p2Line{ *data->GeometricObject<VPointF>(p2LineId) };
 
-    QPointF pHeight = FindPoint(
-        QLineF(static_cast<QPointF>(*p1Line), static_cast<QPointF>(*p2Line)),
-        static_cast<QPointF>(*basePoint));
+    const QPointF pHeight{ FindPoint(
+        QLineF{ static_cast<QPointF>(p1Line), static_cast<QPointF>(p2Line) },
+        static_cast<QPointF>(basePoint)) };
     quint32 id = _id;
     VPointF* p = new VPointF(pHeight, pointName, mx, my);
     p->setShowPointName(showPointName);
@@ -256,9 +256,9 @@ VToolHeight* VToolHeight::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(basePoint->getIdTool());
-        doc->IncrementReferens(p1Line->getIdTool());
-        doc->IncrementReferens(p2Line->getIdTool());
+        doc->IncrementReferens(basePoint.getIdTool());
+        doc->IncrementReferens(p1Line.getIdTool());
+        doc->IncrementReferens(p2Line.getIdTool());
         return point;
     }
     return nullptr;
@@ -279,13 +279,13 @@ QPointF VToolHeight::FindPoint(const QLineF& line, const QPointF& point)
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolHeight::FirstLinePointName() const
 {
-    return VAbstractTool::data.GetGObject(p1LineId)->name();
+    return VAbstractTool::data.GetGObject(p1LineId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolHeight::SecondLinePointName() const
 {
-    return VAbstractTool::data.GetGObject(p2LineId)->name();
+    return VAbstractTool::data.GetGObject(p2LineId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -322,7 +322,7 @@ void VToolHeight::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolHeight::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolHeight::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolLinePoint::SaveOptions(tag, obj);
 
@@ -362,15 +362,14 @@ void VToolHeight::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolHeight::makeToolTip() const
 {
-    const QSharedPointer<VPointF> basePoint =
-        VAbstractTool::data.GeometricObject<VPointF>(basePointId);
-    const QSharedPointer<VPointF> p1Line = VAbstractTool::data.GeometricObject<VPointF>(p1LineId);
-    const QSharedPointer<VPointF> p2Line = VAbstractTool::data.GeometricObject<VPointF>(p2LineId);
-    const QSharedPointer<VPointF> current = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& basePoint{ *VAbstractTool::data.GeometricObject<VPointF>(basePointId) };
+    const auto& p1Line{ *VAbstractTool::data.GeometricObject<VPointF>(p1LineId) };
+    const auto& p2Line{ *VAbstractTool::data.GeometricObject<VPointF>(p2LineId) };
+    const auto& current{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
 
-    const QLineF curLine(static_cast<QPointF>(*basePoint), static_cast<QPointF>(*current));
-    const QLineF p1ToCur(static_cast<QPointF>(*p1Line), static_cast<QPointF>(*current));
-    const QLineF p2ToCur(static_cast<QPointF>(*p2Line), static_cast<QPointF>(*current));
+    const QLineF curLine{ static_cast<QPointF>(basePoint), static_cast<QPointF>(current) };
+    const QLineF p1ToCur{ static_cast<QPointF>(p1Line), static_cast<QPointF>(current) };
+    const QLineF p2ToCur{ static_cast<QPointF>(p2Line), static_cast<QPointF>(current) };
 
     const QString toolTip = QString(
                                 "<table>"
@@ -385,12 +384,12 @@ QString VToolHeight::makeToolTip() const
                                 .arg(UnitsToStr(qApp->patternUnit(), true))
                                 .arg(tr("Angle"))
                                 .arg(curLine.angle())
-                                .arg(QString("%1->%2").arg(p1Line->name(), current->name()))
+                                .arg(QString("%1->%2").arg(p1Line.name(), current.name()))
                                 .arg(qApp->fromPixel(p1ToCur.length()))
-                                .arg(QString("%1->%2").arg(p2Line->name(), current->name()))
+                                .arg(QString("%1->%2").arg(p2Line.name(), current.name()))
                                 .arg(qApp->fromPixel(p2ToCur.length()))
                                 .arg(tr("Name"))
-                                .arg(current->name());
+                                .arg(current.name());
 
     return toolTip;
 }
@@ -404,8 +403,7 @@ void VToolHeight::SetP2LineId(const quint32& value)
     if (value != NULL_ID) {
         p2LineId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -421,7 +419,6 @@ void VToolHeight::SetP1LineId(const quint32& value)
     if (value != NULL_ID) {
         p1LineId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }

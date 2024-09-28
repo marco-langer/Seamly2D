@@ -141,10 +141,10 @@ VToolMirrorByLine* VToolMirrorByLine::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const auto firstPoint = *data->GeometricObject<VPointF>(firstLinePointId);
+    const auto& firstPoint{ *data->GeometricObject<VPointF>(firstLinePointId) };
     const QPointF fPoint = static_cast<QPointF>(firstPoint);
 
-    const auto secondPoint = *data->GeometricObject<VPointF>(secondLinePointId);
+    const auto& secondPoint{ *data->GeometricObject<VPointF>(secondLinePointId) };
     const QPointF sPoint = static_cast<QPointF>(secondPoint);
 
     QVector<DestinationItem> dest = destination;
@@ -163,7 +163,7 @@ VToolMirrorByLine* VToolMirrorByLine::Create(
         doc->IncrementReferens(secondPoint.getIdTool());
         for (int i = 0; i < source.size(); ++i) {
             const SourceItem item = source.at(i);
-            doc->IncrementReferens(data->GetGObject(item.id)->getIdTool());
+            doc->IncrementReferens(data->GetGObject(item.id).getIdTool());
         }
         return tool;
     }
@@ -173,13 +173,13 @@ VToolMirrorByLine* VToolMirrorByLine::Create(
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolMirrorByLine::firstLinePointName() const
 {
-    return VAbstractTool::data.GetGObject(m_firstLinePointId)->name();
+    return VAbstractTool::data.GetGObject(m_firstLinePointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolMirrorByLine::secondLinePointName() const
 {
-    return VAbstractTool::data.GetGObject(m_secondLinePointId)->name();
+    return VAbstractTool::data.GetGObject(m_secondLinePointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -190,9 +190,7 @@ void VToolMirrorByLine::setFirstLinePointId(const quint32& value)
 {
     if (value != NULL_ID) {
         m_firstLinePointId = value;
-
-        QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-        SaveOption(obj);
+        SaveOption(VContainer::GetFakeGObject(m_id).get());
     }
 }
 
@@ -204,9 +202,7 @@ void VToolMirrorByLine::setSecondLinePointId(const quint32& value)
 {
     if (value != NULL_ID) {
         m_secondLinePointId = value;
-
-        QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-        SaveOption(obj);
+        SaveOption(VContainer::GetFakeGObject(m_id).get());
     }
 }
 
@@ -251,7 +247,7 @@ void VToolMirrorByLine::ReadToolAttributes(const QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolMirrorByLine::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolMirrorByLine::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 

@@ -133,8 +133,8 @@ void VToolAlongLine::showContextMenu(QGraphicsSceneContextMenuEvent* event, quin
  */
 void VToolAlongLine::RemoveReferens()
 {
-    const auto secondPoint = VAbstractTool::data.GetGObject(secondPointId);
-    doc->DecrementReferens(secondPoint->getIdTool());
+    const auto& secondPoint{ VAbstractTool::data.GetGObject(secondPointId) };
+    doc->DecrementReferens(secondPoint.getIdTool());
     VToolLinePoint::RemoveReferens();
 }
 
@@ -157,7 +157,7 @@ void VToolAlongLine::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolAlongLine::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolAlongLine::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolLinePoint::SaveOptions(tag, obj);
 
@@ -197,14 +197,12 @@ void VToolAlongLine::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolAlongLine::makeToolTip() const
 {
-    const QSharedPointer<VPointF> basePoint =
-        VAbstractTool::data.GeometricObject<VPointF>(basePointId);
-    const QSharedPointer<VPointF> secondPoint =
-        VAbstractTool::data.GeometricObject<VPointF>(secondPointId);
-    const QSharedPointer<VPointF> current = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& basePoint{ *VAbstractTool::data.GeometricObject<VPointF>(basePointId) };
+    const auto& secondPoint{ *VAbstractTool::data.GeometricObject<VPointF>(secondPointId) };
+    const auto& current{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
 
-    const QLineF curLine(static_cast<QPointF>(*basePoint), static_cast<QPointF>(*current));
-    const QLineF curToSecond(static_cast<QPointF>(*current), static_cast<QPointF>(*secondPoint));
+    const QLineF curLine{ static_cast<QPointF>(basePoint), static_cast<QPointF>(current) };
+    const QLineF curToSecond{ static_cast<QPointF>(current), static_cast<QPointF>(secondPoint) };
 
     const QString toolTip = QString(
                                 "<table>"
@@ -219,11 +217,11 @@ QString VToolAlongLine::makeToolTip() const
                                 .arg(UnitsToStr(qApp->patternUnit(), true))
                                 .arg(tr("Angle"))
                                 .arg(curLine.angle())
-                                .arg(QString("%1->%2").arg(basePoint->name(), current->name()))
-                                .arg(QString("%1->%2").arg(current->name(), secondPoint->name()))
+                                .arg(QString("%1->%2").arg(basePoint.name(), current.name()))
+                                .arg(QString("%1->%2").arg(current.name(), secondPoint.name()))
                                 .arg(qApp->fromPixel(curToSecond.length()))
                                 .arg(tr("Name"))
-                                .arg(current->name());
+                                .arg(current.name());
 
     return toolTip;
 }
@@ -237,8 +235,7 @@ void VToolAlongLine::SetSecondPointId(const quint32& value)
     if (value != NULL_ID) {
         secondPointId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -254,14 +251,14 @@ void VToolAlongLine::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogAlongLine> dialogTool = m_dialog.objectCast<DialogAlongLine>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->setLineType(m_lineType);
     dialogTool->setLineWeight(m_lineWeight);
     dialogTool->setLineColor(lineColor);
     dialogTool->SetFormula(formulaLength);
     dialogTool->SetFirstPointId(basePointId);
     dialogTool->SetSecondPointId(secondPointId);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -348,15 +345,13 @@ VToolAlongLine* VToolAlongLine::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> firstPoint = data->GeometricObject<VPointF>(firstPointId);
-    const QSharedPointer<VPointF> secondPoint = data->GeometricObject<VPointF>(secondPointId);
-    SCASSERT(firstPoint)
-    SCASSERT(secondPoint)
-    QLineF line = QLineF(static_cast<QPointF>(*firstPoint), static_cast<QPointF>(*secondPoint));
+    const auto& firstPoint{ *data->GeometricObject<VPointF>(firstPointId) };
+    const auto& secondPoint{ *data->GeometricObject<VPointF>(secondPointId) };
+    QLineF line{ static_cast<QPointF>(firstPoint), static_cast<QPointF>(secondPoint) };
 
     // Declare special variable "CurrentLength"
     VLengthLine* length = new VLengthLine(
-        *firstPoint, firstPointId, *secondPoint, secondPointId, *data->GetPatternUnit());
+        firstPoint, firstPointId, secondPoint, secondPointId, *data->GetPatternUnit());
     length->SetName(currentLength);
     data->AddVariable(currentLength, length);
 
@@ -396,8 +391,8 @@ VToolAlongLine* VToolAlongLine::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(firstPoint->getIdTool());
-        doc->IncrementReferens(secondPoint->getIdTool());
+        doc->IncrementReferens(firstPoint.getIdTool());
+        doc->IncrementReferens(secondPoint.getIdTool());
     }
     // Very important to delete it. Only this tool need this special variable.
     data->RemoveVariable(currentLength);
@@ -407,5 +402,5 @@ VToolAlongLine* VToolAlongLine::Create(
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolAlongLine::SecondPointName() const
 {
-    return VAbstractTool::data.GetGObject(secondPointId)->name();
+    return VAbstractTool::data.GetGObject(secondPointId).name();
 }

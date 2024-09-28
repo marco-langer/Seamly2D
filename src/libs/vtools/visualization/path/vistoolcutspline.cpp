@@ -90,11 +90,11 @@ VisToolCutSpline::VisToolCutSpline(const VContainer* data, QGraphicsItem* parent
 void VisToolCutSpline::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const auto spl = Visualization::data->GeometricObject<VAbstractCubicBezier>(object1Id);
+        const auto& spl{ *Visualization::data->GeometricObject<VAbstractCubicBezier>(object1Id) };
         DrawPath(
             this,
-            spl->GetPath(),
-            spl->DirectionArrows(),
+            spl.GetPath(),
+            spl.DirectionArrows(),
             supportColor,
             lineStyle,
             lineWeight,
@@ -105,10 +105,10 @@ void VisToolCutSpline::RefreshGeometry()
             QPointF spl1p3;
             QPointF spl2p2;
             QPointF spl2p3;
-            const QPointF p = spl->CutSpline(length, spl1p2, spl1p3, spl2p2, spl2p3);
+            const QPointF p{ spl.CutSpline(length, spl1p2, spl1p3, spl2p2, spl2p3) };
 
-            const VSpline sp1 = VSpline(spl->GetP1(), spl1p2, spl1p3, VPointF(p));
-            const VSpline sp2 = VSpline(VPointF(p), spl2p2, spl2p3, spl->GetP4());
+            const VSpline sp1{ VSpline(spl.GetP1(), spl1p2, spl1p3, VPointF(p)) };
+            const VSpline sp2{ VSpline(VPointF(p), spl2p2, spl2p3, spl.GetP4()) };
 
             DrawPoint(point, p, mainColor);
 

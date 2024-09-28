@@ -158,7 +158,7 @@ void VToolBisector::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogBisector> dialogTool = m_dialog.objectCast<DialogBisector>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->setLineType(m_lineType);
     dialogTool->setLineWeight(m_lineWeight);
     dialogTool->setLineColor(lineColor);
@@ -166,7 +166,7 @@ void VToolBisector::setDialog()
     dialogTool->SetFirstPointId(firstPointId);
     dialogTool->SetSecondPointId(basePointId);
     dialogTool->SetThirdPointId(thirdPointId);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -258,17 +258,17 @@ VToolBisector* VToolBisector::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> firstPoint = data->GeometricObject<VPointF>(firstPointId);
-    const QSharedPointer<VPointF> secondPoint = data->GeometricObject<VPointF>(secondPointId);
-    const QSharedPointer<VPointF> thirdPoint = data->GeometricObject<VPointF>(thirdPointId);
+    const auto& firstPoint{ *data->GeometricObject<VPointF>(firstPointId) };
+    const auto& secondPoint{ *data->GeometricObject<VPointF>(secondPointId) };
+    const auto& thirdPoint{ *data->GeometricObject<VPointF>(thirdPointId) };
 
     const qreal result = CheckFormula(_id, formula, data);
 
-    QPointF fPoint = VToolBisector::FindPoint(
-        static_cast<QPointF>(*firstPoint),
-        static_cast<QPointF>(*secondPoint),
-        static_cast<QPointF>(*thirdPoint),
-        qApp->toPixel(result));
+    const QPointF fPoint{ VToolBisector::FindPoint(
+        static_cast<QPointF>(firstPoint),
+        static_cast<QPointF>(secondPoint),
+        static_cast<QPointF>(thirdPoint),
+        qApp->toPixel(result)) };
     quint32 id = _id;
     VPointF* p = new VPointF(fPoint, pointName, mx, my);
     p->setShowPointName(showPointName);
@@ -301,9 +301,9 @@ VToolBisector* VToolBisector::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(firstPoint->getIdTool());
-        doc->IncrementReferens(secondPoint->getIdTool());
-        doc->IncrementReferens(thirdPoint->getIdTool());
+        doc->IncrementReferens(firstPoint.getIdTool());
+        doc->IncrementReferens(secondPoint.getIdTool());
+        doc->IncrementReferens(thirdPoint.getIdTool());
         return point;
     }
     return nullptr;
@@ -312,13 +312,13 @@ VToolBisector* VToolBisector::Create(
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolBisector::FirstPointName() const
 {
-    return VAbstractTool::data.GetGObject(firstPointId)->name();
+    return VAbstractTool::data.GetGObject(firstPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolBisector::ThirdPointName() const
 {
-    return VAbstractTool::data.GetGObject(thirdPointId)->name();
+    return VAbstractTool::data.GetGObject(thirdPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -342,11 +342,11 @@ void VToolBisector::showContextMenu(QGraphicsSceneContextMenuEvent* event, quint
  */
 void VToolBisector::RemoveReferens()
 {
-    const auto firstPoint = VAbstractTool::data.GetGObject(firstPointId);
-    const auto thirdPoint = VAbstractTool::data.GetGObject(thirdPointId);
+    const auto& firstPoint{ VAbstractTool::data.GetGObject(firstPointId) };
+    const auto& thirdPoint{ VAbstractTool::data.GetGObject(thirdPointId) };
 
-    doc->DecrementReferens(firstPoint->getIdTool());
-    doc->DecrementReferens(thirdPoint->getIdTool());
+    doc->DecrementReferens(firstPoint.getIdTool());
+    doc->DecrementReferens(thirdPoint.getIdTool());
     VToolLinePoint::RemoveReferens();
 }
 
@@ -371,7 +371,7 @@ void VToolBisector::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolBisector::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolBisector::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolLinePoint::SaveOptions(tag, obj);
 
@@ -421,8 +421,7 @@ void VToolBisector::SetThirdPointId(const quint32& value)
     if (value != NULL_ID) {
         thirdPointId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -438,7 +437,6 @@ void VToolBisector::SetFirstPointId(const quint32& value)
     if (value != NULL_ID) {
         firstPointId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }

@@ -89,39 +89,36 @@ VisToolHeight::VisToolHeight(const VContainer* data, QGraphicsItem* parent)
 void VisToolHeight::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> first =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(base_point, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(base_point, static_cast<QPointF>(first), supportColor);
 
         if (lineP1Id <= NULL_ID) {
             DrawLine(
                 this,
-                QLineF(static_cast<QPointF>(*first), Visualization::scenePos),
+                QLineF{ static_cast<QPointF>(first), Visualization::scenePos },
                 mainColor,
                 lineWeight);
         } else {
-            const QSharedPointer<VPointF> second =
-                Visualization::data->GeometricObject<VPointF>(lineP1Id);
-            DrawPoint(lineP1, static_cast<QPointF>(*second), supportColor);
+            const auto& second{ *Visualization::data->GeometricObject<VPointF>(lineP1Id) };
+            DrawPoint(lineP1, static_cast<QPointF>(second), supportColor);
 
             QLineF base_line;
             if (lineP2Id <= NULL_ID) {
-                base_line = QLineF(static_cast<QPointF>(*second), Visualization::scenePos);
+                base_line = QLineF{ static_cast<QPointF>(second), Visualization::scenePos };
                 DrawLine(line, base_line, supportColor, lineWeight);
             } else {
-                const QSharedPointer<VPointF> third =
-                    Visualization::data->GeometricObject<VPointF>(lineP2Id);
-                DrawPoint(lineP2, static_cast<QPointF>(*third), supportColor);
+                const auto& third{ *Visualization::data->GeometricObject<VPointF>(lineP2Id) };
+                DrawPoint(lineP2, static_cast<QPointF>(third), supportColor);
 
-                base_line = QLineF(static_cast<QPointF>(*second), static_cast<QPointF>(*third));
+                base_line = QLineF{ static_cast<QPointF>(second), static_cast<QPointF>(third) };
             }
 
             DrawLine(line, base_line, supportColor, lineWeight);
 
-            QPointF height = VToolHeight::FindPoint(base_line, static_cast<QPointF>(*first));
+            const QPointF height{ VToolHeight::FindPoint(base_line, static_cast<QPointF>(first)) };
             DrawPoint(point, height, mainColor);
 
-            QLineF height_line(static_cast<QPointF>(*first), height);
+            const QLineF height_line{ static_cast<QPointF>(first), height };
             DrawLine(this, height_line, mainColor, lineWeight, lineStyle);
 
             ShowIntersection(height_line, base_line);

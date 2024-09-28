@@ -301,9 +301,8 @@ void DialogSplinePath::ChosenObject(quint32 id, const SceneObject& type)
             return;
         }
 
-        const auto point = data->GeometricObject<VPointF>(id);
         VSplinePoint p;
-        p.SetP(*point);
+        p.SetP(*data->GeometricObject<VPointF>(id));
         NewItem(p);
         emit ToolTip(tr("Select point of curve path"));
 
@@ -795,8 +794,7 @@ void DialogSplinePath::currentPointChanged(int index)
     const quint32 id = qvariant_cast<quint32>(ui->comboBoxPoint->itemData(index));
     QListWidgetItem* item = ui->listWidget->item(ui->listWidget->currentRow());
     VSplinePoint p = qvariant_cast<VSplinePoint>(item->data(Qt::UserRole));
-    const auto point = data->GeometricObject<VPointF>(id);
-    p.SetP(*point);
+    p.SetP(*data->GeometricObject<VPointF>(id));
     DataPoint(p);
     item->setData(Qt::UserRole, QVariant::fromValue(p));
     ShowPointIssue(p.P().name());

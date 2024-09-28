@@ -89,12 +89,12 @@ VisToolCutSplinePath::VisToolCutSplinePath(const VContainer* data, QGraphicsItem
 void VisToolCutSplinePath::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const auto splPath =
-            Visualization::data->GeometricObject<VAbstractCubicBezierPath>(object1Id);
+        const auto& splPath{ *Visualization::data->GeometricObject<VAbstractCubicBezierPath>(
+            object1Id) };
         DrawPath(
             this,
-            splPath->GetPath(),
-            splPath->DirectionArrows(),
+            splPath.GetPath(),
+            splPath.DirectionArrows(),
             supportColor,
             lineStyle,
             lineWeight,
@@ -103,8 +103,8 @@ void VisToolCutSplinePath::RefreshGeometry()
         if (not qFuzzyIsNull(length)) {
             VSplinePath* spPath1 = nullptr;
             VSplinePath* spPath2 = nullptr;
-            VPointF* p =
-                VToolCutSplinePath::CutSplinePath(length, splPath, "X", &spPath1, &spPath2);
+            VPointF* p{ VToolCutSplinePath::CutSplinePath(
+                length, splPath, "X", &spPath1, &spPath2) };
             SCASSERT(p != nullptr)
             SCASSERT(spPath1 != nullptr)
             SCASSERT(spPath2 != nullptr)

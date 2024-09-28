@@ -145,7 +145,7 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
     void keyReleaseEvent(QKeyEvent* event) override;
     void SaveDialog(QDomElement& domElement) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     void ReadToolAttributes(const QDomElement& domElement) override;
     void SetVisualization() override;
     QString makeToolTip() const override;

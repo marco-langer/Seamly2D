@@ -115,8 +115,8 @@ void PointIntersectXYTool::setDialog()
     QSharedPointer<PointIntersectXYDialog> dialogTool =
         m_dialog.objectCast<PointIntersectXYDialog>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(m_id);
-    dialogTool->setPointName(point->name());
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
+    dialogTool->setPointName(point.name());
     dialogTool->setFirstPointId(firstPointId);
     dialogTool->setSecondPointId(secondPointId);
     dialogTool->setLineType(m_lineType);
@@ -206,10 +206,10 @@ PointIntersectXYTool* PointIntersectXYTool::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> firstPoint = data->GeometricObject<VPointF>(firstPointId);
-    const QSharedPointer<VPointF> secondPoint = data->GeometricObject<VPointF>(secondPointId);
+    const auto& firstPoint{ *data->GeometricObject<VPointF>(firstPointId) };
+    const auto& secondPoint{ *data->GeometricObject<VPointF>(secondPointId) };
 
-    QPointF point(firstPoint->x(), secondPoint->y());
+    const QPointF point{ firstPoint.x(), secondPoint.y() };
     quint32 id = _id;
     VPointF* p = new VPointF(point, pointName, mx, my);
     p->setShowPointName(showPointName);
@@ -242,8 +242,8 @@ PointIntersectXYTool* PointIntersectXYTool::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(firstPoint->getIdTool());
-        doc->IncrementReferens(secondPoint->getIdTool());
+        doc->IncrementReferens(firstPoint.getIdTool());
+        doc->IncrementReferens(secondPoint.getIdTool());
         return point;
     }
     return nullptr;
@@ -252,13 +252,13 @@ PointIntersectXYTool* PointIntersectXYTool::Create(
 //---------------------------------------------------------------------------------------------------------------------
 QString PointIntersectXYTool::firstPointName() const
 {
-    return VAbstractTool::data.GetGObject(firstPointId)->name();
+    return VAbstractTool::data.GetGObject(firstPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString PointIntersectXYTool::secondPointName() const
 {
-    return VAbstractTool::data.GetGObject(secondPointId)->name();
+    return VAbstractTool::data.GetGObject(secondPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -267,11 +267,11 @@ QString PointIntersectXYTool::secondPointName() const
  */
 void PointIntersectXYTool::RemoveReferens()
 {
-    const auto firstPoint = VAbstractTool::data.GetGObject(firstPointId);
-    const auto secondPoint = VAbstractTool::data.GetGObject(secondPointId);
+    const auto& firstPoint{ VAbstractTool::data.GetGObject(firstPointId) };
+    const auto& secondPoint{ VAbstractTool::data.GetGObject(secondPointId) };
 
-    doc->DecrementReferens(firstPoint->getIdTool());
-    doc->DecrementReferens(secondPoint->getIdTool());
+    doc->DecrementReferens(firstPoint.getIdTool());
+    doc->DecrementReferens(secondPoint.getIdTool());
     DoubleLinePointTool::RemoveReferens();
 }
 
@@ -309,7 +309,7 @@ void PointIntersectXYTool::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PointIntersectXYTool::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void PointIntersectXYTool::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     DoubleLinePointTool::SaveOptions(tag, obj);
 

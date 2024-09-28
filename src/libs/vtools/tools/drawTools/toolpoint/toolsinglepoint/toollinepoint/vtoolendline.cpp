@@ -120,14 +120,14 @@ void VToolEndLine::setDialog()
     m_dialog->setModal(true);
     QSharedPointer<DialogEndLine> dialogTool = m_dialog.objectCast<DialogEndLine>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->setLineColor(lineColor);
     dialogTool->setLineType(m_lineType);
     dialogTool->setLineWeight(m_lineWeight);
     dialogTool->SetFormula(formulaLength);
     dialogTool->SetAngle(formulaAngle);
     dialogTool->SetBasePointId(basePointId);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -218,9 +218,8 @@ VToolEndLine* VToolEndLine::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> basePoint = data->GeometricObject<VPointF>(basePointId);
-    QLineF line =
-        QLineF(static_cast<QPointF>(*basePoint), QPointF(basePoint->x() + 100, basePoint->y()));
+    const auto& basePoint{ *data->GeometricObject<VPointF>(basePointId) };
+    QLineF line{ static_cast<QPointF>(basePoint), QPointF(basePoint.x() + 100, basePoint.y()) };
 
     line.setAngle(CheckFormula(_id, formulaAngle, data));   // First set angle.
     line.setLength(qApp->toPixel(CheckFormula(_id, formulaLength, data)));
@@ -255,7 +254,7 @@ VToolEndLine* VToolEndLine::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(basePoint->getIdTool());
+        doc->IncrementReferens(basePoint.getIdTool());
         return point;
     }
     return nullptr;
@@ -295,7 +294,7 @@ void VToolEndLine::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolEndLine::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolEndLine::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolLinePoint::SaveOptions(tag, obj);
 
@@ -350,8 +349,7 @@ void VToolEndLine::SetFormulaAngle(const VFormula& value)
     if (value.error() == false) {
         formulaAngle = value.GetFormula(FormulaType::FromUser);
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 

@@ -59,7 +59,6 @@
 #include <QObject>
 #include <QPainterPath>
 #include <QPointF>
-#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <QVector>
@@ -150,7 +149,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
     void ReadToolAttributes(const QDomElement& domElement) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     virtual void refreshCtrlPoints();
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
 

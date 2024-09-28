@@ -355,56 +355,50 @@ RowData HistoryDialog::record(const VToolRecord& tool)
             break;
 
         case Tool::Spline: {
-            const QSharedPointer<VSpline> spl = data->GeometricObject<VSpline>(toolId);
-            SCASSERT(!spl.isNull())
             rowData.icon = ":/toolicon/32x32/spline.png";
-            rowData.name = tr("%1").arg(spl->NameForHistory(tr("Spl_")));
+            rowData.name =
+                tr("%1").arg(data->GeometricObject<VSpline>(toolId)->NameForHistory(tr("Spl_")));
             rowData.tool = tr("Curve Interactive");
             break;
         }
 
         case Tool::CubicBezier: {
-            const QSharedPointer<VCubicBezier> spl = data->GeometricObject<VCubicBezier>(toolId);
-            SCASSERT(!spl.isNull())
             rowData.icon = ":/toolicon/32x32/cubic_bezier.png";
-            rowData.name = tr("%1").arg(spl->NameForHistory(tr("Spl_")));
+            rowData.name = tr("%1").arg(
+                data->GeometricObject<VCubicBezier>(toolId)->NameForHistory(tr("Spl_")));
             rowData.tool = tr("Curve Fixed");
             break;
         }
 
         case Tool::Arc: {
-            const QSharedPointer<VArc> arc = data->GeometricObject<VArc>(toolId);
-            SCASSERT(!arc.isNull())
             rowData.icon = ":/toolicon/32x32/arc.png";
-            rowData.name = tr("%1").arg(arc->NameForHistory(tr("Arc_")));
+            rowData.name =
+                tr("%1").arg(data->GeometricObject<VArc>(toolId)->NameForHistory(tr("Arc_")));
             rowData.tool = tr("Arc Radius & Angles");
             break;
         }
 
         case Tool::ArcWithLength: {
-            const QSharedPointer<VArc> arc = data->GeometricObject<VArc>(toolId);
-            SCASSERT(!arc.isNull())
+            const QString arcName{ data->GeometricObject<VArc>(toolId)->NameForHistory(
+                tr("Arc_")) };
             rowData.icon = ":/toolicon/32x32/arc_with_length.png";
-            rowData.name = tr("%1").arg(arc->NameForHistory(tr("Arc_")));
-            rowData.tool = tr("Arc Radius & Length %1").arg(arc->NameForHistory(tr("Arc_")));
+            rowData.name = tr("%1").arg(arcName);
+            rowData.tool = tr("Arc Radius & Length %1").arg(arcName);
             break;
         }
 
         case Tool::SplinePath: {
-            const QSharedPointer<VSplinePath> splPath = data->GeometricObject<VSplinePath>(toolId);
-            SCASSERT(!splPath.isNull())
             rowData.icon = ":/toolicon/32x32/splinePath.png";
-            rowData.name = tr("%1").arg(splPath->NameForHistory(tr("SplPath_")));
+            rowData.name = tr("%1").arg(
+                data->GeometricObject<VSplinePath>(toolId)->NameForHistory(tr("SplPath_")));
             rowData.tool = tr("Spline Interactive");
             break;
         }
 
         case Tool::CubicBezierPath: {
-            const QSharedPointer<VCubicBezierPath> splPath =
-                data->GeometricObject<VCubicBezierPath>(toolId);
-            SCASSERT(!splPath.isNull())
             rowData.icon = ":/toolicon/32x32/cubic_bezier_path.png";
-            rowData.name = tr("%1").arg(splPath->NameForHistory(tr("SplPath_")));
+            rowData.name = tr("%1").arg(
+                data->GeometricObject<VCubicBezierPath>(toolId)->NameForHistory(tr("SplPath_")));
             rowData.tool = tr("Spline Fixed");
             break;
         }
@@ -446,9 +440,6 @@ RowData HistoryDialog::record(const VToolRecord& tool)
             break;
 
         case Tool::CutArc: {
-            const QSharedPointer<VArc> arc =
-                data->GeometricObject<VArc>(attrUInt(domElement, AttrArc));
-            SCASSERT(!arc.isNull())
             rowData.icon = ":/toolicon/32x32/arc_cut.png";
             rowData.name = tr("%1").arg(getPointName(toolId));
             rowData.tool = tr("Point On Arc");
@@ -456,10 +447,6 @@ RowData HistoryDialog::record(const VToolRecord& tool)
         }
 
         case Tool::CutSpline: {
-            const quint32 splineId = attrUInt(domElement, VToolCutSpline::AttrSpline);
-            const QSharedPointer<VAbstractCubicBezier> spl =
-                data->GeometricObject<VAbstractCubicBezier>(splineId);
-            SCASSERT(!spl.isNull())
             rowData.icon = ":/toolicon/32x32/spline_cut_point.png";
             rowData.name = tr("%1").arg(getPointName(toolId));
             rowData.tool = tr("Point On Curve");
@@ -467,10 +454,6 @@ RowData HistoryDialog::record(const VToolRecord& tool)
         }
 
         case Tool::CutSplinePath: {
-            const quint32 splinePathId = attrUInt(domElement, VToolCutSplinePath::AttrSplinePath);
-            const QSharedPointer<VAbstractCubicBezierPath> splPath =
-                data->GeometricObject<VAbstractCubicBezierPath>(splinePathId);
-            SCASSERT(!splPath.isNull())
             rowData.icon = ":/toolicon/32x32/splinePath_cut_point.png";
             rowData.name = tr("%1").arg(getPointName(toolId));
             rowData.tool = tr("Point On Spline");
@@ -533,12 +516,10 @@ RowData HistoryDialog::record(const VToolRecord& tool)
             break;
 
         case Tool::EllipticalArc: {
-            const QSharedPointer<VEllipticalArc> elArc =
-                data->GeometricObject<VEllipticalArc>(toolId);
-            SCASSERT(!elArc.isNull())
+            const VEllipticalArc& elArc{ *data->GeometricObject<VEllipticalArc>(toolId) };
             rowData.icon = ":/toolicon/32x32/el_arc.png";
-            rowData.name = tr("%1").arg(elArc->NameForHistory(tr("ElArc_")));
-            rowData.tool = tr("Arc Elliptical with length %1").arg(elArc->GetLength());
+            rowData.name = tr("%1").arg(elArc.NameForHistory(tr("ElArc_")));
+            rowData.tool = tr("Arc Elliptical with length %1").arg(elArc.GetLength());
             break;
         }
         case Tool::Rotation:

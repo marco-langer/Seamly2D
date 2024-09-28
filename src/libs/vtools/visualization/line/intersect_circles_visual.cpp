@@ -76,27 +76,25 @@ IntersectCirclesVisual::IntersectCirclesVisual(const VContainer* data, QGraphics
 void IntersectCirclesVisual::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> first =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(c1Center, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(c1Center, static_cast<QPointF>(first), supportColor);
 
         if (object2Id > NULL_ID) {
-            const QSharedPointer<VPointF> second =
-                Visualization::data->GeometricObject<VPointF>(object2Id);
-            DrawPoint(c2Center, static_cast<QPointF>(*second), supportColor);
+            const auto& second{ *Visualization::data->GeometricObject<VPointF>(object2Id) };
+            DrawPoint(c2Center, static_cast<QPointF>(second), supportColor);
 
             if (c1Radius > 0 && c2Radius > 0) {
                 c1Path->setRect(PointRect(c1Radius));
                 DrawPoint(
-                    c1Path, static_cast<QPointF>(*first), m_secondrySupportColor, Qt::DashLine);
+                    c1Path, static_cast<QPointF>(first), m_secondrySupportColor, Qt::DashLine);
 
                 c2Path->setRect(PointRect(c2Radius));
                 DrawPoint(
-                    c2Path, static_cast<QPointF>(*second), m_tertiarySupportColor, Qt::DashLine);
+                    c2Path, static_cast<QPointF>(second), m_tertiarySupportColor, Qt::DashLine);
 
                 const QPointF fPoint = IntersectCirclesTool::FindPoint(
-                    static_cast<QPointF>(*first),
-                    static_cast<QPointF>(*second),
+                    static_cast<QPointF>(first),
+                    static_cast<QPointF>(second),
                     c1Radius,
                     c2Radius,
                     crossPoint);

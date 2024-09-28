@@ -58,11 +58,10 @@ AnchorPointVisual::~AnchorPointVisual()
 void AnchorPointVisual::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> point =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
+        const auto& point{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
 
         m_point->setOnlyPoint(mode == Mode::Creation);
-        m_point->refreshPointGeometry(*point);
+        m_point->refreshPointGeometry(point);
         m_point->setVisible(true);
     }
 }

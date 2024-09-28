@@ -140,7 +140,7 @@ public:
     static QVector<VSAPoint> CurveSeamAllowanceSegment(
         const VContainer* data,
         const QVector<VPieceNode>& nodes,
-        const QSharedPointer<VAbstractCurve>& curve,
+        const VAbstractCurve& curve,
         int i,
         bool reverse,
         qreal width);

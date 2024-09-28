@@ -105,13 +105,13 @@ void IntersectCirclesTool::setDialog()
     QSharedPointer<IntersectCirclesDialog> dialogTool =
         m_dialog.objectCast<IntersectCirclesDialog>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->SetFirstCircleCenterId(firstCircleCenterId);
     dialogTool->SetSecondCircleCenterId(secondCircleCenterId);
     dialogTool->SetFirstCircleRadius(firstCircleRadius);
     dialogTool->SetSecondCircleRadius(secondCircleRadius);
     dialogTool->setCirclesCrossPoint(crossPoint);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -261,13 +261,13 @@ QPointF IntersectCirclesTool::FindPoint(
 //---------------------------------------------------------------------------------------------------------------------
 QString IntersectCirclesTool::FirstCircleCenterPointName() const
 {
-    return VAbstractTool::data.GetGObject(firstCircleCenterId)->name();
+    return VAbstractTool::data.GetGObject(firstCircleCenterId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString IntersectCirclesTool::SecondCircleCenterPointName() const
 {
-    return VAbstractTool::data.GetGObject(secondCircleCenterId)->name();
+    return VAbstractTool::data.GetGObject(secondCircleCenterId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -278,9 +278,7 @@ void IntersectCirclesTool::SetFirstCircleCenterId(const quint32& value)
 {
     if (value != NULL_ID) {
         firstCircleCenterId = value;
-
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -292,9 +290,7 @@ void IntersectCirclesTool::SetSecondCircleCenterId(const quint32& value)
 {
     if (value != NULL_ID) {
         secondCircleCenterId = value;
-
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -316,8 +312,7 @@ void IntersectCirclesTool::SetFirstCircleRadius(const VFormula& value)
             > 0)   // Formula don't check this, but radius can't be 0 or negative
         {
             firstCircleRadius = value.GetFormula(FormulaType::FromUser);
-            QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-            SaveOption(obj);
+            SaveOption(&VAbstractTool::data.GetGObject(m_id));
         }
     }
 }
@@ -340,8 +335,7 @@ void IntersectCirclesTool::SetSecondCircleRadius(const VFormula& value)
             > 0)   // Formula don't check this, but radius can't be 0 or negative
         {
             secondCircleRadius = value.GetFormula(FormulaType::FromUser);
-            QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-            SaveOption(obj);
+            SaveOption(&VAbstractTool::data.GetGObject(m_id));
         }
     }
 }
@@ -353,9 +347,7 @@ CrossCirclesPoint IntersectCirclesTool::GetCrossCirclesPoint() const { return cr
 void IntersectCirclesTool::setCirclesCrossPoint(const CrossCirclesPoint& value)
 {
     crossPoint = value;
-
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOption(obj);
+    SaveOption(&VAbstractTool::data.GetGObject(m_id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -367,11 +359,11 @@ void IntersectCirclesTool::ShowVisualization(bool show)
 //---------------------------------------------------------------------------------------------------------------------
 void IntersectCirclesTool::RemoveReferens()
 {
-    const auto firstCircleCenter = VAbstractTool::data.GetGObject(firstCircleCenterId);
-    const auto secondCircleCenter = VAbstractTool::data.GetGObject(secondCircleCenterId);
+    const auto& firstCircleCenter{ VAbstractTool::data.GetGObject(firstCircleCenterId) };
+    const auto& secondCircleCenter{ VAbstractTool::data.GetGObject(secondCircleCenterId) };
 
-    doc->DecrementReferens(firstCircleCenter->getIdTool());
-    doc->DecrementReferens(secondCircleCenter->getIdTool());
+    doc->DecrementReferens(firstCircleCenter.getIdTool());
+    doc->DecrementReferens(secondCircleCenter.getIdTool());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -406,7 +398,7 @@ void IntersectCirclesTool::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void IntersectCirclesTool::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void IntersectCirclesTool::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 

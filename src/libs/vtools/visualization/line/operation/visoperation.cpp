@@ -123,18 +123,18 @@ void VisOperation::refreshMirroredObjects(const QPointF& firstPoint, const QPoin
     int iCurve = -1;
     for (int i = 0; i < objects.size(); ++i) {
         const quint32 id = objects.at(i);
-        const QSharedPointer<VGObject> obj = Visualization::data->GetGObject(id);
+        const auto& obj{ Visualization::data->GetGObject(id) };
 
         // This check helps to find missed objects in the switch
         Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
-        switch (static_cast<GOType>(obj->getType())) {
+        switch (static_cast<GOType>(obj.getType())) {
         case GOType::Point: {
-            const QSharedPointer<VPointF> p = Visualization::data->GeometricObject<VPointF>(id);
+            const auto& p{ *Visualization::data->GeometricObject<VPointF>(id) };
 
             ++iPoint;
             VScaledEllipse* point = GetPoint(static_cast<quint32>(iPoint), supportColor2);
-            DrawPoint(point, static_cast<QPointF>(*p), supportColor2);
+            DrawPoint(point, static_cast<QPointF>(p), supportColor2);
 
             ++iPoint;
             point = GetPoint(static_cast<quint32>(iPoint), supportColor);
@@ -142,7 +142,7 @@ void VisOperation::refreshMirroredObjects(const QPointF& firstPoint, const QPoin
             if (object1Id != NULL_ID) {
                 DrawPoint(
                     point,
-                    static_cast<QPointF>(p->Flip(QLineF(firstPoint, secondPoint))),
+                    static_cast<QPointF>(p.Flip(QLineF(firstPoint, secondPoint))),
                     supportColor);
             }
             break;

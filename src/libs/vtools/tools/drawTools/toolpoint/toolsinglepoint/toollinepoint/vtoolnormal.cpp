@@ -121,7 +121,7 @@ void VToolNormal::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogNormal> dialogTool = m_dialog.objectCast<DialogNormal>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->setLineType(m_lineType);
     dialogTool->setLineWeight(m_lineWeight);
     dialogTool->setLineColor(lineColor);
@@ -129,7 +129,7 @@ void VToolNormal::setDialog()
     dialogTool->SetAngle(angle);
     dialogTool->SetFirstPointId(basePointId);
     dialogTool->SetSecondPointId(secondPointId);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -221,16 +221,16 @@ VToolNormal* VToolNormal::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> firstPoint = data->GeometricObject<VPointF>(firstPointId);
-    const QSharedPointer<VPointF> secondPoint = data->GeometricObject<VPointF>(secondPointId);
+    const auto& firstPoint{ *data->GeometricObject<VPointF>(firstPointId) };
+    const auto& secondPoint{ *data->GeometricObject<VPointF>(secondPointId) };
 
     const qreal result = CheckFormula(_id, formula, data);
 
-    QPointF fPoint = VToolNormal::FindPoint(
-        static_cast<QPointF>(*firstPoint),
-        static_cast<QPointF>(*secondPoint),
+    const QPointF fPoint{ VToolNormal::FindPoint(
+        static_cast<QPointF>(firstPoint),
+        static_cast<QPointF>(secondPoint),
         qApp->toPixel(result),
-        angle);
+        angle) };
     quint32 id = _id;
     VPointF* p = new VPointF(fPoint, pointName, mx, my);
     p->setShowPointName(showPointName);
@@ -263,8 +263,8 @@ VToolNormal* VToolNormal::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(firstPoint->getIdTool());
-        doc->IncrementReferens(secondPoint->getIdTool());
+        doc->IncrementReferens(firstPoint.getIdTool());
+        doc->IncrementReferens(secondPoint.getIdTool());
         return point;
     }
     return nullptr;
@@ -292,7 +292,7 @@ QPointF VToolNormal::FindPoint(
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolNormal::SecondPointName() const
 {
-    return VAbstractTool::data.GetGObject(secondPointId)->name();
+    return VAbstractTool::data.GetGObject(secondPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -316,8 +316,8 @@ void VToolNormal::showContextMenu(QGraphicsSceneContextMenuEvent* event, quint32
  */
 void VToolNormal::RemoveReferens()
 {
-    const auto secondPoint = VAbstractTool::data.GetGObject(secondPointId);
-    doc->DecrementReferens(secondPoint->getIdTool());
+    const auto& secondPoint{ VAbstractTool::data.GetGObject(secondPointId) };
+    doc->DecrementReferens(secondPoint.getIdTool());
     VToolLinePoint::RemoveReferens();
 }
 
@@ -342,7 +342,7 @@ void VToolNormal::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolNormal::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolNormal::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolLinePoint::SaveOptions(tag, obj);
 
@@ -392,8 +392,7 @@ void VToolNormal::SetSecondPointId(const quint32& value)
     if (value != NULL_ID) {
         secondPointId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 

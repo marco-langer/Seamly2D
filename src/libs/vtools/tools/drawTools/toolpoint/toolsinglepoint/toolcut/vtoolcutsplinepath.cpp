@@ -115,10 +115,10 @@ void VToolCutSplinePath::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogCutSplinePath> dialogTool = m_dialog.objectCast<DialogCutSplinePath>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->SetFormula(formula);
     dialogTool->setSplinePathId(curveCutId);
-    dialogTool->SetPointName(point->name());
+    dialogTool->SetPointName(point.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -189,8 +189,7 @@ VToolCutSplinePath* VToolCutSplinePath::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const auto splPath = data->GeometricObject<VAbstractCubicBezierPath>(splinePathId);
-    SCASSERT(splPath != nullptr)
+    const auto& splPath{ *data->GeometricObject<VAbstractCubicBezierPath>(splinePathId) };
 
     const qreal result = CheckFormula(_id, formula, data);
 
@@ -232,7 +231,7 @@ VToolCutSplinePath* VToolCutSplinePath::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(splPath->getIdTool());
+        doc->IncrementReferens(splPath.getIdTool());
         return point;
     }
 
@@ -251,21 +250,19 @@ void VToolCutSplinePath::ShowVisualization(bool show)
 //---------------------------------------------------------------------------------------------------------------------
 VPointF* VToolCutSplinePath::CutSplinePath(
     qreal length,
-    const QSharedPointer<VAbstractCubicBezierPath>& splPath,
+    const VAbstractCubicBezierPath& splPath,
     const QString& pName,
     VSplinePath** splPath1,
     VSplinePath** splPath2)
 {
-    SCASSERT(splPath != nullptr)
-
     QPointF spl1p2, spl1p3, spl2p2, spl2p3;
     qint32 p1 = 0, p2 = 0;
 
-    const QPointF point = splPath->CutSplinePath(length, p1, p2, spl1p2, spl1p3, spl2p2, spl2p3);
+    const QPointF point = splPath.CutSplinePath(length, p1, p2, spl1p2, spl1p3, spl2p2, spl2p3);
     VPointF* p = new VPointF(point);
     p->setName(pName);
 
-    const QVector<VSplinePoint> points = splPath->GetSplinePath();
+    const QVector<VSplinePoint> points = splPath.GetSplinePath();
 
     const VSplinePoint splP1 = points.at(p1);
     const VSplinePoint splP2 = points.at(p2);
@@ -379,7 +376,7 @@ void VToolCutSplinePath::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCutSplinePath::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolCutSplinePath::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolCut::SaveOptions(tag, obj);
 
@@ -406,9 +403,8 @@ void VToolCutSplinePath::SetVisualization()
         visual->setLength(
             qApp->translateVariables()->FormulaToUser(formula, qApp->Settings()->getOsSeparator()));
 
-        const QSharedPointer<VAbstractCurve> curve =
-            VAbstractTool::data.GeometricObject<VAbstractCurve>(curveCutId);
-        visual->setLineStyle(lineTypeToPenStyle(curve->GetPenStyle()));
+        const auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(curveCutId) };
+        visual->setLineStyle(lineTypeToPenStyle(curve.GetPenStyle()));
 
         visual->RefreshGeometry();
     }
@@ -417,7 +413,8 @@ void VToolCutSplinePath::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolCutSplinePath::makeToolTip() const
 {
-    const auto splPath = VAbstractTool::data.GeometricObject<VAbstractCubicBezierPath>(curveCutId);
+    const auto& splPath{ *VAbstractTool::data.GeometricObject<VAbstractCubicBezierPath>(
+        curveCutId) };
 
     const QString expression =
         qApp->translateVariables()->FormulaToUser(formula, qApp->Settings()->getOsSeparator());

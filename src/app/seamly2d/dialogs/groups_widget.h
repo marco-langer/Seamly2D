@@ -116,7 +116,7 @@ private:
     void cellClicked(int row, int column);
     void cellDoubleClicked(int row, int column);
     void itemDoubleClicked(QListWidgetItem* item);
-    void zoomToObject(QSharedPointer<VPointF> point);
+    void zoomToObject(const VPointF& point);
     void setGroupVisibility(QTableWidgetItem* item, const quint32& groupId, const bool& visible);
     QString getPointName(quint32 pointId);
     quint32 attrUInt(const QDomElement& domElement, const QString& name);

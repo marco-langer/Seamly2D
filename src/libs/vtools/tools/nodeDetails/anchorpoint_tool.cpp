@@ -87,9 +87,9 @@ AnchorPointTool* AnchorPointTool::Create(
     if (typeCreation == Source::FromGui) {
         id = CreateNode<VPointF>(data, pointId);
     } else {
-        QSharedPointer<VPointF> point;
+        VPointF* point{ nullptr };
         try {
-            point = data->GeometricObject<VPointF>(pointId);
+            point = &*data->GeometricObject<VPointF>(pointId);
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
             Q_UNUSED(error)

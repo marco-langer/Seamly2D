@@ -96,48 +96,45 @@ VisToolTriangle::VisToolTriangle(const VContainer* data, QGraphicsItem* parent)
 void VisToolTriangle::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> first =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(axisP1, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(axisP1, static_cast<QPointF>(first), supportColor);
 
         if (object2Id <= NULL_ID) {
             drawArrowedLine(
-                axis, QLineF(static_cast<QPointF>(*first), Visualization::scenePos), supportColor);
+                axis, QLineF{ static_cast<QPointF>(first), Visualization::scenePos }, supportColor);
         } else {
-            const QSharedPointer<VPointF> second =
-                Visualization::data->GeometricObject<VPointF>(object2Id);
-            DrawPoint(axisP2, static_cast<QPointF>(*second), supportColor);
+            const auto& second{ *Visualization::data->GeometricObject<VPointF>(object2Id) };
+            DrawPoint(axisP2, static_cast<QPointF>(second), supportColor);
 
             drawArrowedLine(
                 axis,
-                QLineF(static_cast<QPointF>(*first), static_cast<QPointF>(*second)),
+                QLineF{ static_cast<QPointF>(first), static_cast<QPointF>(second) },
                 supportColor);
 
             if (hypotenuseP1Id <= NULL_ID) {
                 return;
             } else {
-                const QSharedPointer<VPointF> third =
-                    Visualization::data->GeometricObject<VPointF>(hypotenuseP1Id);
-                DrawPoint(hypotenuseP1, static_cast<QPointF>(*third), supportColor);
+                const auto& third{ *Visualization::data->GeometricObject<VPointF>(hypotenuseP1Id) };
+                DrawPoint(hypotenuseP1, static_cast<QPointF>(third), supportColor);
 
                 if (hypotenuseP2Id <= NULL_ID) {
                     DrawLine(
                         this,
-                        QLineF(static_cast<QPointF>(*third), Visualization::scenePos),
+                        QLineF{ static_cast<QPointF>(third), Visualization::scenePos },
                         supportColor,
                         lineWeight,
                         Qt::DashLine);
 
-                    QPointF trPoint = VToolTriangle::FindPoint(
-                        static_cast<QPointF>(*first),
-                        static_cast<QPointF>(*second),
-                        static_cast<QPointF>(*third),
-                        Visualization::scenePos);
+                    const QPointF trPoint{ VToolTriangle::FindPoint(
+                        static_cast<QPointF>(first),
+                        static_cast<QPointF>(second),
+                        static_cast<QPointF>(third),
+                        Visualization::scenePos) };
                     DrawPoint(point, trPoint, mainColor);
 
                     DrawLine(
                         foot1,
-                        QLineF(static_cast<QPointF>(*third), trPoint),
+                        QLineF{ static_cast<QPointF>(third), trPoint },
                         supportColor,
                         lineWeight,
                         Qt::DashLine);
@@ -148,33 +145,33 @@ void VisToolTriangle::RefreshGeometry()
                         lineWeight,
                         Qt::DashLine);
                 } else {
-                    const QSharedPointer<VPointF> forth =
-                        Visualization::data->GeometricObject<VPointF>(hypotenuseP2Id);
-                    DrawPoint(hypotenuseP2, static_cast<QPointF>(*forth), supportColor);
+                    const auto& forth{ *Visualization::data->GeometricObject<VPointF>(
+                        hypotenuseP2Id) };
+                    DrawPoint(hypotenuseP2, static_cast<QPointF>(forth), supportColor);
 
                     DrawLine(
                         this,
-                        QLineF(static_cast<QPointF>(*third), static_cast<QPointF>(*forth)),
+                        QLineF{ static_cast<QPointF>(third), static_cast<QPointF>(forth) },
                         supportColor,
                         lineWeight,
                         Qt::DashLine);
 
-                    QPointF trPoint = VToolTriangle::FindPoint(
-                        static_cast<QPointF>(*first),
-                        static_cast<QPointF>(*second),
-                        static_cast<QPointF>(*third),
-                        static_cast<QPointF>(*forth));
+                    const QPointF trPoint{ VToolTriangle::FindPoint(
+                        static_cast<QPointF>(first),
+                        static_cast<QPointF>(second),
+                        static_cast<QPointF>(third),
+                        static_cast<QPointF>(forth)) };
                     DrawPoint(point, trPoint, mainColor);
 
                     DrawLine(
                         foot1,
-                        QLineF(static_cast<QPointF>(*third), trPoint),
+                        QLineF{ static_cast<QPointF>(third), trPoint },
                         supportColor,
                         lineWeight,
                         Qt::DashLine);
                     DrawLine(
                         foot2,
-                        QLineF(static_cast<QPointF>(*forth), trPoint),
+                        QLineF{ static_cast<QPointF>(forth), trPoint },
                         supportColor,
                         lineWeight,
                         Qt::DashLine);

@@ -157,13 +157,13 @@ bool VToolDoublePoint::isPointNameVisible(quint32 id) const
 void VToolDoublePoint::setPointNameVisiblity(quint32 id, bool visible)
 {
     if (p1id == id) {
-        const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(p1id);
-        point->setShowPointName(visible);
-        firstPoint->refreshPointGeometry(*point);
+        auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(p1id) };
+        point.setShowPointName(visible);
+        firstPoint->refreshPointGeometry(point);
     } else if (p2id == id) {
-        const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(p2id);
-        point->setShowPointName(visible);
-        secondPoint->refreshPointGeometry(*point);
+        auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(p2id) };
+        point.setShowPointName(visible);
+        secondPoint->refreshPointGeometry(point);
     }
 }
 
@@ -345,41 +345,41 @@ void VToolDoublePoint::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolDoublePoint::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolDoublePoint::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
     if (obj->id() == p1id) {
-        QSharedPointer<VPointF> point = qSharedPointerDynamicCast<VPointF>(obj);
-        SCASSERT(point.isNull() == false)
+        const auto* point{ dynamic_cast<const VPointF*>(obj) };
+        SCASSERT(point)
 
         doc->SetAttribute(tag, AttrName1, point->name());
         doc->SetAttribute(tag, AttrMx1, qApp->fromPixel(point->mx()));
         doc->SetAttribute(tag, AttrMy1, qApp->fromPixel(point->my()));
         doc->SetAttribute<bool>(tag, AttrShowPointName1, point->isShowPointName());
     } else if (obj->id() == p2id) {
-        QSharedPointer<VPointF> point = qSharedPointerDynamicCast<VPointF>(obj);
-        SCASSERT(point.isNull() == false)
+        const auto* point{ dynamic_cast<const VPointF*>(obj) };
+        SCASSERT(point)
 
         doc->SetAttribute(tag, AttrName2, point->name());
         doc->SetAttribute(tag, AttrMx2, qApp->fromPixel(point->mx()));
         doc->SetAttribute(tag, AttrMy2, qApp->fromPixel(point->my()));
         doc->SetAttribute<bool>(tag, AttrShowPointName2, point->isShowPointName());
     } else {
-        VPointF* p1 = VAbstractTool::data.GeometricObject<VPointF>(p1id).data();
-        VPointF* p2 = VAbstractTool::data.GeometricObject<VPointF>(p2id).data();
+        auto& p1{ *VAbstractTool::data.GeometricObject<VPointF>(p1id) };
+        auto& p2{ *VAbstractTool::data.GeometricObject<VPointF>(p2id) };
 
         doc->SetAttribute(tag, AttrPoint1, p1id);
-        doc->SetAttribute(tag, AttrName1, p1->name());
-        doc->SetAttribute(tag, AttrMx1, qApp->fromPixel(p1->mx()));
-        doc->SetAttribute(tag, AttrMy1, qApp->fromPixel(p1->my()));
-        doc->SetAttribute<bool>(tag, AttrShowPointName1, p1->isShowPointName());
+        doc->SetAttribute(tag, AttrName1, p1.name());
+        doc->SetAttribute(tag, AttrMx1, qApp->fromPixel(p1.mx()));
+        doc->SetAttribute(tag, AttrMy1, qApp->fromPixel(p1.my()));
+        doc->SetAttribute<bool>(tag, AttrShowPointName1, p1.isShowPointName());
 
         doc->SetAttribute(tag, AttrPoint2, p2id);
-        doc->SetAttribute(tag, AttrName2, p2->name());
-        doc->SetAttribute(tag, AttrMx2, qApp->fromPixel(p2->mx()));
-        doc->SetAttribute(tag, AttrMy2, qApp->fromPixel(p2->my()));
-        doc->SetAttribute<bool>(tag, AttrShowPointName2, p2->isShowPointName());
+        doc->SetAttribute(tag, AttrName2, p2.name());
+        doc->SetAttribute(tag, AttrMx2, qApp->fromPixel(p2.mx()));
+        doc->SetAttribute(tag, AttrMy2, qApp->fromPixel(p2.my()));
+        doc->SetAttribute<bool>(tag, AttrShowPointName2, p2.isShowPointName());
     }
 }
 
@@ -387,8 +387,7 @@ void VToolDoublePoint::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& o
 void VToolDoublePoint::AddToFile()
 {
     QDomElement domElement = doc->createElement(getTagName());
-    QSharedPointer<VGObject> obj = VContainer::GetFakeGObject(m_id);
-    SaveOptions(domElement, obj);
+    SaveOptions(domElement, VContainer::GetFakeGObject(m_id).get());
     AddToCalculation(domElement);
 }
 
@@ -407,13 +406,13 @@ void VToolDoublePoint::updatePointNameVisibility(quint32 id, bool visible)
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolDoublePoint::complexToolTip(quint32 itemId) const
 {
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(itemId);
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(itemId) };
 
     const QString toolTipStr = QString(
                                    "<table>"
                                    "<tr> <td><b>%1:</b> %2</td> </tr>"
                                    "%3"
                                    "</table>")
-                                   .arg(tr("Name"), point->name(), makeToolTip());
+                                   .arg(tr("Name"), point.name(), makeToolTip());
     return toolTipStr;
 }

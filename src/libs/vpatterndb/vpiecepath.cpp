@@ -89,10 +89,9 @@ VSAPoint CurveStartPoint(
         return CurvePoint(candidate, data, node, curvePoints);
     } else {
         // See issue #620. Detail path not correct. Previous curve also should cut segment.
-        const QSharedPointer<VAbstractCurve> curve =
-            data->GeometricObject<VAbstractCurve>(node.GetId());
+        const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 
-        const QVector<QPointF> points = curve->getPoints();
+        const QVector<QPointF> points{ curve.getPoints() };
         if (!points.isEmpty()) {
             QPointF end;   // Last point for this curve show start of next segment
             node.GetReverse() ? end = points.first() : end = points.last();
@@ -115,10 +114,9 @@ VSAPoint CurveEndPoint(
         return CurvePoint(candidate, data, node, curvePoints);
     } else {
         // See issue #620. Detail path not correct. Previous curve also should cut segment.
-        const QSharedPointer<VAbstractCurve> curve =
-            data->GeometricObject<VAbstractCurve>(node.GetId());
+        const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 
-        const QVector<QPointF> points = curve->getPoints();
+        const QVector<QPointF> points{ curve.getPoints() };
         if (!points.isEmpty()) {
             QPointF begin;   // First point for this curve show finish of previous segment
             node.GetReverse() ? begin = points.last() : begin = points.first();
@@ -243,20 +241,18 @@ QVector<QPointF> VPiecePath::PathPoints(const VContainer* data) const
 
         switch (at(i).GetTypeTool()) {
         case (Tool::NodePoint): {
-            const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(at(i).GetId());
-            points.append(static_cast<QPointF>(*point));
+            points.append(static_cast<QPointF>(*data->GeometricObject<VPointF>(at(i).GetId())));
         } break;
         case (Tool::NodeArc):
         case (Tool::NodeElArc):
         case (Tool::NodeSpline):
         case (Tool::NodeSplinePath): {
-            const QSharedPointer<VAbstractCurve> curve =
-                data->GeometricObject<VAbstractCurve>(at(i).GetId());
+            const auto& curve{ *data->GeometricObject<VAbstractCurve>(at(i).GetId()) };
 
             const QPointF begin = StartSegment(data, i, at(i).GetReverse());
             const QPointF end = EndSegment(data, i, at(i).GetReverse());
 
-            points << curve->GetSegmentPoints(begin, end, at(i).GetReverse());
+            points << curve.GetSegmentPoints(begin, end, at(i).GetReverse());
         } break;
         default:
             qWarning() << "Got wrong tool type. Ignore." << static_cast<char>(at(i).GetTypeTool());
@@ -275,8 +271,7 @@ QVector<VPointF> VPiecePath::PathNodePoints(const VContainer* data, bool showExc
         switch (at(i).GetTypeTool()) {
         case Tool::NodePoint: {
             if (showExcluded || not at(i).isExcluded()) {
-                const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(at(i).GetId());
-                points.append(*point);
+                points.append(*data->GeometricObject<VPointF>(at(i).GetId()));
             }
         } break;
         case Tool::NodeArc:
@@ -307,8 +302,7 @@ VPiecePath::SeamAllowancePoints(const VContainer* data, qreal width, bool revers
         case (Tool::NodeElArc):
         case (Tool::NodeSpline):
         case (Tool::NodeSplinePath): {
-            const QSharedPointer<VAbstractCurve> curve =
-                data->GeometricObject<VAbstractCurve>(node.GetId());
+            const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
             pointsEkv +=
                 CurveSeamAllowanceSegment(data, d->m_nodes, curve, i, node.GetReverse(), width);
         } break;
@@ -347,10 +341,9 @@ VSAPoint VPiecePath::StartSegment(
         return VSAPoint();
     }
 
-    const QSharedPointer<VAbstractCurve> curve =
-        data->GeometricObject<VAbstractCurve>(nodes.at(i).GetId());
+    const auto& curve{ *data->GeometricObject<VAbstractCurve>(nodes.at(i).GetId()) };
 
-    const QVector<QPointF> points = curve->getPoints();
+    const QVector<QPointF> points{ curve.getPoints() };
     if (points.isEmpty()) {
         return VSAPoint();
     }
@@ -376,10 +369,9 @@ VSAPoint VPiecePath::EndSegment(
         return VSAPoint();
     }
 
-    const QSharedPointer<VAbstractCurve> curve =
-        data->GeometricObject<VAbstractCurve>(nodes.at(i).GetId());
+    const auto& curve{ *data->GeometricObject<VAbstractCurve>(nodes.at(i).GetId()) };
 
-    const QVector<QPointF> points = curve->getPoints();
+    const QVector<QPointF> points{ curve.getPoints() };
     if (points.isEmpty()) {
         return VSAPoint();
     }
@@ -616,13 +608,12 @@ QPointF VPiecePath::NodePreviousPoint(const VContainer* data, int i) const
         case (Tool::NodeElArc):
         case (Tool::NodeSpline):
         case (Tool::NodeSplinePath): {
-            const QSharedPointer<VAbstractCurve> curve =
-                data->GeometricObject<VAbstractCurve>(node.GetId());
+            const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 
             const VSAPoint begin = StartSegment(data, d->m_nodes, index, node.GetReverse());
             const VSAPoint end = EndSegment(data, d->m_nodes, index, node.GetReverse());
 
-            const QVector<QPointF> points = curve->GetSegmentPoints(begin, end, node.GetReverse());
+            const QVector<QPointF> points{ curve.GetSegmentPoints(begin, end, node.GetReverse()) };
             if (points.size() > 1) {
                 return points.at(points.size() - 2);
             }
@@ -660,13 +651,12 @@ QPointF VPiecePath::NodeNextPoint(const VContainer* data, int i) const
         case (Tool::NodeElArc):
         case (Tool::NodeSpline):
         case (Tool::NodeSplinePath): {
-            const QSharedPointer<VAbstractCurve> curve =
-                data->GeometricObject<VAbstractCurve>(node.GetId());
+            const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 
             const VSAPoint begin = StartSegment(data, d->m_nodes, index, node.GetReverse());
             const VSAPoint end = EndSegment(data, d->m_nodes, index, node.GetReverse());
 
-            const QVector<QPointF> points = curve->GetSegmentPoints(begin, end, node.GetReverse());
+            const QVector<QPointF> points{ curve.GetSegmentPoints(begin, end, node.GetReverse()) };
             if (points.size() > 1) {
                 return points.at(1);
             }
@@ -759,8 +749,7 @@ VSAPoint VPiecePath::PreparePointEkv(const VPieceNode& node, const VContainer* d
 {
     SCASSERT(data != nullptr)
 
-    const QSharedPointer<VPointF> point = data->GeometricObject<VPointF>(node.GetId());
-    VSAPoint p(point->toQPointF());
+    VSAPoint p{ data->GeometricObject<VPointF>(node.GetId())->toQPointF() };
 
     p.SetSAAfter(node.GetSAAfter(data, *data->GetPatternUnit()));
     p.SetSABefore(node.GetSABefore(data, *data->GetPatternUnit()));
@@ -773,7 +762,7 @@ VSAPoint VPiecePath::PreparePointEkv(const VPieceNode& node, const VContainer* d
 QVector<VSAPoint> VPiecePath::CurveSeamAllowanceSegment(
     const VContainer* data,
     const QVector<VPieceNode>& nodes,
-    const QSharedPointer<VAbstractCurve>& curve,
+    const VAbstractCurve& curve,
     int i,
     bool reverse,
     qreal width)
@@ -783,7 +772,7 @@ QVector<VSAPoint> VPiecePath::CurveSeamAllowanceSegment(
     const VSAPoint begin = StartSegment(data, nodes, i, reverse);
     const VSAPoint end = EndSegment(data, nodes, i, reverse);
 
-    const QVector<QPointF> points = curve->GetSegmentPoints(begin, end, reverse);
+    const QVector<QPointF> points{ curve.GetSegmentPoints(begin, end, reverse) };
     if (points.isEmpty()) {
         return pointsEkv;
     }

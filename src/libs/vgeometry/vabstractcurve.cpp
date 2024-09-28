@@ -406,7 +406,7 @@ qreal VAbstractCurve::PathLength(const QVector<QPointF>& path)
  * @brief Gets first point in a curve.
  * @return QPointF
  */
-QPointF VAbstractCurve::getFirstPoint()
+QPointF VAbstractCurve::getFirstPoint() const
 {
     const QVector<QPointF> points = getPoints();
     return points.at(0);
@@ -417,7 +417,7 @@ QPointF VAbstractCurve::getFirstPoint()
  * @brief Gets last point in a curve.
  * @return QPointF
  */
-QPointF VAbstractCurve::getLastPoint()
+QPointF VAbstractCurve::getLastPoint() const
 {
     const QVector<QPointF> points = getPoints();
     return points.at(points.count() - 1);

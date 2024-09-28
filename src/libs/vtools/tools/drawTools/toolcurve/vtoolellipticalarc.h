@@ -127,7 +127,7 @@ protected slots:
 protected:
     void RemoveReferens() override;
     void SaveDialog(QDomElement& domElement) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     void SetVisualization() override;
     QString makeToolTip() const override;
 

@@ -105,11 +105,11 @@ void VToolPointFromArcAndTangent::setDialog()
     QSharedPointer<DialogPointFromArcAndTangent> dialogTool =
         m_dialog.objectCast<DialogPointFromArcAndTangent>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->SetArcId(arcId);
     dialogTool->setCirclesCrossPoint(crossPoint);
     dialogTool->SetTangentPointId(tangentPointId);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -279,13 +279,13 @@ QPointF VToolPointFromArcAndTangent::FindPoint(
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolPointFromArcAndTangent::TangentPointName() const
 {
-    return VAbstractTool::data.GetGObject(tangentPointId)->name();
+    return VAbstractTool::data.GetGObject(tangentPointId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolPointFromArcAndTangent::ArcName() const
 {
-    return VAbstractTool::data.GetGObject(arcId)->name();
+    return VAbstractTool::data.GetGObject(arcId).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -297,8 +297,7 @@ void VToolPointFromArcAndTangent::SetTangentPointId(const quint32& value)
     if (value != NULL_ID) {
         tangentPointId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -311,8 +310,7 @@ void VToolPointFromArcAndTangent::SetArcId(const quint32& value)
     if (value != NULL_ID) {
         arcId = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -324,8 +322,7 @@ void VToolPointFromArcAndTangent::setCirclesCrossPoint(const CrossCirclesPoint& 
 {
     crossPoint = value;
 
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-    SaveOption(obj);
+    SaveOption(&VAbstractTool::data.GetGObject(m_id));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -337,11 +334,11 @@ void VToolPointFromArcAndTangent::ShowVisualization(bool show)
 //---------------------------------------------------------------------------------------------------------------------
 void VToolPointFromArcAndTangent::RemoveReferens()
 {
-    const auto arc = VAbstractTool::data.GetGObject(arcId);
-    const auto tP = VAbstractTool::data.GetGObject(tangentPointId);
+    const auto& arc{ VAbstractTool::data.GetGObject(arcId) };
+    const auto& tP{ VAbstractTool::data.GetGObject(tangentPointId) };
 
-    doc->DecrementReferens(arc->getIdTool());
-    doc->DecrementReferens(tP->getIdTool());
+    doc->DecrementReferens(arc.getIdTool());
+    doc->DecrementReferens(tP.getIdTool());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -372,7 +369,7 @@ void VToolPointFromArcAndTangent::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolPointFromArcAndTangent::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolPointFromArcAndTangent::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolSinglePoint::SaveOptions(tag, obj);
 

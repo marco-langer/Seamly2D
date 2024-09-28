@@ -61,6 +61,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QSet>
+#include <QSharedPointer>
 #include <QTimer>
 #include <QToolButton>
 #include <Qt>
@@ -252,8 +253,8 @@ void DialogSpline::SaveData()
     auto path = qobject_cast<VisToolSpline*>(vis);
     SCASSERT(path != nullptr)
 
-    path->setObject1Id(GetP1()->id());
-    path->setObject4Id(GetP4()->id());
+    path->setObject1Id(GetP1().id());
+    path->setObject4Id(GetP4().id());
     path->SetAngle1(spl.GetStartAngle());
     path->SetAngle2(spl.GetEndAngle());
     path->SetKAsm1(spl.GetKasm1());
@@ -420,15 +421,15 @@ void DialogSpline::FXLength2()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QSharedPointer<VPointF> DialogSpline::GetP1() const
+const VPointF& DialogSpline::GetP1() const
 {
-    return data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP1));
+    return *data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP1));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QSharedPointer<VPointF> DialogSpline::GetP4() const
+const VPointF& DialogSpline::GetP4() const
 {
-    return data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP4));
+    return *data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP4));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -528,10 +529,8 @@ VSpline DialogSpline::CurrentSpline() const
     length1F = qApp->translateVariables()->TryFormulaFromUser(length1F, separator);
     length2F = qApp->translateVariables()->TryFormulaFromUser(length2F, separator);
 
-    VSpline spline(
-        *GetP1(), *GetP4(), angle1, angle1F, angle2, angle2F, length1, length1F, length2, length2F);
-
-    return spline;
+    return VSpline{ GetP1(), GetP4(), angle1,   angle1F, angle2,
+                    angle2F, length1, length1F, length2, length2F };
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -556,14 +555,8 @@ void DialogSpline::PointNameChanged()
             newDuplicate = -1;
             ui->lineEditSplineName->setText(qApp->translateVariables()->VarToUser(spl.name()));
         } else {
-            VSpline spline(
-                *GetP1(),
-                *GetP4(),
-                spl.GetStartAngle(),
-                spl.GetEndAngle(),
-                spl.GetKasm1(),
-                spl.GetKasm2(),
-                spl.GetKcurve());
+            VSpline spline{ GetP1(),        GetP4(),        spl.GetStartAngle(), spl.GetEndAngle(),
+                            spl.GetKasm1(), spl.GetKasm2(), spl.GetKcurve() };
 
             if (not data->IsUnique(spline.name())) {
                 newDuplicate = static_cast<qint32>(DNumber(spline.name()));
@@ -585,7 +578,7 @@ void DialogSpline::ShowDialog(bool click)
         auto* path = qobject_cast<VisToolSpline*>(vis);
         SCASSERT(path != nullptr)
 
-        spl = VSpline(*GetP1(), path->GetP2(), path->GetP3(), *GetP4());
+        spl = VSpline{ GetP1(), path->GetP2(), path->GetP3(), GetP4() };
 
         const QString angle1F = qApp->translateVariables()->FormulaToUser(
             spl.GetStartAngleFormula(), qApp->Settings()->getOsSeparator());

@@ -109,7 +109,7 @@ namespace {
 //---------------------------------------------------------------------------------------------------------------------
 quint32 CreateNodeSpline(VContainer* data, quint32 id)
 {
-    if (data->GetGObject(id)->getType() == GOType::Spline) {
+    if (data->GetGObject(id).getType() == GOType::Spline) {
         return VAbstractTool::CreateNode<VSpline>(data, id);
     } else {
         return VAbstractTool::CreateNode<VCubicBezier>(data, id);
@@ -119,7 +119,7 @@ quint32 CreateNodeSpline(VContainer* data, quint32 id)
 //---------------------------------------------------------------------------------------------------------------------
 quint32 CreateNodeSplinePath(VContainer* data, quint32 id)
 {
-    if (data->GetGObject(id)->getType() == GOType::SplinePath) {
+    if (data->GetGObject(id).getType() == GOType::SplinePath) {
         return VAbstractTool::CreateNode<VSplinePath>(data, id);
     } else {
         return VAbstractTool::CreateNode<VCubicBezierPath>(data, id);
@@ -468,8 +468,8 @@ QMap<QString, quint32> VAbstractTool::PointsList() const
         if (i.key() != m_id) {
             QSharedPointer<VGObject> obj = i.value();
             if (obj->getType() == GOType::Point && obj->getMode() == Draw::Calculation) {
-                const QSharedPointer<VPointF> point = data.GeometricObject<VPointF>(i.key());
-                list[point->name()] = i.key();
+                const auto& point{ *data.GeometricObject<VPointF>(i.key()) };
+                list[point.name()] = i.key();
             }
         }
     }

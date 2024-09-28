@@ -90,7 +90,7 @@ void VAbstractPoint::deletePoint()
 void VAbstractPoint::SetPointName(quint32 id, const QString& name)
 {
     // Don't know if need check name here.
-    QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(id);
-    obj->setName(name);
-    SaveOption(obj);
+    auto& obj{ VAbstractTool::data.GetGObject(id) };
+    obj.setName(name);
+    SaveOption(&obj);
 }

@@ -1698,9 +1698,9 @@ void VPattern::ParseNodePoint(const QDomElement& domElement, const Document& par
         PointsCommonAttributes(domElement, id, mx, my);
         const quint32 idObject = GetParametrUInt(domElement, AttrIdObject, NULL_ID_STR);
         const quint32 idTool = GetParametrUInt(domElement, VAbstractNode::AttrIdTool, NULL_ID_STR);
-        QSharedPointer<VPointF> point;
+        VPointF* point{ nullptr };
         try {
-            point = data->GeometricObject<VPointF>(idObject);
+            point = data->GeometricObject<VPointF>(idObject).get();
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
             Q_UNUSED(error)
@@ -2462,8 +2462,8 @@ void VPattern::ParseOldToolSpline(
         const QString color = GetParametrString(domElement, AttrColor, ColorBlack);
         const quint32 duplicate = GetParametrUInt(domElement, AttrDuplicate, "0");
 
-        const auto p1 = data->GeometricObject<VPointF>(point1);
-        const auto p4 = data->GeometricObject<VPointF>(point4);
+        const auto& p1{ data->GeometricObject<VPointF>(point1) };
+        const auto& p4{ data->GeometricObject<VPointF>(point4) };
 
         auto spline = new VSpline(*p1, *p4, angle1, angle2, kAsm1, kAsm2, kCurve);
         if (duplicate > 0) {
@@ -2577,10 +2577,10 @@ void VPattern::ParseToolCubicBezier(
         const QString lineWeight = GetParametrString(domElement, AttrLineWeight, "0.35");
         const quint32 duplicate = GetParametrUInt(domElement, AttrDuplicate, "0");
 
-        auto p1 = data->GeometricObject<VPointF>(point1);
-        auto p2 = data->GeometricObject<VPointF>(point2);
-        auto p3 = data->GeometricObject<VPointF>(point3);
-        auto p4 = data->GeometricObject<VPointF>(point4);
+        const auto& p1{ data->GeometricObject<VPointF>(point1) };
+        const auto& p2{ data->GeometricObject<VPointF>(point2) };
+        const auto& p3{ data->GeometricObject<VPointF>(point3) };
+        const auto& p4{ data->GeometricObject<VPointF>(point4) };
 
         VCubicBezier* spline = new VCubicBezier(*p1, *p2, *p3, *p4);
         if (duplicate > 0) {
@@ -2626,7 +2626,7 @@ void VPattern::ParseOldToolSplinePath(
                     const qreal angle = GetParametrDouble(element, AttrAngle, "0");
                     const qreal kAsm2 = GetParametrDouble(element, AttrKAsm2, "1.0");
                     const quint32 pSpline = GetParametrUInt(element, AttrPSpline, NULL_ID_STR);
-                    const VPointF p = *data->GeometricObject<VPointF>(pSpline);
+                    const VPointF& p{ *data->GeometricObject<VPointF>(pSpline) };
 
                     QLineF line(0, 0, 100, 0);
                     line.setAngle(angle + 180);
@@ -2778,7 +2778,7 @@ void VPattern::ParseToolCubicBezierPath(
             if (element.isNull() == false) {
                 if (element.tagName() == AttrPathPoint) {
                     const quint32 pSpline = GetParametrUInt(element, AttrPSpline, NULL_ID_STR);
-                    const VPointF p = *data->GeometricObject<VPointF>(pSpline);
+                    const VPointF& p{ *data->GeometricObject<VPointF>(pSpline) };
                     points.append(p);
                     if (parse == Document::FullParse) {
                         IncrementReferens(p.getIdTool());
@@ -2816,15 +2816,14 @@ void VPattern::ParseNodeSpline(const QDomElement& domElement, const Document& pa
 
         SplinesCommonAttributes(domElement, id, idObject, idTool);
         try {
-            const auto obj = data->GetGObject(idObject);
-            if (obj->getType() == GOType::Spline) {
-                VSpline* spl = new VSpline(*data->GeometricObject<VSpline>(idObject));
+            const auto& obj{ data->GetGObject(idObject) };
+            if (obj.getType() == GOType::Spline) {
+                auto* spl{ new VSpline{ *data->GeometricObject<VSpline>(idObject) } };
                 spl->setIdObject(idObject);
                 spl->setMode(Draw::Modeling);
                 data->UpdateGObject(id, spl);
             } else {
-                VCubicBezier* spl =
-                    new VCubicBezier(*data->GeometricObject<VCubicBezier>(idObject));
+                auto* spl{ new VCubicBezier{ *data->GeometricObject<VCubicBezier>(idObject) } };
                 spl->setIdObject(idObject);
                 spl->setMode(Draw::Modeling);
                 data->UpdateGObject(id, spl);
@@ -2856,15 +2855,15 @@ void VPattern::ParseNodeSplinePath(const QDomElement& domElement, const Document
 
         SplinesCommonAttributes(domElement, id, idObject, idTool);
         try {
-            const auto obj = data->GetGObject(idObject);
-            if (obj->getType() == GOType::SplinePath) {
-                VSplinePath* path = new VSplinePath(*data->GeometricObject<VSplinePath>(idObject));
+            const auto& obj{ data->GetGObject(idObject) };
+            if (obj.getType() == GOType::SplinePath) {
+                auto* path{ new VSplinePath{ *data->GeometricObject<VSplinePath>(idObject) } };
                 path->setIdObject(idObject);
                 path->setMode(Draw::Modeling);
                 data->UpdateGObject(id, path);
             } else {
-                VCubicBezierPath* spl =
-                    new VCubicBezierPath(*data->GeometricObject<VCubicBezierPath>(idObject));
+                auto* spl{ new VCubicBezierPath{
+                    *data->GeometricObject<VCubicBezierPath>(idObject) } };
                 spl->setIdObject(idObject);
                 spl->setMode(Draw::Modeling);
                 data->UpdateGObject(id, spl);
@@ -3019,7 +3018,7 @@ void VPattern::ParseNodeEllipticalArc(const QDomElement& domElement, const Docum
         const quint32 idTool = GetParametrUInt(domElement, VAbstractNode::AttrIdTool, NULL_ID_STR);
         VEllipticalArc* arc = nullptr;
         try {
-            arc = new VEllipticalArc(*data->GeometricObject<VEllipticalArc>(idObject));
+            arc = new VEllipticalArc{ *data->GeometricObject<VEllipticalArc>(idObject) };
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
             Q_UNUSED(error)
@@ -3050,7 +3049,7 @@ void VPattern::ParseNodeArc(const QDomElement& domElement, const Document& parse
         const quint32 idTool = GetParametrUInt(domElement, VAbstractNode::AttrIdTool, NULL_ID_STR);
         VArc* arc = nullptr;
         try {
-            arc = new VArc(*data->GeometricObject<VArc>(idObject));
+            arc = new VArc{ *data->GeometricObject<VArc>(idObject) };
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
             Q_UNUSED(error)

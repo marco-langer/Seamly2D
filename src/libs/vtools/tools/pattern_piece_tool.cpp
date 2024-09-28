@@ -1548,14 +1548,13 @@ VPieceItem::MoveTypes PatternPieceTool::FindLabelGeometry(
 
     if (topLeftAnchorPoint != NULL_ID && bottomRightAnchorPoint != NULL_ID) {
         try {
-            const auto topLeftAnchorPointPoint =
-                VAbstractTool::data.GeometricObject<VPointF>(topLeftAnchorPoint);
-            const auto bottomRightAnchorPointPoint =
-                VAbstractTool::data.GeometricObject<VPointF>(bottomRightAnchorPoint);
+            const auto& topLeftAnchorPointPoint{ *VAbstractTool::data.GeometricObject<VPointF>(
+                topLeftAnchorPoint) };
+            const auto& bottomRightAnchorPointPoint{ *VAbstractTool::data.GeometricObject<VPointF>(
+                bottomRightAnchorPoint) };
 
-            const QRectF labelRect = QRectF(
-                static_cast<QPointF>(*topLeftAnchorPointPoint),
-                static_cast<QPointF>(*bottomRightAnchorPointPoint));
+            const QRectF labelRect{ static_cast<QPointF>(topLeftAnchorPointPoint),
+                                    static_cast<QPointF>(bottomRightAnchorPointPoint) };
             labelWidth = FromPixel(qAbs(labelRect.width()), *VDataTool::data.GetPatternUnit());
             labelHeight = FromPixel(qAbs(labelRect.height()), *VDataTool::data.GetPatternUnit());
 
@@ -1596,14 +1595,14 @@ VPieceItem::MoveTypes PatternPieceTool::FindLabelGeometry(
     const quint32 centerAnchor = labelData.centerAnchorPoint();
     if (centerAnchor != NULL_ID) {
         try {
-            const auto centerAnchorPoint =
-                VAbstractTool::data.GeometricObject<VPointF>(centerAnchor);
-            qDebug() << " Anchor center point: " << centerAnchorPoint;
+            const auto& centerAnchorPoint{ *VAbstractTool::data.GeometricObject<VPointF>(
+                centerAnchor) };
+            qDebug() << " Anchor center point: " << &centerAnchorPoint;
             const qreal lWidth = ToPixel(labelWidth, *VDataTool::data.GetPatternUnit());
             const qreal lHeight = ToPixel(labelHeight, *VDataTool::data.GetPatternUnit());
             qDebug() << " Label pixel width: " << lWidth;
             qDebug() << " Label pixel height: " << lHeight;
-            pos = static_cast<QPointF>(*centerAnchorPoint) - QRectF(0, 0, lWidth, lHeight).center();
+            pos = static_cast<QPointF>(centerAnchorPoint) - QRectF(0, 0, lWidth, lHeight).center();
             qDebug() << " Anchor point position: " << pos;
             restrictions &= ~VPieceItem::IsMovable;
         } catch (const VExceptionBadId&) {
@@ -1625,13 +1624,13 @@ VPieceItem::MoveTypes PatternPieceTool::FindGrainlineGeometry(
 
     if (topAnchorPoint != NULL_ID && bottomAnchorPoint != NULL_ID) {
         try {
-            const auto topAnchor_Point =
-                VAbstractTool::data.GeometricObject<VPointF>(topAnchorPoint);
-            const auto bottomAnchor_Point =
-                VAbstractTool::data.GeometricObject<VPointF>(bottomAnchorPoint);
+            const auto& topAnchor_Point{ *VAbstractTool::data.GeometricObject<VPointF>(
+                topAnchorPoint) };
+            const auto& bottomAnchor_Point{ *VAbstractTool::data.GeometricObject<VPointF>(
+                bottomAnchorPoint) };
 
-            QLineF grainline(
-                static_cast<QPointF>(*bottomAnchor_Point), static_cast<QPointF>(*topAnchor_Point));
+            QLineF grainline{ static_cast<QPointF>(bottomAnchor_Point),
+                              static_cast<QPointF>(topAnchor_Point) };
             length = FromPixel(grainline.length(), *VDataTool::data.GetPatternUnit());
             rotationAngle = grainline.angle();
 
@@ -1670,15 +1669,14 @@ VPieceItem::MoveTypes PatternPieceTool::FindGrainlineGeometry(
     const quint32 centerAnchor = data.centerAnchorPoint();
     if (centerAnchor != NULL_ID) {
         try {
-            const auto centerAnchorPoint =
-                VAbstractTool::data.GeometricObject<VPointF>(centerAnchor);
+            const auto& centerAnchorPoint{ *VAbstractTool::data.GeometricObject<VPointF>(
+                centerAnchor) };
 
             const qreal cLength = ToPixel(length, *VDataTool::data.GetPatternUnit());
-            QLineF grainline(
-                centerAnchorPoint->x(),
-                centerAnchorPoint->y(),
-                centerAnchorPoint->x() + cLength / 2.0,
-                centerAnchorPoint->y());
+            QLineF grainline{ centerAnchorPoint.x(),
+                              centerAnchorPoint.y(),
+                              centerAnchorPoint.x() + cLength / 2.0,
+                              centerAnchorPoint.y() };
 
             grainline.setAngle(rotationAngle);
             grainline = QLineF(grainline.p2(), grainline.p1());
@@ -1739,7 +1737,7 @@ void PatternPieceTool::initializeNode(
     case (Tool::NodeElArc):
     case (Tool::NodeSpline):
     case (Tool::NodeSplinePath):
-        doc->IncrementReferens(data->GetGObject(node.GetId())->getIdTool());
+        doc->IncrementReferens(data->GetGObject(node.GetId()).getIdTool());
         break;
     default: qDebug() << "Get wrong tool type. Ignore."; break;
     }

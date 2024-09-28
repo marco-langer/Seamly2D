@@ -347,8 +347,8 @@ void PatternPieceDialog::ChosenObject(quint32 id, const SceneObject& type)
 {
     if (!prepare) {
         bool reverse = false;
-        const QSharedPointer<VGObject> obj = data->GetGObject(id);
-        const GOType objType = static_cast<GOType>(obj->getType());
+        const auto& obj{ data->GetGObject(id) };
+        const GOType objType = static_cast<GOType>(obj.getType());
         quint32 previousId = getPreviousId();
 
         if (objType != GOType::Point && objType != GOType::Unknown) {
@@ -360,38 +360,35 @@ void PatternPieceDialog::ChosenObject(quint32 id, const SceneObject& type)
                 reverse = false;
             } else if (previousId != NULL_ID) {
                 QPointF previousPoint;
-                const QSharedPointer<VGObject> previousObj = data->GetGObject(previousId);
-                const GOType previousObjType = static_cast<GOType>(previousObj->getType());
+                const auto& previousObj{ data->GetGObject(previousId) };
+                const GOType previousObjType = static_cast<GOType>(previousObj.getType());
                 if (previousObjType == GOType::Point) {
                     previousPoint =
                         static_cast<QPointF>(*data->GeometricObject<VPointF>(previousId));
                 } else {
-                    const QSharedPointer<VAbstractCurve> curve =
-                        data->GeometricObject<VAbstractCurve>(previousId);
-                    getLastNode().GetReverse() ? previousPoint = curve->getFirstPoint()
-                                               : previousPoint = curve->getLastPoint();
+                    const auto& curve{ *data->GeometricObject<VAbstractCurve>(previousId) };
+                    getLastNode().GetReverse() ? previousPoint = curve.getFirstPoint()
+                                               : previousPoint = curve.getLastPoint();
                 }
 
-                const QSharedPointer<VAbstractCurve> curve =
-                    data->GeometricObject<VAbstractCurve>(id);
-                if (curve->isPointOnCurve(previousPoint) && curve->getFirstPoint() != previousPoint
-                    && curve->getLastPoint() != previousPoint) {
-                    QList<QListWidgetItem*> items =
-                        ui->mainPath_ListWidget->findItems(curve->name(), Qt::MatchContains);
+                const auto& curve{ *data->GeometricObject<VAbstractCurve>(id) };
+                if (curve.isPointOnCurve(previousPoint) && curve.getFirstPoint() != previousPoint
+                    && curve.getLastPoint() != previousPoint) {
+                    const QList<QListWidgetItem*> items{ ui->mainPath_ListWidget->findItems(
+                        curve.name(), Qt::MatchContains) };
 
                     if (!items.isEmpty()) {
                         VPieceNode rowNode =
                             qvariant_cast<VPieceNode>(items[0]->data(Qt::UserRole));
                         reverse = rowNode.GetReverse();
                     }
-                } else if (curve->getFirstPoint() != previousPoint) {
+                } else if (curve.getFirstPoint() != previousPoint) {
                     reverse = true;
                 }
             } else {
                 QVector<QPointF> points = CreatePiece().MainPathPoints(data);
-                const QSharedPointer<VAbstractCurve> curve =
-                    data->GeometricObject<VAbstractCurve>(id);
-                QVector<QPointF> curvePoints = curve->getPoints();
+                const auto& curve{ *data->GeometricObject<VAbstractCurve>(id) };
+                const QVector<QPointF> curvePoints{ curve.getPoints() };
                 points.append(curvePoints);
                 reverse = !VPiece::isClockwise(points);
             }
@@ -2267,9 +2264,9 @@ void PatternPieceDialog::newInternalPath(quint32 path)
 void PatternPieceDialog::newAnchorPoint(quint32 anchorPoint)
 {
     if (anchorPoint > NULL_ID) {
-        const QSharedPointer<VGObject> anchor = data->GetGObject(anchorPoint);
+        const auto& anchor{ data->GetGObject(anchorPoint) };
 
-        QListWidgetItem* item = new QListWidgetItem(anchor->name());
+        auto* item{ new QListWidgetItem{ anchor.name() } };
         item->setData(Qt::UserRole, QVariant::fromValue(anchorPoint));
         ui->anchorPoints_ListWidget->addItem(item);
         ui->anchorPoints_ListWidget->setCurrentRow(ui->anchorPoints_ListWidget->count() - 1);
@@ -2732,8 +2729,8 @@ void PatternPieceDialog::initAnchorPoint(QComboBox* box)
     const QVector<quint32> anchorPoints = GetListInternals<quint32>(ui->anchorPoints_ListWidget);
 
     for (int i = 0; i < anchorPoints.size(); ++i) {
-        const QSharedPointer<VGObject> anchorPoint = data->GetGObject(anchorPoints.at(i));
-        box->addItem(anchorPoint->name(), anchorPoints.at(i));
+        const auto& anchorPoint{ data->GetGObject(anchorPoints.at(i)) };
+        box->addItem(anchorPoint.name(), anchorPoints.at(i));
     }
 
     const int index = ui->nodes_ComboBox->findData(currentId);

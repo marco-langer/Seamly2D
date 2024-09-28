@@ -66,6 +66,7 @@
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
+#include <memory>
 #include <new>
 
 #include "../ifc/exception/vexceptionbadid.h"
@@ -152,8 +153,9 @@ public:
 
     template <typename T>
     QSharedPointer<T> GeometricObject(const quint32& id) const;
-    QSharedPointer<VGObject> GetGObject(quint32 id) const;
-    static QSharedPointer<VGObject> GetFakeGObject(quint32 id);
+    const VGObject& GetGObject(quint32 id) const;
+    VGObject& GetGObject(quint32 id);
+    static std::unique_ptr<VGObject> GetFakeGObject(quint32 id);
     VPiece GetPiece(quint32 id) const;
     VPiecePath GetPiecePath(quint32 id) const;
     template <typename T>
@@ -237,10 +239,6 @@ private:
 
     template <class T>
     uint qHash(const QSharedPointer<T>& p);
-
-    template <typename key, typename val>
-    // cppcheck-suppress functionStatic
-    val GetObject(const QHash<key, val>& obj, key id) const;
 
     template <typename T>
     void UpdateObject(const quint32& id, const QSharedPointer<T>& point);

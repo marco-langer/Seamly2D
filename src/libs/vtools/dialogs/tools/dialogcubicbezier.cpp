@@ -256,7 +256,7 @@ void DialogCubicBezier::PointNameChanged()
             newDuplicate = -1;
             ui->lineEditSplineName->setText(qApp->translateVariables()->VarToUser(spl.name()));
         } else {
-            VCubicBezier spline(*GetP1(), *GetP2(), *GetP3(), *GetP4());
+            VCubicBezier spline{ GetP1(), GetP2(), GetP3(), GetP4() };
 
             if (not data->IsUnique(spline.name())) {
                 newDuplicate = static_cast<qint32>(DNumber(spline.name()));
@@ -279,12 +279,12 @@ void DialogCubicBezier::ShowVisualization() { AddVisualization<VisToolCubicBezie
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCubicBezier::SaveData()
 {
-    const auto p1 = GetP1();
-    const auto p2 = GetP2();
-    const auto p3 = GetP3();
-    const auto p4 = GetP4();
+    const auto& p1{ GetP1() };
+    const auto& p2{ GetP2() };
+    const auto& p3{ GetP3() };
+    const auto& p4{ GetP4() };
 
-    spl = VCubicBezier(*p1, *p2, *p3, *p4);
+    spl = VCubicBezier{ p1, p2, p3, p4 };
 
     const quint32 d = spl.GetDuplicate();   // Save previous value
     newDuplicate <= -1 ? spl.SetDuplicate(d) : spl.SetDuplicate(static_cast<quint32>(newDuplicate));
@@ -292,34 +292,34 @@ void DialogCubicBezier::SaveData()
     auto path = qobject_cast<VisToolCubicBezier*>(vis);
     SCASSERT(path != nullptr)
 
-    path->setObject1Id(p1->id());
-    path->setObject2Id(p2->id());
-    path->setObject3Id(p3->id());
-    path->setObject4Id(p4->id());
+    path->setObject1Id(p1.id());
+    path->setObject2Id(p2.id());
+    path->setObject3Id(p3.id());
+    path->setObject4Id(p4.id());
     path->SetMode(Mode::Show);
     path->RefreshGeometry();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QSharedPointer<VPointF> DialogCubicBezier::GetP1() const
+const VPointF& DialogCubicBezier::GetP1() const
 {
-    return data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP1));
+    return *data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP1));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QSharedPointer<VPointF> DialogCubicBezier::GetP2() const
+const VPointF& DialogCubicBezier::GetP2() const
 {
-    return data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP2));
+    return *data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP2));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QSharedPointer<VPointF> DialogCubicBezier::GetP3() const
+const VPointF& DialogCubicBezier::GetP3() const
 {
-    return data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP3));
+    return *data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP3));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QSharedPointer<VPointF> DialogCubicBezier::GetP4() const
+const VPointF& DialogCubicBezier::GetP4() const
 {
-    return data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP4));
+    return *data->GeometricObject<VPointF>(getCurrentObjectId(ui->comboBoxP4));
 }

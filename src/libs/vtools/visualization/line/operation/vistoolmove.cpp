@@ -251,14 +251,14 @@ void VisToolMove::setOriginPointId(quint32 value) { object1Id = value; }
 template <class Item>
 QGraphicsPathItem* VisToolMove::AddOriginCurve(quint32 id, int& i)
 {
-    const QSharedPointer<Item> curve = Visualization::data->template GeometricObject<Item>(id);
+    const auto& curve{ *Visualization::data->template GeometricObject<Item>(id) };
 
     ++i;
     VCurvePathItem* path = GetCurve(static_cast<quint32>(i), supportColor2);
     DrawPath(
         path,
-        curve->GetPath(),
-        curve->DirectionArrows(),
+        curve.GetPath(),
+        curve.DirectionArrows(),
         supportColor2,
         Qt::SolidLine,
         lineWeight,
@@ -277,11 +277,11 @@ int VisToolMove::AddDestinationCurve(
     qreal rotationAngle,
     const QPointF& rotationOrigin)
 {
-    const QSharedPointer<Item> curve = Visualization::data->template GeometricObject<Item>(id);
+    const auto& curve{ *Visualization::data->template GeometricObject<Item>(id) };
 
     ++i;
     VCurvePathItem* path = GetCurve(static_cast<quint32>(i), supportColor);
-    const Item moved = curve->Move(length, angle).Rotate(rotationOrigin, rotationAngle);
+    const Item moved{ curve.Move(length, angle).Rotate(rotationOrigin, rotationAngle) };
     DrawPath(
         path,
         moved.GetPath(),
@@ -304,19 +304,19 @@ void VisToolMove::createOriginObjects(int& iPoint, int& iCurve)
 
     for (int i = 0; i < objects.size(); ++i) {
         const quint32 id = objects.at(i);
-        const QSharedPointer<VGObject> obj = Visualization::data->GetGObject(id);
+        const auto& obj{ Visualization::data->GetGObject(id) };
 
         // This check helps to find missed objects in the switch
         Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
-        switch (static_cast<GOType>(obj->getType())) {
+        switch (static_cast<GOType>(obj.getType())) {
         case GOType::Point: {
-            const QSharedPointer<VPointF> p = Visualization::data->GeometricObject<VPointF>(id);
+            const auto& p{ *Visualization::data->GeometricObject<VPointF>(id) };
 
             ++iPoint;
             VScaledEllipse* point = GetPoint(static_cast<quint32>(iPoint), supportColor2);
-            DrawPoint(point, static_cast<QPointF>(*p), supportColor2);
-            sourceObjects.append(p->toQPointF());
+            DrawPoint(point, static_cast<QPointF>(p), supportColor2);
+            sourceObjects.append(p.toQPointF());
             break;
         }
         case GOType::Arc:
@@ -376,20 +376,20 @@ void VisToolMove::createRotatedObjects(
 {
     for (int i = 0; i < objects.size(); ++i) {
         const quint32 id = objects.at(i);
-        const QSharedPointer<VGObject> obj = Visualization::data->GetGObject(id);
+        const auto& obj{ Visualization::data->GetGObject(id) };
 
         // This check helps to find missed objects in the switch
         Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects was handled.");
 
-        switch (static_cast<GOType>(obj->getType())) {
+        switch (static_cast<GOType>(obj.getType())) {
         case GOType::Point: {
-            const QSharedPointer<VPointF> p = Visualization::data->GeometricObject<VPointF>(id);
+            const auto& p{ *Visualization::data->GeometricObject<VPointF>(id) };
 
             ++iPoint;
             VScaledEllipse* point = GetPoint(static_cast<quint32>(iPoint), supportColor);
             DrawPoint(
                 point,
-                static_cast<QPointF>(p->Move(length, angle).Rotate(rotationOrigin, rotationAngle)),
+                static_cast<QPointF>(p.Move(length, angle).Rotate(rotationOrigin, rotationAngle)),
                 supportColor);
             break;
         }

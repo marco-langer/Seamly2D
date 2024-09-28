@@ -112,10 +112,10 @@ void VToolCutSpline::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogCutSpline> dialogTool = m_dialog.objectCast<DialogCutSpline>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->SetFormula(formula);
     dialogTool->setSplineId(curveCutId);
-    dialogTool->SetPointName(point->name());
+    dialogTool->SetPointName(point.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -186,19 +186,19 @@ VToolCutSpline* VToolCutSpline::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const auto spl = data->GeometricObject<VAbstractCubicBezier>(splineId);
+    const auto& spl{ *data->GeometricObject<VAbstractCubicBezier>(splineId) };
 
     const qreal result = CheckFormula(_id, formula, data);
 
     QPointF spl1p2, spl1p3, spl2p2, spl2p3;
-    QPointF point = spl->CutSpline(qApp->toPixel(result), spl1p2, spl1p3, spl2p2, spl2p3);
+    const QPointF point{ spl.CutSpline(qApp->toPixel(result), spl1p2, spl1p3, spl2p2, spl2p3) };
 
     quint32 id = _id;
     VPointF* p = new VPointF(point, pointName, mx, my);
     p->setShowPointName(showPointName);
 
-    auto spline1 = QSharedPointer<VAbstractBezier>(new VSpline(spl->GetP1(), spl1p2, spl1p3, *p));
-    auto spline2 = QSharedPointer<VAbstractBezier>(new VSpline(*p, spl2p2, spl2p3, spl->GetP4()));
+    auto spline1 = QSharedPointer<VAbstractBezier>(new VSpline(spl.GetP1(), spl1p2, spl1p3, *p));
+    auto spline2 = QSharedPointer<VAbstractBezier>(new VSpline(*p, spl2p2, spl2p3, spl.GetP4()));
 
     if (typeCreation == Source::FromGui) {
         id = data->AddGObject(p);
@@ -220,7 +220,7 @@ VToolCutSpline* VToolCutSpline::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(spl->getIdTool());
+        doc->IncrementReferens(spl.getIdTool());
         return point;
     }
     return nullptr;
@@ -259,7 +259,7 @@ void VToolCutSpline::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCutSpline::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolCutSpline::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolCut::SaveOptions(tag, obj);
 
@@ -286,9 +286,8 @@ void VToolCutSpline::SetVisualization()
         visual->setLength(
             qApp->translateVariables()->FormulaToUser(formula, qApp->Settings()->getOsSeparator()));
 
-        const QSharedPointer<VAbstractCurve> curve =
-            VAbstractTool::data.GeometricObject<VAbstractCurve>(curveCutId);
-        visual->setLineStyle(lineTypeToPenStyle(curve->GetPenStyle()));
+        const auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(curveCutId) };
+        visual->setLineStyle(lineTypeToPenStyle(curve.GetPenStyle()));
 
         visual->RefreshGeometry();
     }
@@ -297,17 +296,17 @@ void VToolCutSpline::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolCutSpline::makeToolTip() const
 {
-    const auto spl = VAbstractTool::data.GeometricObject<VAbstractCubicBezier>(curveCutId);
+    const auto& spl{ *VAbstractTool::data.GeometricObject<VAbstractCubicBezier>(curveCutId) };
 
     const QString expression =
         qApp->translateVariables()->FormulaToUser(formula, qApp->Settings()->getOsSeparator());
     const qreal length = Visualization::FindVal(expression, VAbstractTool::data.DataVariables());
 
     QPointF spl1p2, spl1p3, spl2p2, spl2p3;
-    QPointF point = spl->CutSpline(qApp->toPixel(length), spl1p2, spl1p3, spl2p2, spl2p3);
+    QPointF point = spl.CutSpline(qApp->toPixel(length), spl1p2, spl1p3, spl2p2, spl2p3);
 
-    VSpline spline1 = VSpline(spl->GetP1(), spl1p2, spl1p3, VPointF(point));
-    VSpline spline2 = VSpline(VPointF(point), spl2p2, spl2p3, spl->GetP4());
+    const VSpline spline1{ spl.GetP1(), spl1p2, spl1p3, VPointF{ point } };
+    const VSpline spline2{ VPointF{ point }, spl2p2, spl2p3, spl.GetP4() };
 
     const QString curveStr = tr("Curve");
     const QString lengthStr = tr("length");

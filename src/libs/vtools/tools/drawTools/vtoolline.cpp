@@ -226,11 +226,11 @@ VToolLine* VToolLine::Create(
         connect(scene, &VMainGraphicsScene::EnableLineItemHover, line, &VToolLine::AllowHover);
         VAbstractPattern::AddTool(id, line);
 
-        const QSharedPointer<VPointF> first = data->GeometricObject<VPointF>(firstPoint);
-        const QSharedPointer<VPointF> second = data->GeometricObject<VPointF>(secondPoint);
+        const auto& first{ *data->GeometricObject<VPointF>(firstPoint) };
+        const auto& second{ *data->GeometricObject<VPointF>(secondPoint) };
 
-        doc->IncrementReferens(first->getIdTool());
-        doc->IncrementReferens(second->getIdTool());
+        doc->IncrementReferens(first.getIdTool());
+        doc->IncrementReferens(second.getIdTool());
         return line;
     }
     return nullptr;
@@ -259,13 +259,13 @@ void VToolLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolLine::FirstPointName() const
 {
-    return VAbstractTool::data.GetGObject(firstPoint)->name();
+    return VAbstractTool::data.GetGObject(firstPoint).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolLine::SecondPointName() const
 {
-    return VAbstractTool::data.GetGObject(secondPoint)->name();
+    return VAbstractTool::data.GetGObject(secondPoint).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -330,8 +330,7 @@ void VToolLine::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) { showCo
 void VToolLine::AddToFile()
 {
     QDomElement domElement = doc->createElement(getTagName());
-    QSharedPointer<VGObject> obj = QSharedPointer<VGObject>();
-    SaveOptions(domElement, obj);
+    SaveOptions(domElement, nullptr);
     AddToCalculation(domElement);
 }
 
@@ -366,11 +365,11 @@ void VToolLine::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
  */
 void VToolLine::RemoveReferens()
 {
-    const auto p1 = VAbstractTool::data.GetGObject(firstPoint);
-    const auto p2 = VAbstractTool::data.GetGObject(secondPoint);
+    const auto& p1{ VAbstractTool::data.GetGObject(firstPoint) };
+    const auto& p2{ VAbstractTool::data.GetGObject(secondPoint) };
 
-    doc->DecrementReferens(p1->getIdTool());
-    doc->DecrementReferens(p2->getIdTool());
+    doc->DecrementReferens(p1.getIdTool());
+    doc->DecrementReferens(p2.getIdTool());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -425,7 +424,7 @@ void VToolLine::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolLine::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolLine::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VDrawTool::SaveOptions(tag, obj);
 
@@ -464,11 +463,10 @@ void VToolLine::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolLine::makeToolTip() const
 {
-    const QSharedPointer<VPointF> first = VAbstractTool::data.GeometricObject<VPointF>(firstPoint);
-    const QSharedPointer<VPointF> second =
-        VAbstractTool::data.GeometricObject<VPointF>(secondPoint);
+    const auto& first{ *VAbstractTool::data.GeometricObject<VPointF>(firstPoint) };
+    const auto& second{ *VAbstractTool::data.GeometricObject<VPointF>(secondPoint) };
 
-    const QLineF line(static_cast<QPointF>(*first), static_cast<QPointF>(*second));
+    const QLineF line{ static_cast<QPointF>(first), static_cast<QPointF>(second) };
 
     const QString toolTip = QString(
                                 "<table>"
@@ -492,9 +490,8 @@ void VToolLine::SetSecondPoint(const quint32& value)
     if (value != NULL_ID) {
         secondPoint = value;
 
-        QSharedPointer<VGObject>
-            obj;   // We don't have object for line in data container. Just will send empty object.
-        SaveOption(obj);
+        // We don't have object for line in data container. Just will send empty object.
+        SaveOption(nullptr);
     }
 }
 
@@ -521,9 +518,8 @@ void VToolLine::setLineType(const QString& value)
 {
     m_lineType = value;
 
-    QSharedPointer<VGObject>
-        obj;   // We don't have object for line in data container. Just will send empty object.
-    SaveOption(obj);
+    // We don't have object for line in data container. Just will send empty object.
+    SaveOption(nullptr);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -531,9 +527,8 @@ void VToolLine::setLineWeight(const QString& value)
 {
     m_lineWeight = value;
 
-    QSharedPointer<VGObject>
-        obj;   // We don't have object for line in data container. Just will send empty object.
-    SaveOption(obj);
+    // We don't have object for line in data container. Just will send empty object.
+    SaveOption(nullptr);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -544,9 +539,8 @@ void VToolLine::setLineColor(const QString& value)
 {
     lineColor = value;
 
-    QSharedPointer<VGObject>
-        obj;   // We don't have object for line in data container. Just will send empty object.
-    SaveOption(obj);
+    // We don't have object for line in data container. Just will send empty object.
+    SaveOption(nullptr);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -565,9 +559,8 @@ void VToolLine::SetFirstPoint(const quint32& value)
     if (value != NULL_ID) {
         firstPoint = value;
 
-        QSharedPointer<VGObject>
-            obj;   // We don't have object for line in data container. Just will send empty object.
-        SaveOption(obj);
+        // We don't have object for line in data container. Just will send empty object.
+        SaveOption(nullptr);
     }
 }
 
@@ -577,8 +570,7 @@ void VToolLine::SetFirstPoint(const quint32& value)
  */
 void VToolLine::RefreshGeometry()
 {
-    const QSharedPointer<VPointF> first = VAbstractTool::data.GeometricObject<VPointF>(firstPoint);
-    const QSharedPointer<VPointF> second =
-        VAbstractTool::data.GeometricObject<VPointF>(secondPoint);
-    this->setLine(QLineF(static_cast<QPointF>(*first), static_cast<QPointF>(*second)));
+    const auto& first{ *VAbstractTool::data.GeometricObject<VPointF>(firstPoint) };
+    const auto& second{ *VAbstractTool::data.GeometricObject<VPointF>(secondPoint) };
+    this->setLine(QLineF{ static_cast<QPointF>(first), static_cast<QPointF>(second) });
 }

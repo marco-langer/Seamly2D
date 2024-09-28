@@ -109,10 +109,10 @@ void VToolCutArc::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogCutArc> dialogTool = m_dialog.objectCast<DialogCutArc>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->SetFormula(formula);
     dialogTool->setArcId(curveCutId);
-    dialogTool->SetPointName(point->name());
+    dialogTool->SetPointName(point.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -183,13 +183,13 @@ VToolCutArc* VToolCutArc::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VArc> arc = data->GeometricObject<VArc>(arcId);
+    const auto& arc{ *data->GeometricObject<VArc>(arcId) };
 
     const qreal result = CheckFormula(_id, formula, data);
 
     VArc arc1;
     VArc arc2;
-    QPointF point = arc->CutArc(qApp->toPixel(result), arc1, arc2);
+    const QPointF point{ arc.CutArc(qApp->toPixel(result), arc1, arc2) };
 
     quint32 id = _id;
     VPointF* p = new VPointF(point, pointName, mx, my);
@@ -221,7 +221,7 @@ VToolCutArc* VToolCutArc::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(arc->getIdTool());
+        doc->IncrementReferens(arc.getIdTool());
         return point;
     }
     return nullptr;
@@ -260,7 +260,7 @@ void VToolCutArc::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolCutArc::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolCutArc::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolCut::SaveOptions(tag, obj);
 
@@ -287,9 +287,8 @@ void VToolCutArc::SetVisualization()
         visual->setLength(
             qApp->translateVariables()->FormulaToUser(formula, qApp->Settings()->getOsSeparator()));
 
-        const QSharedPointer<VAbstractCurve> curve =
-            VAbstractTool::data.GeometricObject<VAbstractCurve>(curveCutId);
-        visual->setLineStyle(lineTypeToPenStyle(curve->GetPenStyle()));
+        const auto& curve{ *VAbstractTool::data.GeometricObject<VAbstractCurve>(curveCutId) };
+        visual->setLineStyle(lineTypeToPenStyle(curve.GetPenStyle()));
 
         visual->RefreshGeometry();
     }
@@ -298,7 +297,7 @@ void VToolCutArc::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolCutArc::makeToolTip() const
 {
-    const QSharedPointer<VArc> arc = VAbstractTool::data.GeometricObject<VArc>(curveCutId);
+    const auto& arc{ *VAbstractTool::data.GeometricObject<VArc>(curveCutId) };
 
     const QString expression =
         qApp->translateVariables()->FormulaToUser(formula, qApp->Settings()->getOsSeparator());
@@ -312,7 +311,7 @@ QString VToolCutArc::makeToolTip() const
 
     VArc ar1;
     VArc ar2;
-    arc->CutArc(qApp->toPixel(length), ar1, ar2);
+    arc.CutArc(qApp->toPixel(length), ar1, ar2);
 
     auto ArcToolTip = [arcStr, lengthStr, startAngleStr, endAngleStr, radiusStr](
                           QString toolTip, const VArc& arc, const QString& arcNumber) {

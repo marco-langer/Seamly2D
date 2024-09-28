@@ -56,7 +56,6 @@
 #include <QGraphicsItem>
 #include <QMetaObject>
 #include <QObject>
-#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 #include <Qt>
@@ -124,7 +123,7 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    void SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj) override;
+    void SaveOptions(QDomElement& tag, const VGObject* obj) override;
     void ReadToolAttributes(const QDomElement& domElement) override;
     void SetVisualization() override {}
     QString makeToolTip() const override;

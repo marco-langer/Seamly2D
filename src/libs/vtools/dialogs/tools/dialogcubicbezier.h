@@ -109,10 +109,10 @@ private:
 
     qint32 newDuplicate;
 
-    const QSharedPointer<VPointF> GetP1() const;
-    const QSharedPointer<VPointF> GetP2() const;
-    const QSharedPointer<VPointF> GetP3() const;
-    const QSharedPointer<VPointF> GetP4() const;
+    const VPointF& GetP1() const;
+    const VPointF& GetP2() const;
+    const VPointF& GetP3() const;
+    const VPointF& GetP4() const;
 };
 
 #endif   // DIALOGCUBICBEZIER_H

@@ -79,12 +79,11 @@ VisToolArcWithLength::VisToolArcWithLength(const VContainer* data, QGraphicsItem
 void VisToolArcWithLength::RefreshGeometry()
 {
     if (object1Id > NULL_ID) {
-        const QSharedPointer<VPointF> first =
-            Visualization::data->GeometricObject<VPointF>(object1Id);
-        DrawPoint(arcCenter, static_cast<QPointF>(*first), supportColor);
+        const auto& first{ *Visualization::data->GeometricObject<VPointF>(object1Id) };
+        DrawPoint(arcCenter, static_cast<QPointF>(first), supportColor);
 
         if (not qFuzzyIsNull(radius) && f1 >= 0 && not qFuzzyIsNull(length)) {
-            VArc arc = VArc(length, *first, radius, f1);
+            const VArc arc{ length, first, radius, f1 };
             DrawPath(
                 this,
                 arc.GetPath(),

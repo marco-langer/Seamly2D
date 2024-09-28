@@ -216,15 +216,15 @@ void VNodePoint::FullUpdateFromFile()
  */
 void VNodePoint::AddToFile()
 {
-    const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     QDomElement domElement = doc->createElement(getTagName());
 
     doc->SetAttribute(domElement, VDomDocument::AttrId, m_id);
     doc->SetAttribute(domElement, AttrType, ToolType);
     doc->SetAttribute(domElement, AttrIdObject, idNode);
-    doc->SetAttribute(domElement, AttrMx, qApp->fromPixel(point->mx()));
-    doc->SetAttribute(domElement, AttrMy, qApp->fromPixel(point->my()));
-    doc->SetAttribute<bool>(domElement, AttrShowPointName, point->isShowPointName());
+    doc->SetAttribute(domElement, AttrMx, qApp->fromPixel(point.mx()));
+    doc->SetAttribute(domElement, AttrMy, qApp->fromPixel(point.my()));
+    doc->SetAttribute<bool>(domElement, AttrShowPointName, point.isShowPointName());
 
     if (idTool != NULL_ID) {
         doc->SetAttribute(domElement, AttrIdTool, idTool);
@@ -254,7 +254,7 @@ void VNodePoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
     // Use QToolTip::showText() to offset tooltip so it's not hidden under cursor
     QPoint point = event->screenPos();
     QToolTip::showText(
-        QPoint(point.x() + 10, point.y() + 10), VAbstractTool::data.GetGObject(m_id)->name());
+        QPoint(point.x() + 10, point.y() + 10), VAbstractTool::data.GetGObject(m_id).name());
     VScenePoint::hoverEnterEvent(event);
 }
 
@@ -279,9 +279,9 @@ void VNodePoint::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 void VNodePoint::setPointNamePosition(quint32 id, const QPointF& pos)
 {
     if (id == m_id) {
-        QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
-        point->setMx(pos.x());
-        point->setMy(pos.y());
+        auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(id) };
+        point.setMx(pos.x());
+        point.setMy(pos.y());
         m_pointName->blockSignals(true);
         m_pointName->setPosition(pos);
         m_pointName->blockSignals(false);
@@ -297,9 +297,9 @@ void VNodePoint::setPointNamePosition(quint32 id, const QPointF& pos)
 void VNodePoint::setPointNameVisiblity(quint32 id, bool visible)
 {
     if (id == m_id) {
-        const QSharedPointer<VPointF> point = VAbstractTool::data.GeometricObject<VPointF>(id);
-        point->setShowPointName(visible);
-        refreshPointGeometry(*point);
+        auto& point{ *VAbstractTool::data.GeometricObject<VPointF>(id) };
+        point.setShowPointName(visible);
+        refreshPointGeometry(point);
     }
 }
 

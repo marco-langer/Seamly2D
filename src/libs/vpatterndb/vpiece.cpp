@@ -230,8 +230,7 @@ QVector<QPointF> VPiece::SeamAllowancePoints(const VContainer* data) const
         case (Tool::NodeSpline):
         case (Tool::NodeSplinePath): {
             if (not insertingCSA) {
-                const QSharedPointer<VAbstractCurve> curve =
-                    data->GeometricObject<VAbstractCurve>(node.GetId());
+                const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 
                 pointsEkv += VPiecePath::CurveSeamAllowanceSegment(
                     data, unitedPath, curve, i, node.GetReverse(), width);
@@ -618,8 +617,7 @@ VPiece::getNodeSAPoints(const QVector<VPieceNode>& path, int index, const VConta
     if (node.GetTypeTool() == Tool::NodePoint) {
         points.append(VPiecePath::PreparePointEkv(node, data));
     } else {
-        const QSharedPointer<VAbstractCurve> curve =
-            data->GeometricObject<VAbstractCurve>(node.GetId());
+        const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
         const qreal width = ToPixel(GetSAWidth(), *data->GetPatternUnit());
 
         points += VPiecePath::CurveSeamAllowanceSegment(

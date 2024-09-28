@@ -54,7 +54,6 @@
 
 #include <QMetaObject>
 #include <QObject>
-#include <QSharedPointer>
 #include <QString>
 #include <QtGlobal>
 #include <qcompilerdetection.h>
@@ -145,8 +144,8 @@ private:
     bool flagLength1;
     bool flagLength2;
 
-    const QSharedPointer<VPointF> GetP1() const;
-    const QSharedPointer<VPointF> GetP4() const;
+    const VPointF& GetP1() const;
+    const VPointF& GetP4() const;
 
     void EvalAngle1();
     void EvalAngle2();

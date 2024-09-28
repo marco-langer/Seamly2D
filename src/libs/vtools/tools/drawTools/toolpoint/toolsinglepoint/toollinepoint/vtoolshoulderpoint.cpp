@@ -123,14 +123,14 @@ void VToolShoulderPoint::setDialog()
     SCASSERT(not m_dialog.isNull())
     QSharedPointer<DialogShoulderPoint> dialogTool = m_dialog.objectCast<DialogShoulderPoint>();
     SCASSERT(not dialogTool.isNull())
-    const QSharedPointer<VPointF> p = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& p{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
     dialogTool->setLineType(m_lineType);
     dialogTool->setLineColor(lineColor);
     dialogTool->SetFormula(formulaLength);
     dialogTool->SetP1Line(basePointId);
     dialogTool->SetP2Line(p2Line);
     dialogTool->SetP3(pShoulder);
-    dialogTool->SetPointName(p->name());
+    dialogTool->SetPointName(p.name());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -264,17 +264,17 @@ VToolShoulderPoint* VToolShoulderPoint::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    const QSharedPointer<VPointF> firstPoint = data->GeometricObject<VPointF>(p1Line);
-    const QSharedPointer<VPointF> secondPoint = data->GeometricObject<VPointF>(p2Line);
-    const QSharedPointer<VPointF> shoulderPoint = data->GeometricObject<VPointF>(pShoulder);
+    const auto& firstPoint{ *data->GeometricObject<VPointF>(p1Line) };
+    const auto& secondPoint{ *data->GeometricObject<VPointF>(p2Line) };
+    const auto& shoulderPoint{ *data->GeometricObject<VPointF>(pShoulder) };
 
     const qreal result = CheckFormula(_id, formula, data);
 
-    QPointF fPoint = VToolShoulderPoint::FindPoint(
-        static_cast<QPointF>(*firstPoint),
-        static_cast<QPointF>(*secondPoint),
-        static_cast<QPointF>(*shoulderPoint),
-        qApp->toPixel(result));
+    const QPointF fPoint{ VToolShoulderPoint::FindPoint(
+        static_cast<QPointF>(firstPoint),
+        static_cast<QPointF>(secondPoint),
+        static_cast<QPointF>(shoulderPoint),
+        qApp->toPixel(result)) };
     quint32 id = _id;
     VPointF* p = new VPointF(fPoint, pointName, mx, my);
     p->setShowPointName(showPointName);
@@ -309,9 +309,9 @@ VToolShoulderPoint* VToolShoulderPoint::Create(
         scene->addItem(point);
         InitToolConnections(scene, point);
         VAbstractPattern::AddTool(id, point);
-        doc->IncrementReferens(firstPoint->getIdTool());
-        doc->IncrementReferens(secondPoint->getIdTool());
-        doc->IncrementReferens(shoulderPoint->getIdTool());
+        doc->IncrementReferens(firstPoint.getIdTool());
+        doc->IncrementReferens(secondPoint.getIdTool());
+        doc->IncrementReferens(shoulderPoint.getIdTool());
         return point;
     }
     return nullptr;
@@ -320,13 +320,13 @@ VToolShoulderPoint* VToolShoulderPoint::Create(
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolShoulderPoint::SecondPointName() const
 {
-    return VAbstractTool::data.GetGObject(p2Line)->name();
+    return VAbstractTool::data.GetGObject(p2Line).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolShoulderPoint::ShoulderPointName() const
 {
-    return VAbstractTool::data.GetGObject(pShoulder)->name();
+    return VAbstractTool::data.GetGObject(pShoulder).name();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -350,11 +350,11 @@ void VToolShoulderPoint::showContextMenu(QGraphicsSceneContextMenuEvent* event, 
  */
 void VToolShoulderPoint::RemoveReferens()
 {
-    const auto p2 = VAbstractTool::data.GetGObject(p2Line);
-    const auto pS = VAbstractTool::data.GetGObject(pShoulder);
+    const auto& p2{ VAbstractTool::data.GetGObject(p2Line) };
+    const auto& pS{ VAbstractTool::data.GetGObject(pShoulder) };
 
-    doc->DecrementReferens(p2->getIdTool());
-    doc->DecrementReferens(pS->getIdTool());
+    doc->DecrementReferens(p2.getIdTool());
+    doc->DecrementReferens(pS.getIdTool());
     VToolLinePoint::RemoveReferens();
 }
 
@@ -378,7 +378,7 @@ void VToolShoulderPoint::SaveDialog(QDomElement& domElement)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VToolShoulderPoint::SaveOptions(QDomElement& tag, QSharedPointer<VGObject>& obj)
+void VToolShoulderPoint::SaveOptions(QDomElement& tag, const VGObject* obj)
 {
     VToolLinePoint::SaveOptions(tag, obj);
 
@@ -422,12 +422,12 @@ void VToolShoulderPoint::SetVisualization()
 //---------------------------------------------------------------------------------------------------------------------
 QString VToolShoulderPoint::makeToolTip() const
 {
-    const QSharedPointer<VPointF> first = VAbstractTool::data.GeometricObject<VPointF>(basePointId);
-    const QSharedPointer<VPointF> second = VAbstractTool::data.GeometricObject<VPointF>(p2Line);
-    const QSharedPointer<VPointF> current = VAbstractTool::data.GeometricObject<VPointF>(m_id);
+    const auto& first{ *VAbstractTool::data.GeometricObject<VPointF>(basePointId) };
+    const auto& second{ *VAbstractTool::data.GeometricObject<VPointF>(p2Line) };
+    const auto& current{ *VAbstractTool::data.GeometricObject<VPointF>(m_id) };
 
-    const QLineF firstToCur(static_cast<QPointF>(*first), static_cast<QPointF>(*current));
-    const QLineF secondToCur(static_cast<QPointF>(*second), static_cast<QPointF>(*current));
+    const QLineF firstToCur{ static_cast<QPointF>(first), static_cast<QPointF>(current) };
+    const QLineF secondToCur{ static_cast<QPointF>(second), static_cast<QPointF>(current) };
 
     const QString toolTip = QString(
                                 "<table>"
@@ -441,10 +441,10 @@ QString VToolShoulderPoint::makeToolTip() const
                                 .arg(UnitsToStr(qApp->patternUnit(), true))
                                 .arg(tr("Angle"))
                                 .arg(firstToCur.angle())
-                                .arg(QString("%1->%2").arg(second->name(), current->name()))
+                                .arg(QString("%1->%2").arg(second.name(), current.name()))
                                 .arg(qApp->fromPixel(secondToCur.length()))
                                 .arg(tr("Name"))
-                                .arg(current->name());
+                                .arg(current.name());
 
     return toolTip;
 }
@@ -460,8 +460,7 @@ void VToolShoulderPoint::setPShoulder(const quint32& value)
     if (value != NULL_ID) {
         pShoulder = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
 
@@ -480,7 +479,6 @@ void VToolShoulderPoint::SetP2Line(const quint32& value)
     if (value != NULL_ID) {
         p2Line = value;
 
-        QSharedPointer<VGObject> obj = VAbstractTool::data.GetGObject(m_id);
-        SaveOption(obj);
+        SaveOption(&VAbstractTool::data.GetGObject(m_id));
     }
 }
