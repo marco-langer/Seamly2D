@@ -242,3 +242,12 @@ win32{
     # run windeployqt to include all qt libraries and vc_redist in $${DESTDIR}
     QMAKE_POST_LINK += windeployqt $$shell_path($$DESTDIR/$${TARGET}.exe)
 }
+
+# geometry library
+unix|win32: LIBS += -L$${OUT_PWD}/../../libs/geometry/$${DESTDIR} -lgeometry
+
+INCLUDEPATH += $${PWD}/../../libs/geometry
+DEPENDPATH += $${PWD}/../../libs/geometry
+
+win32:!win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/geometry/$${DESTDIR}/geometry.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/geometry/$${DESTDIR}/libgeometry.a

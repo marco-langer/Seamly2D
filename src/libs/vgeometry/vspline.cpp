@@ -51,6 +51,8 @@
 
 #include "vspline.h"
 
+#include "geometry/geometry.h"
+
 #include <QLineF>
 
 #include "vabstractcurve.h"
@@ -185,8 +187,8 @@ VSpline VSpline::Rotate(const QPointF& originPoint, qreal degrees, const QString
     const VPointF p1 = GetP1().Rotate(originPoint, degrees);
     const VPointF p4 = GetP4().Rotate(originPoint, degrees);
 
-    const QPointF p2 = VPointF::RotatePF(originPoint, static_cast<QPointF>(GetP2()), degrees);
-    const QPointF p3 = VPointF::RotatePF(originPoint, static_cast<QPointF>(GetP3()), degrees);
+    const QPointF p2{ geo::rotate(originPoint, static_cast<QPointF>(GetP2()), degrees) };
+    const QPointF p3{ geo::rotate(originPoint, static_cast<QPointF>(GetP3()), degrees) };
 
     VSpline spl(p1, p2, p3, p4);
     spl.setName(name() + prefix);

@@ -51,6 +51,9 @@
 
 #include "vpointf.h"
 #include "vpointf_p.h"
+
+#include "geometry/geometry.h"
+
 #include <QLineF>
 #include <QPointF>
 #include <QString>
@@ -152,7 +155,7 @@ VPointF::operator QPointF() const { return toQPointF(); }
 //---------------------------------------------------------------------------------------------------------------------
 VPointF VPointF::Rotate(const QPointF& originPoint, qreal degrees, const QString& prefix) const
 {
-    const QPointF newPoint = RotatePF(originPoint, toQPointF(), degrees);
+    const QPointF newPoint{ geo::rotate(originPoint, toQPointF(), degrees) };
     VPointF rotated(newPoint, name() + prefix, mx(), my());
     rotated.setShowPointName(isShowPointName());
     return rotated;
@@ -241,13 +244,6 @@ bool VPointF::isShowPointName() const { return d->m_showPointName; }
 //---------------------------------------------------------------------------------------------------------------------
 void VPointF::setShowPointName(bool show) { d->m_showPointName = show; }
 
-//---------------------------------------------------------------------------------------------------------------------
-QPointF VPointF::RotatePF(const QPointF& originPoint, const QPointF& point, qreal degrees)
-{
-    QLineF axis(originPoint, point);
-    axis.setAngle(axis.angle() + degrees);
-    return axis.p2();
-}
 
 //---------------------------------------------------------------------------------------------------------------------
 QPointF VPointF::FlipPF(const QLineF& axis, const QPointF& point)

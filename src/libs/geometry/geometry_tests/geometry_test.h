@@ -9,6 +9,9 @@ class GeometryTests : public QObject
     Q_OBJECT
 
 private slots:
+    void rotateTest_data();
+    void rotateTest();
+
     void boundingRectTest_data();
     void boundingRectTest();
 };

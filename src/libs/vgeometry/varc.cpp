@@ -51,6 +51,8 @@
 
 #include "varc.h"
 
+#include "geometry/geometry.h"
+
 #include <QLineF>
 #include <QPointF>
 #include <QtMath>
@@ -173,8 +175,8 @@ VArc VArc::Rotate(const QPointF& originPoint, qreal degrees, const QString& pref
 {
     const VPointF center = GetCenter().Rotate(originPoint, degrees);
 
-    const QPointF p1 = VPointF::RotatePF(originPoint, GetP1(), degrees);
-    const QPointF p2 = VPointF::RotatePF(originPoint, GetP2(), degrees);
+    const QPointF p1{ geo::rotate(originPoint, GetP1(), degrees) };
+    const QPointF p2{ geo::rotate(originPoint, GetP2(), degrees) };
 
     const qreal f1 = QLineF(static_cast<QPointF>(center), p1).angle();
     const qreal f2 = QLineF(static_cast<QPointF>(center), p2).angle();
