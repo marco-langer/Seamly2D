@@ -31,6 +31,51 @@ void GeometryTests::rotateTest()
 }
 
 
+void GeometryTests::distanceTest_data()
+{
+    QTest::addColumn<QPointF>("first");
+    QTest::addColumn<QPointF>("second");
+    QTest::addColumn<qreal>("expectedDistance");
+
+    QTest::newRow("points equal") << QPointF{} << QPointF{} << 0.0;
+    QTest::newRow("points differ") << QPointF{ 1.0, 1.0 } << QPointF{ 2.0, 2.0 } << std::sqrt(2.0);
+}
+
+
+void GeometryTests::distanceTest()
+{
+    QFETCH(QPointF, first);
+    QFETCH(QPointF, second);
+    QFETCH(qreal, expectedDistance);
+
+    QCOMPARE(geo::distance(first, second), expectedDistance);
+}
+
+
+void GeometryTests::lengthTest_data()
+{
+    QTest::addColumn<QVector<QPointF>>("points");
+    QTest::addColumn<qreal>("expectedLength");
+
+    QTest::newRow("empty") << QVector<QPointF>{} << 0.0;
+    QTest::newRow("single point") << QVector<QPointF>{ QPointF{ 1.1, 1.1 } } << 0.0;
+    QTest::newRow("two points") << QVector<QPointF>{ QPointF{ 1.0, 1.0 }, QPointF{ 1.0, 2.0 } }
+                                << 1.0;
+    QTest::newRow("rectangle open") << QVector<QPointF>{
+        QPointF{ 1.0, 1.0 }, QPointF{ 1.0, 2.0 }, QPointF{ 2.0, 2.0 }, QPointF{ 2.0, 1.0 }
+    } << 3.0;
+}
+
+
+void GeometryTests::lengthTest()
+{
+    QFETCH(QVector<QPointF>, points);
+    QFETCH(qreal, expectedLength);
+
+    QCOMPARE(geo::length(points), expectedLength);
+}
+
+
 void GeometryTests::boundingRectTest_data()
 {
     QTest::addColumn<QVector<QPointF>>("points");

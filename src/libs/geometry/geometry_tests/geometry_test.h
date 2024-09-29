@@ -12,6 +12,12 @@ private slots:
     void rotateTest_data();
     void rotateTest();
 
+    void distanceTest_data();
+    void distanceTest();
+
+    void lengthTest_data();
+    void lengthTest();
+
     void boundingRectTest_data();
     void boundingRectTest();
 };

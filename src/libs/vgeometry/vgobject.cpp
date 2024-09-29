@@ -511,25 +511,6 @@ int VGObject::PointInCircle(const QPointF& p, const QPointF& center, qreal radiu
     return 2;   // inside circle
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief GetLengthContour return length of contour.
- * @param contour container with points of contour.
- * @param newPoints point whos we try to add to contour.
- * @return length length of contour.
- */
-// cppcheck-suppress unusedFunction
-int VGObject::GetLengthContour(const QVector<QPointF>& contour, const QVector<QPointF>& newPoints)
-{
-    qreal length = 0;
-    QVector<QPointF> points;
-    points << contour << newPoints;
-    for (qint32 i = 0; i < points.size() - 1; ++i) {
-        QLineF line(points.at(i), points.at(i + 1));
-        length += line.length();
-    }
-    return qFloor(length);
-}
 
 //---------------------------------------------------------------------------------------------------------------------
 QTransform VGObject::flipTransform(const QLineF& axis)

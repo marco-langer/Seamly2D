@@ -121,7 +121,6 @@ public:
 
     template <typename T>
     static QVector<T> GetReversePoints(const QVector<T>& points);
-    static int GetLengthContour(const QVector<QPointF>& contour, const QVector<QPointF>& newPoints);
 
     static const double accuracyPointOnLine;
 
