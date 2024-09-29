@@ -68,7 +68,7 @@ class PreferencesConfigurationPage : public QWidget
 
 public:
     explicit PreferencesConfigurationPage(QWidget* parent = nullptr);
-    virtual ~PreferencesConfigurationPage();
+    ~PreferencesConfigurationPage() override;
 
     void Apply();
 

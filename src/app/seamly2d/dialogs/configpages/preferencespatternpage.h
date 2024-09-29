@@ -70,7 +70,7 @@ class PreferencesPatternPage : public QWidget
 
 public:
     explicit PreferencesPatternPage(QWidget* parent = nullptr);
-    virtual ~PreferencesPatternPage();
+    ~PreferencesPatternPage() override;
 
     void Apply();
     void initDefaultSeamAllowance();

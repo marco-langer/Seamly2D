@@ -37,7 +37,7 @@ class PreferencesGraphicsViewPage : public QWidget
 
 public:
     explicit PreferencesGraphicsViewPage(QWidget* parent = nullptr);
-    virtual ~PreferencesGraphicsViewPage();
+    ~PreferencesGraphicsViewPage() override;
 
     void Apply();
 

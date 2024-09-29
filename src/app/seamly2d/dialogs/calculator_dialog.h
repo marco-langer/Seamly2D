@@ -47,7 +47,7 @@ class CalculatorDialog : public QDialog
 
 public:
     explicit CalculatorDialog(QWidget* parent = nullptr);
-    virtual ~CalculatorDialog();
+    ~CalculatorDialog() override;
 
 protected:
     void showEvent(QShowEvent* event) override;

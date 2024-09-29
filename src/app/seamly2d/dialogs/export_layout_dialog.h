@@ -55,7 +55,7 @@ public:
         const QString& fileName = QString(),
         QWidget* parent = nullptr);
 
-    virtual ~ExportLayoutDialog();
+    ~ExportLayoutDialog() override;
 
     QString path() const;
     QString fileName() const;

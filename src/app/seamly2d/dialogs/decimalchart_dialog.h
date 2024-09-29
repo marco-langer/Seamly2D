@@ -41,7 +41,7 @@ class DecimalChartDialog : public QDialog
 
 public:
     explicit DecimalChartDialog(QWidget* parent = nullptr);
-    virtual ~DecimalChartDialog();
+    ~DecimalChartDialog() override;
 
 protected:
     void showEvent(QShowEvent* event) override;

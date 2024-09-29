@@ -77,7 +77,7 @@ public:
         const QStringList& predefinedFormats,
         const QStringList& userDefinedFormats,
         QWidget* parent = nullptr);
-    virtual ~DialogDateTimeFormats();
+    ~DialogDateTimeFormats() override;
 
     QStringList GetFormats() const;
 

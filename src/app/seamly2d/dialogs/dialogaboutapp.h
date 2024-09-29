@@ -41,7 +41,7 @@ class DialogAboutApp : public QDialog
 
 public:
     explicit DialogAboutApp(QWidget* parent = nullptr);
-    virtual ~DialogAboutApp();
+    ~DialogAboutApp() override;
 
 protected:
     void showEvent(QShowEvent* event) override;

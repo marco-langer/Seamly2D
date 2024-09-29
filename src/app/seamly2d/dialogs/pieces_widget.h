@@ -70,7 +70,7 @@ class PiecesWidget : public QWidget
 
 public:
     explicit PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* parent = nullptr);
-    virtual ~PiecesWidget();
+    ~PiecesWidget() override;
 
 signals:
     void Highlight(quint32 id);

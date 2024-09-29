@@ -68,7 +68,7 @@ class PreferencesPathPage : public QWidget
 
 public:
     explicit PreferencesPathPage(QWidget* parent = nullptr);
-    virtual ~PreferencesPathPage();
+    ~PreferencesPathPage() override;
 
     void Apply();
 

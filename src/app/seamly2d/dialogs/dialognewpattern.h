@@ -67,7 +67,8 @@ class DialogNewPattern : public QDialog
     Q_OBJECT
 public:
     DialogNewPattern(VContainer* data, const QString& patternPieceName, QWidget* parent = nullptr);
-    virtual ~DialogNewPattern();
+    ~DialogNewPattern() override;
+
     QString name() const;
     Unit PatternUnit() const;
 

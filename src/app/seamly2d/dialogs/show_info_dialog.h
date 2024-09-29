@@ -44,7 +44,7 @@ class ShowInfoDialog : public QDialog
 
 public:
     explicit ShowInfoDialog(VPattern* doc, QWidget* parent = nullptr);
-    virtual ~ShowInfoDialog();
+    ~ShowInfoDialog() override;
 
 protected:
     void showEvent(QShowEvent* event) override;

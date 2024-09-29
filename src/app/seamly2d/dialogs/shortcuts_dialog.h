@@ -41,7 +41,7 @@ class ShortcutsDialog : public QDialog
 
 public:
     explicit ShortcutsDialog(QWidget* parent = nullptr);
-    virtual ~ShortcutsDialog();
+    ~ShortcutsDialog() override;
 
 protected:
     void showEvent(QShowEvent* event) override;

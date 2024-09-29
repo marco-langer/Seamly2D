@@ -74,7 +74,7 @@ class GroupsWidget : public QWidget
 
 public:
     explicit GroupsWidget(VContainer* data, VAbstractPattern* doc, QWidget* parent = nullptr);
-    virtual ~GroupsWidget();
+    ~GroupsWidget() override;
 
 public slots:
     void updateGroups();

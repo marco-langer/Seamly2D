@@ -75,7 +75,7 @@ class DialogPreferences : public QDialog
 
 public:
     explicit DialogPreferences(QWidget* parent = nullptr);
-    virtual ~DialogPreferences();
+    ~DialogPreferences() override;
 
 signals:
     void updateProperties();

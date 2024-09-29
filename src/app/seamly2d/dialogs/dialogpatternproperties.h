@@ -70,6 +70,7 @@ class DialogPatternProperties : public QDialog
 public:
     explicit DialogPatternProperties(VPattern* doc, VContainer* pattern, QWidget* parent = nullptr);
     ~DialogPatternProperties() override;
+
 signals:
     void UpdateGradation();
 private slots:

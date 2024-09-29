@@ -42,7 +42,8 @@ class SeamlyWelcomeDialog : public QDialog
 
 public:
     explicit SeamlyWelcomeDialog(QWidget* parent = nullptr);
-    ~SeamlyWelcomeDialog();
+    ~SeamlyWelcomeDialog() override;
+
     void apply();
 
 protected:

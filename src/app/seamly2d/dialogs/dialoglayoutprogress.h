@@ -66,7 +66,7 @@ class DialogLayoutProgress : public QDialog
 
 public:
     explicit DialogLayoutProgress(int count, QWidget* parent = nullptr);
-    ~DialogLayoutProgress();
+    ~DialogLayoutProgress() override;
 
 signals:
     void Abort();

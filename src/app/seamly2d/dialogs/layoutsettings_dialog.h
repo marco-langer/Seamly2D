@@ -68,7 +68,7 @@ class LayoutSettingsDialog : public AbstractLayoutDialog
 public:
     explicit LayoutSettingsDialog(
         VLayoutGenerator* generator, QWidget* parent = nullptr, bool disableSettings = false);
-    virtual ~LayoutSettingsDialog();
+    ~LayoutSettingsDialog() override;
 
     qreal GetPaperHeight() const;
     void SetPaperHeight(qreal value);
