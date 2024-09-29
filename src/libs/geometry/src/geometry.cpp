@@ -41,4 +41,25 @@ qreal length(const QVector<QPointF>& points)
 
 QRectF boundingRect(const QVector<QPointF>& points) { return QPolygonF{ points }.boundingRect(); }
 
+
+QVector<QPointF> subPath(const QVector<QPointF>& path, int startIndex, int endIndex)
+{
+    if (path.isEmpty() || startIndex < 0 || startIndex >= path.size() || endIndex < 0
+        || endIndex >= path.size() || startIndex == endIndex) {
+        return path;
+    }
+
+    QVector<QPointF> subPath;
+    int i = startIndex - 1;
+    do {
+        ++i;
+        if (i >= path.size()) {
+            i = 0;
+        }
+        subPath.append(path.at(i));
+    } while (i != endIndex);
+
+    return subPath;
+}
+
 }   // namespace geo

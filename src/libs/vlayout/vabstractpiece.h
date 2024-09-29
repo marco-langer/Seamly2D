@@ -150,7 +150,6 @@ private:
         const QPointF& crossPoint);
     static bool ParallelCrossPoint(const QLineF& line1, const QLineF& line2, QPointF& point);
     static bool Crossing(const QVector<QPointF>& sub1, const QVector<QPointF>& sub2);
-    static QVector<QPointF> SubPath(const QVector<QPointF>& path, int startIndex, int endIndex);
     static constexpr qreal PointPosition(const QPointF& p, const QLineF& line);
     static QVector<QPointF> AngleByLength(
         const QPointF& p2, const QPointF& sp1, const QPointF& sp2, const QPointF& sp3, qreal width);

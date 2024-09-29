@@ -127,4 +127,34 @@ void GeometryTests::boundingRectTest()
 }
 
 
+void GeometryTests::subPathTest_data()
+{
+    QTest::addColumn<QVector<QPointF>>("points");
+    QTest::addColumn<int>("startIndex");
+    QTest::addColumn<int>("endIndex");
+    QTest::addColumn<QVector<QPointF>>("expectedSubPath");
+
+    QTest::newRow("empty") << QVector<QPointF>{} << 0 << 0 << QVector<QPointF>{};
+    QTest::newRow("full path") << QVector<QPointF>{
+        { 0.0, 0.0 }, { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 }
+    } << 0 << 3 << QVector<QPointF>{ { 0.0, 0.0 }, { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 } };
+    QTest::newRow("part, no-wrap")
+        << QVector<QPointF>{ { 0.0, 0.0 }, { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 }, { 4.0, 4.0 } }
+        << 1 << 3 << QVector<QPointF>{ { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 } };
+    QTest::newRow("part, wrap")
+        << QVector<QPointF>{ { 0.0, 0.0 }, { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 }, { 4.0, 4.0 } }
+        << 3 << 1 << QVector<QPointF>{ { 3.0, 3.0 }, { 4.0, 4.0 }, { 0.0, 0.0 }, { 1.0, 1.0 } };
+}
+
+
+void GeometryTests::subPathTest()
+{
+    QFETCH(QVector<QPointF>, points);
+    QFETCH(int, startIndex);
+    QFETCH(int, endIndex);
+    QFETCH(QVector<QPointF>, expectedSubPath);
+
+    QCOMPARE(geo::subPath(points, startIndex, endIndex), expectedSubPath);
+}
+
 QTEST_MAIN(GeometryTests)

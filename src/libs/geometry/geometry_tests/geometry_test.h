@@ -20,6 +20,9 @@ private slots:
 
     void boundingRectTest_data();
     void boundingRectTest();
+
+    void subPathTest_data();
+    void subPathTest();
 };
 
 #endif   // GEOMETRY_TEST_H

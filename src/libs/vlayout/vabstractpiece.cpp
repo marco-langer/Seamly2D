@@ -50,8 +50,10 @@
  *************************************************************************/
 
 #include "vabstractpiece.h"
+
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
+#include "geometry/geometry.h"
 #include "vabstractpiece_p.h"
 
 #include <QLineF>
@@ -837,12 +839,12 @@ qreal VAbstractPiece::AngleBetweenBisectors(const QLineF& b1, const QLineF& b2)
 bool VAbstractPiece::CheckIntersection(
     const QVector<QPointF>& points, int i, int iNext, int j, int jNext, const QPointF& crossPoint)
 {
-    QVector<QPointF> sub1 = SubPath(points, iNext, j);
+    QVector<QPointF> sub1 = geo::subPath(points, iNext, j);
     sub1.append(crossPoint);
     sub1 = CheckLoops(CorrectEquidistantPoints(sub1, false));
     const qreal sub1Sum = sumTrapezoids(sub1);
 
-    QVector<QPointF> sub2 = SubPath(points, jNext, i);
+    QVector<QPointF> sub2 = geo::subPath(points, jNext, i);
     sub2.append(crossPoint);
     sub2 = CheckLoops(CorrectEquidistantPoints(sub2, false));
     const qreal sub2Sum = sumTrapezoids(sub2);
@@ -913,27 +915,6 @@ bool VAbstractPiece::Crossing(const QVector<QPointF>& sub1, const QVector<QPoint
     } else {
         return true;
     }
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> VAbstractPiece::SubPath(const QVector<QPointF>& path, int startIndex, int endIndex)
-{
-    if (path.isEmpty() || startIndex < 0 || startIndex >= path.size() || endIndex < 0
-        || endIndex >= path.size() || startIndex == endIndex) {
-        return path;
-    }
-
-    QVector<QPointF> subPath;
-    int i = startIndex - 1;
-    do {
-        ++i;
-        if (i >= path.size()) {
-            i = 0;
-        }
-        subPath.append(path.at(i));
-    } while (i != endIndex);
-
-    return subPath;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
