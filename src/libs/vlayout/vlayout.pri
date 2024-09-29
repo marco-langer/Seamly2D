@@ -27,6 +27,7 @@ SOURCES += \
     $$PWD/vcontour.cpp \
     $$PWD/vbestsquare.cpp \
     $$PWD/vposition.cpp \
+    $$PWD/vsapoint.cpp \
     $$PWD/vtextmanager.cpp \
     $$PWD/vposter.cpp \
     $$PWD/vgraphicsfillitem.cpp \
