@@ -34,5 +34,3 @@ OBJECTS_DIR = obj
 include(vpropertyexplorer.pri)
 
 include(warnings.pri)
-
-include (../libs.pri)

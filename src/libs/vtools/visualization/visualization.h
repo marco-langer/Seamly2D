@@ -37,11 +37,11 @@
 #include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
+#include "../vpatterndb/variables/vinternalvariable.h"
 #include "../vwidgets/global.h"
 #include "../vwidgets/scalesceneitems.h"
 #include "../vwidgets/vcurvepathitem.h"
 #include "../vwidgets/vmaingraphicsscene.h"
-#include "variables/vinternalvariable.h"
 
 #include <QGraphicsItem>
 #include <QObject>
