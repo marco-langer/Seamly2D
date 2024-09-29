@@ -47,3 +47,5 @@ RESOURCES += \
     share/icons.qrc
 
 include (../libs.pri)
+
+INCLUDEPATH += $${PWD}/../geometry/include

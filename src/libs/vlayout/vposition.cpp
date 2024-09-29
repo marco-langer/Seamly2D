@@ -52,6 +52,8 @@
 
 #include "vposition.h"
 
+#include "geometry/geometry.h"
+
 #include <QDir>
 #include <QImage>
 #include <QLineF>
@@ -359,7 +361,7 @@ bool VPosition::CheckRotationEdges(VLayoutPiece& piece, int j, int dEdge, int an
 //---------------------------------------------------------------------------------------------------------------------
 VPosition::CrossingType VPosition::Crossing(const VLayoutPiece& piece) const
 {
-    const QRectF gRect = gContour.BoundingRect();
+    const QRectF gRect = geo::boundingRect(gContour.GetContour());
     if (not gRect.intersects(piece.LayoutBoundingRect())
         && not gRect.contains(piece.pieceBoundingRect())) {
         // This we can determine efficiently.

@@ -235,16 +235,6 @@ QVector<QPointF> VContour::CutEmptySheetEdge() const
 //---------------------------------------------------------------------------------------------------------------------
 const QPointF& VContour::at(int i) const { return m_globalContour.at(i); }
 
-//---------------------------------------------------------------------------------------------------------------------
-QRectF VContour::BoundingRect() const
-{
-    QVector<QPointF> points = GetContour();
-    if (points.isEmpty()) {
-        return QRectF();
-    }
-    points.append(points.first());
-    return QPolygonF(points).boundingRect();
-}
 
 //---------------------------------------------------------------------------------------------------------------------
 QPainterPath VContour::ContourPath() const
