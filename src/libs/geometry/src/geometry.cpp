@@ -39,7 +39,11 @@ qreal length(const QVector<QPointF>& points)
 }
 
 
-QRectF boundingRect(const QVector<QPointF>& points) { return QPolygonF{ points }.boundingRect(); }
+QRectF boundingRect(const QVector<QPointF>& points)
+{   // TODO remove QPolygonF depedency (QPolygonF is part ofQtGui, but this lib should be QtCore
+    // only)
+    return QPolygonF{ points }.boundingRect();
+}
 
 
 QVector<QPointF> subPath(const QVector<QPointF>& path, int startIndex, int endIndex)
