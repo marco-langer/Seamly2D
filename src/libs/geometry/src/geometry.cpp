@@ -48,16 +48,23 @@ QRectF boundingRect(const QVector<QPointF>& points)
 
 QVector<QPointF> subPath(const QVector<QPointF>& path, int startIndex, int endIndex)
 {
-    if (path.isEmpty() || startIndex < 0 || startIndex >= path.size() || endIndex < 0
-        || endIndex >= path.size() || startIndex == endIndex) {
+    const int pathLength{ path.size() };
+
+    if (path.isEmpty() || startIndex < 0 || startIndex >= pathLength || endIndex < 0
+        || endIndex >= pathLength || startIndex == endIndex) {
         return path;
     }
 
+    const int subPathLength{ startIndex < endIndex ? endIndex - startIndex + 1
+                                                   : pathLength - startIndex + endIndex + 1 };
+
     QVector<QPointF> subPath;
+    subPath.reserve(subPathLength);
+
     int i = startIndex - 1;
     do {
         ++i;
-        if (i >= path.size()) {
+        if (i >= pathLength) {
             i = 0;
         }
         subPath.append(path.at(i));
