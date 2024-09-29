@@ -265,8 +265,9 @@ QSharedPointer<T> VContainer::GeometricObject(const quint32& id) const
     }
 
     QSharedPointer<VGObject> gObj = QSharedPointer<VGObject>();
-    if (d->gObjects.contains(id)) {
-        gObj = d->gObjects.value(id);
+
+    if (auto iter{ d->gObjects.find(id) }; iter != d->gObjects.end()) {
+        gObj = *iter;
     } else {
         throw VExceptionBadId(tr("Can't find object Id: "), id);
     }
@@ -290,9 +291,10 @@ template <typename T>
 QSharedPointer<T> VContainer::getVariable(QString name) const
 {
     SCASSERT(name.isEmpty() == false)
-    if (d->variables.contains(name)) {
+
+    if (auto iter{ d->variables.find(name) }; iter != d->variables.end()) {
         try {
-            QSharedPointer<T> value = qSharedPointerDynamicCast<T>(d->variables.value(name));
+            QSharedPointer<T> value = qSharedPointerDynamicCast<T>(*iter);
             SCASSERT(value.isNull() == false)
             return value;
         } catch (const std::bad_alloc&) {
@@ -314,9 +316,9 @@ void VContainer::AddVariable(const QString& name, T* var)
 template <typename T>
 void VContainer::AddVariable(const QString& name, const QSharedPointer<T>& var)
 {
-    if (d->variables.contains(name)) {
-        if (d->variables.value(name)->GetType() == var->GetType()) {
-            QSharedPointer<T> v = qSharedPointerDynamicCast<T>(d->variables.value(name));
+    if (auto iter{ d->variables.find(name) }; iter != d->variables.end()) {
+        if ((*iter)->GetType() == var->GetType()) {
+            QSharedPointer<T> v = qSharedPointerDynamicCast<T>(*iter);
             if (v.isNull()) {
                 throw VExceptionBadId(tr("Can't cast object."), name);
             }
@@ -372,8 +374,9 @@ void VContainer::UpdateObject(const quint32& id, const QSharedPointer<T>& point)
     Q_ASSERT_X(id != NULL_ID, Q_FUNC_INFO, "id == 0");   //-V654 //-V712
     SCASSERT(point.isNull() == false)
     point->setId(id);
-    if (d->gObjects.contains(id)) {
-        QSharedPointer<T> obj = qSharedPointerDynamicCast<T>(d->gObjects.value(id));
+
+    if (auto iter{ d->gObjects.find(id) }; iter != d->gObjects.end()) {
+        QSharedPointer<T> obj = qSharedPointerDynamicCast<T>(*iter);
         if (obj.isNull()) {
             throw VExceptionBadId(tr("Can't cast object"), id);
         }

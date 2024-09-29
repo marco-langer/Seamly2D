@@ -179,21 +179,21 @@ std::unique_ptr<VGObject> VContainer::GetFakeGObject(quint32 id)
 //---------------------------------------------------------------------------------------------------------------------
 VPiece VContainer::GetPiece(quint32 id) const
 {
-    if (d->pieces->contains(id)) {
-        return d->pieces->value(id);
-    } else {
-        throw VExceptionBadId(tr("Can't find piece: "), id);
+    if (auto iter{ d->pieces->find(id) }; iter != d->pieces->end()) {
+        return *iter;
     }
+
+    throw VExceptionBadId(tr("Can't find piece: "), id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiecePath VContainer::GetPiecePath(quint32 id) const
 {
-    if (d->piecePaths->contains(id)) {
-        return d->piecePaths->value(id);
-    } else {
-        throw VExceptionBadId(tr("Can't find path: "), id);
+    if (auto iter{ d->piecePaths->find(id) }; iter != d->piecePaths->end()) {
+        return *iter;
     }
+
+    throw VExceptionBadId(tr("Can't find path: "), id);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
