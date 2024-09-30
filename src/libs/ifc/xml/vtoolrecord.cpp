@@ -50,17 +50,7 @@
  *************************************************************************/
 
 #include "vtoolrecord.h"
-#include "../ifcdef.h"
 
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VToolRecord default constructor.
- */
-VToolRecord::VToolRecord()
-    : id(NULL_ID)
-    , typeTool(Tool::Arrow)
-    , nameDraw(QString())
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -73,24 +63,4 @@ VToolRecord::VToolRecord(const quint32& id, const Tool& typeTool, const QString&
     : id(id)
     , typeTool(typeTool)
     , nameDraw(nameDraw)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VToolRecord& VToolRecord::operator=(const VToolRecord& record)
-{
-    if (&record == this) {
-        return *this;
-    }
-
-    this->id = record.getId();
-    this->typeTool = record.getTypeTool();
-    this->nameDraw = record.getDraftBlockName();
-    return *this;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-VToolRecord::VToolRecord(const VToolRecord& record)
-    : id(record.getId())
-    , typeTool(record.getTypeTool())
-    , nameDraw(record.getDraftBlockName())
 {}

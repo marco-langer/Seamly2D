@@ -806,7 +806,7 @@ QVector<VToolRecord> VAbstractPattern::getBlockHistory() const
     QVector<VToolRecord> draftBlockHistory;
     for (qint32 i = 0; i < history.size(); ++i) {
         const VToolRecord tool = history.at(i);
-        if (tool.getDraftBlockName() != getActiveDraftBlockName()) {
+        if (tool.nameDraw != getActiveDraftBlockName()) {
             continue;
         }
         draftBlockHistory.append(tool);
@@ -820,10 +820,10 @@ QMap<quint32, Tool> VAbstractPattern::getGroupObjHistory() const
     QMap<quint32, Tool> draftBlockHistory;
     for (qint32 i = 0; i < history.size(); ++i) {
         const VToolRecord tool = history.at(i);
-        if (tool.getDraftBlockName() != getActiveDraftBlockName()) {
+        if (tool.nameDraw != getActiveDraftBlockName()) {
             continue;
         }
-        draftBlockHistory.insert(tool.getId(), tool.getTypeTool());
+        draftBlockHistory.insert(tool.id, tool.typeTool);
     }
     return draftBlockHistory;
 }
@@ -850,13 +850,13 @@ quint32 VAbstractPattern::SiblingNodeId(const quint32& nodeId) const
     const QVector<VToolRecord> history = getBlockHistory();
     for (qint32 i = 0; i < history.size(); ++i) {
         const VToolRecord tool = history.at(i);
-        if (nodeId == tool.getId()) {
+        if (nodeId == tool.id) {
             if (i == 0) {
                 siblingId = NULL_ID;
             } else {
                 for (qint32 j = i; j > 0; --j) {
                     const VToolRecord tool = history.at(j - 1);
-                    switch (tool.getTypeTool()) {
+                    switch (tool.typeTool) {
                     case Tool::Piece:
                     case Tool::Union:
                     case Tool::NodeArc:
@@ -865,7 +865,7 @@ quint32 VAbstractPattern::SiblingNodeId(const quint32& nodeId) const
                     case Tool::NodeSpline:
                     case Tool::NodeSplinePath: continue;
                     default:
-                        siblingId = tool.getId();
+                        siblingId = tool.id;
                         j = 0;   // break loop
                         break;
                     }

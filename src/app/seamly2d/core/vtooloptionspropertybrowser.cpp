@@ -567,18 +567,16 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
     QVector<VToolRecord> history = qApp->getCurrentDocument()->getBlockHistory();
     for (qint32 i = 0; i < history.size(); ++i) {
         const VToolRecord record = history.at(i);
-        quint32 recId = record.getId();
+        quint32 recId = record.id;
         if (recId != toolId) {
-            switch (static_cast<int>(record.getTypeTool())) {
+            switch (static_cast<int>(record.typeTool)) {
             case 42:   // Tool::True Darts
             {
                 QVector<quint32> list = qApp->getCurrentDocument()->getDartItems(recId);
                 for (qint32 j = 0; j < list.size(); ++j) {
                     quint32 id = list.at(j);
                     VToolRecord newRecord = VToolRecord(
-                        id,
-                        record.getTypeTool(),
-                        qApp->getCurrentDocument()->getActiveDraftBlockName());
+                        id, record.typeTool, qApp->getCurrentDocument()->getActiveDraftBlockName());
 
                     const QHash<quint32, QSharedPointer<VGObject>>* objs = m_data->DataGObjects();
                     if (objs->contains(id))   // Avoid badId Get GObject only if not a line tool
@@ -600,9 +598,7 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
                 for (qint32 j = 0; j < list.size(); ++j) {
                     quint32 id = list.at(j);
                     VToolRecord newRecord = VToolRecord(
-                        id,
-                        record.getTypeTool(),
-                        qApp->getCurrentDocument()->getActiveDraftBlockName());
+                        id, record.typeTool, qApp->getCurrentDocument()->getActiveDraftBlockName());
 
                     const QHash<quint32, QSharedPointer<VGObject>>* objs = m_data->DataGObjects();
                     if (objs->contains(id))   // Avoid badId Get GObject only if not a line tool

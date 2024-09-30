@@ -531,7 +531,7 @@ void VAbstractTool::AddRecord(const quint32 id, const Tool& toolType, VAbstractP
         qint32 index = 0;
         for (qint32 i = 0; i < history->size(); ++i) {
             VToolRecord rec = history->at(i);
-            if (rec.getId() == cursor) {
+            if (rec.id == cursor) {
                 index = i;
                 break;
             }

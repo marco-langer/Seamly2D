@@ -278,8 +278,8 @@ void VPattern::setCurrentData()
             }
             for (qint32 i = 0; i < history.size(); ++i) {
                 const VToolRecord tool = history.at(i);
-                if (tool.getDraftBlockName() == activeDraftBlock) {
-                    id = tool.getId();
+                if (tool.nameDraw == activeDraftBlock) {
+                    id = tool.id;
                 }
             }
             qCDebug(vXML, "Resoring data from tool with id %u", id);
@@ -290,12 +290,12 @@ void VPattern::setCurrentData()
                     qUtf8Printable(activeDraftBlock));
 
                 const VToolRecord tool = history.at(history.size() - 1);
-                id = tool.getId();
+                id = tool.id;
                 qCDebug(
                     vXML,
                     "Taking record with id %u from Draft block %s",
                     id,
-                    qUtf8Printable(tool.getDraftBlockName()));
+                    qUtf8Printable(tool.nameDraw));
                 if (id == NULL_ID) {
                     qCDebug(vXML, "Bad id for last record in history.");
                     return;
@@ -4095,8 +4095,8 @@ QRectF VPattern::ActiveDrawBoundingRect() const
 
     for (qint32 i = 0; i < history.size(); ++i) {
         const VToolRecord tool = history.at(i);
-        if (tool.getDraftBlockName() == activeDraftBlock) {
-            switch (tool.getTypeTool()) {
+        if (tool.nameDraw == activeDraftBlock) {
+            switch (tool.typeTool) {
             case Tool::Arrow:
             case Tool::SinglePoint:
             case Tool::DoublePoint:
@@ -4121,7 +4121,7 @@ QRectF VPattern::ActiveDrawBoundingRect() const
             case Tool::PointOfIntersectionCurves:
             case Tool::PointFromCircleAndTangent:
             case Tool::PointFromArcAndTangent:
-                rect = ToolBoundingRect<VToolSinglePoint>(rect, tool.getId());
+                rect = ToolBoundingRect<VToolSinglePoint>(rect, tool.id);
                 break;
             case Tool::EndLine:
             case Tool::AlongLine:
@@ -4131,9 +4131,9 @@ QRectF VPattern::ActiveDrawBoundingRect() const
             case Tool::Height:
             case Tool::LineIntersectAxis:
             case Tool::CurveIntersectAxis:
-                rect = ToolBoundingRect<VToolLinePoint>(rect, tool.getId());
+                rect = ToolBoundingRect<VToolLinePoint>(rect, tool.id);
                 break;
-            case Tool::Line: rect = ToolBoundingRect<VToolLine>(rect, tool.getId()); break;
+            case Tool::Line: rect = ToolBoundingRect<VToolLine>(rect, tool.id); break;
             case Tool::Spline:
             case Tool::CubicBezier:
             case Tool::Arc:
@@ -4141,15 +4141,13 @@ QRectF VPattern::ActiveDrawBoundingRect() const
             case Tool::CubicBezierPath:
             case Tool::ArcWithLength:
             case Tool::EllipticalArc:
-                rect = ToolBoundingRect<VAbstractSpline>(rect, tool.getId());
+                rect = ToolBoundingRect<VAbstractSpline>(rect, tool.id);
                 break;
-            case Tool::TrueDarts:
-                rect = ToolBoundingRect<VToolDoublePoint>(rect, tool.getId());
-                break;
+            case Tool::TrueDarts: rect = ToolBoundingRect<VToolDoublePoint>(rect, tool.id); break;
             case Tool::Rotation:
             case Tool::MirrorByLine:
             case Tool::MirrorByAxis:
-            case Tool::Move: rect = ToolBoundingRect<VAbstractOperation>(rect, tool.getId()); break;
+            case Tool::Move: rect = ToolBoundingRect<VAbstractOperation>(rect, tool.id); break;
             // These tools are not accesseble in Draw mode, but still 'history' contains them.
             case Tool::Piece:
             case Tool::Union:

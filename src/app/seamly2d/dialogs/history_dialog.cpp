@@ -267,7 +267,7 @@ RowData HistoryDialog::record(const VToolRecord& tool)
         static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used in history.");
 
     RowData rowData;
-    const quint32& toolId = tool.getId();
+    const quint32& toolId = tool.id;
     rowData.id = toolId;
     const QDomElement domElement = m_doc->elementById(toolId);
     if (domElement.isElement() == false) {
@@ -275,7 +275,7 @@ RowData HistoryDialog::record(const VToolRecord& tool)
         return rowData;
     }
     try {
-        switch (tool.getTypeTool()) {
+        switch (tool.typeTool) {
         case Tool::Arrow:
         case Tool::SinglePoint:
         case Tool::DoublePoint:

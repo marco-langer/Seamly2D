@@ -55,85 +55,33 @@
 #include <QString>
 #include <QtGlobal>
 
+#include "../ifcdef.h"
 #include "../vmisc/def.h"
 
 /**
  * @brief The VToolRecord class record about tool in history.
  */
-class VToolRecord
+struct VToolRecord final
 {
-public:
-    VToolRecord();
+    VToolRecord() = default;
     VToolRecord(const quint32& id, const Tool& typeTool, const QString& nameDraw);
     bool operator==(const VToolRecord& record) const;
-    VToolRecord& operator=(const VToolRecord& record);
-    VToolRecord(const VToolRecord& record);
-    quint32 getId() const;
-    void setId(const quint32& value);
-    Tool getTypeTool() const;
-    void setTypeTool(const Tool& value);
-    QString getDraftBlockName() const;
-    void setNameDraw(const QString& value);
-    ~VToolRecord() = default;
 
-private:
     /** @brief id tool id. */
-    quint32 id;
+    quint32 id{ NULL_ID };
 
     /** @brief typeTool tool type. */
-    Tool typeTool;
+    Tool typeTool{ Tool::Arrow };
 
     /** @brief nameDraw pattern peace name. */
     QString nameDraw;
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief getId return tool id.
- * @return id.
- */
-inline quint32 VToolRecord::getId() const { return id; }
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief setId set tool id.
- * @param value id.
- */
-inline void VToolRecord::setId(const quint32& value) { id = value; }
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief getTypeTool return tool type.
- * @return tool type.
- */
-inline Tool VToolRecord::getTypeTool() const { return typeTool; }
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief setTypeTool set tool type.
- * @param value tool type.
- */
-inline void VToolRecord::setTypeTool(const Tool& value) { typeTool = value; }
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief getDraftBlockName return pattern peace name.
- * @return pattern peace name.
- */
-inline QString VToolRecord::getDraftBlockName() const { return nameDraw; }
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief setNameDraw set pattern peace name.
- * @param value pattern peace name.
- */
-inline void VToolRecord::setNameDraw(const QString& value) { nameDraw = value; }
-
-//---------------------------------------------------------------------------------------------------------------------
 inline bool VToolRecord::operator==(const VToolRecord& record) const
 {
     // Id should be enough
-    return id == record.getId() /* && typeTool == record.getTypeTool() && nameDraw ==
+    return id == record.id /* && typeTool == record.getTypeTool() && nameDraw ==
                                    record.getDraftBlockName()*/
         ;
 }
