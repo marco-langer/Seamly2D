@@ -103,14 +103,13 @@ void VisToolCutSplinePath::RefreshGeometry()
         if (not qFuzzyIsNull(length)) {
             VSplinePath* spPath1 = nullptr;
             VSplinePath* spPath2 = nullptr;
-            VPointF* p{ VToolCutSplinePath::CutSplinePath(
+            std::unique_ptr<VPointF> p{ VToolCutSplinePath::CutSplinePath(
                 length, splPath, "X", &spPath1, &spPath2) };
             SCASSERT(p != nullptr)
             SCASSERT(spPath1 != nullptr)
             SCASSERT(spPath2 != nullptr)
 
             DrawPoint(point, static_cast<QPointF>(*p), mainColor);
-            delete p;
 
             DrawPath(
                 splPath1,

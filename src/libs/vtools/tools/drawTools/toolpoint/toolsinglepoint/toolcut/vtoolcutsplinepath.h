@@ -65,6 +65,8 @@
 #include "../vmisc/def.h"
 #include "vtoolcut.h"
 
+#include <memory>
+
 class VSplinePath;
 
 /**
@@ -104,7 +106,7 @@ public:
     };
     void ShowVisualization(bool show) override;
 
-    [[nodiscard]] static VPointF* CutSplinePath(
+    static std::unique_ptr<VPointF> CutSplinePath(
         qreal length,
         const VAbstractCubicBezierPath& splPath,
         const QString& pName,

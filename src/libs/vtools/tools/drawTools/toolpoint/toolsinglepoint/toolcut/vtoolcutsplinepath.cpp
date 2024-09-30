@@ -197,24 +197,24 @@ VToolCutSplinePath* VToolCutSplinePath::Create(
     VSplinePath* splPath1 = nullptr;
     VSplinePath* splPath2 = nullptr;
 
-    VPointF* p = VToolCutSplinePath::CutSplinePath(
-        qApp->toPixel(result), splPath, pointName, &splPath1, &splPath2);
+    std::unique_ptr<VPointF> p{ VToolCutSplinePath::CutSplinePath(
+        qApp->toPixel(result), splPath, pointName, &splPath1, &splPath2) };
+    SCASSERT(p != nullptr)
     p->setShowPointName(showPointName);
 
     SCASSERT(splPath1 != nullptr)
     SCASSERT(splPath2 != nullptr)
-    SCASSERT(p != nullptr)
 
     p->setMx(mx);
     p->setMy(my);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(p.release());
 
         data->AddSpline(*splPath1, NULL_ID, id);
         data->AddSpline(*splPath2, NULL_ID, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, p.release());
 
         data->AddSpline(*splPath1, NULL_ID, id);
         data->AddSpline(*splPath2, NULL_ID, id);
@@ -248,7 +248,7 @@ void VToolCutSplinePath::ShowVisualization(bool show)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF* VToolCutSplinePath::CutSplinePath(
+std::unique_ptr<VPointF> VToolCutSplinePath::CutSplinePath(
     qreal length,
     const VAbstractCubicBezierPath& splPath,
     const QString& pName,
@@ -259,7 +259,7 @@ VPointF* VToolCutSplinePath::CutSplinePath(
     qint32 p1 = 0, p2 = 0;
 
     const QPointF point = splPath.CutSplinePath(length, p1, p2, spl1p2, spl1p3, spl2p2, spl2p3);
-    VPointF* p = new VPointF(point);
+    auto p{ std::make_unique<VPointF>(point) };
     p->setName(pName);
 
     const QVector<VSplinePoint> points = splPath.GetSplinePath();
@@ -422,9 +422,7 @@ QString VToolCutSplinePath::makeToolTip() const
 
     VSplinePath* splPath1 = nullptr;
     VSplinePath* splPath2 = nullptr;
-    VPointF* p = VToolCutSplinePath::CutSplinePath(
-        qApp->toPixel(length), splPath, "X", &splPath1, &splPath2);
-    delete p;   // Don't need this point
+    VToolCutSplinePath::CutSplinePath(qApp->toPixel(length), splPath, "X", &splPath1, &splPath2);
 
     const QString curveStr = tr("Curve");
     const QString lengthStr = tr("length");

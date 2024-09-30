@@ -504,13 +504,9 @@ void VToolCurveIntersectAxis::InitSegments(
         VSplinePath* splPath1 = nullptr;
         VSplinePath* splPath2 = nullptr;
         if (not VFuzzyComparePossibleNulls(segLength, -1)) {
-            VPointF* pC = VToolCutSplinePath::CutSplinePath(
-                segLength, splPath, p->name(), &splPath1, &splPath2);
-            delete pC;
+            VToolCutSplinePath::CutSplinePath(segLength, splPath, p->name(), &splPath1, &splPath2);
         } else {
-            VPointF* pC =
-                VToolCutSplinePath::CutSplinePath(0, splPath, p->name(), &splPath1, &splPath2);
-            delete pC;
+            VToolCutSplinePath::CutSplinePath(0, splPath, p->name(), &splPath1, &splPath2);
         }
 
         SCASSERT(splPath1 != nullptr)
