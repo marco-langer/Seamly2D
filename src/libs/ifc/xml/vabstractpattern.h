@@ -153,7 +153,7 @@ public:
 
     bool draftBlockNameExists(const QString& name) const;
     int draftBlockCount() const;
-    QDomElement getDraftBlockElement(const QString& name);
+    QDomElement getDraftBlockElement(const QString& name) const;
     bool renameDraftBlock(const QString& oldName, const QString& newName);
     bool appendDraftBlock(const QString& name);
 

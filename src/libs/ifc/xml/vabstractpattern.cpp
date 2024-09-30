@@ -492,7 +492,7 @@ int VAbstractPattern::draftBlockCount() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QDomElement VAbstractPattern::getDraftBlockElement(const QString& name)
+QDomElement VAbstractPattern::getDraftBlockElement(const QString& name) const
 {
     if (name.isEmpty() == false) {
         const QDomNodeList elements = this->documentElement().elementsByTagName(TagDraftBlock);
