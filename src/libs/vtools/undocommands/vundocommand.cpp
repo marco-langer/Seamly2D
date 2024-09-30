@@ -100,16 +100,16 @@ void VUndoCommand::UndoDeleteAfterSibling(QDomNode& parentNode, const quint32& s
 //---------------------------------------------------------------------------------------------------------------------
 void VUndoCommand::IncrementReferences(const QVector<quint32>& nodes) const
 {
-    for (qint32 i = 0; i < nodes.size(); ++i) {
-        doc->IncrementReferens(nodes.at(i));
+    for (quint32 nodeId : nodes) {
+        doc->IncrementReferens(nodeId);
     }
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VUndoCommand::DecrementReferences(const QVector<quint32>& nodes) const
 {
-    for (qint32 i = 0; i < nodes.size(); ++i) {
-        doc->DecrementReferens(nodes.at(i));
+    for (quint32 nodeId : nodes) {
+        doc->DecrementReferens(nodeId);
     }
 }
 
@@ -118,8 +118,8 @@ void VUndoCommand::IncrementReferences(const QVector<CustomSARecord>& nodes) con
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i) {
-        n.append(nodes.at(i).path);
+    for (const CustomSARecord& node : nodes) {
+        n.append(node.path);
     }
 
     IncrementReferences(n);
@@ -130,8 +130,8 @@ void VUndoCommand::DecrementReferences(const QVector<CustomSARecord>& nodes) con
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i) {
-        n.append(nodes.at(i).path);
+    for (const CustomSARecord& node : nodes) {
+        n.append(node.path);
     }
 
     DecrementReferences(n);
@@ -142,8 +142,8 @@ void VUndoCommand::IncrementReferences(const QVector<VPieceNode>& nodes) const
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i) {
-        n.append(nodes.at(i).GetId());
+    for (const VPieceNode& node : nodes) {
+        n.append(node.GetId());
     }
 
     IncrementReferences(n);
@@ -154,8 +154,8 @@ void VUndoCommand::DecrementReferences(const QVector<VPieceNode>& nodes) const
 {
     QVector<quint32> n;
 
-    for (qint32 i = 0; i < nodes.size(); ++i) {
-        n.append(nodes.at(i).GetId());
+    for (const VPieceNode& node : nodes) {
+        n.append(node.GetId());
     }
 
     DecrementReferences(n);
