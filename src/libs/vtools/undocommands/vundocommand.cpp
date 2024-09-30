@@ -117,6 +117,7 @@ void VUndoCommand::DecrementReferences(const QVector<quint32>& nodes) const
 void VUndoCommand::IncrementReferences(const QVector<CustomSARecord>& nodes) const
 {
     QVector<quint32> n;
+    n.reserve(nodes.size());
 
     for (const CustomSARecord& node : nodes) {
         n.append(node.path);
@@ -129,6 +130,7 @@ void VUndoCommand::IncrementReferences(const QVector<CustomSARecord>& nodes) con
 void VUndoCommand::DecrementReferences(const QVector<CustomSARecord>& nodes) const
 {
     QVector<quint32> n;
+    n.reserve(nodes.size());
 
     for (const CustomSARecord& node : nodes) {
         n.append(node.path);
@@ -141,6 +143,7 @@ void VUndoCommand::DecrementReferences(const QVector<CustomSARecord>& nodes) con
 void VUndoCommand::IncrementReferences(const QVector<VPieceNode>& nodes) const
 {
     QVector<quint32> n;
+    n.reserve(nodes.size());
 
     for (const VPieceNode& node : nodes) {
         n.append(node.GetId());
@@ -153,6 +156,7 @@ void VUndoCommand::IncrementReferences(const QVector<VPieceNode>& nodes) const
 void VUndoCommand::DecrementReferences(const QVector<VPieceNode>& nodes) const
 {
     QVector<quint32> n;
+    n.reserve(nodes.size());
 
     for (const VPieceNode& node : nodes) {
         n.append(node.GetId());
