@@ -2,6 +2,8 @@
 
 #include "geometry/geometry.h"
 
+#include <cmath>
+
 
 void GeometryTests::rotateTest_data()
 {
@@ -28,6 +30,31 @@ void GeometryTests::rotateTest()
     QFETCH(QPointF, expectedResult);
 
     QCOMPARE(geo::rotate(pivot, point, degrees), expectedResult);
+}
+
+
+void GeometryTests::movedTest_data()
+{
+    QTest::addColumn<QPointF>("point");
+    QTest::addColumn<qreal>("length");
+    QTest::addColumn<qreal>("angle");
+    QTest::addColumn<QPointF>("expectedMovedPoint");
+
+    QTest::newRow("zero length") << QPointF{ 1.0, 1.0 } << 0.0 << 45.0 << QPointF{ 1.0, 1.0 };
+    QTest::newRow("0 deg") << QPointF{ 1.0, 1.0 } << 1.0 << 0.0 << QPointF{ 2.0, 1.0 };
+    QTest::newRow("45 deg") << QPointF{ 1.0, 1.0 } << 1.0 << 45.0
+                            << QPointF{ 1.0 + 1.0 / std::sqrt(2.0), 1.0 - 1.0 / std::sqrt(2.0) };
+}
+
+
+void GeometryTests::movedTest()
+{
+    QFETCH(QPointF, point);
+    QFETCH(qreal, length);
+    QFETCH(qreal, angle);
+    QFETCH(QPointF, expectedMovedPoint);
+
+    QCOMPARE(geo::moved(point, length, angle), expectedMovedPoint);
 }
 
 
@@ -141,9 +168,9 @@ void GeometryTests::subPathTest_data()
     QTest::newRow("part, no-wrap")
         << QVector<QPointF>{ { 0.0, 0.0 }, { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 }, { 4.0, 4.0 } }
         << 1 << 3 << QVector<QPointF>{ { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 } };
-    QTest::newRow("part, wrap")
-        << QVector<QPointF>{ { 0.0, 0.0 }, { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 }, { 4.0, 4.0 } }
-        << 3 << 1 << QVector<QPointF>{ { 3.0, 3.0 }, { 4.0, 4.0 }, { 0.0, 0.0 }, { 1.0, 1.0 } };
+    QTest::newRow("part, wrap") << QVector<QPointF>{
+        { 0.0, 0.0 }, { 1.0, 1.0 }, { 2.0, 2.0 }, { 3.0, 3.0 }, { 4.0, 4.0 }
+    } << 3 << 1 << QVector<QPointF>{ { 3.0, 3.0 }, { 4.0, 4.0 }, { 0.0, 0.0 }, { 1.0, 1.0 } };
 }
 
 

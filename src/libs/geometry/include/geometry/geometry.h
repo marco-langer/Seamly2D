@@ -10,6 +10,8 @@ namespace geo {
 
 QPointF rotate(const QPointF& pivot, const QPointF& point, qreal degrees);
 
+QPointF moved(const QPointF& originPoint, qreal length, qreal angle);
+
 qreal distance(const QPointF& first, const QPointF& second);
 
 qreal length(const QVector<QPointF>& points);

@@ -173,7 +173,7 @@ VPointF VPointF::Flip(const QLineF& axis, const QString& prefix) const
 //---------------------------------------------------------------------------------------------------------------------
 VPointF VPointF::Move(qreal length, qreal angle, const QString& prefix) const
 {
-    const QPointF newPoint = MovePF(toQPointF(), length, angle);
+    const QPointF newPoint{ geo::moved(toQPointF(), length, angle) };
     VPointF moved(newPoint, name() + prefix, mx(), my());
     moved.setShowPointName(isShowPointName());
     return moved;
@@ -250,12 +250,4 @@ QPointF VPointF::FlipPF(const QLineF& axis, const QPointF& point)
 {
     const QTransform transform = flipTransform(axis);
     return transform.map(point);
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-QPointF VPointF::MovePF(const QPointF& originPoint, qreal length, qreal angle)
-{
-    QLineF line(originPoint.x(), originPoint.y(), originPoint.x() + length, originPoint.y());
-    line.setAngle(angle);
-    return line.p2();
 }

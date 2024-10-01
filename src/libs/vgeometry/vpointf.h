@@ -117,7 +117,6 @@ public:
     void setShowPointName(bool show);
 
     static QPointF FlipPF(const QLineF& axis, const QPointF& point);
-    static QPointF MovePF(const QPointF& originPoint, qreal length, qreal angle);
 
 private:
     QSharedDataPointer<VPointFData> d;

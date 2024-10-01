@@ -215,8 +215,8 @@ VArc VArc::Move(qreal length, qreal angle, const QString& prefix) const
 {
     const VPointF center = GetCenter().Move(length, angle);
 
-    const QPointF p1 = VPointF::MovePF(GetP1(), length, angle);
-    const QPointF p2 = VPointF::MovePF(GetP2(), length, angle);
+    const QPointF p1{ geo::moved(GetP1(), length, angle) };
+    const QPointF p2{ geo::moved(GetP2(), length, angle) };
 
     const qreal f1 = QLineF(static_cast<QPointF>(center), p1).angle();
     const qreal f2 = QLineF(static_cast<QPointF>(center), p2).angle();

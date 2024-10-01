@@ -16,6 +16,14 @@ QPointF rotate(const QPointF& pivot, const QPointF& point, qreal degrees)
 }
 
 
+QPointF moved(const QPointF& originPoint, qreal length, qreal angle)
+{
+    QLineF line{ originPoint.x(), originPoint.y(), originPoint.x() + length, originPoint.y() };
+    line.setAngle(angle);
+    return line.p2();
+}
+
+
 qreal distance(const QPointF& first, const QPointF& second)
 {
     return std::sqrt(
