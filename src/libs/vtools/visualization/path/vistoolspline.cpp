@@ -51,6 +51,8 @@
 
 #include "vistoolspline.h"
 
+#include "math/math.h"
+
 #include <QLineF>
 #include <QPainterPath>
 #include <QSharedPointer>
@@ -158,8 +160,8 @@ void VisToolSpline::RefreshGeometry()
                 }
             }
 
-            if (VFuzzyComparePossibleNulls(angle1, EMPTY_ANGLE)
-                || VFuzzyComparePossibleNulls(angle2, EMPTY_ANGLE)) {
+            if (math::isFuzzyEqual(angle1, EMPTY_ANGLE)
+                || math::isFuzzyEqual(angle2, EMPTY_ANGLE)) {
                 DrawPath(
                     this,
                     VSpline{ first, p2, p3, second }.GetPath(),

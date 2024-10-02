@@ -52,6 +52,8 @@
 
 #include "vformula.h"
 
+#include "math/math.h"
+
 #include <QMessageLogger>
 #include <QScopedPointer>
 #include <QtDebug>
@@ -132,7 +134,7 @@ bool VFormula::operator==(const VFormula& formula) const
         && this->checkZero == formula.getCheckZero() && this->data == formula.getData()
         && this->toolId == formula.getToolId() && this->postfix == formula.getPostfix()
         && this->_error == formula.error()
-        && VFuzzyComparePossibleNulls(this->dValue, formula.getDoubleValue())) {
+        && math::isFuzzyEqual(this->dValue, formula.getDoubleValue())) {
         isEqual = true;
     }
     return isEqual;

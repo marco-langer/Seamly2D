@@ -51,6 +51,8 @@
 
 #include "vgraphicssimpletextitem.h"
 
+#include "math/math.h"
+
 #include <QEvent>
 #include <QFlags>
 #include <QFont>
@@ -108,9 +110,9 @@ void VGraphicsSimpleTextItem::paint(
     QGraphicsScene* scene = this->scene();
     const qreal scale = sceneScale(scene);
 
-    if (scale > 1.0 && not VFuzzyComparePossibleNulls(m_scale, scale)) {
+    if (scale > 1.0 && !math::isFuzzyEqual(m_scale, scale)) {
         scalePointName(scale);
-    } else if (scale <= 1.0 && not VFuzzyComparePossibleNulls(m_scale, 1.0)) {
+    } else if (scale <= 1.0 && !math::isFuzzyEqual(m_scale, 1.0)) {
         scalePointName(1.0);
     }
 

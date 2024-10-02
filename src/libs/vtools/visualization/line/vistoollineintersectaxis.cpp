@@ -51,6 +51,8 @@
 
 #include "vistoollineintersectaxis.h"
 
+#include "math/math.h"
+
 #include <QColor>
 #include <QGraphicsLineItem>
 #include <QLine>
@@ -113,7 +115,7 @@ void VisToolLineIntersectAxis::RefreshGeometry()
             if (axisPointId > NULL_ID) {
                 QLineF axis;
                 const auto& third{ *Visualization::data->GeometricObject<VPointF>(axisPointId) };
-                if (VFuzzyComparePossibleNulls(angle, -1)) {
+                if (math::isFuzzyEqual(angle, -1.0)) {
                     axis = Axis(static_cast<QPointF>(third), Visualization::scenePos);
                 } else {
                     axis = Axis(static_cast<QPointF>(third), angle);

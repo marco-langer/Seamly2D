@@ -52,6 +52,8 @@
 #ifndef VSPLINEPOINT_P_H
 #define VSPLINEPOINT_P_H
 
+#include "math/math.h"
+
 #include <QLineF>
 #include <QSharedData>
 #include <QtDebug>
@@ -76,8 +78,7 @@ public:
         , kAsm1(kAsm1)
         , kAsm2(kAsm2)
     {
-        if (VFuzzyComparePossibleNulls(angle1, angle2)
-            || not qFuzzyCompare(qAbs(angle1 - angle2), 180)) {
+        if (math::isFuzzyEqual(angle1, angle2) || not qFuzzyCompare(qAbs(angle1 - angle2), 180)) {
             qDebug() << "Make angle1 and angle2 correct.";
             this->angle2 = this->angle1 + 180;
         }
@@ -192,7 +193,7 @@ VSplinePointData::VSplinePointData(
     , length2(length2)
     , length2F(length2F)
 {
-    if (not VFuzzyComparePossibleNulls(qAbs(angle1 - angle2), 180)) {
+    if (!math::isFuzzyEqual(qAbs(angle1 - angle2), 180.0)) {
         qDebug() << "Make angle1 and angle2 correct.";
 
         QLineF line(0, 0, 100, 0);

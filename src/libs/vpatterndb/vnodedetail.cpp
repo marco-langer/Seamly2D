@@ -56,6 +56,8 @@
 #include "vpiecenode.h"
 #include "vpiecepath.h"
 
+#include "math/math.h"
+
 #include <QLineF>
 #include <QVector>
 
@@ -63,22 +65,20 @@ namespace {
 //---------------------------------------------------------------------------------------------------------------------
 bool IsOX(const QLineF& line)
 {
-    return VFuzzyComparePossibleNulls(line.angle(), 0)
-        || VFuzzyComparePossibleNulls(line.angle(), 360)
-        || VFuzzyComparePossibleNulls(line.angle(), 180);
+    return math::isFuzzyEqual(line.angle(), 0.0) || math::isFuzzyEqual(line.angle(), 360.0)
+        || math::isFuzzyEqual(line.angle(), 180.0);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool IsOY(const QLineF& line)
 {
-    return VFuzzyComparePossibleNulls(line.angle(), 90)
-        || VFuzzyComparePossibleNulls(line.angle(), 270);
+    return math::isFuzzyEqual(line.angle(), 90.0) || math::isFuzzyEqual(line.angle(), 270.0);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString LocalWidth(const QLineF& line, const QLineF& movedLine)
 {
-    if (VFuzzyComparePossibleNulls(line.angle(), movedLine.angle())) {
+    if (math::isFuzzyEqual(line.angle(), movedLine.angle())) {
         return QString().setNum(movedLine.length());
     } else {   // different direction means value is negative
         return QString("0");

@@ -6,6 +6,8 @@ SUBDIRS = \
     ifc \
     geometry \
     geometry/geometry_tests \
+    math \
+    math/math_tests \
     vobj \
     vdxf \
     vlayout \

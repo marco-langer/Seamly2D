@@ -51,6 +51,8 @@
 
 #include "vabstractarc.h"
 
+#include "math/math.h"
+
 #include <QLineF>
 
 #include "../vmisc/def.h"
@@ -208,8 +210,7 @@ qreal VAbstractArc::AngleArc() const
 {
     {
         const qreal angleDiff = qAbs(GetStartAngle() - GetEndAngle());
-        if (VFuzzyComparePossibleNulls(angleDiff, 0)
-            || VFuzzyComparePossibleNulls(angleDiff, 360)) {
+        if (math::isFuzzyEqual(angleDiff, 0.0) || math::isFuzzyEqual(angleDiff, 360.0)) {
             return 360;
         }
     }

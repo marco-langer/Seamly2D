@@ -51,6 +51,8 @@
 
 #include "vtoolcurveintersectaxis.h"
 
+#include "math/math.h"
+
 #include <QLineF>
 #include <QMap>
 #include <QMessageBox>
@@ -425,7 +427,7 @@ void VToolCurveIntersectAxis::InitArc(
     Item arc1;
     Item arc2;
 
-    if (not VFuzzyComparePossibleNulls(segLength, -1)) {
+    if (!math::isFuzzyEqual(segLength, -1.0)) {
         arc.CutArc(segLength, arc1, arc2);
     } else {
         arc.CutArc(0, arc1, arc2);
@@ -435,7 +437,7 @@ void VToolCurveIntersectAxis::InitArc(
     arc1.setId(p->id() + 1);
     arc2.setId(p->id() + 2);
 
-    if (not VFuzzyComparePossibleNulls(segLength, -1)) {
+    if (!math::isFuzzyEqual(segLength, -1.0)) {
         a1 = QSharedPointer<Item>(new Item(arc1));
         a2 = QSharedPointer<Item>(new Item(arc2));
     } else {
@@ -467,7 +469,7 @@ void VToolCurveIntersectAxis::InitSegments(
 
         const auto& spl{ *data->GeometricObject<VAbstractCubicBezier>(curveId) };
         QPointF spl1p2, spl1p3, spl2p2, spl2p3;
-        if (not VFuzzyComparePossibleNulls(segLength, -1)) {
+        if (!math::isFuzzyEqual(segLength, -1.0)) {
             spl.CutSpline(segLength, spl1p2, spl1p3, spl2p2, spl2p3);
         } else {
             spl.CutSpline(0, spl1p2, spl1p3, spl2p2, spl2p3);
@@ -476,7 +478,7 @@ void VToolCurveIntersectAxis::InitSegments(
         VSpline* spl1 = new VSpline(spl.GetP1(), spl1p2, spl1p3, *p);
         VSpline* spl2 = new VSpline(*p, spl2p2, spl2p3, spl.GetP4());
 
-        if (not VFuzzyComparePossibleNulls(segLength, -1)) {
+        if (!math::isFuzzyEqual(segLength, -1.0)) {
             spline1 = QSharedPointer<VAbstractBezier>(spl1);
             spline2 = QSharedPointer<VAbstractBezier>(spl2);
         } else {
@@ -503,7 +505,7 @@ void VToolCurveIntersectAxis::InitSegments(
         const auto& splPath{ *data->GeometricObject<VAbstractCubicBezierPath>(curveId) };
         VSplinePath* splPath1 = nullptr;
         VSplinePath* splPath2 = nullptr;
-        if (not VFuzzyComparePossibleNulls(segLength, -1)) {
+        if (!math::isFuzzyEqual(segLength, -1.0)) {
             VToolCutSplinePath::CutSplinePath(segLength, splPath, p->name(), &splPath1, &splPath2);
         } else {
             VToolCutSplinePath::CutSplinePath(0, splPath, p->name(), &splPath1, &splPath2);
@@ -512,7 +514,7 @@ void VToolCurveIntersectAxis::InitSegments(
         SCASSERT(splPath1 != nullptr)
         SCASSERT(splPath2 != nullptr)
 
-        if (not VFuzzyComparePossibleNulls(segLength, -1)) {
+        if (!math::isFuzzyEqual(segLength, -1.0)) {
             splP1 = QSharedPointer<VAbstractBezier>(splPath1);
             splP2 = QSharedPointer<VAbstractBezier>(splPath2);
         } else {

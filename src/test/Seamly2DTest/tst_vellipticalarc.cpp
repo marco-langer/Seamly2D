@@ -27,8 +27,10 @@
  *************************************************************************/
 
 #include "tst_vellipticalarc.h"
+
 #include "../vgeometry/vellipticalarc.h"
 #include "../vlayout/vabstractpiece.h"
+#include "math/math.h"
 
 #include <QtGlobal>
 #include <QtTest>
@@ -430,7 +432,7 @@ void TST_VEllipticalArc::TestGetPoints3()
     VEllipticalArc arc(center, radius1, radius2, startAngle, endAngle, rotationAngle);
     QVector<QPointF> points = arc.getPoints();
 
-    if (VFuzzyComparePossibleNulls(arc.AngleArc(), 360.0)) {   // calculated full ellipse square
+    if (math::isFuzzyEqual(arc.AngleArc(), 360.0)) {   // calculated full ellipse square
         const qreal ellipseSquare = M_PI * radius1 * radius2;
         const qreal epsSquare =
             ellipseSquare * 1.7 / 100;   // computing error 0.5 % from origin squere
@@ -460,7 +462,7 @@ void TST_VEllipticalArc::TestGetPoints4()
     const VPointF center;
     VEllipticalArc arc(center, radius1, radius2, startAngle, endAngle, rotationAngle);
 
-    if (VFuzzyComparePossibleNulls(arc.AngleArc(), 360.0)) {   // calculated full ellipse length
+    if (math::isFuzzyEqual(arc.AngleArc(), 360.0)) {   // calculated full ellipse length
         const qreal h = ((radius1 - radius2) * (radius1 - radius2))
                       / ((radius1 + radius2) * (radius1 + radius2));
         const qreal ellipseLength =

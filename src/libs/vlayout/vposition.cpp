@@ -53,6 +53,7 @@
 #include "vposition.h"
 
 #include "geometry/geometry.h"
+#include "math/math.h"
 
 #include <QDir>
 #include <QImage>
@@ -435,7 +436,7 @@ void VPosition::RotateEdges(
 void VPosition::Rotate(int increase)
 {
     int startAngle = 0;
-    if (VFuzzyComparePossibleNulls(angle_between, 360)) {
+    if (math::isFuzzyEqual(angle_between, 360)) {
         startAngle = increase;
     }
     for (int angle = startAngle; angle < 360; angle = angle + increase) {

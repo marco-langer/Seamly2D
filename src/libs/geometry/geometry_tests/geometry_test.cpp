@@ -183,5 +183,3 @@ void GeometryTests::subPathTest()
 
     QCOMPARE(geo::subPath(points, startIndex, endIndex), expectedSubPath);
 }
-
-QTEST_MAIN(GeometryTests)

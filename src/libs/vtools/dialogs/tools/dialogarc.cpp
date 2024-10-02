@@ -46,6 +46,8 @@
 
 #include "dialogarc.h"
 
+#include "math/math.h"
+
 #include <QDialog>
 #include <QLabel>
 #include <QPlainTextEdit>
@@ -537,7 +539,7 @@ void DialogArc::CheckAngles()
         return;
     }
 
-    if (VFuzzyComparePossibleNulls(angleF1, angleF2)) {
+    if (math::isFuzzyEqual(angleF1, angleF2)) {
         flagF1 = false;
         ChangeColor(ui->labelEditF1, Qt::red);
         ui->labelResultF1->setText(tr("Error"));

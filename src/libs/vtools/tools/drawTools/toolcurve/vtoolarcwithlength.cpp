@@ -51,6 +51,8 @@
 
 #include "vtoolarcwithlength.h"
 
+#include "math/math.h"
+
 #include <QPen>
 #include <QStaticStringData>
 #include <QStringData>
@@ -275,7 +277,7 @@ void VToolArcWithLength::SetFormulaF1(const VFormula& value)
         auto* arc{ dynamic_cast<VArc*>(obj) };
         SCASSERT(arc)
 
-        if (not VFuzzyComparePossibleNulls(
+        if (!math::isFuzzyEqual(
                 value.getDoubleValue(), arc->GetEndAngle()))   // Angles can't be equal
         {
             arc->SetFormulaF1(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());

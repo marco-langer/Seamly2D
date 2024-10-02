@@ -51,6 +51,8 @@
 
 #include "vgobject.h"
 
+#include "math/math.h"
+
 #include <QLine>
 #include <QLineF>
 #include <QPoint>
@@ -302,8 +304,8 @@ QPointF VGObject::LineIntersectRect(const QRectF& rec, const QLineF& line)
 int VGObject::IntersectionCircles(
     const QPointF& c1, double r1, const QPointF& c2, double r2, QPointF& p1, QPointF& p2)
 {
-    if (VFuzzyComparePossibleNulls(c1.x(), c2.x()) && VFuzzyComparePossibleNulls(c1.y(), c2.y())
-        && VFuzzyComparePossibleNulls(r1, r2)) {
+    if (math::isFuzzyEqual(c1.x(), c2.x()) && math::isFuzzyEqual(c1.y(), c2.y())
+        && math::isFuzzyEqual(r1, r2)) {
         return 3;   // Circles are equal
     }
     const double a = -2.0 * (c2.x() - c1.x());
@@ -316,7 +318,7 @@ int VGObject::IntersectionCircles(
 
     if (c * c > r1 * r1 * (a * a + b * b)) {
         return 0;
-    } else if (VFuzzyComparePossibleNulls(c * c, r1 * r1 * (a * a + b * b))) {
+    } else if (math::isFuzzyEqual(c * c, r1 * r1 * (a * a + b * b))) {
         p1 = QPointF(x0 + c1.x(), y0 + c1.y());
         return 1;
     } else {
@@ -359,7 +361,7 @@ qint32 VGObject::LineIntersectCircle(
     // how many solutions?
     qint32 flag = 0;
     const qreal d = QLineF(center, p).length();
-    if (VFuzzyComparePossibleNulls(d, radius)) {
+    if (math::isFuzzyEqual(d, radius)) {
         flag = 1;
     } else {
         if (radius > d) {
@@ -463,7 +465,7 @@ bool VGObject::IsPointOnLineviaPDP(const QPointF& t, const QPointF& p1, const QP
     const double p = qAbs(PerpDotProduct(p1, p2, t));
     const double e = GetEpsilon(p1, p2);
     // We can't use common "<=" here because of the floating-point accuraccy problem
-    return p < e || VFuzzyComparePossibleNulls(p, e);
+    return p < e || math::isFuzzyEqual(p, e);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -502,7 +504,7 @@ double VGObject::GetEpsilon(const QPointF& p1, const QPointF& p2)
 int VGObject::PointInCircle(const QPointF& p, const QPointF& center, qreal radius)
 {
     const double d = QLineF(p, center).length();
-    if (VFuzzyComparePossibleNulls(radius, d)) {
+    if (math::isFuzzyEqual(radius, d)) {
         return 1;   // on circle
     }
     if (radius > d) {

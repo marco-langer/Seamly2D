@@ -51,6 +51,8 @@
 
 #include "vistoolmove.h"
 
+#include "math/math.h"
+
 #include <QGraphicsLineItem>
 #include <QGraphicsPathItem>
 #include <QGuiApplication>
@@ -157,7 +159,7 @@ void VisToolMove::RefreshGeometry()
         }
 
         QLineF rotationLine;
-        if (VFuzzyComparePossibleNulls(rotationAngle, std::numeric_limits<int>::min())) {
+        if (math::isFuzzyEqual(rotationAngle, std::numeric_limits<int>::min())) {
             rotationLine = QLineF(m_rotationPoint, Visualization::scenePos);
 
             if (QGuiApplication::keyboardModifiers() == Qt::ShiftModifier) {

@@ -51,6 +51,8 @@
 
 #include "vtooltriangle.h"
 
+#include "math/math.h"
+
 #include <QLine>
 #include <QLineF>
 #include <QStaticStringData>
@@ -266,8 +268,8 @@ QPointF VToolTriangle::FindPoint(
     if (intersect != QLineF::UnboundedIntersection && intersect != QLineF::BoundedIntersection) {
         return QPointF();
     }
-    if (VFuzzyComparePossibleNulls(axis.angle(), hypotenuse.angle())
-        || VFuzzyComparePossibleNulls(qAbs(axis.angle() - hypotenuse.angle()), 180)) {
+    if (math::isFuzzyEqual(axis.angle(), hypotenuse.angle())
+        || math::isFuzzyEqual(qAbs(axis.angle() - hypotenuse.angle()), 180.0)) {
         return QPointF();
     }
 

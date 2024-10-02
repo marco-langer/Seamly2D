@@ -36,3 +36,7 @@ include(warnings.pri)
 include (../libs.pri)
 
 INCLUDEPATH += $${PWD}/../geometry/include
+INCLUDEPATH += $${PWD}/../math/include
+
+DEPENDPATH += $${PWD}/../geometry
+DEPENDPATH += $${PWD}/../math

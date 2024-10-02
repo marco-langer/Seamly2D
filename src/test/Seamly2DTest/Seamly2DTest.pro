@@ -181,8 +181,17 @@ else:unix|win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/vpropertyexplorer/$$
 # geometry library
 unix|win32: LIBS += -L$${OUT_PWD}/../../libs/geometry/$${DESTDIR} -lgeometry
 
-INCLUDEPATH += $${PWD}/../../libs/geometry
+INCLUDEPATH += $${PWD}/../../libs/geometry/include
 DEPENDPATH += $${PWD}/../../libs/geometry
 
 win32:!win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/geometry/$${DESTDIR}/geometry.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/geometry/$${DESTDIR}/libgeometry.a
+
+# math library
+unix|win32: LIBS += -L$${OUT_PWD}/../../libs/math/$${DESTDIR} -lmath
+
+INCLUDEPATH += $${PWD}/../../libs/math/include
+DEPENDPATH += $${PWD}/../../libs/math
+
+win32:!win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/math/$${DESTDIR}/math.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/math/$${DESTDIR}/libmath.a

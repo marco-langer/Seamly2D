@@ -52,6 +52,8 @@
 
 #include "pattern_piece_tool.h"
 
+#include "math/math.h"
+
 #include "../dialogs/tools/piece/pattern_piece_dialog.h"
 #include "../ifc/xml/vpatternconverter.h"
 #include "../qmuparser/qmutokenparser.h"
@@ -1634,7 +1636,7 @@ VPieceItem::MoveTypes PatternPieceTool::FindGrainlineGeometry(
             length = FromPixel(grainline.length(), *VDataTool::data.GetPatternUnit());
             rotationAngle = grainline.angle();
 
-            if (not VFuzzyComparePossibleNulls(rotationAngle, 0)) {
+            if (!math::isFuzzyEqual(rotationAngle, 0.0)) {
                 grainline.setAngle(0);
             }
 

@@ -1,5 +1,5 @@
 SOURCES += \
-        $$PWD/src/geometry.cpp
+        $$PWD/src/geometry.cpp \
 
 HEADERS += \
         $$PWD/include/geometry/geometry.h

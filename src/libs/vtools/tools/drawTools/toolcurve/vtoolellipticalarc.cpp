@@ -46,6 +46,8 @@
 
 #include "vtoolellipticalarc.h"
 
+#include "math/math.h"
+
 #include <QPen>
 #include <QStaticStringData>
 #include <QStringData>
@@ -360,7 +362,7 @@ void VToolEllipticalArc::SetFormulaF1(const VFormula& value)
         auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
         SCASSERT(elArc)
 
-        if (not VFuzzyComparePossibleNulls(
+        if (!math::isFuzzyEqual(
                 value.getDoubleValue(), elArc->GetEndAngle()))   // Angles can't be equal
         {
             elArc->SetFormulaF1(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
@@ -389,7 +391,7 @@ void VToolEllipticalArc::SetFormulaF2(const VFormula& value)
         auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
         SCASSERT(elArc)
 
-        if (not VFuzzyComparePossibleNulls(
+        if (!math::isFuzzyEqual(
                 value.getDoubleValue(), elArc->GetStartAngle()))   // Angles can't be equal
         {
             elArc->SetFormulaF2(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());

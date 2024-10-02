@@ -28,6 +28,8 @@
 
 #include "vellipticalarc.h"
 
+#include "math/math.h"
+
 #include <QLineF>
 #include <QPainterPath>
 #include <QPoint>
@@ -323,7 +325,7 @@ QPointF VEllipticalArc::getPoint(qreal angle) const
 
     QPointF p(line.p2().x() / k, line.p2().y() / k);
     QLineF line2(QPointF(), p);
-    SCASSERT(VFuzzyComparePossibleNulls(line2.angle(), line.angle()))
+    SCASSERT(math::isFuzzyEqual(line2.angle(), line.angle()))
 
     line2.setAngle(line2.angle() + GetRotationAngle());
     return line2.p2() + VAbstractArc::GetCenter().toQPointF();
@@ -599,9 +601,9 @@ qreal VEllipticalArc::getRealEndAngle() const
 {
     qreal endAngle = VEllipticalArc::normalizeAngle(VAbstractArc::GetEndAngle());
 
-    if (qFuzzyIsNull(endAngle) || VFuzzyComparePossibleNulls(endAngle, 90)
-        || VFuzzyComparePossibleNulls(endAngle, 180) || VFuzzyComparePossibleNulls(endAngle, 270)
-        || VFuzzyComparePossibleNulls(endAngle, 360)) {
+    if (qFuzzyIsNull(endAngle) || math::isFuzzyEqual(endAngle, 90)
+        || math::isFuzzyEqual(endAngle, 180) || math::isFuzzyEqual(endAngle, 270)
+        || math::isFuzzyEqual(endAngle, 360)) {
         return endAngle;
     }
 

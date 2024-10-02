@@ -35,3 +35,7 @@ OBJECTS_DIR = obj
 include(warnings.pri)
 
 include (../libs.pri)
+
+INCLUDEPATH += $${PWD}/../math/include
+
+DEPENDPATH += $${PWD}/../math

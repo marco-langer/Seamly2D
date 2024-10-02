@@ -52,6 +52,8 @@
 
 #include "vlayoutpiece.h"
 
+#include "math/math.h"
+
 #include <QBrush>
 #include <QFlags>
 #include <QFont>
@@ -200,7 +202,7 @@ bool FindGrainlineGeometry(
             length = grainline.length();
             rotationAngle = grainline.angle();
 
-            if (not VFuzzyComparePossibleNulls(rotationAngle, 0)) {
+            if (!math::isFuzzyEqual(rotationAngle, 0.0)) {
                 grainline.setAngle(0);
             }
 

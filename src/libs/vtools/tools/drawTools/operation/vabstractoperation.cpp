@@ -51,6 +51,8 @@
 
 #include <QtDebug>
 
+#include "math/math.h"
+
 #include "../../../undocommands/label/moveoperationlabel.h"
 #include "../../../undocommands/label/showoperationpointname.h"
 #include "../vgeometry/vpointf.h"
@@ -555,9 +557,8 @@ void VAbstractOperation::SaveSourceDestination(QDomElement& tag)
         QDomElement item = doc->createElement(TagItem);
         doc->SetAttribute(item, AttrIdObject, destinationItem.id);
 
-        if (not VFuzzyComparePossibleNulls(destinationItem.mx, std::numeric_limits<int>::max())
-            && not VFuzzyComparePossibleNulls(
-                destinationItem.my, std::numeric_limits<int>::max())) {
+        if (!math::isFuzzyEqual(destinationItem.mx, std::numeric_limits<int>::max())
+            && !math::isFuzzyEqual(destinationItem.my, std::numeric_limits<int>::max())) {
             doc->SetAttribute(item, AttrMx, qApp->fromPixel(destinationItem.mx));
             doc->SetAttribute(item, AttrMy, qApp->fromPixel(destinationItem.my));
             doc->SetAttribute<bool>(item, AttrShowPointName, destinationItem.showPointName);

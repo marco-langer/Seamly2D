@@ -620,16 +620,6 @@ VFuzzyComparePoints(const QPointF& p1, const QPointF& p2, qreal accuracy = accur
     return QLineF(p1, p2).length() <= accuracy;
 }
 
-[[nodiscard]] inline bool VFuzzyComparePossibleNulls(double p1, double p2)
-{
-    if (qFuzzyIsNull(p1)) {
-        return qFuzzyIsNull(p2);
-    } else if (qFuzzyIsNull(p2)) {
-        return false;
-    } else {
-        return qFuzzyCompare(p1, p2);
-    }
-}
 
 /**
  * @brief The CustomSA struct contains record about custom seam allowance (SA).

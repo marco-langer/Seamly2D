@@ -51,6 +51,8 @@
 
 #include "vtoollineintersectaxis.h"
 
+#include "math/math.h"
+
 #include "../../../../../dialogs/tools/dialoglineintersectaxis.h"
 #include "../../../../../dialogs/tools/dialogtool.h"
 #include "../../../../../visualization/line/vistoollineintersectaxis.h"
@@ -258,8 +260,8 @@ QPointF VToolLineIntersectAxis::FindPoint(const QLineF& axis, const QLineF& line
     QPointF fPoint;
     QLineF::IntersectType intersect = axis.intersects(line, &fPoint);
     if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection) {
-        if (VFuzzyComparePossibleNulls(axis.angle(), line.angle())
-            || VFuzzyComparePossibleNulls(qAbs(axis.angle() - line.angle()), 180)) {
+        if (math::isFuzzyEqual(axis.angle(), line.angle())
+            || math::isFuzzyEqual(qAbs(axis.angle() - line.angle()), 180.0)) {
             return QPointF();
         } else {
             return fPoint;

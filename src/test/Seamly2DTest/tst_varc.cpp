@@ -50,9 +50,11 @@
  *************************************************************************/
 
 #include "tst_varc.h"
+
 #include "../vgeometry/varc.h"
 #include "../vlayout/vabstractpiece.h"
 #include "../vmisc/logging.h"
+#include "math/math.h"
 
 #include <QtTest>
 
@@ -217,7 +219,7 @@ void TST_VArc::TestGetPoints()
     {
         qreal gSquere = 0.0;   // geometry square
 
-        if (VFuzzyComparePossibleNulls(arc.AngleArc(), 360.0)) {   // circle square
+        if (math::isFuzzyEqual(arc.AngleArc(), 360.0)) {   // circle square
             gSquere = M_PI * radius * radius;
         } else {   // sector square
             gSquere = (M_PI * radius * radius) / 360.0 * arc.AngleArc();

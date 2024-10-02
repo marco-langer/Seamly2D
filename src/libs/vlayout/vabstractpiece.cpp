@@ -51,6 +51,8 @@
 
 #include "vabstractpiece.h"
 
+#include "math/math.h"
+
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "geometry/geometry.h"
@@ -438,8 +440,8 @@ QVector<QPointF> VAbstractPiece::EkvPoint(
         const qreal angle = AngleBetweenBisectors(b1, b2);
 
         // Comparison bisector angles helps to find direction
-        if (angle < 90 || VFuzzyComparePossibleNulls(angle, 90.0))   // Go in a same direction
-        {                                                            // Regular equdistant case
+        if (angle < 90 || math::isFuzzyEqual(angle, 90.0))   // Go in a same direction
+        {                                                    // Regular equdistant case
             QT_WARNING_PUSH
             QT_WARNING_DISABLE_GCC("-Wswitch-default")
             switch (p2Line1.GetAngleType()) {
@@ -819,12 +821,12 @@ qreal VAbstractPiece::AngleBetweenBisectors(const QLineF& b1, const QLineF& b2)
     const QLineF newB2 = b2.translated(-(b2.p1().x() - b1.p1().x()), -(b2.p1().y() - b1.p1().y()));
 
     qreal angle1 = newB2.angleTo(b1);
-    if (VFuzzyComparePossibleNulls(angle1, 360)) {
+    if (math::isFuzzyEqual(angle1, 360.0)) {
         angle1 = 0;
     }
 
     qreal angle2 = b1.angleTo(newB2);
-    if (VFuzzyComparePossibleNulls(angle2, 360)) {
+    if (math::isFuzzyEqual(angle2, 360.0)) {
         angle2 = 0;
     }
 

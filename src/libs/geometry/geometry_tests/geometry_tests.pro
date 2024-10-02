@@ -6,11 +6,7 @@ CONFIG += no_testcase_installs
 
 DESTDIR = bin
 
-SOURCES += \
-    geometry_test.cpp
-
-HEADERS += \
-    geometry_test.h
+include(geometry_tests.pri)
 
 # geometry library
 unix|win32: LIBS += -L$${OUT_PWD}/../$${DESTDIR} -lgeometry
