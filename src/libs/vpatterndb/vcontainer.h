@@ -81,7 +81,6 @@
 #include "vpiecepath.h"
 #include "vtranslatevars.h"
 
-class VEllipticalArc;
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Weffc++")
