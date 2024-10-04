@@ -252,12 +252,9 @@ quint32 VToolArc::getCenter() const
 void VToolArc::setCenter(const quint32& value)
 {
     if (value != NULL_ID) {
-        auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-        auto* arc{ dynamic_cast<VArc*>(obj) };
-        SCASSERT(arc)
-
-        arc->SetCenter(*VAbstractTool::data.GeometricObject<VPointF>(value));
-        SaveOption(obj);
+        auto& arc{ *VAbstractTool::data.GeometricObject<VArc>(m_id) };
+        arc.SetCenter(*VAbstractTool::data.GeometricObject<VPointF>(value));
+        SaveOption(&arc);
     }
 }
 
@@ -280,12 +277,9 @@ void VToolArc::SetFormulaRadius(const VFormula& value)
         if (value.getDoubleValue()
             > 0)   // Formula don't check this, but radius can't be 0 or negative
         {
-            auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-            auto* arc{ dynamic_cast<VArc*>(obj) };
-            SCASSERT(arc)
-
-            arc->SetFormulaRadius(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-            SaveOption(obj);
+            auto& arc{ *VAbstractTool::data.GeometricObject<VArc>(m_id) };
+            arc.SetFormulaRadius(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
+            SaveOption(&arc);
         }
     }
 }
@@ -306,15 +300,13 @@ VFormula VToolArc::GetFormulaF1() const
 void VToolArc::SetFormulaF1(const VFormula& value)
 {
     if (value.error() == false) {
-        auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-        auto* arc{ dynamic_cast<VArc*>(obj) };
-        SCASSERT(arc)
+        auto& arc{ *VAbstractTool::data.GeometricObject<VArc>(m_id) };
 
         if (!math::isFuzzyEqual(
-                value.getDoubleValue(), arc->GetEndAngle()))   // Angles can't be equal
+                value.getDoubleValue(), arc.GetEndAngle()))   // Angles can't be equal
         {
-            arc->SetFormulaF1(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-            SaveOption(obj);
+            arc.SetFormulaF1(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
+            SaveOption(&arc);
         }
     }
 }
@@ -335,15 +327,13 @@ VFormula VToolArc::GetFormulaF2() const
 void VToolArc::SetFormulaF2(const VFormula& value)
 {
     if (value.error() == false) {
-        auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-        auto* arc{ dynamic_cast<VArc*>(obj) };
-        SCASSERT(arc)
+        auto& arc{ *VAbstractTool::data.GeometricObject<VArc>(m_id) };
 
         if (!math::isFuzzyEqual(
-                value.getDoubleValue(), arc->GetStartAngle()))   // Angles can't be equal
+                value.getDoubleValue(), arc.GetStartAngle()))   // Angles can't be equal
         {
-            arc->SetFormulaF2(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-            SaveOption(obj);
+            arc.SetFormulaF2(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
+            SaveOption(&arc);
         }
     }
 }
@@ -354,12 +344,9 @@ VArc VToolArc::getArc() const { return *VAbstractTool::data.GeometricObject<VArc
 //---------------------------------------------------------------------------------------------------------------------
 void VToolArc::setArc(const VArc& arc)
 {
-    auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-    auto* arc2{ dynamic_cast<VArc*>(obj) };
-    SCASSERT(arc2)
-
-    *arc2 = arc;
-    SaveOption(obj);
+    auto& arc2{ *VAbstractTool::data.GeometricObject<VArc>(m_id) };
+    arc2 = arc;
+    SaveOption(&arc2);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

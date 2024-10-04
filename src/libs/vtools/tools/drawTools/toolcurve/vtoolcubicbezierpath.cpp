@@ -189,12 +189,9 @@ VCubicBezierPath VToolCubicBezierPath::getSplinePath() const
 //---------------------------------------------------------------------------------------------------------------------
 void VToolCubicBezierPath::setSplinePath(const VCubicBezierPath& splPath)
 {
-    auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-    auto* splinePath{ dynamic_cast<VCubicBezierPath*>(obj) };
-    SCASSERT(splinePath)
-
-    *splinePath = splPath;
-    SaveOption(obj);
+    auto& splinePath{ *VAbstractTool::data.GeometricObject<VCubicBezierPath>(m_id) };
+    splinePath = splPath;
+    SaveOption(&splinePath);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

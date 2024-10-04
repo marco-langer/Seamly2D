@@ -200,12 +200,9 @@ VCubicBezier VToolCubicBezier::getSpline() const
 //---------------------------------------------------------------------------------------------------------------------
 void VToolCubicBezier::setSpline(const VCubicBezier& spl)
 {
-    auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-    auto* spline{ dynamic_cast<VCubicBezier*>(obj) };
-    SCASSERT(spline)
-
-    *spline = spl;
-    SaveOption(obj);
+    auto& spline{ *VAbstractTool::data.GeometricObject<VCubicBezier>(m_id) };
+    spline = spl;
+    SaveOption(&spline);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

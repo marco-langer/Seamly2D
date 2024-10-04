@@ -425,11 +425,9 @@ VSplinePath VToolSplinePath::getSplinePath() const
 //---------------------------------------------------------------------------------------------------------------------
 void VToolSplinePath::setSplinePath(const VSplinePath& splPath)
 {
-    auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-    auto* splinePath{ dynamic_cast<VSplinePath*>(obj) };
-    SCASSERT(splinePath)
-    *splinePath = splPath;
-    SaveOption(obj);
+    auto& splinePath{ *VAbstractTool::data.GeometricObject<VSplinePath>(m_id) };
+    splinePath = splPath;
+    SaveOption(&splinePath);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

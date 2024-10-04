@@ -273,12 +273,9 @@ quint32 VToolEllipticalArc::getCenter() const
 void VToolEllipticalArc::setCenter(const quint32& value)
 {
     if (value != NULL_ID) {
-        auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-        auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
-        SCASSERT(elArc)
-
-        elArc->SetCenter(*VAbstractTool::data.GeometricObject<VPointF>(value));
-        SaveOption(obj);
+        auto& elArc{ *VAbstractTool::data.GeometricObject<VEllipticalArc>(m_id) };
+        elArc.SetCenter(*VAbstractTool::data.GeometricObject<VPointF>(value));
+        SaveOption(&elArc);
     }
 }
 
@@ -301,13 +298,10 @@ void VToolEllipticalArc::SetFormulaRadius1(const VFormula& value)
         if (value.getDoubleValue()
             > 0)   // Formula don't check this, but radius1 can't be 0 or negative
         {
-            auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-            auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
-            SCASSERT(elArc)
-
-            elArc->SetFormulaRadius1(
+            auto& elArc{ *VAbstractTool::data.GeometricObject<VEllipticalArc>(m_id) };
+            elArc.SetFormulaRadius1(
                 value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-            SaveOption(obj);
+            SaveOption(&elArc);
         }
     }
 }
@@ -331,13 +325,10 @@ void VToolEllipticalArc::SetFormulaRadius2(const VFormula& value)
         if (value.getDoubleValue()
             > 0)   // Formula don't check this, but radius2 can't be 0 or negative
         {
-            auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-            auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
-            SCASSERT(elArc)
-
-            elArc->SetFormulaRadius2(
+            auto& elArc{ *VAbstractTool::data.GeometricObject<VEllipticalArc>(m_id) };
+            elArc.SetFormulaRadius2(
                 value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-            SaveOption(obj);
+            SaveOption(&elArc);
         }
     }
 }
@@ -358,15 +349,12 @@ VFormula VToolEllipticalArc::GetFormulaF1() const
 void VToolEllipticalArc::SetFormulaF1(const VFormula& value)
 {
     if (value.error() == false) {
-        auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-        auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
-        SCASSERT(elArc)
-
+        auto& elArc{ *VAbstractTool::data.GeometricObject<VEllipticalArc>(m_id) };
         if (!math::isFuzzyEqual(
-                value.getDoubleValue(), elArc->GetEndAngle()))   // Angles can't be equal
+                value.getDoubleValue(), elArc.GetEndAngle()))   // Angles can't be equal
         {
-            elArc->SetFormulaF1(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-            SaveOption(obj);
+            elArc.SetFormulaF1(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
+            SaveOption(&elArc);
         }
     }
 }
@@ -387,15 +375,13 @@ VFormula VToolEllipticalArc::GetFormulaF2() const
 void VToolEllipticalArc::SetFormulaF2(const VFormula& value)
 {
     if (value.error() == false) {
-        auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-        auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
-        SCASSERT(elArc)
+        auto& elArc{ *VAbstractTool::data.GeometricObject<VEllipticalArc>(m_id) };
 
         if (!math::isFuzzyEqual(
-                value.getDoubleValue(), elArc->GetStartAngle()))   // Angles can't be equal
+                value.getDoubleValue(), elArc.GetStartAngle()))   // Angles can't be equal
         {
-            elArc->SetFormulaF2(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-            SaveOption(obj);
+            elArc.SetFormulaF2(value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
+            SaveOption(&elArc);
         }
     }
 }
@@ -416,13 +402,10 @@ VFormula VToolEllipticalArc::GetFormulaRotationAngle() const
 void VToolEllipticalArc::SetFormulaRotationAngle(const VFormula& value)
 {
     if (value.error() == false) {
-        auto* obj{ &VAbstractTool::data.GetGObject(m_id) };
-        auto* elArc{ dynamic_cast<VEllipticalArc*>(obj) };
-        SCASSERT(elArc)
-
-        elArc->SetFormulaRotationAngle(
+        auto& elArc{ *VAbstractTool::data.GeometricObject<VEllipticalArc>(m_id) };
+        elArc.SetFormulaRotationAngle(
             value.GetFormula(FormulaType::FromUser), value.getDoubleValue());
-        SaveOption(obj);
+        SaveOption(&elArc);
     }
 }
 

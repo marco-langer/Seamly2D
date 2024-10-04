@@ -311,10 +311,9 @@ VSpline VToolSpline::getSpline() const
 //---------------------------------------------------------------------------------------------------------------------
 void VToolSpline::setSpline(const VSpline& spl)
 {
-    auto& obj{ VAbstractTool::data.GetGObject(m_id) };
-    auto& spline{ dynamic_cast<VSpline&>(obj) };
+    auto& spline{ *VAbstractTool::data.GeometricObject<VSpline>(m_id) };
     spline = spl;
-    SaveOption(&obj);
+    SaveOption(&spline);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
