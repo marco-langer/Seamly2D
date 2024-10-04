@@ -66,7 +66,7 @@ class DialogNewPattern : public QDialog
 {
     Q_OBJECT
 public:
-    DialogNewPattern(VContainer* data, const QString& patternPieceName, QWidget* parent = nullptr);
+    explicit DialogNewPattern(const QString& patternPieceName, QWidget* parent = nullptr);
     ~DialogNewPattern() override;
 
     QString name() const;
@@ -80,7 +80,6 @@ private slots:
 private:
     Q_DISABLE_COPY(DialogNewPattern)
     Ui::DialogNewPattern* ui;
-    VContainer* data;
     bool isInitialized;
     void InitUnits();
 };

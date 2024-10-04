@@ -53,7 +53,6 @@
 #include "dialognewpattern.h"
 #include "../core/application_2d.h"
 #include "../vmisc/vsettings.h"
-#include "../vpatterndb/vcontainer.h"
 #include "ui_dialognewpattern.h"
 
 #include <QFileDialog>
@@ -64,11 +63,9 @@
 #include <QSettings>
 
 //---------------------------------------------------------------------------------------------------------------------
-DialogNewPattern::DialogNewPattern(
-    VContainer* data, const QString& patternPieceName, QWidget* parent)
+DialogNewPattern::DialogNewPattern(const QString& patternPieceName, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::DialogNewPattern)
-    , data(data)
     , isInitialized(false)
 {
     ui->setupUi(this);
