@@ -71,15 +71,6 @@
 PreferencesConfigurationPage::PreferencesConfigurationPage(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::PreferencesConfigurationPage)
-    , m_langChanged(false)
-    , m_unitChanged(false)
-    , m_labelLangChanged(false)
-    , m_selectionSoundChanged(false)
-    , m_moveSuffixChanged(false)
-    , m_rotateSuffixChanged(false)
-    , m_mirrorByAxisSuffixChanged(false)
-    , m_mirrorByLineSuffixChanged(false)
-    , m_defaultExportFormatChanged(false)
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

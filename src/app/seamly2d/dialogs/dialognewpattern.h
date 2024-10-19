@@ -80,7 +80,7 @@ private slots:
 private:
     Q_DISABLE_COPY(DialogNewPattern)
     Ui::DialogNewPattern* ui;
-    bool isInitialized;
+    bool isInitialized{ false };
     void InitUnits();
 };
 

@@ -44,7 +44,6 @@
 CalculatorDialog::CalculatorDialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::CalculatorDialog)
-    , isInitialized(false)
     , calc(new CalculatorUtil(this))
 {
     ui->setupUi(this);

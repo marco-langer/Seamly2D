@@ -47,14 +47,6 @@ Q_LOGGING_CATEGORY(vGraphicsViewConfig, "vgraphicsviewconfig")
 PreferencesGraphicsViewPage::PreferencesGraphicsViewPage(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::PreferencesGraphicsViewPage)
-    , m_zrbPositiveColorChanged(false)
-    , m_zrbNegativeColorChanged(false)
-    , m_pointNameColorChanged(false)
-    , m_pointNameHoverColorChanged(false)
-    , m_orginAxisColorChanged(false)
-    , m_primarySupportColorChanged(false)
-    , m_secondarySupportColorChanged(false)
-    , m_tertiarySupportColorChanged(false)
 {
     ui->setupUi(this);
     // Appearance preferences

@@ -64,8 +64,6 @@ DialogLayoutProgress::DialogLayoutProgress(int count, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::DialogLayoutProgress)
     , maxCount(count)
-    , movie(nullptr)
-    , isInitialized(false)
 {
     ui->setupUi(this);
 

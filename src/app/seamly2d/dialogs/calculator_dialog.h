@@ -54,7 +54,7 @@ protected:
 
 private:
     Ui::CalculatorDialog* ui;
-    bool isInitialized;
+    bool isInitialized{ false };
     Q_DISABLE_COPY(CalculatorDialog)
 
     CalculatorUtil* calc;

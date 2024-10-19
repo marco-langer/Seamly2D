@@ -105,8 +105,6 @@ GroupsWidget::GroupsWidget(VContainer* data, VAbstractPattern* doc, QWidget* par
     , ui(new Ui::GroupsWidget)
     , m_doc(doc)
     , m_data(data)
-    , m_patternHasGroups(false)
-    , m_currentGroupId(0)
 
 {
     ui->setupUi(this);

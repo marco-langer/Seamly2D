@@ -66,7 +66,6 @@
 DialogNewPattern::DialogNewPattern(const QString& patternPieceName, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::DialogNewPattern)
-    , isInitialized(false)
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

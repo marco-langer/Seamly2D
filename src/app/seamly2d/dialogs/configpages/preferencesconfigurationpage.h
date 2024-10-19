@@ -78,15 +78,15 @@ protected:
 private:
     Q_DISABLE_COPY(PreferencesConfigurationPage)
     Ui::PreferencesConfigurationPage* ui;
-    bool m_langChanged;
-    bool m_unitChanged;
-    bool m_labelLangChanged;
-    bool m_selectionSoundChanged;
-    bool m_moveSuffixChanged;
-    bool m_rotateSuffixChanged;
-    bool m_mirrorByAxisSuffixChanged;
-    bool m_mirrorByLineSuffixChanged;
-    bool m_defaultExportFormatChanged;
+    bool m_langChanged{ false };
+    bool m_unitChanged{ false };
+    bool m_labelLangChanged{ false };
+    bool m_selectionSoundChanged{ false };
+    bool m_moveSuffixChanged{ false };
+    bool m_rotateSuffixChanged{ false };
+    bool m_mirrorByAxisSuffixChanged{ false };
+    bool m_mirrorByLineSuffixChanged{ false };
+    bool m_defaultExportFormatChanged{ false };
 
     void setPointNameComboBox(const QStringList& list);
     void InitUnits();

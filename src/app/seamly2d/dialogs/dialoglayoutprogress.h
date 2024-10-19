@@ -84,8 +84,8 @@ private:
     Q_DISABLE_COPY(DialogLayoutProgress)
     Ui::DialogLayoutProgress* ui;
     const int maxCount;
-    QMovie* movie;
-    bool isInitialized;
+    QMovie* movie{ nullptr };
+    bool isInitialized{ false };
 };
 
 #endif   // DIALOGLAYOUTPROGRESS_H

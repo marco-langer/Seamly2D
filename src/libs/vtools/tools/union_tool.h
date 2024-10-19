@@ -73,29 +73,16 @@ class DialogTool;
 
 struct UnionToolInitData
 {
-    UnionToolInitData()
-        : piece1_Id(NULL_ID)
-        , piece2_Id(NULL_ID)
-        , piece1_Index(NULL_ID)
-        , piece2_Index(NULL_ID)
-        , scene(nullptr)
-        , doc(nullptr)
-        , data(nullptr)
-        , parse(Document::FullParse)
-        , typeCreation(Source::FromFile)
-        , retainPieces(false)
-    {}
-
-    quint32 piece1_Id;
-    quint32 piece2_Id;
-    quint32 piece1_Index;
-    quint32 piece2_Index;
-    VMainGraphicsScene* scene;
-    VAbstractPattern* doc;
-    VContainer* data;
-    Document parse;
-    Source typeCreation;
-    bool retainPieces;
+    quint32 piece1_Id{ NULL_ID };
+    quint32 piece2_Id{ NULL_ID };
+    quint32 piece1_Index{ NULL_ID };
+    quint32 piece2_Index{ NULL_ID };
+    VMainGraphicsScene* scene{ nullptr };
+    VAbstractPattern* doc{ nullptr };
+    VContainer* data{ nullptr };
+    Document parse{ Document::FullParse };
+    Source typeCreation{ Source::FromFile };
+    bool retainPieces{ false };
 };
 
 /**

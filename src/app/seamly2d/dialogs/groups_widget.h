@@ -106,8 +106,8 @@ private:
     Ui::GroupsWidget* ui;
     VAbstractPattern* m_doc;
     VContainer* m_data;
-    bool m_patternHasGroups;
-    quint32 m_currentGroupId;
+    bool m_patternHasGroups{ false };
+    quint32 m_currentGroupId{ 0 };
 
     void fillTable(const QMap<quint32, GroupAttributes>& groups);
     void fillGroupItemList();
