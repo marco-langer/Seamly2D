@@ -78,7 +78,6 @@
 #include <QMenu>
 #include <QPixmap>
 #include <QScreen>
-#include <QSound>
 #include <QTimer>
 #include <QtDebug>
 #include <QtNumeric>
@@ -141,11 +140,12 @@ PatternPieceDialog::PatternPieceDialog(
     , m_saWidth(0)
     , m_patternLabelLines()
     , m_pieceLabelLines()
-    , m_beep(new QSound(qApp->Settings()->getSelectionSound()))
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowIcon(QIcon(":/toolicon/32x32/new_piece.png"));
+
+    m_beep.setSource(qApp->Settings()->getSelectionSound());
 
     // Limit dialog height to 80% of screen size
     setMaximumHeight(qRound(QGuiApplication::primaryScreen()->availableGeometry().height() * .8));
@@ -398,23 +398,23 @@ void PatternPieceDialog::ChosenObject(quint32 id, const SceneObject& type)
             switch (type) {
             case SceneObject::Arc:
                 newMainPathItem(VPieceNode(id, Tool::NodeArc, reverse));
-                m_beep->play();
+                m_beep.play();
                 break;
             case SceneObject::ElArc:
                 newMainPathItem(VPieceNode(id, Tool::NodeElArc, reverse));
-                m_beep->play();
+                m_beep.play();
                 break;
             case SceneObject::Point:
                 newMainPathItem(VPieceNode(id, Tool::NodePoint));
-                m_beep->play();
+                m_beep.play();
                 break;
             case SceneObject::Spline:
                 newMainPathItem(VPieceNode(id, Tool::NodeSpline, reverse));
-                m_beep->play();
+                m_beep.play();
                 break;
             case SceneObject::SplinePath:
                 newMainPathItem(VPieceNode(id, Tool::NodeSplinePath, reverse));
-                m_beep->play();
+                m_beep.play();
                 break;
             case (SceneObject::Line):
             case (SceneObject::Piece):

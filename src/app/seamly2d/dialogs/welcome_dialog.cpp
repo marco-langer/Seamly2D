@@ -31,7 +31,7 @@
 
 #include <QPushButton>
 #include <QShowEvent>
-#include <QSound>
+#include <QSoundEffect>
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -75,9 +75,11 @@ SeamlyWelcomeDialog::SeamlyWelcomeDialog(QWidget* parent)
         ui->selectionSound_ComboBox,
         static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
         this,
-        [this]() {
+        [this, soundEffect = std::make_unique<QSoundEffect>()]() {
             m_selectionSoundChanged = true;
-            QSound::play("qrc:/sounds/" + ui->selectionSound_ComboBox->currentText() + ".wav");
+            soundEffect->setSource(QUrl{
+                QString{ "qrc:/sounds/%1.wav" }.arg(ui->selectionSound_ComboBox->currentText()) });
+            soundEffect->play();
         });
 
     ui->doNotShow_CheckBox->setChecked(settings->getShowWelcome());

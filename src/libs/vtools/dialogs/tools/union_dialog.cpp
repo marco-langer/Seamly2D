@@ -79,9 +79,9 @@ UnionDialog::UnionDialog(const VContainer* data, const quint32& toolId, QWidget*
     , numberP(0)
     , p1(NULL_ID)
     , p2(NULL_ID)
-    , m_beep(new QSound(qApp->Settings()->getSelectionSound()))
 {
     ui->setupUi(this);
+    m_beep.setSource(qApp->Settings()->getSelectionSound());
     initializeOkCancel(ui);
 }
 
@@ -153,7 +153,7 @@ void UnionDialog::chosenPiece(
 {
     if (pieceId == NULL_ID) {
         if (type == SceneObject::Piece) {
-            m_beep->play();
+            m_beep.play();
             if (checkPiece(id)) {
                 pieceId = id;
                 emit ToolTip(tr("Select the first point"));
@@ -168,7 +168,7 @@ void UnionDialog::chosenPiece(
         return;
     }
     if (type == SceneObject::Point) {
-        m_beep->play();
+        m_beep.play();
         if (numberP == 0) {
             p1 = id;
             ++numberP;

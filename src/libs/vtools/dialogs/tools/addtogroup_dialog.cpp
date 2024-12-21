@@ -42,11 +42,12 @@ AddToGroupDialog::AddToGroupDialog(VContainer* data, const quint32& toolId, QWid
     , ui(new Ui::AddToGroupDialog)
     , m_doc(qApp->getCurrentDocument())
     , m_groupData()
-    , m_beep(new QSound(qApp->Settings()->getSelectionSound()))
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowIcon(QIcon(":/icon/32x32/group.png"));
+
+    m_beep.setSource(qApp->Settings()->getSelectionSound());
 
     fillNameBox();
 
@@ -93,7 +94,7 @@ void AddToGroupDialog::SelectedObject(bool selected, quint32 object, quint32 too
 {
     if (selected) {
         m_groupData.insert(object, tool);
-        m_beep->play();
+        m_beep.play();
     } else {
         m_groupData.remove(object);
     }

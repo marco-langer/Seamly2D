@@ -59,7 +59,7 @@
 #include "../vpatterndb/floatItemData/vpiecelabeldata.h"
 #include "../vpatterndb/vpiece.h"
 
-#include <QSound>
+#include <QSoundEffect>
 
 enum TabOrder
 {
@@ -219,7 +219,7 @@ private:
     qreal m_saWidth;
     QVector<VLabelTemplateLine> m_patternLabelLines;
     QVector<VLabelTemplateLine> m_pieceLabelLines;
-    QSound* m_beep;
+    QSoundEffect m_beep;
 
     VPiece CreatePiece() const;
 

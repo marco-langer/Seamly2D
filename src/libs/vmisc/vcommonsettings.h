@@ -63,6 +63,7 @@
 #include <QSize>
 #include <QString>
 #include <QStringList>
+#include <QUrl>
 #include <QtGlobal>
 
 
@@ -301,7 +302,7 @@ public:
     void setUndoCount(const int& value);
 
     QString getSound() const;
-    QString getSelectionSound() const;
+    QUrl getSelectionSound() const;
     void setSelectionSound(const QString& value);
 
     QStringList GetRecentFileList() const;

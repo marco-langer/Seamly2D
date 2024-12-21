@@ -59,7 +59,6 @@
 #include <QFont>
 #include <QLocale>
 #include <QMessageLogger>
-#include <QSound>
 #include <QStaticStringData>
 #include <QStringData>
 #include <QStringDataPtr>
@@ -352,7 +351,8 @@ VCommonSettings::VCommonSettings(
     const QString& application,
     QObject* parent)
     : QSettings(format, scope, organization, application, parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 QString VCommonSettings::SharePath(const QString& shareItem)
@@ -1286,10 +1286,10 @@ QString VCommonSettings::getSound() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VCommonSettings::getSelectionSound() const
+QUrl VCommonSettings::getSelectionSound() const
 {
-    return QStringLiteral("qrc:/sounds/") + value(settingSelectionSound, "silent").toString()
-         + QStringLiteral(".wav");
+    return QUrl{ QString{ "qrc:/sounds/%1.wav" }.arg(
+        value(settingSelectionSound, QStringLiteral("silent")).toString()) };
 }
 
 //---------------------------------------------------------------------------------------------------------------------
