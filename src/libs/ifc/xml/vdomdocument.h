@@ -116,7 +116,7 @@ public:
     static const QString TagUnit;
     static const QString TagLine;
 
-    VDomDocument();
+    VDomDocument() = default;
     virtual ~VDomDocument() = default;
     QDomElement elementById(quint32 id, const QString& tagName = QString());
 

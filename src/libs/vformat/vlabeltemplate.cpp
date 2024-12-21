@@ -55,10 +55,6 @@
 const QString VLabelTemplate::TagTemplate = QStringLiteral("template");
 const QString VLabelTemplate::TagLines = QStringLiteral("lines");
 
-//---------------------------------------------------------------------------------------------------------------------
-VLabelTemplate::VLabelTemplate()
-    : VDomDocument()
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLabelTemplate::CreateEmptyTemplate()

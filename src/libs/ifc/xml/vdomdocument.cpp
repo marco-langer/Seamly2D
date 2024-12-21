@@ -140,7 +140,8 @@ public:
         , m_messageType(QtMsgType())
         , m_description()
         , m_sourceLocation(QSourceLocation())
-    {}
+    {
+    }
 
     QString statusMessage() const;
     qint64 line() const;
@@ -203,11 +204,6 @@ const QString VDomDocument::TagVersion = QStringLiteral("version");
 const QString VDomDocument::TagUnit = QStringLiteral("unit");
 const QString VDomDocument::TagLine = QStringLiteral("line");
 
-//---------------------------------------------------------------------------------------------------------------------
-VDomDocument::VDomDocument()
-    : QDomDocument()
-    , map()
-{}
 
 //---------------------------------------------------------------------------------------------------------------------
 QDomElement VDomDocument::elementById(quint32 id, const QString& tagName)
