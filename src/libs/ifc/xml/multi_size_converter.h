@@ -59,7 +59,6 @@
 #include <QCoreApplication>
 #include <QString>
 #include <QtGlobal>
-#include <qcompilerdetection.h>
 
 #include "abstract_converter.h"
 #include "abstract_m_converter.h"
@@ -75,15 +74,9 @@ public:
 
     static const QString MeasurementMaxVerStr;
     static const QString CurrentSchema;
-// GCC 4.6 doesn't allow constexpr and const together
-#if !defined(__INTEL_COMPILER) && !defined(__clang__) && defined(__GNUC__) \
-    && (__GNUC__ * 100 + __GNUC_MINOR__) <= 406
+
     static constexpr int MeasurementMinVer = CONVERTER_VERSION_CHECK(0, 3, 0);
     static constexpr int MeasurementMaxVer = CONVERTER_VERSION_CHECK(0, 4, 5);
-#else
-    static constexpr const int MeasurementMinVer = CONVERTER_VERSION_CHECK(0, 3, 0);
-    static constexpr const int MeasurementMaxVer = CONVERTER_VERSION_CHECK(0, 4, 5);
-#endif
 
 protected:
     int minVer() const override;
