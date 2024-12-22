@@ -113,7 +113,6 @@
 #include <QSettings>
 #include <QSharedPointer>
 #include <QShowEvent>
-#include <QSourceLocation>
 #include <QTextCodec>
 #include <QTimer>
 #include <QToolBar>
