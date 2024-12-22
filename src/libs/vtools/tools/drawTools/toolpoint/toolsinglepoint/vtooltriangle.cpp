@@ -281,7 +281,7 @@ QPointF VToolTriangle::FindPoint(
     line.setLength(step);
 
     qint64 c = qFloor(hypotenuse.length());
-    while (1) {
+    while (true) {
         line.setLength(line.length() + step);
         qint64 a = qFloor(QLineF(line.p2(), firstPoint).length());
         qint64 b = qFloor(QLineF(line.p2(), secondPoint).length());

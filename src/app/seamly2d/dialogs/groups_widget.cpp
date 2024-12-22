@@ -347,7 +347,7 @@ void GroupsWidget::addGroupToList()
                             this };
 
     QString groupName;
-    while (1) {
+    while (true) {
         const bool result = dialog.exec();
         groupName = dialog.getName();
         if (result == false || groupName.isEmpty()) {
@@ -438,7 +438,7 @@ void GroupsWidget::editGroup()
         dialog.setWindowTitle(tr("Edit Group"));
 
         QString groupName;
-        while (1) {
+        while (true) {
             const bool result = dialog.exec();
             groupName = dialog.getName();
             if (result == false || groupName.isEmpty()) {
