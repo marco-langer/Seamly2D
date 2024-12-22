@@ -77,7 +77,8 @@
 
 VLayoutPaper::VLayoutPaper(int height, int width)
     : m_globalContour(VContour{ height, width })
-{}
+{
+}
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -275,12 +276,12 @@ QGraphicsRectItem* VLayoutPaper::GetPaperItem(bool autoCrop, bool textAsPaths) c
 {
     QGraphicsRectItem* paper;
     if (autoCrop) {
-        QScopedPointer<QGraphicsScene> scene(new QGraphicsScene());
+        QGraphicsScene scene;
         QList<QGraphicsItem*> list = getPieceItems(textAsPaths);
         for (int i = 0; i < list.size(); ++i) {
-            scene->addItem(list.at(i));
+            scene.addItem(list.at(i));
         }
-        const int height = scene->itemsBoundingRect().toRect().height();
+        const int height = scene.itemsBoundingRect().toRect().height();
         if (m_globalContour.GetHeight() > height)   //-V807
         {
             paper = new QGraphicsRectItem(QRectF(0, 0, m_globalContour.GetWidth(), height));

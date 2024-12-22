@@ -95,6 +95,7 @@
 #include <QMessageBox>
 #include <QPainterPathStroker>
 
+#include <memory>
 
 // Current version of seam allowance tag need for backward compatibility
 const quint8 PatternPieceTool::pieceVersion = 2;
@@ -1794,13 +1795,13 @@ void PatternPieceTool::initializeAnchorPoints(const VPiece& piece)
 //---------------------------------------------------------------------------------------------------------------------
 void PatternPieceTool::deleteTool(bool ask)
 {
-    QScopedPointer<DeletePiece> cmd(new DeletePiece(doc, m_id, VAbstractTool::data.GetPiece(m_id)));
+    auto cmd{ std::make_unique<DeletePiece>(doc, m_id, VAbstractTool::data.GetPiece(m_id)) };
     if (ask) {
         if (ConfirmDeletion() == QMessageBox::No) {
             return;
         }
         /* If Union tool delete piece no need emit FullParsing.*/
-        connect(cmd.data(), &DeletePiece::NeedFullParsing, doc, &VAbstractPattern::NeedFullParsing);
+        connect(cmd.get(), &DeletePiece::NeedFullParsing, doc, &VAbstractPattern::NeedFullParsing);
     }
 
     // If Union tool delete the piece this object will be deleted only after full parse.
@@ -1818,7 +1819,7 @@ void PatternPieceTool::deleteTool(bool ask)
 
     hide();   // User shouldn't see this object
 
-    qApp->getUndoStack()->push(cmd.take());
+    qApp->getUndoStack()->push(cmd.release());
 
     // Throw exception, this will help prevent case when we forget to immediately quit function.
     VExceptionToolWasDeleted e("Tool was used after deleting.");

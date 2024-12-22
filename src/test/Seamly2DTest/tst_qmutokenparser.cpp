@@ -59,7 +59,8 @@
 TST_QmuTokenParser::TST_QmuTokenParser(QObject* parent)
     : QObject(parent)
     , m_systemLocale(QLocale::system())
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_QmuTokenParser::IsSingle_data()
@@ -157,9 +158,9 @@ bool TST_QmuTokenParser::IsSingleFromUser(const QString& formula)
     QMap<int, QString> numbers;
 
     try {
-        QScopedPointer<qmu::QmuTokenParser> cal(new qmu::QmuTokenParser(formula, true, true));
-        tokens = cal->GetTokens();     // Tokens (variables, measurements)
-        numbers = cal->GetNumbers();   // All numbers in expression
+        qmu::QmuTokenParser cal{ formula, true, true };
+        tokens = cal.GetTokens();     // Tokens (variables, measurements)
+        numbers = cal.GetNumbers();   // All numbers in expression
     } catch (const qmu::QmuParserError& error) {
         Q_UNUSED(error)
         return false;   // something wrong with formula, say no

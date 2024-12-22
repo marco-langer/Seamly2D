@@ -287,7 +287,8 @@ VAbstractPattern::VAbstractPattern(QObject* parent)
     , history(QVector<VToolRecord>())
     , patternPieces(QStringList())
     , modified(false)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 QStringList VAbstractPattern::ListMeasurements() const
@@ -303,10 +304,8 @@ QStringList VAbstractPattern::ListMeasurements() const
     const QVector<VFormulaField> expressions = ListExpressions();
     for (int i = 0; i < expressions.size(); ++i) {
         // Eval formula
-        QScopedPointer<qmu::QmuTokenParser> cal(
-            new qmu::QmuTokenParser(expressions.at(i).expression, false, false));
-        const QMap<int, QString> tokens = cal->GetTokens();   // Tokens (variables, measurements)
-        delete cal.take();
+        const qmu::QmuTokenParser cal{ expressions.at(i).expression, false, false };
+        const QMap<int, QString> tokens = cal.GetTokens();   // Tokens (variables, measurements)
 
         const QList<QString> tValues = tokens.values();
         for (int j = 0; j < tValues.size(); ++j) {

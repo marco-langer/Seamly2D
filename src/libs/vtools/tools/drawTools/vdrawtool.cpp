@@ -64,7 +64,6 @@
 #include <QDialog>
 #include <QDomNode>
 #include <QMessageLogger>
-#include <QScopedPointer>
 #include <QUndoStack>
 #include <Qt>
 #include <QtDebug>

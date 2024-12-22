@@ -20,9 +20,9 @@
  **
  **  You should have received a copy of the GNU General Public License
  **  along with Seamly2D. If not, see <http://www.gnu.org/licenses/>.
- **************************************************************************/
+ **************************************************************************
 
-/************************************************************************
+ ************************************************************************
  **  @file   visualization.cpp
  **  @author Roman Telezhynskyi <dismine(at)gmail.com>
  **  @date   15 8, 2014
@@ -72,7 +72,6 @@
 #include <QPen>
 #include <QPointF>
 #include <QRectF>
-#include <QScopedPointer>
 #include <QString>
 #include <Qt>
 #include <QtDebug>
@@ -95,7 +94,8 @@ Visualization::Visualization(const VContainer* data)
     , object1Id(NULL_ID)
     , toolTip(QString())
     , mode(Mode::Creation)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void Visualization::setObject1Id(const quint32& value) { object1Id = value; }
@@ -182,8 +182,8 @@ qreal Visualization::FindVal(
             formula.replace("\n", " ");
             formula = qApp->translateVariables()->FormulaFromUser(
                 formula, qApp->Settings()->getOsSeparator());
-            QScopedPointer<Calculator> cal(new Calculator());
-            val = cal->EvalFormula(vars, formula);
+            Calculator cal;
+            val = cal.EvalFormula(vars, formula);
 
             if (qIsInf(val) || qIsNaN(val)) {
                 val = 0;

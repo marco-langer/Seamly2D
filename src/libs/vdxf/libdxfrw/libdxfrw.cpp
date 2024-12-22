@@ -16,10 +16,11 @@
 #include "intern/drw_textcodec.h"
 #include "intern/dxfreader.h"
 #include "intern/dxfwriter.h"
-#include <QScopedPointer>
+
 #include <algorithm>
 #include <cassert>
 #include <fstream>
+#include <memory>
 #include <sstream>
 
 #define FIRSTHANDLE 48
@@ -2639,20 +2640,20 @@ bool dxfRW::processVertex(DRW_Polyline* pl)
 {
     DRW_DBG("dxfRW::processVertex");
     int code;
-    QScopedPointer<DRW_Vertex> v(new DRW_Vertex());
+    auto v{ std::make_unique<DRW_Vertex>() };
     while (reader->readRec(&code)) {
         DRW_DBG(code);
         DRW_DBG("\n");
         switch (code) {
         case 0: {
-            pl->appendVertex(v.take());
+            pl->appendVertex(v.release());
             nextentity = reader->getString();
             DRW_DBG(nextentity);
             DRW_DBG("\n");
             if (nextentity == "SEQEND") {
                 return true;   // found SEQEND no more vertex, terminate
             } else if (nextentity == "VERTEX") {
-                v.reset(new DRW_Vertex());   // another vertex
+                v = std::make_unique<DRW_Vertex>();   // another vertex
             }
         }
             DRW_FALLTHROUGH

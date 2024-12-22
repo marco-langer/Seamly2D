@@ -93,6 +93,8 @@
 #include <QTextCodec>
 #include <QtNumeric>
 
+#include <memory>
+
 #if defined(Q_OS_MAC)
 #    include <QDrag>
 #    include <QMimeData>
@@ -605,23 +607,22 @@ void TMainWindow::Preferences()
     static QPointer<DialogSeamlyMePreferences> guard;   // Prevent any second run
     if (guard.isNull()) {
         QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        DialogSeamlyMePreferences* preferences = new DialogSeamlyMePreferences(this);
-        // QScopedPointer needs to be sure any exception will never block guard
-        QScopedPointer<DialogSeamlyMePreferences> dlg(preferences);
-        guard = preferences;
+
+        auto dialog{ std::make_unique<DialogSeamlyMePreferences>(this) };
+        guard = dialog.get();
         // Must be first
         connect(
-            dlg.data(),
+            dialog.get(),
             &DialogSeamlyMePreferences::updateProperties,
             this,
             &TMainWindow::WindowsLocale);
         connect(
-            dlg.data(),
+            dialog.get(),
             &DialogSeamlyMePreferences::updateProperties,
             this,
             &TMainWindow::ToolBarStyles);
         QGuiApplication::restoreOverrideCursor();
-        dlg->exec();
+        dialog->exec();
     }
 }
 
@@ -1499,12 +1500,11 @@ void TMainWindow::AddCustom()
 //---------------------------------------------------------------------------------------------------------------------
 void TMainWindow::AddKnown()
 {
-    QScopedPointer<MeasurementDatabaseDialog> dialog(
-        new MeasurementDatabaseDialog(individualMeasurements->listKnown(), this));
-    if (dialog->exec() == QDialog::Accepted) {
+    MeasurementDatabaseDialog dialog{ individualMeasurements->listKnown(), this };
+    if (dialog.exec() == QDialog::Accepted) {
         qint32 currentRow;
 
-        const QStringList list = dialog->getNewMeasurementNames();
+        const QStringList list = dialog.getNewMeasurementNames();
         if (ui->tableWidget->currentRow() == -1) {
             currentRow = ui->tableWidget->rowCount() + list.size() - 1;
             for (int i = 0; i < list.size(); ++i) {
@@ -1582,9 +1582,9 @@ void TMainWindow::ImportFromPattern()
     QStringList measurements;
     try {
         VPatternConverter converter(filename);
-        QScopedPointer<VLitePattern> doc(new VLitePattern());
-        doc->setXMLContent(converter.Convert());
-        measurements = doc->ListMeasurements();
+        VLitePattern doc;
+        doc.setXMLContent(converter.Convert());
+        measurements = doc.ListMeasurements();
     }
 
     catch (VException& exception) {
@@ -2456,30 +2456,29 @@ bool TMainWindow::MaybeSave()
             return true;   // Don't ask if file was created without modifications.
         }
 
-        QScopedPointer<QMessageBox> messageBox(new QMessageBox(
-            tr("Unsaved changes"),
-            tr("Measurements have been modified.\n"
-               "Do you want to save your changes?"),
-            QMessageBox::Warning,
-            QMessageBox::Yes,
-            QMessageBox::No,
-            QMessageBox::Cancel,
-            this,
-            Qt::Sheet));
+        QMessageBox messageBox{ tr("Unsaved changes"),
+                                tr("Measurements have been modified.\n"
+                                   "Do you want to save your changes?"),
+                                QMessageBox::Warning,
+                                QMessageBox::Yes,
+                                QMessageBox::No,
+                                QMessageBox::Cancel,
+                                this,
+                                Qt::Sheet };
 
-        messageBox->setDefaultButton(QMessageBox::Yes);
-        messageBox->setEscapeButton(QMessageBox::Cancel);
+        messageBox.setDefaultButton(QMessageBox::Yes);
+        messageBox.setEscapeButton(QMessageBox::Cancel);
 
-        messageBox->setButtonText(
+        messageBox.setButtonText(
             QMessageBox::Yes, curFile.isEmpty() || m_isReadOnly ? tr("Save...") : tr("Save"));
-        messageBox->setButtonText(QMessageBox::No, tr("Don't Save"));
+        messageBox.setButtonText(QMessageBox::No, tr("Don't Save"));
 
-        messageBox->setWindowModality(Qt::ApplicationModal);
-        messageBox->setWindowFlags(
+        messageBox.setWindowModality(Qt::ApplicationModal);
+        messageBox.setWindowFlags(
             windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMaximizeButtonHint
             & ~Qt::WindowMinimizeButtonHint);
         const QMessageBox::StandardButton ret =
-            static_cast<QMessageBox::StandardButton>(messageBox->exec());
+            static_cast<QMessageBox::StandardButton>(messageBox.exec());
 
         switch (ret) {
         case QMessageBox::Yes:
@@ -2848,8 +2847,8 @@ bool TMainWindow::EvalFormula(
                 f = formula;
             }
             f.replace("\n", " ");
-            QScopedPointer<Calculator> cal(new Calculator());
-            qreal result = cal->EvalFormula(data->DataVariables(), f);
+            Calculator cal;
+            qreal result = cal.EvalFormula(data->DataVariables(), f);
 
             if (qIsInf(result) || qIsNaN(result)) {
                 label->setText(tr("Error") + " (" + postfix + ").");

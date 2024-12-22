@@ -68,8 +68,8 @@ qreal EvalFormula(const VContainer* data, QString formula)
         try {
             // Replace line return character with spaces for calc if exist
             formula.replace("\n", " ");
-            QScopedPointer<Calculator> cal(new Calculator());
-            const qreal result = cal->EvalFormula(data->DataVariables(), formula);
+            Calculator cal;
+            const qreal result = cal.EvalFormula(data->DataVariables(), formula);
 
             if (qIsInf(result) || qIsNaN(result)) {
                 return -1;
@@ -96,17 +96,20 @@ void VPieceNode::Swap(VPieceNode& node) noexcept { std::swap(d, node.d); }
 //---------------------------------------------------------------------------------------------------------------------
 VPieceNode::VPieceNode()
     : d(new VPieceNodeData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPieceNode::VPieceNode(quint32 id, Tool typeTool, bool reverse)
     : d(new VPieceNodeData(id, typeTool, reverse))
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPieceNode::VPieceNode(const VPieceNode& node)
     : d(node.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPieceNode& VPieceNode::operator=(const VPieceNode& node)

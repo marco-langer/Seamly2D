@@ -280,7 +280,7 @@ void InsertNodesDialog::showContextMenu(const QPoint& pos)
     }
 
     // workaround for https://bugreports.qt.io/browse/QTBUG-97559: assign parent to QMenu
-    QScopedPointer<QMenu> menu(new QMenu(ui->nodes_ListWidget));
+    QMenu menu{ ui->nodes_ListWidget };
     NodeInfo info;
     NotchType notchType = NotchType::Slit;
     bool isNotch = false;
@@ -300,11 +300,11 @@ void InsertNodesDialog::showContextMenu(const QPoint& pos)
     QAction* actionReverse = nullptr;
 
     if (rowNode.GetTypeTool() != Tool::NodePoint) {
-        actionReverse = menu->addAction(tr("Reverse"));
+        actionReverse = menu.addAction(tr("Reverse"));
         actionReverse->setCheckable(true);
         actionReverse->setChecked(rowNode.GetReverse());
     } else {
-        QMenu* notchMenu = menu->addMenu(tr("Notch"));
+        QMenu* notchMenu = menu.addMenu(tr("Notch"));
         actionNotch = notchMenu->menuAction();
         actionNotch->setCheckable(true);
         actionNotch->setChecked(rowNode.isNotch());
@@ -323,8 +323,8 @@ void InsertNodesDialog::showContextMenu(const QPoint& pos)
     }
 
     QAction* actionDelete =
-        menu->addAction(QIcon::fromTheme("edit-delete"), tr("Delete") + QStringLiteral("\tDel"));
-    QAction* selectedAction = menu->exec(ui->nodes_ListWidget->viewport()->mapToGlobal(pos));
+        menu.addAction(QIcon::fromTheme("edit-delete"), tr("Delete") + QStringLiteral("\tDel"));
+    QAction* selectedAction = menu.exec(ui->nodes_ListWidget->viewport()->mapToGlobal(pos));
     if (selectedAction == actionReverse && rowNode.GetTypeTool() != Tool::NodePoint) {
         rowNode.SetReverse(!rowNode.GetReverse());
         info = getNodeInfo(rowNode, true);

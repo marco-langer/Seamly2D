@@ -422,8 +422,8 @@ bool DialogVariables::evalVariableFormula(
                 f = formula;
             }
             f.replace("\n", " ");
-            QScopedPointer<Calculator> cal(new Calculator());
-            const qreal result = cal->EvalFormula(data->DataVariables(), f);
+            Calculator cal;
+            const qreal result = cal.EvalFormula(data->DataVariables(), f);
 
             if (qIsInf(result) || qIsNaN(result)) {
                 label->setText(tr("Error") + " (" + postfix + ").");
@@ -533,11 +533,10 @@ bool DialogVariables::variableUsed(const QString& name) const
         if (expressions.at(i).expression.indexOf(name) != -1) {
             // Eval formula
             try {
-                QScopedPointer<qmu::QmuTokenParser> cal(
-                    new qmu::QmuTokenParser(expressions.at(i).expression, false, false));
+                qmu::QmuTokenParser cal{ expressions.at(i).expression, false, false };
 
                 // Tokens (variables, measurements)
-                if (cal->GetTokens().values().contains(name)) {
+                if (cal.GetTokens().values().contains(name)) {
                     return true;
                 }
             } catch (const qmu::QmuParserError&) {

@@ -70,6 +70,8 @@
 #include "../vpatterndb/vcontainer.h"
 #include "vabstractpiece.h"
 
+#include <memory>
+
 class VLayoutPieceData;
 class VLayoutPiecePath;
 class QGraphicsItem;
@@ -178,7 +180,7 @@ private:
     [[nodiscard]] QGraphicsPathItem* createMainItem() const;
     void createAllowanceItem(QGraphicsItem* parent) const;
     void createNotchesItem(QGraphicsItem* parent) const;
-    [[nodiscard]] QGraphicsPathItem* getMainPathItem() const;
+    std::unique_ptr<QGraphicsPathItem> getMainPathItem() const;
 
     void createInternalPathItem(int i, QGraphicsItem* parent) const;
     void createCutoutPathItem(int i, QGraphicsItem* parent) const;

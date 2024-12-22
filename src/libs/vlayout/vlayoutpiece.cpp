@@ -363,13 +363,15 @@ void VLayoutPiece::Swap(VLayoutPiece& piece) noexcept
 VLayoutPiece::VLayoutPiece()
     : VAbstractPiece()
     , d(new VLayoutPieceData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutPiece::VLayoutPiece(const VLayoutPiece& piece)
     : VAbstractPiece(piece)
     , d(piece.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutPiece& VLayoutPiece::operator=(const VLayoutPiece& piece)
@@ -514,7 +516,7 @@ void VLayoutPiece::SetPieceText(
         v[i] = RotatePoint(ptCenter, v.at(i), rotationAngle);
     }
 
-    QScopedPointer<QGraphicsItem> item(getMainPathItem());
+    std::unique_ptr<QGraphicsItem> item{ getMainPathItem() };
     d->pieceLabel = CorrectPosition(item->boundingRect(), v);
 
     // generate text
@@ -570,7 +572,7 @@ void VLayoutPiece::SetPatternInfo(
     for (int i = 0; i < v.count(); ++i) {
         v[i] = RotatePoint(ptCenter, v.at(i), rotationAngle);
     }
-    QScopedPointer<QGraphicsItem> item(getMainPathItem());
+    std::unique_ptr<QGraphicsItem> item{ getMainPathItem() };
     d->patternInfo = CorrectPosition(item->boundingRect(), v);
 
     // Generate text
@@ -632,7 +634,7 @@ void VLayoutPiece::setGrainline(const VGrainlineData& data, const VContainer* pa
         v << pt4;
     }
 
-    QScopedPointer<QGraphicsItem> item(getMainPathItem());
+    std::unique_ptr<QGraphicsItem> item{ getMainPathItem() };
     d->grainlinePoints = CorrectPosition(item->boundingRect(), v);
 }
 
@@ -1156,9 +1158,9 @@ void VLayoutPiece::createNotchesItem(QGraphicsItem* parent) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QGraphicsPathItem* VLayoutPiece::getMainPathItem() const
+std::unique_ptr<QGraphicsPathItem> VLayoutPiece::getMainPathItem() const
 {
-    QGraphicsPathItem* item = new QGraphicsPathItem();
+    auto item{ std::make_unique<QGraphicsPathItem>() };
 
     QPainterPath path;
 

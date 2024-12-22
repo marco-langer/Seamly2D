@@ -77,8 +77,8 @@
  * parsing here.
  *     //Don't know why.
  *     delete dialog;
- *     QScopedPointer<Calculator> cal(new Calculator());
- *     result = cal->EvalFormula(data->PlainVariables(), formula);
+ *     Calculator cal;
+ *     result = cal.EvalFormula(data->PlainVariables(), formula);
  * }
  */
 class Calculator : public qmu::QmuFormulaBase

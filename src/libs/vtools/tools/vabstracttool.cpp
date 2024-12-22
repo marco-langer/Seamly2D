@@ -176,8 +176,8 @@ qreal VAbstractTool::CheckFormula(const quint32& toolId, QString& formula, VCont
     SCASSERT(data != nullptr)
     qreal result = 0;
     try {
-        QScopedPointer<Calculator> cal(new Calculator());
-        result = cal->EvalFormula(data->DataVariables(), formula);
+        Calculator cal;
+        result = cal.EvalFormula(data->DataVariables(), formula);
 
         if (qIsInf(result) || qIsNaN(result)) {
             qWarning() << "Invalid the formula value";
@@ -191,11 +191,11 @@ qreal VAbstractTool::CheckFormula(const quint32& toolId, QString& formula, VCont
                  << "--------------------------------------";
 
         if (qApp->isAppInGUIMode()) {
-            QScopedPointer<DialogUndo> dialogUndo(new DialogUndo(qApp->getMainWindow()));
+            DialogUndo dialogUndo{ qApp->getMainWindow() };
             forever
             {
-                if (dialogUndo->exec() == QDialog::Accepted) {
-                    const UndoButton resultUndo = dialogUndo->Result();
+                if (dialogUndo.exec() == QDialog::Accepted) {
+                    const UndoButton resultUndo = dialogUndo.Result();
                     if (resultUndo == UndoButton::Fix) {
                         auto* dialog = new EditFormulaDialog(data, toolId, qApp->getMainWindow());
                         dialog->setWindowTitle(tr("Edit wrong formula"));
@@ -205,8 +205,8 @@ qreal VAbstractTool::CheckFormula(const quint32& toolId, QString& formula, VCont
                             /* Need delete dialog here because parser in dialog don't allow use
                              * correct separator for parsing here. */
                             delete dialog;
-                            QScopedPointer<Calculator> cal1(new Calculator());
-                            result = cal1->EvalFormula(data->DataVariables(), formula);
+                            Calculator cal1;
+                            result = cal1.EvalFormula(data->DataVariables(), formula);
 
                             if (qIsInf(result) || qIsNaN(result)) {
                                 qWarning() << "Invalid the formula value";

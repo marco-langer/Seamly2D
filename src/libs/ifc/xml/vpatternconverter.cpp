@@ -1659,10 +1659,8 @@ QString VPatternConverter::FixMeasurementInFormulaToV0_2_0(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
-    QScopedPointer<qmu::QmuTokenParser> cal(
-        new qmu::QmuTokenParser(formula, false, false));   // Eval formula
-    QMap<int, QString> tokens = cal->GetTokens();          // Tokens (variables, measurements)
-    delete cal.take();
+    const qmu::QmuTokenParser cal{ formula, false, false };   // Eval formula
+    QMap<int, QString> tokens = cal.GetTokens();              // Tokens (variables, measurements)
 
     QList<int> tKeys = tokens.keys();   // Take all tokens positions
     QList<QString> tValues = tokens.values();

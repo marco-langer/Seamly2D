@@ -319,7 +319,7 @@ void MainWindowsNoGUI::exportPiecesAsFlatLayout(
         return;
     }
 
-    QScopedPointer<QGraphicsScene> scene(new QGraphicsScene());
+    QGraphicsScene scene;
 
     QList<QGraphicsItem*> list;
     for (int i = 0; i < pieceList.count(); ++i) {
@@ -329,11 +329,11 @@ void MainWindowsNoGUI::exportPiecesAsFlatLayout(
     }
 
     for (int i = 0; i < list.size(); ++i) {
-        scene->addItem(list.at(i));
+        scene.addItem(list.at(i));
     }
 
     QList<QGraphicsItem*> papers;   // Blank sheets
-    QRect rect = scene->itemsBoundingRect().toRect();
+    QRect rect = scene.itemsBoundingRect().toRect();
 
     const int mx = rect.x();
     const int my = rect.y();
@@ -345,7 +345,7 @@ void MainWindowsNoGUI::exportPiecesAsFlatLayout(
         list.at(i)->setTransform(transform);
     }
 
-    rect = scene->itemsBoundingRect().toRect();
+    rect = scene.itemsBoundingRect().toRect();
 
     QGraphicsRectItem* paper = new QGraphicsRectItem(rect);
     paper->setPen(QPen(Qt::black, 1));
@@ -442,7 +442,7 @@ void MainWindowsNoGUI::exportPiecesAsApparelLayout(
         return;
     }
 
-    QScopedPointer<QGraphicsScene> scene(new QGraphicsScene());
+    QGraphicsScene scene;
 
     QList<QGraphicsItem*> list;
     for (int i = 0; i < pieceList.count(); ++i) {
@@ -452,10 +452,10 @@ void MainWindowsNoGUI::exportPiecesAsApparelLayout(
     }
 
     for (int i = 0; i < list.size(); ++i) {
-        scene->addItem(list.at(i));
+        scene.addItem(list.at(i));
     }
 
-    QRect rect = scene->itemsBoundingRect().toRect();
+    QRect rect = scene.itemsBoundingRect().toRect();
 
     const int mx = rect.x();
     const int my = rect.y();
@@ -467,7 +467,7 @@ void MainWindowsNoGUI::exportPiecesAsApparelLayout(
         list.at(i)->setTransform(transform);
     }
 
-    rect = scene->itemsBoundingRect().toRect();
+    rect = scene.itemsBoundingRect().toRect();
 
     for (int i = 0; i < pieceList.count(); ++i) {
         QTransform moveTransform = pieceList[i].getTransform();

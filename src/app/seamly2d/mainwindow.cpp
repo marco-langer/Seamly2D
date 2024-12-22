@@ -5019,30 +5019,29 @@ void MainWindow::WriteSettings()
 bool MainWindow::MaybeSave()
 {
     if (this->isWindowModified() && m_guiEnabled) {
-        QScopedPointer<QMessageBox> messageBox(new QMessageBox(
-            tr("Unsaved changes"),
-            tr("The pattern has been modified.\n"
-               "Do you want to save your changes?"),
-            QMessageBox::Warning,
-            QMessageBox::Yes,
-            QMessageBox::No,
-            QMessageBox::Cancel,
-            this,
-            Qt::Sheet));
+        QMessageBox messageBox{ tr("Unsaved changes"),
+                                tr("The pattern has been modified.\n"
+                                   "Do you want to save your changes?"),
+                                QMessageBox::Warning,
+                                QMessageBox::Yes,
+                                QMessageBox::No,
+                                QMessageBox::Cancel,
+                                this,
+                                Qt::Sheet };
 
-        messageBox->setDefaultButton(QMessageBox::Yes);
-        messageBox->setEscapeButton(QMessageBox::Cancel);
+        messageBox.setDefaultButton(QMessageBox::Yes);
+        messageBox.setEscapeButton(QMessageBox::Cancel);
 
-        messageBox->setButtonText(
+        messageBox.setButtonText(
             QMessageBox::Yes,
             qApp->getFilePath().isEmpty() || m_patternReadOnly ? tr("Save...") : tr("Save"));
-        messageBox->setButtonText(QMessageBox::No, tr("Don't Save"));
+        messageBox.setButtonText(QMessageBox::No, tr("Don't Save"));
 
-        messageBox->setWindowModality(Qt::ApplicationModal);
-        messageBox->setWindowFlags(
+        messageBox.setWindowModality(Qt::ApplicationModal);
+        messageBox.setWindowFlags(
             windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMaximizeButtonHint
             & ~Qt::WindowMinimizeButtonHint);
-        const auto ret = static_cast<QMessageBox::StandardButton>(messageBox->exec());
+        const auto ret = static_cast<QMessageBox::StandardButton>(messageBox.exec());
 
         switch (ret) {
         case QMessageBox::Yes:
@@ -5065,7 +5064,7 @@ bool MainWindow::MaybeSave()
 void MainWindow::InfoUnsavedImages(bool* firstImportImage)
 {
     if (m_guiEnabled) {
-        QScopedPointer<QMessageBox> messageBox(new QMessageBox(
+        QMessageBox messageBox{
             QMessageBox::Information,
             tr("Images will not be saved"),
             tr("Please note that the images can not be saved and that they are not affected "
@@ -5075,14 +5074,15 @@ void MainWindow::InfoUnsavedImages(bool* firstImportImage)
                "to be able to recreate identically the image when opening the software again."),
             QMessageBox::NoButton,
             this,
-            Qt::Sheet));
+            Qt::Sheet
+        };
 
-        messageBox->setWindowModality(Qt::ApplicationModal);
-        messageBox->setWindowFlags(
+        messageBox.setWindowModality(Qt::ApplicationModal);
+        messageBox.setWindowFlags(
             windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowMaximizeButtonHint
             & ~Qt::WindowMinimizeButtonHint);
 
-        messageBox->exec();
+        messageBox.exec();
         *firstImportImage = true;
     }
 }
@@ -6344,61 +6344,60 @@ void MainWindow::Preferences()
     static QPointer<DialogPreferences> guard;   // Prevent any second run
     if (guard.isNull()) {
         QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        DialogPreferences* preferences = new DialogPreferences(this);
-        // QScopedPointer needs to be sure any exception will never block guard
-        QScopedPointer<DialogPreferences> dialog(preferences);
-        guard = preferences;
+
+        auto dialog{ std::make_unique<DialogPreferences>(this) };
+        guard = dialog.get();
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             this,
             &MainWindow::WindowsLocale);   // Must be first
         connect(
-            dialog.data(), &DialogPreferences::updateProperties, this, &MainWindow::ToolBarStyles);
+            dialog.get(), &DialogPreferences::updateProperties, this, &MainWindow::ToolBarStyles);
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             this,
             &MainWindow::updateToolBarVisibility);
         connect(
-            dialog.data(), &DialogPreferences::updateProperties, this, &MainWindow::refreshLabels);
+            dialog.get(), &DialogPreferences::updateProperties, this, &MainWindow::refreshLabels);
         connect(
-            dialog.data(), &DialogPreferences::updateProperties, this, &MainWindow::resetOrigins);
+            dialog.get(), &DialogPreferences::updateProperties, this, &MainWindow::resetOrigins);
         connect(
-            dialog.data(), &DialogPreferences::updateProperties, this, &MainWindow::upDateScenes);
+            dialog.get(), &DialogPreferences::updateProperties, this, &MainWindow::upDateScenes);
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             this,
             &MainWindow::updateViewToolbar);
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             this,
             &MainWindow::resetPanShortcuts);
-        connect(dialog.data(), &DialogPreferences::updateProperties, this, [this]() {
+        connect(dialog.get(), &DialogPreferences::updateProperties, this, [this]() {
             emit doc->FullUpdateFromFile();
         });
         // connect(dialog.data(), &DialogPreferences::updateProperties,
         //        m_toolProperties, &VToolOptionsPropertyBrowser::refreshOptions);
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             this,
             &MainWindow::initPropertyEditor);
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             this,
             &MainWindow::initBasePointComboBox);
 
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             m_ui->view,
             &VMainGraphicsView::resetScrollBars);
         connect(
-            dialog.data(),
+            dialog.get(),
             &DialogPreferences::updateProperties,
             m_ui->view,
             &VMainGraphicsView::resetScrollAnimations);
@@ -6838,12 +6837,12 @@ QString MainWindow::checkPathToMeasurements(const QString& patternPath, const QS
                 if (filename.isEmpty()) {
                     return filename;
                 } else {
-                    QScopedPointer<MeasurementDoc> measurements(new MeasurementDoc(pattern));
-                    measurements->setSize(VContainer::rsize());
-                    measurements->setHeight(VContainer::rheight());
-                    measurements->setXMLContent(filename);
+                    MeasurementDoc measurements{ pattern };
+                    measurements.setSize(VContainer::rsize());
+                    measurements.setHeight(VContainer::rheight());
+                    measurements.setXMLContent(filename);
 
-                    patternType = measurements->Type();
+                    patternType = measurements.Type();
 
                     if (patternType == MeasurementsType::Unknown) {
                         VException exception(tr("Measurement file has unknown format."));
@@ -6857,12 +6856,12 @@ QString MainWindow::checkPathToMeasurements(const QString& patternPath, const QS
                             filename.replace(
                                 QLatin1String(".") + vstExt, QLatin1String(".") + smmsExt);
                             QString error;
-                            const bool result = measurements->SaveDocument(filename, error);
+                            const bool result = measurements.SaveDocument(filename, error);
                             if (result) {
                                 UpdateWindowTitle();
                             }
                         }
-                        measurements->setXMLContent(filename);   // Read again after conversion
+                        measurements.setXMLContent(filename);   // Read again after conversion
                     } else {
                         IndividualSizeConverter converter(filename);
                         QString filename = converter.Convert();
@@ -6870,21 +6869,21 @@ QString MainWindow::checkPathToMeasurements(const QString& patternPath, const QS
                             filename.replace(
                                 QLatin1String(".") + vitExt, QLatin1String(".") + smisExt);
                             QString error;
-                            const bool result = measurements->SaveDocument(filename, error);
+                            const bool result = measurements.SaveDocument(filename, error);
                             if (result) {
                                 UpdateWindowTitle();
                             }
                         }
-                        measurements->setXMLContent(filename);   // Read again after conversion
+                        measurements.setXMLContent(filename);   // Read again after conversion
                     }
 
-                    if (!measurements->eachKnownNameIsValid()) {
+                    if (!measurements.eachKnownNameIsValid()) {
                         VException exception(
                             tr("Measurement file contains invalid known measurement(s)."));
                         throw exception;
                     }
 
-                    checkRequiredMeasurements(measurements.data());
+                    checkRequiredMeasurements(&measurements);
 
                     qApp->setPatternType(patternType);
 

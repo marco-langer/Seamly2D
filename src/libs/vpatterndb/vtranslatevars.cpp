@@ -1034,12 +1034,10 @@ QString VTranslateVars::FormulaFromUser(const QString& formula, bool osSeparator
     }
     QString newFormula = formula;   // Local copy for making changes
 
-    QScopedPointer<qmu::QmuTokenParser> cal(
-        new qmu::QmuTokenParser(formula, osSeparator));   // Eval formula
-    QMap<int, QString> tokens = cal->GetTokens();         // Tokens (variables, measurements)
+    const qmu::QmuTokenParser cal{ formula, osSeparator };   // Eval formula
+    QMap<int, QString> tokens = cal.GetTokens();             // Tokens (variables, measurements)
     QMap<int, QString> numbers =
-        cal->GetNumbers();   // All numbers in expression for changing decimal separator
-    delete cal.take();
+        cal.GetNumbers();   // All numbers in expression for changing decimal separator
 
     QList<int> tKeys = tokens.keys();   // Take all tokens positions
     QList<QString> tValues = tokens.values();
@@ -1149,10 +1147,9 @@ QString VTranslateVars::FormulaToUser(const QString& formula, bool osSeparator) 
     QMap<int, QString> tokens;
     QMap<int, QString> numbers;
     try {
-        QScopedPointer<qmu::QmuTokenParser> cal(
-            new qmu::QmuTokenParser(formula, false, false));   // Eval formula
-        tokens = cal->GetTokens();                             // Tokens (variables, measurements)
-        numbers = cal->GetNumbers();   // All numbers in expression for changing decimal separator
+        const qmu::QmuTokenParser cal{ formula, false, false };   // Eval formula
+        tokens = cal.GetTokens();     // Tokens (variables, measurements)
+        numbers = cal.GetNumbers();   // All numbers in expression for changing decimal separator
     } catch (qmu::QmuParserError& error) {
         qDebug() << "\nMath parser error:\n"
                  << "--------------------------------------\n"

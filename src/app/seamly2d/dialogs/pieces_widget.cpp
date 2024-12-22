@@ -518,18 +518,18 @@ void PiecesWidget::showContextMenu(const QPoint& pos)
     ui->tableWidget->blockSignals(true);
 
     // workaround for https://bugreports.qt.io/browse/QTBUG-97559: assign parent to QMenu
-    QScopedPointer<QMenu> menu(new QMenu(ui->tableWidget));
-    QAction* selectAll = menu->addAction(tr("Include all pieces"));
-    QAction* selectNone = menu->addAction(tr("Exclude all pieces"));
-    QAction* invertSelection = menu->addAction(tr("Invert included pieces"));
+    QMenu menu{ ui->tableWidget };
+    QAction* selectAll = menu.addAction(tr("Include all pieces"));
+    QAction* selectNone = menu.addAction(tr("Exclude all pieces"));
+    QAction* invertSelection = menu.addAction(tr("Invert included pieces"));
 
     QAction* separator = new QAction(this);
     separator->setSeparator(true);
-    menu->addAction(separator);
+    menu.addAction(separator);
 
-    QAction* lockAll = menu->addAction(tr("Lock all pieces"));
-    QAction* unlockAll = menu->addAction(tr("Unlock all pieces"));
-    QAction* invertLocked = menu->addAction(tr("Invert locked pieces"));
+    QAction* lockAll = menu.addAction(tr("Lock all pieces"));
+    QAction* unlockAll = menu.addAction(tr("Unlock all pieces"));
+    QAction* invertLocked = menu.addAction(tr("Invert locked pieces"));
 
     m_allPieces = m_data->DataPieces();
     if (m_allPieces->isEmpty()) {
@@ -562,7 +562,7 @@ void PiecesWidget::showContextMenu(const QPoint& pos)
         lockAll->setDisabled(true);
     }
 
-    QAction* selectedAction = menu->exec(ui->tableWidget->viewport()->mapToGlobal(pos));
+    QAction* selectedAction = menu.exec(ui->tableWidget->viewport()->mapToGlobal(pos));
 
     if (selectedAction == selectAll) {
         includeAllPieces();

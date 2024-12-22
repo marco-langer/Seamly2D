@@ -91,7 +91,6 @@
 #include <QMetaObject>
 #include <QObject>
 #include <QPointer>
-#include <QScopedPointer>
 #include <QSettings>
 #include <QTableWidget>
 #include <Qt>
@@ -343,14 +342,14 @@ void GroupsWidget::unlockAllGroups()
 
 void GroupsWidget::addGroupToList()
 {
-    QScopedPointer<EditGroupDialog> dialog(new EditGroupDialog(
-        new VContainer(qApp->translateVariables(), qApp->patternUnitP()), NULL_ID, this));
-    SCASSERT(dialog != nullptr)
+    EditGroupDialog dialog{ new VContainer(qApp->translateVariables(), qApp->patternUnitP()),
+                            NULL_ID,
+                            this };
 
     QString groupName;
     while (1) {
-        const bool result = dialog->exec();
-        groupName = dialog->getName();
+        const bool result = dialog.exec();
+        groupName = dialog.getName();
         if (result == false || groupName.isEmpty()) {
             return;
         }
@@ -382,10 +381,10 @@ void GroupsWidget::addGroupToList()
     const QDomElement group = m_doc->createGroup(
         nextId,
         groupName,
-        dialog->getColor(),
-        dialog->getLineType(),
-        dialog->getLineWeight(),
-        dialog->getGroupData());
+        dialog.getColor(),
+        dialog.getLineType(),
+        dialog.getLineWeight(),
+        dialog.getGroupData());
 
     if (!group.isNull()) {
         qCDebug(WidgetGroups, "Add a Group to List");
@@ -429,18 +428,19 @@ void GroupsWidget::editGroup()
     if (locked == false) {
         qCDebug(WidgetGroups, "Row = %d", row);
 
-        QScopedPointer<EditGroupDialog> dialog(new EditGroupDialog(
-            new VContainer(qApp->translateVariables(), qApp->patternUnitP()), NULL_ID, this));
-        dialog->setName(oldGroupName);
-        dialog->setColor(m_doc->getGroupColor(groupId));
-        dialog->setLineType(m_doc->getGroupLineType(groupId));
-        dialog->setLineWeight(m_doc->getGroupLineWeight(groupId));
-        dialog->setWindowTitle(tr("Edit Group"));
+        EditGroupDialog dialog{ new VContainer(qApp->translateVariables(), qApp->patternUnitP()),
+                                NULL_ID,
+                                this };
+        dialog.setName(oldGroupName);
+        dialog.setColor(m_doc->getGroupColor(groupId));
+        dialog.setLineType(m_doc->getGroupLineType(groupId));
+        dialog.setLineWeight(m_doc->getGroupLineWeight(groupId));
+        dialog.setWindowTitle(tr("Edit Group"));
 
         QString groupName;
         while (1) {
-            const bool result = dialog->exec();
-            groupName = dialog->getName();
+            const bool result = dialog.exec();
+            groupName = dialog.getName();
             if (result == false || groupName.isEmpty()) {
                 ui->groups_TableWidget->blockSignals(false);
                 return;
@@ -468,9 +468,9 @@ void GroupsWidget::editGroup()
             }
         }
 
-        const QString groupColor = dialog->getColor();
-        const QString groupLineType = dialog->getLineType();
-        const QString groupLineWeight = dialog->getLineWeight();
+        const QString groupColor = dialog.getColor();
+        const QString groupLineType = dialog.getLineType();
+        const QString groupLineWeight = dialog.getLineWeight();
 
         // Add color item
         QTableWidgetItem* item = ui->groups_TableWidget->item(row, 3);
@@ -520,10 +520,10 @@ void GroupsWidget::groupContextMenu(const QPoint& pos)
         return;
     }
 
-    QScopedPointer<QMenu> menu(new QMenu());
-    QAction* actionEdit = menu->addAction(QIcon("://icon/32x32/edit.png"), tr("Edit"));
-    QAction* actionDelete = menu->addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
-    QAction* selectedAction = menu->exec(ui->groups_TableWidget->viewport()->mapToGlobal(pos));
+    QMenu menu;   // TODO this will be a bug on mac with Qt5 (fixed in Qt6 though)
+    QAction* actionEdit = menu.addAction(QIcon("://icon/32x32/edit.png"), tr("Edit"));
+    QAction* actionDelete = menu.addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
+    QAction* selectedAction = menu.exec(ui->groups_TableWidget->viewport()->mapToGlobal(pos));
     if (selectedAction == nullptr) {
         return;
     } else if (selectedAction == actionEdit) {

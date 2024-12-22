@@ -1223,9 +1223,8 @@ QStringList VPattern::GetCurrentAlphabet() const
         alphabet = al.split(",");
         break;
     }
-    case 1:   // en
-    default
-        :   // en
+    case 1:    // en
+    default:   // en
     {
         alphabet = def.split(",");
         break;
@@ -3308,8 +3307,8 @@ qreal VPattern::EvalFormula(VContainer* data, const QString& formula, bool* ok) 
             // Replace line return character with spaces for calc if exist
             QString f = formula;
             f.replace("\n", " ");
-            QScopedPointer<Calculator> cal(new Calculator());
-            const qreal result = cal->EvalFormula(data->DataVariables(), f);
+            Calculator cal;
+            const qreal result = cal.EvalFormula(data->DataVariables(), f);
 
             (qIsInf(result) || qIsNaN(result)) ? * ok = false : * ok = true;
             return result;
@@ -3759,9 +3758,8 @@ void VPattern::replaceNameInFormula(
 
             // Eval formula
             try {
-                QScopedPointer<qmu::QmuTokenParser> cal(
-                    new qmu::QmuTokenParser(expressions.at(i).expression, false, false));
-                tokens = cal->GetTokens();   // Tokens (variables, measurements)
+                const qmu::QmuTokenParser cal{ expressions.at(i).expression, false, false };
+                tokens = cal.GetTokens();   // Tokens (variables, measurements)
 
             } catch (const qmu::QmuParserError&) {
                 continue;   // Because we not sure if used. A formula is broken.

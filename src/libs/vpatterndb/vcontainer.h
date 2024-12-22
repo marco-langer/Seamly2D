@@ -97,7 +97,8 @@ public:
         , piecePaths(QSharedPointer<QHash<quint32, VPiecePath>>(new QHash<quint32, VPiecePath>()))
         , trVars(trVars)
         , patternUnit(patternUnit)
-    {}
+    {
+    }
 
     VContainerData(const VContainerData& data)
         : QSharedData(data)
@@ -107,7 +108,8 @@ public:
         , piecePaths(data.piecePaths)
         , trVars(data.trVars)
         , patternUnit(data.patternUnit)
-    {}
+    {
+    }
 
     virtual ~VContainerData();
 
@@ -163,6 +165,7 @@ public:
     static quint32 getNextId();
     static void UpdateId(quint32 newId);
 
+    quint32 AddGObject(std::unique_ptr<VGObject> obj);
     quint32 AddGObject(VGObject* obj);
     quint32 AddPiece(const VPiece& piece);
     quint32 AddPiecePath(const VPiecePath& path);
@@ -181,6 +184,8 @@ public:
 
     template <class T>
     void UpdateGObject(quint32 id, T* obj);
+    template <class T>
+    void UpdateGObject(quint32 id, std::unique_ptr<T> obj);
     template <class T>
     void UpdateGObject(quint32 id, const QSharedPointer<T>& obj);
 
@@ -350,6 +355,14 @@ void VContainer::UpdateGObject(quint32 id, T* obj)
 {
     SCASSERT(obj != nullptr)
     UpdateGObject(id, QSharedPointer<T>(obj));
+}
+
+
+template <class T>
+void VContainer::UpdateGObject(quint32 id, std::unique_ptr<T> obj)
+{
+    SCASSERT(obj != nullptr)
+    UpdateGObject(id, QSharedPointer<T>(obj.release()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

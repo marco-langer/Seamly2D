@@ -223,7 +223,7 @@ void DialogInternalPath::ShowContextMenu(const QPoint& pos)
     }
 
     // workaround for https://bugreports.qt.io/browse/QTBUG-97559: assign parent to QMenu
-    QScopedPointer<QMenu> menu(new QMenu(ui->listWidget));
+    QMenu menu{ ui->listWidget };
 
     NodeInfo info;
 
@@ -234,7 +234,7 @@ void DialogInternalPath::ShowContextMenu(const QPoint& pos)
     // QAction *actionNotch = nullptr;
     QAction* actionReverse = nullptr;
     if (rowNode.GetTypeTool() != Tool::NodePoint) {
-        actionReverse = menu->addAction(tr("Reverse"));
+        actionReverse = menu.addAction(tr("Reverse"));
         actionReverse->setCheckable(true);
         actionReverse->setChecked(rowNode.GetReverse());
     }
@@ -245,9 +245,9 @@ void DialogInternalPath::ShowContextMenu(const QPoint& pos)
     //    actionNotch->setChecked(rowNode.isNotch());
     //}
 
-    QAction* actionDelete = menu->addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
+    QAction* actionDelete = menu.addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
 
-    QAction* selectedAction = menu->exec(ui->listWidget->viewport()->mapToGlobal(pos));
+    QAction* selectedAction = menu.exec(ui->listWidget->viewport()->mapToGlobal(pos));
     if (selectedAction == actionDelete) {
         delete ui->listWidget->item(row);
     } else if (rowNode.GetTypeTool() != Tool::NodePoint && selectedAction == actionReverse) {

@@ -703,8 +703,7 @@ void PatternPieceDialog::showMainPathContextMenu(const QPoint& pos)
         return;
     }
 
-    // workaround for https://bugreports.qt.io/browse/QTBUG-97559: assign parent to QMenu
-    QScopedPointer<QMenu> menu(new QMenu(ui->mainPath_ListWidget));
+    QMenu menu{ ui->mainPath_ListWidget };
     NodeInfo info;
     NotchType notchType = NotchType::Slit;
     NotchSubType notchSubType = NotchSubType::Straightforward;
@@ -731,13 +730,13 @@ void PatternPieceDialog::showMainPathContextMenu(const QPoint& pos)
     QAction* actionDuplicate = nullptr;
 
     if (rowNode.GetTypeTool() != Tool::NodePoint) {
-        actionReverse = menu->addAction(tr("Reverse") + QStringLiteral("\tCtrl + R"));
+        actionReverse = menu.addAction(tr("Reverse") + QStringLiteral("\tCtrl + R"));
         actionReverse->setCheckable(true);
         actionReverse->setChecked(rowNode.GetReverse());
 
-        actionDuplicate = menu->addAction(tr("Duplicate") + QStringLiteral("\tCtrl + D"));
+        actionDuplicate = menu.addAction(tr("Duplicate") + QStringLiteral("\tCtrl + D"));
     } else {
-        QMenu* notchMenu = menu->addMenu(tr("Notch"));
+        QMenu* notchMenu = menu.addMenu(tr("Notch"));
         actionNotch = notchMenu->menuAction();
         actionNotch->setCheckable(true);
         actionNotch->setChecked(rowNode.isNotch());
@@ -771,14 +770,14 @@ void PatternPieceDialog::showMainPathContextMenu(const QPoint& pos)
             QIcon(), tr("Intersection") + QStringLiteral("\tShift + X"));
     }
 
-    QAction* actionExcluded = menu->addAction(tr("Excluded") + QStringLiteral("\tCtrl + E"));
+    QAction* actionExcluded = menu.addAction(tr("Excluded") + QStringLiteral("\tCtrl + E"));
     actionExcluded->setCheckable(true);
     actionExcluded->setChecked(rowNode.isExcluded());
 
     QAction* actionDelete =
-        menu->addAction(QIcon::fromTheme("edit-delete"), tr("Delete") + QStringLiteral("\tDel"));
+        menu.addAction(QIcon::fromTheme("edit-delete"), tr("Delete") + QStringLiteral("\tDel"));
 
-    QAction* selectedAction = menu->exec(ui->mainPath_ListWidget->viewport()->mapToGlobal(pos));
+    QAction* selectedAction = menu.exec(ui->mainPath_ListWidget->viewport()->mapToGlobal(pos));
     if (selectedAction == actionDelete) {
         delete ui->mainPath_ListWidget->item(row);
     } else if (rowNode.GetTypeTool() != Tool::NodePoint && selectedAction == actionReverse) {
@@ -840,21 +839,21 @@ void PatternPieceDialog::showCustomSAContextMenu(const QPoint& pos)
     }
 
     // workaround for https://bugreports.qt.io/browse/QTBUG-97559: assign parent to QMenu
-    QScopedPointer<QMenu> menu(new QMenu(ui->customSeamAllowance_ListWidget));
-    QAction* actionOption = menu->addAction(QIcon::fromTheme("preferences-other"), tr("Options"));
+    QMenu menu{ ui->customSeamAllowance_ListWidget };
+    QAction* actionOption = menu.addAction(QIcon::fromTheme("preferences-other"), tr("Options"));
 
     QListWidgetItem* rowItem = ui->customSeamAllowance_ListWidget->item(row);
     SCASSERT(rowItem != nullptr);
     CustomSARecord record = qvariant_cast<CustomSARecord>(rowItem->data(Qt::UserRole));
 
-    QAction* actionReverse = menu->addAction(tr("Reverse"));
+    QAction* actionReverse = menu.addAction(tr("Reverse"));
     actionReverse->setCheckable(true);
     actionReverse->setChecked(record.reverse);
 
-    QAction* actionDelete = menu->addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
+    QAction* actionDelete = menu.addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
 
     QAction* selectedAction =
-        menu->exec(ui->customSeamAllowance_ListWidget->viewport()->mapToGlobal(pos));
+        menu.exec(ui->customSeamAllowance_ListWidget->viewport()->mapToGlobal(pos));
     if (selectedAction == actionDelete) {
         delete ui->customSeamAllowance_ListWidget->item(row);
     } else if (selectedAction == actionReverse) {
@@ -890,12 +889,11 @@ void PatternPieceDialog::showInternalPathsContextMenu(const QPoint& pos)
     }
 
     // workaround for https://bugreports.qt.io/browse/QTBUG-97559: assign parent to QMenu
-    QScopedPointer<QMenu> menu(new QMenu(ui->internalPaths_ListWidget));
-    QAction* actionOption = menu->addAction(QIcon::fromTheme("preferences-other"), tr("Options"));
-    QAction* actionDelete = menu->addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
+    QMenu menu{ ui->internalPaths_ListWidget };
+    QAction* actionOption = menu.addAction(QIcon::fromTheme("preferences-other"), tr("Options"));
+    QAction* actionDelete = menu.addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
 
-    QAction* selectedAction =
-        menu->exec(ui->internalPaths_ListWidget->viewport()->mapToGlobal(pos));
+    QAction* selectedAction = menu.exec(ui->internalPaths_ListWidget->viewport()->mapToGlobal(pos));
     if (selectedAction == actionDelete) {
         delete ui->internalPaths_ListWidget->item(row);
     } else if (selectedAction == actionOption) {
@@ -928,10 +926,10 @@ void PatternPieceDialog::showAnchorsContextMenu(const QPoint& pos)
     }
 
     // workaround for https://bugreports.qt.io/browse/QTBUG-97559: assign parent to QMenu
-    QScopedPointer<QMenu> menu(new QMenu(ui->anchorPoints_ListWidget));
-    QAction* actionDelete = menu->addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
+    QMenu menu{ ui->anchorPoints_ListWidget };
+    QAction* actionDelete = menu.addAction(QIcon::fromTheme("edit-delete"), tr("Delete"));
 
-    QAction* selectedAction = menu->exec(ui->anchorPoints_ListWidget->viewport()->mapToGlobal(pos));
+    QAction* selectedAction = menu.exec(ui->anchorPoints_ListWidget->viewport()->mapToGlobal(pos));
     if (selectedAction == actionDelete) {
         delete ui->anchorPoints_ListWidget->item(row);
         initAnchorPointComboboxes();

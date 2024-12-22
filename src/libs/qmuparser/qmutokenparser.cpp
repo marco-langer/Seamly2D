@@ -109,24 +109,23 @@ bool QmuTokenParser::IsSingle(const QString& formula)
         return false;   // if don't know say no
     }
 
-    QScopedPointer<QmuTokenParser> cal(new QmuTokenParser());
+    QmuTokenParser cal;
 
     // Parser doesn't know any variable on this stage. So, we just use variable factory that for
     // each unknown variable set value to 0.
-    cal->SetVarFactory(AddVariable, cal.data());
-    cal->SetSepForEval();   // Reset separators options
+    cal.SetVarFactory(AddVariable, &cal);
+    cal.SetSepForEval();   // Reset separators options
 
     try {
-        cal->SetExpr(formula);
-        cal->Eval();   // We don't need save result, only parse formula
+        cal.SetExpr(formula);
+        cal.Eval();   // We don't need save result, only parse formula
     } catch (const qmu::QmuParserError& error) {
         Q_UNUSED(error)
         return false;   // something wrong with formula, say no
     }
 
-    QMap<int, QString> tokens = cal->GetTokens();           // Tokens (variables, measurements)
-    const QMap<int, QString> numbers = cal->GetNumbers();   // All numbers in expression
-    delete cal.take();
+    QMap<int, QString> tokens = cal.GetTokens();           // Tokens (variables, measurements)
+    const QMap<int, QString> numbers = cal.GetNumbers();   // All numbers in expression
 
     // Remove "-" from tokens list if exist. If don't do that unary minus operation will broken.
     RemoveAll(tokens, QStringLiteral("-"));

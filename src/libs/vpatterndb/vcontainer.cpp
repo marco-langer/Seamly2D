@@ -106,7 +106,8 @@ void VContainer::Swap(VContainer& data) noexcept { std::swap(d, data.d); }
  */
 VContainer::VContainer(const VTranslateVars* trVars, const Unit* patternUnit)
     : d(new VContainerData(trVars, patternUnit))
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -130,7 +131,8 @@ VContainer& VContainer::operator=(const VContainer& data)
  */
 VContainer::VContainer(const VContainer& data)
     : d(data.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VContainer::~VContainer()
@@ -195,6 +197,16 @@ VPiecePath VContainer::GetPiecePath(quint32 id) const
 
     throw VExceptionBadId(tr("Can't find path: "), id);
 }
+
+
+quint32 VContainer::AddGObject(std::unique_ptr<VGObject> obj)
+{
+    SCASSERT(obj != nullptr)
+    QSharedPointer<VGObject> pointer(obj.release());
+    uniqueNames.insert(pointer->name());
+    return AddObject(d->gObjects, pointer);
+}
+
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

@@ -61,7 +61,6 @@
 #include <QDomText>
 #include <QLatin1Char>
 #include <QMessageLogger>
-#include <QScopedPointer>
 #include <QSet>
 #include <QStaticStringData>
 #include <QStringData>
@@ -275,8 +274,7 @@ void MeasurementDoc::readMeasurements() const
     // That's why we need two containers: one for converted values, second for real data.
 
     // Container for values in measurement file's unit
-    QScopedPointer<VContainer> tempData(
-        new VContainer(data->getTranslateVariables(), data->GetPatternUnit()));
+    VContainer tempData{ data->getTranslateVariables(), data->GetPatternUnit() };
 
     const QDomNodeList list = elementsByTagName(TagMeasurement);
     for (int i = 0; i < list.size(); ++i) {
@@ -336,16 +334,16 @@ void MeasurementDoc::readMeasurements() const
         } else {
             const QString formula = GetParametrString(dom, AttrValue, "0");
             bool ok = false;
-            qreal value = EvalFormula(tempData.data(), formula, &ok);
+            qreal value = EvalFormula(&tempData, formula, &ok);
 
             tempMeash = QSharedPointer<MeasurementVariable>(new MeasurementVariable(
-                tempData.data(), static_cast<quint32>(i), name, value, formula, ok));
+                &tempData, static_cast<quint32>(i), name, value, formula, ok));
 
             value = UnitConvertor(value, measurementUnits(), *data->GetPatternUnit());
             meash = QSharedPointer<MeasurementVariable>(new MeasurementVariable(
                 data, static_cast<quint32>(i), name, value, formula, ok, fullName, description));
         }
-        tempData->AddVariable(name, tempMeash);
+        tempData.AddVariable(name, tempMeash);
         data->AddVariable(name, meash);
     }
 }
@@ -830,8 +828,8 @@ qreal MeasurementDoc::EvalFormula(VContainer* data, const QString& formula, bool
             // Replace line return character with spaces for calc if exist
             QString f = formula;
             f.replace("\n", " ");
-            QScopedPointer<Calculator> cal(new Calculator());
-            const qreal result = cal->EvalFormula(data->DataVariables(), f);
+            Calculator cal;
+            const qreal result = cal.EvalFormula(data->DataVariables(), f);
 
             (qIsInf(result) || qIsNaN(result)) ? * ok = false : * ok = true;
             return result;

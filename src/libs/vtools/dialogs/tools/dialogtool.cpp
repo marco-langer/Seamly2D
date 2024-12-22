@@ -70,7 +70,6 @@
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-#include <QScopedPointer>
 #include <QSharedPointer>
 #include <QShowEvent>
 #include <QSize>
@@ -769,8 +768,8 @@ qreal DialogTool::Eval(
             // Translate to internal look.
             formula = qApp->translateVariables()->FormulaFromUser(
                 formula, qApp->Settings()->getOsSeparator());
-            QScopedPointer<Calculator> cal(new Calculator());
-            result = cal->EvalFormula(data->DataVariables(), formula);
+            Calculator cal;
+            result = cal.EvalFormula(data->DataVariables(), formula);
 
             if (qIsInf(result) || qIsNaN(result)) {
                 flag = false;

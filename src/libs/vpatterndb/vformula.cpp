@@ -55,7 +55,6 @@
 #include "math/math.h"
 
 #include <QMessageLogger>
-#include <QScopedPointer>
 #include <QtDebug>
 #include <qnumeric.h>
 
@@ -79,7 +78,8 @@ VFormula::VFormula()
     , postfix(QString())
     , _error(true)
     , dValue(0)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VFormula::VFormula(const QString& formula, const VContainer* container)
@@ -124,7 +124,8 @@ VFormula::VFormula(const VFormula& formula)
     , postfix(formula.getPostfix())
     , _error(formula.error())
     , dValue(formula.getDoubleValue())
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VFormula::operator==(const VFormula& formula) const
@@ -234,10 +235,10 @@ void VFormula::Eval()
         dValue = 0;
     } else {
         try {
-            QScopedPointer<Calculator> cal(new Calculator());
+            Calculator cal;
             QString expression = qApp->translateVariables()->FormulaFromUser(
                 formula, qApp->Settings()->getOsSeparator());
-            const qreal result = cal->EvalFormula(data->DataVariables(), expression);
+            const qreal result = cal.EvalFormula(data->DataVariables(), expression);
 
             if (qIsInf(result) || qIsNaN(result)) {
                 value = tr("Error");
