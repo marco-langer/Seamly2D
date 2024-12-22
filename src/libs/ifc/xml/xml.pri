@@ -3,6 +3,7 @@
 
 HEADERS += \
     $$PWD/abstract_converter.h \
+    $$PWD/document_validation.h \
     $$PWD/individual_size_converter.h \
     $$PWD/multi_size_converter.h \
     $$PWD/vdomdocument.h \
@@ -14,6 +15,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/abstract_converter.cpp \
+    $$PWD/document_validation.cpp \
     $$PWD/individual_size_converter.cpp \
     $$PWD/multi_size_converter.cpp \
     $$PWD/vdomdocument.cpp \

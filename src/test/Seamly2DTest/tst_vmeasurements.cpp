@@ -55,6 +55,7 @@
 
 #include "tst_vmeasurements.h"
 
+#include "../ifc/xml/document_validation.h"
 #include "../ifc/xml/individual_size_converter.h"
 #include "../ifc/xml/multi_size_converter.h"
 #include "../vformat/measurements.h"
@@ -65,7 +66,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 TST_Measurements::TST_Measurements(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -106,7 +108,7 @@ void TST_Measurements::CreateEmptyMultisizeFile()
     }
 
     try {
-        VDomDocument::ValidateXML(MultiSizeConverter::CurrentSchema, fileName);
+        validateXMLSchema(MultiSizeConverter::CurrentSchema, fileName);
     } catch (VException& error) {
         QFAIL(error.ErrorMessage().toUtf8().constData());
     }
@@ -140,7 +142,7 @@ void TST_Measurements::CreateEmptyIndividualFile()
     }
 
     try {
-        VDomDocument::ValidateXML(IndividualSizeConverter::CurrentSchema, fileName);
+        validateXMLSchema(IndividualSizeConverter::CurrentSchema, fileName);
     } catch (VException& error) {
         QFAIL(error.ErrorMessage().toUtf8().constData());
     }
@@ -189,7 +191,7 @@ void TST_Measurements::ValidPMCodesMultisizeFile()
         }
 
         try {
-            VDomDocument::ValidateXML(MultiSizeConverter::CurrentSchema, fileName);
+            validateXMLSchema(MultiSizeConverter::CurrentSchema, fileName);
         } catch (VException& error) {
             const QString message =
                 QString("Error: %1 for code=%2").arg(error.ErrorMessage()).arg(listSystems.at(i));
@@ -235,7 +237,7 @@ void TST_Measurements::ValidPMCodesIndividualFile()
         }
 
         try {
-            VDomDocument::ValidateXML(IndividualSizeConverter::CurrentSchema, fileName);
+            validateXMLSchema(IndividualSizeConverter::CurrentSchema, fileName);
         } catch (VException& error) {
             const QString message =
                 QString("Error: %1 for code=%2").arg(error.ErrorMessage()).arg(listSystems.at(i));

@@ -76,6 +76,7 @@
 
 #include "../exception/vexception.h"
 #include "../exception/vexceptionwrongid.h"
+#include "document_validation.h"
 #include "vdomdocument.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -348,7 +349,7 @@ void VAbstractConverter::ValidateInputFile(const QString& currentSchema) const
         } else if (m_ver > maxVer()) {   // Version bigger than maximum supported version. We still
                                          // have a chance to open the file.
             try {                        // Try to open like the current version.
-                ValidateXML(currentSchema, m_convertedFileName);
+                validateXMLSchema(currentSchema, m_convertedFileName);
             } catch (const VException& exp) {   // Nope, we can't.
                 Q_UNUSED(exp)
                 throw error;
@@ -361,7 +362,7 @@ void VAbstractConverter::ValidateInputFile(const QString& currentSchema) const
         return;   // All is fine and we can try to convert to current max version.
     }
 
-    ValidateXML(schema, m_convertedFileName);
+    validateXMLSchema(schema, m_convertedFileName);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
