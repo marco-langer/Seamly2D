@@ -217,11 +217,10 @@ void EditFormulaDialog::valueChanged(int row)
     switch (ui->menuTab_ListWidget->currentRow()) {
     case VariableTab::Measurements: {
         const QString name = qApp->translateVariables()->VarFromUser(item->text());
-        const QSharedPointer<MeasurementVariable> measurements =
-            data->getVariable<MeasurementVariable>(name);
-        const QString desc = (measurements->getGuiText() == "")
+        const MeasurementVariable& measurements{ data->getVariable<MeasurementVariable>(name) };
+        const QString desc = (measurements.getGuiText() == "")
                                ? ""
-                               : QString("\nDescription: %1").arg(measurements->getGuiText());
+                               : QString("\nDescription: %1").arg(measurements.getGuiText());
         setDescription(
             item->text(),
             *data->DataVariables()->value(name)->GetValue(),
@@ -231,11 +230,10 @@ void EditFormulaDialog::valueChanged(int row)
         break;
     }
     case VariableTab::Custom: {
-        const QSharedPointer<CustomVariable> variables =
-            data->getVariable<CustomVariable>(item->text());
-        const QString desc = (variables->GetDescription() == "")
+        const CustomVariable& variables{ data->getVariable<CustomVariable>(item->text()) };
+        const QString desc = (variables.GetDescription() == "")
                                ? ""
-                               : QString("\nDescription: %1").arg(variables->GetDescription());
+                               : QString("\nDescription: %1").arg(variables.GetDescription());
         setDescription(
             item->text(),
             *data->DataVariables()->value(item->text())->GetValue(),
@@ -247,8 +245,8 @@ void EditFormulaDialog::valueChanged(int row)
     case VariableTab::LineLengths: {
         setDescription(
             item->text(),
-            *data->getVariable<VLengthLine>(qApp->translateVariables()->VarFromUser(item->text()))
-                 ->GetValue(),
+            data->getVariable<VLengthLine>(qApp->translateVariables()->VarFromUser(item->text()))
+                .GetValue(),
             UnitsToStr(qApp->patternUnit(), true),
             tr("Line length"),
             "");
@@ -257,8 +255,8 @@ void EditFormulaDialog::valueChanged(int row)
     case VariableTab::CurveLengths: {
         setDescription(
             item->text(),
-            *data->getVariable<VCurveLength>(qApp->translateVariables()->VarFromUser(item->text()))
-                 ->GetValue(),
+            data->getVariable<VCurveLength>(qApp->translateVariables()->VarFromUser(item->text()))
+                .GetValue(),
             UnitsToStr(qApp->patternUnit(), true),
             tr("Curve length"),
             "");
@@ -267,8 +265,8 @@ void EditFormulaDialog::valueChanged(int row)
     case VariableTab::LineAngles: {
         setDescription(
             item->text(),
-            *data->getVariable<VLineAngle>(qApp->translateVariables()->VarFromUser(item->text()))
-                 ->GetValue(),
+            data->getVariable<VLineAngle>(qApp->translateVariables()->VarFromUser(item->text()))
+                .GetValue(),
             degreeSymbol,
             tr("Line Angle"),
             "");
@@ -277,8 +275,8 @@ void EditFormulaDialog::valueChanged(int row)
     case VariableTab::ArcRadii: {
         setDescription(
             item->text(),
-            *data->getVariable<VArcRadius>(qApp->translateVariables()->VarFromUser(item->text()))
-                 ->GetValue(),
+            data->getVariable<VArcRadius>(qApp->translateVariables()->VarFromUser(item->text()))
+                .GetValue(),
             UnitsToStr(qApp->patternUnit(), true),
             tr("Arc radius"),
             "");
@@ -287,8 +285,8 @@ void EditFormulaDialog::valueChanged(int row)
     case VariableTab::CurveAngles: {
         setDescription(
             item->text(),
-            *data->getVariable<VCurveAngle>(qApp->translateVariables()->VarFromUser(item->text()))
-                 ->GetValue(),
+            data->getVariable<VCurveAngle>(qApp->translateVariables()->VarFromUser(item->text()))
+                .GetValue(),
             degreeSymbol,
             tr("Curve angle"),
             "");

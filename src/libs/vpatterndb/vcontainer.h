@@ -160,7 +160,9 @@ public:
     VPiece GetPiece(quint32 id) const;
     VPiecePath GetPiecePath(quint32 id) const;
     template <typename T>
-    QSharedPointer<T> getVariable(QString name) const;
+    const T& getVariable(const QString& name) const;
+    template <typename T>
+    T& getVariable(const QString& name);
     static quint32 getId();
     static quint32 getNextId();
     static void UpdateId(quint32 newId);
@@ -227,6 +229,9 @@ private:
     template <class T>
     void UpdateGObject(quint32 id, const QSharedPointer<T>& obj);
 
+    template <typename T>
+    QSharedPointer<T> getVariablePtr(const QString& name) const;
+
     /**
      * @brief _id current id. New object will have value +1. For empty class equal 0.
      */
@@ -282,15 +287,20 @@ QSharedPointer<T> VContainer::GeometricObject(const quint32& id) const
     }
 }
 
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief getVariable return varible by name
- * @param name variable's name
- * @return variable
- */
 template <typename T>
-QSharedPointer<T> VContainer::getVariable(QString name) const
+const T& VContainer::getVariable(const QString& name) const
+{
+    return *getVariablePtr<T>(name);
+}
+
+template <typename T>
+T& VContainer::getVariable(const QString& name)
+{
+    return *getVariablePtr<T>(name);
+}
+
+template <typename T>
+QSharedPointer<T> VContainer::getVariablePtr(const QString& name) const
 {
     SCASSERT(name.isEmpty() == false)
 

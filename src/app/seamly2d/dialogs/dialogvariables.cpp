@@ -782,8 +782,8 @@ void DialogVariables::saveCustomVariableFormula()
         return;
     }
 
-    QSharedPointer<CustomVariable> variable = data->getVariable<CustomVariable>(name->text());
-    if (not evalVariableFormula(text, true, variable->GetData(), ui->calculatedValue_Label)) {
+    CustomVariable& variable{ data->getVariable<CustomVariable>(name->text()) };
+    if (not evalVariableFormula(text, true, variable.GetData(), ui->calculatedValue_Label)) {
         return;
     }
 
@@ -817,9 +817,9 @@ void DialogVariables::Fx()
     }
 
     const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
-    QSharedPointer<CustomVariable> variable = data->getVariable<CustomVariable>(name->text());
+    CustomVariable& variable{ data->getVariable<CustomVariable>(name->text()) };
 
-    EditFormulaDialog* dialog = new EditFormulaDialog(&variable->GetData(), NULL_ID, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(&variable.GetData(), NULL_ID, this);
     dialog->setWindowTitle(tr("Edit variable"));
     dialog->SetFormula(qApp->translateVariables()->TryFormulaFromUser(
         ui->formula_PlainTextEdit->toPlainText().replace("\n", " "),
@@ -933,10 +933,10 @@ void DialogVariables::showCustomVariableDetails()
         // name
         const QTableWidgetItem* name =
             ui->variables_TableWidget->item(ui->variables_TableWidget->currentRow(), 0);
-        QSharedPointer<CustomVariable> variable;
+        CustomVariable* variable{ nullptr };
 
         try {
-            variable = data->getVariable<CustomVariable>(name->text());
+            variable = &data->getVariable<CustomVariable>(name->text());
         } catch (const VExceptionBadId& error) {
             Q_UNUSED(error)
             enablePieces(false);

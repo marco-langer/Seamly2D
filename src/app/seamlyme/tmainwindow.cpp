@@ -1428,11 +1428,11 @@ void TMainWindow::Fx()
 
     const QTableWidgetItem* nameField = ui->tableWidget->item(row, ColumnName);
 
-    QSharedPointer<MeasurementVariable> meash;
+    MeasurementVariable* meash{ nullptr };
 
     try {
         // Translate to internal look.
-        meash = data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
+        meash = &data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
     }
 
     catch (const VExceptionBadId& exception) {
@@ -1657,12 +1657,12 @@ void TMainWindow::ShowNewMData(bool fresh)
 
         const QTableWidgetItem* nameField =
             ui->tableWidget->item(ui->tableWidget->currentRow(), ColumnName);   // name
-        QSharedPointer<MeasurementVariable> meash;
+        MeasurementVariable* meash{ nullptr };
 
         try {
             // Translate to internal look.
             meash =
-                data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
+                &data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
         }
 
         catch (const VExceptionBadId& exception) {
@@ -1777,11 +1777,11 @@ void TMainWindow::SaveMName(const QString& text)
     const QTableWidgetItem* nameField =
         ui->tableWidget->item(ui->tableWidget->currentRow(), ColumnName);
 
-    QSharedPointer<MeasurementVariable> meash;
+    const MeasurementVariable* meash{ nullptr };
 
     try {
         // Translate to internal look.
-        meash = data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
+        meash = &data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
     }
 
     catch (const VExceptionBadId& exception) {
@@ -1855,10 +1855,10 @@ void TMainWindow::SaveMValue()
         return;
     }
 
-    QSharedPointer<MeasurementVariable> meash;
+    MeasurementVariable* meash{ nullptr };
     try {
         // Translate to internal look.
-        meash = data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
+        meash = &data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
     }
 
     catch (const VExceptionBadId& exception) {
@@ -2014,11 +2014,11 @@ void TMainWindow::SaveMFullName()
     const QTableWidgetItem* nameField =
         ui->tableWidget->item(ui->tableWidget->currentRow(), ColumnName);
 
-    QSharedPointer<MeasurementVariable> meash;
+    const MeasurementVariable* meash{ nullptr };
 
     try {
         // Translate to internal look.
-        meash = data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
+        meash = &data->getVariable<MeasurementVariable>(nameField->data(Qt::UserRole).toString());
     }
 
     catch (const VExceptionBadId& exception) {
