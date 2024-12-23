@@ -192,8 +192,7 @@ qreal VAbstractTool::CheckFormula(const quint32& toolId, QString& formula, VCont
 
         if (qApp->isAppInGUIMode()) {
             DialogUndo dialogUndo{ qApp->getMainWindow() };
-            forever
-            {
+            while (true) {
                 if (dialogUndo.exec() == QDialog::Accepted) {
                     const UndoButton resultUndo = dialogUndo.Result();
                     if (resultUndo == UndoButton::Fix) {
