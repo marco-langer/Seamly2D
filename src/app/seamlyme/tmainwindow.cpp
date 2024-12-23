@@ -1713,7 +1713,7 @@ void TMainWindow::ShowNewMData(bool fresh)
             ui->doubleSpinBoxInSizes->blockSignals(false);
             ui->doubleSpinBoxInHeights->blockSignals(false);
         } else {
-            EvalFormula(meash->GetFormula(), false, meash->GetData(), ui->labelCalculatedValue);
+            EvalFormula(meash->GetFormula(), false, *meash->GetData(), ui->labelCalculatedValue);
 
             ui->plainTextEditFormula->blockSignals(true);
 
@@ -1871,7 +1871,7 @@ void TMainWindow::SaveMValue()
         return;
     }
 
-    if (!EvalFormula(text, true, meash->GetData(), ui->labelCalculatedValue)) {
+    if (!EvalFormula(text, true, *meash->GetData(), ui->labelCalculatedValue)) {
         return;
     }
 
@@ -2829,7 +2829,7 @@ QString TMainWindow::ClearCustomName(const QString& name) const
 
 //---------------------------------------------------------------------------------------------------------------------
 bool TMainWindow::EvalFormula(
-    const QString& formula, bool fromUser, VContainer* data, QLabel* label)
+    const QString& formula, bool fromUser, const VContainer& data, QLabel* label)
 {
     const QString postfix = UnitsToStr(pUnit);   // Show unit in dialog label (cm, mm or inch)
     if (formula.isEmpty()) {
@@ -2848,7 +2848,7 @@ bool TMainWindow::EvalFormula(
             }
             f.replace("\n", " ");
             Calculator cal;
-            qreal result = cal.EvalFormula(data->DataVariables(), f);
+            qreal result = cal.EvalFormula(data.DataVariables(), f);
 
             if (qIsInf(result) || qIsNaN(result)) {
                 label->setText(tr("Error") + " (" + postfix + ").");

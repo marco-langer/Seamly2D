@@ -403,7 +403,7 @@ QString DialogVariables::clearCustomVariableName(const QString& name) const
 
 //---------------------------------------------------------------------------------------------------------------------
 bool DialogVariables::evalVariableFormula(
-    const QString& formula, bool fromUser, VContainer* data, QLabel* label)
+    const QString& formula, bool fromUser, const VContainer& data, QLabel* label)
 {
     const QString postfix =
         UnitsToStr(qApp->patternUnit());   // Show unit in dialog label (cm, mm or inch)
@@ -423,7 +423,7 @@ bool DialogVariables::evalVariableFormula(
             }
             f.replace("\n", " ");
             Calculator cal;
-            const qreal result = cal.EvalFormula(data->DataVariables(), f);
+            const qreal result = cal.EvalFormula(data.DataVariables(), f);
 
             if (qIsInf(result) || qIsNaN(result)) {
                 label->setText(tr("Error") + " (" + postfix + ").");
@@ -819,7 +819,7 @@ void DialogVariables::Fx()
     const QTableWidgetItem* name = ui->variables_TableWidget->item(row, 0);
     QSharedPointer<CustomVariable> variable = data->getVariable<CustomVariable>(name->text());
 
-    EditFormulaDialog* dialog = new EditFormulaDialog(variable->GetData(), NULL_ID, this);
+    EditFormulaDialog* dialog = new EditFormulaDialog(&variable->GetData(), NULL_ID, this);
     dialog->setWindowTitle(tr("Edit variable"));
     dialog->SetFormula(qApp->translateVariables()->TryFormulaFromUser(
         ui->formula_PlainTextEdit->toPlainText().replace("\n", " "),

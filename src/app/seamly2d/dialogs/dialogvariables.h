@@ -148,8 +148,8 @@ private:
     QString getCustomVariableName() const;
     QString clearCustomVariableName(const QString& name) const;
 
-    bool
-    evalVariableFormula(const QString& formula, bool fromUser, VContainer* data, QLabel* label);
+    bool evalVariableFormula(
+        const QString& formula, bool fromUser, const VContainer& data, QLabel* label);
     void setMoveControls();
     void enablePieces(bool enabled);
 

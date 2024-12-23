@@ -90,7 +90,7 @@ public:
     quint32 getIndex() const;
     QString GetFormula() const;
     bool IsFormulaOk() const;
-    VContainer* GetData();
+    const VContainer& GetData() const;
 
 private:
     QSharedDataPointer<CustomVariableData> d;

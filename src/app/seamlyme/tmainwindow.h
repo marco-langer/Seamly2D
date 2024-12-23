@@ -231,7 +231,7 @@ private:
     QString GetCustomName() const;
     QString ClearCustomName(const QString& name) const;
 
-    bool EvalFormula(const QString& formula, bool fromUser, VContainer* data, QLabel* label);
+    bool EvalFormula(const QString& formula, bool fromUser, const VContainer& data, QLabel* label);
     QString getMeasurementNumber(const QString& name);
     void ShowMDiagram(const QString& name);
 

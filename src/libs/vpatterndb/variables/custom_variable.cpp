@@ -105,7 +105,8 @@ CustomVariable::CustomVariable(
 CustomVariable::CustomVariable(const CustomVariable& variable)
     : VVariable(variable)
     , d(variable.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 CustomVariable& CustomVariable::operator=(const CustomVariable& variable)
@@ -135,4 +136,4 @@ QString CustomVariable::GetFormula() const { return d->formula; }
 bool CustomVariable::IsFormulaOk() const { return d->formulaOk; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VContainer* CustomVariable::GetData() { return &d->data; }
+const VContainer& CustomVariable::GetData() const { return d->data; }
