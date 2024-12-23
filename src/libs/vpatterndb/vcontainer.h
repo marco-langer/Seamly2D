@@ -183,8 +183,6 @@ public:
 
     template <class T>
     void UpdateGObject(quint32 id, std::unique_ptr<T> obj);
-    template <class T>
-    void UpdateGObject(quint32 id, const QSharedPointer<T>& obj);
 
     void UpdatePiece(quint32 id, const VPiece& piece);
     void UpdatePiecePath(quint32 id, const VPiecePath& path);
@@ -226,6 +224,9 @@ public:
     const VTranslateVars* getTranslateVariables() const;
 
 private:
+    template <class T>
+    void UpdateGObject(quint32 id, const QSharedPointer<T>& obj);
+
     /**
      * @brief _id current id. New object will have value +1. For empty class equal 0.
      */
