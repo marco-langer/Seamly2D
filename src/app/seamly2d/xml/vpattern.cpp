@@ -90,8 +90,8 @@
 #include <QtNumeric>
 
 #include <limits>
+#include <memory>
 #include <new>
-
 
 const QString VPattern::AttrReadOnly = QStringLiteral("readOnly");
 
@@ -1268,10 +1268,10 @@ void VPattern::ParseToolBasePoint(
         const qreal x = qApp->toPixel(GetParametrDouble(domElement, AttrX, "10.0"));
         const qreal y = qApp->toPixel(GetParametrDouble(domElement, AttrY, "10.0"));
 
-        VPointF* point = new VPointF(x, y, name, mx, my);
+        auto point{ std::make_unique<VPointF>(x, y, name, mx, my) };
         point->setShowPointName(showPointName);
         spoint = VToolBasePoint::Create(
-            id, activeDraftBlock, point, scene, this, data, parse, Source::FromFile);
+            id, activeDraftBlock, std::move(point), scene, this, data, parse, Source::FromFile);
     } catch (const VExceptionBadId& error) {
         VExceptionObjectError excep(tr("Error creating or updating single point"), domElement);
         excep.AddMoreInformation(error.ErrorMessage());
@@ -1706,11 +1706,11 @@ void VPattern::ParseNodePoint(const QDomElement& domElement, const Document& par
             return;   // Just ignore
         }
 
-        VPointF* nodePoint = new VPointF(
-            static_cast<QPointF>(*point), point->name(), mx, my, idObject, Draw::Modeling);
+        auto nodePoint{ std::make_unique<VPointF>(
+            static_cast<QPointF>(*point), point->name(), mx, my, idObject, Draw::Modeling) };
         nodePoint->setShowPointName(getParameterBool(domElement, AttrShowPointName, trueStr));
 
-        data->UpdateGObject(id, nodePoint);
+        data->UpdateGObject(id, std::move(nodePoint));
         VNodePoint::Create(
             this, data, pieceScene, id, idObject, parse, Source::FromFile, "", idTool);
     } catch (const VExceptionBadId& error) {
@@ -2464,13 +2464,13 @@ void VPattern::ParseOldToolSpline(
         const auto& p1{ data->GeometricObject<VPointF>(point1) };
         const auto& p4{ data->GeometricObject<VPointF>(point4) };
 
-        auto spline = new VSpline(*p1, *p4, angle1, angle2, kAsm1, kAsm2, kCurve);
+        auto spline{ std::make_unique<VSpline>(*p1, *p4, angle1, angle2, kAsm1, kAsm2, kCurve) };
         if (duplicate > 0) {
             spline->SetDuplicate(duplicate);
         }
         spline->setLineColor(color);
 
-        VToolSpline::Create(id, spline, scene, this, data, parse, Source::FromFile);
+        VToolSpline::Create(id, std::move(spline), scene, this, data, parse, Source::FromFile);
     } catch (const VExceptionBadId& error) {
         VExceptionObjectError excep(tr("Error creating or updating simple curve"), domElement);
         excep.AddMoreInformation(error.ErrorMessage());
@@ -2581,7 +2581,7 @@ void VPattern::ParseToolCubicBezier(
         const auto& p3{ data->GeometricObject<VPointF>(point3) };
         const auto& p4{ data->GeometricObject<VPointF>(point4) };
 
-        VCubicBezier* spline = new VCubicBezier(*p1, *p2, *p3, *p4);
+        auto spline{ std::make_unique<VCubicBezier>(*p1, *p2, *p3, *p4) };
         if (duplicate > 0) {
             spline->SetDuplicate(duplicate);
         }
@@ -2589,7 +2589,7 @@ void VPattern::ParseToolCubicBezier(
         spline->SetPenStyle(penStyle);
         spline->setLineWeight(lineWeight);
 
-        VToolCubicBezier::Create(id, spline, scene, this, data, parse, Source::FromFile);
+        VToolCubicBezier::Create(id, std::move(spline), scene, this, data, parse, Source::FromFile);
     } catch (const VExceptionBadId& error) {
         VExceptionObjectError excep(
             tr("Error creating or updating cubic bezier curve"), domElement);
@@ -2639,13 +2639,13 @@ void VPattern::ParseOldToolSplinePath(
             }
         }
 
-        auto path = new VSplinePath(points, kCurve);
+        auto path{ std::make_unique<VSplinePath>(points, kCurve) };
         if (duplicate > 0) {
             path->SetDuplicate(duplicate);
         }
         path->setLineColor(color);
 
-        VToolSplinePath::Create(id, path, scene, this, data, parse, Source::FromFile);
+        VToolSplinePath::Create(id, std::move(path), scene, this, data, parse, Source::FromFile);
     } catch (const VExceptionBadId& error) {
         VExceptionObjectError excep(tr("Error creating or updating curve path"), domElement);
         excep.AddMoreInformation(error.ErrorMessage());
@@ -2786,7 +2786,7 @@ void VPattern::ParseToolCubicBezierPath(
             }
         }
 
-        auto path = new VCubicBezierPath(points);
+        auto path{ std::make_unique<VCubicBezierPath>(points) };
         if (duplicate > 0) {
             path->SetDuplicate(duplicate);
         }
@@ -2794,7 +2794,8 @@ void VPattern::ParseToolCubicBezierPath(
         path->SetPenStyle(penStyle);
         path->setLineWeight(lineWeight);
 
-        VToolCubicBezierPath::Create(id, path, scene, this, data, parse, Source::FromFile);
+        VToolCubicBezierPath::Create(
+            id, std::move(path), scene, this, data, parse, Source::FromFile);
     } catch (const VExceptionBadId& error) {
         VExceptionObjectError excep(
             tr("Error creating or updating cubic bezier path curve"), domElement);
@@ -2817,15 +2818,16 @@ void VPattern::ParseNodeSpline(const QDomElement& domElement, const Document& pa
         try {
             const auto& obj{ data->GetGObject(idObject) };
             if (obj.getType() == GOType::Spline) {
-                auto* spl{ new VSpline{ *data->GeometricObject<VSpline>(idObject) } };
+                auto spl{ std::make_unique<VSpline>(*data->GeometricObject<VSpline>(idObject)) };
                 spl->setIdObject(idObject);
                 spl->setMode(Draw::Modeling);
-                data->UpdateGObject(id, spl);
+                data->UpdateGObject(id, std::move(spl));
             } else {
-                auto* spl{ new VCubicBezier{ *data->GeometricObject<VCubicBezier>(idObject) } };
+                auto spl{ std::make_unique<VCubicBezier>(
+                    *data->GeometricObject<VCubicBezier>(idObject)) };
                 spl->setIdObject(idObject);
                 spl->setMode(Draw::Modeling);
-                data->UpdateGObject(id, spl);
+                data->UpdateGObject(id, std::move(spl));
             }
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
@@ -2856,16 +2858,17 @@ void VPattern::ParseNodeSplinePath(const QDomElement& domElement, const Document
         try {
             const auto& obj{ data->GetGObject(idObject) };
             if (obj.getType() == GOType::SplinePath) {
-                auto* path{ new VSplinePath{ *data->GeometricObject<VSplinePath>(idObject) } };
+                auto path{ std::make_unique<VSplinePath>(
+                    *data->GeometricObject<VSplinePath>(idObject)) };
                 path->setIdObject(idObject);
                 path->setMode(Draw::Modeling);
-                data->UpdateGObject(id, path);
+                data->UpdateGObject(id, std::move(path));
             } else {
-                auto* spl{ new VCubicBezierPath{
-                    *data->GeometricObject<VCubicBezierPath>(idObject) } };
+                auto spl{ std::make_unique<VCubicBezierPath>(
+                    *data->GeometricObject<VCubicBezierPath>(idObject)) };
                 spl->setIdObject(idObject);
                 spl->setMode(Draw::Modeling);
-                data->UpdateGObject(id, spl);
+                data->UpdateGObject(id, std::move(spl));
             }
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
@@ -3015,9 +3018,10 @@ void VPattern::ParseNodeEllipticalArc(const QDomElement& domElement, const Docum
         ToolsCommonAttributes(domElement, id);
         const quint32 idObject = GetParametrUInt(domElement, AttrIdObject, NULL_ID_STR);
         const quint32 idTool = GetParametrUInt(domElement, VAbstractNode::AttrIdTool, NULL_ID_STR);
-        VEllipticalArc* arc = nullptr;
+        std::unique_ptr<VEllipticalArc> arc;
         try {
-            arc = new VEllipticalArc{ *data->GeometricObject<VEllipticalArc>(idObject) };
+            arc =
+                std::make_unique<VEllipticalArc>(*data->GeometricObject<VEllipticalArc>(idObject));
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
             Q_UNUSED(error)
@@ -3025,7 +3029,7 @@ void VPattern::ParseNodeEllipticalArc(const QDomElement& domElement, const Docum
         }
         arc->setIdObject(idObject);
         arc->setMode(Draw::Modeling);
-        data->UpdateGObject(id, arc);
+        data->UpdateGObject(id, std::move(arc));
         VNodeEllipticalArc::Create(this, data, id, idObject, parse, Source::FromFile, "", idTool);
     } catch (const VExceptionBadId& error) {
         VExceptionObjectError excep(
@@ -3046,9 +3050,9 @@ void VPattern::ParseNodeArc(const QDomElement& domElement, const Document& parse
         ToolsCommonAttributes(domElement, id);
         const quint32 idObject = GetParametrUInt(domElement, AttrIdObject, NULL_ID_STR);
         const quint32 idTool = GetParametrUInt(domElement, VAbstractNode::AttrIdTool, NULL_ID_STR);
-        VArc* arc = nullptr;
+        std::unique_ptr<VArc> arc;
         try {
-            arc = new VArc{ *data->GeometricObject<VArc>(idObject) };
+            arc = std::make_unique<VArc>(*data->GeometricObject<VArc>(idObject));
         } catch (const VExceptionBadId& error) {   // Possible case. Parent was deleted, but the
                                                    // node object is still here.
             Q_UNUSED(error)
@@ -3056,7 +3060,7 @@ void VPattern::ParseNodeArc(const QDomElement& domElement, const Document& parse
         }
         arc->setIdObject(idObject);
         arc->setMode(Draw::Modeling);
-        data->UpdateGObject(id, arc);
+        data->UpdateGObject(id, std::move(arc));
         VNodeArc::Create(this, data, id, idObject, parse, Source::FromFile, "", idTool);
     } catch (const VExceptionBadId& error) {
         VExceptionObjectError excep(tr("Error creating or updating modeling arc"), domElement);

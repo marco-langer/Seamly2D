@@ -66,6 +66,7 @@
 #include "../vmisc/def.h"
 #include "vtoolsinglepoint.h"
 
+#include <memory>
 
 /**
  * @brief The VToolBasePoint class tool for creation pattern base point. Only base point can move.
@@ -81,7 +82,7 @@ public:
     static VToolBasePoint* Create(
         quint32 _id,
         const QString& activeDraftBlock,
-        VPointF* point,
+        std::unique_ptr<VPointF> point,
         VMainGraphicsScene* scene,
         VAbstractPattern* doc,
         VContainer* data,

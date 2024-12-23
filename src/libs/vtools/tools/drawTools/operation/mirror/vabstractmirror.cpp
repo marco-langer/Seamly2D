@@ -60,6 +60,8 @@
 #include "../vgeometry/vspline.h"
 #include "../vgeometry/vsplinepath.h"
 
+#include <memory>
+
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractMirror::VAbstractMirror(
     VAbstractPattern* doc,
@@ -70,7 +72,8 @@ VAbstractMirror::VAbstractMirror(
     const QVector<DestinationItem>& destination,
     QGraphicsItem* parent)
     : VAbstractOperation(doc, data, id, suffix, source, destination, parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractMirror::createDestination(
@@ -204,7 +207,7 @@ DestinationItem VAbstractMirror::createPoint(
     item.mx = rotated.mx();
     item.my = rotated.my();
     item.showPointName = rotated.isShowPointName();
-    item.id = data->AddGObject(new VPointF(rotated));
+    item.id = data->AddGObject(std::make_unique<VPointF>(rotated));
     return item;
 }
 
@@ -240,7 +243,7 @@ void VAbstractMirror::updatePoint(
     rotated.setMx(item.mx);
     rotated.setMy(item.my);
     rotated.setShowPointName(item.showPointName);
-    data->UpdateGObject(item.id, new VPointF(rotated));
+    data->UpdateGObject(item.id, std::make_unique<VPointF>(rotated));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

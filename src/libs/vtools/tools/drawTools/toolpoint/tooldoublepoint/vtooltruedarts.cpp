@@ -71,6 +71,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtooldoublepoint.h"
 
+#include <memory>
 
 const QString VToolTrueDarts::ToolType = QStringLiteral("trueDarts");
 
@@ -238,20 +239,20 @@ VToolTrueDarts* VToolTrueDarts::Create(
     quint32 p1id = _p1id;
     quint32 p2id = _p2id;
 
-    VPointF* p1 = new VPointF(fPoint1, point1Name, mx1, my1, id);
+    auto p1{ std::make_unique<VPointF>(fPoint1, point1Name, mx1, my1, id) };
     p1->setShowPointName(showPointName1);
 
-    VPointF* p2 = new VPointF(fPoint2, point2Name, mx2, my2, id);
+    auto p2{ std::make_unique<VPointF>(fPoint2, point2Name, mx2, my2, id) };
     p2->setShowPointName(showPointName2);
 
 
     if (typeCreation == Source::FromGui) {
         id = VContainer::getNextId();   // Just reserve id for tool
-        p1id = data->AddGObject(p1);
-        p2id = data->AddGObject(p2);
+        p1id = data->AddGObject(std::move(p1));
+        p2id = data->AddGObject(std::move(p2));
     } else {
-        data->UpdateGObject(p1id, p1);
-        data->UpdateGObject(p2id, p2);
+        data->UpdateGObject(p1id, std::move(p1));
+        data->UpdateGObject(p2id, std::move(p2));
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

@@ -62,8 +62,6 @@
 #include <QStringDataPtr>
 #include <QVector>
 
-#include <limits>
-
 #include "../../../../../dialogs/tools/dialogcurveintersectaxis.h"
 #include "../../../../../dialogs/tools/dialogtool.h"
 #include "../../../../vabstracttool.h"
@@ -90,6 +88,8 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
+#include <limits>
+#include <memory>
 
 const QString VToolCurveIntersectAxis::ToolType = QStringLiteral("curveIntersectAxis");
 
@@ -222,21 +222,22 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
 
     const qreal segLength{ curve.GetLengthByPoint(intersectPoint) };
     quint32 id = _id;
-    VPointF* p = new VPointF(intersectPoint, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(intersectPoint, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
+    VPointF* pObserver{ p.get() };
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(basePointId, id);
 
         VContainer::getNextId();
         VContainer::getNextId();
-        InitSegments(curve.getType(), segLength, p, curveId, data);
+        InitSegments(curve.getType(), segLength, pObserver, curveId, data);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(basePointId, id);
 
-        InitSegments(curve.getType(), segLength, p, curveId, data);
+        InitSegments(curve.getType(), segLength, pObserver, curveId, data);
 
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

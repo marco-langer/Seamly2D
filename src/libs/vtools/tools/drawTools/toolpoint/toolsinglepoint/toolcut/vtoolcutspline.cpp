@@ -75,6 +75,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolcut.h"
 
+#include <memory>
 
 const QString VToolCutSpline::ToolType = QStringLiteral("cutSpline");
 const QString VToolCutSpline::AttrSpline = QStringLiteral("spline");
@@ -194,18 +195,18 @@ VToolCutSpline* VToolCutSpline::Create(
     const QPointF point{ spl.CutSpline(qApp->toPixel(result), spl1p2, spl1p3, spl2p2, spl2p3) };
 
     quint32 id = _id;
-    VPointF* p = new VPointF(point, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(point, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     auto spline1 = QSharedPointer<VAbstractBezier>(new VSpline(spl.GetP1(), spl1p2, spl1p3, *p));
     auto spline2 = QSharedPointer<VAbstractBezier>(new VSpline(*p, spl2p2, spl2p3, spl.GetP4()));
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddSpline(*spline1, NULL_ID, id);
         data->AddSpline(*spline2, NULL_ID, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddSpline(*spline1, NULL_ID, id);
         data->AddSpline(*spline2, NULL_ID, id);
 

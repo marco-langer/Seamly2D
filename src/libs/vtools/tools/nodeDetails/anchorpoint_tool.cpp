@@ -56,6 +56,8 @@
 #include "../pattern_piece_tool.h"
 #include "../vgeometry/vpointf.h"
 
+#include <memory>
+
 const QString AnchorPointTool::ToolType = QStringLiteral("anchor");
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -96,9 +98,9 @@ AnchorPointTool* AnchorPointTool::Create(
             data->UpdateId(id);
             return nullptr;   // Just ignore
         }
-        VPointF* anchorPoint = new VPointF(*point);
+        auto anchorPoint{ std::make_unique<VPointF>(*point) };
         anchorPoint->setMode(Draw::Modeling);
-        data->UpdateGObject(id, anchorPoint);
+        data->UpdateGObject(id, std::move(anchorPoint));
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

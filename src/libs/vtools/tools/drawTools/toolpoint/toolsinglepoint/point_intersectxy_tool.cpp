@@ -71,6 +71,7 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
+#include <memory>
 
 const QString PointIntersectXYTool::ToolType = QStringLiteral("intersectXY");
 
@@ -211,15 +212,15 @@ PointIntersectXYTool* PointIntersectXYTool::Create(
 
     const QPointF point{ firstPoint.x(), secondPoint.y() };
     quint32 id = _id;
-    VPointF* p = new VPointF(point, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(point, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(firstPointId, id);
         data->AddLine(secondPointId, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(firstPointId, id);
         data->AddLine(secondPointId, id);
         if (parse != Document::FullParse) {

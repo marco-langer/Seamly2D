@@ -77,6 +77,7 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
+#include <memory>
 
 const QString VToolPointOfIntersectionArcs::ToolType = QStringLiteral("pointOfIntersectionArcs");
 
@@ -183,9 +184,9 @@ VToolPointOfIntersectionArcs* VToolPointOfIntersectionArcs::Create(
 
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(new VPointF(point, pointName, mx, my));
+        id = data->AddGObject(std::make_unique<VPointF>(point, pointName, mx, my));
     } else {
-        data->UpdateGObject(id, new VPointF(point, pointName, mx, my));
+        data->UpdateGObject(id, std::make_unique<VPointF>(point, pointName, mx, my));
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

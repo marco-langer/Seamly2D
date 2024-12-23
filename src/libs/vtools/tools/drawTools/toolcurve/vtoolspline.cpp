@@ -201,12 +201,12 @@ VToolSpline* VToolSpline::Create(
     QSharedPointer<DialogSpline> dialogTool = dialog.objectCast<DialogSpline>();
     SCASSERT(not dialogTool.isNull())
 
-    VSpline* spline = new VSpline(dialogTool->GetSpline());
+    auto spline{ std::make_unique<VSpline>(dialogTool->GetSpline()) };
     spline->setLineColor(dialogTool->getLineColor());
     spline->SetPenStyle(dialogTool->getPenStyle());
     spline->setLineWeight(dialogTool->getLineWeight());
 
-    auto spl = Create(0, spline, scene, doc, data, Document::FullParse, Source::FromGui);
+    auto spl = Create(0, std::move(spline), scene, doc, data, Document::FullParse, Source::FromGui);
 
     if (spl != nullptr) {
         spl->m_dialog = dialogTool;
@@ -228,7 +228,7 @@ VToolSpline* VToolSpline::Create(
  */
 VToolSpline* VToolSpline::Create(
     const quint32 _id,
-    VSpline* spline,
+    std::unique_ptr<VSpline> spline,
     VMainGraphicsScene* scene,
     VAbstractPattern* doc,
     VContainer* data,
@@ -236,12 +236,13 @@ VToolSpline* VToolSpline::Create(
     const Source& typeCreation)
 {
     quint32 id = _id;
+    VSpline* splineObserver{ spline.get() };
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(spline);
+        id = data->AddGObject(std::move(spline));
         data->AddSpline(*data->GeometricObject<VAbstractBezier>(id), id);
     } else {
-        data->UpdateGObject(id, spline);
+        data->UpdateGObject(id, std::move(spline));
         data->AddSpline(*data->GeometricObject<VAbstractBezier>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
@@ -254,8 +255,8 @@ VToolSpline* VToolSpline::Create(
         scene->addItem(_spl);
         InitSplineToolConnections(scene, _spl);
         VAbstractPattern::AddTool(id, _spl);
-        doc->IncrementReferens(spline->GetP1().getIdTool());
-        doc->IncrementReferens(spline->GetP4().getIdTool());
+        doc->IncrementReferens(splineObserver->GetP1().getIdTool());
+        doc->IncrementReferens(splineObserver->GetP4().getIdTool());
         return _spl;
     }
     return nullptr;
@@ -289,8 +290,8 @@ VToolSpline* VToolSpline::Create(
     const auto& p1{ *data->GeometricObject<VPointF>(point1) };
     const auto& p4{ *data->GeometricObject<VPointF>(point4) };
 
-    auto* spline =
-        new VSpline{ p1, p4, calcAngle1, a1, calcAngle2, a2, calcLength1, l1, calcLength2, l2 };
+    auto spline{ std::make_unique<VSpline>(
+        p1, p4, calcAngle1, a1, calcAngle2, a2, calcLength1, l1, calcLength2, l2) };
     if (duplicate > 0) {
         spline->SetDuplicate(duplicate);
     }
@@ -299,7 +300,7 @@ VToolSpline* VToolSpline::Create(
     spline->SetPenStyle(penStyle);
     spline->setLineWeight(lineWeight);
 
-    return VToolSpline::Create(_id, spline, scene, doc, data, parse, typeCreation);
+    return VToolSpline::Create(_id, std::move(spline), scene, doc, data, parse, typeCreation);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

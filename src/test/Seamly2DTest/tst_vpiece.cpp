@@ -59,6 +59,8 @@
 
 #include <QtTest>
 
+#include <memory>
+
 //---------------------------------------------------------------------------------------------------------------------
 TST_VPiece::TST_VPiece(QObject* parent)
     : AbstractTest(parent)
@@ -79,24 +81,24 @@ void TST_VPiece::ClearLoop()
 
     data.UpdateGObject(
         304,
-        new VPointF(
+        std::make_unique<VPointF>(
             61.866708661417327, 446.92270866141735, "Ф1", 5.0000125984251973, 9.9999874015748045));
     data.UpdateGObject(
         307,
-        new VPointF(
+        std::make_unique<VPointF>(
             642.96276692900597, 581.21895343695326, "С1", 88.99993700787401, 50.000125984251973));
 
     data.UpdateGObject(
         56,
-        new VPointF(
+        std::make_unique<VPointF>(
             802.08718110236236, 850.6707401574804, "Г6", 20.733316535433072, 18.132850393700789));
     data.UpdateGObject(
         57,
-        new VPointF(
+        std::make_unique<VPointF>(
             690.47666217505162, 804.29700711628709, "З", -11.505637795275591, 31.221543307086616));
     data.UpdateGObject(
         203,
-        new VPointF(
+        std::make_unique<VPointF>(
             642.96276692900597, 581.21895343695326, "С1", 88.99993700787401, 50.000125984251973));
 
     QVector<VFSplinePoint> points;
@@ -123,15 +125,15 @@ void TST_VPiece::ClearLoop()
         points.append(p);
     }
 
-    data.UpdateGObject(308, new VSplinePath(points));
+    data.UpdateGObject(308, std::make_unique<VSplinePath>(points));
 
     data.UpdateGObject(
         309,
-        new VPointF(
+        std::make_unique<VPointF>(
             799.45989815267649, 850.6707401574804, "Г8", -30.431206299212597, 29.487155905511813));
     data.UpdateGObject(
         310,
-        new VPointF(
+        std::make_unique<VPointF>(
             802.08718110236236, 1653.9337322834645, "Н5", 5.0000125984251973, 9.9999874015748045));
 
     VPiece detail;
@@ -199,25 +201,29 @@ void TST_VPiece::Issue620()
     qApp->setPatternUnit(unit);
 
     data.UpdateGObject(
-        1, new VPointF(30, 39.999874015748034, "A", 5.0000125984251973, 9.9999874015748045));
+        1,
+        std::make_unique<VPointF>(
+            30, 39.999874015748034, "A", 5.0000125984251973, 9.9999874015748045));
     data.UpdateGObject(
         2,
-        new VPointF(
+        std::make_unique<VPointF>(
             333.80102715408322, 37.242158125518621, "A1", 5.0000125984251973, 9.9999874015748045));
     data.UpdateGObject(
         3,
-        new VPointF(
+        std::make_unique<VPointF>(
             345.43524385831239, 572.57275904711241, "A2", 5.0000125984251973, 9.9999874015748045));
-    VPointF* p4 = new VPointF(
-        -43.770684129917051, 567.84465074396087, "A3", 5.0000125984251973, 9.9999874015748045);
-    data.UpdateGObject(4, p4);
+    auto p4{ std::make_unique<VPointF>(
+        -43.770684129917051, 567.84465074396087, "A3", 5.0000125984251973, 9.9999874015748045) };
+    VPointF* p4Observer{ p4.get() };
+    data.UpdateGObject(4, std::move(p4));
 
-    VPointF* p5 = new VPointF(
-        101.73836126698214, 289.83563666815587, "A4", 5.0000125984251973, 9.9999874015748045);
-    data.UpdateGObject(5, p5);
+    auto p5{ std::make_unique<VPointF>(
+        101.73836126698214, 289.83563666815587, "A4", 5.0000125984251973, 9.9999874015748045) };
+    VPointF* p5Observer{ p5.get() };
+    data.UpdateGObject(5, std::move(p5));
     data.UpdateGObject(
         6,
-        new VPointF(
+        std::make_unique<VPointF>(
             34.070501467722302, 568.79027240459118, "A5", 5.0000125984251973, 9.9999874015748045));
 
     QVector<VSplinePoint> points;
@@ -247,13 +253,13 @@ void TST_VPiece::Issue620()
         points.append(p);
     }
 
-    data.UpdateGObject(7, new VSplinePath(points));
+    data.UpdateGObject(7, std::make_unique<VSplinePath>(points));
 
     data.UpdateGObject(
         8,
-        new VSpline(
-            *p4,
-            *p5,
+        std::make_unique<VSpline>(
+            *p4Observer,
+            *p5Observer,
             59.932499999999997,
             "59.9325",
             257.56999999999999,

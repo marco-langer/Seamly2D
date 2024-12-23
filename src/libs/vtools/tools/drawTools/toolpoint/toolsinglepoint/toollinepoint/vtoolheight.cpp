@@ -69,6 +69,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
+#include <memory>
 
 const QString VToolHeight::ToolType = QStringLiteral("height");
 
@@ -222,16 +223,16 @@ VToolHeight* VToolHeight::Create(
         QLineF{ static_cast<QPointF>(p1Line), static_cast<QPointF>(p2Line) },
         static_cast<QPointF>(basePoint)) };
     quint32 id = _id;
-    VPointF* p = new VPointF(pHeight, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(pHeight, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(basePointId, id);
         data->AddLine(p1LineId, id);
         data->AddLine(p2LineId, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(basePointId, id);
         data->AddLine(p1LineId, id);
         data->AddLine(p2LineId, id);

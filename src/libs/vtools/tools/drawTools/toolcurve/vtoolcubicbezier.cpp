@@ -117,12 +117,12 @@ VToolCubicBezier* VToolCubicBezier::Create(
     QSharedPointer<DialogCubicBezier> dialogTool = dialog.objectCast<DialogCubicBezier>();
     SCASSERT(not dialogTool.isNull())
 
-    VCubicBezier* spline = new VCubicBezier(dialogTool->GetSpline());
+    auto spline{ std::make_unique<VCubicBezier>(dialogTool->GetSpline()) };
     spline->setLineColor(dialogTool->getLineColor());
     spline->SetPenStyle(dialogTool->getPenStyle());
     spline->setLineWeight(dialogTool->getLineWeight());
 
-    auto spl = Create(0, spline, scene, doc, data, Document::FullParse, Source::FromGui);
+    auto spl = Create(0, std::move(spline), scene, doc, data, Document::FullParse, Source::FromGui);
 
     if (spl != nullptr) {
         spl->m_dialog = dialogTool;
@@ -133,7 +133,7 @@ VToolCubicBezier* VToolCubicBezier::Create(
 //---------------------------------------------------------------------------------------------------------------------
 VToolCubicBezier* VToolCubicBezier::Create(
     const quint32 _id,
-    VCubicBezier* spline,
+    std::unique_ptr<VCubicBezier> spline,
     VMainGraphicsScene* scene,
     VAbstractPattern* doc,
     VContainer* data,
@@ -141,11 +141,13 @@ VToolCubicBezier* VToolCubicBezier::Create(
     const Source& typeCreation)
 {
     quint32 id = _id;
+    VCubicBezier* splineObserver{ spline.get() };
+
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(spline);
+        id = data->AddGObject(std::move(spline));
         data->AddSpline(*data->GeometricObject<VAbstractBezier>(id), id);
     } else {
-        data->UpdateGObject(id, spline);
+        data->UpdateGObject(id, std::move(spline));
         data->AddSpline(*data->GeometricObject<VAbstractBezier>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
@@ -158,10 +160,10 @@ VToolCubicBezier* VToolCubicBezier::Create(
         scene->addItem(_spl);
         InitSplineToolConnections(scene, _spl);
         VAbstractPattern::AddTool(id, _spl);
-        doc->IncrementReferens(spline->GetP1().getIdTool());
-        doc->IncrementReferens(spline->GetP1().getIdTool());
-        doc->IncrementReferens(spline->GetP1().getIdTool());
-        doc->IncrementReferens(spline->GetP4().getIdTool());
+        doc->IncrementReferens(splineObserver->GetP1().getIdTool());
+        doc->IncrementReferens(splineObserver->GetP1().getIdTool());
+        doc->IncrementReferens(splineObserver->GetP1().getIdTool());
+        doc->IncrementReferens(splineObserver->GetP4().getIdTool());
         return _spl;
     }
     return nullptr;

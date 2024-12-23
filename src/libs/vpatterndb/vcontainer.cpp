@@ -207,21 +207,6 @@ quint32 VContainer::AddGObject(std::unique_ptr<VGObject> obj)
     return AddObject(d->gObjects, pointer);
 }
 
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief AddGObject add new GObject to container
- * @param obj new object
- * @return return id of new object in container
- */
-quint32 VContainer::AddGObject(VGObject* obj)
-{
-    SCASSERT(obj != nullptr)
-    QSharedPointer<VGObject> pointer(obj);
-    uniqueNames.insert(obj->name());
-    return AddObject(d->gObjects, pointer);
-}
-
 //---------------------------------------------------------------------------------------------------------------------
 quint32 VContainer::AddPiece(const VPiece& piece)
 {

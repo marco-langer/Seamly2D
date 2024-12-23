@@ -118,7 +118,7 @@ VToolCubicBezierPath* VToolCubicBezierPath::Create(
     SCASSERT(not dialog.isNull())
     QSharedPointer<DialogCubicBezierPath> dialogTool = dialog.objectCast<DialogCubicBezierPath>();
     SCASSERT(not dialogTool.isNull())
-    auto path = new VCubicBezierPath(dialogTool->GetPath());
+    auto path{ std::make_unique<VCubicBezierPath>(dialogTool->GetPath()) };
     const QString color = dialogTool->getLineColor();
     const QString penStyle = dialogTool->getPenStyle();
     const QString lineWeight = dialogTool->getLineWeight();
@@ -130,7 +130,7 @@ VToolCubicBezierPath* VToolCubicBezierPath::Create(
     path->setLineWeight(lineWeight);
 
     VToolCubicBezierPath* spl =
-        Create(0, path, scene, doc, data, Document::FullParse, Source::FromGui);
+        Create(0, std::move(path), scene, doc, data, Document::FullParse, Source::FromGui);
     if (spl != nullptr) {
         spl->m_dialog = dialogTool;
     }
@@ -140,7 +140,7 @@ VToolCubicBezierPath* VToolCubicBezierPath::Create(
 //---------------------------------------------------------------------------------------------------------------------
 VToolCubicBezierPath* VToolCubicBezierPath::Create(
     const quint32 _id,
-    VCubicBezierPath* path,
+    std::unique_ptr<VCubicBezierPath> path,
     VMainGraphicsScene* scene,
     VAbstractPattern* doc,
     VContainer* data,
@@ -149,10 +149,10 @@ VToolCubicBezierPath* VToolCubicBezierPath::Create(
 {
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(path);
+        id = data->AddGObject(std::move(path));
         data->AddCurveWithSegments(*data->GeometricObject<VAbstractCubicBezierPath>(id), id);
     } else {
-        data->UpdateGObject(id, path);
+        data->UpdateGObject(id, std::move(path));
         data->AddCurveWithSegments(*data->GeometricObject<VAbstractCubicBezierPath>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

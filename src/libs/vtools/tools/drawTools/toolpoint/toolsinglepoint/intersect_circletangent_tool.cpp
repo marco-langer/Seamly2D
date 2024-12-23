@@ -73,6 +73,7 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
+#include <memory>
 
 const QString IntersectCircleTangentTool::ToolType = QStringLiteral("pointFromCircleAndTangent");
 
@@ -190,13 +191,13 @@ IntersectCircleTangentTool* IntersectCircleTangentTool::Create(
 
     quint32 id = _id;
 
-    VPointF* p = new VPointF(point, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(point, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

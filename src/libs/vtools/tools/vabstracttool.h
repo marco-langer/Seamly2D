@@ -69,6 +69,8 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vdatatool.h"
 
+#include <memory>
+
 class VGraphicsSimpleTextItem;
 class VAbstractNode;
 
@@ -220,9 +222,9 @@ template <typename T>
 quint32 VAbstractTool::CreateNode(VContainer* data, quint32 id)
 {
     // We can't use exist object. Need create new.
-    T* node = new T(*data->GeometricObject<T>(id).data());
+    auto node{ std::make_unique<T>(*data->GeometricObject<T>(id).data()) };
     node->setMode(Draw::Modeling);
-    return data->AddGObject(node);
+    return data->AddGObject(std::move(node));
 }
 
 #endif   // VABSTRACTTOOL_H

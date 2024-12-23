@@ -67,6 +67,8 @@
 #include "../vmisc/def.h"
 #include "vabstractspline.h"
 
+#include <memory>
+
 class VSplinePath;
 
 /**
@@ -85,7 +87,7 @@ public:
         VContainer* data);
     static VToolSplinePath* Create(
         const quint32 _id,
-        VSplinePath* path,
+        std::unique_ptr<VSplinePath> path,
         VMainGraphicsScene* scene,
         VAbstractPattern* doc,
         VContainer* data,

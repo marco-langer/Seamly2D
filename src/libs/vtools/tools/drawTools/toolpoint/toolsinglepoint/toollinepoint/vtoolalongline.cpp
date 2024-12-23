@@ -75,6 +75,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
+#include <memory>
 
 const QString VToolAlongLine::ToolType = QStringLiteral("alongLine");
 
@@ -358,15 +359,15 @@ VToolAlongLine* VToolAlongLine::Create(
     line.setLength(qApp->toPixel(CheckFormula(_id, formula, data)));
 
     quint32 id = _id;
-    VPointF* p = new VPointF(line.p2(), pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(line.p2(), pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(firstPointId, id);
         data->AddLine(id, secondPointId);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(firstPointId, id);
         data->AddLine(id, secondPointId);
         if (parse != Document::FullParse) {

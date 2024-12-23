@@ -77,6 +77,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolsinglepoint.h"
 
+#include <memory>
 
 const QString VToolPointOfContact::ToolType = QStringLiteral("pointOfContact");
 
@@ -263,16 +264,16 @@ VToolPointOfContact* VToolPointOfContact::Create(
         static_cast<QPointF>(secondP)) };
     quint32 id = _id;
 
-    VPointF* p = new VPointF(fPoint, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(fPoint, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(firstPointId, id);
         data->AddLine(secondPointId, id);
         data->AddLine(center, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(firstPointId, id);
         data->AddLine(secondPointId, id);
         data->AddLine(center, id);

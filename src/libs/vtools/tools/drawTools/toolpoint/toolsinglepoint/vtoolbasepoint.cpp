@@ -133,7 +133,7 @@ void VToolBasePoint::setDialog()
 VToolBasePoint* VToolBasePoint::Create(
     quint32 _id,
     const QString& activeDraftBlock,
-    VPointF* point,
+    std::unique_ptr<VPointF> point,
     VMainGraphicsScene* scene,
     VAbstractPattern* doc,
     VContainer* data,
@@ -144,9 +144,9 @@ VToolBasePoint* VToolBasePoint::Create(
 
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(point);
+        id = data->AddGObject(std::move(point));
     } else {
-        data->UpdateGObject(id, point);
+        data->UpdateGObject(id, std::move(point));
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
         }

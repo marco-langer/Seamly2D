@@ -73,6 +73,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
+#include <memory>
 
 const QString VToolNormal::ToolType = QStringLiteral("normal");
 
@@ -232,14 +233,14 @@ VToolNormal* VToolNormal::Create(
         qApp->toPixel(result),
         angle) };
     quint32 id = _id;
-    VPointF* p = new VPointF(fPoint, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(fPoint, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(firstPointId, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(firstPointId, id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

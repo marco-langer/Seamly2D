@@ -221,7 +221,7 @@ VToolSplinePath* VToolSplinePath::Create(
     SCASSERT(not dialog.isNull())
     QSharedPointer<DialogSplinePath> dialogTool = dialog.objectCast<DialogSplinePath>();
     SCASSERT(not dialogTool.isNull())
-    VSplinePath* path = new VSplinePath(dialogTool->GetPath());
+    auto path{ std::make_unique<VSplinePath>(dialogTool->GetPath()) };
     for (qint32 i = 0; i < path->CountPoints(); ++i) {
         doc->IncrementReferens((*path)[i].P().getIdTool());
     }
@@ -230,7 +230,8 @@ VToolSplinePath* VToolSplinePath::Create(
     path->SetPenStyle(dialogTool->getPenStyle());
     path->setLineWeight(dialogTool->getLineWeight());
 
-    VToolSplinePath* spl = Create(0, path, scene, doc, data, Document::FullParse, Source::FromGui);
+    VToolSplinePath* spl =
+        Create(0, std::move(path), scene, doc, data, Document::FullParse, Source::FromGui);
     if (spl != nullptr) {
         spl->m_dialog = dialogTool;
     }
@@ -250,7 +251,7 @@ VToolSplinePath* VToolSplinePath::Create(
  */
 VToolSplinePath* VToolSplinePath::Create(
     const quint32 _id,
-    VSplinePath* path,
+    std::unique_ptr<VSplinePath> path,
     VMainGraphicsScene* scene,
     VAbstractPattern* doc,
     VContainer* data,
@@ -260,10 +261,10 @@ VToolSplinePath* VToolSplinePath::Create(
     quint32 id = _id;
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(path);
+        id = data->AddGObject(std::move(path));
         data->AddCurveWithSegments(*data->GeometricObject<VAbstractCubicBezierPath>(id), id);
     } else {
-        data->UpdateGObject(id, path);
+        data->UpdateGObject(id, std::move(path));
         data->AddCurveWithSegments(*data->GeometricObject<VAbstractCubicBezierPath>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);
@@ -299,7 +300,7 @@ VToolSplinePath* VToolSplinePath::Create(
     const Document& parse,
     const Source& typeCreation)
 {
-    auto path = new VSplinePath();
+    auto path{ std::make_unique<VSplinePath>() };
 
     if (duplicate > 0) {
         path->SetDuplicate(duplicate);
@@ -330,7 +331,7 @@ VToolSplinePath* VToolSplinePath::Create(
     path->SetPenStyle(penStyle);
     path->setLineWeight(lineWeight);
 
-    return VToolSplinePath::Create(_id, path, scene, doc, data, parse, typeCreation);
+    return VToolSplinePath::Create(_id, std::move(path), scene, doc, data, parse, typeCreation);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

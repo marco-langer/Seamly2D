@@ -119,7 +119,9 @@
 #include <QUndoStack>
 #include <QtDebug>
 #include <QtGlobal>
+
 #include <chrono>
+#include <memory>
 #include <thread>
 
 #if defined(Q_OS_MAC)
@@ -288,9 +290,16 @@ void MainWindow::addDraftBlock(const QString& blockName)
     emit m_ui->view->itemClicked(nullptr);   // hide options previous tool
     const QString label = doc->GenerateLabel(LabelType::NewPatternPiece);
     const QPointF startPosition = draftBlockStartPosition();
-    VPointF* point = new VPointF(startPosition.x(), startPosition.y(), label, 5, 10);
+
     auto spoint = VToolBasePoint::Create(
-        0, blockName, point, m_draftScene, doc, pattern, Document::FullParse, Source::FromGui);
+        0,
+        blockName,
+        std::make_unique<VPointF>(startPosition.x(), startPosition.y(), label, 5, 10),
+        m_draftScene,
+        doc,
+        pattern,
+        Document::FullParse,
+        Source::FromGui);
     emit m_ui->view->itemClicked(spoint);
 
     setToolsEnabled(true);

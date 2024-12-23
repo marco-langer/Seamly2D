@@ -63,6 +63,7 @@
 #include <qiterator.h>
 
 #include <limits>
+#include <memory>
 
 #include "../../../dialogs/tools/dialogmove.h"
 #include "../../../dialogs/tools/dialogtool.h"
@@ -719,7 +720,7 @@ DestinationItem VToolMove::createPoint(
     item.mx = moved.mx();
     item.my = moved.my();
     item.showPointName = moved.isShowPointName();
-    item.id = data->AddGObject(new VPointF(moved));
+    item.id = data->AddGObject(std::make_unique<VPointF>(moved));
     return item;
 }
 
@@ -743,7 +744,7 @@ DestinationItem VToolMove::createItem(
     DestinationItem item;
     item.mx = std::numeric_limits<int>::max();
     item.my = std::numeric_limits<int>::max();
-    item.id = data->AddGObject(new Item(moved));
+    item.id = data->AddGObject(std::make_unique<Item>(moved));
     return item;
 }
 
@@ -820,7 +821,7 @@ void VToolMove::updatePoint(
     moved.setMx(item.mx);
     moved.setMy(item.my);
     moved.setShowPointName(item.showPointName);
-    data->UpdateGObject(item.id, new VPointF(moved));
+    data->UpdateGObject(item.id, std::make_unique<VPointF>(moved));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -840,7 +841,7 @@ void VToolMove::updateItem(
                     ->Move(length, angle, suffix)
                     .Rotate(rotationOrigin, rotation) };
     moved.setIdObject(idTool);
-    data->UpdateGObject(id, new Item(moved));
+    data->UpdateGObject(id, std::make_unique<Item>(moved));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

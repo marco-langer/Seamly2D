@@ -55,6 +55,7 @@
 #include <QtGlobal>
 
 #include <limits>
+#include <memory>
 
 #include "../vabstractoperation.h"
 
@@ -194,7 +195,7 @@ DestinationItem VAbstractMirror::createItem(
     DestinationItem item;
     item.mx = std::numeric_limits<int>::max();
     item.my = std::numeric_limits<int>::max();
-    item.id = data->AddGObject(new Item(rotated));
+    item.id = data->AddGObject(std::make_unique<Item>(rotated));
     return item;
 }
 
@@ -244,7 +245,7 @@ void VAbstractMirror::updateItem(
     Item rotated{ data->GeometricObject<Item>(idItem)->Flip(
         QLineF(firstPoint, secondPoint), suffix) };
     rotated.setIdObject(idTool);
-    data->UpdateGObject(id, new Item(rotated));
+    data->UpdateGObject(id, std::make_unique<Item>(rotated));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

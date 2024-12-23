@@ -209,12 +209,12 @@ VToolCutSplinePath* VToolCutSplinePath::Create(
     p->setMy(my);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p.release());
+        id = data->AddGObject(std::move(p));
 
         data->AddSpline(*splPath1, NULL_ID, id);
         data->AddSpline(*splPath2, NULL_ID, id);
     } else {
-        data->UpdateGObject(id, p.release());
+        data->UpdateGObject(id, std::move(p));
 
         data->AddSpline(*splPath1, NULL_ID, id);
         data->AddSpline(*splPath2, NULL_ID, id);

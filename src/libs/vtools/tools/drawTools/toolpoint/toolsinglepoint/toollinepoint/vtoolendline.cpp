@@ -73,6 +73,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
+#include <memory>
 
 const QString VToolEndLine::ToolType = QStringLiteral("endLine");
 
@@ -224,14 +225,14 @@ VToolEndLine* VToolEndLine::Create(
     line.setAngle(CheckFormula(_id, formulaAngle, data));   // First set angle.
     line.setLength(qApp->toPixel(CheckFormula(_id, formulaLength, data)));
     quint32 id = _id;
-    VPointF* p = new VPointF(line.p2(), pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(line.p2(), pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(basePointId, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(basePointId, id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

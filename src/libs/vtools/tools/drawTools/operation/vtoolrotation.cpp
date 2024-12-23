@@ -63,6 +63,7 @@
 #include <qiterator.h>
 
 #include <limits>
+#include <memory>
 
 #include "../../../dialogs/tools/dialogrotation.h"
 #include "../../../dialogs/tools/dialogtool.h"
@@ -436,7 +437,7 @@ DestinationItem VToolRotation::createPoint(
     item.mx = rotated.mx();
     item.my = rotated.my();
     item.showPointName = rotated.isShowPointName();
-    item.id = data->AddGObject(new VPointF(rotated));
+    item.id = data->AddGObject(std::make_unique<VPointF>(rotated));
     return item;
 }
 
@@ -456,7 +457,7 @@ DestinationItem VToolRotation::createItem(
     DestinationItem item;
     item.mx = std::numeric_limits<int>::max();
     item.my = std::numeric_limits<int>::max();
-    item.id = data->AddGObject(new Item(rotated));
+    item.id = data->AddGObject(std::make_unique<Item>(rotated));
     return item;
 }
 
@@ -520,7 +521,7 @@ void VToolRotation::updatePoint(
     rotated.setMx(item.mx);
     rotated.setMy(item.my);
     rotated.setShowPointName(item.showPointName);
-    data->UpdateGObject(item.id, new VPointF(rotated));
+    data->UpdateGObject(item.id, std::make_unique<VPointF>(rotated));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -536,7 +537,7 @@ void VToolRotation::updateItem(
 {
     Item rotated = data->GeometricObject<Item>(idItem)->Rotate(origin, angle, suffix);
     rotated.setIdObject(idTool);
-    data->UpdateGObject(id, new Item(rotated));
+    data->UpdateGObject(id, std::make_unique<Item>(rotated));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -78,6 +78,8 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vabstractspline.h"
 
+#include <memory>
+
 const QString VToolArc::ToolType = QStringLiteral("simple");
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -205,16 +207,16 @@ VToolArc* VToolArc::Create(
     calcF2 = CheckFormula(_id, f2, data);
 
     const VPointF c = *data->GeometricObject<VPointF>(center);
-    VArc* arc = new VArc(c, calcRadius, radius, calcF1, f1, calcF2, f2);
+    auto arc{ std::make_unique<VArc>(c, calcRadius, radius, calcF1, f1, calcF2, f2) };
     arc->setLineColor(color);
     arc->SetPenStyle(penStyle);
     arc->setLineWeight(lineWeight);
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(arc);
+        id = data->AddGObject(std::move(arc));
         data->AddArc(*data->GeometricObject<VArc>(id), id);
     } else {
-        data->UpdateGObject(id, arc);
+        data->UpdateGObject(id, std::move(arc));
         data->AddArc(*data->GeometricObject<VArc>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

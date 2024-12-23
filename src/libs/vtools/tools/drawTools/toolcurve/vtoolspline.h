@@ -66,6 +66,7 @@
 #include "../vmisc/def.h"
 #include "vabstractspline.h"
 
+#include <memory>
 
 /**
  * @brief The VToolSpline class tool for creation spline. I mean bezier curve.
@@ -83,7 +84,7 @@ public:
         VContainer* data);
     static VToolSpline* Create(
         const quint32 _id,
-        VSpline* spline,
+        std::unique_ptr<VSpline> spline,
         VMainGraphicsScene* scene,
         VAbstractPattern* doc,
         VContainer* data,

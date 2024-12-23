@@ -166,7 +166,6 @@ public:
     static void UpdateId(quint32 newId);
 
     quint32 AddGObject(std::unique_ptr<VGObject> obj);
-    quint32 AddGObject(VGObject* obj);
     quint32 AddPiece(const VPiece& piece);
     quint32 AddPiecePath(const VPiecePath& path);
     void AddLine(const quint32& firstPointId, const quint32& secondPointId);
@@ -182,8 +181,6 @@ public:
     void RemoveVariable(const QString& name);
     void RemovePiece(quint32 id);
 
-    template <class T>
-    void UpdateGObject(quint32 id, T* obj);
     template <class T>
     void UpdateGObject(quint32 id, std::unique_ptr<T> obj);
     template <class T>
@@ -343,20 +340,6 @@ uint VContainer::qHash(const QSharedPointer<T>& p)
 {
     return qHash(p.data());
 }
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief UpdateGObject update GObject by id
- * @param id id of existing GObject
- * @param obj object
- */
-template <class T>
-void VContainer::UpdateGObject(quint32 id, T* obj)
-{
-    SCASSERT(obj != nullptr)
-    UpdateGObject(id, QSharedPointer<T>(obj));
-}
-
 
 template <class T>
 void VContainer::UpdateGObject(quint32 id, std::unique_ptr<T> obj)

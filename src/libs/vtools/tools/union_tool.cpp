@@ -604,14 +604,15 @@ quint32 AddNodeSpline(
         BiasRotatePoint(&p4, dx, dy, p, angle);
     }
 
-    VSpline* spl =
-        new VSpline(p1, static_cast<QPointF>(p2), static_cast<QPointF>(p3), p4, 0, Draw::Modeling);
-    const quint32 objectId = initData.data->AddGObject(spl);
+    auto spl{ std::make_unique<VSpline>(
+        p1, static_cast<QPointF>(p2), static_cast<QPointF>(p3), p4, 0, Draw::Modeling) };
+    VSpline* splObserver{ spl.get() };
+    const quint32 objectId = initData.data->AddGObject(std::move(spl));
     children.append(objectId);
 
-    VSpline* spl1 = new VSpline(*spl);
+    auto spl1{ std::make_unique<VSpline>(*splObserver) };
     spl1->setMode(Draw::Modeling);
-    const quint32 id = initData.data->AddGObject(spl1);
+    const quint32 id = initData.data->AddGObject(std::move(spl1));
     VNodeSpline::Create(
         initData.doc,
         initData.data,

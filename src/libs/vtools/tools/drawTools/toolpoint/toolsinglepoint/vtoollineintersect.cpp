@@ -73,6 +73,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolsinglepoint.h"
 
+#include <memory>
 
 const QString VToolLineIntersect::ToolType = QStringLiteral("lineIntersect");
 
@@ -215,17 +216,17 @@ VToolLineIntersect* VToolLineIntersect::Create(
     if (intersect == QLineF::UnboundedIntersection || intersect == QLineF::BoundedIntersection) {
         quint32 id = _id;
 
-        VPointF* p = new VPointF(fPoint, pointName, mx, my);
+        auto p{ std::make_unique<VPointF>(fPoint, pointName, mx, my) };
         p->setShowPointName(showPointName);
 
         if (typeCreation == Source::FromGui) {
-            id = data->AddGObject(p);
+            id = data->AddGObject(std::move(p));
             data->AddLine(p1Line1Id, id);
             data->AddLine(id, p2Line1Id);
             data->AddLine(p1Line2Id, id);
             data->AddLine(id, p2Line2Id);
         } else {
-            data->UpdateGObject(id, p);
+            data->UpdateGObject(id, std::move(p));
             data->AddLine(p1Line1Id, id);
             data->AddLine(id, p2Line1Id);
             data->AddLine(p1Line2Id, id);

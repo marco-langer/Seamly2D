@@ -64,6 +64,8 @@
 #include "../vmisc/def.h"
 #include "vabstractspline.h"
 
+#include <memory>
+
 class VCubicBezier;
 
 class VToolCubicBezier : public VAbstractSpline
@@ -80,7 +82,7 @@ public:
         VContainer* data);
     static VToolCubicBezier* Create(
         const quint32 _id,
-        VCubicBezier* spline,
+        std::unique_ptr<VCubicBezier> spline,
         VMainGraphicsScene* scene,
         VAbstractPattern* doc,
         VContainer* data,

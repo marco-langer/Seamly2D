@@ -215,7 +215,7 @@ VToolEllipticalArc* VToolEllipticalArc::Create(
     calcRotationAngle = CheckFormula(_id, rotationAngle, data);
 
     const VPointF c = *data->GeometricObject<VPointF>(center);
-    VEllipticalArc* elArc = new VEllipticalArc(
+    auto elArc{ std::make_unique<VEllipticalArc>(
         c,
         calcRadius1,
         calcRadius2,
@@ -226,16 +226,16 @@ VToolEllipticalArc* VToolEllipticalArc::Create(
         calcF2,
         f2,
         calcRotationAngle,
-        rotationAngle);
+        rotationAngle) };
     elArc->setLineColor(color);
     elArc->SetPenStyle(penStyle);
     elArc->setLineWeight(lineWeight);
     quint32 id = _id;
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(elArc);
+        id = data->AddGObject(std::move(elArc));
         data->AddArc(*data->GeometricObject<VEllipticalArc>(id), id);
     } else {
-        data->UpdateGObject(id, elArc);
+        data->UpdateGObject(id, std::move(elArc));
         data->AddArc(*data->GeometricObject<VEllipticalArc>(id), id);
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

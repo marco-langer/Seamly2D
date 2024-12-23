@@ -75,6 +75,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoollinepoint.h"
 
+#include <memory>
 
 const QString VToolShoulderPoint::ToolType = QStringLiteral("shoulder");
 
@@ -276,15 +277,15 @@ VToolShoulderPoint* VToolShoulderPoint::Create(
         static_cast<QPointF>(shoulderPoint),
         qApp->toPixel(result)) };
     quint32 id = _id;
-    VPointF* p = new VPointF(fPoint, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(fPoint, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(p1Line, id);
         data->AddLine(p2Line, id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(p1Line, id);
         data->AddLine(p2Line, id);
         if (parse != Document::FullParse) {

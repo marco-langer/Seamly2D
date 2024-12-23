@@ -75,6 +75,7 @@
 #include <QStringData>
 #include <QStringDataPtr>
 
+#include <memory>
 
 const QString VToolLineIntersectAxis::ToolType = QStringLiteral("lineIntersectAxis");
 
@@ -211,16 +212,16 @@ VToolLineIntersectAxis* VToolLineIntersectAxis::Create(
     }
 
     quint32 id = _id;
-    VPointF* p = new VPointF(fPoint, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(fPoint, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         data->AddLine(basePointId, id);
         data->AddLine(firstPointId, id);
         data->AddLine(id, secondPointId);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         data->AddLine(basePointId, id);
         data->AddLine(firstPointId, id);
         data->AddLine(id, secondPointId);

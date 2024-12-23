@@ -73,6 +73,7 @@
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "vtoolcut.h"
 
+#include <memory>
 
 const QString VToolCutArc::ToolType = QStringLiteral("cutArc");
 
@@ -192,19 +193,19 @@ VToolCutArc* VToolCutArc::Create(
     const QPointF point{ arc.CutArc(qApp->toPixel(result), arc1, arc2) };
 
     quint32 id = _id;
-    VPointF* p = new VPointF(point, pointName, mx, my);
+    auto p{ std::make_unique<VPointF>(point, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     auto a1 = QSharedPointer<VArc>(new VArc(arc1));
     auto a2 = QSharedPointer<VArc>(new VArc(arc2));
     if (typeCreation == Source::FromGui) {
-        id = data->AddGObject(p);
+        id = data->AddGObject(std::move(p));
         a1->setId(VContainer::getNextId());
         a2->setId(VContainer::getNextId());
         data->AddArc(*a1, a1->id(), id);
         data->AddArc(*a2, a2->id(), id);
     } else {
-        data->UpdateGObject(id, p);
+        data->UpdateGObject(id, std::move(p));
         a1->setId(id + 1);
         a2->setId(id + 2);
         data->AddArc(*a1, a1->id(), id);
