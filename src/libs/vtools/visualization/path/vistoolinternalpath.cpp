@@ -91,7 +91,7 @@ void VisToolInternalPath::RefreshGeometry()
 
         if (mode == Mode::Creation) {
             const QVector<QPointF> points = m_path.PathPoints(Visualization::data);
-            if (points.size() > 0) {
+            if (!points.isEmpty()) {
                 DrawLine(
                     m_line,
                     QLineF(points.last(), Visualization::scenePos),

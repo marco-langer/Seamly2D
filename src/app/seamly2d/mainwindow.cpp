@@ -840,7 +840,7 @@ template <typename DrawTool>
 void MainWindow::ClosedPiecesDialogWithApply(int result)
 {
     ClosedDialogWithApply<DrawTool>(result, m_pieceScene);
-    if (pattern->DataPieces()->size() > 0) {
+    if (!pattern->DataPieces()->isEmpty()) {
         m_ui->anchorPoint_ToolButton->setEnabled(true);
         m_ui->internalPath_ToolButton->setEnabled(true);
         m_ui->insertNodes_ToolButton->setEnabled(true);
@@ -3270,9 +3270,9 @@ void MainWindow::handlePieceMenu()
     QAction* action_InsertNodes = menu.addAction(
         QIcon(":/toolicon/32x32/insert_nodes_icon.png"), tr("Insert Nodes in Path") + "\tI, P");
 
-    action_AnchorPoint->setEnabled(pattern->DataPieces()->size() > 0);
-    action_InternalPath->setEnabled(pattern->DataPieces()->size() > 0);
-    action_InsertNodes->setEnabled(pattern->DataPieces()->size() > 0);
+    action_AnchorPoint->setEnabled(!pattern->DataPieces()->isEmpty());
+    action_InternalPath->setEnabled(!pattern->DataPieces()->isEmpty());
+    action_InsertNodes->setEnabled(!pattern->DataPieces()->isEmpty());
 
     QAction* selectedAction = menu.exec(QCursor::pos());
 
@@ -4762,9 +4762,9 @@ void MainWindow::setToolsEnabled(bool enable)
 
     // Piece
     m_ui->addPatternPiece_ToolButton->setEnabled(draftTools);
-    m_ui->anchorPoint_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    m_ui->internalPath_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    m_ui->insertNodes_ToolButton->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->anchorPoint_ToolButton->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
+    m_ui->internalPath_ToolButton->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
+    m_ui->insertNodes_ToolButton->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
 
     // Images
     m_ui->importImage_ToolButton->setEnabled(draftTools);
@@ -4839,10 +4839,10 @@ void MainWindow::setToolsEnabled(bool enable)
 
     // Piece
     m_ui->addPiece_Action->setEnabled(draftTools);
-    m_ui->anchorPoint_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->anchorPoint_Action->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
     m_ui->images_Action->setEnabled(draftTools);
-    m_ui->internalPath_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
-    m_ui->insertNodes_Action->setEnabled(draftTools & (pattern->DataPieces()->size() > 0));
+    m_ui->internalPath_Action->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
+    m_ui->insertNodes_Action->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
 
     // Images
     m_ui->importImage_Action->setEnabled(draftTools);
@@ -6284,7 +6284,7 @@ QStringList MainWindow::GetUnlokedRestoreFileList() const
     QStringList restoreFiles;
     // Take all files that need to be restored
     QStringList files = qApp->Seamly2DSettings()->GetRestoreFileList();
-    if (files.size() > 0) {
+    if (!files.isEmpty()) {
         for (int i = 0; i < files.size(); ++i) {
             // Seeking file that really needs reopen
             VLockGuard<char> m_lock(files.at(i));
@@ -6680,7 +6680,7 @@ void MainWindow::exportDraftBlocksAs()
 void MainWindow::ReopenFilesAfterCrash(QStringList& args)
 {
     const QStringList files = GetUnlokedRestoreFileList();
-    if (files.size() > 0) {
+    if (!files.isEmpty()) {
         qCDebug(vMainWindow, "Reopen files after crash.");
 
         QStringList restoreFiles;
@@ -6691,7 +6691,7 @@ void MainWindow::ReopenFilesAfterCrash(QStringList& args)
             }
         }
 
-        if (restoreFiles.size() > 0) {
+        if (!restoreFiles.isEmpty()) {
             QMessageBox::StandardButton reply;
             const QString mes = tr("Seamly2D didn't shut down correctly. Do you want reopen files "
                                    "(%1) you had open?")
@@ -6942,7 +6942,7 @@ void MainWindow::zoomFirstShow()
      * coordinate and whole pattern will be moved. Looks very ugly. It is best solution that i have
      * now.
      */
-    if (pattern->DataPieces()->size() > 0) {
+    if (!pattern->DataPieces()->isEmpty()) {
         showPieceMode(true);
         m_ui->view->zoomToFit();
     }
@@ -6954,7 +6954,7 @@ void MainWindow::zoomFirstShow()
     VMainGraphicsView::NewSceneRect(m_draftScene, m_ui->view);
     VMainGraphicsView::NewSceneRect(m_pieceScene, m_ui->view);
 
-    if (pattern->DataPieces()->size() > 0) {
+    if (!pattern->DataPieces()->isEmpty()) {
         showPieceMode(true);
         m_ui->view->zoomToFit();
     }

@@ -610,7 +610,7 @@ void VMainGraphicsView::mousePressEvent(QMouseEvent* event)
             }
             if (showToolProperties) {
                 QList<QGraphicsItem*> list = items(event->pos());
-                if (list.size() == 0) {
+                if (list.isEmpty()) {
                     emit itemClicked(nullptr);
                     break;
                 }
@@ -631,7 +631,7 @@ void VMainGraphicsView::mousePressEvent(QMouseEvent* event)
     }
     case Qt::MiddleButton: {
         const QList<QGraphicsItem*> list = items(event->pos());
-        if (list.size() == 0) {   // Only when the user clicks on the scene background
+        if (list.isEmpty()) {   // Only when the user clicks on the scene background
             m_ptStartPos = event->pos();
             QGraphicsView::setDragMode(QGraphicsView::ScrollHandDrag);
             event->accept();

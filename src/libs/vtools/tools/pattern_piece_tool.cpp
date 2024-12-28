@@ -334,7 +334,7 @@ void PatternPieceTool::AddCSARecord(
 void PatternPieceTool::AddCSARecords(
     VAbstractPattern* doc, QDomElement& domElement, const QVector<CustomSARecord>& records)
 {
-    if (records.size() > 0) {
+    if (!records.isEmpty()) {
         QDomElement csaRecordsElement = doc->createElement(PatternPieceTool::TagCSA);
         for (int i = 0; i < records.size(); ++i) {
             AddCSARecord(doc, csaRecordsElement, records.at(i));
@@ -347,7 +347,7 @@ void PatternPieceTool::AddCSARecords(
 void PatternPieceTool::AddInternalPaths(
     VAbstractPattern* doc, QDomElement& domElement, const QVector<quint32>& paths)
 {
-    if (paths.size() > 0) {
+    if (!paths.isEmpty()) {
         QDomElement iPathsElement = doc->createElement(PatternPieceTool::TagIPaths);
         for (int i = 0; i < paths.size(); ++i) {
             QDomElement recordNode = doc->createElement(PatternPieceTool::TagRecord);
@@ -362,7 +362,7 @@ void PatternPieceTool::AddInternalPaths(
 void PatternPieceTool::addAnchors(
     VAbstractPattern* doc, QDomElement& domElement, const QVector<quint32>& anchors)
 {
-    if (anchors.size() > 0) {
+    if (!anchors.isEmpty()) {
         QDomElement anchorsElement = doc->createElement(PatternPieceTool::TagAnchors);
         for (int i = 0; i < anchors.size(); ++i) {
             QDomElement recordNode = doc->createElement(PatternPieceTool::TagRecord);

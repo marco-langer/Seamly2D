@@ -272,7 +272,7 @@ void VPattern::setCurrentData()
             qCDebug(vXML, "Draftf block count %d", draftBlockCount());
 
             quint32 id = 0;
-            if (history.size() == 0) {
+            if (history.isEmpty()) {
                 qCDebug(vXML, "History is empty!");
                 return;
             }
@@ -301,7 +301,7 @@ void VPattern::setCurrentData()
                     return;
                 }
             }
-            if (tools.size() > 0) {
+            if (!tools.isEmpty()) {
                 try {
                     ToolExists(id);
                 } catch (VExceptionBadId& error) {
@@ -3881,7 +3881,7 @@ QString VPattern::GenerateSuffix(const QString& type) const
 bool VPattern::IsDefCustom() const
 {
     QDomNodeList tags = elementsByTagName(TagGradation);
-    if (tags.size() == 0) {
+    if (tags.isEmpty()) {
         return false;
     }
 
@@ -3925,7 +3925,7 @@ int VPattern::GetDefCustomHeight() const
 {
     if (IsDefCustom()) {
         QDomNodeList tags = elementsByTagName(TagGradation);
-        if (tags.size() == 0) {
+        if (tags.isEmpty()) {
             return 0;
         }
 
@@ -3971,7 +3971,7 @@ int VPattern::GetDefCustomSize() const
 {
     if (IsDefCustom()) {
         QDomNodeList tags = elementsByTagName(TagGradation);
-        if (tags.size() == 0) {
+        if (tags.isEmpty()) {
             return 0;
         }
 

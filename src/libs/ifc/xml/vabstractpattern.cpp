@@ -367,7 +367,7 @@ bool VAbstractPattern::getActiveDraftElement(QDomElement& element) const
 {
     if (activeDraftBlock.isEmpty() == false) {
         const QDomNodeList elements = this->documentElement().elementsByTagName(TagDraftBlock);
-        if (elements.size() == 0) {
+        if (elements.isEmpty()) {
             return false;
         }
         for (qint32 i = 0; i < elements.count(); i++) {
@@ -394,7 +394,7 @@ bool VAbstractPattern::draftBlockNameExists(const QString& name) const
 {
     Q_ASSERT_X(not name.isEmpty(), Q_FUNC_INFO, "draft block name is empty");
     const QDomNodeList elements = this->documentElement().elementsByTagName(TagDraftBlock);
-    if (elements.size() == 0) {
+    if (elements.isEmpty()) {
         return false;
     }
     for (qint32 i = 0; i < elements.count(); i++) {
@@ -495,7 +495,7 @@ QDomElement VAbstractPattern::getDraftBlockElement(const QString& name) const
 {
     if (name.isEmpty() == false) {
         const QDomNodeList elements = this->documentElement().elementsByTagName(TagDraftBlock);
-        if (elements.size() == 0) {
+        if (elements.isEmpty()) {
             return QDomElement();
         }
         for (qint32 i = 0; i < elements.count(); i++) {
@@ -912,7 +912,7 @@ QMap<GHeights, bool> VAbstractPattern::GetGradationHeights() const
     map.insert(GHeights::H200, true);
 
     QDomNodeList tags = elementsByTagName(TagGradation);
-    if (tags.size() == 0) {
+    if (tags.isEmpty()) {
         return map;
     }
 
@@ -1088,7 +1088,7 @@ QMap<GSizes, bool> VAbstractPattern::GetGradationSizes() const
     map.insert(GSizes::S72, true);
 
     QDomNodeList tags = elementsByTagName(TagGradation);
-    if (tags.size() == 0) {
+    if (tags.isEmpty()) {
         return map;
     }
 

@@ -78,7 +78,8 @@ void VSplinePath::Swap(VSplinePath& path) noexcept
 VSplinePath::VSplinePath(quint32 idObject, Draw mode)
     : VAbstractCubicBezierPath(GOType::SplinePath, idObject, mode)
     , d(new VSplinePathData())
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VSplinePath::VSplinePath(
@@ -130,7 +131,8 @@ VSplinePath::VSplinePath(const QVector<VSplinePoint>& points, quint32 idObject, 
 VSplinePath::VSplinePath(const VSplinePath& splPath)
     : VAbstractCubicBezierPath(splPath)
     , d(splPath.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VSplinePath
@@ -215,7 +217,7 @@ VSplinePath::~VSplinePath() = default;
  */
 void VSplinePath::append(const VSplinePoint& point)
 {
-    if (d->path.size() > 0
+    if (!d->path.isEmpty()
         && static_cast<QPointF>(d->path.last().P()) == static_cast<QPointF>(point.P()))   //-V807
     {
         return;

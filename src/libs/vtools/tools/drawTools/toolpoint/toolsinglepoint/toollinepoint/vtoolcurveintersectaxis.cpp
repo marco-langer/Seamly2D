@@ -283,7 +283,7 @@ bool VToolCurveIntersectAxis::FindPoint(
         points = curve.IntersectLine(axis2);
     }
 
-    if (points.size() > 0) {
+    if (!points.isEmpty()) {
         if (points.size() == 1) {
             *intersectPoint = points.at(0);
             return true;

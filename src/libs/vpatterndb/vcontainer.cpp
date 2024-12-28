@@ -321,7 +321,7 @@ void VContainer::ClearCalculationGObjects()
 //---------------------------------------------------------------------------------------------------------------------
 void VContainer::ClearVariables(const VarType& type)
 {
-    if (d->variables.size() > 0)   //-V807
+    if (!d->variables.isEmpty())   //-V807
     {
         if (type == VarType::Unknown) {
             d->variables.clear();

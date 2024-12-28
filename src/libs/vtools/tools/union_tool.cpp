@@ -810,7 +810,7 @@ QDomElement GetTagChildren(VAbstractPattern* doc, quint32 id)
 void SaveChildren(
     VAbstractPattern* doc, quint32 id, QDomElement section, const QVector<quint32>& children)
 {
-    if (children.size() > 0) {
+    if (!children.isEmpty()) {
         for (int i = 0; i < children.size(); ++i) {
             QDomElement tagChild = doc->createElement(UnionTool::TagChild);
             tagChild.appendChild(doc->createTextNode(QString().setNum(children.at(i))));
