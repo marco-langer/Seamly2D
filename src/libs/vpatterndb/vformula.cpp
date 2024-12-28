@@ -98,36 +98,6 @@ VFormula::VFormula(const QString& formula, const VContainer* container)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VFormula& VFormula::operator=(const VFormula& formula)
-{
-    if (&formula == this) {
-        return *this;
-    }
-    this->formula = formula.GetFormula();
-    this->value = formula.getStringValue();
-    this->checkZero = formula.getCheckZero();
-    this->data = formula.getData();
-    this->toolId = formula.getToolId();
-    this->postfix = formula.getPostfix();
-    this->_error = formula.error();
-    this->dValue = formula.getDoubleValue();
-    return *this;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-VFormula::VFormula(const VFormula& formula)
-    : formula(formula.GetFormula())
-    , value(formula.getStringValue())
-    , checkZero(formula.getCheckZero())
-    , data(formula.getData())
-    , toolId(formula.getToolId())
-    , postfix(formula.getPostfix())
-    , _error(formula.error())
-    , dValue(formula.getDoubleValue())
-{
-}
-
-//---------------------------------------------------------------------------------------------------------------------
 bool VFormula::operator==(const VFormula& formula) const
 {
     bool isEqual = false;

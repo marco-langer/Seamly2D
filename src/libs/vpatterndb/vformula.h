@@ -71,8 +71,7 @@ class VFormula
 public:
     VFormula();
     VFormula(const QString& formula, const VContainer* container);
-    VFormula& operator=(const VFormula& formula);
-    VFormula(const VFormula& formula);
+
     bool operator==(const VFormula& formula) const;
     bool operator!=(const VFormula& formula) const;
 
