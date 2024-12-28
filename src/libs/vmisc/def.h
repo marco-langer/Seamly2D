@@ -597,8 +597,6 @@ QString makeHeaderName(const QString& name);
 [[nodiscard]] QString RelativeMPath(const QString& patternPath, const QString& absoluteMPath);
 [[nodiscard]] QString AbsoluteMPath(const QString& patternPath, const QString& relativeMPath);
 
-[[nodiscard]] QPixmap darkenPixmap(const QPixmap& pixmap);
-
 void ShowInGraphicalShell(const QString& filePath);
 
 inline constexpr qreal accuracyPointOnLine{ (0.1555 /*mm*/ / 25.4) * 96.0 };
