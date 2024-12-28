@@ -46,7 +46,7 @@
 #include <QtGlobal>
 #include <qcompilerdetection.h>
 
-#include "def.h"
+#include "qxtprivate.h"
 
 class QxtCsvModelPrivate;
 

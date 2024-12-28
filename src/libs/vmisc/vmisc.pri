@@ -29,5 +29,6 @@ HEADERS += \
     $$PWD/vsysexits.h \
     $$PWD/commandoptions.h \
     $$PWD/qxtcsvmodel.h \
+    $$PWD/qxtprivate.h \
     $$PWD/vtablesearch.h \
     $$PWD/customevents.h
