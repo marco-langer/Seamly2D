@@ -67,6 +67,7 @@
 #include "../vpatterndb/calculator.h"
 #include "../vpatterndb/pmsystems.h"
 #include "../vtools/dialogs/support/edit_formula_dialog.h"
+#include "../vwidgets/dialogs/file_dialog.h"
 #include "application_me.h"   // Should be last because of definning qApp
 #include "dialogs/dialogaboutseamlyme.h"
 #include "dialogs/dialogexporttocsv.h"

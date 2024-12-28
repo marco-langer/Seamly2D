@@ -56,6 +56,7 @@
 #include "seamlymepreferencespathpage.h"
 #include "../../application_me.h"
 #include "../vmisc/vseamlymesettings.h"
+#include "../vwidgets/dialogs/file_dialog.h"
 #include "ui_seamlymepreferencespathpage.h"
 
 #include <QDir>

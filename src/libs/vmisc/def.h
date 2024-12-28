@@ -31,7 +31,6 @@
 #ifndef DEF_H
 #define DEF_H
 
-#include <QFileDialog>
 #include <QLineF>
 #include <QPixmap>
 #include <QString>
@@ -597,15 +596,6 @@ QString makeHeaderName(const QString& name);
 [[nodiscard]] QString strippedName(const QString& fullFileName);
 [[nodiscard]] QString RelativeMPath(const QString& patternPath, const QString& absoluteMPath);
 [[nodiscard]] QString AbsoluteMPath(const QString& patternPath, const QString& relativeMPath);
-[[nodiscard]] QString fileDialog(
-    QWidget* parent,
-    const QString& title,
-    const QString& dir,
-    const QString& filter,
-    QString* selectedFilter,
-    QFileDialog::Options options,
-    QFileDialog::FileMode mode,
-    QFileDialog::AcceptMode accept);
 
 [[nodiscard]] QPixmap darkenPixmap(const QPixmap& pixmap);
 
@@ -662,7 +652,8 @@ class QxtPrivate
 public:
     QxtPrivate()
         : qxt_p_ptr(nullptr)
-    {}
+    {
+    }
     virtual ~QxtPrivate() {}
     inline void QXT_setPublic(PUB* pub) { qxt_p_ptr = pub; }
 
@@ -685,7 +676,8 @@ class QxtPrivateInterface
 public:
     QxtPrivateInterface()
         : pvt(new PVT)
-    {}
+    {
+    }
     ~QxtPrivateInterface() { delete pvt; }
 
     inline void setPublic(PUB* pub) { pvt->QXT_setPublic(pub); }

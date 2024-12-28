@@ -4,7 +4,9 @@
 SOURCES += \
     $$PWD/calculator/button.cpp \
     $$PWD/calculator/calculator.cpp \
+    $$PWD/dialogs/dialogexporttocsv.cpp \
     $$PWD/color_combobox.cpp \
+    $$PWD/dialogs/file_dialog.cpp \
     $$PWD/export_format_combobox.cpp \
     $$PWD/resize_handle.cpp \
     $$PWD/fill_combobox.cpp \
@@ -40,7 +42,9 @@ SOURCES += \
 HEADERS += \
     $$PWD/calculator/button.h \
     $$PWD/calculator/calculator.h \
+    $$PWD/dialogs/dialogexporttocsv.h \
     $$PWD/color_combobox.h \
+    $$PWD/dialogs/file_dialog.h \
     $$PWD/export_format_combobox.h \
     $$PWD/resize_handle.h \
     $$PWD/fill_combobox.h \
@@ -73,4 +77,5 @@ HEADERS += \
     $$PWD/vlineedit.h
 
 FORMS += \
+    $$PWD/dialogs/dialogexporttocsv.ui \
     $$PWD/mouse_coordinates.ui

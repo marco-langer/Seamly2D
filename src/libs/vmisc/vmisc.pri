@@ -10,7 +10,6 @@ SOURCES += \
     $$PWD/commandoptions.cpp \
     $$PWD/qxtcsvmodel.cpp \
     $$PWD/vtablesearch.cpp \
-    $$PWD/dialogs/dialogexporttocsv.cpp \
     $$PWD/def.cpp
 
 *msvc*:SOURCES += $$PWD/stable.cpp
@@ -31,12 +30,4 @@ HEADERS += \
     $$PWD/commandoptions.h \
     $$PWD/qxtcsvmodel.h \
     $$PWD/vtablesearch.h \
-    $$PWD/dialogs/dialogexporttocsv.h \
     $$PWD/customevents.h
-
-# Qt's versions
-# 5.2.0, 5.2.1
-# 5.3.0, 5.3.1, 5.3.2
-
-FORMS    += \
-    $$PWD/dialogs/dialogexporttocsv.ui

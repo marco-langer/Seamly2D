@@ -56,7 +56,7 @@
 #include "dialogexporttocsv.h"
 #include "ui_dialogexporttocsv.h"
 
-#include "../vabstractapplication.h"
+#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/scassert.h"
 #include "../vmisc/vcommonsettings.h"
 
