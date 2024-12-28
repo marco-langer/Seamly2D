@@ -115,13 +115,12 @@ void VisToolCurveIntersectAxis::RefreshGeometry()
             DrawPoint(basePoint, static_cast<QPointF>(first), mainColor);
             DrawLine(axisLine, axis, supportColor, lineWeight, Qt::DashLine);
 
-            QPointF intersectPoint;
-            const bool isIntersect{ VToolCurveIntersectAxis::FindPoint(
-                static_cast<QPointF>(first), axis.angle(), curve, &intersectPoint) };
-            if (isIntersect) {
-                QLineF axis_line(static_cast<QPointF>(first), intersectPoint);
+            const std::optional<QPointF> intersectPoint{ VToolCurveIntersectAxis::findPoint(
+                static_cast<QPointF>(first), axis.angle(), curve) };
+            if (intersectPoint) {
+                QLineF axis_line(static_cast<QPointF>(first), *intersectPoint);
                 DrawLine(this, axis_line, mainColor, lineWeight, lineStyle);
-                DrawPoint(point, intersectPoint, mainColor);
+                DrawPoint(point, *intersectPoint, mainColor);
             }
 
             Visualization::toolTip = tr("<b>Intersection curve and axis</b>: angle = %1°, "

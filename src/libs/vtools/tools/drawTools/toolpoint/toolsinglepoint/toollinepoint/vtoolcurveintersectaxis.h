@@ -68,6 +68,7 @@
 #include "../vpatterndb/vformula.h"
 #include "vtoollinepoint.h"
 
+#include <optional>
 
 class VToolCurveIntersectAxis : public VToolLinePoint
 {
@@ -100,8 +101,8 @@ public:
         const Document& parse,
         const Source& typeCreation);
 
-    static bool FindPoint(
-        const QPointF& point, qreal angle, const VAbstractCurve& curve, QPointF* intersectPoint);
+    static std::optional<QPointF>
+    findPoint(const QPointF& point, qreal angle, const VAbstractCurve& curve);
 
     static const QString ToolType;
     int type() const override { return Type; }

@@ -197,11 +197,10 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
     const qreal angle = CheckFormula(_id, formulaAngle, data);
     const auto& curve{ *data->GeometricObject<VAbstractCurve>(curveId) };
 
-    QPointF intersectPoint;
-    const bool isIntersect{ FindPoint(
-        static_cast<QPointF>(basePoint), angle, curve, &intersectPoint) };
+    const std::optional<QPointF> intersectPoint{ findPoint(
+        static_cast<QPointF>(basePoint), angle, curve) };
 
-    if (not isIntersect) {
+    if (!intersectPoint) {
         const QString msg =
             tr("<b><big>Can not create intersection point %1 from point %2</big></b><br>"
                "<b><big>to curve %3 with an axis angle of %4°</big></b><br><br>"
@@ -220,9 +219,9 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
         msgBox.exec();
     }
 
-    const qreal segLength{ curve.GetLengthByPoint(intersectPoint) };
+    const qreal segLength{ curve.GetLengthByPoint(*intersectPoint) };
     quint32 id = _id;
-    auto p{ std::make_unique<VPointF>(intersectPoint, pointName, mx, my) };
+    auto p{ std::make_unique<VPointF>(*intersectPoint, pointName, mx, my) };
     p->setShowPointName(showPointName);
 
     VPointF* pObserver{ p.get() };
@@ -268,8 +267,8 @@ VToolCurveIntersectAxis* VToolCurveIntersectAxis::Create(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool VToolCurveIntersectAxis::FindPoint(
-    const QPointF& axisPoint, qreal angle, const VAbstractCurve& curve, QPointF* intersectPoint)
+std::optional<QPointF> VToolCurveIntersectAxis::findPoint(
+    const QPointF& axisPoint, qreal angle, const VAbstractCurve& curve)
 {
     constexpr int intMax{ std::numeric_limits<int>::max() };
     QRectF rectangle = QRectF(0, 0, intMax, intMax);
@@ -285,8 +284,7 @@ bool VToolCurveIntersectAxis::FindPoint(
 
     if (!points.isEmpty()) {
         if (points.size() == 1) {
-            *intersectPoint = points.at(0);
-            return true;
+            return points.at(0);
         }
 
         QMap<qreal, int> lengths;
@@ -297,12 +295,11 @@ bool VToolCurveIntersectAxis::FindPoint(
 
         QMap<qreal, int>::const_iterator i = lengths.constBegin();
         if (i != lengths.constEnd()) {
-            *intersectPoint = points.at(i.value());
-            return true;
+            return points.at(i.value());
         }
     }
 
-    return false;
+    return std::nullopt;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
