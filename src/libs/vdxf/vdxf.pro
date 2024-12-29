@@ -16,7 +16,7 @@ TARGET = vdxf
 # We want create a library
 TEMPLATE = lib
 
-CONFIG += staticlib c++17
+CONFIG += staticlib
 
 include(vdxf.pri)
 

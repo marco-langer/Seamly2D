@@ -2,7 +2,7 @@ QT += core
 
 TEMPLATE = lib
 
-CONFIG += staticlib c++17
+CONFIG += staticlib
 
 include(geometry.pri)
 

@@ -16,7 +16,7 @@ TARGET = vpatterndb
 # We want create a library
 TEMPLATE = lib
 
-CONFIG += staticlib c++17
+CONFIG += staticlib
 
 include(trmeasurements.pri)
 include(vpatterndb.pri)

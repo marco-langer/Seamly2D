@@ -21,7 +21,7 @@ TARGET = ifc # Internal Format Converter
 # We want create library
 TEMPLATE = lib
 
-CONFIG += staticlib c++17
+CONFIG += staticlib
 
 include(ifc.pri)
 

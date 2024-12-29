@@ -16,7 +16,7 @@ TARGET = vmisc
 # We want to create a library
 TEMPLATE = lib
 
-CONFIG += staticlib c++17
+CONFIG += staticlib
 
 include(vmisc.pri)
 

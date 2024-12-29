@@ -58,7 +58,7 @@ CONFIG(debug, debug|release){
     DEFINES += V_NO_ASSERT V_NO_DEBUG
 }
 
-CONFIG += c++14
+CONFIG += c++17
 
 # Only do debug or release builds also on windows
 CONFIG -= debug_and_release debug_and_release_target
