@@ -277,12 +277,12 @@ void DialogAlongLine::SetCurrentLength()
     const auto& p1{ *data->GeometricObject<VPointF>(GetFirstPointId()) };
     const auto& p2{ *data->GeometricObject<VPointF>(GetSecondPointId()) };
 
-    auto* length{ new VLengthLine{
-        p1, GetFirstPointId(), p2, GetSecondPointId(), *data->GetPatternUnit() } };
+    auto length{ std::make_unique<VLengthLine>(
+        p1, GetFirstPointId(), p2, GetSecondPointId(), *data->GetPatternUnit()) };
     length->SetName(currentLength);
 
     VContainer* locData = const_cast<VContainer*>(data);
-    locData->AddVariable(currentLength, length);
+    locData->AddVariable(std::move(length));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

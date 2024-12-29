@@ -352,12 +352,10 @@ void VContainer::AddLine(const quint32& firstPointId, const quint32& secondPoint
     const auto& first{ *GeometricObject<VPointF>(firstPointId) };
     const auto& second{ *GeometricObject<VPointF>(secondPointId) };
 
-    auto* length{ new VLengthLine{
-        first, firstPointId, second, secondPointId, *GetPatternUnit() } };
-    AddVariable(length->GetName(), length);
+    AddVariable(std::make_unique<VLengthLine>(
+        first, firstPointId, second, secondPointId, *GetPatternUnit()));
 
-    auto* angle{ new VLineAngle{ first, firstPointId, second, secondPointId } };
-    AddVariable(angle->GetName(), angle);
+    AddVariable(std::make_unique<VLineAngle>(first, firstPointId, second, secondPointId));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -368,16 +366,12 @@ void VContainer::AddArc(const VAbstractCurve& arc, const quint32& id, const quin
     if (arc.getType() == GOType::Arc) {
         const auto& casted{ static_cast<const VArc&>(arc) };
 
-        VArcRadius* radius = new VArcRadius(id, parentId, casted, *GetPatternUnit());
-        AddVariable(radius->GetName(), radius);
+        AddVariable(std::make_unique<VArcRadius>(id, parentId, casted, *GetPatternUnit()));
     } else if (arc.getType() == GOType::EllipticalArc) {
         const auto& casted{ static_cast<const VEllipticalArc&>(arc) };
 
-        VArcRadius* radius1 = new VArcRadius(id, parentId, casted, 1, *GetPatternUnit());
-        AddVariable(radius1->GetName(), radius1);
-
-        VArcRadius* radius2 = new VArcRadius(id, parentId, casted, 2, *GetPatternUnit());
-        AddVariable(radius2->GetName(), radius2);
+        AddVariable(std::make_unique<VArcRadius>(id, parentId, casted, 1, *GetPatternUnit()));
+        AddVariable(std::make_unique<VArcRadius>(id, parentId, casted, 2, *GetPatternUnit()));
     }
 }
 
@@ -392,14 +386,9 @@ void VContainer::AddCurve(const VAbstractCurve& curve, const quint32& id, quint3
             tr("Can't create a curve with type '%1'").arg(static_cast<int>(curveType)));
     }
 
-    VCurveLength* length = new VCurveLength(id, parentId, curve, *GetPatternUnit());
-    AddVariable(length->GetName(), length);
-
-    VCurveAngle* startAngle = new VCurveAngle(id, parentId, curve, CurveAngle::StartAngle);
-    AddVariable(startAngle->GetName(), startAngle);
-
-    VCurveAngle* endAngle = new VCurveAngle(id, parentId, curve, CurveAngle::EndAngle);
-    AddVariable(endAngle->GetName(), endAngle);
+    AddVariable(std::make_unique<VCurveLength>(id, parentId, curve, *GetPatternUnit()));
+    AddVariable(std::make_unique<VCurveAngle>(id, parentId, curve, CurveAngle::StartAngle));
+    AddVariable(std::make_unique<VCurveAngle>(id, parentId, curve, CurveAngle::EndAngle));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -407,13 +396,10 @@ void VContainer::AddSpline(const VAbstractBezier& curve, quint32 id, quint32 par
 {
     AddCurve(curve, id, parentId);
 
-    VCurveCLength* c1Length =
-        new VCurveCLength(id, parentId, curve, CurveCLength::C1, *GetPatternUnit());
-    AddVariable(c1Length->GetName(), c1Length);
-
-    VCurveCLength* c2Length =
-        new VCurveCLength(id, parentId, curve, CurveCLength::C2, *GetPatternUnit());
-    AddVariable(c2Length->GetName(), c2Length);
+    AddVariable(
+        std::make_unique<VCurveCLength>(id, parentId, curve, CurveCLength::C1, *GetPatternUnit()));
+    AddVariable(
+        std::make_unique<VCurveCLength>(id, parentId, curve, CurveCLength::C2, *GetPatternUnit()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -425,25 +411,16 @@ void VContainer::AddCurveWithSegments(
     for (qint32 i = 1; i <= curve.CountSubSpl(); ++i) {
         const VSpline spl = curve.GetSpline(i);
 
-        VCurveLength* length =
-            new VCurveLength(id, parentId, curve.name(), spl, *GetPatternUnit(), i);
-        AddVariable(length->GetName(), length);
-
-        VCurveAngle* startAngle =
-            new VCurveAngle(id, parentId, curve.name(), spl, CurveAngle::StartAngle, i);
-        AddVariable(startAngle->GetName(), startAngle);
-
-        VCurveAngle* endAngle =
-            new VCurveAngle(id, parentId, curve.name(), spl, CurveAngle::EndAngle, i);
-        AddVariable(endAngle->GetName(), endAngle);
-
-        VCurveCLength* c1Length = new VCurveCLength(
-            id, parentId, curve.name(), spl, CurveCLength::C1, *GetPatternUnit(), i);
-        AddVariable(c1Length->GetName(), c1Length);
-
-        VCurveCLength* c2Length = new VCurveCLength(
-            id, parentId, curve.name(), spl, CurveCLength::C2, *GetPatternUnit(), i);
-        AddVariable(c2Length->GetName(), c2Length);
+        AddVariable(
+            std::make_unique<VCurveLength>(id, parentId, curve.name(), spl, *GetPatternUnit(), i));
+        AddVariable(std::make_unique<VCurveAngle>(
+            id, parentId, curve.name(), spl, CurveAngle::StartAngle, i));
+        AddVariable(std::make_unique<VCurveAngle>(
+            id, parentId, curve.name(), spl, CurveAngle::EndAngle, i));
+        AddVariable(std::make_unique<VCurveCLength>(
+            id, parentId, curve.name(), spl, CurveCLength::C1, *GetPatternUnit(), i));
+        AddVariable(std::make_unique<VCurveCLength>(
+            id, parentId, curve.name(), spl, CurveCLength::C2, *GetPatternUnit(), i));
     }
 }
 

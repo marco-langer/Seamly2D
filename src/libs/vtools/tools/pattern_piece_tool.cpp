@@ -160,31 +160,21 @@ PatternPieceTool* PatternPieceTool::Create(
     const QString& blockName)
 {
     if (typeCreation == Source::FromGui || typeCreation == Source::FromTool) {
-        data->AddVariable(
+        data->AddVariable(std::make_unique<CustomVariable>(
+            data,
             currentSeamAllowance,
-            new CustomVariable(
-                data,
-                currentSeamAllowance,
-                0,
-                newPiece.GetSAWidth(),
-                width,
-                true,
-                tr("Current seam allowance")));
+            0,
+            newPiece.GetSAWidth(),
+            width,
+            true,
+            tr("Current seam allowance")));
         id = data->AddPiece(newPiece);
     } else {
         const qreal calcWidth = CheckFormula(id, width, data);
         newPiece.setSeamAllowanceWidthFormula(width, calcWidth);
 
-        data->AddVariable(
-            currentSeamAllowance,
-            new CustomVariable(
-                data,
-                currentSeamAllowance,
-                0,
-                calcWidth,
-                width,
-                true,
-                tr("Current seam allowance")));
+        data->AddVariable(std::make_unique<CustomVariable>(
+            data, currentSeamAllowance, 0, calcWidth, width, true, tr("Current seam allowance")));
 
         data->UpdatePiece(id, newPiece);
         if (parse != Document::FullParse) {

@@ -3646,10 +3646,8 @@ void VPattern::parseVariablesElement(const QDomNode& node)
                     bool ok = false;
                     const qreal value = EvalFormula(data, formula, &ok);
 
-                    data->AddVariable(
-                        name,
-                        new CustomVariable(
-                            data, name, static_cast<quint32>(index), value, formula, ok, desc));
+                    data->AddVariable(std::make_unique<CustomVariable>(
+                        data, name, static_cast<quint32>(index), value, formula, ok, desc));
                     ++index;
                 }
             }

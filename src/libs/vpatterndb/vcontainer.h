@@ -177,9 +177,8 @@ public:
         const VAbstractCubicBezierPath& curve, const quint32& id, quint32 parentId = NULL_ID);
 
     template <typename T>
-    void AddVariable(const QString& name, T* var);
-    template <typename T>
-    void AddVariable(const QString& name, const QSharedPointer<T>& var);
+    void AddVariable(std::unique_ptr<T> var);
+
     void RemoveVariable(const QString& name);
     void RemovePiece(quint32 id);
 
@@ -228,6 +227,9 @@ public:
 private:
     template <class T>
     void UpdateGObject(quint32 id, const QSharedPointer<T>& obj);
+
+    template <typename T>
+    void AddVariable(const QString& name, const QSharedPointer<T>& var);
 
     template <typename T>
     QSharedPointer<T> getVariablePtr(const QString& name) const;
@@ -317,11 +319,11 @@ QSharedPointer<T> VContainer::getVariablePtr(const QString& name) const
     }
 }
 
-//---------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void VContainer::AddVariable(const QString& name, T* var)
+void VContainer::AddVariable(std::unique_ptr<T> var)
 {
-    AddVariable(name, QSharedPointer<T>(var));
+    const QString& name{ var->GetName() };
+    AddVariable(name, QSharedPointer<T>(var.release()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

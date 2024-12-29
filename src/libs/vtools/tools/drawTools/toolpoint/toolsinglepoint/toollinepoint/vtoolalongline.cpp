@@ -351,10 +351,10 @@ VToolAlongLine* VToolAlongLine::Create(
     QLineF line{ static_cast<QPointF>(firstPoint), static_cast<QPointF>(secondPoint) };
 
     // Declare special variable "CurrentLength"
-    VLengthLine* length = new VLengthLine(
-        firstPoint, firstPointId, secondPoint, secondPointId, *data->GetPatternUnit());
+    auto length{ std::make_unique<VLengthLine>(
+        firstPoint, firstPointId, secondPoint, secondPointId, *data->GetPatternUnit()) };
     length->SetName(currentLength);
-    data->AddVariable(currentLength, length);
+    data->AddVariable(std::move(length));
 
     line.setLength(qApp->toPixel(CheckFormula(_id, formula, data)));
 

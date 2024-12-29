@@ -1898,16 +1898,14 @@ void PatternPieceDialog::evaluateDefaultWidth()
 
     if (m_saWidth >= 0) {
         VContainer* locData = const_cast<VContainer*>(data);
-        locData->AddVariable(
+        locData->AddVariable(std::make_unique<CustomVariable>(
+            locData,
             currentSeamAllowance,
-            new CustomVariable(
-                locData,
-                currentSeamAllowance,
-                0,
-                m_saWidth,
-                QString().setNum(m_saWidth),
-                true,
-                tr("Current seam allowance")));
+            0,
+            m_saWidth,
+            QString().setNum(m_saWidth),
+            true,
+            tr("Current seam allowance")));
 
         evaluateBeforeWidth();
         evaluateAfterWidth();
