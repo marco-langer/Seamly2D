@@ -75,9 +75,6 @@ public:
 
     void Swap(VPieceNode& node) noexcept;
 
-    friend QDataStream& operator<<(QDataStream& out, const VPieceNode&);
-    friend QDataStream& operator>>(QDataStream& in, VPieceNode& p);
-
     quint32 GetId() const;
     void SetId(quint32 id);
 
