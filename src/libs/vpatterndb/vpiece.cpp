@@ -126,13 +126,15 @@ void VPiece::Swap(VPiece& piece) noexcept
 VPiece::VPiece()
     : VAbstractPiece()
     , d(new VPieceData(PiecePathType::PiecePath))
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiece::VPiece(const VPiece& piece)
     : VAbstractPiece(piece)
     , d(piece.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiece& VPiece::operator=(const VPiece& piece)
@@ -149,7 +151,7 @@ VPiece& VPiece::operator=(const VPiece& piece)
 VPiece::~VPiece() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
-VPiecePath VPiece::GetPath() const { return d->m_path; }
+const VPiecePath& VPiece::GetPath() const { return d->m_path; }
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiecePath& VPiece::GetPath() { return d->m_path; }
@@ -204,7 +206,7 @@ QVector<QPointF> VPiece::SeamAllowancePoints(const VContainer* data) const
                     && records.at(recordIndex).includeType == PiecePathIncludeType::AsCustomSA) {
                     insertingCSA = true;
 
-                    const VPiecePath path = data->GetPiecePath(records.at(recordIndex).path);
+                    const VPiecePath& path{ data->GetPiecePath(records.at(recordIndex).path) };
                     QVector<VSAPoint> r =
                         path.SeamAllowancePoints(data, width, records.at(recordIndex).reverse);
 

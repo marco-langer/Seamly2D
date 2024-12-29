@@ -223,7 +223,7 @@ void VToolInternalPath::AllowSelecting(bool enabled)
 void VToolInternalPath::AddToFile()
 {
     QDomElement domElement = doc->createElement(getTagName());
-    const VPiecePath path = VAbstractTool::data.GetPiecePath(m_id);
+    const VPiecePath& path{ VAbstractTool::data.GetPiecePath(m_id) };
 
     AddAttributes(doc, domElement, m_id, path);
 
@@ -236,7 +236,7 @@ void VToolInternalPath::AddToFile()
     AddToModeling(domElement);
 
     if (m_pieceId > NULL_ID) {
-        const VPiece oldPiece = VAbstractTool::data.GetPiece(m_pieceId);
+        const VPiece& oldPiece{ VAbstractTool::data.GetPiece(m_pieceId) };
         VPiece newPiece = oldPiece;
 
         if (path.GetType() == PiecePathType::InternalPath) {
@@ -304,7 +304,7 @@ VToolInternalPath::VToolInternalPath(
 //---------------------------------------------------------------------------------------------------------------------
 void VToolInternalPath::RefreshGeometry()
 {
-    const VPiecePath path = VAbstractTool::data.GetPiecePath(m_id);
+    const VPiecePath& path{ VAbstractTool::data.GetPiecePath(m_id) };
     if (path.GetType() == PiecePathType::InternalPath) {
         QPainterPath p = path.PainterPath(this->getData());
         p.setFillRule(Qt::OddEvenFill);

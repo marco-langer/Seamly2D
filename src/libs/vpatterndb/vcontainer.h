@@ -157,8 +157,8 @@ public:
     const VGObject& GetGObject(quint32 id) const;
     VGObject& GetGObject(quint32 id);
     static std::unique_ptr<VGObject> GetFakeGObject(quint32 id);
-    VPiece GetPiece(quint32 id) const;
-    VPiecePath GetPiecePath(quint32 id) const;
+    const VPiece& GetPiece(quint32 id) const;
+    const VPiecePath& GetPiecePath(quint32 id) const;
     template <typename T>
     const T& getVariable(const QString& name) const;
     template <typename T>

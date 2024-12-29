@@ -1291,7 +1291,7 @@ void PatternPieceDialog::pathDialogClosed(int result)
         SCASSERT(dialog != nullptr);
         try {
             const VPiecePath newPath = dialog->GetPiecePath();
-            const VPiecePath oldPath = data->GetPiecePath(dialog->GetToolId());
+            const VPiecePath& oldPath{ data->GetPiecePath(dialog->GetToolId()) };
 
             SavePiecePathOptions* saveCommand = new SavePiecePathOptions(
                 oldPath,

@@ -159,7 +159,7 @@ void AnchorPointTool::AddToFile()
     AddToModeling(domElement);
 
     if (m_pieceId > NULL_ID) {
-        const VPiece oldPiece = VAbstractTool::data.GetPiece(m_pieceId);
+        const VPiece& oldPiece{ VAbstractTool::data.GetPiece(m_pieceId) };
         VPiece newPiece = oldPiece;
 
         newPiece.getAnchors().append(m_id);

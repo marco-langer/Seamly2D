@@ -29,19 +29,20 @@
 
 PieceTableWidgetItem::PieceTableWidgetItem(VContainer* data)
     : m_data(data)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 bool PieceTableWidgetItem::operator<(const QTableWidgetItem& other) const
 {
     if (other.column() == 0) {
-        VPiece thisPiece = m_data->GetPiece(this->data(Qt::UserRole).toUInt());
-        VPiece otherPiece = m_data->GetPiece(other.data(Qt::UserRole).toUInt());
+        const VPiece& thisPiece{ m_data->GetPiece(this->data(Qt::UserRole).toUInt()) };
+        const VPiece& otherPiece{ m_data->GetPiece(other.data(Qt::UserRole).toUInt()) };
 
         return int(thisPiece.isInLayout()) < int(otherPiece.isInLayout());
     } else if (other.column() == 1) {
-        VPiece thisPiece = m_data->GetPiece(this->data(Qt::UserRole).toUInt());
-        VPiece otherPiece = m_data->GetPiece(other.data(Qt::UserRole).toUInt());
+        const VPiece& thisPiece{ m_data->GetPiece(this->data(Qt::UserRole).toUInt()) };
+        const VPiece& otherPiece{ m_data->GetPiece(other.data(Qt::UserRole).toUInt()) };
 
         return int(thisPiece.isLocked()) < int(otherPiece.isLocked());
     } else if (other.column() == 2) {

@@ -118,7 +118,7 @@ bool UnionDialog::CheckObject(const quint32& id, const quint32& pieceId) const
     if (pieceId == NULL_ID) {
         return false;
     }
-    const VPiece piece = data->GetPiece(pieceId);
+    const VPiece& piece{ data->GetPiece(pieceId) };
     return piece.GetPath().Contains(id);
 }
 
@@ -128,7 +128,7 @@ bool UnionDialog::checkPiece(const quint32& pieceId) const
     if (pieceId == NULL_ID) {
         return false;
     }
-    const VPiece piece = data->GetPiece(pieceId);
+    const VPiece& piece{ data->GetPiece(pieceId) };
     if (piece.isLocked()) {
         ui->checkBox->setChecked(true);
         ui->checkBox->setEnabled(false);
@@ -180,7 +180,7 @@ void UnionDialog::chosenPiece(
                 emit ToolTip(tr("Select a unique point"));
                 return;
             }
-            VPiece piece = data->GetPiece(pieceId);
+            const VPiece& piece{ data->GetPiece(pieceId) };
             if (piece.GetPath().OnEdge(p1, id)) {
                 p2 = id;
                 index = piece.GetPath().Edge(p1, p2);

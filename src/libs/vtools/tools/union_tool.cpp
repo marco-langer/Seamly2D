@@ -1169,8 +1169,8 @@ void CreateUnitedNodes(
     quint32 pRotate,
     qreal angle)
 {
-    const VPiecePath piece1Path = piece1.GetPath().RemoveEdge(initData.piece1_Index);
-    const VPiecePath piece2Path = piece2.GetPath().RemoveEdge(initData.piece2_Index);
+    const VPiecePath& piece1Path{ piece1.GetPath().RemoveEdge(initData.piece1_Index) };
+    const VPiecePath& piece2Path{ piece2.GetPath().RemoveEdge(initData.piece2_Index) };
 
     const qint32 piece1NodeCount = piece1Path.CountNodes();
     const qint32 piece2NodeCount = piece2Path.CountNodes();
@@ -1229,7 +1229,7 @@ void createCSAUnion(
     QVector<quint32> nodeChildren;
     for (int i = 0; i < d.GetCustomSARecords().size(); ++i) {
         CustomSARecord record = d.GetCustomSARecords().at(i);
-        const VPiecePath path = initData.data->GetPiecePath(record.path);
+        const VPiecePath& path{ initData.data->GetPiecePath(record.path) };
         VPiecePath newPath = path;
         newPath.Clear();   // Clear nodes
         for (int i = 0; i < path.CountNodes(); ++i) {
@@ -1292,7 +1292,7 @@ void createUnionInternalPaths(
 {
     QVector<quint32> nodeChildren;
     for (int i = 0; i < d.GetInternalPaths().size(); ++i) {
-        const VPiecePath path = initData.data->GetPiecePath(d.GetInternalPaths().at(i));
+        const VPiecePath& path{ initData.data->GetPiecePath(d.GetInternalPaths().at(i)) };
         VPiecePath newPath = path;
         newPath.Clear();   // Clear nodes
 
@@ -1468,7 +1468,7 @@ void createUnionPaths(
     QVector<quint32> children)
 {
     for (int i = 0; i < records.size(); ++i) {
-        const VPiecePath path = initData.data->GetPiecePath(records.at(i));
+        const VPiecePath& path{ initData.data->GetPiecePath(records.at(i)) };
         const quint32 updatedId = TakeNextId(children);
 
         VPiecePath updatedPath(path);
@@ -1551,8 +1551,8 @@ void createUnion(
     const QString blockName = getBlockName(initData.doc, initData.piece1_Id, initData.piece2_Id);
     SCASSERT(not blockName.isEmpty())
 
-    const VPiece piece1 = initData.data->GetPiece(initData.piece1_Id);
-    const VPiece piece2 = initData.data->GetPiece(initData.piece2_Id);
+    const VPiece& piece1{ initData.data->GetPiece(initData.piece1_Id) };
+    const VPiece& piece2{ initData.data->GetPiece(initData.piece2_Id) };
 
     VPiece newPiece;
 
@@ -1562,8 +1562,7 @@ void createUnion(
         newPiece, piece1, piece2, id, blockName, initData, dx, dy, pRotate, angle);
     createUnitedAnchors(newPiece, piece1, piece2, id, blockName, initData, dx, dy, pRotate, angle);
 
-    VPiecePath path = newPiece.GetPath();
-    const QRectF rect = QPolygonF(path.PathPoints(initData.data)).boundingRect();
+    const QRectF rect = QPolygonF(newPiece.GetPath().PathPoints(initData.data)).boundingRect();
 
     newPiece.SetName(QObject::tr("Union piece"));
     newPiece.SetSeamAllowance(qApp->Settings()->getDefaultSeamAllowanceVisibilty());
@@ -1657,8 +1656,8 @@ void unitePieces(quint32 id, const UnionToolInitData& initData)
     qreal angle = 0;
 
     if (initData.typeCreation == Source::FromGui) {
-        const VPiece piece1 = initData.data->GetPiece(initData.piece1_Id);
-        const VPiece piece2 = initData.data->GetPiece(initData.piece2_Id);
+        const VPiece& piece1{ initData.data->GetPiece(initData.piece1_Id) };
+        const VPiece& piece2{ initData.data->GetPiece(initData.piece2_Id) };
         UnionInitParameters(
             initData, piece1.GetPath(), piece2.GetPath(), piece1_Pt1, dx, dy, angle);
         createUnion(id, initData, dx, dy, piece1_Pt1.GetId(), angle);

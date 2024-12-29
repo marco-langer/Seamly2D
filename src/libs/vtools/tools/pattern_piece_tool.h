@@ -257,7 +257,7 @@ private:
     void toggleGrainline(bool checked);
     void togglePatternLabel(bool checked);
     void togglePieceLabel(bool checked);
-    void renamePiece(VPiece piece);
+    void renamePiece(const VPiece& piece);
     void showStatus(QString toolTip);
     void raiseItemToTop(QGraphicsItem* item);
     void lowerItemToBottom(QGraphicsItem* item);

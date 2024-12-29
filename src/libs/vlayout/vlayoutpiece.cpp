@@ -93,7 +93,7 @@ ConvertInternalPaths(const VPiece& piece, const VContainer* pattern, const bool 
     QVector<VLayoutPiecePath> paths;
     const QVector<quint32> pathIds = piece.GetInternalPaths();
     for (int i = 0; i < pathIds.size(); ++i) {
-        const VPiecePath path = pattern->GetPiecePath(pathIds.at(i));
+        const VPiecePath& path{ pattern->GetPiecePath(pathIds.at(i)) };
         if (path.GetType() == PiecePathType::InternalPath) {
             if (isCut && path.IsCutPath()) {
                 paths.append(VLayoutPiecePath(

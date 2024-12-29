@@ -97,7 +97,7 @@ public:
 
     void Swap(VPiece& piece) noexcept;
 
-    VPiecePath GetPath() const;
+    const VPiecePath& GetPath() const;
     VPiecePath& GetPath();
     void SetPath(const VPiecePath& path);
 

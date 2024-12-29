@@ -179,7 +179,7 @@ std::unique_ptr<VGObject> VContainer::GetFakeGObject(quint32 id)
 
 
 //---------------------------------------------------------------------------------------------------------------------
-VPiece VContainer::GetPiece(quint32 id) const
+const VPiece& VContainer::GetPiece(quint32 id) const
 {
     if (auto iter{ d->pieces->find(id) }; iter != d->pieces->end()) {
         return *iter;
@@ -189,7 +189,7 @@ VPiece VContainer::GetPiece(quint32 id) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPiecePath VContainer::GetPiecePath(quint32 id) const
+const VPiecePath& VContainer::GetPiecePath(quint32 id) const
 {
     if (auto iter{ d->piecePaths->find(id) }; iter != d->piecePaths->end()) {
         return *iter;
