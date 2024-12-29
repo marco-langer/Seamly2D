@@ -58,10 +58,6 @@
 
 #include <qcompilerdetection.h>
 
-#if !defined(Q_OS_OSX) && !defined(Q_OS_WIN) && defined(Q_CC_GNU)
-#    include <sys/sysmacros.h>
-#endif
-
 #include <QCoreApplication>
 #include <QString>
 #include <QTemporaryFile>
