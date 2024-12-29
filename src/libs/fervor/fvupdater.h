@@ -71,13 +71,6 @@ public slots:
     bool CheckForUpdatesSilent();
     bool CheckForUpdatesNotSilent();
 
-protected:
-    friend class FvUpdateWindow;   // Uses GetProposedUpdate() and others
-
-
-protected slots:
-
-
 private slots:
     void httpFeedDownloadFinished();
     void networkError(QNetworkReply::NetworkError);
