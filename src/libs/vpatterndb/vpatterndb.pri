@@ -40,7 +40,6 @@ HEADERS += \
     $$PWD/calculator.h \
     $$PWD/variables.h \
     $$PWD/vnodedetail.h \
-    $$PWD/vnodedetail_p.h \
     $$PWD/vtranslatevars.h \
     $$PWD/variables/varcradius.h \
     $$PWD/variables/varcradius_p.h \

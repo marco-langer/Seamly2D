@@ -52,27 +52,17 @@
 #ifndef VNODEDETAIL_H
 #define VNODEDETAIL_H
 
-#include <QMetaType>
-#include <QSharedDataPointer>
-#include <QTypeInfo>
-#include <QtGlobal>
-
 #include "../vmisc/def.h"
 
-class VNodeDetailData;
 class VPieceNode;
 class VContainer;
 
 /**
  * @brief The VNodeDetail class keep information about detail node.
  */
-class VNodeDetail
+class VNodeDetail final
 {
 public:
-    /**
-     * @brief VNodeDetail default constructor.
-     */
-    VNodeDetail();
     /**
      * @brief VNodeDetail constructor.
      * @param id object id
@@ -88,23 +78,6 @@ public:
         qreal mx = 0,
         qreal my = 0,
         bool reverse = false);
-    /**
-     * @brief VNodeDetail copy constructor
-     * @param node node
-     */
-    VNodeDetail(const VNodeDetail& node);
-
-    ~VNodeDetail();
-
-    /**
-     * @brief operator = assignment operator
-     * @param node node
-     * @return node
-     */
-    VNodeDetail& operator=(const VNodeDetail& node);
-    VNodeDetail& operator=(VNodeDetail&& node) noexcept;
-
-    void Swap(VNodeDetail& node) noexcept;
 
     /**
      * @brief getId return object id.
@@ -164,10 +137,21 @@ public:
     Convert(const VContainer* data, const QVector<VNodeDetail>& nodes, qreal width, bool closed);
 
 private:
-    QSharedDataPointer<VNodeDetailData> d;
+    quint32 m_id;
+    Tool m_typeTool;
+    NodeDetail m_typeNode;
+    /**
+     * @brief mx bias x axis.
+     */
+    qreal m_mx;
+    /**
+     * @brief my bias y axis.
+     */
+    qreal m_my;
+    /**
+     * @brief reverse true if need reverse points list for node.
+     */
+    bool m_reverse;
 };
-
-Q_DECLARE_METATYPE(VNodeDetail)
-Q_DECLARE_TYPEINFO(VNodeDetail, Q_MOVABLE_TYPE);
 
 #endif   // VNODEDETAIL_H

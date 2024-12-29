@@ -52,7 +52,6 @@
 #include "vnodedetail.h"
 #include "../vgeometry/vpointf.h"
 #include "../vpatterndb/vcontainer.h"
-#include "vnodedetail_p.h"
 #include "vpiecenode.h"
 #include "vpiecepath.h"
 
@@ -110,74 +109,48 @@ void ConvertAfter(VPieceNode& node, const QLineF& line, qreal mX, qreal mY)
 }
 }   // namespace
 
-VNodeDetail& VNodeDetail::operator=(VNodeDetail&& node) noexcept
-{
-    Swap(node);
-    return *this;
-}
-
-void VNodeDetail::Swap(VNodeDetail& node) noexcept { std::swap(d, node.d); }
-
-//---------------------------------------------------------------------------------------------------------------------
-VNodeDetail::VNodeDetail()
-    : d(new VNodeDetailData)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
 VNodeDetail::VNodeDetail(
     quint32 id, Tool typeTool, NodeDetail typeNode, qreal mx, qreal my, bool reverse)
-    : d(new VNodeDetailData(id, typeTool, typeNode, mx, my, reverse))
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VNodeDetail::VNodeDetail(const VNodeDetail& node)
-    : d(node.d)
-{}
-
-//---------------------------------------------------------------------------------------------------------------------
-VNodeDetail& VNodeDetail::operator=(const VNodeDetail& node)
+    : m_id{ id }
+    , m_typeTool{ typeTool }
+    , m_typeNode{ typeNode }
+    , m_mx{ mx }
+    , m_my{ my }
+    , m_reverse{ reverse }
 {
-    if (&node == this) {
-        return *this;
-    }
-    d = node.d;
-    return *this;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-VNodeDetail::~VNodeDetail() = default;
+quint32 VNodeDetail::getId() const { return m_id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-quint32 VNodeDetail::getId() const { return d->id; }
+void VNodeDetail::setId(const quint32& value) { m_id = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VNodeDetail::setId(const quint32& value) { d->id = value; }
-
-//---------------------------------------------------------------------------------------------------------------------
-Tool VNodeDetail::getTypeTool() const { return d->typeTool; }
+Tool VNodeDetail::getTypeTool() const { return m_typeTool; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void VNodeDetail::setTypeTool(const Tool& value) { d->typeTool = value; }
+void VNodeDetail::setTypeTool(const Tool& value) { m_typeTool = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-NodeDetail VNodeDetail::getTypeNode() const { return d->typeNode; }
+NodeDetail VNodeDetail::getTypeNode() const { return m_typeNode; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-void VNodeDetail::setTypeNode(const NodeDetail& value) { d->typeNode = value; }
+void VNodeDetail::setTypeNode(const NodeDetail& value) { m_typeNode = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VNodeDetail::getMx() const { return d->mx; }
+qreal VNodeDetail::getMx() const { return m_mx; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VNodeDetail::setMx(const qreal& value) { d->mx = value; }
+void VNodeDetail::setMx(const qreal& value) { m_mx = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VNodeDetail::getMy() const { return d->my; }
+qreal VNodeDetail::getMy() const { return m_my; }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VNodeDetail::setMy(const qreal& value) { d->my = value; }
+void VNodeDetail::setMy(const qreal& value) { m_my = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VNodeDetail::getReverse() const
@@ -185,7 +158,7 @@ bool VNodeDetail::getReverse() const
     if (getTypeTool() == Tool::NodePoint) {
         return false;
     } else {
-        return d->reverse;
+        return m_reverse;
     }
 }
 
@@ -193,9 +166,9 @@ bool VNodeDetail::getReverse() const
 void VNodeDetail::setReverse(bool reverse)
 {
     if (getTypeTool() == Tool::NodePoint) {
-        d->reverse = false;
+        m_reverse = false;
     } else {
-        d->reverse = reverse;
+        m_reverse = reverse;
     }
 }
 
