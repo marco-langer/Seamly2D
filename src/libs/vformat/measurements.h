@@ -81,7 +81,6 @@ public:
     explicit MeasurementDoc(VContainer* data);
     MeasurementDoc(Unit unit, VContainer* data);
     MeasurementDoc(Unit unit, int baseSize, int baseHeight, VContainer* data);
-    virtual ~MeasurementDoc() = default;
 
     void setXMLContent(const QString& fileName) override;
     bool SaveDocument(const QString& fileName, QString& error) override;

@@ -85,7 +85,6 @@ class Calculator : public qmu::QmuFormulaBase
 {
 public:
     Calculator();
-    virtual ~Calculator() = default;
 
     qreal EvalFormula(
         const QHash<QString, QSharedPointer<VInternalVariable>>* vars, const QString& formula);

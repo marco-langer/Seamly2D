@@ -70,7 +70,6 @@ class MultiSizeConverter : public AbstractMConverter
     Q_DECLARE_TR_FUNCTIONS(MultiSizeConverter)
 public:
     explicit MultiSizeConverter(const QString& fileName);
-    virtual ~MultiSizeConverter() = default;
 
     static const QString MeasurementMaxVerStr;
     static const QString CurrentSchema;

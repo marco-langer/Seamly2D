@@ -62,7 +62,6 @@ class VLabelTemplateConverter : public VAbstractConverter
 {
 public:
     explicit VLabelTemplateConverter(const QString& fileName);
-    virtual ~VLabelTemplateConverter() = default;
 
     static const QString LabelTemplateMaxVerStr;
     static const QString CurrentSchema;

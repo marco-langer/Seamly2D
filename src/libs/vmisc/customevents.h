@@ -71,8 +71,6 @@ public:
     UndoEvent()
         : QEvent(UNDO_EVENT)
     {}
-
-    virtual ~UndoEvent() = default;
 };
 
 const QEvent::Type LITE_PARSE_EVENT =
@@ -84,8 +82,6 @@ public:
     LiteParseEvent()
         : QEvent(LITE_PARSE_EVENT)
     {}
-
-    virtual ~LiteParseEvent() = default;
 };
 
 #endif   // CUSTOMEVENTS_H

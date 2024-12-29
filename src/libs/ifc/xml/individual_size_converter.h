@@ -70,7 +70,6 @@ class IndividualSizeConverter : public AbstractMConverter
     Q_DECLARE_TR_FUNCTIONS(IndividualSizeConverter)
 public:
     explicit IndividualSizeConverter(const QString& fileName);
-    virtual ~IndividualSizeConverter() = default;
 
     static const QString MeasurementMaxVerStr;
     static const QString CurrentSchema;

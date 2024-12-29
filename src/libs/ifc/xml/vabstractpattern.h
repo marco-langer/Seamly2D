@@ -140,7 +140,6 @@ class VAbstractPattern
     Q_OBJECT
 public:
     explicit VAbstractPattern(QObject* parent = nullptr);
-    virtual ~VAbstractPattern() = default;
 
     QStringList ListMeasurements() const;
     QVector<VFormulaField> ListExpressions() const;

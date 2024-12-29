@@ -72,9 +72,6 @@ public:
     //! Constructor taking a widget as parent
     explicit VFormulaPropertyEditor(QWidget* parent);
 
-    //! Destructor
-    virtual ~VFormulaPropertyEditor() = default;
-
     //! Returns the formula currently set
     VFormula GetFormula() const;
 
