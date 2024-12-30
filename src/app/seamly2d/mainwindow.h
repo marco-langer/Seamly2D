@@ -111,7 +111,6 @@ public:
 
 public slots:
     void processCommandLine();
-    void penChanged(Pen pen);
     void basePointChanged();
 
     void ShowToolTip(const QString& toolTip) override;

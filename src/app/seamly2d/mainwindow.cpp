@@ -2576,7 +2576,8 @@ void MainWindow::initPenToolBar()
     m_penToolBar->setObjectName("penToolBar");
     this->addToolBar(Qt::TopToolBarArea, m_penToolBar);
 
-    connect(m_penToolBar, &PenToolBar::penChanged, this, &MainWindow::penChanged);
+    connect(
+        m_penToolBar, &PenToolBar::penChanged, this, [this](Pen pen) { doc->setDefaultPen(pen); });
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -2603,12 +2604,6 @@ void MainWindow::initPropertyEditor()
         m_toolProperties,
         &VToolOptionsPropertyBrowser::updateOptions);
 }
-
-/**
- * Called when something changed in the pen tool bar
- * (e.g. color, weight, or type).
- */
-void MainWindow::penChanged(Pen pen) { doc->setDefaultPen(pen); }
 
 void MainWindow::basePointChanged()
 {
