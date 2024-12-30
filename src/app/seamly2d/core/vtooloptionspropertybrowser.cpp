@@ -564,9 +564,9 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
     quint32 toolId = tool->getId();
     QHash<quint32, const VGObject*> objects;
 
-    QVector<VToolRecord> history = qApp->getCurrentDocument()->getBlockHistory();
+    const QVector<VToolRecord> history{ qApp->getCurrentDocument()->getBlockHistory() };
     for (qint32 i = 0; i < history.size(); ++i) {
-        const VToolRecord record = history.at(i);
+        const VToolRecord& record{ history.at(i) };
         quint32 recId = record.id;
         if (recId != toolId) {
             switch (static_cast<int>(record.typeTool)) {

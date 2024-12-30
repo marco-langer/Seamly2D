@@ -517,25 +517,25 @@ void VAbstractTool::ToolCreation(const Source& typeCreation)
  */
 void VAbstractTool::AddRecord(const quint32 id, const Tool& toolType, VAbstractPattern* doc)
 {
-    QVector<VToolRecord>* history = doc->getHistory();
+    QVector<VToolRecord>& history{ doc->getHistory() };
     VToolRecord record = VToolRecord(id, toolType, doc->getActiveDraftBlockName());
-    if (history->contains(record)) {
+    if (history.contains(record)) {
         return;
     }
 
     quint32 cursor = doc->getCursor();
     if (cursor == NULL_ID) {
-        history->append(record);
+        history.append(record);
     } else {
         qint32 index = 0;
-        for (qint32 i = 0; i < history->size(); ++i) {
-            VToolRecord rec = history->at(i);
+        for (qint32 i = 0; i < history.size(); ++i) {
+            const VToolRecord& rec{ history.at(i) };
             if (rec.id == cursor) {
                 index = i;
                 break;
             }
         }
-        history->insert(index + 1, record);
+        history.insert(index + 1, record);
     }
 }
 

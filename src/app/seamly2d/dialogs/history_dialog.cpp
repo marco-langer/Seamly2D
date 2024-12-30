@@ -200,14 +200,14 @@ void HistoryDialog::updateHistory()
 void HistoryDialog::fillTable()
 {
     ui->tableWidget->clear();
-    QVector<VToolRecord> history = m_doc->getBlockHistory();
+    const QVector<VToolRecord> history{ m_doc->getBlockHistory() };
     qint32 currentRow = -1;
     qint32 count = 0;
     ui->tableWidget->setRowCount(
         history.size());   // Set Row count to number of Tool history records
 
     for (qint32 i = 0; i < history.size(); ++i) {
-        const VToolRecord tool = history.at(i);
+        const VToolRecord& tool{ history.at(i) };
         const RowData rowData = record(tool);
         if (!rowData.tool.isEmpty()) {
             currentRow++;
@@ -604,8 +604,8 @@ void HistoryDialog::initializeTable()
  */
 void HistoryDialog::showTool()
 {
-    const QVector<VToolRecord>* history = m_doc->getHistory();
-    if (!history->empty()) {
+    const QVector<VToolRecord>& history = m_doc->getHistory();
+    if (!history.empty()) {
         QTableWidgetItem* item = ui->tableWidget->item(0, 1);
         item->setSelected(true);
         m_cursorToolRecordRow = 0;

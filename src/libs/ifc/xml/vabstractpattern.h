@@ -189,7 +189,7 @@ public:
 
     void AddToolOnRemove(VDataTool* tool);
 
-    QVector<VToolRecord>* getHistory();
+    QVector<VToolRecord>& getHistory();
     QVector<VToolRecord> getBlockHistory() const;
     QMap<quint32, Tool> getGroupObjHistory() const;
 

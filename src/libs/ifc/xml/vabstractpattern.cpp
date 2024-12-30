@@ -797,14 +797,14 @@ void VAbstractPattern::AddToolOnRemove(VDataTool* tool)
  * @brief getHistory return list with list of history records.
  * @return list of history records.
  */
-QVector<VToolRecord>* VAbstractPattern::getHistory() { return &history; }
+QVector<VToolRecord>& VAbstractPattern::getHistory() { return history; }
 
 //---------------------------------------------------------------------------------------------------------------------
 QVector<VToolRecord> VAbstractPattern::getBlockHistory() const
 {
     QVector<VToolRecord> draftBlockHistory;
     for (qint32 i = 0; i < history.size(); ++i) {
-        const VToolRecord tool = history.at(i);
+        const VToolRecord& tool{ history.at(i) };
         if (tool.nameDraw != getActiveDraftBlockName()) {
             continue;
         }
