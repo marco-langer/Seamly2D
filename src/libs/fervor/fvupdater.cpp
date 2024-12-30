@@ -49,11 +49,9 @@
 
 #include "fvupdater.h"
 
-#include "../ifc/exception/vexception.h"
-#include "../ifc/xml/abstract_converter.h"
-#include "../vmisc/projectversion.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
+
 #include <QApplication>
 #include <QByteArray>
 #include <QDate>

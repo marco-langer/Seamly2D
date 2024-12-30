@@ -60,8 +60,6 @@
 #include <QStringList>
 #include <QtGlobal>
 
-#include "../vmisc/def.h"
-
 extern const QString CustomMSign;
 extern const QString CustomIncrSign;
 

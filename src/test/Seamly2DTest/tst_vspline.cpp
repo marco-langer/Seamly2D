@@ -55,6 +55,7 @@
 
 #include "tst_vspline.h"
 #include "../vgeometry/vspline.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 
 #include <QtTest>
@@ -62,7 +63,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 TST_VSpline::TST_VSpline(QObject* parent)
     : AbstractTest(parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VSpline::GetSegmentPoints()

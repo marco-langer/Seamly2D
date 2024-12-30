@@ -58,8 +58,6 @@
 #include <QString>
 #include <qcompilerdetection.h>
 
-#include "../ifcdef.h"
-
 /**
  * @brief The VException class parent for all exception. Could be use for abstract exception
  */

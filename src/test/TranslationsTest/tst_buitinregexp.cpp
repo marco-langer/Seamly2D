@@ -53,6 +53,7 @@
 #include "../qmuparser/qmudef.h"
 
 #include "../ifc/ifcdef.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vpatterndb/vtranslatevars.h"
 
@@ -62,7 +63,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 TST_BuitInRegExp::TST_BuitInRegExp(const QString& locale, QObject* parent)
     : TST_AbstractRegExp(locale, parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_BuitInRegExp::initTestCase()

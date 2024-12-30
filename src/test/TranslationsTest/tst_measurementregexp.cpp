@@ -53,6 +53,7 @@
 #include "../qmuparser/qmudef.h"
 
 #include "../ifc/ifcdef.h"
+#include "../vmisc/def.h"
 #include "../vmisc/logging.h"
 #include "../vpatterndb/measurements_def.h"
 #include "../vpatterndb/vtranslatevars.h"
@@ -68,7 +69,8 @@ TST_MeasurementRegExp::TST_MeasurementRegExp(
     : TST_AbstractRegExp(locale, parent)
     , m_systemCode(systemCode)
     , m_pmsTranslator(nullptr)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 TST_MeasurementRegExp::~TST_MeasurementRegExp() { delete m_pmsTranslator; }

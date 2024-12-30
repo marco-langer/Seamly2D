@@ -41,6 +41,7 @@
 #include <QWidget>
 
 #include "../ifc/ifcdef.h"
+#include "../vmisc/def.h"
 #include "../vproperty_p.h"
 
 VPE::LineWeightProperty::LineWeightProperty(const QString& name)
