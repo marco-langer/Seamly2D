@@ -472,10 +472,10 @@ private:
 
     void initializeScenes();
 
-    QSharedPointer<MeasurementDoc> openMeasurementFile(const QString& fileName);
+    std::unique_ptr<MeasurementDoc> openMeasurementFile(const QString& fileName);
     bool loadMeasurements(const QString& fileName);
     bool updateMeasurements(const QString& fileName, int size, int height);
-    void checkRequiredMeasurements(const MeasurementDoc* m);
+    void checkRequiredMeasurements(const MeasurementDoc& m);
 
     void ReopenFilesAfterCrash(QStringList& args);
     void DoExport(const VCommandLinePtr& expParams);

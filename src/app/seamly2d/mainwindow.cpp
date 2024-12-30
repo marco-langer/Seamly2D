@@ -459,15 +459,15 @@ void MainWindow::initializeScenes()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QSharedPointer<MeasurementDoc> MainWindow::openMeasurementFile(const QString& fileName)
+std::unique_ptr<MeasurementDoc> MainWindow::openMeasurementFile(const QString& fileName)
 {
-    QSharedPointer<MeasurementDoc> measurements;
+    std::unique_ptr<MeasurementDoc> measurements;
     if (fileName.isEmpty()) {
         return measurements;
     }
 
     try {
-        measurements = QSharedPointer<MeasurementDoc>(new MeasurementDoc(pattern));
+        measurements = std::make_unique<MeasurementDoc>(pattern);
         measurements->setSize(VContainer::rsize());
         measurements->setHeight(VContainer::rheight());
         measurements->setXMLContent(fileName);
@@ -490,7 +490,7 @@ QSharedPointer<MeasurementDoc> MainWindow::openMeasurementFile(const QString& fi
             throw exception;
         }
 
-        checkRequiredMeasurements(measurements.data());
+        checkRequiredMeasurements(*measurements);
 
         if (measurements->Type() == MeasurementsType::Multisize) {
             if (measurements->measurementUnits() == Unit::Inch) {
@@ -527,7 +527,7 @@ QSharedPointer<MeasurementDoc> MainWindow::openMeasurementFile(const QString& fi
 //---------------------------------------------------------------------------------------------------------------------
 bool MainWindow::loadMeasurements(const QString& fileName)
 {
-    QSharedPointer<MeasurementDoc> measurements = openMeasurementFile(fileName);
+    const std::unique_ptr<MeasurementDoc> measurements = openMeasurementFile(fileName);
 
     if (measurements->isNull()) {
         return false;
@@ -587,7 +587,7 @@ bool MainWindow::loadMeasurements(const QString& fileName)
 //---------------------------------------------------------------------------------------------------------------------
 bool MainWindow::updateMeasurements(const QString& fileName, int size, int height)
 {
-    QSharedPointer<MeasurementDoc> measurements = openMeasurementFile(fileName);
+    const std::unique_ptr<MeasurementDoc> measurements = openMeasurementFile(fileName);
 
     if (measurements->isNull()) {
         return false;
@@ -635,9 +635,9 @@ bool MainWindow::updateMeasurements(const QString& fileName, int size, int heigh
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void MainWindow::checkRequiredMeasurements(const MeasurementDoc* measurements)
+void MainWindow::checkRequiredMeasurements(const MeasurementDoc& measurements)
 {
-    auto tempMeasurements = measurements->ListAll();
+    const QStringList tempMeasurements = measurements.ListAll();
     auto docMeasurements = doc->ListMeasurements();
     const QSet<QString> match =
         QSet<QString>(docMeasurements.begin(), docMeasurements.end())
@@ -6889,7 +6889,7 @@ QString MainWindow::checkPathToMeasurements(const QString& patternPath, const QS
                         throw exception;
                     }
 
-                    checkRequiredMeasurements(&measurements);
+                    checkRequiredMeasurements(measurements);
 
                     qApp->setPatternType(patternType);
 
