@@ -28,25 +28,15 @@
 #ifndef PEN_TOOLBAR_H
 #define PEN_TOOLBAR_H
 
-#include <QObject>
-#include <QToolBar>
-#include <QWidget>
-
 #include "color_combobox.h"
 #include "linetype_combobox.h"
 #include "lineweight_combobox.h"
 
+#include "../ifc/xml/pen.h"
 
-class ColorComboBox;
-class LineWeightComboBox;
-class LineTypeComboBox;
-
-struct Pen
-{
-    QString color{ QString("black") };
-    qreal lineWeight{ 1.20 };
-    QString lineType{ QString("solidline") };
-};
+#include <QObject>
+#include <QToolBar>
+#include <QWidget>
 
 class PenToolBar : public QToolBar
 {

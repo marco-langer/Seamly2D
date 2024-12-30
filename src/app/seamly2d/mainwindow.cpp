@@ -85,6 +85,7 @@
 #include "../vwidgets/dialogs/dialogexporttocsv.h"
 #include "../vwidgets/dialogs/file_dialog.h"
 #include "../vwidgets/mouse_coordinates.h"
+#include "../vwidgets/pen_toolbar.h"
 #include "../vwidgets/vmaingraphicsscene.h"
 #include "../vwidgets/vwidgetpopup.h"
 #include "core/application_2d.h"

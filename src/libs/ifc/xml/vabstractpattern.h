@@ -66,7 +66,8 @@
 
 #include "../../tools/image_item.h"
 #include "../vmisc/def.h"
-#include "../vwidgets/pen_toolbar.h"
+
+#include "pen.h"
 #include "vdomdocument.h"
 #include "vtoolrecord.h"
 

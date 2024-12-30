@@ -6,6 +6,7 @@ HEADERS += \
     $$PWD/document_validation.h \
     $$PWD/individual_size_converter.h \
     $$PWD/multi_size_converter.h \
+    $$PWD/pen.h \
     $$PWD/vdomdocument.h \
     $$PWD/vpatternconverter.h \
     $$PWD/vtoolrecord.h \
