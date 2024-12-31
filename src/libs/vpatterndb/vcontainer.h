@@ -57,8 +57,6 @@
 #include <QMap>
 #include <QMessageLogger>
 #include <QSet>
-#include <QSharedData>
-#include <QSharedDataPointer>
 #include <QSharedPointer>
 #include <QString>
 #include <QStringList>
@@ -81,76 +79,15 @@
 #include "vpiecepath.h"
 #include "vtranslatevars.h"
 
-
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Weffc++")
-QT_WARNING_DISABLE_INTEL(2021)
-QT_WARNING_DISABLE_GCC("-Wnon-virtual-dtor")
-
-class VContainerData : public QSharedData   //-V690
-{
-public:
-    VContainerData(const VTranslateVars* trVars, const Unit* patternUnit)
-        : gObjects(QHash<quint32, QSharedPointer<VGObject>>())
-        , variables(QHash<QString, QSharedPointer<VInternalVariable>>())
-        , pieces(QSharedPointer<QHash<quint32, VPiece>>(new QHash<quint32, VPiece>()))
-        , piecePaths(QSharedPointer<QHash<quint32, VPiecePath>>(new QHash<quint32, VPiecePath>()))
-        , trVars(trVars)
-        , patternUnit(patternUnit)
-    {
-    }
-
-    VContainerData(const VContainerData& data)
-        : QSharedData(data)
-        , gObjects(data.gObjects)
-        , variables(data.variables)
-        , pieces(data.pieces)
-        , piecePaths(data.piecePaths)
-        , trVars(data.trVars)
-        , patternUnit(data.patternUnit)
-    {
-    }
-
-    virtual ~VContainerData();
-
-    /**
-     * @brief gObjects graphicals objects of pattern.
-     */
-    QHash<quint32, QSharedPointer<VGObject>> gObjects;
-
-    /**
-     * @brief variables container for measurements, custom variables, lines lengths, lines angles,
-     * arcs lengths, curve lengths
-     */
-    QHash<QString, QSharedPointer<VInternalVariable>> variables;
-
-    QSharedPointer<QHash<quint32, VPiece>> pieces;
-    QSharedPointer<QHash<quint32, VPiecePath>> piecePaths;
-
-    const VTranslateVars* trVars;
-    const Unit* patternUnit;
-
-private:
-    VContainerData& operator=(const VContainerData&) = delete;
-};
-
-QT_WARNING_POP
-
 /**
  * @brief The VContainer class container of all variables.
  */
 class VContainer
 {
     Q_DECLARE_TR_FUNCTIONS(VContainer)
+
 public:
     VContainer(const VTranslateVars* trVars, const Unit* patternUnit);
-    VContainer(const VContainer& data);
-    ~VContainer();
-
-    VContainer& operator=(const VContainer& data);
-    VContainer& operator=(VContainer&& data) noexcept;
-
-    void Swap(VContainer& data) noexcept;
 
     template <typename T>
     QSharedPointer<T> GeometricObject(const quint32& id) const;
@@ -234,16 +171,6 @@ private:
     template <typename T>
     QSharedPointer<T> getVariablePtr(const QString& name) const;
 
-    /**
-     * @brief _id current id. New object will have value +1. For empty class equal 0.
-     */
-    static quint32 _id;
-    static qreal _size;
-    static qreal _height;
-    static QSet<QString> uniqueNames;
-
-    QSharedDataPointer<VContainerData> d;
-
     void AddCurve(const VAbstractCurve& curve, const quint32& id, quint32 parentId = NULL_ID);
 
     template <class T>
@@ -257,13 +184,24 @@ private:
 
     template <typename T>
     QMap<QString, QSharedPointer<T>> DataVar(const VarType& type) const;
+
+    /**
+     * @brief _id current id. New object will have value +1. For empty class equal 0.
+     */
+    static quint32 _id;
+    static qreal _size;
+    static qreal _height;
+    static QSet<QString> uniqueNames;
+
+    QHash<quint32, QSharedPointer<VGObject>> m_gObjects;
+    QHash<QString, QSharedPointer<VInternalVariable>> m_variables;
+    QSharedPointer<QHash<quint32, VPiece>>
+        m_pieces;   // TODO some callers store the pointer to this variable. Fix that first before
+                    // removing this shared pointer
+    QHash<quint32, VPiecePath> m_piecePaths;
+    const VTranslateVars* m_trVars;
+    const Unit* m_patternUnit;
 };
-
-Q_DECLARE_TYPEINFO(VContainer, Q_MOVABLE_TYPE);
-
-/*
- *  Defintion of templated member functions of VContainer
- */
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -275,7 +213,7 @@ QSharedPointer<T> VContainer::GeometricObject(const quint32& id) const
 
     QSharedPointer<VGObject> gObj = QSharedPointer<VGObject>();
 
-    if (auto iter{ d->gObjects.find(id) }; iter != d->gObjects.end()) {
+    if (auto iter{ m_gObjects.find(id) }; iter != m_gObjects.end()) {
         gObj = *iter;
     } else {
         throw VExceptionBadId(tr("Can't find object Id: "), id);
@@ -306,7 +244,7 @@ QSharedPointer<T> VContainer::getVariablePtr(const QString& name) const
 {
     SCASSERT(name.isEmpty() == false)
 
-    if (auto iter{ d->variables.find(name) }; iter != d->variables.end()) {
+    if (auto iter{ m_variables.find(name) }; iter != m_variables.end()) {
         try {
             QSharedPointer<T> value = qSharedPointerDynamicCast<T>(*iter);
             SCASSERT(value.isNull() == false)
@@ -330,7 +268,7 @@ void VContainer::AddVariable(std::unique_ptr<T> var)
 template <typename T>
 void VContainer::AddVariable(const QString& name, const QSharedPointer<T>& var)
 {
-    if (auto iter{ d->variables.find(name) }; iter != d->variables.end()) {
+    if (auto iter{ m_variables.find(name) }; iter != m_variables.end()) {
         if ((*iter)->GetType() == var->GetType()) {
             QSharedPointer<T> v = qSharedPointerDynamicCast<T>(*iter);
             if (v.isNull()) {
@@ -341,7 +279,7 @@ void VContainer::AddVariable(const QString& name, const QSharedPointer<T>& var)
             throw VExceptionBadId(tr("Can't find object. Type mismatch."), name);
         }
     } else {
-        d->variables.insert(name, var);
+        m_variables.insert(name, var);
     }
 
     uniqueNames.insert(name);
@@ -383,14 +321,14 @@ void VContainer::UpdateObject(const quint32& id, const QSharedPointer<T>& point)
     SCASSERT(point.isNull() == false)
     point->setId(id);
 
-    if (auto iter{ d->gObjects.find(id) }; iter != d->gObjects.end()) {
+    if (auto iter{ m_gObjects.find(id) }; iter != m_gObjects.end()) {
         QSharedPointer<T> obj = qSharedPointerDynamicCast<T>(*iter);
         if (obj.isNull()) {
             throw VExceptionBadId(tr("Can't cast object"), id);
         }
         *obj = *point;
     } else {
-        d->gObjects.insert(id, point);
+        m_gObjects.insert(id, point);
     }
     UpdateId(id);
 }

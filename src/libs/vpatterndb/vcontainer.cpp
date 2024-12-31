@@ -92,66 +92,18 @@ qreal VContainer::_size = 50;
 qreal VContainer::_height = 176;
 QSet<QString> VContainer::uniqueNames = QSet<QString>();
 
-VContainer& VContainer::operator=(VContainer&& data) noexcept
-{
-    Swap(data);
-    return *this;
-}
-
-void VContainer::Swap(VContainer& data) noexcept { std::swap(d, data.d); }
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VContainer create empty container
- */
 VContainer::VContainer(const VTranslateVars* trVars, const Unit* patternUnit)
-    : d(new VContainerData(trVars, patternUnit))
+    : m_pieces{ new QHash<quint32, VPiece>() }
+    , m_trVars{ trVars }
+    , m_patternUnit{ patternUnit }
 {
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief operator = copy constructor
- * @param data container
- * @return copy container
- */
-VContainer& VContainer::operator=(const VContainer& data)
-{
-    if (&data == this) {
-        return *this;
-    }
-    d = data.d;
-    return *this;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief VContainer create container from another container
- * @param data container
- */
-VContainer::VContainer(const VContainer& data)
-    : d(data.d)
-{
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-VContainer::~VContainer()
-{
-    ClearGObjects();
-    ClearVariables();
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-/**
- * @brief GetGObject returns a point by id
- * @param id id of point
- * @return point
- */
 // cppcheck-suppress unusedFunction
 const VGObject& VContainer::GetGObject(quint32 id) const
 {
-    auto iter{ d->gObjects.find(id) };
-    if (iter != d->gObjects.end()) {
+    auto iter{ m_gObjects.find(id) };
+    if (iter != m_gObjects.end()) {
         return **iter;
     }
 
@@ -161,8 +113,8 @@ const VGObject& VContainer::GetGObject(quint32 id) const
 
 VGObject& VContainer::GetGObject(quint32 id)
 {
-    auto iter{ d->gObjects.find(id) };
-    if (iter != d->gObjects.end()) {
+    auto iter{ m_gObjects.find(id) };
+    if (iter != m_gObjects.end()) {
         return **iter;
     }
 
@@ -181,7 +133,7 @@ std::unique_ptr<VGObject> VContainer::GetFakeGObject(quint32 id)
 //---------------------------------------------------------------------------------------------------------------------
 const VPiece& VContainer::GetPiece(quint32 id) const
 {
-    if (auto iter{ d->pieces->find(id) }; iter != d->pieces->end()) {
+    if (auto iter{ m_pieces->find(id) }; iter != m_pieces->end()) {
         return *iter;
     }
 
@@ -191,7 +143,7 @@ const VPiece& VContainer::GetPiece(quint32 id) const
 //---------------------------------------------------------------------------------------------------------------------
 const VPiecePath& VContainer::GetPiecePath(quint32 id) const
 {
-    if (auto iter{ d->piecePaths->find(id) }; iter != d->piecePaths->end()) {
+    if (auto iter{ m_piecePaths.find(id) }; iter != m_piecePaths.end()) {
         return *iter;
     }
 
@@ -204,14 +156,14 @@ quint32 VContainer::AddGObject(std::unique_ptr<VGObject> obj)
     SCASSERT(obj != nullptr)
     QSharedPointer<VGObject> pointer(obj.release());
     uniqueNames.insert(pointer->name());
-    return AddObject(d->gObjects, pointer);
+    return AddObject(m_gObjects, pointer);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 quint32 VContainer::AddPiece(const VPiece& piece)
 {
     const quint32 id = getNextId();
-    d->pieces->insert(id, piece);
+    m_pieces->insert(id, piece);
     return id;
 }
 
@@ -219,7 +171,7 @@ quint32 VContainer::AddPiece(const VPiece& piece)
 quint32 VContainer::AddPiecePath(const VPiecePath& path)
 {
     const quint32 id = getNextId();
-    d->piecePaths->insert(id, path);
+    m_piecePaths.insert(id, path);
     return id;
 }
 
@@ -264,8 +216,8 @@ void VContainer::Clear()
     qCDebug(vCon, "Clearing container data.");
     _id = NULL_ID;
 
-    d->pieces->clear();
-    d->piecePaths->clear();
+    m_pieces->clear();
+    m_piecePaths.clear();
     ClearVariables();
     ClearGObjects();
     ClearUniqueNames();
@@ -277,8 +229,8 @@ void VContainer::ClearForFullParse()
     qCDebug(vCon, "Clearing container data for full parse.");
     _id = NULL_ID;
 
-    d->pieces->clear();
-    d->piecePaths->clear();
+    m_pieces->clear();
+    m_piecePaths.clear();
     ClearVariables(VarType::Variable);
     ClearVariables(VarType::LineAngle);
     ClearVariables(VarType::LineLength);
@@ -294,16 +246,16 @@ void VContainer::ClearForFullParse()
 /**
  * @brief ClearObject points, splines, arcs, spline paths will be cleared.
  */
-void VContainer::ClearGObjects() { d->gObjects.clear(); }
+void VContainer::ClearGObjects() { m_gObjects.clear(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VContainer::ClearCalculationGObjects()
 {
-    if (not d->gObjects.isEmpty())   //-V807
+    if (not m_gObjects.isEmpty())   //-V807
     {
         QVector<quint32> keys;
         QHash<quint32, QSharedPointer<VGObject>>::iterator i;
-        for (i = d->gObjects.begin(); i != d->gObjects.end(); ++i) {
+        for (i = m_gObjects.begin(); i != m_gObjects.end(); ++i) {
             if (i.value()->getMode() == Draw::Calculation) {
                 i.value().clear();
                 keys.append(i.key());
@@ -312,7 +264,7 @@ void VContainer::ClearCalculationGObjects()
         // We can't delete objects in previous loop it will destroy the iterator.
         if (not keys.isEmpty()) {
             for (int i = 0; i < keys.size(); ++i) {
-                d->gObjects.remove(keys.at(i));
+                m_gObjects.remove(keys.at(i));
             }
         }
     }
@@ -321,21 +273,21 @@ void VContainer::ClearCalculationGObjects()
 //---------------------------------------------------------------------------------------------------------------------
 void VContainer::ClearVariables(const VarType& type)
 {
-    if (!d->variables.isEmpty())   //-V807
+    if (!m_variables.isEmpty())   //-V807
     {
         if (type == VarType::Unknown) {
-            d->variables.clear();
+            m_variables.clear();
         } else {
             QVector<QString> keys;
             QHash<QString, QSharedPointer<VInternalVariable>>::iterator i;
-            for (i = d->variables.begin(); i != d->variables.end(); ++i) {
+            for (i = m_variables.begin(); i != m_variables.end(); ++i) {
                 if (i.value()->GetType() == type) {
                     keys.append(i.key());
                 }
             }
 
             for (int i = 0; i < keys.size(); ++i) {
-                d->variables.remove(keys.at(i));
+                m_variables.remove(keys.at(i));
             }
         }
     }
@@ -425,10 +377,10 @@ void VContainer::AddCurveWithSegments(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContainer::RemoveVariable(const QString& name) { d->variables.remove(name); }
+void VContainer::RemoveVariable(const QString& name) { m_variables.remove(name); }
 
 //---------------------------------------------------------------------------------------------------------------------
-void VContainer::RemovePiece(quint32 id) { d->pieces->remove(id); }
+void VContainer::RemovePiece(quint32 id) { m_pieces->remove(id); }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -451,7 +403,7 @@ quint32 VContainer::AddObject(QHash<key, val>& obj, val value)
 void VContainer::UpdatePiece(quint32 id, const VPiece& piece)
 {
     Q_ASSERT_X(id != NULL_ID, Q_FUNC_INFO, "id == 0");   //-V654 //-V712
-    d->pieces->insert(id, piece);
+    m_pieces->insert(id, piece);
     UpdateId(id);
 }
 
@@ -459,7 +411,7 @@ void VContainer::UpdatePiece(quint32 id, const VPiece& piece)
 void VContainer::UpdatePiecePath(quint32 id, const VPiecePath& path)
 {
     Q_ASSERT_X(id != NULL_ID, Q_FUNC_INFO, "id == 0");   //-V654 //-V712
-    d->piecePaths->insert(id, path);
+    m_piecePaths.insert(id, path);
     UpdateId(id);
 }
 
@@ -470,8 +422,8 @@ void VContainer::UpdatePiecePath(quint32 id, const VPiecePath& path)
  */
 void VContainer::removeCustomVariable(const QString& name)
 {
-    d->variables[name].clear();
-    d->variables.remove(name);
+    m_variables[name].clear();
+    m_variables.remove(name);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -537,10 +489,10 @@ QStringList VContainer::AllUniqueNames()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const Unit* VContainer::GetPatternUnit() const { return d->patternUnit; }
+const Unit* VContainer::GetPatternUnit() const { return m_patternUnit; }
 
 //---------------------------------------------------------------------------------------------------------------------
-const VTranslateVars* VContainer::getTranslateVariables() const { return d->trVars; }
+const VTranslateVars* VContainer::getTranslateVariables() const { return m_trVars; }
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -549,10 +501,10 @@ QMap<QString, QSharedPointer<T>> VContainer::DataVar(const VarType& type) const
     QMap<QString, QSharedPointer<T>> map;
     // Sorting QHash by id
     QHash<QString, QSharedPointer<VInternalVariable>>::const_iterator i;
-    for (i = d->variables.constBegin(); i != d->variables.constEnd(); ++i) {
+    for (i = m_variables.constBegin(); i != m_variables.constEnd(); ++i) {
         if (i.value()->GetType() == type) {
             QSharedPointer<T> var = getVariablePtr<T>(i.key());
-            map.insert(d->trVars->VarToUser(i.key()), var);
+            map.insert(m_trVars->VarToUser(i.key()), var);
         }
     }
     return map;
@@ -615,17 +567,14 @@ qreal* VContainer::rheight() { return &_height; }
  */
 const QHash<quint32, QSharedPointer<VGObject>>& VContainer::DataGObjects() const
 {
-    return d->gObjects;
+    return m_gObjects;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QHash<quint32, VPiece>& VContainer::DataPieces() const { return *d->pieces.data(); }
+const QHash<quint32, VPiece>& VContainer::DataPieces() const { return *m_pieces.data(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 const QHash<QString, QSharedPointer<VInternalVariable>>& VContainer::DataVariables() const
 {
-    return d->variables;
+    return m_variables;
 }
-
-//---------------------------------------------------------------------------------------------------------------------
-VContainerData::~VContainerData() = default;
