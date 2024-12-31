@@ -433,7 +433,7 @@ void PiecesWidget::fillTable(const QHash<quint32, VPiece>& pieces)
 void PiecesWidget::toggleInLayoutPieces(bool inLayout)
 {
     const QHash<quint32, VPiece>& allPieces = m_data->DataPieces();
-    if (allPieces.count() == 0) {
+    if (allPieces.isEmpty()) {
         return;
     }
 
@@ -457,7 +457,7 @@ void PiecesWidget::toggleLockedPieces(bool lock)
     ui->tableWidget->blockSignals(true);
     ui->tableWidget->horizontalHeader()->setSortIndicator(-1, Qt::AscendingOrder);
     const QHash<quint32, VPiece>& allPieces = m_data->DataPieces();
-    if (allPieces.count() == 0) {
+    if (allPieces.isEmpty()) {
         return;
     }
 

@@ -527,7 +527,7 @@ QPointF VGrainlineItem::GetInsideCorner(int i, qreal dDist) const
  */
 qreal VGrainlineItem::GetScale() const
 {
-    if (scene()->views().count() > 0) {
+    if (!scene()->views().isEmpty()) {
         const QPoint pt0 = scene()->views().at(0)->mapFromScene(0, 0);
         const QPoint pt = scene()->views().at(0)->mapFromScene(0, 100);
         const QPoint p = pt - pt0;

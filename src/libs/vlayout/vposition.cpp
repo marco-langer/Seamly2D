@@ -521,10 +521,9 @@ QPainterPath VPosition::drawPieces(const QVector<VLayoutPiece>& pieces)
 {
     QPainterPath path;
     path.setFillRule(Qt::WindingFill);
-    if (pieces.count() > 0) {
-        for (int i = 0; i < pieces.size(); ++i) {
-            path.addPath(pieces.at(i).createMainPath());
-        }
+    for (int i = 0; i < pieces.size(); ++i) {
+        path.addPath(pieces.at(i).createMainPath());
     }
+
     return path;
 }

@@ -3698,7 +3698,7 @@ void MainWindow::showPieceMode(bool checked)
         m_ui->layoutMode_Action->setChecked(false);
 
         if (!qApp->getOpeningPattern()) {
-            if (pattern->DataPieces().count() == 0) {
+            if (pattern->DataPieces().isEmpty()) {
                 QMessageBox::information(
                     this,
                     tr("Piece mode"),
@@ -3778,7 +3778,7 @@ void MainWindow::showLayoutMode(bool checked)
         QHash<quint32, VPiece> pieces;
         if (!qApp->getOpeningPattern()) {
             const QHash<quint32, VPiece>& allPieces = pattern->DataPieces();
-            if (allPieces.count() == 0) {
+            if (allPieces.isEmpty()) {
                 QMessageBox::information(
                     this,
                     tr("Layout mode"),
@@ -3797,7 +3797,7 @@ void MainWindow::showLayoutMode(bool checked)
                     ++i;
                 }
 
-                if (pieces.count() == 0) {
+                if (pieces.isEmpty()) {
                     QMessageBox::information(
                         this,
                         tr("Layout mode"),
@@ -6471,7 +6471,7 @@ void MainWindow::exportPiecesAs()
         ++i;
     }
 
-    if (piecesInLayout.count() == 0) {
+    if (piecesInLayout.isEmpty()) {
         QMessageBox::information(
             this,
             tr("Layout mode"),
@@ -6951,7 +6951,7 @@ void MainWindow::DoExport(const VCommandLinePtr& expParams)
 {
     const QHash<quint32, VPiece>& pieces = pattern->DataPieces();
     if (!qApp->getOpeningPattern()) {
-        if (pieces.count() == 0) {
+        if (pieces.isEmpty()) {
             qCCritical(vMainWindow, "%s", qUtf8Printable(tr("You can't export empty scene.")));
             qApp->exit(V_EX_DATAERR);
             return;

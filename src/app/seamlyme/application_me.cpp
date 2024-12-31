@@ -662,7 +662,7 @@ void ApplicationME::parseCommandLine(
     }
 
     const QStringList args = parser.positionalArguments();
-    if (args.count() > 0) {
+    if (!args.isEmpty()) {
         if (m_testMode && args.count() > 1) {
             qCCritical(
                 mApp, "%s\n", qPrintable(tr("Test mode doesn't support Opening several files.")));
