@@ -1543,10 +1543,10 @@ void MainWindowsNoGUI::ExportScene(
                         increment,                                                  // 3
                         ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 4
 
-            QBrush* brush = new QBrush();
-            brush->setColor(QColor(Qt::white));
+            QBrush brush;
+            brush.setColor(QColor(Qt::white));
             QGraphicsScene* scene = scenes.at(i);
-            scene->setBackgroundBrush(*brush);
+            scene->setBackgroundBrush(brush);
             shadows[i]->setVisible(false);
             paper->setPen(QPen(QBrush(Qt::white, Qt::NoBrush), 0.1, Qt::NoPen));
 
@@ -1623,11 +1623,10 @@ void MainWindowsNoGUI::ExportScene(
             default: qWarning() << "Can't recognize file type." << Q_FUNC_INFO; break;
             }
             paper->setPen(QPen(Qt::black, 1));
-            brush->setColor(QColor(Qt::gray));
-            brush->setStyle(Qt::SolidPattern);
-            scenes[i]->setBackgroundBrush(*brush);
+            brush.setColor(QColor(Qt::gray));
+            brush.setStyle(Qt::SolidPattern);
+            scenes[i]->setBackgroundBrush(brush);
             shadows[i]->setVisible(true);
-            delete brush;
         }
     }
 }
