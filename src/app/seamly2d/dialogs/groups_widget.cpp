@@ -724,8 +724,6 @@ void GroupsWidget::fillGroupItemList()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
 /**
  * @brief addGroupItem Add group item with description in listwidget.
  * @param toolID ToolID of item to add to list.
@@ -997,8 +995,6 @@ void GroupsWidget::addGroupItem(const quint32& toolId, const quint32& objId, con
         return;
     }
 }
-
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

@@ -202,8 +202,6 @@ VToolRotation* VToolRotation::Create(
             Q_STATIC_ASSERT_X(
                 static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
-            QT_WARNING_PUSH
-            QT_WARNING_DISABLE_GCC("-Wswitch-default")
             switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point:
                 dest.append(createPoint(id, objectId, oPoint, calcAngle, suffix, data));
@@ -236,7 +234,6 @@ VToolRotation* VToolRotation::Create(
             case GOType::AllCurves:
             default: break;
             }
-            QT_WARNING_POP
         }
     } else {
         for (int i = 0; i < source.size(); ++i) {
@@ -248,8 +245,6 @@ VToolRotation* VToolRotation::Create(
             Q_STATIC_ASSERT_X(
                 static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
-            QT_WARNING_PUSH
-            QT_WARNING_DISABLE_GCC("-Wswitch-default")
             switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point: {
                 const DestinationItem& item = dest.at(i);
@@ -283,7 +278,6 @@ VToolRotation* VToolRotation::Create(
             case GOType::Path:
             case GOType::AllCurves: break;
             }
-            QT_WARNING_POP
         }
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

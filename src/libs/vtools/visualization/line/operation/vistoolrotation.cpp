@@ -94,9 +94,6 @@ VisToolRotation::VisToolRotation(const VContainer* data, QGraphicsItem* parent)
 VisToolRotation::~VisToolRotation() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
-
 void VisToolRotation::RefreshGeometry()
 {
     if (objects.isEmpty()) {
@@ -203,7 +200,6 @@ void VisToolRotation::RefreshGeometry()
         }
     }
 }
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolRotation::SetOriginPointId(quint32 value) { object1Id = value; }

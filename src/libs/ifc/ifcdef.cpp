@@ -199,9 +199,6 @@ Qt::PenStyle lineTypeToPenStyle(const QString& lineType)
 //---------------------------------------------------------------------------------------------------------------------
 QString PenStyleToLineType(Qt::PenStyle penStyle)
 {
-    QT_WARNING_PUSH
-    QT_WARNING_DISABLE_GCC("-Wswitch-default")
-
     switch (penStyle) {
     case Qt::NoPen: return LineTypeNone;
     case Qt::DashLine: return LineTypeDashLine;
@@ -210,8 +207,6 @@ QString PenStyleToLineType(Qt::PenStyle penStyle)
     case Qt::DashDotDotLine: return LineTypeDashDotDotLine;
     default: break;
     }
-
-    QT_WARNING_POP
 
     return LineTypeSolidLine;
 }

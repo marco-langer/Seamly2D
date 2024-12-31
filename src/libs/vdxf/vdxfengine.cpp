@@ -80,7 +80,8 @@ VDxfEngine::VDxfEngine()
     , varMeasurement(VarMeasurement::Metric)
     , varInsunits(VarInsunits::Millimeters)
     , textBuffer(new DRW_Text())
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VDxfEngine::~VDxfEngine() { delete textBuffer; }
@@ -497,9 +498,6 @@ void VDxfEngine::setInsunits(const VarInsunits& var)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
-
 double VDxfEngine::FromPixel(double pix, const VarInsunits& unit) const
 {
     switch (unit) {
@@ -520,8 +518,6 @@ double VDxfEngine::ToPixel(double val, const VarInsunits& unit) const
     }
     return val;
 }
-
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VDxfEngine::ExportToAAMA(const QVector<VLayoutPiece>& details)

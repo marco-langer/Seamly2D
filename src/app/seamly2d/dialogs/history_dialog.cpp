@@ -253,8 +253,6 @@ void HistoryDialog::fillTable()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
 /**
  * @brief Record return description for record
  * @param tool record data
@@ -581,8 +579,6 @@ RowData HistoryDialog::record(const VToolRecord& tool)
     qWarning() << "Can't create history record for the tool.";
     return rowData;
 }
-
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

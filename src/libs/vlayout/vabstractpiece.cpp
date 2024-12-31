@@ -76,12 +76,14 @@ void VAbstractPiece::Swap(VAbstractPiece& piece) noexcept { std::swap(d, piece.d
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractPiece::VAbstractPiece()
     : d(new VAbstractPieceData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractPiece::VAbstractPiece(const VAbstractPiece& piece)
     : d(piece.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractPiece& VAbstractPiece::operator=(const VAbstractPiece& piece)
@@ -442,8 +444,6 @@ QVector<QPointF> VAbstractPiece::EkvPoint(
         // Comparison bisector angles helps to find direction
         if (angle < 90 || math::isFuzzyEqual(angle, 90.0))   // Go in a same direction
         {                                                    // Regular equdistant case
-            QT_WARNING_PUSH
-            QT_WARNING_DISABLE_GCC("-Wswitch-default")
             switch (p2Line1.GetAngleType()) {
             case PieceNodeAngle::ByLength:
                 return AngleByLength(p2Line1, bigLine1.p1(), CrosPoint, bigLine2.p2(), localWidth);
@@ -463,7 +463,6 @@ QVector<QPointF> VAbstractPiece::EkvPoint(
                 return AngleBySecondRightAngle(
                     p2Line1, p1Line2, bigLine1.p1(), CrosPoint, bigLine2.p2(), localWidth);
             }
-            QT_WARNING_POP
         } else {   // Different directions
             QLineF bisector(p2Line1, p1Line1);
             bisector.setAngle(b1.angle());

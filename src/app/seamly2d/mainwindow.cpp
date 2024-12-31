@@ -3378,8 +3378,6 @@ void MainWindow::MouseMove(const QPointF& scenePos)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
 /**
  * @brief CancelTool cancel tool.
  */
@@ -3487,8 +3485,6 @@ void MainWindow::CancelTool()
     undoAction->setEnabled(qApp->getUndoStack()->canUndo());
     redoAction->setEnabled(qApp->getUndoStack()->canRedo());
 }
-
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -5211,8 +5207,6 @@ void MainWindow::createMenus()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
 void MainWindow::LastUsedTool()
 {
     // This check helps to find missed tools in the switch
@@ -5411,8 +5405,6 @@ void MainWindow::LastUsedTool()
         break;
     }
 }
-
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::AddDocks()

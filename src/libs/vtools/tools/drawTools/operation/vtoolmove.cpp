@@ -97,8 +97,7 @@
 const QString VToolMove::ToolType = QStringLiteral("moving");
 
 namespace {
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
+
 QPointF findRotationOrigin(
     const QVector<SourceItem> objects, const VContainer* data, qreal calcLength, qreal calcAngle)
 {
@@ -136,7 +135,7 @@ QPointF findRotationOrigin(
     move.setAngle(calcAngle);
     return move.p2();
 }
-QT_WARNING_POP
+
 }   // namespace
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -272,8 +271,6 @@ VToolMove* VToolMove::Create(
             Q_STATIC_ASSERT_X(
                 static_cast<int>(GOType::AllCurves) == 10, "Not all objects were handled.");
 
-            QT_WARNING_PUSH
-            QT_WARNING_DISABLE_GCC("-Wswitch-default")
             qCDebug(vTool, "VToolMove - Rotation Origin");
             qCDebug(vTool, "X:  %f", rotationOrigin.x());
             qCDebug(vTool, "Y:  %f", rotationOrigin.y());
@@ -373,7 +370,6 @@ VToolMove* VToolMove::Create(
             case GOType::AllCurves:
             default: break;
             }
-            QT_WARNING_POP
         }
     } else {
         qCDebug(vTool, "Create sourceItem\n");
@@ -386,8 +382,6 @@ VToolMove* VToolMove::Create(
             Q_STATIC_ASSERT_X(
                 static_cast<int>(GOType::AllCurves) == 10, "Not all objects were handled.");
 
-            QT_WARNING_PUSH
-            QT_WARNING_DISABLE_GCC("-Wswitch-default")
             switch (static_cast<GOType>(object.getType())) {
             case GOType::Point: {
                 updatePoint(
@@ -480,7 +474,6 @@ VToolMove* VToolMove::Create(
             case GOType::AllCurves:
             default: break;
             }
-            QT_WARNING_POP
         }
         if (parse != Document::FullParse) {
             doc->UpdateToolData(id, data);

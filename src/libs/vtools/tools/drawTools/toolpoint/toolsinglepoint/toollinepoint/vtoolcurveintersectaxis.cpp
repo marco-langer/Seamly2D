@@ -452,8 +452,6 @@ void VToolCurveIntersectAxis::InitArc(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
 void VToolCurveIntersectAxis::InitSegments(
     const GOType& curveType, qreal segLength, const VPointF* p, quint32 curveId, VContainer* data)
 {
@@ -539,5 +537,3 @@ void VToolCurveIntersectAxis::InitSegments(
     default: Q_UNREACHABLE(); break;
     }
 }
-
-QT_WARNING_POP

@@ -4082,9 +4082,6 @@ void VPattern::ToolsCommonAttributes(const QDomElement& domElement, quint32& id)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
-
 QRectF VPattern::ActiveDrawBoundingRect() const
 {
     // This check helps to find missed tools in the switch
@@ -4165,8 +4162,6 @@ QRectF VPattern::ActiveDrawBoundingRect() const
     }
     return rect;
 }
-
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 template <typename T>

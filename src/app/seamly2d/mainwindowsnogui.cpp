@@ -1116,9 +1116,6 @@ void MainWindowsNoGUI::ObjFile(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
-
 void MainWindowsNoGUI::FlatDxfFile(
     const QString& name,
     int version,
@@ -1161,8 +1158,6 @@ void MainWindowsNoGUI::AAMADxfFile(
     generator.setInsunits(VarInsunits::Millimeters);   // Decided to always use mm. See issue #745
     generator.ExportToAAMA(pieces);
 }
-
-QT_WARNING_POP
 
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindowsNoGUI::PreparePaper(int index) const

@@ -297,9 +297,6 @@ int VisToolMove::AddDestinationCurve(
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
-
 void VisToolMove::createOriginObjects(int& iPoint, int& iCurve)
 {
     QPolygonF sourceObjects;
@@ -362,12 +359,7 @@ void VisToolMove::createOriginObjects(int& iPoint, int& iCurve)
     m_origin = sourceObjects.boundingRect().center();
 }
 
-QT_WARNING_POP
-
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
-
 void VisToolMove::createRotatedObjects(
     int& iPoint,
     int& iCurve,
@@ -426,5 +418,3 @@ void VisToolMove::createRotatedObjects(
         }
     }
 }
-
-QT_WARNING_POP

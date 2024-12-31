@@ -509,7 +509,8 @@ VAbstractOperation::VAbstractOperation(
     , source(source)
     , destination(destination)
     , operatedObjects()
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractOperation::AddToFile()
@@ -634,8 +635,6 @@ void VAbstractOperation::InitOperatedObjects()
         // This check helps to find missed objects in the switch
         Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
-        QT_WARNING_PUSH
-        QT_WARNING_DISABLE_GCC("-Wswitch-default")
         switch (static_cast<GOType>(object.getType())) {
         case GOType::Point: {
             VSimplePoint* point = new VSimplePoint(item.id, QColor(Qt::black));
@@ -683,7 +682,6 @@ void VAbstractOperation::InitOperatedObjects()
         case GOType::AllCurves:
         default: break;
         }
-        QT_WARNING_POP
     }
 }
 

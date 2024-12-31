@@ -70,7 +70,8 @@ VisOperation::VisOperation(const VContainer* data, QGraphicsItem* parent)
     , supportColor3(QColor(qApp->Settings()->getTertiarySupportColor()))
     , points()
     , curves()
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VisOperation::~VisOperation()
@@ -115,8 +116,6 @@ VCurvePathItem* VisOperation::GetCurve(quint32 i, const QColor& color)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_GCC("-Wswitch-default")
 void VisOperation::refreshMirroredObjects(const QPointF& firstPoint, const QPointF& secondPoint)
 {
     int iPoint = -1;
@@ -179,4 +178,3 @@ void VisOperation::refreshMirroredObjects(const QPointF& firstPoint, const QPoin
         }
     }
 }
-QT_WARNING_POP
