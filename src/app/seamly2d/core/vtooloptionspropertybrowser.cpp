@@ -578,9 +578,9 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
                     VToolRecord newRecord = VToolRecord(
                         id, record.typeTool, qApp->getCurrentDocument()->getActiveDraftBlockName());
 
-                    const QHash<quint32, QSharedPointer<VGObject>>* objs = m_data->DataGObjects();
-                    if (objs->contains(id))   // Avoid badId Get GObject only if not a line tool
-                                              // which is not an object
+                    const QHash<quint32, QSharedPointer<VGObject>>& objs = m_data->DataGObjects();
+                    if (objs.contains(id))   // Avoid badId Get GObject only if not a line tool
+                                             // which is not an object
                     {
                         objects.insert(id, &m_data->GetGObject(id));
                     }
@@ -600,9 +600,9 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
                     VToolRecord newRecord = VToolRecord(
                         id, record.typeTool, qApp->getCurrentDocument()->getActiveDraftBlockName());
 
-                    const QHash<quint32, QSharedPointer<VGObject>>* objs = m_data->DataGObjects();
-                    if (objs->contains(id))   // Avoid badId Get GObject only if not a line tool
-                                              // which is not an object
+                    const QHash<quint32, QSharedPointer<VGObject>>& objs = m_data->DataGObjects();
+                    if (objs.contains(id))   // Avoid badId Get GObject only if not a line tool
+                                             // which is not an object
                     {
                         objects.insert(id, &m_data->GetGObject(id));
                     }
@@ -610,9 +610,9 @@ QMap<QString, quint32> VToolOptionsPropertyBrowser::getObjectList(Tool* tool, GO
                 break;
             }
             default: {
-                const QHash<quint32, QSharedPointer<VGObject>>* objs = m_data->DataGObjects();
-                if (objs->contains(recId))   // Avoid badId Get GObject only if not a line tool
-                                             // which is not an object
+                const QHash<quint32, QSharedPointer<VGObject>>& objs = m_data->DataGObjects();
+                if (objs.contains(recId))   // Avoid badId Get GObject only if not a line tool
+                                            // which is not an object
                 {
                     objects.insert(recId, &m_data->GetGObject(recId));
                 }

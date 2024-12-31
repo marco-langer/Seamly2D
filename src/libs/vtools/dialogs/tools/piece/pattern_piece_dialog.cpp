@@ -3318,7 +3318,7 @@ void PatternPieceDialog::setMoveExclusions()
 //---------------------------------------------------------------------------------------------------------------------
 QString PatternPieceDialog::createPieceName() const
 {
-    QList<VPiece> pieces = data->DataPieces()->values();
+    const QList<VPiece> pieces = data->DataPieces().values();
     QStringList pieceNames;
 
     for (int i = 0; i < pieces.size(); ++i) {

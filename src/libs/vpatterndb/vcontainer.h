@@ -205,9 +205,9 @@ public:
 
     void removeCustomVariable(const QString& name);
 
-    const QHash<quint32, QSharedPointer<VGObject>>* DataGObjects() const;
-    const QHash<quint32, VPiece>* DataPieces() const;
-    const QHash<QString, QSharedPointer<VInternalVariable>>* DataVariables() const;
+    const QHash<quint32, QSharedPointer<VGObject>>& DataGObjects() const;
+    const QHash<quint32, VPiece>& DataPieces() const;
+    const QHash<QString, QSharedPointer<VInternalVariable>>& DataVariables() const;
 
     QMap<QString, QSharedPointer<MeasurementVariable>> DataMeasurements() const;
     QMap<QString, QSharedPointer<CustomVariable>> variablesData() const;

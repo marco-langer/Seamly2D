@@ -249,10 +249,10 @@ void DialogTool::FillComboBoxSplines(QComboBox* box) const
     SCASSERT(box != nullptr)
     box->blockSignals(true);
 
-    const auto objs = data->DataGObjects();
+    const auto& objs = data->DataGObjects();
     QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
     QMap<QString, quint32> list;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+    for (i = objs.constBegin(); i != objs.constEnd(); ++i) {
         if (i.key() != toolId) {
             if (IsSpline(i.value())) {
                 PrepareList<VAbstractCurve>(list, i.key());
@@ -270,10 +270,10 @@ void DialogTool::FillComboBoxSplinesPath(QComboBox* box) const
     SCASSERT(box != nullptr)
     box->blockSignals(true);
 
-    const auto objs = data->DataGObjects();
+    const auto& objs = data->DataGObjects();
     QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
     QMap<QString, quint32> list;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+    for (i = objs.constBegin(); i != objs.constEnd(); ++i) {
         if (i.key() != toolId) {
             if (IsSplinePath(i.value())) {
                 PrepareList<VAbstractCurve>(list, i.key());
@@ -289,10 +289,10 @@ void DialogTool::FillComboBoxSplinesPath(QComboBox* box) const
 void DialogTool::FillComboBoxCurves(QComboBox* box) const
 {
     SCASSERT(box != nullptr)
-    const auto objs = data->DataGObjects();
+    const auto& objs = data->DataGObjects();
     QMap<QString, quint32> list;
     QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+    for (i = objs.constBegin(); i != objs.constEnd(); ++i) {
         if (i.key() != toolId) {
             QSharedPointer<VGObject> obj = i.value();
             if ((obj->getType() == GOType::Arc || obj->getType() == GOType::EllipticalArc
@@ -1291,10 +1291,10 @@ void DialogTool::FillCombo(
     SCASSERT(box != nullptr)
     box->blockSignals(true);
 
-    const QHash<quint32, QSharedPointer<VGObject>>* objs = data->DataGObjects();
+    const QHash<quint32, QSharedPointer<VGObject>>& objs = data->DataGObjects();
     QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
     QMap<QString, quint32> list;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+    for (i = objs.constBegin(); i != objs.constEnd(); ++i) {
         if (rule == FillComboBox::NoChildren) {
             if (i.key() != toolId && i.value()->getIdTool() != toolId && i.key() != ch1
                 && i.key() != ch2) {

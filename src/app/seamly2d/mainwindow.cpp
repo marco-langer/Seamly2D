@@ -166,7 +166,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(doc, &VPattern::UndoCommand, this, &MainWindow::fullParseFile);
     connect(doc, &VPattern::setGuiEnabled, this, &MainWindow::setGuiEnabled);
     connect(doc, &VPattern::CheckLayout, this, [this]() {
-        if (pattern->DataPieces()->count() == 0) {
+        if (pattern->DataPieces().count() == 0) {
             if (!m_ui->showDraftMode->isChecked()) {
                 showDraftMode(true);
             }
@@ -842,7 +842,7 @@ template <typename DrawTool>
 void MainWindow::ClosedPiecesDialogWithApply(int result)
 {
     ClosedDialogWithApply<DrawTool>(result, m_pieceScene);
-    if (!pattern->DataPieces()->isEmpty()) {
+    if (!pattern->DataPieces().isEmpty()) {
         m_ui->anchorPoint_ToolButton->setEnabled(true);
         m_ui->internalPath_ToolButton->setEnabled(true);
         m_ui->insertNodes_ToolButton->setEnabled(true);
@@ -2741,10 +2741,10 @@ void MainWindow::showZoomToPointDialog()
  */
 void MainWindow::zoomToPoint(const QString& pointName)
 {
-    const QHash<quint32, QSharedPointer<VGObject>>* objects = pattern->DataGObjects();
+    const QHash<quint32, QSharedPointer<VGObject>>& objects = pattern->DataGObjects();
     QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
 
-    for (i = objects->constBegin(); i != objects->constEnd(); ++i) {
+    for (i = objects.constBegin(); i != objects.constEnd(); ++i) {
         QSharedPointer<VGObject> object = i.value();
         const quint32 objectId = object->getIdObject();
         const QString objectName = object->name();
@@ -3267,9 +3267,10 @@ void MainWindow::handlePieceMenu()
     QAction* action_InsertNodes = menu.addAction(
         QIcon(":/toolicon/32x32/insert_nodes_icon.png"), tr("Insert Nodes in Path") + "\tI, P");
 
-    action_AnchorPoint->setEnabled(!pattern->DataPieces()->isEmpty());
-    action_InternalPath->setEnabled(!pattern->DataPieces()->isEmpty());
-    action_InsertNodes->setEnabled(!pattern->DataPieces()->isEmpty());
+    const bool hasPatternPieces{ !pattern->DataPieces().isEmpty() };
+    action_AnchorPoint->setEnabled(hasPatternPieces);
+    action_InternalPath->setEnabled(hasPatternPieces);
+    action_InsertNodes->setEnabled(hasPatternPieces);
 
     QAction* selectedAction = menu.exec(QCursor::pos());
 
@@ -3705,7 +3706,7 @@ void MainWindow::showPieceMode(bool checked)
         m_ui->layoutMode_Action->setChecked(false);
 
         if (!qApp->getOpeningPattern()) {
-            if (pattern->DataPieces()->count() == 0) {
+            if (pattern->DataPieces().count() == 0) {
                 QMessageBox::information(
                     this,
                     tr("Piece mode"),
@@ -3784,8 +3785,8 @@ void MainWindow::showLayoutMode(bool checked)
 
         QHash<quint32, VPiece> pieces;
         if (!qApp->getOpeningPattern()) {
-            const QHash<quint32, VPiece>* allPieces = pattern->DataPieces();
-            if (allPieces->count() == 0) {
+            const QHash<quint32, VPiece>& allPieces = pattern->DataPieces();
+            if (allPieces.count() == 0) {
                 QMessageBox::information(
                     this,
                     tr("Layout mode"),
@@ -3796,8 +3797,8 @@ void MainWindow::showLayoutMode(bool checked)
                 showDraftMode(true);
                 return;
             } else {
-                QHash<quint32, VPiece>::const_iterator i = allPieces->constBegin();
-                while (i != allPieces->constEnd()) {
+                QHash<quint32, VPiece>::const_iterator i = allPieces.constBegin();
+                while (i != allPieces.constEnd()) {
                     if (i.value().isInLayout()) {
                         pieces.insert(i.key(), i.value());
                     }
@@ -4759,9 +4760,10 @@ void MainWindow::setToolsEnabled(bool enable)
 
     // Piece
     m_ui->addPatternPiece_ToolButton->setEnabled(draftTools);
-    m_ui->anchorPoint_ToolButton->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
-    m_ui->internalPath_ToolButton->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
-    m_ui->insertNodes_ToolButton->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
+    const bool hasPatternPieces{ !pattern->DataPieces().isEmpty() };
+    m_ui->anchorPoint_ToolButton->setEnabled(draftTools && hasPatternPieces);
+    m_ui->internalPath_ToolButton->setEnabled(draftTools && hasPatternPieces);
+    m_ui->insertNodes_ToolButton->setEnabled(draftTools && hasPatternPieces);
 
     // Images
     m_ui->importImage_ToolButton->setEnabled(draftTools);
@@ -4836,10 +4838,10 @@ void MainWindow::setToolsEnabled(bool enable)
 
     // Piece
     m_ui->addPiece_Action->setEnabled(draftTools);
-    m_ui->anchorPoint_Action->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
+    m_ui->anchorPoint_Action->setEnabled(draftTools && hasPatternPieces);
     m_ui->images_Action->setEnabled(draftTools);
-    m_ui->internalPath_Action->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
-    m_ui->insertNodes_Action->setEnabled(draftTools & !pattern->DataPieces()->isEmpty());
+    m_ui->internalPath_Action->setEnabled(draftTools && hasPatternPieces);
+    m_ui->insertNodes_Action->setEnabled(draftTools && hasPatternPieces);
 
     // Images
     m_ui->importImage_Action->setEnabled(draftTools);
@@ -6476,10 +6478,10 @@ void MainWindow::exportPiecesAs()
     m_ui->arrow_Action->setChecked(false);
     m_ui->exportPiecesAs_ToolButton->setChecked(true);
 
-    const QHash<quint32, VPiece>* allPieces = pattern->DataPieces();
-    QHash<quint32, VPiece>::const_iterator i = allPieces->constBegin();
+    const QHash<quint32, VPiece>& allPieces = pattern->DataPieces();
+    QHash<quint32, VPiece>::const_iterator i = allPieces.constBegin();
     QHash<quint32, VPiece> piecesInLayout;
-    while (i != allPieces->constEnd()) {
+    while (i != allPieces.constEnd()) {
         if (i.value().isInLayout()) {
             piecesInLayout.insert(i.key(), i.value());
         }
@@ -6939,7 +6941,7 @@ void MainWindow::zoomFirstShow()
      * coordinate and whole pattern will be moved. Looks very ugly. It is best solution that i have
      * now.
      */
-    if (!pattern->DataPieces()->isEmpty()) {
+    if (!pattern->DataPieces().isEmpty()) {
         showPieceMode(true);
         m_ui->view->zoomToFit();
     }
@@ -6951,7 +6953,7 @@ void MainWindow::zoomFirstShow()
     VMainGraphicsView::NewSceneRect(m_draftScene, m_ui->view);
     VMainGraphicsView::NewSceneRect(m_pieceScene, m_ui->view);
 
-    if (!pattern->DataPieces()->isEmpty()) {
+    if (!pattern->DataPieces().isEmpty()) {
         showPieceMode(true);
         m_ui->view->zoomToFit();
     }
@@ -6964,15 +6966,15 @@ void MainWindow::zoomFirstShow()
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::DoExport(const VCommandLinePtr& expParams)
 {
-    const QHash<quint32, VPiece>* pieces = pattern->DataPieces();
+    const QHash<quint32, VPiece>& pieces = pattern->DataPieces();
     if (!qApp->getOpeningPattern()) {
-        if (pieces->count() == 0) {
+        if (pieces.count() == 0) {
             qCCritical(vMainWindow, "%s", qUtf8Printable(tr("You can't export empty scene.")));
             qApp->exit(V_EX_DATAERR);
             return;
         }
     }
-    pieceList = preparePiecesForLayout(*pieces);
+    pieceList = preparePiecesForLayout(pieces);
 
     const bool exportOnlyPieces = expParams->exportOnlyPieces();
     if (exportOnlyPieces) {
@@ -7357,8 +7359,8 @@ QStringList MainWindow::draftPointNamesList()
 {
     QStringList pointNames;
     for (QHash<quint32, QSharedPointer<VGObject>>::const_iterator item =
-             pattern->DataGObjects()->begin();
-         item != pattern->DataGObjects()->end();
+             pattern->DataGObjects().begin();
+         item != pattern->DataGObjects().end();
          ++item) {
         if (item.value()->getType() == GOType::Point && !pointNames.contains(item.value()->name()))
             pointNames << item.value()->name();

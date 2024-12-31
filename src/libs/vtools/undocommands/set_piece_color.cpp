@@ -45,7 +45,7 @@ SetPieceColor::SetPieceColor(
     : VUndoCommand(QDomElement(), doc, parent)
     , m_id(id)
     , m_data(data)
-    , m_oldColor(m_data->DataPieces()->value(m_id).getColor())
+    , m_oldColor(m_data->DataPieces().value(m_id).getColor())
     , m_newColor(color)
 {
     setText(tr("Change piece color"));
@@ -84,7 +84,7 @@ void SetPieceColor::doCmd(QString color)
     if (element.isElement()) {
         doc->SetAttribute(element, QStringLiteral("color"), color);
 
-        VPiece piece = m_data->DataPieces()->value(m_id);
+        VPiece piece = m_data->DataPieces().value(m_id);
         piece.setColor(color);
         m_data->UpdatePiece(m_id, piece);
 

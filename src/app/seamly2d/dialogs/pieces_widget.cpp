@@ -97,7 +97,7 @@ PiecesWidget::PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* par
         this,
         &PiecesWidget::includeAllPieces);
     connect(ui->invertIncludedPieces_ToolButton, &QToolButton::clicked, this, [this]() {
-        m_allPieces = m_data->DataPieces();
+        m_allPieces = &m_data->DataPieces();
         invertIncludedPieces();
     });
     connect(
@@ -109,7 +109,7 @@ PiecesWidget::PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* par
     connect(
         ui->lockAllPieces_ToolButton, &QToolButton::clicked, this, &PiecesWidget::lockAllPieces);
     connect(ui->invertLockedPieces_ToolButton, &QToolButton::clicked, this, [this]() {
-        m_allPieces = m_data->DataPieces();
+        m_allPieces = &m_data->DataPieces();
         invertLockedPieces();
     });
 
@@ -130,8 +130,7 @@ PiecesWidget::PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* par
             return;
 
         const quint32 id = item->data(Qt::UserRole).toUInt();
-        const QHash<quint32, VPiece>* allPieces = m_data->DataPieces();
-        const bool locked = allPieces->value(id).isLocked();
+        const bool locked = m_data->DataPieces().value(id).isLocked();
 
         if (locked == true) {
             QApplication::beep();
@@ -153,8 +152,7 @@ PiecesWidget::PiecesWidget(VContainer* data, VAbstractPattern* doc, QWidget* par
             return;
 
         const quint32 id = item->data(Qt::UserRole).toUInt();
-        const QHash<quint32, VPiece>* allPieces = m_data->DataPieces();
-        const bool locked = allPieces->value(id).isLocked();
+        const bool locked = m_data->DataPieces().value(id).isLocked();
 
         if (locked == true) {
             QApplication::beep();
@@ -200,16 +198,16 @@ void PiecesWidget::togglePiece(quint32 id)
     ui->tableWidget->clearSelection();
 
     int selectedRow = 0;
-    const QHash<quint32, VPiece>* pieces = m_data->DataPieces();
+    const QHash<quint32, VPiece>& pieces = m_data->DataPieces();
 
-    if (pieces->contains(id)) {
+    if (pieces.contains(id)) {
         for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
             QTableWidgetItem* item = ui->tableWidget->item(row, 0);
             SCASSERT(item != nullptr)
 
             if (item && item->data(Qt::UserRole).toUInt() == id) {
                 selectedRow = row;
-                VPiece piece = pieces->value(id);
+                const VPiece& piece = pieces.value(id);
                 const bool inLayout = piece.isInLayout();
                 inLayout ? item->setIcon(QIcon("://icon/32x32/visible_on.png"))
                          : item->setIcon(QIcon("://icon/32x32/visible_off.png"));
@@ -271,12 +269,12 @@ void PiecesWidget::cellClicked(int row, int column)
         return;
 
     const quint32 id = item->data(Qt::UserRole).toUInt();
-    const QHash<quint32, VPiece>* allPieces = m_data->DataPieces();
-    const bool locked = allPieces->value(id).isLocked();
+    const QHash<quint32, VPiece>& allPieces = m_data->DataPieces();
+    const bool locked = allPieces.value(id).isLocked();
 
     if (column == 0) {
         if (locked == false) {
-            const bool inLayout = !allPieces->value(id).isInLayout();
+            const bool inLayout = !allPieces.value(id).isInLayout();
 
             TogglePieceInLayout* command = new TogglePieceInLayout(id, inLayout, m_data, m_doc);
             connect(command, &TogglePieceInLayout::updateList, this, &PiecesWidget::togglePiece);
@@ -313,8 +311,7 @@ void PiecesWidget::cellDoubleClicked(int row, int column)
         return;
 
     const quint32 id = item->data(Qt::UserRole).toUInt();
-    const QHash<quint32, VPiece>* allPieces = m_data->DataPieces();
-    const bool locked = allPieces->value(id).isLocked();
+    const bool locked = m_data->DataPieces().value(id).isLocked();
 
     if (locked == true) {
         QApplication::beep();
@@ -333,18 +330,18 @@ void PiecesWidget::cellDoubleClicked(int row, int column)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void PiecesWidget::fillTable(const QHash<quint32, VPiece>* pieces)
+void PiecesWidget::fillTable(const QHash<quint32, VPiece>& pieces)
 {
     ui->tableWidget->blockSignals(true);
 
     ui->tableWidget->clearContents();
     ui->tableWidget->setColumnCount(5);
-    ui->tableWidget->setRowCount(pieces->size());
+    ui->tableWidget->setRowCount(pieces.size());
     ui->tableWidget->setSortingEnabled(false);
 
     qint32 currentRow = -1;
-    auto i = pieces->constBegin();
-    while (i != pieces->constEnd()) {
+    auto i = pieces.constBegin();
+    while (i != pieces.constEnd()) {
         ++currentRow;
         const VPiece piece = i.value();
 
@@ -435,16 +432,16 @@ void PiecesWidget::fillTable(const QHash<quint32, VPiece>* pieces)
 //---------------------------------------------------------------------------------------------------------------------
 void PiecesWidget::toggleInLayoutPieces(bool inLayout)
 {
-    const QHash<quint32, VPiece>* allPieces = m_data->DataPieces();
-    if (allPieces->count() == 0) {
+    const QHash<quint32, VPiece>& allPieces = m_data->DataPieces();
+    if (allPieces.count() == 0) {
         return;
     }
 
     for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
         QTableWidgetItem* item = ui->tableWidget->item(row, 0);
         const quint32 id = item->data(Qt::UserRole).toUInt();
-        if (allPieces->contains(id)) {
-            if (!(inLayout == allPieces->value(id).isInLayout())) {
+        if (allPieces.contains(id)) {
+            if (!(inLayout == allPieces.value(id).isInLayout())) {
                 TogglePieceInLayout* command = new TogglePieceInLayout(id, inLayout, m_data, m_doc);
                 connect(
                     command, &TogglePieceInLayout::updateList, this, &PiecesWidget::togglePiece);
@@ -459,16 +456,16 @@ void PiecesWidget::toggleLockedPieces(bool lock)
 {
     ui->tableWidget->blockSignals(true);
     ui->tableWidget->horizontalHeader()->setSortIndicator(-1, Qt::AscendingOrder);
-    const QHash<quint32, VPiece>* allPieces = m_data->DataPieces();
-    if (allPieces->count() == 0) {
+    const QHash<quint32, VPiece>& allPieces = m_data->DataPieces();
+    if (allPieces.count() == 0) {
         return;
     }
 
     for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
         QTableWidgetItem* item = ui->tableWidget->item(row, 1);
         const quint32 id = item->data(Qt::UserRole).toUInt();
-        if (allPieces->contains(id)) {
-            if (!(lock == allPieces->value(id).isLocked())) {
+        if (allPieces.contains(id)) {
+            if (!(lock == allPieces.value(id).isLocked())) {
                 TogglePieceLock* command = new TogglePieceLock(id, lock, m_data, m_doc);
                 connect(command, &TogglePieceLock::updateList, this, &PiecesWidget::togglePiece);
                 qApp->getUndoStack()->push(command);
@@ -531,7 +528,7 @@ void PiecesWidget::showContextMenu(const QPoint& pos)
     QAction* unlockAll = menu.addAction(tr("Unlock all pieces"));
     QAction* invertLocked = menu.addAction(tr("Invert locked pieces"));
 
-    m_allPieces = m_data->DataPieces();
+    m_allPieces = &m_data->DataPieces();
     if (m_allPieces->isEmpty()) {
         return;
     }

@@ -85,9 +85,9 @@ public:
     void SetMode(const Mode& value);
 
     static qreal FindLength(
-        const QString& expression, const QHash<QString, QSharedPointer<VInternalVariable>>* vars);
+        const QString& expression, const QHash<QString, QSharedPointer<VInternalVariable>>& vars);
     static qreal FindVal(
-        const QString& expression, const QHash<QString, QSharedPointer<VInternalVariable>>* vars);
+        const QString& expression, const QHash<QString, QSharedPointer<VInternalVariable>>& vars);
 
     QString CurrentToolTip() const { return toolTip; }
 

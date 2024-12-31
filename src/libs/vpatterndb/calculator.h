@@ -87,13 +87,13 @@ public:
     Calculator();
 
     qreal EvalFormula(
-        const QHash<QString, QSharedPointer<VInternalVariable>>* vars, const QString& formula);
+        const QHash<QString, QSharedPointer<VInternalVariable>>& vars, const QString& formula);
 
 private:
     Q_DISABLE_COPY(Calculator)
 
     void InitVariables(
-        const QHash<QString, QSharedPointer<VInternalVariable>>* vars,
+        const QHash<QString, QSharedPointer<VInternalVariable>>& vars,
         const QMap<int, QString>& tokens,
         const QString& formula);
 };

@@ -84,7 +84,7 @@ void TogglePieceLock::doCmd(bool lock)
     if (element.isElement()) {
         doc->SetAttribute(element, AttrPieceLocked, lock);
 
-        VPiece piece = m_data->DataPieces()->value(m_id);
+        VPiece piece = m_data->DataPieces().value(m_id);
         piece.setIsLocked(lock);
         m_data->UpdatePiece(m_id, piece);
 

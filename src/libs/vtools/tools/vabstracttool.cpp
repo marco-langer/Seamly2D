@@ -460,10 +460,10 @@ const QStringList VAbstractTool::fills()
 // cppcheck-suppress unusedFunction
 QMap<QString, quint32> VAbstractTool::PointsList() const
 {
-    const QHash<quint32, QSharedPointer<VGObject>>* objs = data.DataGObjects();
+    const QHash<quint32, QSharedPointer<VGObject>>& objs = data.DataGObjects();
     QMap<QString, quint32> list;
     QHash<quint32, QSharedPointer<VGObject>>::const_iterator i;
-    for (i = objs->constBegin(); i != objs->constEnd(); ++i) {
+    for (i = objs.constBegin(); i != objs.constEnd(); ++i) {
         if (i.key() != m_id) {
             QSharedPointer<VGObject> obj = i.value();
             if (obj->getType() == GOType::Point && obj->getMode() == Draw::Calculation) {

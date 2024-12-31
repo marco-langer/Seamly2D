@@ -223,7 +223,7 @@ void EditFormulaDialog::valueChanged(int row)
                                : QString("\nDescription: %1").arg(measurements.getGuiText());
         setDescription(
             item->text(),
-            *data->DataVariables()->value(name)->GetValue(),
+            *data->DataVariables().value(name)->GetValue(),
             UnitsToStr(qApp->patternUnit(), true),
             tr("Measurement"),
             desc);
@@ -236,7 +236,7 @@ void EditFormulaDialog::valueChanged(int row)
                                : QString("\nDescription: %1").arg(variables.GetDescription());
         setDescription(
             item->text(),
-            *data->DataVariables()->value(item->text())->GetValue(),
+            *data->DataVariables().value(item->text())->GetValue(),
             UnitsToStr(qApp->patternUnit(), true),
             tr("Custom Variable"),
             desc);

@@ -1700,7 +1700,7 @@ void TMainWindow::ShowNewMData(bool fresh)
             const QString postfix =
                 UnitsToStr(pUnit);   // Show unit in dialog label (cm, mm or inch)
             const qreal value = UnitConvertor(
-                *data->DataVariables()->value(meash->GetName())->GetValue(), mUnit, pUnit);
+                *data->DataVariables().value(meash->GetName())->GetValue(), mUnit, pUnit);
             ui->labelCalculatedValue->setText(qApp->LocaleToString(value) + " " + postfix);
 
             if (fresh) {
@@ -2654,7 +2654,7 @@ void TMainWindow::RefreshTable(bool freshCall)
             }
 
             const qreal value = UnitConvertor(
-                *data->DataVariables()->value(meash->GetName())->GetValue(), mUnit, pUnit);
+                *data->DataVariables().value(meash->GetName())->GetValue(), mUnit, pUnit);
             AddCell(
                 locale().toString(value),
                 currentRow,

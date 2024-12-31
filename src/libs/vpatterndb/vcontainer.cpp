@@ -613,18 +613,18 @@ qreal* VContainer::rheight() { return &_height; }
  * @brief data container with datagObjects return container of gObjects
  * @return pointer on container of gObjects
  */
-const QHash<quint32, QSharedPointer<VGObject>>* VContainer::DataGObjects() const
+const QHash<quint32, QSharedPointer<VGObject>>& VContainer::DataGObjects() const
 {
-    return &d->gObjects;
+    return d->gObjects;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QHash<quint32, VPiece>* VContainer::DataPieces() const { return d->pieces.data(); }
+const QHash<quint32, VPiece>& VContainer::DataPieces() const { return *d->pieces.data(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-const QHash<QString, QSharedPointer<VInternalVariable>>* VContainer::DataVariables() const
+const QHash<QString, QSharedPointer<VInternalVariable>>& VContainer::DataVariables() const
 {
-    return &d->variables;
+    return d->variables;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

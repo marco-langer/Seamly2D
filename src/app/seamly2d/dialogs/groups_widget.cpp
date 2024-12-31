@@ -1219,7 +1219,7 @@ void GroupsWidget::cellDoubleClicked(int row, int column)
 void GroupsWidget::itemDoubleClicked(QListWidgetItem* item)
 {
     GOType objType;
-    const auto objects = m_data->DataGObjects();
+    const auto& objects = m_data->DataGObjects();
     QList<quint32> itemData = item->data(Qt::UserRole).value<QList<quint32>>();
     quint32 toolId = itemData.last();
     quint32 objId = itemData.first();
@@ -1227,7 +1227,7 @@ void GroupsWidget::itemDoubleClicked(QListWidgetItem* item)
         toolId = objId;
     }
 
-    if (objects->contains(toolId)) {
+    if (objects.contains(toolId)) {
         objType = m_data->GetGObject(toolId).getType();
     } else {
         // Some tools are not GObjects in the container. Need to look in the Dom Doc instead

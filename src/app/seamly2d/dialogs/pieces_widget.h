@@ -95,7 +95,7 @@ private:
     VContainer* m_data;
     const QHash<quint32, VPiece>* m_allPieces;
 
-    void fillTable(const QHash<quint32, VPiece>* details);
+    void fillTable(const QHash<quint32, VPiece>& details);
     void toggleInLayoutPieces(bool inLayout);
     void toggleLockedPieces(bool lock);
     void headerClicked(int index);

@@ -116,7 +116,7 @@ void TogglePieceInLayout::doCmd(bool state)
     if (element.isElement()) {
         doc->SetAttribute(element, AttrInLayout, state);
 
-        VPiece piece = m_data->DataPieces()->value(m_id);
+        VPiece piece = m_data->DataPieces().value(m_id);
         piece.SetInLayout(state);
         m_data->UpdatePiece(m_id, piece);
         emit updateList(m_id);

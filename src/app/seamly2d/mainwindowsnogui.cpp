@@ -675,9 +675,9 @@ void MainWindowsNoGUI::PrintTiled()
  */
 void MainWindowsNoGUI::refreshLabels()
 {
-    const QHash<quint32, VPiece>* list = pattern->DataPieces();
-    QHash<quint32, VPiece>::const_iterator i = list->constBegin();
-    while (i != list->constEnd()) {
+    const QHash<quint32, VPiece>& list = pattern->DataPieces();
+    QHash<quint32, VPiece>::const_iterator i = list.constBegin();
+    while (i != list.constEnd()) {
         if (PatternPieceTool* tool =
                 qobject_cast<PatternPieceTool*>(VAbstractPattern::getTool(i.key()))) {
             tool->UpdatePatternLabel();
@@ -694,9 +694,9 @@ void MainWindowsNoGUI::refreshLabels()
  */
 void MainWindowsNoGUI::refreshGrainLines()
 {
-    const QHash<quint32, VPiece>* list = pattern->DataPieces();
-    QHash<quint32, VPiece>::const_iterator i = list->constBegin();
-    while (i != list->constEnd()) {
+    const QHash<quint32, VPiece>& list = pattern->DataPieces();
+    QHash<quint32, VPiece>::const_iterator i = list.constBegin();
+    while (i != list.constEnd()) {
         if (PatternPieceTool* tool =
                 qobject_cast<PatternPieceTool*>(VAbstractPattern::getTool(i.key()))) {
             tool->UpdateGrainline();
@@ -711,9 +711,9 @@ void MainWindowsNoGUI::refreshGrainLines()
  */
 void MainWindowsNoGUI::refreshSeamAllowances()
 {
-    const QHash<quint32, VPiece>* list = pattern->DataPieces();
-    QHash<quint32, VPiece>::const_iterator i = list->constBegin();
-    while (i != list->constEnd()) {
+    const QHash<quint32, VPiece>& list = pattern->DataPieces();
+    QHash<quint32, VPiece>::const_iterator i = list.constBegin();
+    while (i != list.constEnd()) {
         if (PatternPieceTool* tool =
                 qobject_cast<PatternPieceTool*>(VAbstractPattern::getTool(i.key()))) {
             tool->RefreshGeometry();
@@ -1643,16 +1643,16 @@ QString MainWindowsNoGUI::FileName() const
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindowsNoGUI::setSizeHeightForIndividualM() const
 {
-    const QHash<QString, QSharedPointer<VInternalVariable>>* vars = pattern->DataVariables();
+    const QHash<QString, QSharedPointer<VInternalVariable>>& vars = pattern->DataVariables();
 
-    if (vars->contains(size_M)) {
-        VContainer::setSize(*vars->value(size_M)->GetValue());
+    if (vars.contains(size_M)) {
+        VContainer::setSize(*vars.value(size_M)->GetValue());
     } else {
         VContainer::setSize(0);
     }
 
-    if (vars->contains(height_M)) {
-        VContainer::setHeight(*vars->value(height_M)->GetValue());
+    if (vars.contains(height_M)) {
+        VContainer::setHeight(*vars.value(height_M)->GetValue());
     } else {
         VContainer::setHeight(0);
     }
