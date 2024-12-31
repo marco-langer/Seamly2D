@@ -65,7 +65,6 @@
 #include <qcompilerdetection.h>
 
 #include <memory>
-#include <new>
 
 #include "../ifc/exception/vexceptionbadid.h"
 #include "../ifc/ifcdef.h"
@@ -218,13 +217,10 @@ QSharedPointer<T> VContainer::GeometricObject(const quint32& id) const
     } else {
         throw VExceptionBadId(tr("Can't find object Id: "), id);
     }
-    try {
-        QSharedPointer<T> obj = qSharedPointerDynamicCast<T>(gObj);
-        SCASSERT(obj.isNull() == false)
-        return obj;
-    } catch (const std::bad_alloc&) {
-        throw VExceptionBadId(tr("Can't cast object"), id);
-    }
+    QSharedPointer<T> obj = qSharedPointerDynamicCast<T>(gObj);
+    SCASSERT(!obj.isNull())
+
+    return obj;
 }
 
 template <typename T>
@@ -245,13 +241,10 @@ QSharedPointer<T> VContainer::getVariablePtr(const QString& name) const
     SCASSERT(name.isEmpty() == false)
 
     if (auto iter{ m_variables.find(name) }; iter != m_variables.end()) {
-        try {
-            QSharedPointer<T> value = qSharedPointerDynamicCast<T>(*iter);
-            SCASSERT(value.isNull() == false)
-            return value;
-        } catch (const std::bad_alloc&) {
-            throw VExceptionBadId(tr("Can't cast object"), name);
-        }
+        QSharedPointer<T> value = qSharedPointerDynamicCast<T>(*iter);
+        SCASSERT(!value.isNull())
+
+        return value;
     } else {
         throw VExceptionBadId(tr("Can't find object"), name);
     }
