@@ -152,7 +152,7 @@ void IndividualSizeConverter::downgradeToCurrentMaxVersion()
 bool IndividualSizeConverter::isReadOnly() const
 {
     // Check if attribute read-only was not changed in file format
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMaxVer == CONVERTER_VERSION_CHECK(0, 3, 4),
         "Check attribute read-only.");
 
@@ -167,7 +167,7 @@ bool IndividualSizeConverter::isReadOnly() const
 void IndividualSizeConverter::addNewTagsForVer0_3_0()
 {
     // TODO. Delete if minimal supported version is 0.3.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 0),
         "Time to refactor the code.");
 
@@ -190,7 +190,7 @@ void IndividualSizeConverter::addNewTagsForVer0_3_0()
 QString IndividualSizeConverter::convertUnitsToVer0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.3.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 0),
         "Time to refactor the code.");
 
@@ -201,7 +201,7 @@ QString IndividualSizeConverter::convertUnitsToVer0_2_0()
 void IndividualSizeConverter::convertMeasurementsToV0_3_0()
 {
     // TODO. Delete if minimal supported version is 0.3.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 0),
         "Time to refactor the code.");
 
@@ -242,7 +242,7 @@ void IndividualSizeConverter::convertMeasurementsToV0_3_0()
 QDomElement IndividualSizeConverter::addMeasurementsVer0_3_0(const QString& name, qreal value)
 {
     // TODO. Delete if minimal supported version is 0.3.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 0),
         "Time to refactor the code.");
 
@@ -260,7 +260,7 @@ QDomElement IndividualSizeConverter::addMeasurementsVer0_3_0(const QString& name
 void IndividualSizeConverter::convertGenderToVer0_3_1()
 {
     // TODO. Delete if minimal supported version is 0.3.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 1),
         "Time to refactor the code.");
 
@@ -278,7 +278,7 @@ void IndividualSizeConverter::convertGenderToVer0_3_1()
 void IndividualSizeConverter::convertPmSystemToVer0_3_2()
 {
     // TODO. Delete if minimal supported version is 0.3.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 2),
         "Time to refactor the code.");
 
@@ -296,7 +296,7 @@ void IndividualSizeConverter::convertPmSystemToVer0_3_2()
 void IndividualSizeConverter::convertMeasurementsToV0_3_3()
 {
     // TODO. Delete if minimal supported version is 0.3.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 3),
         "Time to refactor the code.");
 
@@ -326,7 +326,7 @@ void IndividualSizeConverter::convertMeasurementsToV0_3_3()
 void IndividualSizeConverter::convertToVer0_3_0()
 {
     // TODO. Delete if minimal supported version is 0.3.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 0),
         "Time to refactor the code.");
 
@@ -341,7 +341,7 @@ void IndividualSizeConverter::convertToVer0_3_0()
 void IndividualSizeConverter::convertToVer0_3_1()
 {
     // TODO. Delete if minimal supported version is 0.3.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 1),
         "Time to refactor the code.");
 
@@ -354,7 +354,7 @@ void IndividualSizeConverter::convertToVer0_3_1()
 void IndividualSizeConverter::convertToVer0_3_2()
 {
     // TODO. Delete if minimal supported version is 0.3.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 2),
         "Time to refactor the code.");
 
@@ -367,7 +367,7 @@ void IndividualSizeConverter::convertToVer0_3_2()
 void IndividualSizeConverter::convertToVer0_3_3()
 {
     // TODO. Delete if minimal supported version is 0.3.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 3),
         "Time to refactor the code.");
 
@@ -380,7 +380,7 @@ void IndividualSizeConverter::convertToVer0_3_3()
 void IndividualSizeConverter::convertToVer0_3_4()
 {
     // TODO. Delete if minimal supported version is 0.3.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         IndividualSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 3, 4),
         "Time to refactor the code.");
 

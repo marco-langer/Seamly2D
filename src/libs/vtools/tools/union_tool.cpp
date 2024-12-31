@@ -1404,7 +1404,7 @@ void UpdateUnitedNodes(
     if (not children.isEmpty()) {
         // This check need for backward compatibility
         // Remove check and "else" part if min version is 0.3.2
-        Q_STATIC_ASSERT_X(
+        static_assert(
             VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 2),
             "Time to refactor the code.");
         if (children.size() == piece1NodeCount + piece2NodeCount - 1) {

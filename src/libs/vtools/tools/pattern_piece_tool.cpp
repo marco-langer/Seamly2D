@@ -976,7 +976,7 @@ void PatternPieceTool::RefreshDataInFile()
         // Refresh only parts that we possibly need to update
         {
             // TODO. Delete if minimal supported version is 0.4.0
-            Q_STATIC_ASSERT_X(
+            static_assert(
                 VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
                 "Time to refactor the code.");
 

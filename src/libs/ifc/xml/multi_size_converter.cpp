@@ -157,7 +157,7 @@ void MultiSizeConverter::downgradeToCurrentMaxVersion()
 bool MultiSizeConverter::isReadOnly() const
 {
     // Check if attribute read-only was not changed in file format
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMaxVer == CONVERTER_VERSION_CHECK(0, 4, 5),
         "Check attribute read-only.");
 
@@ -172,7 +172,7 @@ bool MultiSizeConverter::isReadOnly() const
 void MultiSizeConverter::addNewTagsForVer0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -198,7 +198,7 @@ void MultiSizeConverter::addNewTagsForVer0_4_0()
 void MultiSizeConverter::removeTagsForVer0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -223,7 +223,7 @@ void MultiSizeConverter::removeTagsForVer0_4_0()
 void MultiSizeConverter::convertMeasurementsToV0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -274,7 +274,7 @@ QDomElement MultiSizeConverter::addMeasurementsVer0_4_0(
     const QString& name, qreal value, qreal sizeIncrease, qreal heightIncrease)
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -294,7 +294,7 @@ QDomElement MultiSizeConverter::addMeasurementsVer0_4_0(
 void MultiSizeConverter::convertPmSystemToVer0_4_1()
 {
     // TODO. Delete if minimal supported version is 0.4.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 1),
         "Time to refactor the code.");
 
@@ -312,7 +312,7 @@ void MultiSizeConverter::convertPmSystemToVer0_4_1()
 void MultiSizeConverter::convertMeasurementsToV0_4_2()
 {
     // TODO. Delete if minimal supported version is 0.4.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 2),
         "Time to refactor the code.");
 
@@ -342,7 +342,7 @@ void MultiSizeConverter::convertMeasurementsToV0_4_2()
 void MultiSizeConverter::convertToVer0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -358,7 +358,7 @@ void MultiSizeConverter::convertToVer0_4_0()
 void MultiSizeConverter::convertToVer0_4_1()
 {
     // TODO. Delete if minimal supported version is 0.4.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 1),
         "Time to refactor the code.");
 
@@ -371,7 +371,7 @@ void MultiSizeConverter::convertToVer0_4_1()
 void MultiSizeConverter::convertToVer0_4_2()
 {
     // TODO. Delete if minimal supported version is 0.4.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 2),
         "Time to refactor the code.");
 
@@ -384,7 +384,7 @@ void MultiSizeConverter::convertToVer0_4_2()
 void MultiSizeConverter::convertToVer0_4_3()
 {
     // TODO. Delete if minimal supported version is 0.4.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 3),
         "Time to refactor the code.");
 
@@ -396,7 +396,7 @@ void MultiSizeConverter::convertToVer0_4_3()
 void MultiSizeConverter::convertToVer0_4_4()
 {
     // TODO. Delete if minimal supported version is 0.4.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 4),
         "Time to refactor the code.");
 
@@ -408,7 +408,7 @@ void MultiSizeConverter::convertToVer0_4_4()
 void MultiSizeConverter::convertToVer0_4_5()
 {
     // TODO. Delete if minimal supported version is 0.4.5
-    Q_STATIC_ASSERT_X(
+    static_assert(
         MultiSizeConverter::MeasurementMinVer < CONVERTER_VERSION_CHECK(0, 4, 5),
         "Time to refactor the code.");
 

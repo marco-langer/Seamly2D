@@ -502,7 +502,7 @@ void VPatternConverter::downgradeToCurrentMaxVersion()
 bool VPatternConverter::isReadOnly() const
 {
     // Check if attribute readOnly was not changed in file format
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMaxVer == CONVERTER_VERSION_CHECK(0, 6, 9),
         "Check attribute readOnly.");
 
@@ -523,7 +523,7 @@ bool VPatternConverter::isReadOnly() const
 void VPatternConverter::toVersion0_1_1()
 {
     // TODO. Delete if minimal supported version is 0.1.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 1, 1),
         "Time to refactor the code.");
 
@@ -535,7 +535,7 @@ void VPatternConverter::toVersion0_1_1()
 void VPatternConverter::toVersion0_1_2()
 {
     // TODO. Delete if minimal supported version is 0.1.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 1, 2),
         "Time to refactor the code.");
 
@@ -547,7 +547,7 @@ void VPatternConverter::toVersion0_1_2()
 void VPatternConverter::toVersion0_1_3()
 {
     // TODO. Delete if minimal supported version is 0.1.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 1, 3),
         "Time to refactor the code.");
 
@@ -559,7 +559,7 @@ void VPatternConverter::toVersion0_1_3()
 void VPatternConverter::toVersion0_1_4()
 {
     // TODO. Delete if minimal supported version is 0.1.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 1, 4),
         "Time to refactor the code.");
 
@@ -571,7 +571,7 @@ void VPatternConverter::toVersion0_1_4()
 void VPatternConverter::toVersion0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -587,7 +587,7 @@ void VPatternConverter::toVersion0_2_0()
 void VPatternConverter::toVersion0_2_1()
 {
     // TODO. Delete if minimal supported version is 0.2.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 1),
         "Time to refactor the code.");
 
@@ -600,7 +600,7 @@ void VPatternConverter::toVersion0_2_1()
 void VPatternConverter::toVersion0_2_2()
 {
     // TODO. Delete if minimal supported version is 0.2.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 2),
         "Time to refactor the code.");
 
@@ -612,7 +612,7 @@ void VPatternConverter::toVersion0_2_2()
 void VPatternConverter::toVersion0_2_3()
 {
     // TODO. Delete if minimal supported version is 0.2.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 3),
         "Time to refactor the code.");
 
@@ -624,7 +624,7 @@ void VPatternConverter::toVersion0_2_3()
 void VPatternConverter::toVersion0_2_4()
 {
     // TODO. Delete if minimal supported version is 0.2.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 4),
         "Time to refactor the code.");
 
@@ -637,7 +637,7 @@ void VPatternConverter::toVersion0_2_4()
 void VPatternConverter::toVersion0_2_5()
 {
     // TODO. Delete if minimal supported version is 0.2.5
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 5),
         "Time to refactor the code.");
 
@@ -649,7 +649,7 @@ void VPatternConverter::toVersion0_2_5()
 void VPatternConverter::toVersion0_2_6()
 {
     // TODO. Delete if minimal supported version is 0.2.6
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 6),
         "Time to refactor the code.");
 
@@ -661,7 +661,7 @@ void VPatternConverter::toVersion0_2_6()
 void VPatternConverter::toVersion0_2_7()
 {
     // TODO. Delete if minimal supported version is 0.2.7
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 7),
         "Time to refactor the code.");
 
@@ -673,7 +673,7 @@ void VPatternConverter::toVersion0_2_7()
 void VPatternConverter::toVersion0_3_0()
 {
     // TODO. Delete if minimal supported version is 0.3.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 0),
         "Time to refactor the code.");
 
@@ -688,7 +688,7 @@ void VPatternConverter::toVersion0_3_0()
 void VPatternConverter::toVersion0_3_1()
 {
     // TODO. Delete if minimal supported version is 0.3.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 1),
         "Time to refactor the code.");
 
@@ -701,7 +701,7 @@ void VPatternConverter::toVersion0_3_1()
 void VPatternConverter::toVersion0_3_2()
 {
     // TODO. Delete if minimal supported version is 0.3.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 2),
         "Time to refactor the code.");
 
@@ -713,7 +713,7 @@ void VPatternConverter::toVersion0_3_2()
 void VPatternConverter::toVersion0_3_3()
 {
     // TODO. Delete if minimal supported version is 0.3.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 3),
         "Time to refactor the code.");
 
@@ -725,7 +725,7 @@ void VPatternConverter::toVersion0_3_3()
 void VPatternConverter::toVersion0_3_4()
 {
     // TODO. Delete if minimal supported version is 0.3.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 4),
         "Time to refactor the code.");
 
@@ -737,7 +737,7 @@ void VPatternConverter::toVersion0_3_4()
 void VPatternConverter::toVersion0_3_5()
 {
     // TODO. Delete if minimal supported version is 0.3.5
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 5),
         "Time to refactor the code.");
 
@@ -749,7 +749,7 @@ void VPatternConverter::toVersion0_3_5()
 void VPatternConverter::toVersion0_3_6()
 {
     // TODO. Delete if minimal supported version is 0.3.6
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 6),
         "Time to refactor the code.");
 
@@ -761,7 +761,7 @@ void VPatternConverter::toVersion0_3_6()
 void VPatternConverter::toVersion0_3_7()
 {
     // TODO. Delete if minimal supported version is 0.3.7
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 7),
         "Time to refactor the code.");
 
@@ -773,7 +773,7 @@ void VPatternConverter::toVersion0_3_7()
 void VPatternConverter::toVersion0_3_8()
 {
     // TODO. Delete if minimal supported version is 0.3.8
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 8),
         "Time to refactor the code.");
 
@@ -785,7 +785,7 @@ void VPatternConverter::toVersion0_3_8()
 void VPatternConverter::toVersion0_3_9()
 {
     // TODO. Delete if minimal supported version is 0.3.9
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 9),
         "Time to refactor the code.");
 
@@ -797,7 +797,7 @@ void VPatternConverter::toVersion0_3_9()
 void VPatternConverter::toVersion0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -812,7 +812,7 @@ void VPatternConverter::toVersion0_4_0()
 void VPatternConverter::toVersion0_4_1()
 {
     // TODO. Delete if minimal supported version is 0.4.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 1),
         "Time to refactor the code.");
 
@@ -824,7 +824,7 @@ void VPatternConverter::toVersion0_4_1()
 void VPatternConverter::toVersion0_4_2()
 {
     // TODO. Delete if minimal supported version is 0.4.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 2),
         "Time to refactor the code.");
 
@@ -836,7 +836,7 @@ void VPatternConverter::toVersion0_4_2()
 void VPatternConverter::toVersion0_4_3()
 {
     // TODO. Delete if minimal supported version is 0.4.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 3),
         "Time to refactor the code.");
 
@@ -848,7 +848,7 @@ void VPatternConverter::toVersion0_4_3()
 void VPatternConverter::toVersion0_4_4()
 {
     // TODO. Delete if minimal supported version is 0.4.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 4),
         "Time to refactor the code.");
 
@@ -862,7 +862,7 @@ void VPatternConverter::toVersion0_4_4()
 void VPatternConverter::toVersion0_4_5()
 {
     // TODO. Delete if minimal supported version is 0.4.5
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 5),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.4.5"));
@@ -873,7 +873,7 @@ void VPatternConverter::toVersion0_4_5()
 void VPatternConverter::toVersion0_4_6()
 {
     // TODO. Delete if minimal supported version is 0.4.6
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 6),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.4.6"));
@@ -884,7 +884,7 @@ void VPatternConverter::toVersion0_4_6()
 void VPatternConverter::toVersion0_4_7()
 {
     // TODO. Delete if minimal supported version is 0.4.7
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 7),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.4.7"));
@@ -895,7 +895,7 @@ void VPatternConverter::toVersion0_4_7()
 void VPatternConverter::toVersion0_4_8()
 {
     // TODO. Delete if minimal supported version is 0.4.8
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 8),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.4.8"));
@@ -906,7 +906,7 @@ void VPatternConverter::toVersion0_4_8()
 void VPatternConverter::toVersion0_5_0()
 {
     // TODO. Delete if minimal supported version is 0.5.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 5, 0),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.5.0"));
@@ -917,7 +917,7 @@ void VPatternConverter::toVersion0_5_0()
 void VPatternConverter::toVersion0_5_1()
 {
     // TODO. Delete if minimal supported version is 0.5.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 5, 1),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.5.1"));
@@ -928,7 +928,7 @@ void VPatternConverter::toVersion0_5_1()
 void VPatternConverter::toVersion0_6_0()
 {
     // TODO. Delete if minimal supported version is 0.6.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 0),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.0"));
@@ -944,7 +944,7 @@ void VPatternConverter::toVersion0_6_0()
 void VPatternConverter::toVersion0_6_1()
 {
     // TODO. Delete if minimal supported version is 0.6.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 1),
         "Time to refactor the code.");
 
@@ -1055,7 +1055,7 @@ void VPatternConverter::toVersion0_6_1()
 void VPatternConverter::toVersion0_6_2()
 {
     // TODO. Delete if minimal supported version is 0.6.2
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 2),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.2"));
@@ -1066,7 +1066,7 @@ void VPatternConverter::toVersion0_6_2()
 void VPatternConverter::toVersion0_6_3()
 {
     // TODO. Delete if minimal supported version is 0.6.3
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 3),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.3"));
@@ -1077,7 +1077,7 @@ void VPatternConverter::toVersion0_6_3()
 void VPatternConverter::toVersion0_6_4()
 {
     // TODO. Delete if minimal supported version is 0.6.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 4),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.4"));
@@ -1104,7 +1104,7 @@ void VPatternConverter::toVersion0_6_4()
 void VPatternConverter::toVersion0_6_5()
 {
     // TODO. Delete if minimal supported version is 0.6.5
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 5),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.5"));
@@ -1201,7 +1201,7 @@ void VPatternConverter::toVersion0_6_5()
 void VPatternConverter::toVersion0_6_6()
 {
     // TODO. Delete if minimal supported version is 0.6.6
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 6),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.6"));
@@ -1260,7 +1260,7 @@ void VPatternConverter::toVersion0_6_6()
 void VPatternConverter::toVersion0_6_7()
 {
     // TODO. Delete if minimal supported version is 0.6.7
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 7),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.7"));
@@ -1271,7 +1271,7 @@ void VPatternConverter::toVersion0_6_7()
 void VPatternConverter::toVersion0_6_8()
 {
     // TODO. Delete if minimal supported version is 0.6.8
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 8),
         "Time to refactor the code.");
     setVersion(QStringLiteral("0.6.8"));
@@ -1282,7 +1282,7 @@ void VPatternConverter::toVersion0_6_8()
 void VPatternConverter::toVersion0_6_9()
 {
     // TODO. Delete if minimal supported version is 0.6.9
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 9),
         "Time to refactor the code.");
 
@@ -1313,7 +1313,7 @@ void VPatternConverter::toVersion0_6_9()
 void VPatternConverter::TagUnitToV0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1329,7 +1329,7 @@ void VPatternConverter::TagUnitToV0_2_0()
 void VPatternConverter::TagIncrementToV0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1344,7 +1344,7 @@ void VPatternConverter::TagIncrementToV0_2_0()
 void VPatternConverter::ConvertMeasurementsToV0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1358,7 +1358,7 @@ void VPatternConverter::ConvertMeasurementsToV0_2_0()
 QSet<QString> VPatternConverter::FixIncrementsToV0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1398,7 +1398,7 @@ QSet<QString> VPatternConverter::FixIncrementsToV0_2_0()
 void VPatternConverter::FixPointExpressionsToV0_2_0(const QSet<QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1447,7 +1447,7 @@ void VPatternConverter::FixPointExpressionsToV0_2_0(const QSet<QString>& names)
 void VPatternConverter::FixArcExpressionsToV0_2_0(const QSet<QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1490,7 +1490,7 @@ void VPatternConverter::FixArcExpressionsToV0_2_0(const QSet<QString>& names)
 void VPatternConverter::FixPathPointExpressionsToV0_2_0(const QSet<QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1526,7 +1526,7 @@ void VPatternConverter::FixPathPointExpressionsToV0_2_0(const QSet<QString>& nam
 void VPatternConverter::ConvertPointExpressionsToV0_2_0(const QMap<QString, QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1575,7 +1575,7 @@ void VPatternConverter::ConvertPointExpressionsToV0_2_0(const QMap<QString, QStr
 void VPatternConverter::ConvertArcExpressionsToV0_2_0(const QMap<QString, QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1618,7 +1618,7 @@ void VPatternConverter::ConvertArcExpressionsToV0_2_0(const QMap<QString, QStrin
 void VPatternConverter::ConvertPathPointExpressionsToV0_2_0(const QMap<QString, QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1655,7 +1655,7 @@ QString VPatternConverter::FixMeasurementInFormulaToV0_2_0(
     const QString& formula, const QMap<QString, QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1688,7 +1688,7 @@ QString
 VPatternConverter::FixIncrementInFormulaToV0_2_0(const QString& formula, const QSet<QString>& names)
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1721,7 +1721,7 @@ VPatternConverter::FixIncrementInFormulaToV0_2_0(const QString& formula, const Q
 void VPatternConverter::TagMeasurementsToV0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -1741,7 +1741,7 @@ void VPatternConverter::TagMeasurementsToV0_2_0()
 void VPatternConverter::ConvertMeasurementsToV0_2_1()
 {
     // TODO. Delete if minimal supported version is 0.2.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 1),
         "Time to refactor the code.");
 
@@ -1757,7 +1757,7 @@ void VPatternConverter::ConvertMeasurementsToV0_2_1()
 void VPatternConverter::RemoveColorToolCutV0_3_1()
 {
     // TODO. Delete if minimal supported version is 0.3.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 3, 1),
         "Time to refactor the code.");
 
@@ -1777,7 +1777,7 @@ void VPatternConverter::RemoveColorToolCutV0_3_1()
 QString VPatternConverter::MUnitV0_1_4() const
 {
     // TODO. Delete if minimal supported version is 0.1.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 1, 4),
         "Time to refactor the code.");
 
@@ -1795,7 +1795,7 @@ QString VPatternConverter::MUnitV0_1_4() const
 QDomElement VPatternConverter::TagMeasurementsV0_1_4() const
 {
     // TODO. Delete if minimal supported version is 0.1.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 1, 4),
         "Time to refactor the code.");
 
@@ -1812,7 +1812,7 @@ QDomElement VPatternConverter::TagMeasurementsV0_1_4() const
 QDomElement VPatternConverter::TagIncrementsV0_1_4() const
 {
     // TODO. Delete if minimal supported version is 0.1.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 1, 4),
         "Time to refactor the code.");
 
@@ -1829,7 +1829,7 @@ QDomElement VPatternConverter::TagIncrementsV0_1_4() const
 void VPatternConverter::FixToolUnionToV0_2_4()
 {
     // TODO. Delete if minimal supported version is 0.2.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 4),
         "Time to refactor the code.");
 
@@ -1844,7 +1844,7 @@ void VPatternConverter::FixToolUnionToV0_2_4()
 void VPatternConverter::ParseModelingToV0_2_4(const QDomElement& modeling)
 {
     // TODO. Delete if minimal supported version is 0.2.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 4),
         "Time to refactor the code.");
 
@@ -1878,7 +1878,7 @@ void VPatternConverter::ParseModelingToV0_2_4(const QDomElement& modeling)
 void VPatternConverter::SaveChildrenToolUnionToV0_2_4(quint32 id, const QVector<quint32>& children)
 {
     // TODO. Delete if minimal supported version is 0.2.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 4),
         "Time to refactor the code.");
 
@@ -1902,7 +1902,7 @@ void VPatternConverter::SaveChildrenToolUnionToV0_2_4(quint32 id, const QVector<
 QMap<QString, QString> VPatternConverter::OldNamesToNewNames_InV0_2_0()
 {
     // TODO. Delete if minimal supported version is 0.2.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 0),
         "Time to refactor the code.");
 
@@ -2108,7 +2108,7 @@ QMap<QString, QString> VPatternConverter::OldNamesToNewNames_InV0_2_0()
 QMap<QString, QString> VPatternConverter::OldNamesToNewNames_InV0_2_1()
 {
     // TODO. Delete if minimal supported version is 0.2.1
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 1),
         "Time to refactor the code.");
 
@@ -2277,7 +2277,7 @@ void VPatternConverter::FixSubPaths(int i, quint32 id, quint32 baseCurve)
 void VPatternConverter::TagRemoveAttributeTypeObjectInV0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -2303,7 +2303,7 @@ void VPatternConverter::TagRemoveAttributeTypeObjectInV0_4_0()
 void VPatternConverter::TagDetailToV0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 
@@ -2430,7 +2430,7 @@ QDomElement VPatternConverter::GetUnionChildrenNodesV0_4_0(const QDomElement& pi
 void VPatternConverter::LabelTagToV0_4_4(const QString& tagName)
 {
     // TODO. Delete if minimal supported version is 0.4.4
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 4),
         "Time to refactor the code.");
 
@@ -2478,7 +2478,7 @@ void VPatternConverter::LabelTagToV0_4_4(const QString& tagName)
 QDomElement VPatternConverter::AddTagPatternLabelV0_5_1()
 {
     // TODO. Delete if minimal supported version is 0.6.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 0),
         "Time to refactor the code.");
 
@@ -2507,7 +2507,7 @@ QDomElement VPatternConverter::AddTagPatternLabelV0_5_1()
 void VPatternConverter::PortPatternLabeltoV0_6_0(QDomElement& label)
 {
     // TODO. Delete if minimal supported version is 0.6.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 0),
         "Time to refactor the code.");
 
@@ -2556,7 +2556,7 @@ void VPatternConverter::AddLabelTemplateLineV0_6_0(
     int fontSizeIncrement)
 {
     // TODO. Delete if minimal supported version is 0.6.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 0),
         "Time to refactor the code.");
 
@@ -2575,7 +2575,7 @@ void VPatternConverter::AddLabelTemplateLineV0_6_0(
 void VPatternConverter::PortPieceLabelstoV0_6_0()
 {
     // TODO. Delete if minimal supported version is 0.6.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 0),
         "Time to refactor the code.");
 
@@ -2622,7 +2622,7 @@ void VPatternConverter::PortPieceLabelstoV0_6_0()
 void VPatternConverter::RemoveUnusedTagsV0_6_0()
 {
     // TODO. Delete if minimal supported version is 0.6.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 0),
         "Time to refactor the code.");
 
@@ -2645,7 +2645,7 @@ void VPatternConverter::RemoveUnusedTagsV0_6_0()
 void VPatternConverter::RemoveUniqueTagV0_6_0(const QString& tag)
 {
     // TODO. Delete if minimal supported version is 0.6.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 6, 0),
         "Time to refactor the code.");
 
@@ -2662,7 +2662,7 @@ void VPatternConverter::RemoveUniqueTagV0_6_0(const QString& tag)
 void VPatternConverter::TagUnionDetailsToV0_4_0()
 {
     // TODO. Delete if minimal supported version is 0.4.0
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
         "Time to refactor the code.");
 

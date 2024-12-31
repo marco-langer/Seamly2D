@@ -266,7 +266,7 @@ private:
         VMainGraphicsScene* scene, const QDomElement& domElement, const Document& parse);
 
     // TODO. Delete if minimal supported version is 0.2.7
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 7),
         "Time to refactor the code.");
     void ParseOldToolSpline(
@@ -277,7 +277,7 @@ private:
         VMainGraphicsScene* scene, const QDomElement& domElement, const Document& parse);
 
     // TODO. Delete if minimal supported version is 0.2.7
-    Q_STATIC_ASSERT_X(
+    static_assert(
         VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 2, 7),
         "Time to refactor the code.");
     void ParseOldToolSplinePath(

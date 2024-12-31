@@ -800,7 +800,7 @@ void VPattern::parsePieceElement(QDomElement& domElement, const Document& parse)
                 case 0:   // TagNodes
                     if (version == 1) {
                         // TODO. Delete if minimal supported version is 0.4.0
-                        Q_STATIC_ASSERT_X(
+                        static_assert(
                             VPatternConverter::PatternMinVer < CONVERTER_VERSION_CHECK(0, 4, 0),
                             "Time to refactor the code.");
                         const bool closed = GetParametrUInt(domElement, AttrClosed, "1");
