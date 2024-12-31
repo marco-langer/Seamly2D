@@ -98,10 +98,6 @@ void VAbstractMirror::createDestination(
             const quint32 objectId = item.id;
             const auto& obj{ data->GetGObject(objectId) };
 
-            // This check helps to find missed objects in the switch
-            Q_STATIC_ASSERT_X(
-                static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
-
             switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point:
                 dest.append(createPoint(id, objectId, fPoint, sPoint, suffix, data));
@@ -129,8 +125,7 @@ void VAbstractMirror::createDestination(
             case GOType::Curve:
             case GOType::Path:
             case GOType::AllCurves:
-            case GOType::Unknown:
-            default: break;
+            case GOType::Unknown: break;
             }
         }
     } else {
@@ -138,10 +133,6 @@ void VAbstractMirror::createDestination(
             const SourceItem item = source.at(i);
             const quint32 objectId = item.id;
             const auto& obj{ data->GetGObject(objectId) };
-
-            // This check helps to find missed objects in the switch
-            Q_STATIC_ASSERT_X(
-                static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
             switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point: {

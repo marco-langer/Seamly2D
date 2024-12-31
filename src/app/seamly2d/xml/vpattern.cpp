@@ -4084,10 +4084,6 @@ void VPattern::ToolsCommonAttributes(const QDomElement& domElement, quint32& id)
 //---------------------------------------------------------------------------------------------------------------------
 QRectF VPattern::ActiveDrawBoundingRect() const
 {
-    // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(
-        static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used.");
-
     QRectF rect;
 
     for (qint32 i = 0; i < history.size(); ++i) {

@@ -3383,10 +3383,6 @@ void MainWindow::MouseMove(const QPointF& scenePos)
  */
 void MainWindow::CancelTool()
 {
-    // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(
-        static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were handled.");
-
     qCDebug(vMainWindow, "Canceling tool.");
     m_dialogTool.clear();
     qCDebug(vMainWindow, "Dialog closed.");
@@ -5209,10 +5205,6 @@ void MainWindow::createMenus()
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::LastUsedTool()
 {
-    // This check helps to find missed tools in the switch
-    Q_STATIC_ASSERT_X(
-        static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were handled.");
-
     if (m_currentTool == m_lastUsedTool) {
         return;
     }

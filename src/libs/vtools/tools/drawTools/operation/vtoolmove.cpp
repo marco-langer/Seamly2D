@@ -107,9 +107,6 @@ QPointF findRotationOrigin(
         qCDebug(vTool, "Object:  %d", item.id);
         const auto& object{ data->GetGObject(item.id) };
 
-        Q_STATIC_ASSERT_X(
-            static_cast<int>(GOType::AllCurves) == 10, "Not all objects were handled.");
-
         switch (static_cast<GOType>(object.getType())) {
         case GOType::Point:
             originObjects.append(data->GeometricObject<VPointF>(item.id)->toQPointF());
@@ -125,8 +122,7 @@ QPointF findRotationOrigin(
         case GOType::Unknown:
         case GOType::Curve:
         case GOType::Path:
-        case GOType::AllCurves:
-        default: Q_UNREACHABLE(); break;
+        case GOType::AllCurves: break;
         }
     }
 
@@ -267,10 +263,6 @@ VToolMove* VToolMove::Create(
             qCDebug(vTool, "Add Object:  %d", item.id);
             const auto& object{ data->GetGObject(item.id) };
 
-            // This check helps to find missed objects in the switch
-            Q_STATIC_ASSERT_X(
-                static_cast<int>(GOType::AllCurves) == 10, "Not all objects were handled.");
-
             qCDebug(vTool, "VToolMove - Rotation Origin");
             qCDebug(vTool, "X:  %f", rotationOrigin.x());
             qCDebug(vTool, "Y:  %f", rotationOrigin.y());
@@ -367,8 +359,7 @@ VToolMove* VToolMove::Create(
             case GOType::Unknown:
             case GOType::Curve:
             case GOType::Path:
-            case GOType::AllCurves:
-            default: break;
+            case GOType::AllCurves: break;
             }
         }
     } else {
@@ -377,10 +368,6 @@ VToolMove* VToolMove::Create(
             const SourceItem item = source.at(i);
             qCDebug(vTool, "Add Object:  %d\n", item.id);
             const auto& object{ data->GetGObject(item.id) };
-
-            // This check helps to find missed objects in the switch
-            Q_STATIC_ASSERT_X(
-                static_cast<int>(GOType::AllCurves) == 10, "Not all objects were handled.");
 
             switch (static_cast<GOType>(object.getType())) {
             case GOType::Point: {
@@ -471,8 +458,7 @@ VToolMove* VToolMove::Create(
             case GOType::Unknown:
             case GOType::Curve:
             case GOType::Path:
-            case GOType::AllCurves:
-            default: break;
+            case GOType::AllCurves: break;
             }
         }
         if (parse != Document::FullParse) {

@@ -632,9 +632,6 @@ void VAbstractOperation::InitOperatedObjects()
         const DestinationItem item = destination.at(i);
         const auto& object{ VAbstractTool::data.GetGObject(item.id) };
 
-        // This check helps to find missed objects in the switch
-        Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
-
         switch (static_cast<GOType>(object.getType())) {
         case GOType::Point: {
             VSimplePoint* point = new VSimplePoint(item.id, QColor(Qt::black));
@@ -679,8 +676,7 @@ void VAbstractOperation::InitOperatedObjects()
         case GOType::Unknown:
         case GOType::Curve:
         case GOType::Path:
-        case GOType::AllCurves:
-        default: break;
+        case GOType::AllCurves: break;
         }
     }
 }

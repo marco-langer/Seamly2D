@@ -732,10 +732,6 @@ void GroupsWidget::fillGroupItemList()
  */
 void GroupsWidget::addGroupItem(const quint32& toolId, const quint32& objId, const Tool& tooltype)
 {
-    // This check helps to find missing tools in the switch
-    Q_STATIC_ASSERT_X(
-        static_cast<int>(Tool::LAST_ONE_DO_NOT_USE) == 54, "Not all tools were used in history.");
-
     QString iconFileName = "";
     QString objName = tr("Unknown Object");
     const QDomElement domElement = m_doc->elementById(toolId);

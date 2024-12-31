@@ -168,7 +168,6 @@ void VToolOptionsPropertyBrowser::showItemOptions(QGraphicsItem* item)
     case VToolMirrorByAxis::Type: showOptionsToolMirrorByAxis(item); break;
     case VToolMove::Type: showOptionsToolMove(item); break;
     case VToolEllipticalArc::Type: showOptionsToolEllipticalArc(item); break;
-    default: break;
     }
 }
 
@@ -220,7 +219,6 @@ void VToolOptionsPropertyBrowser::updateOptions()
     case VToolMirrorByAxis::Type: updateOptionsToolMirrorByAxis(); break;
     case VToolMove::Type: updateOptionsToolMove(); break;
     case VToolEllipticalArc::Type: updateOptionsToolEllipticalArc(); break;
-    default: break;
     }
 }
 
@@ -288,7 +286,6 @@ void VToolOptionsPropertyBrowser::userChangedData(VPE::VProperty* property)
     case VToolMirrorByAxis::Type: changeDataToolMirrorByAxis(prop); break;
     case VToolMove::Type: changeDataToolMove(prop); break;
     case VToolEllipticalArc::Type: changeDataToolEllipticalArc(prop); break;
-    default: break;
     }
     qApp->getSceneView()->update();
 }

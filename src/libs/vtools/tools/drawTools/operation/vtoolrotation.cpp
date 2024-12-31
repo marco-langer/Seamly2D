@@ -198,10 +198,6 @@ VToolRotation* VToolRotation::Create(
             const quint32 objectId = item.id;
             const auto& obj{ data->GetGObject(objectId) };
 
-            // This check helps to find missed objects in the switch
-            Q_STATIC_ASSERT_X(
-                static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
-
             switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point:
                 dest.append(createPoint(id, objectId, oPoint, calcAngle, suffix, data));
@@ -231,8 +227,7 @@ VToolRotation* VToolRotation::Create(
             case GOType::Unknown:
             case GOType::Curve:
             case GOType::Path:
-            case GOType::AllCurves:
-            default: break;
+            case GOType::AllCurves: break;
             }
         }
     } else {
@@ -240,10 +235,6 @@ VToolRotation* VToolRotation::Create(
             const SourceItem item = source.at(i);
             const quint32 objectId = item.id;
             const auto& obj{ data->GetGObject(objectId) };
-
-            // This check helps to find missed objects in the switch
-            Q_STATIC_ASSERT_X(
-                static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
 
             switch (static_cast<GOType>(obj.getType())) {
             case GOType::Point: {

@@ -124,9 +124,6 @@ void VisOperation::refreshMirroredObjects(const QPointF& firstPoint, const QPoin
         const quint32 id = objects.at(i);
         const auto& obj{ Visualization::data->GetGObject(id) };
 
-        // This check helps to find missed objects in the switch
-        Q_STATIC_ASSERT_X(static_cast<int>(GOType::Unknown) == 7, "Not all objects were handled.");
-
         switch (static_cast<GOType>(obj.getType())) {
         case GOType::Point: {
             const auto& p{ *Visualization::data->GeometricObject<VPointF>(id) };
@@ -173,8 +170,7 @@ void VisOperation::refreshMirroredObjects(const QPointF& firstPoint, const QPoin
         case GOType::Unknown:
         case GOType::Curve:
         case GOType::Path:
-        case GOType::AllCurves:
-        default: break;
+        case GOType::AllCurves: break;
         }
     }
 }
