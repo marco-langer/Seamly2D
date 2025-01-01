@@ -87,7 +87,7 @@ ImageItem::ImageItem(VAbstractPattern* doc, DraftImage image, QGraphicsItem* par
 
     if (m_image.order == 0) {
         qreal minZValue = maxImageZvalue + 1;
-        foreach (ImageItem* item, m_doc->getBackgroundImageMap().values()) {
+        for (const ImageItem* item : m_doc->getBackgroundImageMap().values()) {
             minZValue = qMin(minZValue, item->m_image.order);
         }
         m_image.order = minZValue - 1;
@@ -485,7 +485,7 @@ void ImageItem::deleteImageItem()
 void ImageItem::moveToBottom()
 {
     qreal minZValue = m_image.order;
-    foreach (ImageItem* item, m_doc->getBackgroundImageMap().values()) {
+    for (ImageItem* item : m_doc->getBackgroundImageMap().values()) {
         if (item != this && item->m_image.order < m_image.order) {
             minZValue = qMin(minZValue, item->m_image.order);
             item->m_image.order++;
@@ -499,7 +499,7 @@ void ImageItem::moveToBottom()
 
 void ImageItem::moveToTop()
 {
-    foreach (ImageItem* item, m_doc->getBackgroundImageMap().values()) {
+    for (ImageItem* item : m_doc->getBackgroundImageMap().values()) {
         if (item != this && item->m_image.order > m_image.order) {
             item->m_image.order--;
             item->updateImage();
@@ -515,7 +515,7 @@ void ImageItem::moveUp()
         return;
     }
 
-    foreach (ImageItem* item, m_doc->getBackgroundImageMap().values()) {
+    for (ImageItem* item : m_doc->getBackgroundImageMap().values()) {
         if (item->m_image.order == m_image.order + 1) {
             item->m_image.order--;
             item->updateImage();
@@ -532,7 +532,7 @@ void ImageItem::moveDown()
         return;
     }
 
-    foreach (ImageItem* item, m_doc->getBackgroundImageMap().values()) {
+    for (ImageItem* item : m_doc->getBackgroundImageMap().values()) {
         if (item->m_image.order == m_image.order - 1) {
             item->m_image.order++;
             item->updateImage();

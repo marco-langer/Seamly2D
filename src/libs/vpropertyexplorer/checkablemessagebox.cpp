@@ -194,7 +194,7 @@ QPushButton* CheckableMessageBox::addButton(const QString& text, QDialogButtonBo
 
 QDialogButtonBox::StandardButton CheckableMessageBox::defaultButton() const
 {
-    foreach (QAbstractButton* b, d->buttonBox->buttons())
+    for (QAbstractButton* b : d->buttonBox->buttons())
         if (QPushButton* pb = qobject_cast<QPushButton*>(b)) {
             if (pb->isDefault()) {
                 return d->buttonBox->standardButton(pb);
@@ -402,7 +402,7 @@ bool CheckableMessageBox::hasSuppressedQuestions(QSettings* settings)
     // Q_ASSERT(settings, return false);
     bool hasSuppressed = false;
     settings->beginGroup(QLatin1String(kDoNotAskAgainKey));
-    foreach (const QString& subKey, settings->childKeys()) {
+    for (const QString& subKey : settings->childKeys()) {
         if (settings->value(subKey, false).toBool()) {
             hasSuppressed = true;
             break;

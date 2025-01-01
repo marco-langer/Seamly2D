@@ -30,7 +30,8 @@ VPE::VSerializedProperty::VSerializedProperty()
     , Type()
     , Value()
     , Children()
-{}
+{
+}
 
 /*! Creates a new VSerializedProperty from an existing property
 
@@ -64,13 +65,14 @@ VPE::VSerializedProperty::VSerializedProperty(
     , Type(type)
     , Value(value)
     , Children()
-{}
+{
+}
 
 void VPE::VSerializedProperty::initChildren(const VProperty* property, const VPropertySet* set)
 {
     if (property && set) {
         const QList<VProperty*>& tmpChildren = property->getChildren();
-        foreach (const VProperty* tmpChild, tmpChildren) {
+        for (const VProperty* tmpChild : tmpChildren) {
             QString tmpChildID = set->getPropertyID(property);
             Children.append(VSerializedProperty(tmpChild, tmpChildID, set));
         }

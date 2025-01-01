@@ -59,7 +59,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 TST_NameRegExp::TST_NameRegExp(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
@@ -194,8 +195,7 @@ void TST_NameRegExp::TestOriginalMeasurementNamesRegExp_data()
 {
     QTest::addColumn<QString>("str");
 
-    const QStringList originalNames = AllGroupNames();
-    foreach (const QString& str, originalNames) {
+    for (const QString& str : AllGroupNames()) {
         const QString name = QString("Measurement '%1'").arg(str);
         QTest::newRow(qUtf8Printable(name)) << str;
     }

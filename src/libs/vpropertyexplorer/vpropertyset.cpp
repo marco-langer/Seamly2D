@@ -30,7 +30,8 @@
 
 VPE::VPropertySet::VPropertySet()
     : d_ptr(new VPropertySetPrivate())
-{}
+{
+}
 
 
 VPE::VPropertySet::~VPropertySet()
@@ -185,9 +186,9 @@ VPE::VPropertySet* VPE::VPropertySet::clone() const
 {
     VPropertySet* tmpResult = new VPropertySet();
 
-    foreach (VProperty* tmpProperty, d_ptr->RootProperties)
+    for (VProperty* tmpProperty : d_ptr->RootProperties) {
         cloneProperty(tmpProperty, nullptr, tmpResult);
-
+    }
 
     return tmpResult;
 }
@@ -200,7 +201,7 @@ bool VPE::VPropertySet::hasProperty(VProperty* property, VProperty* parent) cons
 
     const QList<VProperty*>& tmpChildrenList =
         (parent != nullptr ? parent->getChildren() : d_ptr->RootProperties);
-    foreach (VProperty* tmpProp, tmpChildrenList) {
+    for (VProperty* tmpProp : tmpChildrenList) {
         if (!tmpProp) {
             continue;
         } else if (tmpProp == property || hasProperty(property, tmpProp)) {
@@ -232,13 +233,15 @@ void VPE::VPropertySet::cloneProperty(
 void VPE::VPropertySet::removePropertyFromSet(VProperty* prop)
 {
     // Remove all the children
-    foreach (VProperty* tmpChild, prop->getChildren())
+    const QList<VProperty*> tmpChildren{ prop->getChildren() };
+    for (VProperty* tmpChild : tmpChildren) {
         removeProperty(tmpChild);
+    }
 
-
-    QList<QString> tmpKeys = d_ptr->Properties.keys(prop);
-    foreach (const QString& tmpID, tmpKeys)
+    const QList<QString> tmpKeys = d_ptr->Properties.keys(prop);
+    for (const QString& tmpID : tmpKeys) {
         d_ptr->Properties.remove(tmpID);
+    }
 
     // Remove from list
     d_ptr->RootProperties.removeAll(prop);

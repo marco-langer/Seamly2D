@@ -623,15 +623,15 @@ QStringList MeasurementDoc::listKnown() const
 //---------------------------------------------------------------------------------------------------------------------
 bool MeasurementDoc::eachKnownNameIsValid() const
 {
-    QStringList names = AllGroupNames();
+    const QStringList names = AllGroupNames();
 
     QSet<QString> set;
-    foreach (const QString& var, names) {
+    for (const QString& var : names) {
         set.insert(var);
     }
 
-    names = listKnown();
-    foreach (const QString& var, names) {
+    const QStringList knownNames = listKnown();
+    for (const QString& var : knownNames) {
         if (not set.contains(var)) {
             return false;
         }

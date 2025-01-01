@@ -61,16 +61,16 @@
 //---------------------------------------------------------------------------------------------------------------------
 TST_VCommandLine::TST_VCommandLine(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
 void TST_VCommandLine::UniqueKeys()
 {
-    const QStringList options = AllKeys();
     QSet<QString> unique;
 
-    foreach (const QString& str, options) {
+    for (const QString& str : AllKeys()) {
         const QString message = QString("Options '%1' is not unique!").arg(str);
         QVERIFY2(not unique.contains(str), qUtf8Printable(message));
         unique.insert(str);

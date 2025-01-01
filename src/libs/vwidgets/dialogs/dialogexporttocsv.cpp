@@ -56,8 +56,8 @@
 #include "dialogexporttocsv.h"
 #include "ui_dialogexporttocsv.h"
 
-#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/scassert.h"
+#include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
 
 #include <QPushButton>
@@ -75,7 +75,7 @@ DialogExportToCSV::DialogExportToCSV(QWidget* parent)
 
     ui->checkBoxWithHeader->setChecked(qApp->Settings()->GetCSVWithHeader());
 
-    foreach (int mib, QTextCodec::availableMibs()) {
+    for (int mib : QTextCodec::availableMibs()) {
         ui->comboBoxCodec->addItem(QTextCodec::codecForMib(mib)->name(), mib);
     }
 

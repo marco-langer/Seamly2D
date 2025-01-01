@@ -36,11 +36,13 @@
 VPE::VProperty::VProperty(const QString& name, QVariant::Type type)
     : QObject()
     , d_ptr(new VPropertyPrivate(name, type))
-{}
+{
+}
 
 VPE::VProperty::VProperty(VPropertyPrivate* d)
     : d_ptr(d)
-{}
+{
+}
 
 
 VPE::VProperty::~VProperty()
@@ -266,9 +268,10 @@ QMap<QString, QVariant> VPE::VProperty::getSettings() const
 {
     QMap<QString, QVariant> tmpResult;
 
-    QStringList tmpKeyList = getSettingKeys();
-    foreach (const QString& tmpKey, tmpKeyList)
+    const QStringList tmpKeyList = getSettingKeys();
+    for (const QString& tmpKey : tmpKeyList) {
         tmpResult.insert(tmpKey, getSetting(tmpKey));
+    }
 
     return tmpResult;
 }
@@ -303,8 +306,9 @@ VPE::VProperty* VPE::VProperty::clone(bool include_children, VProperty* containe
     container->setPropertyType(propertyType());
 
     if (include_children) {
-        foreach (VProperty* tmpChild, d_ptr->Children)
+        for (const VProperty* tmpChild : d_ptr->Children) {
             container->addChild(tmpChild->clone(true));
+        }
     }
 
     return container;

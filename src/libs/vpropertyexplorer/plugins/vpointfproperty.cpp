@@ -101,7 +101,7 @@ VPE::VProperty* VPE::VPointFProperty::clone(bool include_children, VProperty* co
 
         if (!include_children) {
             QList<VProperty*> tempChildren = container->getChildren();
-            foreach (VProperty* tempChild, tempChildren) {
+            for (VProperty* tempChild : tempChildren) {
                 container->removeChild(tempChild);
                 delete tempChild;
             }

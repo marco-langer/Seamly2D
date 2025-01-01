@@ -74,7 +74,8 @@
  */
 VMainGraphicsScene::VMainGraphicsScene(QObject* parent)
     : QGraphicsScene(parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -84,7 +85,8 @@ VMainGraphicsScene::VMainGraphicsScene(QObject* parent)
  */
 VMainGraphicsScene::VMainGraphicsScene(const QRectF& sceneRect, QObject* parent)
     : QGraphicsScene(sceneRect, parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -224,7 +226,7 @@ void VMainGraphicsScene::initializeOrigins()
 //---------------------------------------------------------------------------------------------------------------------
 void VMainGraphicsScene::setOriginsVisible(bool visible)
 {
-    foreach (QGraphicsItem* item, origins) {
+    for (QGraphicsItem* item : origins) {
         item->setVisible(visible);
     }
 }
@@ -236,7 +238,7 @@ QPointF VMainGraphicsScene::getScenePos() const { return scenePos; }
 QRectF VMainGraphicsScene::visibleItemsBoundingRect() const
 {
     QRectF rect;
-    foreach (QGraphicsItem* item, items()) {
+    for (const QGraphicsItem* item : items()) {
         if (not item->isVisible()) {
             continue;
         }

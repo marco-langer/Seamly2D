@@ -63,7 +63,7 @@ void ExportFormatCombobox::init()
     this->blockSignals(true);
 
     int count = 0;
-    foreach (auto& v, initFormats()) {
+    for (const auto& v : initFormats()) {
         addItem(v.first, QVariant(static_cast<int>(v.second)));
         count++;
     }
@@ -267,7 +267,7 @@ QString ExportFormatCombobox::exportFormatDescription(LayoutExportFormat format)
 QString ExportFormatCombobox::makeHelpFormatList()
 {
     QString out("\n");
-    foreach (auto& v, initFormats()) {
+    for (const auto& v : initFormats()) {
         out += QLatin1String("\t") + v.first + QLatin1String(" = ")
              + QString::number(static_cast<int>(v.second)) + QLatin1String("\n");
     }

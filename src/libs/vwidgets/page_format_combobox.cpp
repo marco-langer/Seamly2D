@@ -160,7 +160,7 @@ QString PageFormatCombobox::MakeHelpTemplateList()
     QString out = "\n";
 
     auto cntr = static_cast<int>(PaperSizeFormat::A0);
-    foreach (auto& v, initFormats()) {
+    for (const auto& v : initFormats()) {
         if (cntr <= static_cast<int>(PaperSizeFormat::Roll44in))   // Don't include custom template
         {
             out += QLatin1String("\t") + v.first + QLatin1String(" = ")

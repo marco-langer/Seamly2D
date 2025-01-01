@@ -206,9 +206,9 @@ bool AbstractTest::CopyRecursively(const QString& srcFilePath, const QString& tg
             return false;
         }
         QDir sourceDir(srcFilePath);
-        QStringList fileNames = sourceDir.entryList(
+        const QStringList fileNames = sourceDir.entryList(
             QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-        foreach (const QString& fileName, fileNames) {
+        for (const QString& fileName : fileNames) {
             const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
             const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
             if (not CopyRecursively(newSrcFilePath, newTgtFilePath)) {

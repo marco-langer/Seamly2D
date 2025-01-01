@@ -215,8 +215,7 @@ void IndividualSizeConverter::convertMeasurementsToV0_3_0()
         qreal resValue = 0;
 
         // This has the same effect as a .values(), just isn't as elegant
-        const QList<QString> list = names.values(keys.at(i));
-        foreach (const QString& val, list) {
+        for (const QString& val : names.values(keys.at(i))) {
             const QDomNodeList nodeList = this->elementsByTagName(val);
             if (nodeList.isEmpty()) {
                 continue;

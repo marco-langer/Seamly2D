@@ -275,7 +275,7 @@ void SymlinkCopyDirRecursive(const QString& fromDir, const QString& toDir, bool 
     QDir dir;
     dir.setPath(fromDir);
 
-    foreach (QString copyFile, dir.entryList(QDir::Files)) {
+    for (const QString& copyFile : dir.entryList(QDir::Files)) {
         const QString from = fromDir + QDir::separator() + copyFile;
         QString to = toDir + QDir::separator() + copyFile;
 
@@ -314,7 +314,7 @@ void SymlinkCopyDirRecursive(const QString& fromDir, const QString& toDir, bool 
         QFile::link(from, to);
     }
 
-    foreach (QString copyDir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+    for (const QString& copyDir : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
         const QString from = fromDir + QDir::separator() + copyDir;
         const QString to = toDir + QDir::separator() + copyDir;
 

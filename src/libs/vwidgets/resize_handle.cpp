@@ -89,7 +89,7 @@ void ResizeHandlesItem::parentIsLocked(bool lock)
     m_parentIsLocked = lock;
     qreal lock_size = qMax(m_parentRect.width(), m_parentRect.height()) / 30;
 
-    foreach (HandleItem* handleItem, m_handleItems) {
+    for (HandleItem* handleItem : m_handleItems) {
         handleItem->setFlag(QGraphicsItem::ItemIgnoresTransformations, !lock);
         handleItem->setAcceptedMouseButtons(lock ? Qt::NoButton : Qt::AllButtons);
         handleItem->setRect(
@@ -146,7 +146,7 @@ SET_POSITION(BottomLeft, const QPointF&)
  */
 void ResizeHandlesItem::updateHandlePositions()
 {
-    foreach (HandleItem* item, m_handleItems) {
+    for (HandleItem* item : m_handleItems) {
         item->setFlag(ItemSendsGeometryChanges, false);
 
         switch (item->position()) {
