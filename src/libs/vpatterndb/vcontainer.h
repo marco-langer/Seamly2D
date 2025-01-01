@@ -81,7 +81,7 @@
 /**
  * @brief The VContainer class container of all variables.
  */
-class VContainer
+class VContainer final
 {
     Q_DECLARE_TR_FUNCTIONS(VContainer)
 
