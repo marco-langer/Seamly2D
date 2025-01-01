@@ -79,6 +79,8 @@
 #include <QToolButton>
 #include <QtSvg>
 
+#include <memory>
+
 #ifdef Q_OS_WIN
 #    define PDFTOPS "pdftops.exe"
 #else
@@ -106,7 +108,7 @@ void RemoveLayoutPath(const QString& path, bool usedNotExistedDir)
 }
 
 
-QSharedPointer<QPrinter>
+std::unique_ptr<QPrinter>
 preparePrinter(const QString& printerName, QPrinter::PrinterMode mode = QPrinter::ScreenResolution)
 {
     QPrinterInfo printerInfo = QPrinterInfo::printerInfo(printerName);
@@ -118,12 +120,12 @@ preparePrinter(const QString& printerName, QPrinter::PrinterMode mode = QPrinter
         const QStringList list = QPrinterInfo::availablePrinterNames();
 
         if (list.isEmpty()) {
-            return QSharedPointer<QPrinter>{};
+            return nullptr;
         }
         printerInfo = QPrinterInfo::printerInfo(list.first());
     }
 
-    QSharedPointer<QPrinter> printer{ new QPrinter{ printerInfo, mode } };
+    auto printer{ std::make_unique<QPrinter>(printerInfo, mode) };
     printer->setResolution(static_cast<int>(PrintDPI));
     return printer;
 }
@@ -1256,8 +1258,8 @@ void MainWindowsNoGUI::PrintPreview()
         }
     }
 
-    QSharedPointer<QPrinter> printer = preparePrinter(layoutPrinterName);
-    if (printer.isNull() || !printer->isValid()) {
+    std::unique_ptr<QPrinter> printer = preparePrinter(layoutPrinterName);
+    if (!printer || !printer->isValid()) {
         qCritical(
             "%s\n\n%s",
             qUtf8Printable(tr("Print error")),
@@ -1266,10 +1268,10 @@ void MainWindowsNoGUI::PrintPreview()
         return;
     }
 
-    SetPrinterSettings(printer.data(), PrintType::PrintPreview);
+    SetPrinterSettings(printer.get(), PrintType::PrintPreview);
     printer->setResolution(static_cast<int>(PrintDPI));
     // display print preview dialog
-    QPrintPreviewDialog preview(printer.data());
+    QPrintPreviewDialog preview(printer.get());
     connect(&preview, &QPrintPreviewDialog::paintRequested, this, &MainWindowsNoGUI::PrintPages);
     preview.exec();
 }
@@ -1283,8 +1285,8 @@ void MainWindowsNoGUI::LayoutPrint()
         }
     }
 
-    QSharedPointer<QPrinter> printer = preparePrinter(layoutPrinterName, QPrinter::HighResolution);
-    if (printer.isNull() || !printer->isValid()) {
+    std::unique_ptr<QPrinter> printer = preparePrinter(layoutPrinterName, QPrinter::HighResolution);
+    if (!printer || !printer->isValid()) {
         qCritical(
             "%s\n\n%s",
             qUtf8Printable(tr("Print error")),
@@ -1293,13 +1295,13 @@ void MainWindowsNoGUI::LayoutPrint()
         return;
     }
 
-    SetPrinterSettings(printer.data(), PrintType::PrintNative);
-    QPrintDialog dialog(printer.data(), this);
+    SetPrinterSettings(printer.get(), PrintType::PrintNative);
+    QPrintDialog dialog(printer.get(), this);
     // If only user couldn't change page margins we could use method setMinMax();
     dialog.setOption(QPrintDialog::PrintCurrentPage, false);
     if (dialog.exec() == QDialog::Accepted) {
         printer->setResolution(static_cast<int>(PrintDPI));
-        PrintPages(printer.data());
+        PrintPages(printer.get());
     }
 }
 
