@@ -183,3 +183,30 @@ void GeometryTests::subPathTest()
 
     QCOMPARE(geo::subPath(points, startIndex, endIndex), expectedSubPath);
 }
+
+void GeometryTests::calculateSignedAreaTest_data()
+{
+    QTest::addColumn<QVector<QPointF>>("points");
+    QTest::addColumn<qreal>("expectedArea");
+
+    QTest::newRow("square CW") << QVector{
+        QPointF(1, 1), QPointF(1, 3), QPointF(3, 3), QPointF(3, 1)
+    } << 4.0;
+    QTest::newRow("square CCW") << QVector{
+        QPointF(1, 1), QPointF(3, 1), QPointF(3, 3), QPointF(1, 3)
+    } << -4.0;
+    QTest::newRow("case 3a") << QVector{ QPointF(35, 35), QPointF(50, 50), QPointF(15, 50) }
+                             << -262.5;
+    QTest::newRow("case 4a") << QVector{ QPointF(15, 15), QPointF(15, 50), QPointF(50, 50) }
+                             << 612.5;
+    QTest::newRow("case 5a") << QVector{ QPointF(35, 35) } << 0.0;
+}
+
+void GeometryTests::calculateSignedAreaTest()
+{
+    QFETCH(QVector<QPointF>, points);
+    QFETCH(qreal, expectedArea);
+
+    const qreal area{ geo::signedArea(points) };
+    QCOMPARE(area, expectedArea);
+}

@@ -52,8 +52,8 @@
 #include "tst_varc.h"
 
 #include "../vgeometry/varc.h"
-#include "../vlayout/vabstractpiece.h"
 #include "../vmisc/logging.h"
+#include "geometry/geometry.h"
 #include "math/math.h"
 
 #include <QtTest>
@@ -61,7 +61,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 TST_VArc::TST_VArc(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
@@ -227,7 +228,7 @@ void TST_VArc::TestGetPoints()
         }
 
         // calculated square
-        const qreal cSquare = qAbs(VAbstractPiece::sumTrapezoids(points) / 2.0);
+        const qreal cSquare = geo::area(points);
         const qreal value = qAbs(gSquere - cSquare);
         const QString errorMsg =
             QString(

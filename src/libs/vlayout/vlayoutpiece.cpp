@@ -77,7 +77,9 @@
 #include "../vpatterndb/calculator.h"
 #include "../vpatterndb/floatItemData/vpatternlabeldata.h"
 #include "../vpatterndb/floatItemData/vpiecelabeldata.h"
-#include "global.h"
+#include "../vwidgets/global.h"
+#include "geometry/geometry.h"
+
 #include "vgraphicsfillitem.h"
 #include "vlayoutdef.h"
 #include "vlayoutpiece_p.h"
@@ -776,10 +778,7 @@ qint64 VLayoutPiece::Square() const
         return 0;
     }
 
-    const qreal res = sumTrapezoids(d->layoutAllowance);
-
-    const qint64 sq = qFloor(qAbs(res / 2.0));
-    return sq;
+    return qFloor(geo::area(d->layoutAllowance));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -26,6 +26,9 @@ private slots:
 
     void subPathTest_data();
     void subPathTest();
+
+    void calculateSignedAreaTest_data();
+    void calculateSignedAreaTest();
 };
 
 #endif   // GEOMETRY_TEST_H

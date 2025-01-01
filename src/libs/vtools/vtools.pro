@@ -43,11 +43,20 @@ include(warnings.pri)
 
 include (../libs.pri)
 
+# geometry library
+unix|win32: LIBS += -L$${OUT_PWD}/../geometry/$${DESTDIR} -lgeometry
+
+INCLUDEPATH += $${PWD}/../geometry/include
+DEPENDPATH += $${PWD}/../geometry
+
+win32:!win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../geometry/$${DESTDIR}/geometry.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../geometry/$${DESTDIR}/libgeometry.a
+
 # math library
-unix|win32: LIBS += -L$${OUT_PWD}/../../libs/math/$${DESTDIR} -lmath
+unix|win32: LIBS += -L$${OUT_PWD}/../math/$${DESTDIR} -lmath
 
-INCLUDEPATH += $${PWD}/../../libs/math/include
-DEPENDPATH += $${PWD}/../../libs/math
+INCLUDEPATH += $${PWD}/../math/include
+DEPENDPATH += $${PWD}/../math
 
-win32:!win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/math/$${DESTDIR}/math.lib
-else:unix|win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/math/$${DESTDIR}/libmath.a
+win32:!win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../math/$${DESTDIR}/math.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../math/$${DESTDIR}/libmath.a

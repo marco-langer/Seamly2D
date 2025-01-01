@@ -113,8 +113,6 @@ public:
     void SetMy(qreal value);
 
     static QVector<QPointF> Equidistant(const QVector<VSAPoint>& points, qreal width);
-    static qreal sumTrapezoids(const QVector<QPointF>& points);
-    static bool isClockwise(const QVector<QPointF>& points);
     static QVector<QPointF> CheckLoops(const QVector<QPointF>& points);
     static QVector<QPointF> EkvPoint(
         const VSAPoint& p1Line1,
@@ -193,7 +191,6 @@ private:
     static QPointF
     SingleParallelPoint(const QPointF& p1, const QPointF& p2, qreal angle, qreal width);
     static QLineF BisectorLine(const QPointF& p1, const QPointF& p2, const QPointF& p3);
-    static qreal AngleBetweenBisectors(const QLineF& b1, const QLineF& b2);
 };
 
 Q_DECLARE_TYPEINFO(VAbstractPiece, Q_MOVABLE_TYPE);

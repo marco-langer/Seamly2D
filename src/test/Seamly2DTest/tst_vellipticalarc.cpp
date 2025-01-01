@@ -29,7 +29,8 @@
 #include "tst_vellipticalarc.h"
 
 #include "../vgeometry/vellipticalarc.h"
-#include "../vlayout/vabstractpiece.h"
+#include "../vmisc/def.h"
+#include "geometry/geometry.h"
 #include "math/math.h"
 
 #include <QtGlobal>
@@ -38,7 +39,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 TST_VEllipticalArc::TST_VEllipticalArc(QObject* parent)
     : AbstractTest(parent)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void TST_VEllipticalArc::CompareTwoWays_data()
@@ -436,7 +438,7 @@ void TST_VEllipticalArc::TestGetPoints3()
         const qreal ellipseSquare = M_PI * radius1 * radius2;
         const qreal epsSquare =
             ellipseSquare * 1.7 / 100;   // computing error 0.5 % from origin squere
-        const qreal arcSquare = qAbs(VAbstractPiece::sumTrapezoids(points) / 2.0);
+        const qreal arcSquare = geo::area(points);
         const qreal diffSquare = qAbs(ellipseSquare - arcSquare);
         const QString errorMsg1 =
             QString(

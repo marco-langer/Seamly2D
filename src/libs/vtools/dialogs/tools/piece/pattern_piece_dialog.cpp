@@ -64,6 +64,8 @@
 #include "../vpatterndb/calculator.h"
 #include "../vpatterndb/vpiecenode.h"
 #include "../vpatterndb/vpiecepath.h"
+#include "geometry/geometry.h"
+
 #include "dialoginternalpath.h"
 #include "visualization/path/pattern_piece_visual.h"
 #include "visualization/path/pieceanchorpoint_visual.h"
@@ -390,7 +392,7 @@ void PatternPieceDialog::ChosenObject(quint32 id, const SceneObject& type)
                 const auto& curve{ *data->GeometricObject<VAbstractCurve>(id) };
                 const QVector<QPointF> curvePoints{ curve.getPoints() };
                 points.append(curvePoints);
-                reverse = !VPiece::isClockwise(points);
+                reverse = !geo::isClockwise(points);
             }
         }
 
@@ -2367,8 +2369,7 @@ void PatternPieceDialog::validateObjects(bool value)
 //---------------------------------------------------------------------------------------------------------------------
 bool PatternPieceDialog::isMainPathClockwise() const
 {
-    const QVector<QPointF> points = CreatePiece().MainPathPoints(data);
-    return VPiece::isClockwise(points);
+    return geo::isClockwise(CreatePiece().MainPathPoints(data));
 }
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -195,49 +195,6 @@ QVector<QPointF> VAbstractPiece::Equidistant(const QVector<VSAPoint>& points, qr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VAbstractPiece::sumTrapezoids(const QVector<QPointF>& points)
-{
-    // Calculation a polygon area through the sum of the areas of trapezoids
-    qreal s, res = 0;
-    const int n = points.size();
-
-    if (n > 2) {
-        for (int i = 0; i < n; ++i) {
-            if (i == 0) {
-                // if i == 0, then y[i-1] replace on y[n-1]
-                s = points.at(i).x() * (points.at(n - 1).y() - points.at(i + 1).y());
-                res += s;
-            } else {
-                if (i == n - 1) {
-                    // if i == n-1, then y[i+1] replace on y[0]
-                    s = points.at(i).x() * (points.at(i - 1).y() - points.at(0).y());
-                    res += s;
-                } else {
-                    s = points.at(i).x() * (points.at(i - 1).y() - points.at(i + 1).y());
-                    res += s;
-                }
-            }
-        }
-    }
-    return res;
-}
-
-/*
- * @brief Checks for direction of a vector of points.
- * @param points QVector of QPointF.
- * @return true for clockwise direction.
- * return false for counterclock-wise direction.
- */
-bool VAbstractPiece::isClockwise(const QVector<QPointF>& points)
-{
-    if (points.count() < 3) {
-        return false;
-    } else if (sumTrapezoids(points) < 0) {
-        return true;
-    }
-    return false;
-}
-//---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief CheckLoops seek and delete loops in equidistant.
  * @param points vector of points of equidistant.
@@ -439,7 +396,7 @@ QVector<QPointF> VAbstractPiece::EkvPoint(
         const QLineF b1 = BisectorLine(p1Line1, p2Line1, p1Line2);
         const QLineF b2 = BisectorLine(bigLine1.p1(), CrosPoint, bigLine2.p2());
 
-        const qreal angle = AngleBetweenBisectors(b1, b2);
+        const qreal angle = geo::angleBetweenBisectors(b1, b2);
 
         // Comparison bisector angles helps to find direction
         if (angle < 90 || math::isFuzzyEqual(angle, 90.0))   // Go in a same direction
@@ -815,40 +772,18 @@ QLineF VAbstractPiece::BisectorLine(const QPointF& p1, const QPointF& p2, const 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-qreal VAbstractPiece::AngleBetweenBisectors(const QLineF& b1, const QLineF& b2)
-{
-    const QLineF newB2 = b2.translated(-(b2.p1().x() - b1.p1().x()), -(b2.p1().y() - b1.p1().y()));
-
-    qreal angle1 = newB2.angleTo(b1);
-    if (math::isFuzzyEqual(angle1, 360.0)) {
-        angle1 = 0;
-    }
-
-    qreal angle2 = b1.angleTo(newB2);
-    if (math::isFuzzyEqual(angle2, 360.0)) {
-        angle2 = 0;
-    }
-
-    if (angle1 <= angle2) {
-        return angle1;
-    } else {
-        return angle2;
-    }
-}
-
-//---------------------------------------------------------------------------------------------------------------------
 bool VAbstractPiece::CheckIntersection(
     const QVector<QPointF>& points, int i, int iNext, int j, int jNext, const QPointF& crossPoint)
 {
     QVector<QPointF> sub1 = geo::subPath(points, iNext, j);
     sub1.append(crossPoint);
     sub1 = CheckLoops(CorrectEquidistantPoints(sub1, false));
-    const qreal sub1Sum = sumTrapezoids(sub1);
+    const qreal sub1Sum = geo::signedArea(sub1);
 
     QVector<QPointF> sub2 = geo::subPath(points, jNext, i);
     sub2.append(crossPoint);
     sub2 = CheckLoops(CorrectEquidistantPoints(sub2, false));
-    const qreal sub2Sum = sumTrapezoids(sub2);
+    const qreal sub2Sum = geo::signedArea(sub2);
 
     if (sub1Sum < 0 && sub2Sum < 0) {
         if (Crossing(sub1, sub2)) {
