@@ -32,10 +32,6 @@
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_GCC("-Wattributes")
 
-#ifdef Q_CC_MSVC
-#    include <ciso646>
-#endif /* Q_CC_MSVC */
-
 #define INIT_LOCALE_VARIABLES(locale)                        \
     const QChar positiveSign = (locale).positiveSign();      \
     const QChar negativeSign = (locale).negativeSign();      \

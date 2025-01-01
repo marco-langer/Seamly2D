@@ -19,10 +19,6 @@
 #include "drw_objects.h"
 #include <string>
 
-#ifdef Q_CC_MSVC
-#    include <ciso646>
-#endif /* Q_CC_MSVC */
-
 class dxfReader;
 class dxfWriter;
 

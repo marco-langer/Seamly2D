@@ -55,10 +55,6 @@
 #include <QFileInfo>
 #include <QtTest>
 
-#ifdef Q_CC_MSVC
-#    include <ciso646>
-#endif /* Q_CC_MSVC */
-
 //---------------------------------------------------------------------------------------------------------------------
 TST_VLockGuard::TST_VLockGuard(QObject* parent)
     : QObject(parent)

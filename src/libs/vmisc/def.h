@@ -43,11 +43,6 @@
 #    include <windows.h>
 #endif /* Q_OS_WIN */
 
-
-#ifdef Q_CC_MSVC
-#    include <ciso646>
-#endif /* Q_CC_MSVC */
-
 class QComboBox;
 class QMarginsF;
 class VTranslateMeasurements;

@@ -52,10 +52,6 @@
 #include "dialogdatetimeformats.h"
 #include "ui_dialogdatetimeformats.h"
 
-#ifdef Q_CC_MSVC
-#    include <ciso646>
-#endif /* Q_CC_MSVC */
-
 //---------------------------------------------------------------------------------------------------------------------
 DialogDateTimeFormats::DialogDateTimeFormats(
     const QDate& date,
