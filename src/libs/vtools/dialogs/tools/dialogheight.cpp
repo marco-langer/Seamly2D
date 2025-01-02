@@ -255,13 +255,13 @@ void DialogHeight::ChosenObject(quint32 id, const SceneObject& type)
             SCASSERT(line != nullptr)
 
             switch (number) {
-            case (0):
+            case 0:
                 if (SetObject(id, ui->comboBoxBasePoint, tr("Select first point of line"))) {
                     number++;
                     line->VisualMode(id);
                 }
                 break;
-            case (1):
+            case 1:
                 if (getCurrentObjectId(ui->comboBoxBasePoint) != id) {
                     if (SetObject(id, ui->comboBoxP1Line, tr("Select second point of line"))) {
                         number++;
@@ -270,7 +270,7 @@ void DialogHeight::ChosenObject(quint32 id, const SceneObject& type)
                     }
                 }
                 break;
-            case (2): {
+            case 2: {
                 QSet<quint32> set;
                 set.insert(getCurrentObjectId(ui->comboBoxBasePoint));
                 set.insert(getCurrentObjectId(ui->comboBoxP1Line));

@@ -90,17 +90,16 @@ QString VLabelTemplateConverter::maxVerStr() const { return LabelTemplateMaxVerS
 QString VLabelTemplateConverter::getSchema(int ver) const
 {
     switch (ver) {
-    case (0x010000): return CurrentSchema;
+    case 0x010000: return CurrentSchema;
     default: InvalidVersion(ver); break;
     }
-    return QString();   // unreachable code
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLabelTemplateConverter::applyPatches()
 {
     switch (m_ver) {
-    case (0x010000): break;
+    case 0x010000: break;
     default: InvalidVersion(m_ver); break;
     }
 }

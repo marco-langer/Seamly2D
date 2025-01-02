@@ -197,7 +197,7 @@ QVector<QPointF> VPiece::SeamAllowancePoints(const VContainer* data) const
         }
 
         switch (node.GetTypeTool()) {
-        case (Tool::NodePoint): {
+        case Tool::NodePoint: {
             if (not insertingCSA) {
                 pointsEkv.append(VPiecePath::PreparePointEkv(node, data));
 
@@ -227,10 +227,10 @@ QVector<QPointF> VPiece::SeamAllowancePoints(const VContainer* data) const
                 }
             }
         } break;
-        case (Tool::NodeArc):
-        case (Tool::NodeElArc):
-        case (Tool::NodeSpline):
-        case (Tool::NodeSplinePath): {
+        case Tool::NodeArc:
+        case Tool::NodeElArc:
+        case Tool::NodeSpline:
+        case Tool::NodeSplinePath: {
             if (not insertingCSA) {
                 const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 

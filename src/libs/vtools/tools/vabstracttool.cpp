@@ -589,11 +589,11 @@ VAbstractTool::AddSANode(VAbstractPattern* doc, const QString& tagName, const VP
     }
 
     switch (type) {
-    case (Tool::NodeArc): doc->SetAttribute(nod, AttrType, VAbstractPattern::NodeArc); break;
-    case (Tool::NodeElArc): doc->SetAttribute(nod, AttrType, VAbstractPattern::NodeElArc); break;
-    case (Tool::NodePoint): doc->SetAttribute(nod, AttrType, VAbstractPattern::NodePoint); break;
-    case (Tool::NodeSpline): doc->SetAttribute(nod, AttrType, VAbstractPattern::NodeSpline); break;
-    case (Tool::NodeSplinePath):
+    case Tool::NodeArc: doc->SetAttribute(nod, AttrType, VAbstractPattern::NodeArc); break;
+    case Tool::NodeElArc: doc->SetAttribute(nod, AttrType, VAbstractPattern::NodeElArc); break;
+    case Tool::NodePoint: doc->SetAttribute(nod, AttrType, VAbstractPattern::NodePoint); break;
+    case Tool::NodeSpline: doc->SetAttribute(nod, AttrType, VAbstractPattern::NodeSpline); break;
+    case Tool::NodeSplinePath:
         doc->SetAttribute(nod, AttrType, VAbstractPattern::NodeSplinePath);
         break;
     default: qWarning() << "May be wrong tool type!!! Ignoring." << Q_FUNC_INFO; break;
@@ -673,25 +673,25 @@ quint32 VAbstractTool::PrepareNode(
 
     quint32 id = NULL_ID;
     switch (node.GetTypeTool()) {
-    case (Tool::NodePoint):
+    case Tool::NodePoint:
         id = CreateNode<VPointF>(data, node.GetId());
         VNodePoint::Create(
             doc, data, scene, id, node.GetId(), Document::FullParse, Source::FromGui);
         break;
-    case (Tool::NodeArc):
+    case Tool::NodeArc:
         id = CreateNode<VArc>(data, node.GetId());
         VNodeArc::Create(doc, data, id, node.GetId(), Document::FullParse, Source::FromGui);
         break;
-    case (Tool::NodeElArc):
+    case Tool::NodeElArc:
         id = CreateNode<VEllipticalArc>(data, node.GetId());
         VNodeEllipticalArc::Create(
             doc, data, id, node.GetId(), Document::FullParse, Source::FromGui);
         break;
-    case (Tool::NodeSpline):
+    case Tool::NodeSpline:
         id = CreateNodeSpline(data, node.GetId());
         VNodeSpline::Create(doc, data, id, node.GetId(), Document::FullParse, Source::FromGui);
         break;
-    case (Tool::NodeSplinePath):
+    case Tool::NodeSplinePath:
         id = CreateNodeSplinePath(data, node.GetId());
         VNodeSplinePath::Create(doc, data, id, node.GetId(), Document::FullParse, Source::FromGui);
         break;

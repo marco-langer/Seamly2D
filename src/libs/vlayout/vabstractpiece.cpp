@@ -383,11 +383,11 @@ QVector<QPointF> VAbstractPiece::EkvPoint(
     QPointF CrosPoint;
     const QLineF::IntersectType type = bigLine1.intersects(bigLine2, &CrosPoint);
     switch (type) {   // There are at least three big cases
-    case (QLineF::BoundedIntersection):
+    case QLineF::BoundedIntersection:
         // The easiest, real intersection
         points.append(CrosPoint);
         return points;
-    case (QLineF::UnboundedIntersection): {   // Most common case
+    case QLineF::UnboundedIntersection: {   // Most common case
         const qreal localWidth = MaxLocalSA(p2Line1, width);
         QLineF line(p2Line1, CrosPoint);
 
@@ -470,7 +470,7 @@ QVector<QPointF> VAbstractPiece::EkvPoint(
         }
         break;
     }
-    case (QLineF::NoIntersection):
+    case QLineF::NoIntersection:
         /*If we have correct lines this means lines lie on a line.*/
         points.append(bigLine1.p2());
         return points;

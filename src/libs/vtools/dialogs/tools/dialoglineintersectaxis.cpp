@@ -336,7 +336,7 @@ void DialogLineIntersectAxis::ChosenObject(quint32 id, const SceneObject& type)
             SCASSERT(line != nullptr)
 
             switch (number) {
-            case (0):
+            case 0:
                 if (SetObject(id, ui->comboBoxFirstLinePoint, tr("Select second point of line"))) {
                     number++;
                     line->VisualMode(id);
@@ -350,7 +350,7 @@ void DialogLineIntersectAxis::ChosenObject(quint32 id, const SceneObject& type)
                         &VAbstractMainWindow::ShowToolTip);
                 }
                 break;
-            case (1):
+            case 1:
                 if (getCurrentObjectId(ui->comboBoxFirstLinePoint) != id) {
                     if (SetObject(id, ui->comboBoxSecondLinePoint, tr("Select axis point"))) {
                         number++;
@@ -359,7 +359,7 @@ void DialogLineIntersectAxis::ChosenObject(quint32 id, const SceneObject& type)
                     }
                 }
                 break;
-            case (2): {
+            case 2: {
                 QSet<quint32> set;
                 set.insert(getCurrentObjectId(ui->comboBoxFirstLinePoint));
                 set.insert(getCurrentObjectId(ui->comboBoxSecondLinePoint));
