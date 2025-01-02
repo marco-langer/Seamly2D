@@ -1256,8 +1256,7 @@ void GroupsWidget::itemDoubleClicked(QListWidgetItem* item)
     case GOType::Unknown:
     case GOType::Curve:
     case GOType::Path:
-    case GOType::AllCurves:
-    default: break;
+    case GOType::AllCurves: break;
     }
 
     return;

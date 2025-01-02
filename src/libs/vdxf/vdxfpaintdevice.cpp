@@ -167,7 +167,7 @@ int VDxfPaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
     case QPaintDevice::PdmDpiY: return static_cast<int>(engine->getResolution());
     case QPaintDevice::PdmDevicePixelRatio:
     case QPaintDevice::PdmDevicePixelRatioScaled: return 1;
-    default: qWarning("VDxfPaintDevice::metric(), unhandled metric %d\n", metric); break;
     }
-    return 0;
+
+    Q_UNREACHABLE();
 }

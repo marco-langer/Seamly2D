@@ -172,7 +172,6 @@ void VPattern::Parse(const Document& parse)
     case Document::FullParse: qCDebug(vXML, "Full parse."); break;
     case Document::LiteParse: qCDebug(vXML, "Lite parse."); break;
     case Document::LiteBlockParse: qCDebug(vXML, "Lite draft block parse."); break;
-    default: break;
     }
 
     SCASSERT(draftScene != nullptr)
@@ -505,7 +504,6 @@ void VPattern::LiteParseTree(const Document& parse)
         case Document::FullParse:
             qCWarning(vXML, "Lite parsing doesn't support full parsing");
             break;
-        default: break;
         }
     } catch (const VExceptionUndo& error) {
         Q_UNUSED(error)

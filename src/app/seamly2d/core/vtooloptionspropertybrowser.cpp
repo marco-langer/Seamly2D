@@ -662,8 +662,7 @@ endLoop:
                 }
                 break;
             case GOType::EllipticalArc:
-            case GOType::Unknown:
-            default: break;
+            case GOType::Unknown: break;
             }
         }
     }

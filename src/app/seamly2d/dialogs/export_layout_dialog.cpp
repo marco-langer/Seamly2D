@@ -679,8 +679,7 @@ QString ExportLayoutDialog::modeString() const
             modeStr = QStringLiteral("_pieces");
             break;
         }
-        case Draw::Layout:
-        default: {
+        case Draw::Layout: {
             modeStr = QStringLiteral("_layout");
             break;
         }

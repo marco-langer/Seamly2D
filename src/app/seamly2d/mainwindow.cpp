@@ -4695,7 +4695,6 @@ void MainWindow::setToolsEnabled(bool enable)
     case Draw::Calculation: draftTools = enable; break;
     case Draw::Modeling: pieceTools = enable; break;
     case Draw::Layout: layoutTools = enable; break;
-    default: break;
     }
 
     // This check helps to find missed tools

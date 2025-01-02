@@ -150,8 +150,8 @@ QString PageFormatCombobox::getFormatName(PaperSizeFormat format)
     case PaperSizeFormat::Roll42in: return QString("Roll 42in");
     case PaperSizeFormat::Roll44in: return QString("Roll 44in");
     case PaperSizeFormat::Custom: return QString("Custom");
-    default: return QString();
     }
+    Q_UNREACHABLE();
 }
 
 //---------------------------------------------------------------------------------------------------------------------

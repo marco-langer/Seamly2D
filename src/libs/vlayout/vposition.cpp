@@ -296,7 +296,6 @@ bool VPosition::CheckCombineEdges(VLayoutPiece& piece, int j, int& dEdge)
         flagMirror = true;
         break;
     case CrossingType::NoIntersection: flagSquare = true; break;
-    default: break;
     }
 
     if (flagMirror && not piece.IsForbidFlipping()) {
@@ -325,7 +324,6 @@ bool VPosition::CheckCombineEdges(VLayoutPiece& piece, int j, int& dEdge)
         case CrossingType::EdgeError: return false;
         case CrossingType::Intersection: flagSquare = false; break;
         case CrossingType::NoIntersection: flagSquare = true; break;
-        default: break;
         }
     }
     return flagSquare;
@@ -354,7 +352,6 @@ bool VPosition::CheckRotationEdges(VLayoutPiece& piece, int j, int dEdge, int an
     case CrossingType::EdgeError: return false;
     case CrossingType::Intersection: flagSquare = false; break;
     case CrossingType::NoIntersection: flagSquare = true; break;
-    default: break;
     }
     return flagSquare;
 }

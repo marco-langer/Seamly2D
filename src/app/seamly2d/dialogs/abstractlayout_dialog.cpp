@@ -101,9 +101,10 @@ QSizeF AbstractLayoutDialog::getTemplateSize(const PaperSizeFormat& tmpl, const 
         width = UnitConvertor(44, Unit::Inch, unit);
         height = UnitConvertor(QIMAGE_MAX, Unit::Px, unit);
         return RoundTemplateSize(width, height, unit);
-    default: break;
+    case PaperSizeFormat::Custom: return QSizeF{};
     }
-    return QSizeF();
+
+    Q_UNREACHABLE();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
