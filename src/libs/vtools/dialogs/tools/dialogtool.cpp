@@ -623,11 +623,11 @@ void DialogTool::newNodeItem(
     SCASSERT(node.GetId() > NULL_ID);
     NodeInfo info;
     switch (node.GetTypeTool()) {
-    case (Tool::NodePoint):
-    case (Tool::NodeArc):
-    case (Tool::NodeElArc):
-    case (Tool::NodeSpline):
-    case (Tool::NodeSplinePath): info = getNodeInfo(node, true); break;
+    case Tool::NodePoint:
+    case Tool::NodeArc:
+    case Tool::NodeElArc:
+    case Tool::NodeSpline:
+    case Tool::NodeSplinePath: info = getNodeInfo(node, true); break;
     default: qWarning() << "Got wrong tools. Ignore."; return;
     }
 

@@ -1709,7 +1709,7 @@ void PatternPieceTool::initializeNode(
     SCASSERT(parent != nullptr)
 
     switch (node.GetTypeTool()) {
-    case (Tool::NodePoint): {
+    case Tool::NodePoint: {
         VNodePoint* tool = qobject_cast<VNodePoint*>(VAbstractPattern::getTool(node.GetId()));
         SCASSERT(tool != nullptr);
 
@@ -1726,10 +1726,10 @@ void PatternPieceTool::initializeNode(
         doc->IncrementReferens(node.GetId());
         break;
     }
-    case (Tool::NodeArc):
-    case (Tool::NodeElArc):
-    case (Tool::NodeSpline):
-    case (Tool::NodeSplinePath):
+    case Tool::NodeArc:
+    case Tool::NodeElArc:
+    case Tool::NodeSpline:
+    case Tool::NodeSplinePath:
         doc->IncrementReferens(data->GetGObject(node.GetId()).getIdTool());
         break;
     default: qDebug() << "Get wrong tool type. Ignore."; break;

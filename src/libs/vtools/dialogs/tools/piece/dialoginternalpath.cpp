@@ -127,9 +127,9 @@ void DialogInternalPath::ChosenObject(quint32 id, const SceneObject& type)
             case SceneObject::SplinePath:
                 NewItem(VPieceNode(id, Tool::NodeSplinePath, reverse));
                 break;
-            case (SceneObject::Line):
-            case (SceneObject::Piece):
-            case (SceneObject::Unknown): qWarning() << "Got wrong scene object. Ignore."; break;
+            case SceneObject::Line:
+            case SceneObject::Piece:
+            case SceneObject::Unknown: qWarning() << "Got wrong scene object. Ignore."; break;
             }
         } else {
             if (ui->listWidget->count() > 1) {

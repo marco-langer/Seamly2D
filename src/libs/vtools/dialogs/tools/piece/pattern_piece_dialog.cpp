@@ -418,9 +418,9 @@ void PatternPieceDialog::ChosenObject(quint32 id, const SceneObject& type)
                 newMainPathItem(VPieceNode(id, Tool::NodeSplinePath, reverse));
                 m_beep.play();
                 break;
-            case (SceneObject::Line):
-            case (SceneObject::Piece):
-            case (SceneObject::Unknown): qWarning() << "Invalid scene object. Ignore."; break;
+            case SceneObject::Line:
+            case SceneObject::Piece:
+            case SceneObject::Unknown: qWarning() << "Invalid scene object. Ignore."; break;
             }
         } else {
             if (ui->mainPath_ListWidget->count() > 1) {

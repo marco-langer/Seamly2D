@@ -160,17 +160,20 @@ void VPiecePath::Swap(VPiecePath& path) noexcept { std::swap(d, path.d); }
 //---------------------------------------------------------------------------------------------------------------------
 VPiecePath::VPiecePath()
     : d(new VPiecePathData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiecePath::VPiecePath(PiecePathType type)
     : d(new VPiecePathData(type))
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiecePath::VPiecePath(const VPiecePath& path)
     : d(path.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VPiecePath& VPiecePath::operator=(const VPiecePath& path)
@@ -240,13 +243,13 @@ QVector<QPointF> VPiecePath::PathPoints(const VContainer* data) const
         }
 
         switch (at(i).GetTypeTool()) {
-        case (Tool::NodePoint): {
+        case Tool::NodePoint: {
             points.append(static_cast<QPointF>(*data->GeometricObject<VPointF>(at(i).GetId())));
         } break;
-        case (Tool::NodeArc):
-        case (Tool::NodeElArc):
-        case (Tool::NodeSpline):
-        case (Tool::NodeSplinePath): {
+        case Tool::NodeArc:
+        case Tool::NodeElArc:
+        case Tool::NodeSpline:
+        case Tool::NodeSplinePath: {
             const auto& curve{ *data->GeometricObject<VAbstractCurve>(at(i).GetId()) };
 
             const QPointF begin = StartSegment(data, i, at(i).GetReverse());
@@ -295,13 +298,13 @@ VPiecePath::SeamAllowancePoints(const VContainer* data, qreal width, bool revers
     for (int i = 0; i < d->m_nodes.size(); ++i) {
         const VPieceNode& node = d->m_nodes.at(i);
         switch (node.GetTypeTool()) {
-        case (Tool::NodePoint): {
+        case Tool::NodePoint: {
             pointsEkv.append(PreparePointEkv(node, data));
         } break;
-        case (Tool::NodeArc):
-        case (Tool::NodeElArc):
-        case (Tool::NodeSpline):
-        case (Tool::NodeSplinePath): {
+        case Tool::NodeArc:
+        case Tool::NodeElArc:
+        case Tool::NodeSpline:
+        case Tool::NodeSplinePath: {
             const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
             pointsEkv +=
                 CurveSeamAllowanceSegment(data, d->m_nodes, curve, i, node.GetReverse(), width);
@@ -602,12 +605,12 @@ QPointF VPiecePath::NodePreviousPoint(const VContainer* data, int i) const
 
         const VPieceNode& node = d->m_nodes.at(index);
         switch (node.GetTypeTool()) {
-        case (Tool::NodePoint):
+        case Tool::NodePoint:
             return static_cast<QPointF>(*data->GeometricObject<VPointF>(node.GetId()));
-        case (Tool::NodeArc):
-        case (Tool::NodeElArc):
-        case (Tool::NodeSpline):
-        case (Tool::NodeSplinePath): {
+        case Tool::NodeArc:
+        case Tool::NodeElArc:
+        case Tool::NodeSpline:
+        case Tool::NodeSplinePath: {
             const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 
             const VSAPoint begin = StartSegment(data, d->m_nodes, index, node.GetReverse());
@@ -645,12 +648,12 @@ QPointF VPiecePath::NodeNextPoint(const VContainer* data, int i) const
 
         const VPieceNode& node = d->m_nodes.at(index);
         switch (node.GetTypeTool()) {
-        case (Tool::NodePoint):
+        case Tool::NodePoint:
             return static_cast<QPointF>(*data->GeometricObject<VPointF>(node.GetId()));
-        case (Tool::NodeArc):
-        case (Tool::NodeElArc):
-        case (Tool::NodeSpline):
-        case (Tool::NodeSplinePath): {
+        case Tool::NodeArc:
+        case Tool::NodeElArc:
+        case Tool::NodeSpline:
+        case Tool::NodeSplinePath: {
             const auto& curve{ *data->GeometricObject<VAbstractCurve>(node.GetId()) };
 
             const VSAPoint begin = StartSegment(data, d->m_nodes, index, node.GetReverse());

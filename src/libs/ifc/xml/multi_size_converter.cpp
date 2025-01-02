@@ -101,47 +101,46 @@ MultiSizeConverter::MultiSizeConverter(const QString& fileName)
 QString MultiSizeConverter::getSchema(int ver) const
 {
     switch (ver) {
-    case (0x000300): return QStringLiteral("://schema/multi_size_measurements/v0.3.0.xsd");
-    case (0x000400): return QStringLiteral("://schema/multi_size_measurements/v0.4.0.xsd");
-    case (0x000401): return QStringLiteral("://schema/multi_size_measurements/v0.4.1.xsd");
-    case (0x000402): return QStringLiteral("://schema/multi_size_measurements/v0.4.2.xsd");
-    case (0x000403): return QStringLiteral("://schema/multi_size_measurements/v0.4.3.xsd");
-    case (0x000404): return QStringLiteral("://schema/multi_size_measurements/v0.4.4.xsd");
-    case (0x000405): return CurrentSchema;
+    case 0x000300: return QStringLiteral("://schema/multi_size_measurements/v0.3.0.xsd");
+    case 0x000400: return QStringLiteral("://schema/multi_size_measurements/v0.4.0.xsd");
+    case 0x000401: return QStringLiteral("://schema/multi_size_measurements/v0.4.1.xsd");
+    case 0x000402: return QStringLiteral("://schema/multi_size_measurements/v0.4.2.xsd");
+    case 0x000403: return QStringLiteral("://schema/multi_size_measurements/v0.4.3.xsd");
+    case 0x000404: return QStringLiteral("://schema/multi_size_measurements/v0.4.4.xsd");
+    case 0x000405: return CurrentSchema;
     default: InvalidVersion(ver); break;
     }
-    return QString();   // unreachable code
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void MultiSizeConverter::applyPatches()
 {
     switch (m_ver) {
-    case (0x000300):
+    case 0x000300:
         convertToVer0_4_0();
         validateXMLSchema(getSchema(0x000400), m_convertedFileName);
         [[fallthrough]];
-    case (0x000400):
+    case 0x000400:
         convertToVer0_4_1();
         validateXMLSchema(getSchema(0x000401), m_convertedFileName);
         [[fallthrough]];
-    case (0x000401):
+    case 0x000401:
         convertToVer0_4_2();
         validateXMLSchema(getSchema(0x000402), m_convertedFileName);
         [[fallthrough]];
-    case (0x000402):
+    case 0x000402:
         convertToVer0_4_3();
         validateXMLSchema(getSchema(0x000403), m_convertedFileName);
         [[fallthrough]];
-    case (0x000403):
+    case 0x000403:
         convertToVer0_4_4();
         validateXMLSchema(getSchema(0x000404), m_convertedFileName);
         [[fallthrough]];
-    case (0x000404):
+    case 0x000404:
         convertToVer0_4_5();
         validateXMLSchema(getSchema(0x000405), m_convertedFileName);
         [[fallthrough]];
-    case (0x000405): break;
+    case 0x000405: break;
     default: InvalidVersion(m_ver); break;
     }
 }

@@ -259,234 +259,233 @@ VPatternConverter::VPatternConverter(const QString& fileName)
 QString VPatternConverter::getSchema(int ver) const
 {
     switch (ver) {
-    case (0x000100): return QStringLiteral("://schema/pattern/v0.1.0.xsd");
-    case (0x000101): return QStringLiteral("://schema/pattern/v0.1.1.xsd");
-    case (0x000102): return QStringLiteral("://schema/pattern/v0.1.2.xsd");
-    case (0x000103): return QStringLiteral("://schema/pattern/v0.1.3.xsd");
-    case (0x000104): return QStringLiteral("://schema/pattern/v0.1.4.xsd");
-    case (0x000200): return QStringLiteral("://schema/pattern/v0.2.0.xsd");
-    case (0x000201): return QStringLiteral("://schema/pattern/v0.2.1.xsd");
-    case (0x000202): return QStringLiteral("://schema/pattern/v0.2.2.xsd");
-    case (0x000203): return QStringLiteral("://schema/pattern/v0.2.3.xsd");
-    case (0x000204): return QStringLiteral("://schema/pattern/v0.2.4.xsd");
-    case (0x000205): return QStringLiteral("://schema/pattern/v0.2.5.xsd");
-    case (0x000206): return QStringLiteral("://schema/pattern/v0.2.6.xsd");
-    case (0x000207): return QStringLiteral("://schema/pattern/v0.2.7.xsd");
-    case (0x000300): return QStringLiteral("://schema/pattern/v0.3.0.xsd");
-    case (0x000301): return QStringLiteral("://schema/pattern/v0.3.1.xsd");
-    case (0x000302): return QStringLiteral("://schema/pattern/v0.3.2.xsd");
-    case (0x000303): return QStringLiteral("://schema/pattern/v0.3.3.xsd");
-    case (0x000304): return QStringLiteral("://schema/pattern/v0.3.4.xsd");
-    case (0x000305): return QStringLiteral("://schema/pattern/v0.3.5.xsd");
-    case (0x000306): return QStringLiteral("://schema/pattern/v0.3.6.xsd");
-    case (0x000307): return QStringLiteral("://schema/pattern/v0.3.7.xsd");
-    case (0x000308): return QStringLiteral("://schema/pattern/v0.3.8.xsd");
-    case (0x000309): return QStringLiteral("://schema/pattern/v0.3.9.xsd");
-    case (0x000400): return QStringLiteral("://schema/pattern/v0.4.0.xsd");
-    case (0x000401): return QStringLiteral("://schema/pattern/v0.4.1.xsd");
-    case (0x000402): return QStringLiteral("://schema/pattern/v0.4.2.xsd");
-    case (0x000403): return QStringLiteral("://schema/pattern/v0.4.3.xsd");
-    case (0x000404): return QStringLiteral("://schema/pattern/v0.4.4.xsd");
-    case (0x000405): return QStringLiteral("://schema/pattern/v0.4.5.xsd");
-    case (0x000406): return QStringLiteral("://schema/pattern/v0.4.6.xsd");
-    case (0x000407): return QStringLiteral("://schema/pattern/v0.4.7.xsd");
-    case (0x000408): return QStringLiteral("://schema/pattern/v0.4.8.xsd");
-    case (0x000500): return QStringLiteral("://schema/pattern/v0.5.0.xsd");
-    case (0x000501): return QStringLiteral("://schema/pattern/v0.5.1.xsd");
-    case (0x000600): return QStringLiteral("://schema/pattern/v0.6.0.xsd");
-    case (0x000601): return QStringLiteral("://schema/pattern/v0.6.1.xsd");
-    case (0x000602): return QStringLiteral("://schema/pattern/v0.6.2.xsd");
-    case (0x000603): return QStringLiteral("://schema/pattern/v0.6.3.xsd");
-    case (0x000604): return QStringLiteral("://schema/pattern/v0.6.4.xsd");
-    case (0x000605): return QStringLiteral("://schema/pattern/v0.6.5.xsd");
-    case (0x000606): return QStringLiteral("://schema/pattern/v0.6.6.xsd"); ;
-    case (0x000607): return QStringLiteral("://schema/pattern/v0.6.7.xsd"); ;
-    case (0x000608): return QStringLiteral("://schema/pattern/v0.6.8.xsd"); ;
-    case (0x000609):
+    case 0x000100: return QStringLiteral("://schema/pattern/v0.1.0.xsd");
+    case 0x000101: return QStringLiteral("://schema/pattern/v0.1.1.xsd");
+    case 0x000102: return QStringLiteral("://schema/pattern/v0.1.2.xsd");
+    case 0x000103: return QStringLiteral("://schema/pattern/v0.1.3.xsd");
+    case 0x000104: return QStringLiteral("://schema/pattern/v0.1.4.xsd");
+    case 0x000200: return QStringLiteral("://schema/pattern/v0.2.0.xsd");
+    case 0x000201: return QStringLiteral("://schema/pattern/v0.2.1.xsd");
+    case 0x000202: return QStringLiteral("://schema/pattern/v0.2.2.xsd");
+    case 0x000203: return QStringLiteral("://schema/pattern/v0.2.3.xsd");
+    case 0x000204: return QStringLiteral("://schema/pattern/v0.2.4.xsd");
+    case 0x000205: return QStringLiteral("://schema/pattern/v0.2.5.xsd");
+    case 0x000206: return QStringLiteral("://schema/pattern/v0.2.6.xsd");
+    case 0x000207: return QStringLiteral("://schema/pattern/v0.2.7.xsd");
+    case 0x000300: return QStringLiteral("://schema/pattern/v0.3.0.xsd");
+    case 0x000301: return QStringLiteral("://schema/pattern/v0.3.1.xsd");
+    case 0x000302: return QStringLiteral("://schema/pattern/v0.3.2.xsd");
+    case 0x000303: return QStringLiteral("://schema/pattern/v0.3.3.xsd");
+    case 0x000304: return QStringLiteral("://schema/pattern/v0.3.4.xsd");
+    case 0x000305: return QStringLiteral("://schema/pattern/v0.3.5.xsd");
+    case 0x000306: return QStringLiteral("://schema/pattern/v0.3.6.xsd");
+    case 0x000307: return QStringLiteral("://schema/pattern/v0.3.7.xsd");
+    case 0x000308: return QStringLiteral("://schema/pattern/v0.3.8.xsd");
+    case 0x000309: return QStringLiteral("://schema/pattern/v0.3.9.xsd");
+    case 0x000400: return QStringLiteral("://schema/pattern/v0.4.0.xsd");
+    case 0x000401: return QStringLiteral("://schema/pattern/v0.4.1.xsd");
+    case 0x000402: return QStringLiteral("://schema/pattern/v0.4.2.xsd");
+    case 0x000403: return QStringLiteral("://schema/pattern/v0.4.3.xsd");
+    case 0x000404: return QStringLiteral("://schema/pattern/v0.4.4.xsd");
+    case 0x000405: return QStringLiteral("://schema/pattern/v0.4.5.xsd");
+    case 0x000406: return QStringLiteral("://schema/pattern/v0.4.6.xsd");
+    case 0x000407: return QStringLiteral("://schema/pattern/v0.4.7.xsd");
+    case 0x000408: return QStringLiteral("://schema/pattern/v0.4.8.xsd");
+    case 0x000500: return QStringLiteral("://schema/pattern/v0.5.0.xsd");
+    case 0x000501: return QStringLiteral("://schema/pattern/v0.5.1.xsd");
+    case 0x000600: return QStringLiteral("://schema/pattern/v0.6.0.xsd");
+    case 0x000601: return QStringLiteral("://schema/pattern/v0.6.1.xsd");
+    case 0x000602: return QStringLiteral("://schema/pattern/v0.6.2.xsd");
+    case 0x000603: return QStringLiteral("://schema/pattern/v0.6.3.xsd");
+    case 0x000604: return QStringLiteral("://schema/pattern/v0.6.4.xsd");
+    case 0x000605: return QStringLiteral("://schema/pattern/v0.6.5.xsd");
+    case 0x000606: return QStringLiteral("://schema/pattern/v0.6.6.xsd"); ;
+    case 0x000607: return QStringLiteral("://schema/pattern/v0.6.7.xsd"); ;
+    case 0x000608: return QStringLiteral("://schema/pattern/v0.6.8.xsd"); ;
+    case 0x000609:
         qCDebug(PatternConverter, "Current schema - ://schema/pattern/v0.6.9.xsd");
         return CurrentSchema;
     default: InvalidVersion(ver); break;
     }
-    return QString();   // unreachable code
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPatternConverter::applyPatches()
 {
     switch (m_ver) {
-    case (0x000100):
+    case 0x000100:
         toVersion0_1_1();
         validateXMLSchema(getSchema(0x000101), m_convertedFileName);
         [[fallthrough]];
-    case (0x000101):
+    case 0x000101:
         toVersion0_1_2();
         validateXMLSchema(getSchema(0x000102), m_convertedFileName);
         [[fallthrough]];
-    case (0x000102):
+    case 0x000102:
         toVersion0_1_3();
         validateXMLSchema(getSchema(0x000103), m_convertedFileName);
         [[fallthrough]];
-    case (0x000103):
+    case 0x000103:
         toVersion0_1_4();
         validateXMLSchema(getSchema(0x000104), m_convertedFileName);
         [[fallthrough]];
-    case (0x000104):
+    case 0x000104:
         toVersion0_2_0();
         validateXMLSchema(getSchema(0x000200), m_convertedFileName);
         [[fallthrough]];
-    case (0x000200):
+    case 0x000200:
         toVersion0_2_1();
         validateXMLSchema(getSchema(0x000201), m_convertedFileName);
         [[fallthrough]];
-    case (0x000201):
+    case 0x000201:
         toVersion0_2_2();
         validateXMLSchema(getSchema(0x000202), m_convertedFileName);
         [[fallthrough]];
-    case (0x000202):
+    case 0x000202:
         toVersion0_2_3();
         validateXMLSchema(getSchema(0x000203), m_convertedFileName);
         [[fallthrough]];
-    case (0x000203):
+    case 0x000203:
         toVersion0_2_4();
         validateXMLSchema(getSchema(0x000204), m_convertedFileName);
         [[fallthrough]];
-    case (0x000204):
+    case 0x000204:
         toVersion0_2_5();
         validateXMLSchema(getSchema(0x000205), m_convertedFileName);
         [[fallthrough]];
-    case (0x000205):
+    case 0x000205:
         toVersion0_2_6();
         validateXMLSchema(getSchema(0x000206), m_convertedFileName);
         [[fallthrough]];
-    case (0x000206):
+    case 0x000206:
         toVersion0_2_7();
         validateXMLSchema(getSchema(0x000207), m_convertedFileName);
         [[fallthrough]];
-    case (0x000207):
+    case 0x000207:
         toVersion0_3_0();
         validateXMLSchema(getSchema(0x000300), m_convertedFileName);
         [[fallthrough]];
-    case (0x000300):
+    case 0x000300:
         toVersion0_3_1();
         validateXMLSchema(getSchema(0x000301), m_convertedFileName);
         [[fallthrough]];
-    case (0x000301):
+    case 0x000301:
         toVersion0_3_2();
         validateXMLSchema(getSchema(0x000302), m_convertedFileName);
         [[fallthrough]];
-    case (0x000302):
+    case 0x000302:
         toVersion0_3_3();
         validateXMLSchema(getSchema(0x000303), m_convertedFileName);
         [[fallthrough]];
-    case (0x000303):
+    case 0x000303:
         toVersion0_3_4();
         validateXMLSchema(getSchema(0x000304), m_convertedFileName);
         [[fallthrough]];
-    case (0x000304):
+    case 0x000304:
         toVersion0_3_5();
         validateXMLSchema(getSchema(0x000305), m_convertedFileName);
         [[fallthrough]];
-    case (0x000305):
+    case 0x000305:
         toVersion0_3_6();
         validateXMLSchema(getSchema(0x000306), m_convertedFileName);
         [[fallthrough]];
-    case (0x000306):
+    case 0x000306:
         toVersion0_3_7();
         validateXMLSchema(getSchema(0x000307), m_convertedFileName);
         [[fallthrough]];
-    case (0x000307):
+    case 0x000307:
         toVersion0_3_8();
         validateXMLSchema(getSchema(0x000308), m_convertedFileName);
         [[fallthrough]];
-    case (0x000308):
+    case 0x000308:
         toVersion0_3_9();
         validateXMLSchema(getSchema(0x000309), m_convertedFileName);
         [[fallthrough]];
-    case (0x000309):
+    case 0x000309:
         toVersion0_4_0();
         validateXMLSchema(getSchema(0x000400), m_convertedFileName);
         [[fallthrough]];
-    case (0x000400):
+    case 0x000400:
         toVersion0_4_1();
         validateXMLSchema(getSchema(0x000401), m_convertedFileName);
         [[fallthrough]];
-    case (0x000401):
+    case 0x000401:
         toVersion0_4_2();
         validateXMLSchema(getSchema(0x000402), m_convertedFileName);
         [[fallthrough]];
-    case (0x000402):
+    case 0x000402:
         toVersion0_4_3();
         validateXMLSchema(getSchema(0x000403), m_convertedFileName);
         [[fallthrough]];
-    case (0x000403):
+    case 0x000403:
         toVersion0_4_4();
         validateXMLSchema(getSchema(0x000404), m_convertedFileName);
         [[fallthrough]];
-    case (0x000404):
+    case 0x000404:
         toVersion0_4_5();
         validateXMLSchema(getSchema(0x000405), m_convertedFileName);
         [[fallthrough]];
-    case (0x000405):
+    case 0x000405:
         toVersion0_4_6();
         validateXMLSchema(getSchema(0x000406), m_convertedFileName);
         [[fallthrough]];
-    case (0x000406):
+    case 0x000406:
         toVersion0_4_7();
         validateXMLSchema(getSchema(0x000407), m_convertedFileName);
         [[fallthrough]];
-    case (0x000407):
+    case 0x000407:
         toVersion0_4_8();
         validateXMLSchema(getSchema(0x000408), m_convertedFileName);
         [[fallthrough]];
-    case (0x000408):
+    case 0x000408:
         toVersion0_5_0();
         validateXMLSchema(getSchema(0x000500), m_convertedFileName);
         [[fallthrough]];
-    case (0x000500):
+    case 0x000500:
         toVersion0_5_1();
         validateXMLSchema(getSchema(0x000501), m_convertedFileName);
         [[fallthrough]];
-    case (0x000501):
+    case 0x000501:
         toVersion0_6_0();
         validateXMLSchema(getSchema(0x000600), m_convertedFileName);
         [[fallthrough]];
-    case (0x000600):
+    case 0x000600:
         toVersion0_6_1();
         validateXMLSchema(getSchema(0x000601), m_convertedFileName);
         [[fallthrough]];
-    case (0x000601):
+    case 0x000601:
         toVersion0_6_2();
         validateXMLSchema(getSchema(0x000602), m_convertedFileName);
         [[fallthrough]];
-    case (0x000602):
+    case 0x000602:
         toVersion0_6_3();
         validateXMLSchema(getSchema(0x000603), m_convertedFileName);
         [[fallthrough]];
-    case (0x000603):
+    case 0x000603:
         toVersion0_6_4();
         validateXMLSchema(getSchema(0x000604), m_convertedFileName);
         [[fallthrough]];
-    case (0x000604):
+    case 0x000604:
         toVersion0_6_5();
         validateXMLSchema(getSchema(0x000605), m_convertedFileName);
         [[fallthrough]];
-    case (0x000605):
+    case 0x000605:
         toVersion0_6_6();
         validateXMLSchema(getSchema(0x000606), m_convertedFileName);
         [[fallthrough]];
-    case (0x000606):
+    case 0x000606:
         toVersion0_6_7();
         validateXMLSchema(getSchema(0x000607), m_convertedFileName);
         [[fallthrough]];
-    case (0x000607):
+    case 0x000607:
         toVersion0_6_8();
         validateXMLSchema(getSchema(0x000608), m_convertedFileName);
         [[fallthrough]];
-    case (0x000608):
+    case 0x000608:
         toVersion0_6_9();
         validateXMLSchema(getSchema(0x000609), m_convertedFileName);
         [[fallthrough]];
-    case (0x000609): break;
+    case 0x000609: break;
     default: InvalidVersion(m_ver); break;
     }
 }

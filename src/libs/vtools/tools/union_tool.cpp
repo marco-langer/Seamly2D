@@ -746,19 +746,19 @@ void AddNodeToNewPath(
 {
     quint32 id = 0;
     switch (node.GetTypeTool()) {
-    case (Tool::NodePoint):
+    case Tool::NodePoint:
         id = AddNodePoint(node, initData, idTool, children, blockName, dx, dy, pRotate, angle);
         break;
-    case (Tool::NodeArc):
+    case Tool::NodeArc:
         id = AddNodeArc(node, initData, idTool, children, blockName, dx, dy, pRotate, angle);
         break;
-    case (Tool::NodeElArc):
+    case Tool::NodeElArc:
         id = AddNodeElArc(node, initData, idTool, children, blockName, dx, dy, pRotate, angle);
         break;
-    case (Tool::NodeSpline):
+    case Tool::NodeSpline:
         id = AddNodeSpline(node, initData, idTool, children, blockName, dx, dy, pRotate, angle);
         break;
-    case (Tool::NodeSplinePath):
+    case Tool::NodeSplinePath:
         id = AddNodeSplinePath(node, initData, idTool, children, blockName, dx, dy, pRotate, angle);
         break;
     default: qWarning() << "May be wrong tool type!!! Ignoring." << Q_FUNC_INFO; break;
@@ -1145,11 +1145,11 @@ void UpdatePathNode(
     qreal angle)
 {
     switch (node.GetTypeTool()) {
-    case (Tool::NodePoint): UpdateNodePoint(data, node, children, dx, dy, pRotate, angle); break;
-    case (Tool::NodeArc): UpdateNodeArc(data, node, children, dx, dy, pRotate, angle); break;
-    case (Tool::NodeElArc): UpdateNodeElArc(data, node, children, dx, dy, pRotate, angle); break;
-    case (Tool::NodeSpline): UpdateNodeSpline(data, node, children, dx, dy, pRotate, angle); break;
-    case (Tool::NodeSplinePath):
+    case Tool::NodePoint: UpdateNodePoint(data, node, children, dx, dy, pRotate, angle); break;
+    case Tool::NodeArc: UpdateNodeArc(data, node, children, dx, dy, pRotate, angle); break;
+    case Tool::NodeElArc: UpdateNodeElArc(data, node, children, dx, dy, pRotate, angle); break;
+    case Tool::NodeSpline: UpdateNodeSpline(data, node, children, dx, dy, pRotate, angle); break;
+    case Tool::NodeSplinePath:
         UpdateNodeSplinePath(data, node, children, dx, dy, pRotate, angle);
         break;
     default: qWarning() << "May be wrong tool type!!! Ignoring." << Q_FUNC_INFO; break;
