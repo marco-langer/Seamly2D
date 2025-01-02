@@ -571,9 +571,10 @@ QString MeasurementDoc::GenderToStr(const GenderType& sex)
     switch (sex) {
     case GenderType::Male: return GenderMale;
     case GenderType::Female: return GenderFemale;
-    case GenderType::Unknown:
-    default: return GenderUnknown;
+    case GenderType::Unknown: return GenderUnknown;
     }
+
+    Q_UNREACHABLE();
 }
 
 //---------------------------------------------------------------------------------------------------------------------

@@ -212,7 +212,6 @@ bool MainWindowsNoGUI::LayoutSettings(VLayoutGenerator& lGenerator)
             QApplication::alert(this);
         }
         return false;
-    default: break;
     }
     return true;
 }
@@ -229,8 +228,7 @@ void MainWindowsNoGUI::ErrorConsoleMode(const LayoutErrors& state)
             "One or more pattern pieces are bigger than the paper format you selected. Please "
             "select a bigger paper format.");
         break;
-    case LayoutErrors::ProcessStoped:
-    default: break;
+    case LayoutErrors::ProcessStoped: break;
     }
 
     qApp->exit(V_EX_DATAERR);
@@ -1399,8 +1397,7 @@ void MainWindowsNoGUI::SetPrinterSettings(QPrinter* printer, const PrintType& pr
         printer->setOutputFileName("");   // Disable printing to file if was enabled.
         printer->setOutputFormat(QPrinter::NativeFormat);
         break;
-    case PrintType::PrintPreview: /*do nothing*/
-    default: break;
+    case PrintType::PrintPreview: break; /*do nothing*/
     }
 
     printer->setDocName(FileName());

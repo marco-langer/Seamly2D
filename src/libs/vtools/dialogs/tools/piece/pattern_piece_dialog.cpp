@@ -420,8 +420,7 @@ void PatternPieceDialog::ChosenObject(quint32 id, const SceneObject& type)
                 break;
             case (SceneObject::Line):
             case (SceneObject::Piece):
-            case (SceneObject::Unknown):
-            default: qWarning() << "Invalid scene object. Ignore."; break;
+            case (SceneObject::Unknown): qWarning() << "Invalid scene object. Ignore."; break;
             }
         } else {
             if (ui->mainPath_ListWidget->count() > 1) {
@@ -1092,7 +1091,6 @@ void PatternPieceDialog::notchChanged(int index)
             case NotchType::VExternal: ui->vExternalNotch_RadioButton->setChecked(true); break;
             case NotchType::Castle: ui->castleNotch_RadioButton->setChecked(true); break;
             case NotchType::Diamond: ui->diamondNotch_RadioButton->setChecked(true); break;
-            default: break;
             }
 
             // Notch Sub type
@@ -1106,7 +1104,6 @@ void PatternPieceDialog::notchChanged(int index)
                 break;
             case NotchSubType::Bisector: ui->bisector_RadioButton->setChecked(true); break;
             case NotchSubType::Intersection: ui->intersection_RadioButton->setChecked(true); break;
-            default: break;
             }
 
             // Show the seam allowance notch

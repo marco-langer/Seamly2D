@@ -326,7 +326,6 @@ QVector<QPointF> VAbstractPiece::CheckLoops(const QVector<QPointF>& points)
             /*We have not found loop.*/
             ekvPoints.append(points.at(i));
             break;
-        default: break;
         }
     }
     return ekvPoints;
@@ -475,8 +474,8 @@ QVector<QPointF> VAbstractPiece::EkvPoint(
         /*If we have correct lines this means lines lie on a line.*/
         points.append(bigLine1.p2());
         return points;
-    default: break;
     }
+
     return points;
 }
 

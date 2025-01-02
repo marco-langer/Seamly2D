@@ -609,7 +609,6 @@ NodeInfo DialogTool::getNodeInfo(const VPieceNode& node, bool showNotch) const
         case NotchType::Castle: info.icon = "://icon/24x24/castle_notch.png"; break;
         case NotchType::Diamond: info.icon = "://icon/24x24/diamond_notch.png"; break;
         case NotchType::Slit: info.icon = "://icon/24x24/slit_notch.png"; break;
-        default: break;
         }
     }
 

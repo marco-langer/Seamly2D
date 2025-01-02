@@ -533,7 +533,6 @@ void VToolCurveIntersectAxis::InitSegments(
     case GOType::Unknown:
     case GOType::Curve:
     case GOType::Path:
-    case GOType::AllCurves:
-    default: Q_UNREACHABLE(); break;
+    case GOType::AllCurves: Q_UNREACHABLE(); break;
     }
 }

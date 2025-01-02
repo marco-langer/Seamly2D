@@ -412,10 +412,9 @@ QString notchTypeToString(NotchType type)
     case NotchType::VExternal: return strVExternal;
     case NotchType::Castle: return strCastle;
     case NotchType::Diamond: return strDiamond;
-    default: break;
     }
 
-    return strSlit;
+    Q_UNREACHABLE();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -448,10 +447,9 @@ QString notchSubTypeToString(NotchSubType type)
     case NotchSubType::Straightforward: return strStraightforward;
     case NotchSubType::Bisector: return strBisector;
     case NotchSubType::Intersection: return strIntersection;
-    default: break;
     }
 
-    return strStraightforward;
+    Q_UNREACHABLE();
 }
 
 //---------------------------------------------------------------------------------------------------------------------

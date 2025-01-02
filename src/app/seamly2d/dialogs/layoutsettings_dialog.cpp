@@ -783,9 +783,9 @@ QSizeF LayoutSettingsDialog::Template()
         SetAdditionalOptions(true);
         return getTemplateSize(temp, paperUnit);
     case PaperSizeFormat::Custom: return getTemplateSize(temp, paperUnit);
-    default: break;
     }
-    return QSizeF();
+
+    Q_UNREACHABLE();
 }
 
 /**
