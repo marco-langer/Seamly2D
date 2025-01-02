@@ -161,11 +161,9 @@ void noisyFailureMsgHandler(QtMsgType type, const QMessageLogContext& context, c
     case QtFatalMsg:
         vStdErr() << QApplication::translate("mNoisyHandler", "FATAL:") << msg << "\n";
         break;
-#if QT_VERSION > QT_VERSION_CHECK(5, 4, 2)
     case QtInfoMsg:
         vStdOut() << QApplication::translate("mNoisyHandler", "INFO:") << msg << "\n";
         break;
-#endif
     default: break;
     }
 
@@ -189,12 +187,10 @@ void noisyFailureMsgHandler(QtMsgType type, const QMessageLogContext& context, c
             messageBox.setWindowTitle(QApplication::translate("mNoisyHandler", "Fatal Error"));
             messageBox.setIcon(QMessageBox::Critical);
             break;
-#if QT_VERSION > QT_VERSION_CHECK(5, 4, 2)
         case QtInfoMsg:
             messageBox.setWindowTitle(QApplication::translate("mNoisyHandler", "Information"));
             messageBox.setIcon(QMessageBox::Information);
             break;
-#endif
         case QtDebugMsg:
             Q_UNREACHABLE();   //-V501
             break;
