@@ -48,7 +48,7 @@ class AddToGroupDialog : public DialogTool
 
 public:
     AddToGroupDialog(VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~AddToGroupDialog();
+    ~AddToGroupDialog() override;
 
     void fillNameBox();
 

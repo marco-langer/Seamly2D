@@ -74,7 +74,7 @@ class DialogRotation : public DialogTool
 public:
     explicit DialogRotation(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogRotation();
+    ~DialogRotation() override;
 
     quint32 getOriginPointId() const;
     void setOriginPointId(const quint32& value);

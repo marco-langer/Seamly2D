@@ -75,7 +75,7 @@ class DialogCubicBezier : public DialogTool
 public:
     explicit DialogCubicBezier(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogCubicBezier();
+    ~DialogCubicBezier() override;
 
     VCubicBezier GetSpline() const;
     void SetSpline(const VCubicBezier& spline);

@@ -71,7 +71,7 @@ class InsertNodesDialog : public DialogTool
 
 public:
     explicit InsertNodesDialog(const VContainer* data, quint32 toolId, QWidget* parent = nullptr);
-    virtual ~InsertNodesDialog();
+    ~InsertNodesDialog() override;
 
     void SetPiecesList(const QVector<quint32>& list) override;
 

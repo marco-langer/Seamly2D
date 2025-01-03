@@ -71,7 +71,7 @@ class DialogTrueDarts : public DialogTool
 
 public:
     DialogTrueDarts(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    ~DialogTrueDarts();
+    ~DialogTrueDarts() override;
 
     QString GetFirstNewDartPointName();
     QString GetSecondNewDartPointName();

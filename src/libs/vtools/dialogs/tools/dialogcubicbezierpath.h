@@ -75,7 +75,7 @@ class DialogCubicBezierPath : public DialogTool
 public:
     explicit DialogCubicBezierPath(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogCubicBezierPath();
+    ~DialogCubicBezierPath() override;
 
     VCubicBezierPath GetPath() const;
     void SetPath(const VCubicBezierPath& value);

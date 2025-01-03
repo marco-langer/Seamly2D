@@ -50,7 +50,7 @@ class ImageDialog : public QDialog
 
 public:
     explicit ImageDialog(DraftImage image, qreal minDimension, qreal maxDimension);
-    virtual ~ImageDialog();
+    ~ImageDialog() override;
 
     DraftImage getImage() const;
     void setImage(DraftImage image);

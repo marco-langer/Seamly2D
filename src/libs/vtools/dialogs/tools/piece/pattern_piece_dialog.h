@@ -92,7 +92,7 @@ public:
     PatternPieceDialog(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     // PatternPieceDialog(const VContainer *data, const quint32 &toolId,
     //                    QWidget *parent = nullptr);
-    virtual ~PatternPieceDialog();
+    ~PatternPieceDialog() override;
 
     void pageChanged(QListWidgetItem* current, QListWidgetItem* previous);
     void enableApply(bool enable);
