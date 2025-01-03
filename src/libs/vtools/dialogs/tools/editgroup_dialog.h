@@ -73,7 +73,7 @@ class EditGroupDialog : public DialogTool
 public:
     explicit EditGroupDialog(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~EditGroupDialog();
+    ~EditGroupDialog() override;
 
     void setName(const QString& name);
     QString getName() const;

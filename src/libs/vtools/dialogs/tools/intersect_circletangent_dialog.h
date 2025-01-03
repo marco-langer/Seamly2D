@@ -53,7 +53,7 @@ class IntersectCircleTangentDialog : public DialogTool
 public:
     IntersectCircleTangentDialog(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    ~IntersectCircleTangentDialog();
+    ~IntersectCircleTangentDialog() override;
 
     void SetPointName(const QString& value);
 

@@ -67,7 +67,7 @@ class DialogArcWithLength : public DialogTool
 
 public:
     DialogArcWithLength(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    ~DialogArcWithLength();
+    ~DialogArcWithLength() override;
 
     VArc getArc() const;
     void setArc(const VArc& arc);

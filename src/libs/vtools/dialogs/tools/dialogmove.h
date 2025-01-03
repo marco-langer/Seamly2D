@@ -74,7 +74,7 @@ class DialogMove : public DialogTool
 
 public:
     explicit DialogMove(const VContainer* data, quint32 toolId, QWidget* parent = nullptr);
-    virtual ~DialogMove();
+    ~DialogMove() override;
 
     QString GetAngle() const;
     void SetAngle(const QString& value);

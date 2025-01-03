@@ -76,7 +76,7 @@ class DialogMirrorByAxis : public DialogTool
 public:
     explicit DialogMirrorByAxis(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogMirrorByAxis();
+    ~DialogMirrorByAxis() override;
 
     quint32 getOriginPointId() const;
     void setOriginPointId(quint32 value);

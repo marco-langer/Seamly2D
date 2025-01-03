@@ -73,8 +73,7 @@ class DialogPointFromArcAndTangent : public DialogTool
 public:
     DialogPointFromArcAndTangent(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    ~DialogPointFromArcAndTangent();
-
+    ~DialogPointFromArcAndTangent() override;
 
     void SetPointName(const QString& value);
 

@@ -63,7 +63,7 @@ class DialogInternalPath : public DialogTool
     Q_OBJECT
 public:
     explicit DialogInternalPath(const VContainer* data, quint32 toolId, QWidget* parent = nullptr);
-    virtual ~DialogInternalPath();
+    ~DialogInternalPath() override;
 
     void EnbleShowMode(bool disable);
 

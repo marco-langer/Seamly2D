@@ -76,7 +76,7 @@ class DialogMirrorByLine : public DialogTool
 public:
     explicit DialogMirrorByLine(
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
-    virtual ~DialogMirrorByLine();
+    ~DialogMirrorByLine() override;
 
     quint32 getFirstLinePointId() const;
     void setFirstLinePointId(quint32 value);
