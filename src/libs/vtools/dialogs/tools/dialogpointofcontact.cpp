@@ -59,7 +59,6 @@
 #include <QPlainTextEdit>
 #include <QPointer>
 #include <QPushButton>
-#include <QSet>
 #include <QToolButton>
 
 #include "../../visualization/line/vistoolpointofcontact.h"
@@ -70,6 +69,8 @@
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
 #include "../vpatterndb/vtranslatevars.h"
+#include "core_utils/algorithm.h"
+
 #include "ui_dialogpointofcontact.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -149,13 +150,13 @@ void DialogPointOfContact::FormulaTextChanged() { this->FormulaChangedPlainText(
 //---------------------------------------------------------------------------------------------------------------------
 void DialogPointOfContact::PointNameChanged()
 {
-    QSet<quint32> set;
-    set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
-    set.insert(getCurrentObjectId(ui->comboBoxSecondPoint));
-    set.insert(getCurrentObjectId(ui->comboBoxCenter));
+    const bool areIdsUnique{ areUnique(
+        getCurrentObjectId(ui->comboBoxFirstPoint),
+        getCurrentObjectId(ui->comboBoxSecondPoint),
+        getCurrentObjectId(ui->comboBoxCenter)) };
 
     QColor color = okColor;
-    if (set.size() != 3) {
+    if (!areIdsUnique) {
         flagError = false;
         color = errorColor;
     } else {
@@ -222,12 +223,12 @@ void DialogPointOfContact::ChosenObject(quint32 id, const SceneObject& type)
                 }
                 break;
             case 2: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
-                set.insert(getCurrentObjectId(ui->comboBoxSecondPoint));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxFirstPoint),
+                    getCurrentObjectId(ui->comboBoxSecondPoint),
+                    id) };
 
-                if (set.size() == 3) {
+                if (areIdsUnique) {
                     if (SetObject(id, ui->comboBoxCenter, "")) {
                         line->setRadiusId(id);
                         line->RefreshGeometry();

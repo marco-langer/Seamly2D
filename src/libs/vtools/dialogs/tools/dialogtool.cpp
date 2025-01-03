@@ -70,6 +70,7 @@
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QSet>
 #include <QSharedPointer>
 #include <QShowEvent>
 #include <QSize>

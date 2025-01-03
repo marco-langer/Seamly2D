@@ -59,7 +59,6 @@
 #include <QPoint>
 #include <QPointF>
 #include <QPointer>
-#include <QSet>
 #include <QSharedPointer>
 
 #include "../../visualization/line/visline.h"
@@ -70,6 +69,8 @@
 #include "../vgeometry/vpointf.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
+#include "core_utils/algorithm.h"
+
 #include "dialogtool.h"
 #include "ui_dialogheight.h"
 
@@ -271,12 +272,12 @@ void DialogHeight::ChosenObject(quint32 id, const SceneObject& type)
                 }
                 break;
             case 2: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxBasePoint));
-                set.insert(getCurrentObjectId(ui->comboBoxP1Line));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxBasePoint),
+                    getCurrentObjectId(ui->comboBoxP1Line),
+                    id) };
 
-                if (set.size() == 3) {
+                if (areIdsUnique) {
                     if (SetObject(id, ui->comboBoxP2Line, "")) {
                         line->setLineP2Id(id);
                         line->RefreshGeometry();
@@ -310,21 +311,18 @@ void DialogHeight::SaveData()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogHeight::PointNameChanged()
 {
-    QSet<quint32> set;
     const quint32 basePointId = getCurrentObjectId(ui->comboBoxBasePoint);
     const quint32 p1LineId = getCurrentObjectId(ui->comboBoxP1Line);
     const quint32 p2LineId = getCurrentObjectId(ui->comboBoxP2Line);
 
-    set.insert(basePointId);
-    set.insert(p1LineId);
-    set.insert(p2LineId);
+    const bool areIdsUnique{ areUnique(basePointId, p1LineId, p2LineId) };
 
     const QPointF basePoint = static_cast<QPointF>(*data->GeometricObject<VPointF>(basePointId));
     const QPointF p1Line = static_cast<QPointF>(*data->GeometricObject<VPointF>(p1LineId));
     const QPointF p2Line = static_cast<QPointF>(*data->GeometricObject<VPointF>(p2LineId));
 
     QColor color = okColor;
-    if (set.size() != 3 || VGObject::ClosestPoint(QLineF(p1Line, p2Line), basePoint) == QPointF()) {
+    if (!areIdsUnique || VGObject::ClosestPoint(QLineF(p1Line, p2Line), basePoint) == QPointF()) {
         flagError = false;
         color = errorColor;
     } else {

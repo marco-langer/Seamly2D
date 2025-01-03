@@ -69,6 +69,8 @@
 #include "../vgeometry/../ifc/ifcdef.h"
 #include "../vmisc/vabstractapplication.h"
 #include "../vpatterndb/vcontainer.h"
+#include "core_utils/algorithm.h"
+
 #include "dialogtool.h"
 #include "ui_dialogtruedarts.h"
 
@@ -294,12 +296,12 @@ void DialogTrueDarts::ChosenObject(quint32 id, const SceneObject& type)
                 }
                 break;
             case 2: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
-                set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxFirstBasePoint),
+                    getCurrentObjectId(ui->comboBoxSecondBasePoint),
+                    id) };
 
-                if (set.size() == 3) {
+                if (areIdsUnique) {
                     if (SetObject(
                             id, ui->comboBoxFirstDartPoint, tr("Select the second dart point"))) {
                         number++;
@@ -310,13 +312,13 @@ void DialogTrueDarts::ChosenObject(quint32 id, const SceneObject& type)
                 break;
             }
             case 3: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
-                set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
-                set.insert(getCurrentObjectId(ui->comboBoxFirstDartPoint));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxFirstBasePoint),
+                    getCurrentObjectId(ui->comboBoxSecondBasePoint),
+                    getCurrentObjectId(ui->comboBoxFirstDartPoint),
+                    id) };
 
-                if (set.size() == 4) {
+                if (areIdsUnique) {
                     if (SetObject(
                             id, ui->comboBoxSecondDartPoint, tr("Select the third dart point"))) {
                         number++;
@@ -327,14 +329,14 @@ void DialogTrueDarts::ChosenObject(quint32 id, const SceneObject& type)
                 break;
             }
             case 4: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
-                set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
-                set.insert(getCurrentObjectId(ui->comboBoxFirstDartPoint));
-                set.insert(getCurrentObjectId(ui->comboBoxSecondDartPoint));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxFirstBasePoint),
+                    getCurrentObjectId(ui->comboBoxSecondBasePoint),
+                    getCurrentObjectId(ui->comboBoxFirstDartPoint),
+                    getCurrentObjectId(ui->comboBoxSecondDartPoint),
+                    id) };
 
-                if (set.size() == 5) {
+                if (areIdsUnique) {
                     if (SetObject(id, ui->comboBoxThirdDartPoint, "")) {
                         points->setD3PointId(id);
                         points->RefreshGeometry();
@@ -353,15 +355,15 @@ void DialogTrueDarts::ChosenObject(quint32 id, const SceneObject& type)
 //---------------------------------------------------------------------------------------------------------------------
 void DialogTrueDarts::PointNameChanged()
 {
-    QSet<quint32> set;
-    set.insert(getCurrentObjectId(ui->comboBoxFirstBasePoint));
-    set.insert(getCurrentObjectId(ui->comboBoxSecondBasePoint));
-    set.insert(getCurrentObjectId(ui->comboBoxFirstDartPoint));
-    set.insert(getCurrentObjectId(ui->comboBoxSecondDartPoint));
-    set.insert(getCurrentObjectId(ui->comboBoxThirdDartPoint));
+    const bool areIdsUnique{ areUnique(
+        getCurrentObjectId(ui->comboBoxFirstBasePoint),
+        getCurrentObjectId(ui->comboBoxSecondBasePoint),
+        getCurrentObjectId(ui->comboBoxFirstDartPoint),
+        getCurrentObjectId(ui->comboBoxSecondDartPoint),
+        getCurrentObjectId(ui->comboBoxThirdDartPoint)) };
 
     QColor color = okColor;
-    if (set.size() != 5) {
+    if (!areIdsUnique) {
         flagError = false;
         color = errorColor;
     } else {
