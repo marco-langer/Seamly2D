@@ -68,7 +68,9 @@
 
 #include "../ifc/ifcdef.h"
 #include "../vpatterndb/pmsystems.h"
+
 #include "def.h"
+#include "scassert.h"
 
 namespace {
 const QString settingImagesPath = QStringLiteral("paths/images");
@@ -1011,6 +1013,7 @@ int VCommonSettings::getExportQuality() const
 //---------------------------------------------------------------------------------------------------------------------
 void VCommonSettings::setExportQuality(const int& value)
 {
+    SCASSERT(value >= -1 && value <= 100);
     setValue(settingGraphicsViewExportQuality, value);
 }
 
