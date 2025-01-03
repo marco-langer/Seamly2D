@@ -61,7 +61,6 @@
 #include <QPointF>
 #include <QPointer>
 #include <QPushButton>
-#include <QSet>
 #include <QSharedPointer>
 #include <QTimer>
 #include <QToolButton>
@@ -78,6 +77,8 @@
 #include "../vpatterndb/vtranslatevars.h"
 #include "../vwidgets/vabstractmainwindow.h"
 #include "../vwidgets/vmaingraphicsscene.h"
+#include "core_utils/algorithm.h"
+
 #include "ui_dialoglineintersectaxis.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -360,12 +361,12 @@ void DialogLineIntersectAxis::ChosenObject(quint32 id, const SceneObject& type)
                 }
                 break;
             case 2: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxFirstLinePoint));
-                set.insert(getCurrentObjectId(ui->comboBoxSecondLinePoint));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxFirstLinePoint),
+                    getCurrentObjectId(ui->comboBoxSecondLinePoint),
+                    id) };
 
-                if (set.size() == 3) {
+                if (areIdsUnique) {
                     if (SetObject(id, ui->comboBoxAxisPoint, "")) {
                         line->setAxisPointId(id);
                         line->RefreshGeometry();
@@ -405,13 +406,13 @@ void DialogLineIntersectAxis::DeployAngleTextEdit()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogLineIntersectAxis::PointNameChanged()
 {
-    QSet<quint32> set;
-    set.insert(getCurrentObjectId(ui->comboBoxFirstLinePoint));
-    set.insert(getCurrentObjectId(ui->comboBoxSecondLinePoint));
-    set.insert(getCurrentObjectId(ui->comboBoxAxisPoint));
+    const bool areIdsUnique{ areUnique(
+        getCurrentObjectId(ui->comboBoxFirstLinePoint),
+        getCurrentObjectId(ui->comboBoxSecondLinePoint),
+        getCurrentObjectId(ui->comboBoxAxisPoint)) };
 
     QColor color = okColor;
-    if (set.size() != 3) {
+    if (!areIdsUnique) {
         flagError = false;
         color = errorColor;
     } else {

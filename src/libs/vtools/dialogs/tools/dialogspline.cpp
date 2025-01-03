@@ -60,7 +60,6 @@
 #include <QPlainTextEdit>
 #include <QPointer>
 #include <QPushButton>
-#include <QSet>
 #include <QSharedPointer>
 #include <QTimer>
 #include <QToolButton>
@@ -536,10 +535,6 @@ VSpline DialogSpline::CurrentSpline() const
 //---------------------------------------------------------------------------------------------------------------------
 void DialogSpline::PointNameChanged()
 {
-    QSet<quint32> set;
-    set.insert(getCurrentObjectId(ui->comboBoxP1));
-    set.insert(getCurrentObjectId(ui->comboBoxP4));
-
     QColor color = okColor;
     if (getCurrentObjectId(ui->comboBoxP1) == getCurrentObjectId(ui->comboBoxP4)) {
         flagError = false;

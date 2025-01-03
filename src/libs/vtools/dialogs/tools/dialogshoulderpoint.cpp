@@ -59,7 +59,6 @@
 #include <QPlainTextEdit>
 #include <QPointer>
 #include <QPushButton>
-#include <QSet>
 #include <QToolButton>
 
 #include "../../tools/vabstracttool.h"
@@ -71,6 +70,8 @@
 #include "../vmisc/vabstractapplication.h"
 #include "../vmisc/vcommonsettings.h"
 #include "../vpatterndb/vtranslatevars.h"
+#include "core_utils/algorithm.h"
+
 #include "ui_dialogshoulderpoint.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -166,13 +167,13 @@ void DialogShoulderPoint::FormulaTextChanged() { this->FormulaChangedPlainText()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogShoulderPoint::PointNameChanged()
 {
-    QSet<quint32> set;
-    set.insert(getCurrentObjectId(ui->comboBoxP1Line));
-    set.insert(getCurrentObjectId(ui->comboBoxP2Line));
-    set.insert(getCurrentObjectId(ui->comboBoxP3));
+    const bool areIdsUnique{ areUnique(
+        getCurrentObjectId(ui->comboBoxP1Line),
+        getCurrentObjectId(ui->comboBoxP2Line),
+        getCurrentObjectId(ui->comboBoxP3)) };
 
     QColor color = okColor;
-    if (set.size() != 3) {
+    if (!areIdsUnique) {
         flagError = false;
         color = errorColor;
     } else {
@@ -240,12 +241,12 @@ void DialogShoulderPoint::ChosenObject(quint32 id, const SceneObject& type)
                 }
                 break;
             case 2: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxP3));
-                set.insert(getCurrentObjectId(ui->comboBoxP1Line));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxP3),
+                    getCurrentObjectId(ui->comboBoxP1Line),
+                    id) };
 
-                if (set.size() == 3) {
+                if (areIdsUnique) {
                     if (SetObject(id, ui->comboBoxP2Line, "")) {
                         line->setLineP2Id(id);
                         line->RefreshGeometry();

@@ -62,6 +62,8 @@
 #include "../../visualization/visualization.h"
 #include "../ifc/xml/vabstractpattern.h"
 #include "../vmisc/vabstractapplication.h"
+#include "core_utils/algorithm.h"
+
 #include "dialogtool.h"
 #include "ui_dialogtriangle.h"
 
@@ -152,12 +154,12 @@ void DialogTriangle::ChosenObject(quint32 id, const SceneObject& type)
                 }
                 break;
             case 2: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxAxisP1));
-                set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxAxisP1),
+                    getCurrentObjectId(ui->comboBoxAxisP2),
+                    id) };
 
-                if (set.size() == 3) {
+                if (areIdsUnique) {
                     if (SetObject(id, ui->comboBoxFirstPoint, tr("Select second point"))) {
                         number++;
                         line->setHypotenuseP1Id(id);
@@ -166,13 +168,13 @@ void DialogTriangle::ChosenObject(quint32 id, const SceneObject& type)
                 }
             } break;
             case 3: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxAxisP1));
-                set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
-                set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
-                set.insert(id);
+                const bool areIdsUnique{ areUnique(
+                    getCurrentObjectId(ui->comboBoxAxisP1),
+                    getCurrentObjectId(ui->comboBoxAxisP2),
+                    getCurrentObjectId(ui->comboBoxFirstPoint),
+                    id) };
 
-                if (set.size() == 4) {
+                if (areIdsUnique) {
                     if (SetObject(id, ui->comboBoxSecondPoint, "")) {
                         line->setHypotenuseP2Id(id);
                         line->RefreshGeometry();
@@ -205,14 +207,13 @@ void DialogTriangle::SaveData()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogTriangle::PointNameChanged()
 {
-    QSet<quint32> set;
-    set.insert(getCurrentObjectId(ui->comboBoxFirstPoint));
-    set.insert(getCurrentObjectId(ui->comboBoxSecondPoint));
-    set.insert(getCurrentObjectId(ui->comboBoxAxisP1));
-    set.insert(getCurrentObjectId(ui->comboBoxAxisP2));
+    const QSet<quint32> ids{ getCurrentObjectId(ui->comboBoxFirstPoint),
+                             getCurrentObjectId(ui->comboBoxSecondPoint),
+                             getCurrentObjectId(ui->comboBoxAxisP1),
+                             getCurrentObjectId(ui->comboBoxAxisP2) };
 
     QColor color = okColor;
-    if (set.size() < 3)   // Need tree or more unique points for creation triangle
+    if (ids.size() < 3)   // Need tree or more unique points for creation triangle
     {
         flagError = false;
         color = errorColor;

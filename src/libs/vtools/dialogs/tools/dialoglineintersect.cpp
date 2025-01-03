@@ -171,13 +171,12 @@ void DialogLineIntersect::ChosenObject(quint32 id, const SceneObject& type)
                 }
                 break;
             case 3: {
-                QSet<quint32> set;
-                set.insert(getCurrentObjectId(ui->comboBoxP1Line1));
-                set.insert(getCurrentObjectId(ui->comboBoxP2Line1));
-                set.insert(getCurrentObjectId(ui->comboBoxP1Line2));
-                set.insert(id);
+                const QSet<quint32> ids{ getCurrentObjectId(ui->comboBoxP1Line1),
+                                         getCurrentObjectId(ui->comboBoxP2Line1),
+                                         getCurrentObjectId(ui->comboBoxP1Line2),
+                                         id };
 
-                if (set.size() >= 3) {
+                if (ids.size() >= 3) {
                     if (SetObject(id, ui->comboBoxP2Line2, "")) {
                         line->setLine2P2Id(id);
                         line->RefreshGeometry();
@@ -248,16 +247,12 @@ void DialogLineIntersect::PointChanged()
 //---------------------------------------------------------------------------------------------------------------------
 void DialogLineIntersect::PointNameChanged()
 {
-    QSet<quint32> set;
     const quint32 p1Line1Id = getCurrentObjectId(ui->comboBoxP1Line1);
     const quint32 p2Line1Id = getCurrentObjectId(ui->comboBoxP2Line1);
     const quint32 p1Line2Id = getCurrentObjectId(ui->comboBoxP1Line2);
     const quint32 p2Line2Id = getCurrentObjectId(ui->comboBoxP2Line2);
 
-    set.insert(p1Line1Id);
-    set.insert(p2Line1Id);
-    set.insert(p1Line2Id);
-    set.insert(p2Line2Id);
+    const QSet<quint32> ids{ p1Line1Id, p2Line1Id, p1Line2Id, p2Line2Id };
 
     const auto& p1Line1{ *data->GeometricObject<VPointF>(p1Line1Id) };
     const auto& p2Line1{ *data->GeometricObject<VPointF>(p2Line1Id) };
@@ -270,7 +265,7 @@ void DialogLineIntersect::PointNameChanged()
     QLineF::IntersectType intersect = line1.intersects(line2, &fPoint);
 
     QColor color = okColor;
-    if (set.size() < 3 || intersect == QLineF::NoIntersection) {
+    if (ids.size() < 3 || intersect == QLineF::NoIntersection) {
         flagError = false;
         color = errorColor;
     } else {
