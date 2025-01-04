@@ -6565,12 +6565,12 @@ void MainWindow::exportDraftBlocksAs()
         QRectF rect;
         rect = m_draftScene->itemsBoundingRect();
         m_draftScene->update(rect);
-        QGraphicsRectItem* paper = new QGraphicsRectItem(rect);
+        QGraphicsRectItem paper{ rect };
         QMarginsF margins = QMarginsF(0, 0, 0, 0);
 
         switch (dialog.format()) {
         case LayoutExportFormat::SVG: {
-            exportSVG(filename, paper, m_draftScene);
+            exportSVG(filename, &paper, m_draftScene);
             break;
         }
         case LayoutExportFormat::PNG: {
@@ -6594,17 +6594,17 @@ void MainWindow::exportDraftBlocksAs()
             break;
         }
         case LayoutExportFormat::PDF: {
-            exportPDF(filename, paper, m_draftScene, true, margins);
+            exportPDF(filename, &paper, m_draftScene, true, margins);
             break;
         }
         case LayoutExportFormat::PDFTiled:
         case LayoutExportFormat::OBJ:
         case LayoutExportFormat::PS: {
-            exportPS(filename, paper, m_draftScene, true, margins);
+            exportPS(filename, &paper, m_draftScene, true, margins);
             break;
         }
         case LayoutExportFormat::EPS: {
-            exportEPS(filename, paper, m_draftScene, true, margins);
+            exportEPS(filename, &paper, m_draftScene, true, margins);
             break;
         }
         case LayoutExportFormat::DXF_AC1006_Flat:
