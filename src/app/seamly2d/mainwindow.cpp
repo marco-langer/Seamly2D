@@ -93,6 +93,7 @@
 #include "dialogs/calculator_dialog.h"
 #include "dialogs/decimalchart_dialog.h"
 #include "dialogs/dialogs.h"
+#include "dialogs/export_layout_dialog.h"
 #include "options.h"
 #include "tools/nodeDetails/anchorpoint_tool.h"
 #include "tools/nodeDetails/vtoolinternalpath.h"
@@ -6435,8 +6436,7 @@ void MainWindow::exportLayoutAs()
             m_ui->exportLayout_ToolButton->setChecked(false);
             return;
         }
-
-        ExportData(QVector<VLayoutPiece>(), dialog);
+        ExportData(QVector<VLayoutPiece>(), dialog.options());
     }
 
     catch (const VException& exception) {
@@ -6505,7 +6505,7 @@ void MainWindow::exportPiecesAs()
             return;
         }
 
-        ExportData(pieceList, dialog);
+        ExportData(pieceList, dialog.options());
     }
 
     catch (const VException& exception) {
@@ -6558,9 +6558,9 @@ void MainWindow::exportDraftBlocksAs()
 
     if (dialog.exec() == QDialog::Accepted) {
         const QString filename = QString("%1/%2%3").arg(
-            dialog.path(),                                              // 1
-            dialog.fileName(),                                          // 2
-            ExportLayoutDialog::exportFormatSuffix(dialog.format()));   // 3
+            dialog.path(),                          // 1
+            dialog.fileName(),                      // 2
+            exportFormatSuffix(dialog.format()));   // 3
 
         QRectF rect;
         rect = m_draftScene->itemsBoundingRect();
@@ -6948,6 +6948,7 @@ void MainWindow::zoomFirstShow()
 //---------------------------------------------------------------------------------------------------------------------
 void MainWindow::DoExport(const VCommandLinePtr& expParams)
 {
+    // TODO remove ExportLayoutDialog from this function, it is not shown anyway
     const QHash<quint32, VPiece>& pieces = pattern->DataPieces();
     if (!qApp->getOpeningPattern()) {
         if (pieces.isEmpty()) {
@@ -6967,7 +6968,7 @@ void MainWindow::DoExport(const VCommandLinePtr& expParams)
             dialog.setBinaryDXFFormat(expParams->IsBinaryDXF());
             dialog.setTextAsPaths(expParams->isTextAsPaths());
 
-            ExportData(pieceList, dialog);
+            ExportData(pieceList, dialog.options());
         }
 
         catch (const VException& exception) {
@@ -6991,7 +6992,7 @@ void MainWindow::DoExport(const VCommandLinePtr& expParams)
                 dialog.selectFormat(static_cast<LayoutExportFormat>(expParams->OptExportType()));
                 dialog.setBinaryDXFFormat(expParams->IsBinaryDXF());
 
-                ExportData(pieceList, dialog);
+                ExportData(pieceList, dialog.options());
             }
 
             catch (const VException& exception) {

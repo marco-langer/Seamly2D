@@ -37,12 +37,12 @@
 #include "../vmisc/vsettings.h"
 #include "../vwidgets/export_format_combobox.h"
 #include "../vwidgets/page_format_combobox.h"
+
 #include "ui_export_layout_dialog.h"
 
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QProcess>
 #include <QRegularExpression>
 #include <QSpinBox>
 #include <QtDebug>
@@ -319,53 +319,13 @@ void ExportLayoutDialog::setDestinationPath(const QString& cmdDestinationPath)
 Draw ExportLayoutDialog::mode() const { return m_mode; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString ExportLayoutDialog::exportFormatSuffix(LayoutExportFormat format)
-{
-    switch (format) {
-    case LayoutExportFormat::SVG: return ".svg";
-    case LayoutExportFormat::PDF:
-    case LayoutExportFormat::PDFTiled: return ".pdf";
-    case LayoutExportFormat::PNG: return ".png";
-    case LayoutExportFormat::JPG: return ".jpg";
-    case LayoutExportFormat::BMP: return ".bmp";
-    case LayoutExportFormat::PPM: return ".ppm";
-    case LayoutExportFormat::OBJ: return ".obj";
-    case LayoutExportFormat::PS: return ".ps";
-    case LayoutExportFormat::EPS: return ".eps";
-    case LayoutExportFormat::TIF: return ".tif";
-    case LayoutExportFormat::DXF_AC1006_Flat:
-    case LayoutExportFormat::DXF_AC1009_Flat:
-    case LayoutExportFormat::DXF_AC1012_Flat:
-    case LayoutExportFormat::DXF_AC1014_Flat:
-    case LayoutExportFormat::DXF_AC1015_Flat:
-    case LayoutExportFormat::DXF_AC1018_Flat:
-    case LayoutExportFormat::DXF_AC1021_Flat:
-    case LayoutExportFormat::DXF_AC1024_Flat:
-    case LayoutExportFormat::DXF_AC1027_Flat:
-    case LayoutExportFormat::DXF_AC1006_AAMA:
-    case LayoutExportFormat::DXF_AC1009_AAMA:
-    case LayoutExportFormat::DXF_AC1012_AAMA:
-    case LayoutExportFormat::DXF_AC1014_AAMA:
-    case LayoutExportFormat::DXF_AC1015_AAMA:
-    case LayoutExportFormat::DXF_AC1018_AAMA:
-    case LayoutExportFormat::DXF_AC1021_AAMA:
-    case LayoutExportFormat::DXF_AC1024_AAMA:
-    case LayoutExportFormat::DXF_AC1027_AAMA:
-    case LayoutExportFormat::DXF_AC1006_ASTM:
-    case LayoutExportFormat::DXF_AC1009_ASTM:
-    case LayoutExportFormat::DXF_AC1012_ASTM:
-    case LayoutExportFormat::DXF_AC1014_ASTM:
-    case LayoutExportFormat::DXF_AC1015_ASTM:
-    case LayoutExportFormat::DXF_AC1018_ASTM:
-    case LayoutExportFormat::DXF_AC1021_ASTM:
-    case LayoutExportFormat::DXF_AC1024_ASTM:
-    case LayoutExportFormat::DXF_AC1027_ASTM: return ".dxf";
-    default: return QString();
-    }
-}
-
-//---------------------------------------------------------------------------------------------------------------------
 ExportLayoutDialog::~ExportLayoutDialog() { delete ui; }
+
+LayoutExportOptions ExportLayoutDialog::options() const
+{
+    return LayoutExportOptions{ path(), fileName(),          format(),
+                                mode(), isBinaryDXFFormat(), isTextAsPaths() };
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 QString ExportLayoutDialog::path() const { return ui->path_LineEdit->text(); }

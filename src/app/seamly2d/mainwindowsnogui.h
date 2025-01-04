@@ -61,7 +61,8 @@
 #include "../vlayout/vlayoutpiece.h"
 #include "../vpatterndb/vcontainer.h"
 #include "../vwidgets/vabstractmainwindow.h"
-#include "dialogs/export_layout_dialog.h"
+
+#include "layout_export_options.h"
 #include "xml/vpattern.h"
 
 class QGraphicsScene;
@@ -141,7 +142,8 @@ protected:
 
     static QVector<VLayoutPiece> preparePiecesForLayout(const QHash<quint32, VPiece>& pieces);
 
-    void ExportData(const QVector<VLayoutPiece>& pieceList, const ExportLayoutDialog& dialog);
+    void
+    ExportData(const QVector<VLayoutPiece>& pieceList, const LayoutExportOptions& exportOptions);
 
     void InitTempLayoutScene();
     virtual void CleanLayout() = 0;
@@ -216,7 +218,7 @@ private:
     bool IsPagesFit(const QSizeF& printPaper) const;
 
     void ExportScene(
-        const ExportLayoutDialog& dialog,
+        const LayoutExportOptions& exportOptions,
         const QList<QGraphicsScene*>& scenes,
         const QList<QGraphicsItem*>& papers,
         const QList<QGraphicsItem*>& shadows,
@@ -225,16 +227,16 @@ private:
         const QMarginsF& margins) const;
 
     void ExportApparelLayout(
-        const ExportLayoutDialog& dialog,
+        const LayoutExportOptions& exportOptions,
         const QVector<VLayoutPiece>& pieces,
         const QString& name,
         const QSize& size) const;
 
-    void
-    exportPiecesAsApparelLayout(const ExportLayoutDialog& dialog, QVector<VLayoutPiece> pieceList);
+    void exportPiecesAsApparelLayout(
+        const LayoutExportOptions& exportOptions, QVector<VLayoutPiece> pieceList);
 
     void ExportFlatLayout(
-        const ExportLayoutDialog& dialog,
+        const LayoutExportOptions& exportOptions,
         const QList<QGraphicsScene*>& scenes,
         const QList<QGraphicsItem*>& papers,
         const QList<QGraphicsItem*>& shadows,
@@ -243,7 +245,7 @@ private:
         const QMarginsF& margins);
 
     void exportPiecesAsFlatLayout(
-        const ExportLayoutDialog& dialog, const QVector<VLayoutPiece>& pieceList);
+        const LayoutExportOptions& exportOptions, const QVector<VLayoutPiece>& pieceList);
 };
 
 #endif   // MAINWINDOWSNOGUI_H

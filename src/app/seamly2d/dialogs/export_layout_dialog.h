@@ -37,6 +37,8 @@
 
 #include "../vgeometry/vgeometrydef.h"
 #include "../vmisc/def.h"
+
+#include "../layout_export_options.h"
 #include "abstractlayout_dialog.h"
 
 namespace Ui {
@@ -57,6 +59,7 @@ public:
 
     ~ExportLayoutDialog() override;
 
+    LayoutExportOptions options() const;
     QString path() const;
     QString fileName() const;
     QString modeString() const;
@@ -71,8 +74,6 @@ public:
     void setDestinationPath(const QString& cmdDestinationPath);
 
     Draw mode() const;
-
-    static QString exportFormatSuffix(LayoutExportFormat format);
 
     bool isTextAsPaths() const;
     void setTextAsPaths(bool textAsPaths);

@@ -8,6 +8,7 @@ include(core/core.pri)
 
 # Some source files
 SOURCES += \
+        $$PWD/layout_export_options.cpp \
         $$PWD/main.cpp \
         $$PWD/mainwindow.cpp \
         $$PWD/mainwindowsnogui.cpp
@@ -16,6 +17,7 @@ SOURCES += \
 
 # Some header files
 HEADERS  += \
+        $$PWD/layout_export_options.h \
         $$PWD/mainwindow.h \
         $$PWD/options.h \
         $$PWD/stable.h \
