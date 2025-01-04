@@ -68,6 +68,8 @@
 #include "../vgeometry/vspline.h"
 #include "../vmisc/logging.h"
 #include "../vmisc/vabstractapplication.h"
+#include "core_utils/qhash_extensions.h"
+
 #include "variables/custom_variable.h"
 #include "variables/measurement_variable.h"
 #include "variables/varcradius.h"
@@ -251,45 +253,20 @@ void VContainer::ClearGObjects() { m_gObjects.clear(); }
 //---------------------------------------------------------------------------------------------------------------------
 void VContainer::ClearCalculationGObjects()
 {
-    if (not m_gObjects.isEmpty())   //-V807
-    {
-        QVector<quint32> keys;
-        QHash<quint32, QSharedPointer<VGObject>>::iterator i;
-        for (i = m_gObjects.begin(); i != m_gObjects.end(); ++i) {
-            if (i.value()->getMode() == Draw::Calculation) {
-                i.value().clear();
-                keys.append(i.key());
-            }
-        }
-        // We can't delete objects in previous loop it will destroy the iterator.
-        if (not keys.isEmpty()) {
-            for (int i = 0; i < keys.size(); ++i) {
-                m_gObjects.remove(keys.at(i));
-            }
-        }
-    }
+    erase_if(m_gObjects, [](const auto& keyAndValue) {
+        return keyAndValue.second->getMode() == Draw::Calculation;
+    });
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VContainer::ClearVariables(const VarType& type)
 {
-    if (!m_variables.isEmpty())   //-V807
-    {
-        if (type == VarType::Unknown) {
-            m_variables.clear();
-        } else {
-            QVector<QString> keys;
-            QHash<QString, QSharedPointer<VInternalVariable>>::iterator i;
-            for (i = m_variables.begin(); i != m_variables.end(); ++i) {
-                if (i.value()->GetType() == type) {
-                    keys.append(i.key());
-                }
-            }
-
-            for (int i = 0; i < keys.size(); ++i) {
-                m_variables.remove(keys.at(i));
-            }
-        }
+    if (type == VarType::Unknown) {
+        m_variables.clear();
+    } else {
+        erase_if(m_variables, [type](const auto& keyAndValue) {
+            return keyAndValue.second->GetType() == type;
+        });
     }
 }
 
@@ -420,10 +397,7 @@ void VContainer::UpdatePiecePath(quint32 id, const VPiecePath& path)
  * @brief removeCustomVariable remove increment by name from increment table
  * @param name name of existing increment
  */
-void VContainer::removeCustomVariable(const QString& name)
-{
-    m_variables.remove(name);
-}
+void VContainer::removeCustomVariable(const QString& name) { m_variables.remove(name); }
 
 //---------------------------------------------------------------------------------------------------------------------
 QMap<QString, QSharedPointer<MeasurementVariable>> VContainer::DataMeasurements() const

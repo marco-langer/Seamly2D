@@ -1,4 +1,5 @@
 #include "algorithm_tests.h"
+#include "qhash_extensions_tests.h"
 
 #include <QtTest/QtTest>
 
@@ -12,4 +13,5 @@ int main(int argc, char** argv)
     };
 
     ASSERT_TEST(std::make_unique<AlgorithmTests>());
+    ASSERT_TEST(std::make_unique<QHashExtensionsTests>());
 }
