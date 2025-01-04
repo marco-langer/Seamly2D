@@ -422,7 +422,6 @@ void VContainer::UpdatePiecePath(quint32 id, const VPiecePath& path)
  */
 void VContainer::removeCustomVariable(const QString& name)
 {
-    m_variables[name].clear();
     m_variables.remove(name);
 }
 
