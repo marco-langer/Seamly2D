@@ -62,7 +62,8 @@ void VEllipticalArc::Swap(VEllipticalArc& arc) noexcept
 VEllipticalArc::VEllipticalArc()
     : VAbstractArc(GOType::EllipticalArc)
     , d(new VEllipticalArcData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -149,7 +150,8 @@ VEllipticalArc::VEllipticalArc(
 VEllipticalArc::VEllipticalArc(const VEllipticalArc& arc)
     : VAbstractArc(arc)
     , d(arc.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -282,7 +284,7 @@ QPointF VEllipticalArc::GetP2() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QTransform VEllipticalArc::getTransform() const { return d->m_transform; }
+const QTransform& VEllipticalArc::getTransform() const { return d->m_transform; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VEllipticalArc::setTransform(const QTransform& matrix, bool combine)
@@ -538,21 +540,21 @@ qreal VEllipticalArc::MaxLength() const
  * @brief GetFormulaRadius1 return formula for major radius.
  * @return radius.
  */
-QString VEllipticalArc::GetFormulaRadius1() const { return d->formulaRadius1; }
+const QString& VEllipticalArc::GetFormulaRadius1() const { return d->formulaRadius1; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetFormulaRadius2 return formula for minor radius.
  * @return radius.
  */
-QString VEllipticalArc::GetFormulaRadius2() const { return d->formulaRadius2; }
+const QString& VEllipticalArc::GetFormulaRadius2() const { return d->formulaRadius2; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
  * @brief GetFormulaRotationAngle return formula for rotation angle.
  * @return rotationAngle.
  */
-QString VEllipticalArc::GetFormulaRotationAngle() const { return d->formulaRotationAngle; }
+const QString& VEllipticalArc::GetFormulaRotationAngle() const { return d->formulaRotationAngle; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VEllipticalArc::SetFormulaRadius1(const QString& formula, qreal value)

@@ -78,7 +78,7 @@ public:
     void setName(const QString& name);
     QString getName() const;
 
-    QMap<quint32, quint32> getGroupData() const;
+    const QMap<quint32, quint32>& getGroupData() const;
     QString getColor() const;
     void setColor(const QString& color);
     QString getLineType() const;

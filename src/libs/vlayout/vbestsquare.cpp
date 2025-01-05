@@ -57,7 +57,8 @@ VBestSquare::VBestSquare(const QSizeF& sheetSize, bool saveLength)
     : bestSize(QSizeF(sheetSize.width() + 10, sheetSize.height() + 10))
     , sheetWidth(sheetSize.width())
     , saveLength(saveLength)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void VBestSquare::NewResult(
@@ -102,7 +103,7 @@ void VBestSquare::NewResult(const VBestSquare& best)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QSizeF VBestSquare::BestSize() const { return bestSize; }
+const QSizeF& VBestSquare::BestSize() const { return bestSize; }
 
 //---------------------------------------------------------------------------------------------------------------------
 int VBestSquare::GContourEdge() const { return resI; }
@@ -111,7 +112,7 @@ int VBestSquare::GContourEdge() const { return resI; }
 int VBestSquare::pieceEdge() const { return resJ; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QTransform VBestSquare::Transform() const { return resTransform; }
+const QTransform& VBestSquare::Transform() const { return resTransform; }
 
 //---------------------------------------------------------------------------------------------------------------------
 bool VBestSquare::ValidResult() const { return valideResult; }

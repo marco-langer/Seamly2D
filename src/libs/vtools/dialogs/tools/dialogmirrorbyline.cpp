@@ -154,7 +154,7 @@ void DialogMirrorByLine::setSecondLinePointId(quint32 value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogMirrorByLine::getSuffix() const { return m_suffix; }
+const QString& DialogMirrorByLine::getSuffix() const { return m_suffix; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByLine::setSuffix(const QString& value)
@@ -164,7 +164,7 @@ void DialogMirrorByLine::setSuffix(const QString& value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<SourceItem> DialogMirrorByLine::getSourceObjects() const { return m_objects; }
+const QVector<SourceItem>& DialogMirrorByLine::getSourceObjects() const { return m_objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByLine::setSourceObjects(const QVector<SourceItem>& value)

@@ -132,7 +132,7 @@ public:
 
     virtual bool isAppInGUIMode() const = 0;
 
-    QString getFilePath() const;
+    const QString& getFilePath() const;
     void setFilePath(const QString& value);
 
 protected:
@@ -180,7 +180,7 @@ private:
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString VAbstractApplication::getFilePath() const { return patternFilePath; }
+inline const QString& VAbstractApplication::getFilePath() const { return patternFilePath; }
 
 //---------------------------------------------------------------------------------------------------------------------
 inline void VAbstractApplication::setFilePath(const QString& value) { patternFilePath = value; }

@@ -71,13 +71,15 @@ void VCubicBezier::Swap(VCubicBezier& curve) noexcept
 VCubicBezier::VCubicBezier()
     : VAbstractCubicBezier(GOType::CubicBezier)
     , d(new VCubicBezierData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VCubicBezier::VCubicBezier(const VCubicBezier& curve)
     : VAbstractCubicBezier(curve)
     , d(curve.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VCubicBezier::VCubicBezier(
@@ -154,7 +156,7 @@ VCubicBezier VCubicBezier::Move(qreal length, qreal angle, const QString& prefix
 VCubicBezier::~VCubicBezier() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VCubicBezier::GetP1() const { return d->p1; }
+const VPointF& VCubicBezier::GetP1() const { return d->p1; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VCubicBezier::SetP1(const VPointF& p) { d->p1 = p; }
@@ -172,7 +174,7 @@ VPointF VCubicBezier::GetP3() const { return d->p3; }
 void VCubicBezier::SetP3(const VPointF& p) { d->p3 = p; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VCubicBezier::GetP4() const { return d->p4; }
+const VPointF& VCubicBezier::GetP4() const { return d->p4; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VCubicBezier::SetP4(const VPointF& p) { d->p4 = p; }

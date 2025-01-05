@@ -77,8 +77,8 @@ public:
     void moveDown();
 
 
-    DraftImage getImage();
-    void setImage(DraftImage image);
+    const DraftImage& getImage() const;
+    void setImage(const DraftImage& image);
     void updateImage();
     void updateImageAndHandles(DraftImage image);
 

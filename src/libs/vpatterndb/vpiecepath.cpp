@@ -204,7 +204,7 @@ VPieceNode& VPiecePath::operator[](int indx) { return d->m_nodes[indx]; }
 const VPieceNode& VPiecePath::at(int indx) const { return d->m_nodes.at(indx); }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<VPieceNode> VPiecePath::GetNodes() const { return d->m_nodes; }
+const QVector<VPieceNode>& VPiecePath::GetNodes() const { return d->m_nodes; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPiecePath::SetNodes(const QVector<VPieceNode>& nodes) { d->m_nodes = nodes; }
@@ -216,7 +216,7 @@ PiecePathType VPiecePath::GetType() const { return d->m_type; }
 void VPiecePath::SetType(PiecePathType type) { d->m_type = type; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPiecePath::GetName() const { return d->m_name; }
+const QString& VPiecePath::GetName() const { return d->m_name; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPiecePath::SetName(const QString& name) { d->m_name = name; }

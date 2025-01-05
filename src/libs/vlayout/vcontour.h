@@ -71,7 +71,7 @@ public:
     VContour(int height, int width);
 
     void SetContour(const QVector<QPointF>& contour);
-    QVector<QPointF> GetContour() const;
+    const QVector<QPointF>& GetContour() const;
 
     quint32 GetShift() const;
     void SetShift(quint32 shift);

@@ -168,7 +168,7 @@ void VisToolCubicBezierPath::setPath(const VCubicBezierPath& value)
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-VCubicBezierPath VisToolCubicBezierPath::getPath() { return path; }
+const VCubicBezierPath& VisToolCubicBezierPath::getPath() { return path; }
 
 //---------------------------------------------------------------------------------------------------------------------
 VScaledEllipse*

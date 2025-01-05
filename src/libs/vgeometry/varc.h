@@ -109,7 +109,7 @@ public:
 
     void Swap(VArc& arc) noexcept;
 
-    QString GetFormulaRadius() const;
+    const QString& GetFormulaRadius() const;
     void SetFormulaRadius(const QString& formula, qreal value);
     qreal GetRadius() const;
 

@@ -67,7 +67,7 @@ public:
 
     QPainterPath GetPainterPath() const;
 
-    QVector<QPointF> Points() const;
+    const QVector<QPointF>& Points() const;
     void SetPoints(const QVector<QPointF>& points);
 
     Qt::PenStyle PenStyle() const;

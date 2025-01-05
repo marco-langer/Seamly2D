@@ -234,7 +234,7 @@ void DialogMove::setRotation(const QString& value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogMove::getSuffix() const { return m_suffix; }
+const QString& DialogMove::getSuffix() const { return m_suffix; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMove::setSuffix(const QString& value)
@@ -534,7 +534,7 @@ void DialogMove::closeEvent(QCloseEvent* event)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<SourceItem> DialogMove::getSourceObjects() const { return m_objects; }
+const QVector<SourceItem>& DialogMove::getSourceObjects() const { return m_objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMove::setSourceObjects(const QVector<SourceItem>& value)

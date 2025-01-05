@@ -1206,7 +1206,7 @@ quint32 DialogTool::GetToolId() const { return toolId; }
 void DialogTool::SetToolId(const quint32& value) { toolId = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogTool::getPointName() const { return pointName; }
+const QString& DialogTool::getPointName() const { return pointName; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogTool::moveListRowTop(QListWidget* list)

@@ -89,7 +89,7 @@ public:
     static qreal FindVal(
         const QString& expression, const QHash<QString, QSharedPointer<VInternalVariable>>& vars);
 
-    QString CurrentToolTip() const { return toolTip; }
+    const QString& CurrentToolTip() const { return toolTip; }
 
 signals:
     void ToolTip(const QString& toolTip);

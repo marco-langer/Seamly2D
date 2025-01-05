@@ -72,10 +72,10 @@ public:
         BestFrom type);
     void NewResult(const VBestSquare& best);
 
-    QSizeF BestSize() const;
+    const QSizeF& BestSize() const;
     int GContourEdge() const;
     int pieceEdge() const;
-    QTransform Transform() const;
+    const QTransform& Transform() const;
     bool ValidResult() const;
     bool isMirror() const;
     BestFrom Type() const;

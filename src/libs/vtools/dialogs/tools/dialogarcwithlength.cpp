@@ -185,7 +185,7 @@ DialogArcWithLength::DialogArcWithLength(
 DialogArcWithLength::~DialogArcWithLength() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArc DialogArcWithLength::getArc() const { return m_arc; }
+const VArc& DialogArcWithLength::getArc() const { return m_arc; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArcWithLength::setArc(const VArc& arc)

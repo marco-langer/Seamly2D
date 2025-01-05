@@ -172,7 +172,7 @@ qreal VPieceNode::GetSABefore(const VContainer* data, Unit unit) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceNode::GetFormulaSABefore() const { return d->m_beforeWidthFormula; }
+const QString& VPieceNode::GetFormulaSABefore() const { return d->m_beforeWidthFormula; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPieceNode::setBeforeSAFormula(const QString& formula)
@@ -207,7 +207,7 @@ qreal VPieceNode::GetSAAfter(const VContainer* data, Unit unit) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPieceNode::GetFormulaSAAfter() const { return d->m_afterWidthFormula; }
+const QString& VPieceNode::GetFormulaSAAfter() const { return d->m_afterWidthFormula; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPieceNode::setAfterSAFormula(const QString& formula)

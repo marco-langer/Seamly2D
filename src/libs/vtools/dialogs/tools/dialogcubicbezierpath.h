@@ -77,7 +77,7 @@ public:
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogCubicBezierPath() override;
 
-    VCubicBezierPath GetPath() const;
+    const VCubicBezierPath& GetPath() const;
     void SetPath(const VCubicBezierPath& value);
 
     QString getPenStyle() const;

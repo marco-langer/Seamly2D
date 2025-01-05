@@ -69,7 +69,7 @@ public:
     ~VObjPaintDevice() override;
     QPaintEngine* paintEngine() const override;
 
-    QString getFileName() const;
+    const QString& getFileName() const;
     void setFileName(const QString& value);
 
     QSize getSize();

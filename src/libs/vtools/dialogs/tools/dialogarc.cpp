@@ -192,7 +192,7 @@ void DialogArc::DeployF2TextEdit()
 DialogArc::~DialogArc() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VArc DialogArc::getArc() const { return m_arc; }
+const VArc& DialogArc::getArc() const { return m_arc; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogArc::setArc(const VArc& arc)

@@ -82,8 +82,8 @@ public:
     void SetKAsm2(const qreal& value);
     void SetKCurve(const qreal& value);
 
-    QPointF GetP2() const;
-    QPointF GetP3() const;
+    const QPointF& GetP2() const;
+    const QPointF& GetP3() const;
 
     int type() const override { return Type; }
     enum

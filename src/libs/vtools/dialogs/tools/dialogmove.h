@@ -85,7 +85,7 @@ public:
     QString getRotation() const;
     void setRotation(const QString& value);
 
-    QString getSuffix() const;
+    const QString& getSuffix() const;
     void setSuffix(const QString& value);
 
     quint32 getOriginPointId() const;
@@ -93,7 +93,7 @@ public:
 
     void ShowDialog(bool click) override;
 
-    QVector<SourceItem> getSourceObjects() const;
+    const QVector<SourceItem>& getSourceObjects() const;
     void setSourceObjects(const QVector<SourceItem>& value);
 
 public slots:

@@ -76,7 +76,7 @@ public:
     ~DialogSinglePoint() override;
 
     void SetData(const QString& name, const QPointF& point);
-    QPointF GetPoint() const;
+    const QPointF& GetPoint() const;
 
 public slots:
     void mousePress(const QPointF& scenePos);

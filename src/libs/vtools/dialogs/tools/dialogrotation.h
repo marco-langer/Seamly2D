@@ -82,10 +82,10 @@ public:
     QString GetAngle() const;
     void SetAngle(const QString& value);
 
-    QString getSuffix() const;
+    const QString& getSuffix() const;
     void setSuffix(const QString& value);
 
-    QVector<SourceItem> getSourceObjects() const;
+    const QVector<SourceItem>& getSourceObjects() const;
     void setSourceObjects(const QVector<SourceItem>& value);
 
 

@@ -169,7 +169,7 @@ void DialogRotation::SetAngle(const QString& value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogRotation::getSuffix() const { return m_suffix; }
+const QString& DialogRotation::getSuffix() const { return m_suffix; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogRotation::setSuffix(const QString& value)
@@ -179,7 +179,7 @@ void DialogRotation::setSuffix(const QString& value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<SourceItem> DialogRotation::getSourceObjects() const { return m_objects; }
+const QVector<SourceItem>& DialogRotation::getSourceObjects() const { return m_objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogRotation::setSourceObjects(const QVector<SourceItem>& value)

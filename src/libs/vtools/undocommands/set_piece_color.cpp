@@ -75,7 +75,7 @@ int SetPieceColor::id() const { return static_cast<int>(UndoCommand::SetPieceCol
 quint32 SetPieceColor::getpieceId() const { return m_id; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString SetPieceColor::getColor() const { return m_newColor; }
+const QString& SetPieceColor::getColor() const { return m_newColor; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void SetPieceColor::doCmd(QString color)

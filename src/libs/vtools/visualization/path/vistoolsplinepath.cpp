@@ -150,7 +150,7 @@ void VisToolSplinePath::setPath(const VSplinePath& value) { path = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-VSplinePath VisToolSplinePath::getPath() { return path; }
+const VSplinePath& VisToolSplinePath::getPath() { return path; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolSplinePath::MouseLeftPressed()

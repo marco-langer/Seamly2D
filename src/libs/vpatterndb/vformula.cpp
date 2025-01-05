@@ -140,7 +140,7 @@ void VFormula::SetFormula(const QString& value, FormulaType type)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VFormula::getStringValue() const { return value; }
+const QString& VFormula::getStringValue() const { return value; }
 
 //---------------------------------------------------------------------------------------------------------------------
 qreal VFormula::getDoubleValue() const { return dValue; }
@@ -176,7 +176,7 @@ quint32 VFormula::getToolId() const { return toolId; }
 void VFormula::setToolId(const quint32& value) { toolId = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VFormula::getPostfix() const { return postfix; }
+const QString& VFormula::getPostfix() const { return postfix; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VFormula::setPostfix(const QString& value)

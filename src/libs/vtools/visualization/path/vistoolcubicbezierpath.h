@@ -74,7 +74,7 @@ public:
     void RefreshGeometry() override;
 
     void setPath(const VCubicBezierPath& value);
-    VCubicBezierPath getPath();
+    const VCubicBezierPath& getPath();
 
     int type() const override { return Type; }
     enum

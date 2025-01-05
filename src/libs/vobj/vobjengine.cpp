@@ -284,7 +284,7 @@ void VObjEngine::drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QSize VObjEngine::getSize() const { return size; }
+const QSize& VObjEngine::getSize() const { return size; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VObjEngine::setSize(const QSize& value)

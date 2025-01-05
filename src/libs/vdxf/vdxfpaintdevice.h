@@ -48,10 +48,10 @@ public:
     ~VDxfPaintDevice() override;
     QPaintEngine* paintEngine() const override;
 
-    QString getFileName() const;
+    const QString& getFileName() const;
     void setFileName(const QString& value);
 
-    QSize getSize();
+    const QSize& getSize();
     void setSize(const QSize& size);
 
     double getResolution() const;

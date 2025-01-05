@@ -309,7 +309,7 @@ QList<QGraphicsItem*> VLayoutPaper::getPieceItems(bool textAsPaths) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<VLayoutPiece> VLayoutPaper::getPieces() const { return m_pieces; }
+const QVector<VLayoutPiece>& VLayoutPaper::getPieces() const { return m_pieces; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPaper::setPieces(const QList<VLayoutPiece>& pieces) { m_pieces = pieces.toVector(); }

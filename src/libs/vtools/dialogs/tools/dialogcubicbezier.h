@@ -77,7 +77,7 @@ public:
         const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogCubicBezier() override;
 
-    VCubicBezier GetSpline() const;
+    const VCubicBezier& GetSpline() const;
     void SetSpline(const VCubicBezier& spline);
 
     QString getPenStyle() const;

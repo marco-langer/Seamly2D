@@ -130,9 +130,9 @@ void ImageItem::setPixmap(const QPixmap& pixmap)
         HANDLE_SIZE / 2, HANDLE_SIZE / 2, -HANDLE_SIZE / 2, -HANDLE_SIZE / 2);
 }
 
-DraftImage ImageItem::getImage() { return m_image; }
+const DraftImage& ImageItem::getImage() const { return m_image; }
 
-void ImageItem::setImage(DraftImage image) { m_image = image; }
+void ImageItem::setImage(const DraftImage& image) { m_image = image; }
 
 void ImageItem::updateImage()
 {

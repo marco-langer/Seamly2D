@@ -69,7 +69,7 @@ public:
     DialogArcWithLength(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogArcWithLength() override;
 
-    VArc getArc() const;
+    const VArc& getArc() const;
     void setArc(const VArc& arc);
 
     quint32 GetCenter() const;

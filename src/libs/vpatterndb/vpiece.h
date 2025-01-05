@@ -122,18 +122,18 @@ public:
     bool IsUnited() const;
     void SetUnited(bool united);
 
-    QString getSeamAllowanceWidthFormula() const;
+    const QString& getSeamAllowanceWidthFormula() const;
     void setSeamAllowanceWidthFormula(const QString& formula, qreal value);
 
-    QVector<quint32> GetInternalPaths() const;
+    const QVector<quint32>& GetInternalPaths() const;
     QVector<quint32>& GetInternalPaths();
     void SetInternalPaths(const QVector<quint32>& iPaths);
 
-    QVector<CustomSARecord> GetCustomSARecords() const;
+    const QVector<CustomSARecord>& GetCustomSARecords() const;
     QVector<CustomSARecord>& GetCustomSARecords();
     void SetCustomSARecords(const QVector<CustomSARecord>& records);
 
-    QVector<quint32> getAnchors() const;
+    const QVector<quint32>& getAnchors() const;
     QVector<quint32>& getAnchors();
     void setAnchors(const QVector<quint32>& anchors);
 

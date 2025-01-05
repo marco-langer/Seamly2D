@@ -70,7 +70,8 @@
 VArc::VArc()
     : VAbstractArc(GOType::Arc)
     , d(new VArcData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -152,7 +153,8 @@ VArc::VArc(qreal length, const VPointF& center, qreal radius, qreal f1)
 VArc::VArc(const VArc& arc)
     : VAbstractArc(arc)
     , d(arc.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -479,7 +481,7 @@ qreal VArc::MaxLength() const { return 2 * M_PI * d->radius; }
  * @brief GetRadius return arc radius.
  * @return radius.
  */
-QString VArc::GetFormulaRadius() const { return d->formulaRadius; }
+const QString& VArc::GetFormulaRadius() const { return d->formulaRadius; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VArc::SetFormulaRadius(const QString& formula, qreal value)

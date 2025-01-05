@@ -190,7 +190,7 @@ void VTextManager::SetFontSize(int iFS)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QList<TextLine> VTextManager::GetAllSourceLines() const { return m_liLines; }
+const QList<TextLine>& VTextManager::GetAllSourceLines() const { return m_liLines; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

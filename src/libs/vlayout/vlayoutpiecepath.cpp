@@ -58,7 +58,8 @@ VLayoutPiecePath::VLayoutPiecePath(const QVector<QPointF>& points, bool cut, Qt:
     : m_points{ points }
     , m_penStyle{ penStyle }
     , m_cut{ cut }
-{}
+{
+}
 
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -73,7 +74,7 @@ QPainterPath VLayoutPiecePath::GetPainterPath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> VLayoutPiecePath::Points() const { return m_points; }
+const QVector<QPointF>& VLayoutPiecePath::Points() const { return m_points; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPiecePath::SetPoints(const QVector<QPointF>& points) { m_points = points; }

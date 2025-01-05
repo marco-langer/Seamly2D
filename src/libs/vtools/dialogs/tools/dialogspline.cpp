@@ -612,7 +612,7 @@ void DialogSpline::CheckState()
 void DialogSpline::ShowVisualization() { AddVisualization<VisToolSpline>(); }
 
 //---------------------------------------------------------------------------------------------------------------------
-VSpline DialogSpline::GetSpline() const { return spl; }
+const VSpline& DialogSpline::GetSpline() const { return spl; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogSpline::SetSpline(const VSpline& spline)

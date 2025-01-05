@@ -101,4 +101,4 @@ void AddToGroupDialog::SelectedObject(bool selected, quint32 object, quint32 too
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QMap<quint32, quint32> AddToGroupDialog::getGroupData() const { return m_groupData; }
+const QMap<quint32, quint32>& AddToGroupDialog::getGroupData() const { return m_groupData; }

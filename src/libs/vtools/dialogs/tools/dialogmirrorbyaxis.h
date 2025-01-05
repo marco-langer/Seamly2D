@@ -84,10 +84,10 @@ public:
     AxisType getAxisType() const;
     void setAxisType(AxisType type);
 
-    QString getSuffix() const;
+    const QString& getSuffix() const;
     void setSuffix(const QString& value);
 
-    QVector<SourceItem> getSourceObjects() const;
+    const QVector<SourceItem>& getSourceObjects() const;
     void setSourceObjects(const QVector<SourceItem>& value);
 
     void ShowDialog(bool click) override;

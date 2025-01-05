@@ -163,7 +163,7 @@ void VPosition::setPieceCount(const quint32& value) { piecesCount = value; }
 void VPosition::setPieces(const QVector<VLayoutPiece>& pieces) { this->pieces = pieces; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VBestSquare VPosition::getBestResult() const { return bestResult; }
+const VBestSquare& VPosition::getBestResult() const { return bestResult; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPosition::DrawDebug(

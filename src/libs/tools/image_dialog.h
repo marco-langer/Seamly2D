@@ -52,12 +52,12 @@ public:
     explicit ImageDialog(DraftImage image, qreal minDimension, qreal maxDimension);
     ~ImageDialog() override;
 
-    DraftImage getImage() const;
+    const DraftImage& getImage() const;
     void setImage(DraftImage image);
     void updateImage();
     void enableWidgets();
 
-    QString getName() const;
+    const QString& getName() const;
     void setName(const QString& name);
 
     Position getOriginPoint() const;

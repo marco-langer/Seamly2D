@@ -75,10 +75,10 @@ public:
     VAbstractCubicBezier& operator=(const VAbstractCubicBezier& curve);
     virtual ~VAbstractCubicBezier();
 
-    virtual VPointF GetP1() const = 0;
+    virtual const VPointF& GetP1() const = 0;
     virtual VPointF GetP2() const = 0;
     virtual VPointF GetP3() const = 0;
-    virtual VPointF GetP4() const = 0;
+    virtual const VPointF& GetP4() const = 0;
 
     QPointF CutSpline(
         qreal length, QPointF& spl1p2, QPointF& spl1p3, QPointF& spl2p2, QPointF& spl2p3) const;

@@ -124,7 +124,7 @@ public:
     quint32 GetToolId() const;
     void SetToolId(const quint32& value);
 
-    QString getPointName() const;
+    const QString& getPointName() const;
 
     static void moveListRowTop(QListWidget* list);
     static void moveListRowUp(QListWidget* list);

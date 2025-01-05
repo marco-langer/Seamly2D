@@ -136,4 +136,4 @@ DialogSinglePoint::~DialogSinglePoint() { delete ui; }
  * @brief getPoint return point
  * @return point
  */
-QPointF DialogSinglePoint::GetPoint() const { return point; }
+const QPointF& DialogSinglePoint::GetPoint() const { return point; }

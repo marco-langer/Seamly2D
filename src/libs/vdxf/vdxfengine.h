@@ -73,13 +73,13 @@ public:
     Type type() const override;
     void drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr) override;
 
-    QSize getSize() const;
+    const QSize& getSize() const;
     void setSize(const QSize& value);
 
     double getResolution() const;
     void setResolution(double value);
 
-    QString getFileName() const;
+    const QString& getFileName() const;
     void setFileName(const QString& value);
 
     DRW::Version GetVersion() const;

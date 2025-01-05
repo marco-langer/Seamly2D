@@ -79,13 +79,13 @@ public:
 
     void Swap(VAbstractPiece& piece) noexcept;
 
-    QString GetName() const;
+    const QString& GetName() const;
     void SetName(const QString& value);
 
-    QString getColor() const;
+    const QString& getColor() const;
     void setColor(const QString& value);
 
-    QString getFill() const;
+    const QString& getFill() const;
     void setFill(const QString& value);
 
     bool getLock() const;

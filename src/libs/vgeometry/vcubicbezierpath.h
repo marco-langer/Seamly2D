@@ -98,7 +98,7 @@ public:
     qreal GetC2Length() const override;
 
     QVector<VSplinePoint> GetSplinePath() const override;
-    QVector<VPointF> GetCubicPath() const;
+    const QVector<VPointF>& GetCubicPath() const;
 
     static qint32 CountSubSpl(qint32 size);
     static qint32 SubSplOffset(qint32 subSplIndex);

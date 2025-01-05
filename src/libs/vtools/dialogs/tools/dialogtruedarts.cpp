@@ -145,10 +145,10 @@ DialogTrueDarts::DialogTrueDarts(const VContainer* data, const quint32& toolId, 
 DialogTrueDarts::~DialogTrueDarts() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogTrueDarts::GetFirstNewDartPointName() { return d1PointName; }
+const QString& DialogTrueDarts::GetFirstNewDartPointName() const { return d1PointName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogTrueDarts::GetSecondNewDartPointName() { return d2PointName; }
+const QString& DialogTrueDarts::GetSecondNewDartPointName() const { return d2PointName; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogTrueDarts::SetNewDartPointNames(const QString& firstPoint, const QString& secondPoint)

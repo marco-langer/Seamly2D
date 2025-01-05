@@ -236,7 +236,7 @@ DialogEllipticalArc::DialogEllipticalArc(
 DialogEllipticalArc::~DialogEllipticalArc() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VEllipticalArc DialogEllipticalArc::getArc() const { return m_arc; }
+const VEllipticalArc& DialogEllipticalArc::getArc() const { return m_arc; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogEllipticalArc::setArc(const VEllipticalArc& arc)

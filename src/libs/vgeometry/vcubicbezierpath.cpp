@@ -77,13 +77,15 @@ void VCubicBezierPath::Swap(VCubicBezierPath& curve) noexcept
 VCubicBezierPath::VCubicBezierPath(quint32 idObject, Draw mode)
     : VAbstractCubicBezierPath(GOType::CubicBezierPath, idObject, mode)
     , d(new VCubicBezierPathData())
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VCubicBezierPath::VCubicBezierPath(const VCubicBezierPath& curve)
     : VAbstractCubicBezierPath(curve)
     , d(curve.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VCubicBezierPath::VCubicBezierPath(const QVector<VPointF>& points, quint32 idObject, Draw mode)
@@ -284,7 +286,7 @@ QVector<VSplinePoint> VCubicBezierPath::GetSplinePath() const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<VPointF> VCubicBezierPath::GetCubicPath() const { return d->path; }
+const QVector<VPointF>& VCubicBezierPath::GetCubicPath() const { return d->path; }
 
 //---------------------------------------------------------------------------------------------------------------------
 qint32 VCubicBezierPath::CountSubSpl(qint32 size)

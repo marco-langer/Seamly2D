@@ -205,10 +205,10 @@ void VisToolSpline::SetKAsm2(const qreal& value) { kAsm2 = value; }
 void VisToolSpline::SetKCurve(const qreal& value) { kCurve = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VisToolSpline::GetP2() const { return p2; }
+const QPointF& VisToolSpline::GetP2() const { return p2; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QPointF VisToolSpline::GetP3() const { return p3; }
+const QPointF& VisToolSpline::GetP3() const { return p3; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VisToolSpline::MouseLeftPressed()

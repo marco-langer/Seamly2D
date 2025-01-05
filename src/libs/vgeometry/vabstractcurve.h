@@ -103,13 +103,13 @@ public:
     quint32 GetDuplicate() const;
     void SetDuplicate(quint32 number);
 
-    QString getLineColor() const;
+    const QString& getLineColor() const;
     void setLineColor(const QString& color);
 
-    QString GetPenStyle() const;
+    const QString& GetPenStyle() const;
     void SetPenStyle(const QString& penStyle);
 
-    QString getLineWeight() const;
+    const QString& getLineWeight() const;
     void setLineWeight(const QString& lineWeight);
 
     static qreal PathLength(const QVector<QPointF>& path);

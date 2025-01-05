@@ -77,13 +77,15 @@ void VAbstractCurve::Swap(VAbstractCurve& curve) noexcept
 VAbstractCurve::VAbstractCurve(const GOType& type, const quint32& idObject, const Draw& mode)
     : VGObject(type, idObject, mode)
     , d(new VAbstractCurveData())
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractCurve::VAbstractCurve(const VAbstractCurve& curve)
     : VGObject(curve)
     , d(curve.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VAbstractCurve& VAbstractCurve::operator=(const VAbstractCurve& curve)
@@ -277,13 +279,13 @@ void VAbstractCurve::SetDuplicate(quint32 number)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VAbstractCurve::getLineColor() const { return d->color; }
+const QString& VAbstractCurve::getLineColor() const { return d->color; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractCurve::setLineColor(const QString& color) { d->color = color; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VAbstractCurve::GetPenStyle() const { return d->penStyle; }
+const QString& VAbstractCurve::GetPenStyle() const { return d->penStyle; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractCurve::SetPenStyle(const QString& penStyle) { d->penStyle = penStyle; }
@@ -293,7 +295,7 @@ void VAbstractCurve::SetPenStyle(const QString& penStyle) { d->penStyle = penSty
  * @brief getLineWeight return weight of the lines
  * @return lineWeight
  */
-QString VAbstractCurve::getLineWeight() const { return d->lineWeight; }
+const QString& VAbstractCurve::getLineWeight() const { return d->lineWeight; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**

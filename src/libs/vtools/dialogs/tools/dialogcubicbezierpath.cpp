@@ -133,7 +133,7 @@ DialogCubicBezierPath::DialogCubicBezierPath(
 DialogCubicBezierPath::~DialogCubicBezierPath() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezierPath DialogCubicBezierPath::GetPath() const { return path; }
+const VCubicBezierPath& DialogCubicBezierPath::GetPath() const { return path; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCubicBezierPath::SetPath(const VCubicBezierPath& value)

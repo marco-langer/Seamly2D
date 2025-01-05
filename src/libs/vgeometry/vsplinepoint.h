@@ -79,7 +79,7 @@ public:
 
     void Swap(VFSplinePoint& point) noexcept;
 
-    VPointF P() const;
+    const VPointF& P() const;
     void SetP(const VPointF& value);
     qreal Angle1() const;
     void SetAngle1(const qreal& value);
@@ -125,23 +125,23 @@ public:
 
     void Swap(VSplinePoint& point) noexcept;
 
-    VPointF P() const;
+    const VPointF& P() const;
     void SetP(const VPointF& value);
 
     qreal Angle1() const;
-    QString Angle1Formula() const;
+    const QString& Angle1Formula() const;
     void SetAngle1(const qreal& value, const QString& angle1F);
 
     qreal Angle2() const;
-    QString Angle2Formula() const;
+    const QString& Angle2Formula() const;
     void SetAngle2(const qreal& value, const QString& angle2F);
 
     qreal Length1() const;
-    QString Length1Formula() const;
+    const QString& Length1Formula() const;
     void SetLength1(const qreal& value, const QString& length1F);
 
     qreal Length2() const;
-    QString Length2Formula() const;
+    const QString& Length2Formula() const;
     void SetLength2(const qreal& value, const QString& length2F);
 
     bool IsMovable() const;

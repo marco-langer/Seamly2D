@@ -71,7 +71,8 @@ VLayoutGenerator::VLayoutGenerator(QObject* parent)
 #else
     stopGeneration(false)
 #endif
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VLayoutGenerator::~VLayoutGenerator() { delete bank; }
@@ -441,7 +442,7 @@ void VLayoutGenerator::SetPaperWidth(qreal value) { paperWidth = value; }
 bool VLayoutGenerator::IsUsePrinterFields() const { return usePrinterFields; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QMarginsF VLayoutGenerator::GetPrinterFields() const { return margins; }
+const QMarginsF& VLayoutGenerator::GetPrinterFields() const { return margins; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutGenerator::SetPrinterFields(bool usePrinterFields, const QMarginsF& value)

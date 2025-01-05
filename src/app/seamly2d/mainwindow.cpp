@@ -1360,7 +1360,7 @@ void MainWindow::ClosedEditGroupDialog(int result)
         SCASSERT(dialog != nullptr)
 
         QString gName = dialog->getName();
-        QMap<quint32, quint32> gData = dialog->getGroupData();
+        const QMap<quint32, quint32>& gData = dialog->getGroupData();
         QDomElement group = doc->addGroupItems(gName, gData);
         if (group.isNull()) {
             QMessageBox::information(

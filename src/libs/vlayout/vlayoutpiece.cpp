@@ -644,7 +644,7 @@ void VLayoutPiece::setGrainline(const VGrainlineData& data, const VContainer* pa
 QVector<QPointF> VLayoutPiece::getGrainline() const { return Map(d->grainlinePoints); }
 
 //---------------------------------------------------------------------------------------------------------------------
-QTransform VLayoutPiece::getTransform() const { return d->transform; }
+const QTransform& VLayoutPiece::getTransform() const { return d->transform; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPiece::setTransform(const QTransform& transform) { d->transform = transform; }
@@ -828,7 +828,10 @@ QVector<QVector<QPointF>> VLayoutPiece::InternalPathsForCut(bool cut) const
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<VLayoutPiecePath> VLayoutPiece::getInternalPaths() const { return d->m_internalPaths; }
+const QVector<VLayoutPiecePath>& VLayoutPiece::getInternalPaths() const
+{
+    return d->m_internalPaths;
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPiece::setInternalPaths(const QVector<VLayoutPiecePath>& internalPaths)
@@ -837,7 +840,7 @@ void VLayoutPiece::setInternalPaths(const QVector<VLayoutPiecePath>& internalPat
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<VLayoutPiecePath> VLayoutPiece::getCutoutPaths() const { return d->m_cutoutPaths; }
+const QVector<VLayoutPiecePath>& VLayoutPiece::getCutoutPaths() const { return d->m_cutoutPaths; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VLayoutPiece::setCutoutPaths(const QVector<VLayoutPiecePath>& cutoutPaths)

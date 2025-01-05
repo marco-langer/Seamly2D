@@ -117,20 +117,20 @@ public:
 
     void Swap(VSpline& spline) noexcept;
 
-    VPointF GetP1() const override;
+    const VPointF& GetP1() const override;
     void SetP1(const VPointF& p);
 
     VPointF GetP2() const override;
     VPointF GetP3() const override;
 
-    VPointF GetP4() const override;
+    const VPointF& GetP4() const override;
     void SetP4(const VPointF& p);
 
     qreal GetStartAngle() const override;
     qreal GetEndAngle() const override;
 
-    QString GetStartAngleFormula() const;
-    QString GetEndAngleFormula() const;
+    const QString& GetStartAngleFormula() const;
+    const QString& GetEndAngleFormula() const;
 
     void SetStartAngle(qreal angle, const QString& formula);
     void SetEndAngle(qreal angle, const QString& formula);
@@ -138,8 +138,8 @@ public:
     qreal GetC1Length() const override;
     qreal GetC2Length() const override;
 
-    QString GetC1LengthFormula() const;
-    QString GetC2LengthFormula() const;
+    const QString& GetC1LengthFormula() const;
+    const QString& GetC2LengthFormula() const;
 
     void SetC1Length(qreal length, const QString& formula);
     void SetC2Length(qreal length, const QString& formula);

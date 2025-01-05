@@ -70,7 +70,8 @@ void VFSplinePoint::Swap(VFSplinePoint& point) noexcept { std::swap(d, point.d);
  */
 VFSplinePoint::VFSplinePoint()
     : d(new VFSplinePointData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -84,7 +85,8 @@ VFSplinePoint::VFSplinePoint()
 VFSplinePoint::VFSplinePoint(
     const VPointF& pSpline, qreal kAsm1, qreal angle1, qreal kAsm2, qreal angle2)
     : d(new VFSplinePointData(pSpline, kAsm1, angle1, kAsm2, angle2))
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -93,7 +95,8 @@ VFSplinePoint::VFSplinePoint(
  */
 VFSplinePoint::VFSplinePoint(const VFSplinePoint& point)
     : d(point.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VFSplinePoint& VFSplinePoint::operator=(const VFSplinePoint& point)
@@ -143,7 +146,7 @@ void VFSplinePoint::SetAngle2(const qreal& value)
  * @brief P return point.
  * @return point.
  */
-VPointF VFSplinePoint::P() const { return d->pSpline; }
+const VPointF& VFSplinePoint::P() const { return d->pSpline; }
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -205,7 +208,8 @@ void VSplinePoint::Swap(VSplinePoint& point) noexcept { std::swap(d, point.d); }
 //------------------------------------------VSplinePoint---------------------------------------------------------------
 VSplinePoint::VSplinePoint()
     : d(new VSplinePointData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VSplinePoint::VSplinePoint(
@@ -220,12 +224,14 @@ VSplinePoint::VSplinePoint(
     const QString& length2F)
     : d(new VSplinePointData(
         pSpline, angle1, angle1F, angle2, angle2F, length1, length1F, length2, length2F))
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VSplinePoint::VSplinePoint(const VSplinePoint& point)
     : d(point.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VSplinePoint& VSplinePoint::operator=(const VSplinePoint& point)
@@ -241,7 +247,7 @@ VSplinePoint& VSplinePoint::operator=(const VSplinePoint& point)
 VSplinePoint::~VSplinePoint() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
-VPointF VSplinePoint::P() const { return d->pSpline; }
+const VPointF& VSplinePoint::P() const { return d->pSpline; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSplinePoint::SetP(const VPointF& value) { d->pSpline = value; }
@@ -250,7 +256,7 @@ void VSplinePoint::SetP(const VPointF& value) { d->pSpline = value; }
 qreal VSplinePoint::Angle1() const { return d->angle1; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSplinePoint::Angle1Formula() const { return d->angle1F; }
+const QString& VSplinePoint::Angle1Formula() const { return d->angle1F; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSplinePoint::SetAngle1(const qreal& value, const QString& angle1F)
@@ -270,7 +276,7 @@ void VSplinePoint::SetAngle1(const qreal& value, const QString& angle1F)
 qreal VSplinePoint::Angle2() const { return d->angle2; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSplinePoint::Angle2Formula() const { return d->angle2F; }
+const QString& VSplinePoint::Angle2Formula() const { return d->angle2F; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSplinePoint::SetAngle2(const qreal& value, const QString& angle2F)
@@ -290,7 +296,7 @@ void VSplinePoint::SetAngle2(const qreal& value, const QString& angle2F)
 qreal VSplinePoint::Length1() const { return d->length1; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSplinePoint::Length1Formula() const { return d->length1F; }
+const QString& VSplinePoint::Length1Formula() const { return d->length1F; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSplinePoint::SetLength1(const qreal& value, const QString& length1F)
@@ -303,7 +309,7 @@ void VSplinePoint::SetLength1(const qreal& value, const QString& length1F)
 qreal VSplinePoint::Length2() const { return d->length2; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSplinePoint::Length2Formula() const { return d->length2F; }
+const QString& VSplinePoint::Length2Formula() const { return d->length2F; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSplinePoint::SetLength2(const qreal& value, const QString& length2F)

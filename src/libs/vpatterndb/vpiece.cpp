@@ -358,7 +358,7 @@ bool VPiece::IsUnited() const { return d->m_united; }
 void VPiece::SetUnited(bool united) { d->m_united = united; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VPiece::getSeamAllowanceWidthFormula() const { return d->m_formulaWidth; }
+const QString& VPiece::getSeamAllowanceWidthFormula() const { return d->m_formulaWidth; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VPiece::setSeamAllowanceWidthFormula(const QString& formula, qreal value)
@@ -369,7 +369,7 @@ void VPiece::setSeamAllowanceWidthFormula(const QString& formula, qreal value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<quint32> VPiece::GetInternalPaths() const { return d->m_internalPaths; }
+const QVector<quint32>& VPiece::GetInternalPaths() const { return d->m_internalPaths; }
 
 //---------------------------------------------------------------------------------------------------------------------
 QVector<quint32>& VPiece::GetInternalPaths() { return d->m_internalPaths; }
@@ -378,7 +378,7 @@ QVector<quint32>& VPiece::GetInternalPaths() { return d->m_internalPaths; }
 void VPiece::SetInternalPaths(const QVector<quint32>& iPaths) { d->m_internalPaths = iPaths; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<CustomSARecord> VPiece::GetCustomSARecords() const { return d->m_customSARecords; }
+const QVector<CustomSARecord>& VPiece::GetCustomSARecords() const { return d->m_customSARecords; }
 
 //---------------------------------------------------------------------------------------------------------------------
 QVector<CustomSARecord>& VPiece::GetCustomSARecords() { return d->m_customSARecords; }
@@ -390,7 +390,7 @@ void VPiece::SetCustomSARecords(const QVector<CustomSARecord>& records)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<quint32> VPiece::getAnchors() const { return d->m_anchors; }
+const QVector<quint32>& VPiece::getAnchors() const { return d->m_anchors; }
 
 //---------------------------------------------------------------------------------------------------------------------
 QVector<quint32>& VPiece::getAnchors() { return d->m_anchors; }

@@ -90,13 +90,13 @@ public:
     qreal GetSABefore(const VContainer* data) const;
     qreal GetSABefore(const VContainer* data, Unit unit) const;
 
-    QString GetFormulaSABefore() const;
+    const QString& GetFormulaSABefore() const;
     void setBeforeSAFormula(const QString& formula);
 
     qreal GetSAAfter(const VContainer* data) const;
     qreal GetSAAfter(const VContainer* data, Unit unit) const;
 
-    QString GetFormulaSAAfter() const;
+    const QString& GetFormulaSAAfter() const;
     void setAfterSAFormula(const QString& formula);
 
     PieceNodeAngle GetAngleType() const;

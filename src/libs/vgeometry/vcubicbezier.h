@@ -89,7 +89,7 @@ public:
 
     void Swap(VCubicBezier& curve) noexcept;
 
-    VPointF GetP1() const override;
+    const VPointF& GetP1() const override;
     void SetP1(const VPointF& p);
 
     VPointF GetP2() const override;
@@ -98,7 +98,7 @@ public:
     VPointF GetP3() const override;
     void SetP3(const VPointF& p);
 
-    VPointF GetP4() const override;
+    const VPointF& GetP4() const override;
     void SetP4(const VPointF& p);
 
     qreal GetStartAngle() const override;

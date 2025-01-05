@@ -91,7 +91,7 @@ public:
     void SetPaperWidth(qreal value);
 
     bool IsUsePrinterFields() const;
-    QMarginsF GetPrinterFields() const;
+    const QMarginsF& GetPrinterFields() const;
     void SetPrinterFields(bool usePrinterFields, const QMarginsF& value);
 
     quint32 GetShift() const;

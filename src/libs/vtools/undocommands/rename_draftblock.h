@@ -75,8 +75,8 @@ public:
     void redo() override;
     bool mergeWith(const QUndoCommand* command) override;
     int id() const override;
-    QString getNewName() const;
-    QString getOldName() const;
+    const QString& getNewName() const;
+    const QString& getOldName() const;
 
 private:
     Q_DISABLE_COPY(RenameDraftBlock)
@@ -87,9 +87,9 @@ private:
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString RenameDraftBlock::getNewName() const { return m_newBlockName; }
+inline const QString& RenameDraftBlock::getNewName() const { return m_newBlockName; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QString RenameDraftBlock::getOldName() const { return m_oldBlockName; }
+inline const QString& RenameDraftBlock::getOldName() const { return m_oldBlockName; }
 
 #endif   // RENAME_DRAFTBLOCK_H

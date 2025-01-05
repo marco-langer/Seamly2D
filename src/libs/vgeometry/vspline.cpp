@@ -77,7 +77,8 @@ void VSpline::Swap(VSpline& spline) noexcept
 VSpline::VSpline()
     : VAbstractCubicBezier(GOType::Spline)
     , d(new VSplineData)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -87,7 +88,8 @@ VSpline::VSpline()
 VSpline::VSpline(const VSpline& spline)
     : VAbstractCubicBezier(spline)
     , d(spline.d)
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 /**
@@ -329,7 +331,7 @@ VSpline& VSpline::operator=(const VSpline& spline)
  * @brief GetP1 return first spline point.
  * @return first point.
  */
-VPointF VSpline::GetP1() const { return d->p1; }
+const VPointF& VSpline::GetP1() const { return d->p1; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSpline::SetP1(const VPointF& p) { d->p1 = p; }
@@ -363,7 +365,7 @@ VPointF VSpline::GetP3() const
  * @brief GetP4 return last spline point.
  * @return остання точка сплайну.
  */
-VPointF VSpline::GetP4() const { return d->p4; }
+const VPointF& VSpline::GetP4() const { return d->p4; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSpline::SetP4(const VPointF& p) { d->p4 = p; }
@@ -383,10 +385,10 @@ qreal VSpline::GetStartAngle() const { return d->angle1; }
 qreal VSpline::GetEndAngle() const { return d->angle2; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSpline::GetStartAngleFormula() const { return d->angle1F; }
+const QString& VSpline::GetStartAngleFormula() const { return d->angle1F; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSpline::GetEndAngleFormula() const { return d->angle2F; }
+const QString& VSpline::GetEndAngleFormula() const { return d->angle2F; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSpline::SetStartAngle(qreal angle, const QString& formula)
@@ -409,10 +411,10 @@ qreal VSpline::GetC1Length() const { return d->c1Length; }
 qreal VSpline::GetC2Length() const { return d->c2Length; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSpline::GetC1LengthFormula() const { return d->c1LengthF; }
+const QString& VSpline::GetC1LengthFormula() const { return d->c1LengthF; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VSpline::GetC2LengthFormula() const { return d->c2LengthF; }
+const QString& VSpline::GetC2LengthFormula() const { return d->c2LengthF; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VSpline::SetC1Length(qreal length, const QString& formula)

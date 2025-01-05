@@ -71,7 +71,7 @@ public:
     DialogArc(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogArc() override;
 
-    VArc getArc() const;
+    const VArc& getArc() const;
     void setArc(const VArc& arc);
 
     quint32 getCenter() const;

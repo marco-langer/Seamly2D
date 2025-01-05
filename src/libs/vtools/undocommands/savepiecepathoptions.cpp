@@ -141,4 +141,4 @@ int SavePiecePathOptions::id() const { return static_cast<int>(UndoCommand::Save
 quint32 SavePiecePathOptions::PathId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VPiecePath SavePiecePathOptions::NewPath() const { return m_newPath; }
+const VPiecePath& SavePiecePathOptions::NewPath() const { return m_newPath; }

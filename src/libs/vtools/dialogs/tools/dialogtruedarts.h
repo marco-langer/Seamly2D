@@ -73,8 +73,8 @@ public:
     DialogTrueDarts(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogTrueDarts() override;
 
-    QString GetFirstNewDartPointName();
-    QString GetSecondNewDartPointName();
+    const QString& GetFirstNewDartPointName() const;
+    const QString& GetSecondNewDartPointName() const;
     void SetNewDartPointNames(const QString& firstPoint, const QString& secondPoint);
 
     quint32 GetFirstBasePointId() const;

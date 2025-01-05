@@ -54,7 +54,7 @@ public:
 
     QString getName() const;
 
-    QMap<quint32, quint32> getGroupData() const;
+    const QMap<quint32, quint32>& getGroupData() const;
 
     void ShowDialog(bool click) override;
 

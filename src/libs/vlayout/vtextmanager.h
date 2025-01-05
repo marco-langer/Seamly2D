@@ -71,7 +71,7 @@ public:
     void SetFontSize(int iFS);
     void FitFontSize(qreal fW, qreal fH);
 
-    QList<TextLine> GetAllSourceLines() const;
+    const QList<TextLine>& GetAllSourceLines() const;
     int GetSourceLinesCount() const;
     const TextLine& GetSourceLine(int i) const;
 

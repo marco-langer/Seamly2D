@@ -48,7 +48,7 @@ public:
     void redo() override;
     int id() const override;
     quint32 getpieceId() const;
-    QString getColor() const;
+    const QString& getColor() const;
 
 signals:
     void updateList(quint32 m_id);

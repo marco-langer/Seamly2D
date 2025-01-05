@@ -82,7 +82,7 @@ QPaintEngine* VObjPaintDevice::paintEngine() const { return engine.data(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-QString VObjPaintDevice::getFileName() const { return fileName; }
+const QString& VObjPaintDevice::getFileName() const { return fileName; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VObjPaintDevice::setFileName(const QString& value)

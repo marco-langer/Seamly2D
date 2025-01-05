@@ -86,13 +86,13 @@ public:
     VPieceNode& operator[](int indx);
     const VPieceNode& at(int indx) const;
 
-    QVector<VPieceNode> GetNodes() const;
+    const QVector<VPieceNode>& GetNodes() const;
     void SetNodes(const QVector<VPieceNode>& nodes);
 
     PiecePathType GetType() const;
     void SetType(PiecePathType type);
 
-    QString GetName() const;
+    const QString& GetName() const;
     void SetName(const QString& name);
 
     Qt::PenStyle GetPenType() const;

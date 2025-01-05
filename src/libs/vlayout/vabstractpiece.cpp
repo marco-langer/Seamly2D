@@ -99,20 +99,20 @@ VAbstractPiece& VAbstractPiece::operator=(const VAbstractPiece& piece)
 VAbstractPiece::~VAbstractPiece() = default;
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VAbstractPiece::GetName() const { return d->m_name; }
+const QString& VAbstractPiece::GetName() const { return d->m_name; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractPiece::SetName(const QString& value) { d->m_name = value; }
 
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VAbstractPiece::getColor() const { return d->m_color; }
+const QString& VAbstractPiece::getColor() const { return d->m_color; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractPiece::setColor(const QString& value) { d->m_color = value; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VAbstractPiece::getFill() const { return d->m_fill; }
+const QString& VAbstractPiece::getFill() const { return d->m_fill; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VAbstractPiece::setFill(const QString& value) { d->m_fill = value; }

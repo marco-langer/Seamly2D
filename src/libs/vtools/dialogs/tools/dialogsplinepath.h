@@ -79,7 +79,7 @@ public:
     DialogSplinePath(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogSplinePath() override;
 
-    VSplinePath GetPath() const;
+    const VSplinePath& GetPath() const;
     void SetPath(const VSplinePath& value);
 
     QString getPenStyle() const;
@@ -164,6 +164,6 @@ private:
  * @brief GetPath return spline path
  * @return path
  */
-inline VSplinePath DialogSplinePath::GetPath() const { return path; }
+inline const VSplinePath& DialogSplinePath::GetPath() const { return path; }
 
 #endif   // DIALOGSPLINEPATH_H

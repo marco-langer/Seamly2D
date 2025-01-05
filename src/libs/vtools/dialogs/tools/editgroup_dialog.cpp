@@ -140,7 +140,7 @@ void EditGroupDialog::nameChanged()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QMap<quint32, quint32> EditGroupDialog::getGroupData() const { return m_groupData; }
+const QMap<quint32, quint32>& EditGroupDialog::getGroupData() const { return m_groupData; }
 
 //---------------------------------------------------------------------------------------------------------------------
 QString EditGroupDialog::getColor() const

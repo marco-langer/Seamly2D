@@ -84,7 +84,7 @@ public:
     void drawPolygon(const QPointF* points, int pointCount, PolygonDrawMode mode) override;
     void drawPolygon(const QPoint* points, int pointCount, PolygonDrawMode mode) override;
 
-    QSize getSize() const;
+    const QSize& getSize() const;
     void setSize(const QSize& value);
 
     QIODevice* getOutputDevice() const;

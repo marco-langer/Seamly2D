@@ -132,7 +132,7 @@ ImageDialog::ImageDialog(DraftImage image, qreal minDimension, qreal maxDimensio
 ImageDialog::~ImageDialog() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-DraftImage ImageDialog::getImage() const { return m_image; }
+const DraftImage& ImageDialog::getImage() const { return m_image; }
 
 void ImageDialog::setImage(DraftImage image)
 {
@@ -190,7 +190,7 @@ void ImageDialog::enableWidgets()
     ui->opacity_DoubleSpinBox->setEnabled(!m_image.locked);
 }
 //---------------------------------------------------------------------------------------------------------------------
-QString ImageDialog::getName() const { return m_image.name; }
+const QString& ImageDialog::getName() const { return m_image.name; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void ImageDialog::setName(const QString& name)

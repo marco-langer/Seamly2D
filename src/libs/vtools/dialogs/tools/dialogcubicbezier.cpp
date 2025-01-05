@@ -121,7 +121,7 @@ DialogCubicBezier::DialogCubicBezier(const VContainer* data, const quint32& tool
 DialogCubicBezier::~DialogCubicBezier() { delete ui; }
 
 //---------------------------------------------------------------------------------------------------------------------
-VCubicBezier DialogCubicBezier::GetSpline() const { return spl; }
+const VCubicBezier& DialogCubicBezier::GetSpline() const { return spl; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogCubicBezier::SetSpline(const VCubicBezier& spline)

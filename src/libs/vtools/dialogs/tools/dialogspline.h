@@ -77,7 +77,7 @@ public:
     DialogSpline(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogSpline() override;
 
-    VSpline GetSpline() const;
+    const VSpline& GetSpline() const;
     void SetSpline(const VSpline& spline);
 
     QString getPenStyle() const;

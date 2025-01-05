@@ -38,7 +38,8 @@ VDxfPaintDevice::VDxfPaintDevice()
     : QPaintDevice()
     , engine(new VDxfEngine())
     , fileName()
-{}
+{
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 VDxfPaintDevice::~VDxfPaintDevice() { delete engine; }
@@ -49,7 +50,7 @@ QPaintEngine* VDxfPaintDevice::paintEngine() const { return engine; }
 
 //---------------------------------------------------------------------------------------------------------------------
 // cppcheck-suppress unusedFunction
-QString VDxfPaintDevice::getFileName() const { return fileName; }
+const QString& VDxfPaintDevice::getFileName() const { return fileName; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VDxfPaintDevice::setFileName(const QString& value)
@@ -65,7 +66,7 @@ void VDxfPaintDevice::setFileName(const QString& value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QSize VDxfPaintDevice::getSize() { return engine->getSize(); }
+const QSize& VDxfPaintDevice::getSize() { return engine->getSize(); }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VDxfPaintDevice::setSize(const QSize& size)

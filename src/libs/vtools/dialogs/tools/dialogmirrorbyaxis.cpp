@@ -153,7 +153,7 @@ void DialogMirrorByAxis::setAxisType(AxisType type)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString DialogMirrorByAxis::getSuffix() const { return m_suffix; }
+const QString& DialogMirrorByAxis::getSuffix() const { return m_suffix; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByAxis::setSuffix(const QString& value)
@@ -163,7 +163,7 @@ void DialogMirrorByAxis::setSuffix(const QString& value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<SourceItem> DialogMirrorByAxis::getSourceObjects() const { return m_objects; }
+const QVector<SourceItem>& DialogMirrorByAxis::getSourceObjects() const { return m_objects; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void DialogMirrorByAxis::setSourceObjects(const QVector<SourceItem>& value)

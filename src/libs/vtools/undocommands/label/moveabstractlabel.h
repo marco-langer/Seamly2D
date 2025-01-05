@@ -72,7 +72,7 @@ public:
     void redo() override;
 
     quint32 GetPointId() const;
-    QPointF GetNewPos() const;
+    const QPointF& GetNewPos() const;
 
 protected:
     QPointF m_oldPos;
@@ -88,6 +88,6 @@ private:
 inline quint32 MoveAbstractLabel::GetPointId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QPointF MoveAbstractLabel::GetNewPos() const { return m_newPos; }
+inline const QPointF& MoveAbstractLabel::GetNewPos() const { return m_newPos; }
 
 #endif   // MOVEABSTRACTLABEL_H

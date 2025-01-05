@@ -76,7 +76,7 @@ public:
     void redo() override;
     bool mergeWith(const QUndoCommand* command) override;
     int id() const override;
-    QDomElement getNewXml() const;
+    const QDomElement& getNewXml() const;
     quint32 getToolId() const;
 
 private:
@@ -86,7 +86,7 @@ private:
 };
 
 //---------------------------------------------------------------------------------------------------------------------
-inline QDomElement SaveToolOptions::getNewXml() const { return newXml; }
+inline const QDomElement& SaveToolOptions::getNewXml() const { return newXml; }
 
 //---------------------------------------------------------------------------------------------------------------------
 inline quint32 SaveToolOptions::getToolId() const { return nodeId; }

@@ -73,7 +73,7 @@ public:
     bool mergeWith(const QUndoCommand* command) override;
     int id() const override;
     quint32 pieceId() const;
-    VPiece getNewPiece() const;
+    const VPiece& getNewPiece() const;
 
 private:
     Q_DISABLE_COPY(SavePieceOptions)
@@ -86,6 +86,6 @@ private:
 inline quint32 SavePieceOptions::pieceId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline VPiece SavePieceOptions::getNewPiece() const { return m_newPiece; }
+inline const VPiece& SavePieceOptions::getNewPiece() const { return m_newPiece; }
 
 #endif   // SAVEPIECEOPTIONS_H

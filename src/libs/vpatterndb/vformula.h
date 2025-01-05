@@ -78,7 +78,7 @@ public:
     QString GetFormula(FormulaType type = FormulaType::ToUser) const;
     void SetFormula(const QString& value, FormulaType type = FormulaType::ToUser);
 
-    QString getStringValue() const;
+    const QString& getStringValue() const;
     qreal getDoubleValue() const;
 
     bool getCheckZero() const;
@@ -90,7 +90,7 @@ public:
     quint32 getToolId() const;
     void setToolId(const quint32& value);
 
-    QString getPostfix() const;
+    const QString& getPostfix() const;
     void setPostfix(const QString& value);
 
     bool error() const;

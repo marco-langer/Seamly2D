@@ -111,15 +111,15 @@ public:
 
     void Swap(VEllipticalArc& arc) noexcept;
 
-    QString GetFormulaRotationAngle() const;
+    const QString& GetFormulaRotationAngle() const;
     void SetFormulaRotationAngle(const QString& formula, qreal value);
     qreal GetRotationAngle() const;
 
-    QString GetFormulaRadius1() const;
+    const QString& GetFormulaRadius1() const;
     void SetFormulaRadius1(const QString& formula, qreal value);
     qreal GetRadius1() const;
 
-    QString GetFormulaRadius2() const;
+    const QString& GetFormulaRadius2() const;
     void SetFormulaRadius2(const QString& formula, qreal value);
     qreal GetRadius2() const;
 
@@ -128,7 +128,7 @@ public:
     QPointF GetP1() const;
     QPointF GetP2() const;
 
-    QTransform getTransform() const;
+    const QTransform& getTransform() const;
     void setTransform(const QTransform& matrix, bool combine = false);
 
     VPointF GetCenter() const override;

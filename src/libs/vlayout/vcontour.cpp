@@ -66,14 +66,15 @@
 VContour::VContour(int height, int width)
     : m_paperHeight{ height }
     , m_paperWidth{ width }
-{}
+{
+}
 
 
 //---------------------------------------------------------------------------------------------------------------------
 void VContour::SetContour(const QVector<QPointF>& contour) { m_globalContour = contour; }
 
 //---------------------------------------------------------------------------------------------------------------------
-QVector<QPointF> VContour::GetContour() const { return m_globalContour; }
+const QVector<QPointF>& VContour::GetContour() const { return m_globalContour; }
 
 //---------------------------------------------------------------------------------------------------------------------
 quint32 VContour::GetShift() const { return m_shift; }
@@ -242,7 +243,7 @@ QPainterPath VContour::ContourPath() const
     QPainterPath path;
     path.setFillRule(Qt::WindingFill);
 
-    const QVector<QPointF> points = GetContour();
+    const QVector<QPointF>& points = GetContour();
     path.moveTo(points.at(0));
     for (qint32 i = 1; i < points.count(); ++i) {
         path.lineTo(points.at(i));

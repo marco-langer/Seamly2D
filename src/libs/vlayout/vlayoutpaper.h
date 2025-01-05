@@ -103,7 +103,7 @@ public:
     [[nodiscard]] QGraphicsRectItem* GetPaperItem(bool autoCrop, bool textAsPaths) const;
     [[nodiscard]] QList<QGraphicsItem*> getPieceItems(bool textAsPaths) const;
 
-    QVector<VLayoutPiece> getPieces() const;
+    const QVector<VLayoutPiece>& getPieces() const;
     void setPieces(const QList<VLayoutPiece>& pieces);
 
     QRectF piecesBoundingRect() const;

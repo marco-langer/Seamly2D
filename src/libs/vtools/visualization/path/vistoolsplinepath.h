@@ -77,7 +77,7 @@ public:
     void RefreshGeometry() override;
 
     void setPath(const VSplinePath& value);
-    VSplinePath getPath();
+    const VSplinePath& getPath();
 
     int type() const override { return Type; }
     enum

@@ -73,7 +73,7 @@ public:
     bool mergeWith(const QUndoCommand* command) override;
     int id() const override;
     quint32 PathId() const;
-    VPiecePath NewPath() const;
+    const VPiecePath& NewPath() const;
 
 private:
     Q_DISABLE_COPY(SavePiecePathOptions)

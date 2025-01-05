@@ -79,7 +79,7 @@ public:
     bool mergeWith(const QUndoCommand* command) override;
     int id() const override;
     quint32 getSplineId() const;
-    VSpline getNewSpline() const;
+    const VSpline& getNewSpline() const;
 
 private:
     Q_DISABLE_COPY(MoveSpline)
@@ -93,6 +93,6 @@ private:
 inline quint32 MoveSpline::getSplineId() const { return nodeId; }
 
 //---------------------------------------------------------------------------------------------------------------------
-inline VSpline MoveSpline::getNewSpline() const { return newSpline; }
+inline const VSpline& MoveSpline::getNewSpline() const { return newSpline; }
 
 #endif   // MOVESPLINE_H

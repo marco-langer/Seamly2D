@@ -114,18 +114,18 @@ public:
 
     void Swap(VAbstractArc& arc) noexcept;
 
-    QString GetFormulaF1() const;
+    const QString& GetFormulaF1() const;
     void SetFormulaF1(const QString& formula, qreal value);
     qreal GetStartAngle() const override;
 
-    QString GetFormulaF2() const;
+    const QString& GetFormulaF2() const;
     void SetFormulaF2(const QString& formula, qreal value);
     qreal GetEndAngle() const override;
 
     virtual VPointF GetCenter() const;
     void SetCenter(const VPointF& point);
 
-    QString GetFormulaLength() const;
+    const QString& GetFormulaLength() const;
     void SetFormulaLength(const QString& formula, qreal value);
 
     void setId(const quint32& id) override;

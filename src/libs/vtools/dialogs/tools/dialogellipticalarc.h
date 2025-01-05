@@ -68,7 +68,7 @@ public:
     DialogEllipticalArc(const VContainer* data, const quint32& toolId, QWidget* parent = nullptr);
     ~DialogEllipticalArc() override;
 
-    VEllipticalArc getArc() const;
+    const VEllipticalArc& getArc() const;
     void setArc(const VEllipticalArc& arc);
 
     quint32 GetCenter() const;

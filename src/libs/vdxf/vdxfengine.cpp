@@ -385,7 +385,7 @@ void VDxfEngine::drawPixmap(const QRectF& r, const QPixmap& pm, const QRectF& sr
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QSize VDxfEngine::getSize() const { return size; }
+const QSize& VDxfEngine::getSize() const { return size; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VDxfEngine::setSize(const QSize& value)
@@ -405,7 +405,7 @@ void VDxfEngine::setResolution(double value)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-QString VDxfEngine::getFileName() const { return fileName; }
+const QString& VDxfEngine::getFileName() const { return fileName; }
 
 //---------------------------------------------------------------------------------------------------------------------
 void VDxfEngine::setFileName(const QString& value)

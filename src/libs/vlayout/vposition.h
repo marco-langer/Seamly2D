@@ -90,7 +90,7 @@ public:
 
     void setPieces(const QVector<VLayoutPiece>& pieces);
 
-    VBestSquare getBestResult() const;
+    const VBestSquare& getBestResult() const;
 
     static void DrawDebug(
         const VContour& contour,

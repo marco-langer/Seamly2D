@@ -110,10 +110,10 @@ public:
     void setNotches(const QVector<QLineF>& notches);
 
     QVector<QVector<QPointF>> InternalPathsForCut(bool cut) const;
-    QVector<VLayoutPiecePath> getInternalPaths() const;
+    const QVector<VLayoutPiecePath>& getInternalPaths() const;
     void setInternalPaths(const QVector<VLayoutPiecePath>& internalPaths);
 
-    QVector<VLayoutPiecePath> getCutoutPaths() const;
+    const QVector<VLayoutPiecePath>& getCutoutPaths() const;
     void setCutoutPaths(const QVector<VLayoutPiecePath>& cutoutPaths);
 
     QPointF GetPieceTextPosition() const;
@@ -135,7 +135,7 @@ public:
     void setGrainline(const VGrainlineData& geom, const VContainer* pattern);
     QVector<QPointF> getGrainline() const;
 
-    QTransform getTransform() const;
+    const QTransform& getTransform() const;
     void setTransform(const QTransform& transform);
 
     qreal GetLayoutWidth() const;
