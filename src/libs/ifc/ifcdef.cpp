@@ -55,15 +55,7 @@
 
 #include "ifcdef.h"
 
-#include <QBrush>
-#include <QIcon>
-#include <QMap>
-#include <QPainter>
-#include <QPen>
-#include <QPixmap>
-#include <QStaticStringData>
-#include <QStringData>
-#include <QStringDataPtr>
+#include <QObject>
 
 const QString CustomMSign = QStringLiteral("@");
 const QString CustomIncrSign = QStringLiteral("#");

@@ -56,6 +56,7 @@
 #ifndef IFCDEF_H
 #define IFCDEF_H
 
+#include <QMap>
 #include <QString>
 #include <QStringList>
 #include <QtGlobal>
