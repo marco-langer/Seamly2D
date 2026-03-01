@@ -15,9 +15,7 @@ unix {
         QMAKE_CXXFLAGS -= \
             -Wswitch-default
 
-        noAddressSanitizer{ # For enable run qmake with CONFIG+=noAddressSanitizer
-            # do nothing
-        } else {
+        gccAsan{ # For enable run qmake with CONFIG+=gccAsan
             CONFIG(debug, debug|release){
                 # Debug mode
                 #gcc’s 4.8.0 Address Sanitizer

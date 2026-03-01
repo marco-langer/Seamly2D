@@ -14,9 +14,7 @@ unix {
         # want them in the global list. Compromise decision is to delete them from the local list.
         # QMAKE_CXXFLAGS -= \
 
-        noAddressSanitizer{ # For enable run qmake with CONFIG+=noAddressSanitizer
-            # do nothing
-        } else {
+        gccAsan{ # For enable run qmake with CONFIG+=gccAsan
             CONFIG(debug, debug|release){
                 # Debug mode
                 #gcc’s 4.8.0 Address Sanitizer
