@@ -75,6 +75,10 @@ class VLockGuard
 {
 public:
     explicit VLockGuard(const QString& lockName, int stale = 0, int timeout = 0);
+    VLockGuard(const VLockGuard& other) = delete;
+    VLockGuard(VLockGuard&& other) = delete;
+    VLockGuard& operator=(const VLockGuard& other) = delete;
+    VLockGuard& operator=(VLockGuard& other) = delete;
 
     template <typename Alloc>
     VLockGuard(const QString& lockName, Alloc a, int stale = 0, int timeout = 0);
@@ -88,8 +92,6 @@ public:
     QString GetLockFile() const;
 
 private:
-    Q_DISABLE_COPY(VLockGuard<Guarded>)
-
     std::shared_ptr<Guarded> holder;
     int lockError;
     QString lockFile;
