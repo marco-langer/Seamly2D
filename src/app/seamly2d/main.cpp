@@ -81,6 +81,20 @@ int main(int argc, char* argv[])
 
     QT_REQUIRE_VERSION(argc, argv, "5.15.2");
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0) && defined(Q_OS_LINUX)
+    /*
+        Qt5 on Wayland logs warnings like:
+        "Wayland does not support QWindow::requestActivate()"
+        because activateWindow() relies on X11 behavior.
+
+        On Linux + Qt5 we force the xcb (X11) backend to restore
+        expected behavior and suppress these warnings.
+
+        Safe to remove once fully migrated to Qt6.
+    */
+    qputenv("QT_QPA_PLATFORM", QByteArray("xcb"));
+#endif
+
     //------------------------------------------------------------------------
     // On macOS, correct WebView / QtQuick compositing and stacking requires running
     // Qt in layer-backed mode, which again requires rendering on the Gui thread.
